@@ -7,7 +7,7 @@ class welcandleave(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_join(self, member, ctx):
-        channel_id = 1121921106706710567  # Replace with the ID of your welcome channel
+        channel_id = 1121921106706710567  
         channel = self.bot.get_channel(channel_id)
         if channel:
             mention = member.mention
@@ -20,7 +20,7 @@ class welcandleave(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_remove(self, member):
-        channel_id = 1121921106706710567  # Replace with the ID of your leave channel
+        channel_id = 1121921106706710567  
         channel = self.bot.get_channel(channel_id)
         if channel:
             mention = member.mention
