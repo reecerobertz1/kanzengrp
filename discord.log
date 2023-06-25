@@ -1,0 +1,53 @@
+[2023-06-25 16:59:20] [WARNING ] discord.client: PyNaCl is not installed, voice will NOT be supported
+[2023-06-25 16:59:20] [INFO    ] discord.client: logging in using static token
+[2023-06-25 17:03:06] [WARNING ] discord.client: PyNaCl is not installed, voice will NOT be supported
+[2023-06-25 17:03:06] [INFO    ] discord.client: logging in using static token
+[2023-06-25 17:06:09] [WARNING ] discord.client: PyNaCl is not installed, voice will NOT be supported
+[2023-06-25 17:06:09] [INFO    ] discord.client: logging in using static token
+[2023-06-25 17:06:11] [INFO    ] discord.gateway: Shard ID None has connected to Gateway (Session ID: f7d40c80a95585b250e31c43d88f0602).
+[2023-06-25 17:08:15] [ERROR   ] discord.ext.commands.bot: Ignoring exception in command jishaku cat
+Traceback (most recent call last):
+  File "C:\Users\reece\AppData\Local\Programs\Python\Python311\Lib\site-packages\discord\ext\commands\bot.py", line 1350, in invoke
+    await ctx.command.invoke(ctx)
+  File "C:\Users\reece\AppData\Local\Programs\Python\Python311\Lib\site-packages\discord\ext\commands\core.py", line 1650, in invoke
+    await ctx.invoked_subcommand.invoke(ctx)
+  File "C:\Users\reece\AppData\Local\Programs\Python\Python311\Lib\site-packages\discord\ext\commands\core.py", line 1021, in invoke
+    await self.prepare(ctx)
+  File "C:\Users\reece\AppData\Local\Programs\Python\Python311\Lib\site-packages\discord\ext\commands\core.py", line 925, in prepare
+    if not await self.can_run(ctx):
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\reece\AppData\Local\Programs\Python\Python311\Lib\site-packages\discord\ext\commands\core.py", line 1279, in can_run
+    ret = await discord.utils.maybe_coroutine(local_check, ctx)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\reece\AppData\Local\Programs\Python\Python311\Lib\site-packages\discord\utils.py", line 693, in maybe_coroutine
+    return await value
+           ^^^^^^^^^^^
+  File "C:\Users\reece\AppData\Local\Programs\Python\Python311\Lib\site-packages\jishaku\features\baseclass.py", line 231, in cog_check
+    raise commands.NotOwner("You must own this bot to use Jishaku.")
+discord.ext.commands.errors.NotOwner: You must own this bot to use Jishaku.
+[2023-06-25 17:09:08] [ERROR   ] discord.ext.commands.bot: Ignoring exception in command jishaku load
+Traceback (most recent call last):
+  File "C:\Users\reece\AppData\Local\Programs\Python\Python311\Lib\site-packages\discord\ext\commands\bot.py", line 1350, in invoke
+    await ctx.command.invoke(ctx)
+  File "C:\Users\reece\AppData\Local\Programs\Python\Python311\Lib\site-packages\discord\ext\commands\core.py", line 1650, in invoke
+    await ctx.invoked_subcommand.invoke(ctx)
+  File "C:\Users\reece\AppData\Local\Programs\Python\Python311\Lib\site-packages\discord\ext\commands\core.py", line 1021, in invoke
+    await self.prepare(ctx)
+  File "C:\Users\reece\AppData\Local\Programs\Python\Python311\Lib\site-packages\discord\ext\commands\core.py", line 925, in prepare
+    if not await self.can_run(ctx):
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\reece\AppData\Local\Programs\Python\Python311\Lib\site-packages\discord\ext\commands\core.py", line 1279, in can_run
+    ret = await discord.utils.maybe_coroutine(local_check, ctx)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\reece\AppData\Local\Programs\Python\Python311\Lib\site-packages\discord\utils.py", line 693, in maybe_coroutine
+    return await value
+           ^^^^^^^^^^^
+  File "C:\Users\reece\AppData\Local\Programs\Python\Python311\Lib\site-packages\jishaku\features\baseclass.py", line 231, in cog_check
+    raise commands.NotOwner("You must own this bot to use Jishaku.")
+discord.ext.commands.errors.NotOwner: You must own this bot to use Jishaku.
+[2023-06-25 17:54:59] [ERROR   ] discord.client: Ignoring exception in on_member_join
+Traceback (most recent call last):
+  File "C:\Users\reece\AppData\Local\Programs\Python\Python311\Lib\site-packages\discord\client.py", line 441, in _run_event
+    await coro(*args, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^
+TypeError: welcandleave.on_member_join() missing 1 required positional argument: 'ctx'
