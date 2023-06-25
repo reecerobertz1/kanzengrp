@@ -9,7 +9,6 @@ from discord.ext import commands
 class apps(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.bot = bot
         self.accept_role_id = 1122191098006224906
         self.decline_role_id = 1122191119430733835
         self.server_id = 1121841073673736215
@@ -22,7 +21,7 @@ class apps(commands.Cog):
             color=0x2b2d31
         )
         embed.add_field(name='Application Rules', value='• Make sure you are following [@remqsi](https://www.instagram.com/remqsi/) and the [group account](https://www.instagram.com/uzaigrp/)\n• Please only send one form!', inline=False)
-        embed.add_field(name='Application Info', value='• Velocity edits are an **auto decline**\n• You will receive an acceptence message if you are accepted, and a decline message if you get declined.\n• There is no doing reapps so choose the edit you want to apply with wisely\n• Make sure you answer all the questions on the form before sending!\n• Apply with your best edit. We look for creative and smooth edits', inline=False)
+        embed.add_field(name='Application Info', value='• Velocity edits are an **auto decline**\n• You will receive an acceptance message if you are accepted, and a decline message if you get declined.\n• There is no redoing applications, so choose the edit you want to apply with wisely.\n• Make sure you answer all the questions on the form before sending!\n• Apply with your best edit. We look for creative and smooth edits.', inline=False)
         embed.set_image(url='https://cdn.discordapp.com/attachments/1122195332516810874/1122208438345281666/IMG_2232_00000_00000.png')
         embed.set_footer(text='If you need any help, feel free to ping @lead')
 
@@ -65,8 +64,8 @@ class apps(commands.Cog):
         except discord.Forbidden:
             await ctx.reply("I couldn't send the acceptance message. Please try again later.")
 
-        await member.add_roles(accept_role)
-        await member.remove_roles(decline_role)
+        await member.add_roles(accept_role, reason="Accepted into the group")
+        await member.remove_roles(decline_role, reason="Accepted into the group")
 
     @commands.command()
     @commands.is_owner()  # Restrict command to server owner
