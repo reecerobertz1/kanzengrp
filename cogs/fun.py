@@ -95,7 +95,7 @@ class funcmds(commands.Cog):
     @commands.command()
     async def hug(self, ctx, member: typing.Optional[discord.Member]):
         if member is None:
-            await ctx.send(f"Aroma gave {ctx.author.mention} a hug <a:mm_hug_tight:1122277098887848028>")
+            await ctx.send(f"Hoshi gave {ctx.author.mention} a hug <a:mm_hug_tight:1122621840305684632>")
         else:
             embed = discord.Embed(description=f"{ctx.author.mention} gave {member.mention} a hug!", color=0x2b2d31)
             urls = ['https://cdn.discordapp.com/attachments/804482120671821865/814085524548878346/download_1.gif', "https://cdn.discordapp.com/attachments/804482120671821865/814083420194996224/download.gif", "https://cdn.discordapp.com/attachments/804482120671821865/814086607997108254/tenor.gif", "https://cdn.discordapp.com/attachments/804482120671821865/814087205039243274/tenor_1.gif", "https://cdn.discordapp.com/attachments/804482120671821865/814087528906620968/tenor_2.gif"]
@@ -106,7 +106,7 @@ class funcmds(commands.Cog):
     async def kiss(self, ctx, member: typing.Optional[discord.Member]):
         author = ctx.message.author.mention
         if member is None:
-            await ctx.reply(f"Aroma kissed {author}! <a:pkiss:1122277569941741691>")
+            await ctx.reply(f"Hoshi kissed {author}! <a:pkiss:1122621758978138283>")
         else:
             embed = discord.Embed(description=f"{author} kissed {member.mention}", color=0x2b2d31)
             hugs = ['https://cdn.discordapp.com/attachments/804482120671821865/814095974611681280/37f9f27715e7dec6f2f4b7d63ad1af13.gif', 'https://cdn.discordapp.com/attachments/804482120671821865/814096796582019082/39fe167bdab90223bcc890bcb067b761.gif', 'https://cdn.discordapp.com/attachments/804482120671821865/814097411525836851/5f5afb51884af7c58e8d46c90261f990.gif', 'https://cdn.discordapp.com/attachments/804482120671821865/814097832494759936/tenor_1.gif', 'https://cdn.discordapp.com/attachments/804482120671821865/814098373228625970/tenor_2.gif']
@@ -117,7 +117,7 @@ class funcmds(commands.Cog):
     async def slap(self, ctx, member: typing.Optional[discord.Member]):
         author = ctx.message.author.mention
         if member is None:
-            await ctx.reply(f"Aroma slapped {author}! HAHAHAHAHAHAHA")
+            await ctx.reply(f"Hoshi slapped {author}! HAHAHAHAHAHAHA")
         else:
             embed = discord.Embed(description=f'{author} slapped {member.mention}!', color=0x2b2d31)
             embed.set_image(url='https://cdn.discordapp.com/attachments/804482120671821865/814100958463524884/nK.gif')
