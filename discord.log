@@ -51,3 +51,10 @@ Traceback (most recent call last):
     await coro(*args, **kwargs)
           ^^^^^^^^^^^^^^^^^^^^^
 TypeError: welcandleave.on_member_join() missing 1 required positional argument: 'ctx'
+[2023-06-25 18:26:22] [WARNING ] discord.client: PyNaCl is not installed, voice will NOT be supported
+[2023-06-25 18:26:22] [INFO    ] discord.client: logging in using static token
+[2023-06-25 18:26:23] [INFO    ] discord.gateway: Shard ID None has connected to Gateway (Session ID: 93247f5ea3f2c317a78939dda8a6b0ac).
+[2023-06-25 18:57:25] [INFO    ] discord.gateway: Shard ID None session has been invalidated.
+[2023-06-25 19:16:38] [WARNING ] discord.client: PyNaCl is not installed, voice will NOT be supported
+[2023-06-25 19:16:38] [INFO    ] discord.client: logging in using static token
+[2023-06-25 19:16:40] [INFO    ] discord.gateway: Shard ID None has connected to Gateway (Session ID: 806467a300734cdab3aa34cc6647fd8d).
