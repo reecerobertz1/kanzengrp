@@ -125,6 +125,16 @@ class funcmds(commands.Cog):
             embed.set_image(url='https://cdn.discordapp.com/attachments/804482120671821865/814100958463524884/nK.gif')
             await ctx.reply(embed=embed)
 
+    @commands.command()
+    async def fuck(self, ctx, member: typing.Optional[discord.Member]):
+        author = ctx.message.author.mention
+        if member is None:
+            await ctx.reply(f"Hoshi fuck {author}! UGH OMFG")
+        else:
+            embed = discord.Embed(description=f'{author} fucked {member.mention}!', color=0x2b2d31)
+            embed.set_image(url='https://myteenwebcam.com/fapp/gifs/df33afb45614b12e96ef2aedf5a56225.gif')
+            await ctx.reply(embed=embed)
+
     @commands.command(name='roast')
     async def roast_command(self, ctx, *, member: discord.Member = None):
         # If no member is mentioned, default to the author of the command
