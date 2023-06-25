@@ -53,7 +53,7 @@ class apps(commands.Cog):
         try:
             invite = await server.text_channels[0].create_invite()
         except discord.Forbidden:
-            await ctx.reply("I couldn't create an invite. Please try again later.")
+            await ctx.reply("I couldn't create an invite. Please try again later...")
             return
 
         accept_message = f"Hey, you have been accepted! You can join the server here: {invite.url}"
