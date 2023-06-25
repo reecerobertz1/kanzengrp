@@ -1,6 +1,5 @@
 import io
 import os
-from tkinter import Image
 from typing import Optional
 import aiohttp
 import discord
