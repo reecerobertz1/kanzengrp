@@ -12,8 +12,16 @@ from PIL import Image
 class funcmds(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.log_channel_id = 1122627075682078720  # Replace with your desired log channel ID
 
+    @commands.command()
+    async def say(self, ctx, *, message):
+        await ctx.message.delete()
+        await ctx.send(message)
 
+        log_channel = self.bot.get_channel(self.log_channel_id)
+        if log_channel:
+            await log_channel.send(f"{ctx.author.mention} used the say command, and they said: {message}")
 
 
     @commands.command()
@@ -75,12 +83,6 @@ class funcmds(commands.Cog):
 
         # Delete the temporary files
         os.remove("jail_avatar.png")
-
-        
-    @commands.command()
-    async def say(self, ctx, *, message):
-        await ctx.message.delete()
-        await ctx.send(message)
 
 
     @commands.command()
