@@ -48,7 +48,7 @@ class editing(commands.Cog):
         await ctx.reply(raneffect)
 
     @commands.command()
-    async def transitions(self, ctx):
+    async def transition(self, ctx):
         choices = ["Warp Fisheye", "Zoom in", "Zoom out", "Inside Cube", "Ink Splash", "Split Cube", "Polaroid Pop Up", "CC scale wipe", "3D flip", "3D tunnel", "Tile Scramble", "do something with a cube, dont be lazy", "idfk... look at someone's edits take inspo from them (GIVE THEM IB CREDITS THOUGH)", "rotation", "slide down", "slide right", "slide left", "slide up", "slide somewhere", "3D flip into a cube", "i can't think of anything... do the command again"]
         raneffect = random.choice(choices)
         await ctx.reply(raneffect)
