@@ -131,20 +131,20 @@ class funcmds(commands.Cog):
 
         # List of roasts
         roasts = [
-            f"{member.mention}, you're so dumb, you stare at a glass of orange juice because it says 'concentrate'.",
-            f"{member.mention}, I'm not saying I hate you, but I would unplug your life support to charge my phone.",
-            f"{member.mention}, I was going to make a joke about your life, but I see life already beat me to it.",
-            f"{member.mention}, if I had a face like yours, I'd sue my parents.",
-            f"{member.mention}, I envy people who have never met you.",
-            f"{member.mention}, I'm not insulting you, I'm describing you.",
-            f"{member.mention}, I'm sorry, was I meant to be offended? The only thing offending me is your face.",
-            f"{member.mention}, I don't have the time or crayons to explain this to you.",
-            f"{member.mention}, roses are red, violets are blue, I have 5 fingers, and the middle one is for you.",
-            f"{member.mention}, I'm sorry if I hurt your feelings. But I hope you understand that I just don't care."
+            "you're so dumb, you stare at a glass of orange juice because it says 'concentrate'.",
+            "I'm not saying I hate you, but I would unplug your life support to charge my phone.",
+            "I was going to make a joke about your life, but I see life already beat me to it.",
+            "if I had a face like yours, I'd sue my parents.",
+            "I envy people who have never met you.",
+            "I'm not insulting you, I'm describing you.",
+            "I'm sorry, was I meant to be offended? The only thing offending me is your face.",
+            "I don't have the time or crayons to explain this to you.",
+            "roses are red, violets are blue, I have 5 fingers, and the middle one is for you.",
+            "I'm sorry if I hurt your feelings. But I hope you understand that I just don't care."
         ]
 
         roast = random.choice(roasts)
-        await ctx.send(roast)
+        await ctx.reply(roast)
 
     @commands.command(name='compliment')
     async def compliment_command(self, ctx, *, member: discord.Member = None):
@@ -154,20 +154,20 @@ class funcmds(commands.Cog):
 
         # List of compliments
         compliments = [
-            f"{member.mention}, you have a beautiful smile!",
-            f"{member.mention}, your kindness is contagious!",
-            f"{member.mention}, you're incredibly smart and talented!",
-            f"{member.mention}, you make the world a better place just by being in it!",
-            f"{member.mention}, your positive attitude is inspiring!",
-            f"{member.mention}, you have a heart of gold!",
-            f"{member.mention}, your creativity knows no bounds!",
-            f"{member.mention}, you always know how to make people feel special!",
-            f"{member.mention}, you're an amazing friend and companion!",
-            f"{member.mention}, your hard work and dedication are truly admirable!"
+            "you have a beautiful smile!",
+            "your kindness is contagious!",
+            "you're incredibly smart and talented!",
+            "you make the world a better place just by being in it!",
+            "your positive attitude is inspiring!",
+            "you have a heart of gold!",
+            "your creativity knows no bounds!",
+            "you always know how to make people feel special!",
+            "you're an amazing friend and companion!",
+            "your hard work and dedication are truly admirable!"
         ]
 
         compliment = random.choice(compliments)
-        await ctx.send(compliment)
+        await ctx.reply(compliment)
 
 
 
