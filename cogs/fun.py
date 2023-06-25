@@ -132,7 +132,7 @@ class funcmds(commands.Cog):
             await ctx.reply(f"Hoshi fuck {author}! UGH OMFG")
         else:
             embed = discord.Embed(description=f'{author} fucked {member.mention}!', color=0x2b2d31)
-            embed.set_image(url='https://tenor.com/view/shake-wet-hair-soaked-rainbows-gif-19295009')
+            embed.set_image(url='https://myteenwebcam.com/fapp/gifs/df33afb45614b12e96ef2aedf5a56225.gif')
             await ctx.reply(embed=embed)
 
     @commands.command(name='roast')
