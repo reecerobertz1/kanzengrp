@@ -13,16 +13,27 @@ from PIL import Image
 class funcmds(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.log_channel_id = 1122627075682078720  # Replace with your desired log channel ID
+        self.server1_log_channel_id = 1122627075682078720
+        self.server2_log_channel_id = 1122994947444973709
 
     @commands.command()
     async def say(self, ctx, *, message):
         await ctx.message.delete()
         await ctx.send(message)
 
-        log_channel = self.bot.get_channel(self.log_channel_id)
-        if log_channel:
-            await log_channel.send(f"{ctx.author.mention} used the say command, and they said: {message}")
+        log_channel_id = self.get_log_channel_id(ctx.guild.id)
+        if log_channel_id is not None:
+            log_channel = self.bot.get_channel(log_channel_id)
+            if log_channel:
+                await log_channel.send(f"{ctx.author.mention} used the say command, and they said: {message}")
+
+    def get_log_channel_id(self, guild_id):
+        if guild_id == 1121841073673736215:
+            return self.server1_log_channel_id
+        elif guild_id == 957987670787764224:
+            return self.server2_log_channel_id
+        else:
+            return None
 
 
     @commands.command()
