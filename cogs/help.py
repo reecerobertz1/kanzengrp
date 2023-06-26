@@ -10,10 +10,10 @@ class Help(commands.Cog):
     async def help(self, ctx):
         categories = {
             "> <a:Lumi_penguin_fall:1122607666578063531> : About Hoshi": [
-                {"name": "Hoshi is coded in Python 3.11.4", "value": "[Download Python 3.11.4](https://www.python.org/downloads/)", "inline": False},
-                {"name": "Hoshi is owned by Reeceroberts", "value": "Reece coded Hoshi in [Visual Studio Code](https://code.visualstudio.com/)", "inline": False},
-                {"name": "Hoshi's prefix is `+`", "value": "Hoshi was made for **__Kanzengrp__**", "inline": False},
-                {"name": "Page", "value": "[page 1/7]", "inline": True}
+                {"name": "The Coding", "value": "Hoshi is coded in Python 3.11.4\n[Download Python 3.11.4](https://www.python.org/downloads/)", "inline": False},
+                {"name": "Owner", "value": "Hoshi is owned by Reeceroberts\nReece coded Hoshi in [Visual Studio Code](https://code.visualstudio.com/)", "inline": False},
+                {"name": "Extra Information", "value": "Hoshi's prefix is `+`\nHoshi was made for **__Kanzengrp__**", "inline": False},
+                {"name": "", "value": "`[page 1/7]`", "inline": True}
             ],
             "> Fun commands": [
                 {"name": "+dog", "value": "Sends you a random photo of a dog", "inline": False},
@@ -29,24 +29,24 @@ class Help(commands.Cog):
                 {"name": "+8ball", "value": "Ask Hoshi a question and get an answer", "inline": False},
                 {"name": "+ship", "value": "Mention 2 members to see if Hoshi ships them (+ship @mention @mention)", "inline": False},
                 {"name": "+trivia", "value": "Hoshi will ask you a question, make sure to answer correctly (answer with numbers 1-4)", "inline": False},
-                {"name": "Page", "value": "[page 2/7]", "inline": True}
+                {"name": "", "value": "`[page 2/7]`", "inline": True}
             ],
             "> Editing commands": [
                 {"name": "+transition", "value": "Get a random transition to use in your edit", "inline": False},
                 {"name": "+audio", "value": "Get an audio added by a member to use for your edit", "inline": False},
                 {"name": "+addaudio", "value": "Add an audio from SoundCloud for others to use", "inline": False},
                 {"name": "+effects", "value": "Get a random effect to use in your edit", "inline": False},
-                {"name": "Page", "value": "[page 3/7]", "inline": True}
+                {"name": "", "value": "`[page 3/7]`", "inline": True}
             ],
             "> Other commands": [
                 {"name": "+ia", "value": "Send us an inactivity message if you go inactive", "inline": False},
-                {"name": "Page", "value": "[page 4/7]", "inline": True}
+                {"name": "", "value": "`[page 4/7]`", "inline": True}
             ],
             "> Levels commands": [
                 {"name": "Command 1", "value": "", "inline": False},
                 {"name": "Command 2", "value": "", "inline": False},
                 {"name": "Command 3", "value": "", "inline": False},
-                {"name": "Page", "value": "[page 5/7]", "inline": True}
+                {"name": "", "value": "`[page 5/7]`", "inline": True}
             ],
             "> Moderation commands": [
                 {"name": "+kick", "value": "Kick a member from the server", "inline": False},
@@ -54,7 +54,7 @@ class Help(commands.Cog):
                 {"name": "+addrole", "value": "Add a role to a member (+addrole @role @mention)", "inline": False},
                 {"name": "+removerole", "value": "Remove a role from a member (+removerole @role @mention)", "inline": False},
                 {"name": "+buildembed", "value": "Create an embed", "inline": False},
-                {"name": "Page", "value": "[page 6/7]", "inline": True}
+                {"name": "", "value": "`[page 6/7]`", "inline": True}
             ],
             "> Application commands": [
                 {"name": "+apply", "value": "Apply for kanzengrp", "inline": False},
@@ -62,7 +62,7 @@ class Help(commands.Cog):
                 {"name": "+decline @mention", "value": "Declines a member from kanzen", "inline": False},
                 {"name": "+resetids", "value": "Resets all IDs from forms", "inline": False},
                 {"name": "+viewapplications", "value": "See all applications sent", "inline": False},
-                {"name": "Page", "value": "[page 7/7]", "inline": True}
+                {"name": "", "value": "`[page 7/7]`", "inline": True}
             ]
         }
 
