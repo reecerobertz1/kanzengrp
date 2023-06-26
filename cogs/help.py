@@ -20,6 +20,7 @@ class Help(commands.Cog):
         embeds = []
         for category, commands in categories.items():
             embed = discord.Embed(title=f"{category}", description="\n".join(commands), color=0x2b2d31)
+            embed.set_thumbnail(url-f'{ctx.guild.icon}')
             embeds.append(embed)
 
         current_page = 0
