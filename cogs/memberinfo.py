@@ -24,13 +24,13 @@ class MemberInfo(commands.Cog):
 
     def get_badges(self, member: discord.Member, user: discord.User, flags: str, badgeslist: list) -> None:
         if "hypesquad_balance" in str(flags):
-            badgeslist.append("<:balance_icon:937770399880585287> HypeSquad Balance")
+            badgeslist.append("<:balance:1122699998635753532> HypeSquad Balance")
         elif "hypesquad_bravery" in str(flags):
-            badgeslist.append("<:bravery_icon:937767201094631444> HypeSquad Bravery")
+            badgeslist.append("<:6601hypesquadbravery:1122699733186654248> HypeSquad Bravery")
         elif "hypesquad_brilliance" in str(flags):
-            badgeslist.append("<:brilliance_icon:937770447838281758> HypeSquad Brilliance")
+            badgeslist.append("<:brilliance:1122700238361206816> HypeSquad Brilliance")
         if "active_developer" in str(flags):
-            badgeslist.append("<:active_dev:1078684899172692020> Active Developer")
+            badgeslist.append("<:7011activedeveloperbadge:1122700402442383450> Active Developer")
         if member.avatar.is_animated():
             badgeslist.append("<:nitro_icon:937770475625525289> Nitro")
         elif member.discriminator == "0001":
@@ -72,7 +72,7 @@ class MemberInfo(commands.Cog):
         embed.add_field(name="Joined Discord", value=discord_join_date, inline=False)
         embed.add_field(name="Joined", value=server_join_date, inline=False)
         embed.add_field(name="Nickname", value=nickname, inline=False)
-        embed.add_field(name="Badges", value=' '.join(str(badge) for badge in badgeslist) if badgeslist else "None", inline=False)
+        embed.add_field(name="<a:938023584142622791:1122700150641528873> Badges", value=' '.join(str(badge) for badge in badgeslist) if badgeslist else "None", inline=False)
 
         if avatar_url:
             embed.set_thumbnail(url=avatar_url)
