@@ -57,6 +57,14 @@ class Help(commands.Cog):
                 "**+removerole** : Remove a role from a member (+removerole @role @mention)",
                 "**+buildembed** : Create an embed",
                 "[page 6/6]"
+            ],
+            "> Application commands": [
+                "**+apply** : Apply for kanzengrp",
+                "**+accept @mention** : Accepts member into kanzen",
+                "**+decline @mention** : Declines a member from kanzen",
+                "**+resetids** : resets All ids from forms",
+                "**+viewapplications** : See all applications sent",
+                "[page 6/6]"
             ]
         }
 
