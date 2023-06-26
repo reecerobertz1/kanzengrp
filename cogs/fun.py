@@ -1,3 +1,4 @@
+import asyncio
 import io
 import os
 import random
@@ -233,6 +234,57 @@ class funcmds(commands.Cog):
         ship_message += f"💑 Ship Name: {ship_name}"
 
         await ctx.send(ship_message)
+
+    @commands.command()
+    async def trivia(self, ctx):
+        """Starts a trivia game with multiple-choice questions."""
+        # Define a list of trivia questions and their corresponding answers
+        trivia_questions = [
+            {
+                "question": "What is the capital of France?",
+                "options": ["A) London", "B) Paris", "C) Rome", "D) Berlin"],
+                "answer": 1  # Index of the correct answer (starts from 0)
+            },
+            {
+                "question": "Which planet is known as the Red Planet?",
+                "options": ["A) Mars", "B) Jupiter", "C) Saturn", "D) Venus"],
+                "answer": 0
+            },
+            {
+                "question": "What is the chemical symbol for the element oxygen?",
+                "options": ["A) O", "B) H", "C) C", "D) N"],
+                "answer": 0
+            }
+            # Add more questions here
+        ]
+
+        # Choose a random question from the list
+        question = random.choice(trivia_questions)
+
+        # Send the question and options as an embedded message
+        embed = discord.Embed(title="Trivia", description=question["question"], color=discord.Color.blue())
+        for i, option in enumerate(question["options"]):
+            embed.add_field(name=f"Option {i+1}", value=option, inline=False)
+        question_msg = await ctx.send(embed=embed)
+
+        # Define a check function to validate answers
+        def check_answer(msg):
+            return msg.author == ctx.author and msg.channel == ctx.channel
+
+        try:
+            # Wait for the user's answer
+            user_answer = await self.bot.wait_for('message', timeout=10.0, check=check_answer)
+
+            # Check if the answer is correct
+            if user_answer.content.isdigit() and int(user_answer.content) - 1 == question["answer"]:
+                await ctx.send("✅ Correct answer!")
+            else:
+                await ctx.send(f"❌ Incorrect answer! The correct answer is {question['options'][question['answer']]}")
+
+        except asyncio.TimeoutError:
+            await ctx.send("⌛ Time's up! You took too long to answer.")
+
+
 
 async def setup(bot):
     await bot.add_cog(funcmds(bot))
