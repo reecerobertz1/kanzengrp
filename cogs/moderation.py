@@ -113,6 +113,57 @@ class Moderation(commands.Cog):
         view.add_item(button)
 
         await ctx.send(embed=embed, view=view)
+    
+    @commands.command()
+    async def roles(self, ctx):
+        embed = discord.Embed(
+            title='✦ Colour Roles',
+            description="<:red:1122922281027522670> <@&1122919355273986138>\n<:orange:1122922351282098246> <@&1122920245267542106>\n<:peach:1122922314430959676> <@&1122920134223335524>\n<:yellow:1122922412250513528> <@&1122920319557046413>\n<:lightgreen:1122922505049473248> <@&1122920394735763526>\n<:green:1122922547172888627> <@&1122920478194028646>\n<:teal:1122922731520938056> <@&1122920653876633670>\n<:lightteal:1122922687375876191> <@&1122920539766407178>\n<:lightblue:1122922756657385523> <@&1122920731529973841>\n<:blue:1122922771052245063> <@&1122920821216792617>\n<:purple:1122922810122190949> <@&1122920986086477964>\n<:lavender:1122922908713504908> <@&1122920902858899456>\n<:lightpink:1122922955488383046> <@&1122921065744707634>\n<:lightpink:1122922955488383046> <@&1122921134174769304>\n<:white_00000:1122923529994764408> <@&1122921232145338480>\n<:black:1122922973234475019> <@&1122921204630696009>",
+            footer='- React with the emojis below to select your colour',
+            color=0x2b2d31
+        )
+        await ctx.send(embed=embed)
+
+    @commands.command()
+    async def roles2(self, ctx):
+        embed = discord.Embed(
+            title='✦ Pronouns',
+            description="<a:pr_lnumber_1:1122926192018870382>  <@&1121852424353755137> \n<a:pr_lnumber_2:1122926359002493048> <@&1122635691487137884> \n<a:pr_lnumber_3:1122926388224200785> <@&1122635724559241317> \n<a:pr_lnumber_4:1122926425918414880> <@&1122635760445706321> \n<a:pr_lnumber_5:1122926454133493800> <@&1122635742229835897> \n<a:pr_lnumber_6:1122926485095850024> <@&1122635791844266064>",
+            footer='- React with the emojis below to select your pronouns',
+            color=0x2b2d31
+        )
+        await ctx.send(embed=embed)
+
+    @commands.command()
+    async def roles3(self, ctx):
+        embed = discord.Embed(
+            title='✦ Editing Programs',
+            description="<:aftereffects:1122925440240193649> <@&1122921620047147131> \n<:alightmotion:1122925541901734022> <@&1122921640288850025> \n<:videostar:1122925486209777704> <@&1122921660320858274>",
+            footer='- React with the emojis below to select your editing program',
+            color=0x2b2d31
+        )
+        await ctx.send(embed=embed)
+
+    @commands.command()
+    async def roles4(self, ctx):
+        embed = discord.Embed(
+            title='✦ Game Roles',
+            description="<:fortnite_00004:1122978882816069702> <@&1122921698367389756> \n<:MCicon:1122978908124479488> <@&1122979205324480553> \n<:ROBLOXicon:1122978966651805856> <@&1122921713823395851> \n<:Valoranticon:1122979072704782337> <@&1122921729384271963> \n<:gtaV:1122978939539837129> <@&1122921800502878259>",
+            footer='- React with the emojis below to select your roles',
+            color=0x2b2d31
+        )
+        await ctx.send(embed=embed)
+
+    @commands.command()
+    async def roles5(self, ctx):
+        embed = discord.Embed(
+            title='✦ Extra Roles',
+            description="<:Lumi_purple_star:1122927969086734456> <@&1122655473368314017> \n<a:pr_lnumber_1:1122926192018870382> <@&1122927309813461143> \n<a:pr_lnumber_2:1122926359002493048> <@&1122928933575335936> \n<a:pr_lnumber_3:1122926388224200785> <@&1122926819553841162> \n<a:pr_lnumber_4:1122926425918414880> <@&1122926767192154142> \n<a:pr_lnumber_5:1122926454133493800> <@&1122926835936809090>",
+            footer='- React with the emojis below to select your roles',
+            color=0x2b2d31
+        )
+        await ctx.send(embed=embed)
+
 
 async def setup(bot):
     await bot.add_cog(Moderation(bot))
