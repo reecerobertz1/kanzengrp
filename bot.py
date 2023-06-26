@@ -16,7 +16,8 @@ extensions = {
     "cogs.memberinfo",
     "cogs.moderation",
     "cogs.welcandbye",
-    "cogs.applications"
+    "cogs.applications",
+    "cogs.levels"
 }
 
 # bot subclass
