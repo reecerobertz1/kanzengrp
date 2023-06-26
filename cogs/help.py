@@ -73,5 +73,21 @@ class Help(commands.Cog):
         def check(reaction, user):
             return user == ctx.author and reaction.message == message
 
+        while True:
+            try:
+                reaction, user = await self.bot.wait_for('reaction_add', timeout=60.0, check=check)
+
+                if reaction.emoji == "➡️":
+                    current_page = (current_page + 1) % len(embeds)
+                elif reaction.emoji == "⬅️":
+                    current_page = (current_page - 1) % len(embeds)
+
+                await message.edit(embed=embeds[current_page])
+                await message.remove_reaction(reaction, user)
+            except TimeoutError:
+                break
+
+        await message.clear_reactions()
+
 async def setup(bot):
     await bot.add_cog(Help(bot))
