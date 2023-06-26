@@ -77,8 +77,8 @@ class Help(commands.Cog):
         current_page = 0
         message = await ctx.reply(embed=embeds[current_page])
 
-        await message.add_reaction("⬅️")
-        await message.add_reaction("➡️")
+        await message.add_reaction("◀")
+        await message.add_reaction("▶")
 
         def check(reaction, user):
             return user == ctx.author and reaction.message == message
@@ -87,9 +87,9 @@ class Help(commands.Cog):
             try:
                 reaction, user = await self.bot.wait_for('reaction_add', timeout=60.0, check=check)
 
-                if reaction.emoji == "➡️":
+                if reaction.emoji == "▶":
                     current_page = (current_page + 1) % len(embeds)
-                elif reaction.emoji == "⬅️":
+                elif reaction.emoji == "◀":
                     current_page = (current_page - 1) % len(embeds)
 
                 await message.edit(embed=embeds[current_page])
