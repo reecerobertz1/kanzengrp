@@ -262,10 +262,10 @@ class funcmds(commands.Cog):
         question = random.choice(trivia_questions)
 
         # Send the question and options as an embedded message
-        embed = discord.Embed(title="Trivia", description=question["question"], color=discord.Color.blue())
+        embed = discord.Embed(title="Trivia", description=question["question"], color=0x2b2d31)
         for i, option in enumerate(question["options"]):
             embed.add_field(name=f"Option {i+1}", value=option, inline=False)
-        question_msg = await ctx.send(embed=embed)
+        question_msg = await ctx.reply(embed=embed)
 
         # Define a check function to validate answers
         def check_answer(msg):
@@ -277,12 +277,12 @@ class funcmds(commands.Cog):
 
             # Check if the answer is correct
             if user_answer.content.isdigit() and int(user_answer.content) - 1 == question["answer"]:
-                await ctx.send("✅ Correct answer!")
+                await ctx.reply("✅ Correct answer!")
             else:
-                await ctx.send(f"❌ Incorrect answer! The correct answer is {question['options'][question['answer']]}")
+                await ctx.reply(f"❌ Incorrect answer! The correct answer is {question['options'][question['answer']]}")
 
         except asyncio.TimeoutError:
-            await ctx.send("⌛ Time's up! You took too long to answer.")
+            await ctx.reply("⌛ Time's up! You took too long to answer.")
 
 
 
