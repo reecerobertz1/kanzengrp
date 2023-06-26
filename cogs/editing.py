@@ -53,5 +53,17 @@ class editing(commands.Cog):
         raneffect = random.choice(choices)
         await ctx.reply(raneffect)
 
+    @commands.command(aliases=["who2edit"])
+    async def whotoedit(self, ctx):
+        """Displays a random transition effect for video editing."""
+
+        choices = [
+            "BTS - Taehyung", "BTS - Hoseok", "BTS - Yoongi",  "BTS - Namjoon", "BTS - Jimin", "BTS - Jin", "BTS - Jungkook", "Blackpink - Lisa", 
+            "Blackpink - Jennie", "Blackpink rosé", "Blackpink - Jisoo"
+        ]
+
+        person = random.choice(choices)
+        await ctx.reply(person)
+
 async def setup(bot):
     await bot.add_cog(editing(bot))
