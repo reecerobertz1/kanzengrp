@@ -20,7 +20,30 @@ class Moderation(commands.Cog):
 
         await ctx.reply(f"Bot Uptime: {uptime_str}")
 
+        self.deleted_messages = {}
 
+    @commands.Cog.listener()
+    async def on_message_delete(self, message):
+        self.deleted_messages[message.channel.id] = message
+
+    @commands.command()
+    async def snipe(self, ctx):
+        channel = ctx.channel
+        deleted_message = self.deleted_messages.get(channel.id)
+
+        if deleted_message is None:
+            await ctx.send("There are no recently deleted messages in this channel.")
+            return
+
+        author_mention = deleted_message.author.mention
+        content = deleted_message.content
+
+        embed = discord.Embed(color=0xff0000)
+        embed.set_author(name="Deleted Message")
+        embed.add_field(name="Author", value=author_mention, inline=False)
+        embed.add_field(name="Content", value=content, inline=False)
+
+        await ctx.send(embed=embed)
 
     @commands.command()
     @commands.has_permissions(manage_guild=True)
