@@ -18,13 +18,16 @@ class appnewtest(commands.Cog):
         def check(message):
             return message.author == ctx.author and message.channel == ctx.channel
 
+        await ctx.message.delete()  # Delete the author's command message
+
         answers = {}
 
         for question in self.questions:
-            await ctx.send(question["question"])
+            question_msg = await ctx.send(question["question"])
             response = await self.bot.wait_for('message', check=check)
             answers[question["name"]] = response.content
 
+            await question_msg.delete()  # Delete the bot's question message
             await response.delete()  # Delete the author's response
 
         embed = discord.Embed(title="Application Form", color=0x2b2d31)
