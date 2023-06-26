@@ -278,8 +278,10 @@ class funcmds(commands.Cog):
             # Check if the answer is correct
             if user_answer.content.isdigit() and int(user_answer.content) - 1 == question["answer"]:
                 await ctx.reply("✅ Correct answer!")
-            else:
+            elif user_answer.content.isdigit():
                 await ctx.reply(f"❌ Incorrect answer! The correct answer is {question['options'][question['answer']]}")
+            else:
+                await ctx.reply("Please provide a valid option number as your answer.")
 
         except asyncio.TimeoutError:
             await ctx.reply("⌛ Time's up! You took too long to answer.")
