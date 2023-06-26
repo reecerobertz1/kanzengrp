@@ -15,7 +15,7 @@ class Help(commands.Cog):
                 "• Hoshi's prefix is `+`",
                 "• Reece coded Hoshi in [Visual Studio Code](https://code.visualstudio.com/)",
                 "• Hoshi was made for **__Kanzengrp__**",
-                "[page 1/6]"
+                "[page 1/7]"
             ],
             "> Fun commands": [
                 "**+dog** : Sends you a random photo of a dog",
@@ -31,24 +31,24 @@ class Help(commands.Cog):
                 "**+8ball** : Ask Hoshi a question and get an answer",
                 "**+ship** : Mention 2 members to see if Hoshi ships them (+ship @mention @mention)",
                 "**+trivia** : Hoshi will ask you a question, make sure to answer correctly (answer with numbers 1-4)",
-                "[page 2/6]"
+                "[page 2/7]"
             ],
             "> Editing commands": [
                 "**+transition** : Get a random transition to use in your edit",
                 "**+audio** : Get an audio added by a member to use for your edit",
                 "**+addaudio** : Add an audio from SoundCloud for others to use",
                 "**+effects** : Get a random effect to use in your edit",
-                "[page 3/6]"
+                "[page 3/7]"
             ],
             "> Other commands": [
                 "**+ia** : Send us an inactivity message if you go inactive",
-                "[page 4/6]"
+                "[page 4/7]"
             ],
             "> Levels commands": [
                 "Command 1",
                 "Command 2",
                 "Command 3",
-                "[page 5/6]"
+                "[page 5/7]"
             ],
             "> Moderation commands": [
                 "**+kick** : Kick a member from the server",
@@ -56,7 +56,7 @@ class Help(commands.Cog):
                 "**+addrole** : Add a role to a member (+addrole @role @mention)",
                 "**+removerole** : Remove a role from a member (+removerole @role @mention)",
                 "**+buildembed** : Create an embed",
-                "[page 6/6]"
+                "[page 6/7]"
             ],
             "> Application commands": [
                 "**+apply** : Apply for kanzengrp",
@@ -64,7 +64,7 @@ class Help(commands.Cog):
                 "**+decline @mention** : Declines a member from kanzen",
                 "**+resetids** : resets All ids from forms",
                 "**+viewapplications** : See all applications sent",
-                "[page 6/6]"
+                "[page 7/7]"
             ]
         }
 
