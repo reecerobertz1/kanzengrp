@@ -17,7 +17,7 @@ class MemberInfo(commands.Cog):
             async with session.get(f'https://discord.com/api/v9/users/{user.id}') as response:
                 data = await response.json()
 
-                if 'banner' in data:
+                if 'banner' in data and data['banner']:
                     return f"https://cdn.discordapp.com/banners/{user.id}/{data['banner']}.png?size=2048"
 
         return None
@@ -84,10 +84,6 @@ class MemberInfo(commands.Cog):
             embed.set_image(url=banner_url)
 
         await ctx.reply(embed=embed)
-
-    async def get_banner_url(self, user):
-
-        return None
 
 
 
