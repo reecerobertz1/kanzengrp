@@ -32,15 +32,15 @@ class MemberInfo(commands.Cog):
         if "active_developer" in str(flags):
             badgeslist.append("<:7011activedeveloperbadge:1122700402442383450> Active Developer")
         if member.avatar.is_animated():
-            badgeslist.append("<:nitro_icon:937770475625525289> Nitro")
+            badgeslist.append("<:nitro:1122703008220860468> Nitro")
         elif member.discriminator == "0001":
-            badgeslist.append("<:nitro_icon:937770475625525289> Nitro")
+            badgeslist.append("<:nitro:1122703008220860468> Nitro")
         elif member.premium_since is not None:
-            badgeslist.append("<:nitro_icon:937770475625525289> Nitro")
+            badgeslist.append("<:nitro:1122703008220860468> Nitro")
         elif user.banner is not None:
-            badgeslist.append("<:nitro_icon:937770475625525289> Nitro")
+            badgeslist.append("<:nitro:1122703008220860468> Nitro")
         if member.premium_since is not None:
-            badgeslist.append("<a:boost:938021210984419338> Booster")
+            badgeslist.append("<a:938021210984419338:1122702983277330512> Booster")
 
     @commands.command()
     async def memberinfo(self, ctx, member: discord.Member = None):
@@ -68,7 +68,7 @@ class MemberInfo(commands.Cog):
         self.get_badges(member, user, badges, badgeslist)
 
         embed = discord.Embed(title=f"{member.name}", color=0x2b2d31)
-        embed.add_field(name="<:ezgif2620d3f9a2c:1121963017630912543> Activity", value=f"Active for the **{online_days} days, {online_hours} hours**", inline=False)
+        embed.add_field(name="<:ezgif2620d3f9a2c:1121963017630912543> Activity", value=f"Active for **{online_days} days, {online_hours} hours**", inline=False)
         embed.add_field(name="<:concoursdiscordcartesvoeuxfortni:1122702096085549076> Joined Discord", value=discord_join_date, inline=False)
         embed.add_field(name="<:arrow_00000:1121934367569227837> Joined", value=server_join_date, inline=False)
         embed.add_field(name="<:1faaa:1122701643536937011> Nickname", value=nickname, inline=False)
