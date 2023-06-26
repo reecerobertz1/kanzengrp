@@ -76,6 +76,15 @@ class appnewtest(commands.Cog):
         await confirmation_msg.delete()  # Delete the confirmation message
 
     @commands.command()
+    async def resetids(self, ctx):
+        if ctx.author.guild_permissions.administrator:
+            self.applications = {}
+            self.save_applications()
+            await ctx.send("Application IDs have been reset.")
+        else:
+            await ctx.send("You don't have permission to reset application IDs.")
+
+    @commands.command()
     async def viewapplications(self, ctx):
         if ctx.author.guild_permissions.administrator:
             if not self.applications:
@@ -98,6 +107,7 @@ class appnewtest(commands.Cog):
                 await ctx.send(embed=embed)
         else:
             await ctx.send("You don't have permission to view applications.")
+
 
 
 
