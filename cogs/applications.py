@@ -76,7 +76,7 @@ class applications(commands.Cog):
         await confirmation_msg.delete()  # Delete the confirmation message
 
     @commands.command()
-    async def resetids(self, ctx):
+    async def resetapps(self, ctx):
         if ctx.author.guild_permissions.administrator:
             self.applications = {}
             self.save_applications()
@@ -85,7 +85,7 @@ class applications(commands.Cog):
             await ctx.send("You don't have permission to reset application IDs.")
 
     @commands.command()
-    async def viewapplications(self, ctx):
+    async def viewapps(self, ctx):
         if ctx.author.guild_permissions.administrator:
             if not self.applications:
                 await ctx.send("No applications have been submitted.")
