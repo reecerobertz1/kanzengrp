@@ -210,7 +210,29 @@ class funcmds(commands.Cog):
         response = random.choice(responses)
         await ctx.reply(f"Question: {question}\nAnswer: {response}")
 
+    @commands.command()
+    async def ship(self, ctx, user1: discord.Member, user2: discord.Member):
+        """Calculates the compatibility between two users."""
+        # Calculate compatibility score (random number between 0 and 100)
+        compatibility = random.randint(0, 100)
 
+        # Determine ship name based on compatibility score
+        if compatibility < 20:
+            ship_name = "Incompatible Duo"
+        elif compatibility < 40:
+            ship_name = "Awkward Pair"
+        elif compatibility < 60:
+            ship_name = "Potential Couple"
+        elif compatibility < 80:
+            ship_name = "Perfect Match"
+        else:
+            ship_name = "Soulmates"
+
+        # Construct the ship message
+        ship_message = f"❤️ Compatibility between {user1.mention} and {user2.mention}: {compatibility}%\n"
+        ship_message += f"💑 Ship Name: {ship_name}"
+
+        await ctx.send(ship_message)
 
 async def setup(bot):
     await bot.add_cog(funcmds(bot))
