@@ -1,7 +1,6 @@
 from datetime import datetime
 import discord
 from discord.ext import commands
-from interactions import SlashContext
 
 class Moderation(commands.Cog):
     def __init__(self, bot):
