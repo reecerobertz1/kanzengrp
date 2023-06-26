@@ -1,80 +1,116 @@
+import asyncio
 import json
-import random
 import discord
 from discord.ext import commands
 
-
-
-
-class apps(commands.Cog):
+class appnewtest(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.accept_role_id = 1122191098006224906
-        self.decline_role_id = 1122191119430733835
-        self.server_id = 1121841073673736215
+        self.questions = [
+            {"name": "discord_name", "question": "What is your Discord name?"},
+            {"name": "instagram_name", "question": "What is your Instagram name?"},
+            {"name": "edit_link", "question": "Link for the edit you want to apply with:"},
+            {"name": "activity_level", "question": "How active will you be (1 - 5)?"},
+            {"name": "additional_info", "question": "Anything else you want us to know?"}
+        ]
 
-    @commands.command()
-    async def openapps(self, ctx):
-        embed = discord.Embed(
-            title='Apply Here!',
-            description='Please make sure you read the [Rules](https://discord.com/channels/1122181605591621692/1122195332516810873) and the info below!',
-            color=0x2b2d31
-        )
-        embed.add_field(name='Application Rules', value='• Make sure you are following [@remqsi](https://www.instagram.com/remqsi/) and the [group account](https://www.instagram.com/uzaigrp/)\n• Please only send one form!', inline=False)
-        embed.add_field(name='Application Info', value='• Velocity edits are an **auto decline**\n• You will receive an acceptance message if you are accepted, and a decline message if you get declined.\n• There is no redoing applications, so choose the edit you want to apply with wisely.\n• Make sure you answer all the questions on the form before sending!\n• Apply with your best edit. We look for creative and smooth edits', inline=False)
-        embed.set_image(url='https://cdn.discordapp.com/attachments/1122195332516810874/1122208438345281666/IMG_2232_00000_00000.png')
-        embed.set_footer(text='If you need any help, feel free to ping @lead')
+        self.application_file = "applications.json"
+        self.applications = self.load_applications()
 
-        button = discord.ui.Button(
-            label='Click to apply!',
-            url='https://example.com'
-        )
-
-        view = discord.ui.View()
-        view.add_item(button)
-
-        await ctx.send(embed=embed, view=view)
-
-    @commands.command()
-    @commands.guild_only()
-    async def accept(self, ctx: commands.Context, member: discord.Member):
-        if ctx.guild.id != self.server_id:
-            await ctx.reply("This command can only be used in the specified server.")
-            return
-
-        accept_role = ctx.guild.get_role(self.accept_role_id)
-        decline_role = ctx.guild.get_role(self.decline_role_id)
-        server = self.bot.get_guild(self.server_id)
-
-        if not accept_role or not decline_role:
-            await ctx.reply("Server roles not found.")
-            return
-
+    def load_applications(self):
         try:
-            invite = await server.text_channels[0].create_invite()
-        except discord.Forbidden:
-            await ctx.reply("I couldn't create an invite. Please try again later...")
-            return
-
-        accept_message = f"Hey, you have been accepted! You can join the server here: {invite.url}"
-
-        try:
-            await member.send(accept_message)
-            await ctx.send("The acceptance message has been sent.")
-        except discord.Forbidden:
-            await ctx.reply("I couldn't send the acceptance message. Please try again later.")
-
-        await member.add_roles(accept_role)
-        await member.remove_roles(decline_role)
+            with open(self.application_file, "r") as file:
+                applications = json.load(file)
+                return applications
+        except FileNotFoundError:
+            return {}
+    
+    def save_applications(self):
+        with open(self.application_file, "w") as file:
+            json.dump(self.applications, file, indent=4)
 
     @commands.command()
-    @commands.is_owner()  # Restrict command to server owner
-    async def decline(self, ctx, member: discord.Member):
-        message = "Hey, unfortunately, you have been declined from the group. We will have more recruitment opportunities in the future!"
-        await member.send(message)
-        await ctx.reply("Decline message sent.")
+    async def apply(self, ctx):
+        def check(message):
+            return message.author == ctx.author and message.channel == ctx.channel
+
+        await ctx.message.delete()  # Delete the author's command message
+
+        user_id = str(ctx.author.id)
+        if user_id in self.applications:
+            await ctx.send("You have already submitted an application.")
+            return
+
+        answers = {"discord_id": user_id}
+
+        for question in self.questions:
+            question_msg = await ctx.send(question["question"])
+            response = await self.bot.wait_for('message', check=check)
+            answers[question["name"]] = response.content
+
+            await question_msg.delete()  # Delete the bot's question message
+            await response.delete()  # Delete the author's response
+
+        embed = discord.Embed(title="Application Form", color=0x2b2d31)
+        embed.add_field(name="Discord ID", value=f"<@{answers['discord_id']}>", inline=False)
+        embed.add_field(name="Instagram Name", value=answers.get("instagram_name", "N/A"), inline=False)
+        embed.add_field(name="Edit Link", value=answers.get("edit_link", "N/A"), inline=False)
+        embed.add_field(name="Activity Level", value=answers.get("activity_level", "N/A"), inline=False)
+        embed.add_field(name="Additional Info", value=answers.get("additional_info", "N/A"), inline=False)
+        embed.set_footer(text=f"User ID: {answers['discord_id']}")
+
+        channel_id = 1122183100038905908  # Replace with the desired channel ID
+        channel = self.bot.get_channel(channel_id)
+
+        if channel:
+            await channel.send(embed=embed)
+        else:
+            await ctx.send("Failed to find the specified channel.")
+
+        confirmation_msg = await ctx.send("Your application has been submitted. Thank you!")
+
+        self.applications[user_id] = answers
+        self.save_applications()
+
+        await asyncio.sleep(5)  # Wait for 5 seconds (you can adjust the duration)
+        await confirmation_msg.delete()  # Delete the confirmation message
+
+    @commands.command()
+    async def resetids(self, ctx):
+        if ctx.author.guild_permissions.administrator:
+            self.applications = {}
+            self.save_applications()
+            await ctx.send("Application IDs have been reset.")
+        else:
+            await ctx.send("You don't have permission to reset application IDs.")
+
+    @commands.command()
+    async def viewapplications(self, ctx):
+        if ctx.author.guild_permissions.administrator:
+            if not self.applications:
+                await ctx.send("No applications have been submitted.")
+                return
+
+            for application in self.applications.values():
+                user_id = application["discord_id"]
+                user = self.bot.get_user(int(user_id))
+
+                embed = discord.Embed(title="Application Form", color=0x2b2d31)
+                embed.add_field(name="Discord ID", value=f"<@{user_id}>", inline=False)
+                embed.add_field(name="Instagram Name", value=application.get("instagram_name", "N/A"), inline=False)
+                embed.add_field(name="Edit Link", value=application.get("edit_link", "N/A"), inline=False)
+                embed.add_field(name="Activity Level", value=application.get("activity_level", "N/A"), inline=False)
+                embed.add_field(name="Additional Info", value=application.get("additional_info", "N/A"), inline=False)
+                embed.set_footer(text=f"User ID: {user_id}")
+
+                await ctx.send(f"Application by {user.mention}:")
+                await ctx.send(embed=embed)
+        else:
+            await ctx.send("You don't have permission to view applications.")
+
+
 
 
 
 async def setup(bot):
-    await bot.add_cog(apps(bot))
+    await bot.add_cog(appnewtest(bot))
