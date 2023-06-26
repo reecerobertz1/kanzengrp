@@ -35,7 +35,7 @@ class funcmds(commands.Cog):
         embed = discord.Embed(color=0x2b2d31)
         embed.set_image(url=image_url)
 
-        await asyncio.sleep(3)  # Wait for 3 seconds (you can adjust the duration)
+        await asyncio.sleep(1)  # Wait for 3 seconds (you can adjust the duration)
         await loading_msg.delete()  # Delete the loading message
         await ctx.reply(embed=embed)
 
@@ -51,7 +51,7 @@ class funcmds(commands.Cog):
             embed = discord.Embed(color=0x2b2d31)
             embed.set_image(url=image_url)
 
-            await asyncio.sleep(3)  # Wait for 3 seconds (you can adjust the duration)
+            await asyncio.sleep(1)  # Wait for 3 seconds (you can adjust the duration)
             await loading_msg.delete()  # Delete the loading message
             await ctx.reply(embed=embed)
         except (requests.exceptions.RequestException, KeyError):
