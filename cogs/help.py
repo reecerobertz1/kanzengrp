@@ -57,11 +57,11 @@ class Help(commands.Cog):
                 {"name": "", "value": "`[page 6/7]`", "inline": True}
             ],
             "> Application commands": [
-                {"name": "+apply", "value": "Apply for kanzengrp", "inline": False},
+                {"name": "+app", "value": "Apply for kanzengrp", "inline": False},
                 {"name": "+accept @mention", "value": "Accepts member into kanzen", "inline": False},
                 {"name": "+decline @mention", "value": "Declines a member from kanzen", "inline": False},
-                {"name": "+resetids", "value": "Resets all IDs from forms", "inline": False},
-                {"name": "+viewapplications", "value": "See all applications sent", "inline": False},
+                {"name": "+resetapps", "value": "Resets all IDs from forms", "inline": False},
+                {"name": "+viewapps", "value": "See all applications sent", "inline": False},
                 {"name": "", "value": "`[page 7/7]`", "inline": True}
             ]
         }
