@@ -71,7 +71,7 @@ class Help(commands.Cog):
             embed = discord.Embed(title=f"{category}", color=0x2b2d31)
             embed.set_thumbnail(url=ctx.guild.icon)
             for command in commands:
-                embed.add_field(name=command["name"], value=command["value"], inline=True)
+                embed.add_field(name=command["name"], value=command["value"], inline=False)
             embeds.append(embed)
 
         current_page = 0
