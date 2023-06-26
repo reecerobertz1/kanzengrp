@@ -1,5 +1,7 @@
 import discord
 from discord.ext import commands
+from discord_components import DiscordComponents, Button, ButtonStyle
+
 
 class Help(commands.Cog):
     def __init__(self, bot):
