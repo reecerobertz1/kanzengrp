@@ -3,7 +3,7 @@ import json
 import discord
 from discord.ext import commands
 
-class appnewtest(commands.Cog):
+class applications(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.questions = [
@@ -113,4 +113,4 @@ class appnewtest(commands.Cog):
 
 
 async def setup(bot):
-    await bot.add_cog(appnewtest(bot))
+    await bot.add_cog(applications(bot))
