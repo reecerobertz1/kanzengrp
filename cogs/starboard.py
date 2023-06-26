@@ -32,9 +32,9 @@ class starboard(commands.Cog):
             if star_message.reference and star_message.reference.message_id == message.id:
                 return
 
-        # Check if the reacted message has enough stars (1 star in this case)
-        if payload.member is not None and payload.count >= 1:
-            embed = discord.Embed(color=0x2b2d31)
+        # Check if the reacted message has at least 1 star
+        if payload.count >= 1:
+            embed = discord.Embed(color=0xffac33)
             embed.add_field(name="Author", value=message.author.mention, inline=False)
             embed.add_field(name="Content", value=message.content, inline=False)
 
@@ -65,6 +65,7 @@ class starboard(commands.Cog):
         embed.add_field(name="Content", value=message.content, inline=False)
 
         await starboard_channel.send(f"{message.author.mention} ⭐ Your message in {message.channel.mention} has been starred:", embed=embed)
+
 
 
 async def setup(bot):
