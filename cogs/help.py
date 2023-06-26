@@ -11,7 +11,7 @@ class Help(commands.Cog):
         categories = {
             "> <a:Lumi_penguin_fall:1122607666578063531> : About Hoshi": [
                 {"name": "Hoshi is coded in Python 3.11.4", "value": "[Download Python 3.11.4](https://www.python.org/downloads/)", "inline": False},
-                {"name": "Hoshi is owned by <@609515684740988959>", "value": "Reece coded Hoshi in [Visual Studio Code](https://code.visualstudio.com/)", "inline": False},
+                {"name": "Hoshi is owned by Reeceroberts", "value": "Reece coded Hoshi in [Visual Studio Code](https://code.visualstudio.com/)", "inline": False},
                 {"name": "Hoshi's prefix is `+`", "value": "Hoshi was made for **__Kanzengrp__**", "inline": False},
                 {"name": "Page", "value": "[page 1/7]", "inline": True}
             ],
