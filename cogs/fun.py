@@ -27,6 +27,7 @@ class funcmds(commands.Cog):
 
     @commands.command()
     async def dog(self, ctx):
+        loading_msg = await ctx.reply("<a:loading:1122893578461520013> Searching for an image")
         response = requests.get('https://dog.ceo/api/breeds/image/random')
         data = response.json()
         image_url = data['message']
@@ -34,11 +35,14 @@ class funcmds(commands.Cog):
         embed = discord.Embed(color=0x2b2d31)
         embed.set_image(url=image_url)
 
+        await asyncio.sleep(3)  # Wait for 3 seconds (you can adjust the duration)
+        await loading_msg.delete()  # Delete the loading message
         await ctx.reply(embed=embed)
 
     @commands.command()
     async def cat(self, ctx):
         try:
+            loading_msg = await ctx.reply("<a:loading:1122893578461520013> Searching for an image")
             response = requests.get('https://api.thecatapi.com/v1/images/search')
             response.raise_for_status()
             data = response.json()
@@ -47,6 +51,8 @@ class funcmds(commands.Cog):
             embed = discord.Embed(color=0x2b2d31)
             embed.set_image(url=image_url)
 
+            await asyncio.sleep(3)  # Wait for 3 seconds (you can adjust the duration)
+            await loading_msg.delete()  # Delete the loading message
             await ctx.reply(embed=embed)
         except (requests.exceptions.RequestException, KeyError):
             await ctx.reply("Sorry, I couldn't fetch a cute cat at the moment. Please try again later.")
