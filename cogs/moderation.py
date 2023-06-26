@@ -113,7 +113,6 @@ class Moderation(commands.Cog):
         view.add_item(button)
 
         await ctx.send(embed=embed, view=view)
-    
     @commands.command()
     async def roles(self, ctx):
         embed = discord.Embed(
