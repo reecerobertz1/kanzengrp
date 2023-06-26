@@ -1,15 +1,11 @@
+import asyncio
 import discord
 from discord.ext import commands
 
 class appnewtest(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-
-
-    @commands.command()
-    async def apply(self, ctx):
-        # Create a modal with questions
-        questions = [
+        self.questions = [
             {"name": "discord_name", "question": "What is your Discord name?"},
             {"name": "instagram_name", "question": "What is your Instagram name?"},
             {"name": "edit_link", "question": "Link for the edit you want to apply with:"},
@@ -17,24 +13,26 @@ class appnewtest(commands.Cog):
             {"name": "additional_info", "question": "Anything else you want us to know?"}
         ]
 
-        # Initialize responses dictionary
-        responses = {}
+    @commands.command()
+    async def apply(self, ctx):
+        def check(message):
+            return message.author == ctx.author and message.channel == ctx.channel
 
-        # Send the modal
-        for question in questions:
-            response_msg = await ctx.send(question["question"])
-            response = await self.bot.wait_for('message', check=lambda message: message.author == ctx.author and message.channel == ctx.channel)
-            responses[question["name"]] = response.content
+        answers = {}
 
-            await response_msg.delete()  # Delete the question message
+        for question in self.questions:
+            await ctx.send(question["question"])
+            response = await self.bot.wait_for('message', check=check)
+            answers[question["name"]] = response.content
 
-        # Create the embed with the submitted information
+            await response.delete()  # Delete the author's response
+
         embed = discord.Embed(title="Application Form", color=0x2b2d31)
-        embed.add_field(name="Discord Name", value=responses.get("discord_name", "N/A"), inline=False)
-        embed.add_field(name="Instagram Name", value=responses.get("instagram_name", "N/A"), inline=False)
-        embed.add_field(name="Edit Link", value=responses.get("edit_link", "N/A"), inline=False)
-        embed.add_field(name="Activity Level", value=responses.get("activity_level", "N/A"), inline=False)
-        embed.add_field(name="Additional Info", value=responses.get("additional_info", "N/A"), inline=False)
+        embed.add_field(name="Discord Name", value=answers.get("discord_name", "N/A"), inline=False)
+        embed.add_field(name="Instagram Name", value=answers.get("instagram_name", "N/A"), inline=False)
+        embed.add_field(name="Edit Link", value=answers.get("edit_link", "N/A"), inline=False)
+        embed.add_field(name="Activity Level", value=answers.get("activity_level", "N/A"), inline=False)
+        embed.add_field(name="Additional Info", value=answers.get("additional_info", "N/A"), inline=False)
 
         channel_id = 1122183100038905908  # Replace with the desired channel ID
         channel = self.bot.get_channel(channel_id)
@@ -44,8 +42,11 @@ class appnewtest(commands.Cog):
         else:
             await ctx.send("Failed to find the specified channel.")
 
-        # Optionally, you can also send a confirmation message to the user
-        await ctx.send("Your application has been submitted. Thank you!")
+        confirmation_msg = await ctx.send("Your application has been submitted. Thank you!")
+
+        await asyncio.sleep(5)  # Wait for 5 seconds (you can adjust the duration)
+        await confirmation_msg.delete()  # Delete the confirmation message
+
 
 
 async def setup(bot):
