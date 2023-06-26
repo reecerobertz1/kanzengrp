@@ -72,7 +72,10 @@ class MemberInfo(commands.Cog):
         embed.add_field(name="<:concoursdiscordcartesvoeuxfortni:1122702096085549076> Joined Discord", value=discord_join_date, inline=False)
         embed.add_field(name="<:arrow_00000:1121934367569227837> Joined", value=server_join_date, inline=False)
         embed.add_field(name="<:1faaa:1122701643536937011> Nickname", value=nickname, inline=False)
-        embed.add_field(name="<a:938023584142622791:1122700150641528873> Badges", value=' '.join(str(badge) for badge in badgeslist) if badgeslist else "None", inline=False)
+        if badgeslist:
+            embed.add_field(name="<a:938023584142622791:1122700150641528873> Badges", value='\n'.join(badgeslist), inline=False)
+        else:
+            embed.add_field(name="<a:938023584142622791:1122700150641528873> Badges", value="None", inline=False)
 
         if avatar_url:
             embed.set_thumbnail(url=avatar_url)
@@ -85,7 +88,6 @@ class MemberInfo(commands.Cog):
     async def get_banner_url(self, user):
 
         return None
-        await ctx.reply(embed=embed)
 
 
 
