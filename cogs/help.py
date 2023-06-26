@@ -1,12 +1,10 @@
 import discord
 from discord.ext import commands
-from discord_components import DiscordComponents, Button, ButtonStyle
 
 
 class Help(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        DiscordComponents(bot)
 
     @commands.command()
     async def help(self, ctx):
@@ -60,34 +58,37 @@ class Help(commands.Cog):
             ]
         }
 
-        def create_embed(category):
+        embeds = []
+        for category, commands in categories.items():
             embed = discord.Embed(title=f"{category}", color=0x2b2d31)
             embed.set_thumbnail(url=ctx.guild.icon)
-            embed.description = "\n".join(categories[category])
-            return embed
+            embed.description = "\n".join(commands)
+            embeds.append(embed)
 
-        category_list = list(categories.keys())
-        current_category = 0
-        embed = create_embed(category_list[current_category])
+        current_page = 0
+        message = await ctx.reply(embed=embeds[current_page])
 
-        message = await ctx.reply(embed=embed, components=[discord.Button(style=discord.ButtonStyle.blue, label=category_list[current_category])])
+        await message.add_reaction("⬅️")
+        await message.add_reaction("➡️")
 
-        def check_button(interaction):
-            return interaction.user.id == ctx.author.id and interaction.message.id == message.id
+        def check(reaction, user):
+            return user == ctx.author and reaction.message == message
 
         while True:
             try:
-                interaction = await self.bot.wait_for("button_click", check=check_button, timeout=60.0)
-                await interaction.respond(content="", embed=create_embed(interaction.component.label), type=7)
+                reaction, user = await self.bot.wait_for('reaction_add', timeout=60.0, check=check)
+
+                if reaction.emoji == "➡️":
+                    current_page = (current_page + 1) % len(embeds)
+                elif reaction.emoji == "⬅️":
+                    current_page = (current_page - 1) % len(embeds)
+
+                await message.edit(embed=embeds[current_page])
+                await message.remove_reaction(reaction, user)
             except TimeoutError:
                 break
 
-        await message.delete()
-
-    @help.error
-    async def help_error(self, ctx, error):
-        if isinstance(error, commands.CommandInvokeError):
-            await ctx.send("An error occurred while processing the command.")
+        await message.clear_reactions()
 
 
 
