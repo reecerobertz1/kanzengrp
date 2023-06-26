@@ -30,7 +30,7 @@ class applications(commands.Cog):
             json.dump(self.applications, file, indent=4)
 
     @commands.command()
-    async def apply(self, ctx):
+    async def app(self, ctx):
         def check(message):
             return message.author == ctx.author and message.channel == ctx.channel
 
