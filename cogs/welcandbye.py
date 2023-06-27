@@ -33,7 +33,9 @@ class welcandleave(commands.Cog):
             # Set the thumbnail using the discord.File object
             embed.set_thumbnail(url="attachment://avatar.png")
 
-            await channel.send(embed=embed, file=file)
+            # Send the embed and file separately
+            await channel.send(embed=embed)
+            await channel.send(file=file)
 
     @commands.Cog.listener()
     async def on_member_remove(self, member):
@@ -59,7 +61,9 @@ class welcandleave(commands.Cog):
             # Set the thumbnail using the discord.File object
             embed.set_thumbnail(url="attachment://avatar.png")
 
-            await channel.send(embed=embed, file=file)
+            # Send the embed and file separately
+            await channel.send(embed=embed)
+            await channel.send(file=file)
 
 async def setup(bot):
     await bot.add_cog(welcandleave(bot))
