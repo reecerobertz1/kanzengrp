@@ -116,42 +116,32 @@ class applications(commands.Cog):
             await ctx.send("You don't have permission to view applications.")
 
     @commands.command()
-    async def accept(self, ctx, mention_or_id):
-        guild_id = ctx.guild.id
-        if guild_id == 1123347338841313331:
-            server_invite = "957987670787764224"  # Server invite for guild ID 1123347338841313331
-        elif guild_id == 1122181605591621692:
-            server_invite = "1121841073673736215"  # Server invite for guild ID 1122181605591621692
+    async def accept(self, ctx, member: discord.Member):
+        if ctx.guild.id == 1123347338841313331:
+            invite_server_id = 957987670787764224  # Server ID for invite in server 1123347338841313331
+        elif ctx.guild.id == 1122181605591621692:
+            invite_server_id = 1121841073673736215  # Server ID for invite in server 1122181605591621692
         else:
-            await ctx.send("This command is not available in this server.")
+            await ctx.send("You can only use this command in specific servers.")
             return
 
-        member = None
-        if mention_or_id.startswith("<@") and mention_or_id.endswith(">"):
-            mention_or_id = mention_or_id[3:-1]
-            if mention_or_id.startswith("!"):
-                mention_or_id = mention_or_id[1:]
+        invite = await self.generate_invite(invite_server_id)
 
-            try:
-                member = await commands.MemberConverter().convert(ctx, mention_or_id)
-            except commands.MemberNotFound:
-                pass
+        dm_message = f"Hello {member.mention}! You have been accepted into a server.\nHere is your invite:\n{invite}"
+        await member.send(dm_message)
+        await ctx.send(f"An invite has been sent to {member.mention}.")
 
-        if member is None:
-            try:
-                member = await self.bot.fetch_user(int(mention_or_id))
-            except (ValueError, discord.NotFound):
-                await ctx.send("Invalid mention or user ID.")
-                return
-
-        embed = discord.Embed(title="Accepted!", color=0x2b2d31)
-        embed.add_field(name="Congratulations", value=f"You have been accepted into our server! Here is the invite: [Join]({server_invite})", inline=False)
-
-        try:
-            await member.send(embed=embed)
-            await ctx.send(f"Accepted message sent to {member.mention}.")
-        except discord.Forbidden:
-            await ctx.send("Failed to send the acceptance message. Please make sure the user has their DMs enabled.")
+    async def generate_invite(self, server_id):
+        server = self.bot.get_guild(server_id)
+        if server:
+            invites = await server.invites()
+            if invites:
+                return invites[0].url
+            else:
+                invite = await server.text_channels[0].create_invite()
+                return invite.url
+        else:
+            raise ValueError("Failed to find the specified server.")
 
 
     @commands.command()
