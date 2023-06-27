@@ -9,6 +9,8 @@ class welcandleave(commands.Cog):
         self.server1_welcome_channel_id = 1121921106706710567
         self.server2_id = 957987670787764224
         self.server2_welcome_channel_id = 1123274964406120479
+        self.server3_id = 1123347338841313331
+        self.server3_channel = 1123347338841313331
 
     @commands.Cog.listener()
     async def on_member_join(self, member: discord.Member):
@@ -24,6 +26,14 @@ class welcandleave(commands.Cog):
             embed = discord.Embed(title=f'<:brazy_milksip:958479364184490075> : {member.name} has joined aura!', color=0x64a875, description=f"<a:greenarrow:1123286634629169203> Make sure you read our [rules](https://discord.com/channels/957987670787764224/958026887379173396)\n<a:greenarrow:1123286634629169203> Go and get your [roles](https://discord.com/channels/957987670787764224/1122304274408423566)\n<a:greenarrow:1123286634629169203> need help? ping <@&957993316794917024> or <@&965970726597296148>")
             embed.set_footer(text='Have fun! Thank you for joining', icon_url=member.display_avatar.url)
             channel = self.bot.get_channel(self.server2_welcome_channel_id)
+            embed.set_thumbnail(url=member.display_avatar.url)
+            await channel.send(f'{member.mention}')
+            await channel.send(embed=embed)
+            """AURA FORMS"""
+        elif member.guild.id == self.server3_id:
+            embed = discord.Embed(title=f'<:brazy_milksip:958479364184490075> : {member.name} has joined the server!', color=0x64a875, description=f"<a:greenarrow:1123286634629169203> Make sure you read our [rules](https://discord.com/channels/1123347338841313331/1123351779158016060)\n<a:greenarrow:1123286634629169203> Go and get your [roles](https://discord.com/channels/1123347338841313331/1123351943549562950)\n<a:greenarrow:1123286634629169203> apply [here!](https://discord.com/channels/1123347338841313331/1123352172143329331)\n<a:greenarrow:1123286634629169203> need help? ping <@&957993316794917024> or <@&965970726597296148>")
+            embed.set_footer(text='Have fun! Thank you for joining', icon_url=member.display_avatar.url)
+            channel = self.bot.get_channel(self.server3_channel)
             embed.set_thumbnail(url=member.display_avatar.url)
             await channel.send(f'{member.mention}')
             await channel.send(embed=embed)
