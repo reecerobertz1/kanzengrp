@@ -115,6 +115,79 @@ class applications(commands.Cog):
         else:
             await ctx.send("You don't have permission to view applications.")
 
+    @commands.command()
+    async def accept(self, ctx, mention_or_id):
+        guild_id = ctx.guild.id
+        if guild_id == 1123347338841313331:
+            server_invite = "957987670787764224"  # Server invite for guild ID 1123347338841313331
+        elif guild_id == 1122181605591621692:
+            server_invite = "1121841073673736215"  # Server invite for guild ID 1122181605591621692
+        else:
+            await ctx.send("This command is not available in this server.")
+            return
+
+        member = None
+        if mention_or_id.startswith("<@") and mention_or_id.endswith(">"):
+            mention_or_id = mention_or_id[3:-1]
+            if mention_or_id.startswith("!"):
+                mention_or_id = mention_or_id[1:]
+
+            try:
+                member = await commands.MemberConverter().convert(ctx, mention_or_id)
+            except commands.MemberNotFound:
+                pass
+
+        if member is None:
+            try:
+                member = await self.bot.fetch_user(int(mention_or_id))
+            except (ValueError, discord.NotFound):
+                await ctx.send("Invalid mention or user ID.")
+                return
+
+        embed = discord.Embed(title="Accepted!", color=0x2b2d31)
+        embed.add_field(name="Congratulations", value=f"You have been accepted into our server! Here is the invite: [Join]({server_invite})", inline=False)
+
+        try:
+            await member.send(embed=embed)
+            await ctx.send(f"Accepted message sent to {member.mention}.")
+        except discord.Forbidden:
+            await ctx.send("Failed to send the acceptance message. Please make sure the user has their DMs enabled.")
+
+
+    @commands.command()
+    async def decline(self, ctx, mention_or_id):
+        guild_id = ctx.guild.id
+        if guild_id == 1122181605591621692:
+            message = "Hi thank you for applying to Kanzen, but unfortunately you have been declined. We will recruit again in the near future!"
+        elif guild_id == 1123347338841313331:
+            message = "Hi thank you for applying to Auragrp, but unfortunately you have been declined. We will recruit again in the near future!"
+        else:
+            await ctx.send("This command is not available in this server.")
+            return
+
+        member = None
+        if mention_or_id.startswith("<@") and mention_or_id.endswith(">"):
+            mention_or_id = mention_or_id[3:-1]
+            if mention_or_id.startswith("!"):
+                mention_or_id = mention_or_id[1:]
+
+            try:
+                member = await commands.MemberConverter().convert(ctx, mention_or_id)
+            except commands.MemberNotFound:
+                pass
+
+        if member is None:
+            try:
+                member = await self.bot.fetch_user(int(mention_or_id))
+            except (ValueError, discord.NotFound):
+                await ctx.send("Invalid mention or user ID.")
+                return
+
+        try:
+            await member.send(message)
+            await ctx.send(f"Decline message sent to {member.mention}.")
+        except discord.Forbidden:
+            await ctx.send("Failed to send the decline message. Please make sure the user has their DMs enabled.")
 
 
 
