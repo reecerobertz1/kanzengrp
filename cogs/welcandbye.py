@@ -34,6 +34,7 @@ class welcandleave(commands.Cog):
             embed.set_thumbnail(url=member.display_avatar.url)
             embed.set_footer(text='Hope to see you again <3')
             channel = self.bot.get_channel(self.server1_welcome_channel_id)
+            await channel.send(f'{member.mention}')
             await channel.send(embed=embed)
             """AURA GRP LEAVE"""
         elif member.guild.id == self.server2_id:
@@ -41,6 +42,7 @@ class welcandleave(commands.Cog):
             embed.set_thumbnail(url=member.display_avatar.url)
             embed.set_footer(text='Hope to see you again soon !!')
             channel = self.bot.get_channel(self.server2_welcome_channel_id)
+            await channel.send(f'{member.mention}')
             await channel.send(embed=embed)
 
 async def setup(bot):
