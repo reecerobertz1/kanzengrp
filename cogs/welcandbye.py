@@ -37,7 +37,7 @@ class welcandleave(commands.Cog):
             embed.set_footer(text='Have fun! Thank you for joining', icon_url=member.display_avatar.url)
             channel = self.bot.get_channel(self.server3_channel)
             embed.set_thumbnail(url=member.display_avatar.url)
-            await channel.send(f'{member.mention}')
+            await channel.send(f'{member.mention} <@&1123361940895445032>')
             await channel.send(embed=embed)
             """KANZEN FORMS"""
         elif member.guild.id == self.server4_id:
