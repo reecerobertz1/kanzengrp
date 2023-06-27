@@ -148,25 +148,18 @@ class applications(commands.Cog):
     async def decline(self, ctx, mention_or_id):
         guild_id = ctx.guild.id
         if guild_id == 1122181605591621692:
-            message = "Hi thank you for applying to Kanzen, but unfortunately you have been declined. We will recruit again in the near future!"
+            server_name = "Kanzen"
+            message = "Hi, thank you for applying to Kanzen, but unfortunately you have been declined. We will recruit again in the near future!"
         elif guild_id == 1123347338841313331:
-            message = "Hi thank you for applying to Auragrp, but unfortunately you have been declined. We will recruit again in the near future!"
+            server_name = "Auragrp"
+            message = "Hi, thank you for applying to Auragrp, but unfortunately you have been declined. We will recruit again in the near future!"
         else:
             await ctx.send("This command is not available in this server.")
             return
 
-        member = None
-        if mention_or_id.startswith("<@") and mention_or_id.endswith(">"):
-            mention_or_id = mention_or_id[3:-1]
-            if mention_or_id.startswith("!"):
-                mention_or_id = mention_or_id[1:]
-
-            try:
-                member = await commands.MemberConverter().convert(ctx, mention_or_id)
-            except commands.MemberNotFound:
-                pass
-
-        if member is None:
+        try:
+            member = await commands.MemberConverter().convert(ctx, mention_or_id)
+        except commands.MemberNotFound:
             try:
                 member = await self.bot.fetch_user(int(mention_or_id))
             except (ValueError, discord.NotFound):
@@ -175,9 +168,10 @@ class applications(commands.Cog):
 
         try:
             await member.send(message)
-            await ctx.send(f"Decline message sent to {member.mention}.")
+            await ctx.send(f"Decline message sent to {member.mention} in {server_name}.")
         except discord.Forbidden:
             await ctx.send("Failed to send the decline message. Please make sure the user has their DMs enabled.")
+
 
 
 
