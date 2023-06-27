@@ -21,9 +21,19 @@ class welcandleave(commands.Cog):
                             f"﹒The logos are [here](https://discord.com/channels/1121841073673736215/1121922101708857344)",
                 color=0x2b2d31
             )
-            embed.set_thumbnail(url=member.avatar_url)
             embed.set_footer(text='Have fun! Thank you for joining <3')
-            await channel.send(embed=embed)
+
+            # Fetch the member's avatar URL
+            avatar_url = member.avatar_url_as(static_format='png')
+
+            # Create a discord.File object with the avatar URL
+            avatar_file = await avatar_url.read()
+            file = discord.File(avatar_file, filename="avatar.png")
+
+            # Set the thumbnail using the discord.File object
+            embed.set_thumbnail(url="attachment://avatar.png")
+
+            await channel.send(embed=embed, file=file)
 
     @commands.Cog.listener()
     async def on_member_remove(self, member):
@@ -37,9 +47,19 @@ class welcandleave(commands.Cog):
                 description=f"Goodbye {mention}! We'll miss you!",
                 color=0x2b2d31
             )
-            embed.set_thumbnail(url=member.avatar_url)
             embed.set_footer(text='Hope to see you again soon <3')
-            await channel.send(embed=embed)
+
+            # Fetch the member's avatar URL
+            avatar_url = member.avatar_url_as(static_format='png')
+
+            # Create a discord.File object with the avatar URL
+            avatar_file = await avatar_url.read()
+            file = discord.File(avatar_file, filename="avatar.png")
+
+            # Set the thumbnail using the discord.File object
+            embed.set_thumbnail(url="attachment://avatar.png")
+
+            await channel.send(embed=embed, file=file)
 
 async def setup(bot):
     await bot.add_cog(welcandleave(bot))
