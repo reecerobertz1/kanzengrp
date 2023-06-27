@@ -31,7 +31,7 @@ class welcandleave(commands.Cog):
             await channel.send(embed=embed)
             """AURA FORMS"""
         elif member.guild.id == self.server3_id:
-            embed = discord.Embed(title=f'<:brazy_milksip:958479364184490075> : {member.name} has joined the server!', color=0x64a875, description=f"<a:greenarrow:1123286634629169203> Make sure you read our [rules](https://discord.com/channels/1123347338841313331/1123351779158016060)\n<a:greenarrow:1123286634629169203> Go and get your [roles](https://discord.com/channels/1123347338841313331/1123351943549562950)\n<a:greenarrow:1123286634629169203> apply [here!](https://discord.com/channels/1123347338841313331/1123352172143329331)\n<a:greenarrow:1123286634629169203> need help? ping <@&957993316794917024> or <@&965970726597296148>")
+            embed = discord.Embed(title=f'<:brazy_milksip:958479364184490075> : {member.name} has joined the server!', color=0x64a875, description=f"<a:greenarrow:1123286634629169203> Make sure you read our [rules](https://discord.com/channels/1123347338841313331/1123351779158016060)\n<a:greenarrow:1123286634629169203> Go and get your [roles](https://discord.com/channels/1123347338841313331/1123351943549562950)\n<a:greenarrow:1123286634629169203> apply [here!](https://discord.com/channels/1123347338841313331/1123352172143329331)\n<a:greenarrow:1123286634629169203> need help? ping <@&1123347897715527802> or <@&1123347913964269718>")
             embed.set_footer(text='Have fun! Thank you for joining', icon_url=member.display_avatar.url)
             channel = self.bot.get_channel(self.server3_channel)
             embed.set_thumbnail(url=member.display_avatar.url)
