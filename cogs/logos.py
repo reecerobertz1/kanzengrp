@@ -12,7 +12,7 @@ class logos(commands.Cog):
             description='<a:greenarrow:1123286634629169203> Please make sure you watermark the logos!\n<a:greenarrow:1123286634629169203> Use the watermark on every edit\n<a:greenarrow:1123286634629169203> Do not share this link with anyone outside the group!',
             color=0x2b2d31
         )
-        embed.set_footer(text='If you need any help, feel free to ping @lead')
+        embed.set_footer(text='Made us some logos? send them to a lead or co lead!')
 
         button = discord.ui.Button(
             label='Click here for logos!',
