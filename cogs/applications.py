@@ -6,28 +6,8 @@ from discord.ext import commands
 class applications(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.questions = [
-            {"name": "discord_name", "question": "What is your Discord name?"},
-            {"name": "instagram_name", "question": "What is your Instagram name?"},
-            {"name": "edit_link", "question": "Link for the edit you want to apply with:"},
-            {"name": "activity_level", "question": "How active will you be (1 - 5)?"},
-            {"name": "additional_info", "question": "Anything else you want us to know?"}
-        ]
-
-        self.application_file = "applications.json"
-        self.applications = self.load_applications()
-
-    def load_applications(self):
-        try:
-            with open(self.application_file, "r") as file:
-                applications = json.load(file)
-                return applications
-        except FileNotFoundError:
-            return {}
-    
-    def save_applications(self):
-        with open(self.application_file, "w") as file:
-            json.dump(self.applications, file, indent=4)
+        self.applications = {}  # Placeholder for applications data, replace with your implementation
+        self.questions = []  # Placeholder for application questions, replace with your implementation
 
     @commands.command()
     async def app(self, ctx):
@@ -59,7 +39,14 @@ class applications(commands.Cog):
         embed.add_field(name="Additional Info", value=answers.get("additional_info", "N/A"), inline=False)
         embed.set_footer(text=f"User ID: {answers['discord_id']}")
 
-        channel_id = 1122183100038905908  # Replace with the desired channel ID
+        if ctx.guild.id == 1122181605591621692:
+            channel_id = 1122183100038905908  # Channel ID for the first server
+        elif ctx.guild.id == 1123347338841313331:
+            channel_id = 1123353889228468305  # Channel ID for the second server
+        else:
+            await ctx.send("This command can only be used in specific servers.")
+            return
+
         channel = self.bot.get_channel(channel_id)
 
         if channel:
