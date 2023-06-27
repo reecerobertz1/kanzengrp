@@ -110,10 +110,10 @@ class applications(commands.Cog):
                 embed.add_field(name="Additional Info", value=application.get("additional_info", "N/A"), inline=False)
                 embed.set_footer(text=f"User ID: {user_id}")
 
-                await ctx.send(f"Application by {user.mention}:")
-                await ctx.send(embed=embed)
+                await ctx.reply(f"Application by {user.mention}:")
+                await ctx.reply(embed=embed)
         else:
-            await ctx.send("You don't have permission to view applications.")
+            await ctx.reply("You don't have permission to view applications.")
 
     @commands.command()
     async def accept(self, ctx, member: discord.Member):
@@ -122,14 +122,14 @@ class applications(commands.Cog):
         elif ctx.guild.id == 1122181605591621692:
             invite_server_id = 1121841073673736215  # Server ID for invite in server 1122181605591621692
         else:
-            await ctx.send("You can only use this command in specific servers.")
+            await ctx.reply("You can only use this command in specific servers.")
             return
 
         invite = await self.generate_invite(invite_server_id)
 
         dm_message = f"Hello {member.mention}! You have been accepted into a server.\nHere is your invite:\n{invite}"
         await member.send(dm_message)
-        await ctx.send(f"An invite has been sent to {member.mention}.")
+        await ctx.reply(f"Accept message sent to {member.mention}.")
 
     async def generate_invite(self, server_id):
         server = self.bot.get_guild(server_id)
@@ -154,7 +154,7 @@ class applications(commands.Cog):
             server_name = "Auragrp"
             message = "Hi, thank you for applying to Auragrp, but unfortunately you have been declined. We will recruit again in the near future!"
         else:
-            await ctx.send("This command is not available in this server.")
+            await ctx.reply("This command is not available in this server.")
             return
 
         try:
@@ -163,12 +163,12 @@ class applications(commands.Cog):
             try:
                 member = await self.bot.fetch_user(int(mention_or_id))
             except (ValueError, discord.NotFound):
-                await ctx.send("Invalid mention or user ID.")
+                await ctx.reply("Invalid mention or user ID.")
                 return
 
         try:
             await member.send(message)
-            await ctx.send(f"Decline message sent to {member.mention} in {server_name}.")
+            await ctx.reply(f"Decline message sent to {member.mention} in {server_name}.")
         except discord.Forbidden:
             await ctx.send("Failed to send the decline message. Please make sure the user has their DMs enabled.")
 
