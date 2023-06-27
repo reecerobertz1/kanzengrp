@@ -22,7 +22,7 @@ class welcandleave(commands.Cog):
         if member.guild.id == guild_id:
             embed = discord.Embed(title="Member left!", color=0x96bfff, description=f"{member.mention} has left the discord.")
             embed.set_thumbnail(url=member.display_avatar.url)
-            embed.set_footer(text='i hope to see you again!', icon_url=ctx.guild.icon_url)
+            embed.set_footer(text='i hope to see you again!')
             channel = self.bot.get_channel(1121921106706710567)
             await channel.send(embed=embed)
 
