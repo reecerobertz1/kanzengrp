@@ -16,7 +16,7 @@ class logos(commands.Cog):
 
         button = discord.ui.Button(
             label='Click here for logos!',
-            url='https://example.com'
+            url='https://mega.nz/folder/fNkhXaTZ#HESDVux7S8DrUXYgiexxmg'
         )
 
         view = discord.ui.View()
