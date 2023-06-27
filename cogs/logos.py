@@ -6,7 +6,7 @@ class logos(commands.Cog):
         self.bot = bot
 
     @commands.command()
-    async def logo(self, ctx):
+    async def logocommandwithbuttons(self, ctx):
         embed = discord.Embed(
             title='<a:Lumi_penguin_fall:1122607666578063531> : Kanzen Logos',
             description='• Please make sure you watermark the logos!\n• Use the watermark on every edit\n• Do not share this link with anyone outside the group!',
