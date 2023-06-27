@@ -8,15 +8,15 @@ class logos(commands.Cog):
     @commands.command()
     async def logo(self, ctx):
         embed = discord.Embed(
-            title='<:brazy_milksip:958479364184490075> : Aura Logos',
-            description='<a:greenarrow:1123286634629169203> Please make sure you watermark the logos!\n<a:greenarrow:1123286634629169203> Use the watermark on every edit\n<a:greenarrow:1123286634629169203> Do not share this link with anyone outside the group!',
+            title='<a:Lumi_penguin_fall:1122607666578063531> : Kanzen Logos',
+            description='• Please make sure you watermark the logos!\n• Use the watermark on every edit\n• Do not share this link with anyone outside the group!',
             color=0x2b2d31
         )
-        embed.set_footer(text='Made us some logos? send them to a lead or co lead!')
+        embed.set_footer(text='Made us some logos? send them to Reece!')
 
         button = discord.ui.Button(
             label='Click here for logos!',
-            url='https://mega.nz/folder/fNkhXaTZ#HESDVux7S8DrUXYgiexxmg'
+            url='https://mega.nz/folder/J40zCTYY#L73pTeQKWpCh15wpuQaIFA'
         )
 
         view = discord.ui.View()
