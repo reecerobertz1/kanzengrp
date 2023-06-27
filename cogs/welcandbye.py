@@ -17,7 +17,7 @@ class welcandleave(commands.Cog):
             await channel.send(embed=embed)
 
     @commands.Cog.listener()
-    async def on_member_remove(self, member: discord.Member, ctx):
+    async def on_member_remove(self, member: discord.Member):
         guild_id = 1121841073673736215
         if member.guild.id == guild_id:
             embed = discord.Embed(title="Member left!", color=0x96bfff, description=f"{member.mention} has left the discord.")
