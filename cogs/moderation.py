@@ -164,6 +164,19 @@ class Moderation(commands.Cog):
         embed.set_footer(text='- React with the emojis below to select your roles')
         await ctx.send(embed=embed)
 
+    @commands.command()
+    async def rules(self, ctx):
+        embed = discord.Embed(
+            title='<a:3b56330f710c3a978f27c9cc7e099180:1122633149764088030> : __Kanzen rules__',
+            description="",
+            color=0x2b2d31
+        )
+        embed.set_footer(text='If you need to go inactive, use the command +ia')
+        embed.add_field(name='✦ Group Rules :', value='• always watermark the logos\n• do not share the logos link outside the server!\n• make sure you are following [@remqsi](instagram.com/remqsi/) + [@kanzengrp](instagram.com/kanzengrp/)!\n• if you do ever decide to leave the grp, or move accounts. please let reece know!', inline= False)
+        embed.add_field(name='✦ Chat Rules :', value='• please be as active as possible!\n• using any slurs / words that can be offensive!\n• please set your nickname as "your name | username"\n• no impersonation as other editors\n• no trash talking other editors and groups!')
+        embed.set_image(url='https://serving.photos.photobox.com/0814269535cc11c4fac2f41446e80b4f01b10a9db227f0f8574292f78abe9067e6361440.jpg')
+        await ctx.send(embed=embed)
+
 
 async def setup(bot):
     await bot.add_cog(Moderation(bot))
