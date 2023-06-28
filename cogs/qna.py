@@ -27,7 +27,7 @@ class qna(commands.Cog):
         channel = self.bot.get_channel(1123696501441450107)         
         q = await ctx.reply("asked!")
         await channel.send(f"{question} ^ {ctx.author.id}")
-        await asyncio.sleep(2)
+        await asyncio.sleep(1)
         await ctx.message.delete()
         await q.delete()  
 
