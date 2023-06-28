@@ -18,7 +18,8 @@ extensions = {
     "cogs.welcandbye",
     "cogs.applications",
     "cogs.logos",
-    "cogs.status"
+    "cogs.status",
+    "cogs.qna"
 }
 
 # bot subclass
