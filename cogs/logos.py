@@ -29,7 +29,7 @@ class logos(commands.Cog):
         embed = discord.Embed(
             title='<:members:1119069738493026364> : DAEGUTOWN FORMS',
             description='<a:redarrow:1123372633182982155> editing server\n<a:redarrow:1123372633182982155> amazing logos + custom bot\n<a:redarrow:1123372633182982155> booster pack | booster form',
-            color=0x9e4343
+            color=0x2b2d31
         )
 
         button = discord.ui.Button(
@@ -64,7 +64,7 @@ class logos(commands.Cog):
     async def kanzenpartner(self, ctx):
         embed = discord.Embed(
             title='<a:Lumi_penguin_fall:1122607666578063531> : Kanzen Forms',
-            description='• editing group\n• cute logos\n• custom bot',
+            description='<:pr_dash:1123654552843993099> editing group\n<:pr_dash:1123654552843993099> cute logos\n<:pr_dash:1123654552843993099> custom bot',
             color=0x2b2d31
         )
 
