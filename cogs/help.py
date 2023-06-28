@@ -63,6 +63,8 @@ class Help(commands.Cog):
                 {"name": "+decline @mention", "value": "Declines a member from kanzen", "inline": False},
                 {"name": "+resetapps", "value": "Resets all IDs from forms", "inline": False},
                 {"name": "+viewapps", "value": "See all applications sent", "inline": False},
+                {"name": "+qna", "value": "Ask the lead a question", "inline": False},
+                {"name": "+answer", "value": "Answer a question sent", "inline": False},
                 {"name": "", "value": "`[page 7/7]`", "inline": True}
             ]
         }
