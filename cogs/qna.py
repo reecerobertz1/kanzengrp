@@ -6,8 +6,8 @@ class qna(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.deleted_messages_channels = {
-            1123347338841313331: 1123696501441450107,  # Server 1
-            1122181605591621692: 1234567890  # Server 2
+            1123347338841313331: 1123696501441450107,  # Server 1 
+            1122181605591621692: 1123719751479341107  # Server 2 
         }
         self.answer_channels = {
             1123347338841313331: 1123696762985656451,  # Server 1
