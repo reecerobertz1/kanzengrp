@@ -6,7 +6,7 @@ class qna(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.question_channel_id = 1123696243911164054
-        self.answer_channel = 1123696762985656451
+        self.answer_channel_id = 1123696762985656451
         self.deleted_messages_channel_id = 1123696501441450107
 
     @commands.Cog.listener()
