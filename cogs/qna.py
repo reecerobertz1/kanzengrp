@@ -9,7 +9,7 @@ class qna(commands.Cog):
     @commands.command(hidden=True)
     async def answer(self, ctx, *, response: str):
         msg = await ctx.channel.fetch_message(ctx.message.reference.message_id)
-        channel = self.bot.get_channel(1123696762985656451)
+        channel = self.bot.get_channel(1123696501441450107)
         if "^" in msg.content:
                 message = msg.content.split("^ ")
                 question = message[0]
