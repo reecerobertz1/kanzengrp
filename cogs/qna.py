@@ -52,16 +52,16 @@ class qna(commands.Cog):
                 user_id = lines[2].split(": ")[1]
 
                 # Fetch the user who asked the question
-                user = await self.bot.fetch_user(user_id)
+                user = await self.bot.fetch_user(int(user_id))
 
-                # Create an embed with the question, answer, and mention
+                # Create an embed with the question and answer
                 embed = discord.Embed(title="Answer", color=discord.Color.green())
                 embed.add_field(name="Question", value=content)
                 embed.add_field(name="Answer", value=ctx.message.content)
-                embed.set_footer(text=f"In response to {user.name}")
 
                 # Send the answer embed to the answer channel
-                await answer_channel.send(f"<@{user.id}>", embed=embed)
+                await answer_channel.send(f"<@{user.id}>")
+                await answer_channel.send(embed=embed)
 
                 # Notify the user who asked the question
                 await ctx.send(f"Answer sent to {user.mention} in {answer_channel.mention}.")
