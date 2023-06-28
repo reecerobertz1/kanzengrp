@@ -36,7 +36,7 @@ class logos(commands.Cog):
             label='Click here to join Daegu Forms!',
             url='https://discord.gg/R5d7TXVdcj'
         )
-
+        embed.set_footer(text='Go support our partners!')
         view = discord.ui.View()
         view.add_item(button)
 
@@ -54,7 +54,7 @@ class logos(commands.Cog):
             label='Click here to join Aura Forms!',
             url='https://discord.gg/edDCM3JUvM'
         )
-
+        embed.set_footer(text='Go support our partners!')
         view = discord.ui.View()
         view.add_item(button)
 
@@ -67,7 +67,7 @@ class logos(commands.Cog):
             description='<:pr_dash:1123654552843993099> editing group\n<:pr_dash:1123654552843993099> cute logos\n<:pr_dash:1123654552843993099> custom bot',
             color=0x2b2d31
         )
-
+        embed.set_footer(text='Go support our partners!')
         button = discord.ui.Button(
             label='Click here to join Kanzen Forms!',
             url='https://discord.gg/9MqbUTYthE'
