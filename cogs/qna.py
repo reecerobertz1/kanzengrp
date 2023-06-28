@@ -7,8 +7,8 @@ class qna(commands.Cog):
         self.bot = bot
         self.server1_deleted_messages_channel_id = 1123696501441450107
         self.server1_answer_channel_id = 1123696762985656451
-        self.server2_deleted_messages_channel_id = 1234567890
-        self.server2_answer_channel_id = 2345678901
+        self.server2_deleted_messages_channel_id = 1123347338841313331
+        self.server2_answer_channel_id = 1123719714594639922
 
     @commands.command(hidden=True)
     async def answer(self, ctx, *, response: str):
