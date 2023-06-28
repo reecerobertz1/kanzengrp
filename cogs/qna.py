@@ -25,9 +25,9 @@ class qna(commands.Cog):
     @commands.command()
     async def qna(self, ctx, *, question: str):
         channel = self.bot.get_channel(1123696501441450107)         
-        q = await ctx.reply("asked!")
+        q = await ctx.reply("your question has been sent to the lead!")
         await channel.send(f"{question} ^ {ctx.author.id}")
-        await asyncio.sleep(1)
+        await asyncio.sleep(3)
         await ctx.message.delete()
         await q.delete()  
 
