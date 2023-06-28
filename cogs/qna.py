@@ -13,8 +13,8 @@ class qna(commands.Cog):
         reference = ctx.message.reference
         if reference and reference.message_id:
             msg = await ctx.channel.fetch_message(reference.message_id)
-            if "^" in msg.content:
-                question, asker = msg.content.split("^ ")
+            if "|" in msg.content:
+                question, asker = msg.content.split("| ")
                 user = await self.bot.fetch_user(int(asker))
                 answer_channel = self.bot.get_channel(self.answer_channel_id)
 
@@ -33,7 +33,7 @@ class qna(commands.Cog):
 
         q = await ctx.reply("Your question has been sent to the lead!")
 
-        message = f"{question} ^ {ctx.author.id}"
+        message = f"{question} | {ctx.author.id}"
         await deleted_messages_channel.send(message)
 
         await asyncio.sleep(3)
