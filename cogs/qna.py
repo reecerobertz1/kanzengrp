@@ -9,15 +9,16 @@ class qna(commands.Cog):
         self.answer_channel_id = 1123696762985656451
         self.deleted_messages_channel_id = 1123696501441450107
 
+        self.question_channel_id = 1123696243911164054
+        self.answer_channel_id = 1123696762985656451
+        self.deleted_messages_channel_id = 1123696501441450107
+
     @commands.Cog.listener()
     async def on_message(self, message):
         if message.channel.id == self.question_channel_id:
             await self.process_question(message)
-        elif message.channel.id == self.answer_channel_id:
-            await self.process_answer(message)
 
     async def process_question(self, message):
-        question_channel = self.bot.get_channel(self.question_channel_id)
         deleted_messages_channel = self.bot.get_channel(self.deleted_messages_channel_id)
 
         # Send the deleted question content and user ID to the deleted messages channel
@@ -25,17 +26,6 @@ class qna(commands.Cog):
         await deleted_messages_channel.send(deleted_message)
 
         # Delete the question message
-        await message.delete()
-
-    async def process_answer(self, message):
-        answer_channel = self.bot.get_channel(self.answer_channel_id)
-        deleted_messages_channel = self.bot.get_channel(self.deleted_messages_channel_id)
-
-        # Send the deleted answer content and user ID to the deleted messages channel
-        deleted_message = f"Deleted Answer\nContent: {message.content}\nUser ID: {message.author.id}"
-        await deleted_messages_channel.send(deleted_message)
-
-        # Delete the answer message
         await message.delete()
 
     @commands.command()
@@ -52,7 +42,7 @@ class qna(commands.Cog):
                 user_id = lines[2].split(": ")[1]
 
                 # Fetch the user who asked the question
-                user = await self.bot.fetch_user(user_id)
+                user = await self.bot.fetch_user(int(user_id))
 
                 # Create an embed with the question, answer, and mention
                 embed = discord.Embed(title="Answer", color=discord.Color.green())
@@ -61,7 +51,7 @@ class qna(commands.Cog):
                 embed.set_footer(text=f"In response to {user.name}")
 
                 # Send the answer embed to the answer channel
-                await answer_channel.send(f"<@{user.id}>", embed=embed)
+                await answer_channel.send(embed=embed)
 
                 # Notify the user who asked the question
                 await answer_channel.send(f"<@{user.id}>")
