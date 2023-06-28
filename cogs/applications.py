@@ -83,6 +83,7 @@ class applications(commands.Cog):
 
 
     @commands.command()
+    @commands.has_permissions(manage_guild=True)
     async def resetapps(self, ctx):
         if ctx.author.guild_permissions.administrator:
             self.applications = {}
@@ -92,6 +93,7 @@ class applications(commands.Cog):
             await ctx.send("You don't have permission to reset application IDs.")
 
     @commands.command()
+    @commands.has_permissions(manage_guild=True)
     async def viewapps(self, ctx):
         if ctx.author.guild_permissions.administrator:
             if not self.applications:
@@ -116,11 +118,14 @@ class applications(commands.Cog):
             await ctx.reply("You don't have permission to view applications.")
 
     @commands.command()
+    @commands.has_permissions(manage_guild=True)
     async def accept(self, ctx, member: discord.Member):
         if ctx.guild.id == 1123347338841313331:
             invite_server_id = 957987670787764224  # Server ID for invite in server 1123347338841313331
         elif ctx.guild.id == 1122181605591621692:
             invite_server_id = 1121841073673736215  # Server ID for invite in server 1122181605591621692
+        elif ctx.guild.id == 901409710572466217:
+            invite_server_id = 896619762354892821  # Server ID for invite in server 1122181605591621692
         else:
             await ctx.reply("You can only use this command in specific servers.")
             return
@@ -145,6 +150,7 @@ class applications(commands.Cog):
 
 
     @commands.command()
+    @commands.has_permissions(manage_guild=True)
     async def decline(self, ctx, mention_or_id):
         guild_id = ctx.guild.id
         if guild_id == 1122181605591621692:
@@ -153,6 +159,9 @@ class applications(commands.Cog):
         elif guild_id == 1123347338841313331:
             server_name = "Auragrp"
             message = "Hi, thank you for applying to Auragrp, but unfortunately you have been declined. We will recruit again in the near future!"
+        elif guild_id == 901409710572466217:
+            server_name = "Daegutown"
+            message = "Hi, thank you for applying to Daegutown, but unfortunately you have been declined. We will recruit again in the near future!"
         else:
             await ctx.reply("This command is not available in this server.")
             return
