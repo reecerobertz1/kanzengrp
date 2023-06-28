@@ -84,6 +84,7 @@ class welcandleave(commands.Cog):
             if channel_id:
                 channel = self.bot.get_channel(channel_id)
                 embed = discord.Embed(title=f"{after.name} thank you for boosting!",description='<a:greenarrow:1123286634629169203> do `+perks` to get the booster perks!\n<a:greenarrow:1123286634629169203> we really appriciate the support', color=0x2b2d31)
+                embed.set_footer(text=f'Total Server Boosts: {self.boost_count}')
                 await channel.send(f'{after.mention}')
                 await channel.send(embed=embed)
 
