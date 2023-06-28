@@ -131,6 +131,9 @@ class applications(commands.Cog):
             accepted_channel_id = 1123588044180684800
             add_role_id = 1122191098006224906
             remove_role_id = 1122191119430733835
+        elif ctx.guild_id == 901409710572466217:
+            accepted_channel_id = 1123588044180684800
+
             message = f"{member.mention} has been accepted."
         else:
             await ctx.reply("You can only use this command in specific servers.")
@@ -144,7 +147,7 @@ class applications(commands.Cog):
             await ctx.reply("Failed to find the specified channel.")
 
         invite = await self.generate_invite(invite_server_id)
-        dm_message = f"Hello {member.mention}! You have been accepted into a server.\nHere is your invite:\n{invite}"
+        dm_message = f"Hello {member.mention}! You have been accepted!.\nHere is your invite:\n{invite} thank you for applying!"
         await member.send(dm_message)
 
         guild = self.bot.get_guild(ctx.guild.id)

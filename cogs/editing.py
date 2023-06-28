@@ -37,7 +37,7 @@ class editing(commands.Cog):
 
         if len(data) > 0:
             selected_link = random.choice(data)
-            await ctx.reply(selected_link)
+            await ctx.reply('You can add audios by doing `+addaudio`!', selected_link)
         else:
             await ctx.reply("No one has added an audio yet! Be the first to add an audio by using the command `+addaudio (soundcloud link)`.")
 

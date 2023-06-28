@@ -3,9 +3,6 @@ import random
 import discord
 from discord.ext import commands
 
-
-
-
 class addedits(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -37,7 +34,7 @@ class addedits(commands.Cog):
 
         if len(data) > 0:
             selected_link = random.choice(data)
-            await ctx.reply(selected_link)
+            await ctx.reply('You can upload your own edits by doing `+addedit`', selected_link)
         else:
             await ctx.reply("No one has added their edit yet! Be the first to add an edit by using the command `addedit (streamable link)`.")
 
