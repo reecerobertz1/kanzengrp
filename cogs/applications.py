@@ -120,9 +120,9 @@ class applications(commands.Cog):
     @commands.command()
     @commands.has_permissions(manage_guild=True)
     async def accept(self, ctx, member: discord.Member):
-        if ctx.guild.id == 1123347338841313331:
+        if ctx.guild.id == 1123347338841313331: 
             invite_server_id = 957987670787764224
-            accepted_channel_id = 1123353878461698160
+            accepted_channel_id = 1123588246614577213
             message = f"{member.mention} has been accepted."
         elif ctx.guild.id == 1122181605591621692:
             invite_server_id = 1121841073673736215
@@ -178,11 +178,11 @@ class applications(commands.Cog):
             message = f"{mention_or_id} was declined."
         elif guild_id == 1123347338841313331:
             server_name = "Auragrp"
-            decline_channel_id = 1123353878461698160
+            decline_channel_id = 1123588246614577213
             message = f"{mention_or_id} was declined."
         elif guild_id == 901409710572466217:
             server_name = "Daegutown"
-            decline_channel_id = 1123588246614577213
+            decline_channel_id = 901410829218492456
             message = f"{mention_or_id} was declined."
         else:
             await ctx.reply("This command is not available in this server.")
