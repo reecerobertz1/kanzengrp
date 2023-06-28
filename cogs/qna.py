@@ -64,6 +64,9 @@ class qna(commands.Cog):
                 await answer_channel.send(f"<@{user.id}>", embed=embed)
 
                 # Notify the user who asked the question
+                await answer_channel.send(f"<@{user.id}>")
+
+                # Notify the command invoker
                 await ctx.send(f"Answer sent to {user.mention} in {answer_channel.mention}.")
                 break
 
