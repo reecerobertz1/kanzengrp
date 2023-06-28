@@ -83,8 +83,7 @@ class welcandleave(commands.Cog):
             
             if channel_id:
                 channel = self.bot.get_channel(channel_id)
-                embed = discord.Embed(title=f"{after.name} thank you for boosting!", color=0x2b2d31)
-                embed.add_field(name="** **", value=f"do `+perks` to get the booster perks!\nwe really appriciate the support", inline=False)
+                embed = discord.Embed(title=f"{after.display_name} thank you for boosting!",description='do `+perks` to get the booster perks!\nwe really appriciate the support', color=0x2b2d31)
                 await channel.send(f'{after.mention}')
                 await channel.send(embed=embed)
 
