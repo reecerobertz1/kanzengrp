@@ -9,7 +9,7 @@ class qna(commands.Cog):
     @commands.command(hidden=True)
     async def answer(self, ctx, *, response: str):
         msg = await ctx.channel.fetch_message(ctx.message.reference.message_id)
-        channel = self.bot.get_channel(1123696501441450107)
+        channel = self.bot.get_channel(1123696762985656451)
         if "^" in msg.content:
                 message = msg.content.split("^ ")
                 question = message[0]
@@ -24,7 +24,7 @@ class qna(commands.Cog):
 
     @commands.command()
     async def qna(self, ctx, *, question: str):
-        channel = self.bot.get_channel(1123696243911164054)         
+        channel = self.bot.get_channel(1123696501441450107)         
         q = await ctx.reply("asked!")
         await channel.send(f"{question} ^ {ctx.author.id}")
         await asyncio.sleep(2)
