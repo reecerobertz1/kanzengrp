@@ -25,7 +25,7 @@ class qna(commands.Cog):
                 else:
                     return
 
-                embed = discord.Embed(title="kanzen q&n", color=0x2b2d31, description=f"**question:** {question}**\nanswer:** {response}")
+                embed = discord.Embed(title="Q&A", color=0x2b2d31, description=f"**question:** {question}**\nanswer:** {response}")
                 embed.set_footer(text=f"asked by {user.display_name} | answered by {ctx.author.display_name}")
 
                 await answer_channel.send(user.mention)
