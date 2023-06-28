@@ -32,7 +32,7 @@ class qna(commands.Cog):
         deleted_messages_channel = self.bot.get_channel(self.deleted_messages_channel_id)
 
         # Send the deleted answer content and user ID to the deleted messages channel
-        deleted_message = f"Deleted Answer\nContent: {message.content}\nUser ID: {message.author.id}"
+        deleted_message = f"questions: {message.content}\nid: {message.author.id}"
         await deleted_messages_channel.send(deleted_message)
 
         # Delete the answer message
