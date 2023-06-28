@@ -63,7 +63,7 @@ class applications(commands.Cog):
         elif ctx.guild.id == 1123347338841313331:
             channel_id = 1123353889228468305  # Channel ID for server 1123347338841313331
         else:
-            await ctx.send("You can only use this command in specific servers.")
+            await ctx.send("You can't apply with this command in this group!")
             return
 
         channel = self.bot.get_channel(channel_id)
@@ -121,20 +121,39 @@ class applications(commands.Cog):
     @commands.has_permissions(manage_guild=True)
     async def accept(self, ctx, member: discord.Member):
         if ctx.guild.id == 1123347338841313331:
-            invite_server_id = 957987670787764224  # Server ID for invite in server 1123347338841313331
+            invite_server_id = 957987670787764224
+            accepted_channel_id = 1123353878461698160
+            message = f"{member.mention} has been accepted."
         elif ctx.guild.id == 1122181605591621692:
-            invite_server_id = 1121841073673736215  # Server ID for invite in server 1122181605591621692
-        elif ctx.guild.id == 901409710572466217:
-            invite_server_id = 896619762354892821  # Server ID for invite in server 1122181605591621692
+            invite_server_id = 1121841073673736215
+            accepted_channel_id = 1123588044180684800
+            message = f"{member.mention} has been accepted."
         else:
             await ctx.reply("You can only use this command in specific servers.")
             return
 
-        invite = await self.generate_invite(invite_server_id)
+        accepted_channel = self.bot.get_channel(accepted_channel_id)
+        if accepted_channel:
+            await accepted_channel.send(message)
+            await ctx.reply(f"Accept message sent to {member.mention}.")
+        else:
+            await ctx.reply("Failed to find the specified channel.")
 
+        invite = await self.generate_invite(invite_server_id)
         dm_message = f"Hello {member.mention}! You have been accepted into a server.\nHere is your invite:\n{invite}"
         await member.send(dm_message)
-        await ctx.reply(f"Accept message sent to {member.mention}.")
+
+    async def generate_invite(self, server_id):
+        server = self.bot.get_guild(server_id)
+        if server:
+            invites = await server.invites()
+            if invites:
+                return invites[0].url
+            else:
+                invite = await server.text_channels[0].create_invite()
+                return invite.url
+        else:
+            raise ValueError("Failed to find the specified server.")
 
     async def generate_invite(self, server_id):
         server = self.bot.get_guild(server_id)
@@ -155,16 +174,26 @@ class applications(commands.Cog):
         guild_id = ctx.guild.id
         if guild_id == 1122181605591621692:
             server_name = "Kanzen"
-            message = "Hi, thank you for applying to Kanzen, but unfortunately you have been declined. We will recruit again in the near future!"
+            decline_channel_id = 1123588044180684800
+            message = f"{mention_or_id} was declined."
         elif guild_id == 1123347338841313331:
             server_name = "Auragrp"
-            message = "Hi, thank you for applying to Auragrp, but unfortunately you have been declined. We will recruit again in the near future!"
+            decline_channel_id = 1123353878461698160
+            message = f"{mention_or_id} was declined."
         elif guild_id == 901409710572466217:
             server_name = "Daegutown"
-            message = "Hi, thank you for applying to Daegutown, but unfortunately you have been declined. We will recruit again in the near future!"
+            decline_channel_id = 1123588246614577213
+            message = f"{mention_or_id} was declined."
         else:
             await ctx.reply("This command is not available in this server.")
             return
+
+        decline_channel = self.bot.get_channel(decline_channel_id)
+        if decline_channel:
+            await decline_channel.send(message)
+            await ctx.reply(f"Decline message sent in {server_name}.")
+        else:
+            await ctx.reply("Failed to find the specified channel.")
 
         try:
             member = await commands.MemberConverter().convert(ctx, mention_or_id)
@@ -180,6 +209,7 @@ class applications(commands.Cog):
             await ctx.reply(f"Decline message sent to {member.mention} in {server_name}.")
         except discord.Forbidden:
             await ctx.send("Failed to send the decline message. Please make sure the user has their DMs enabled.")
+
 
 
 
