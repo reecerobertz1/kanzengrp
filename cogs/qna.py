@@ -20,13 +20,9 @@ class qna(commands.Cog):
         question_channel = self.bot.get_channel(self.question_channel_id)
         deleted_messages_channel = self.bot.get_channel(self.deleted_messages_channel_id)
 
-        # Create an embed with the deleted message and user information
-        embed = discord.Embed(title="Deleted Question", color=discord.Color.red())
-        embed.add_field(name="Content", value=message.content)
-        embed.add_field(name="User ID", value=message.author.id)
-
-        # Send the embed to the deleted messages channel
-        await deleted_messages_channel.send(embed=embed)
+        # Send the deleted question content and user ID to the deleted messages channel
+        deleted_message = f"Deleted Question\nContent: {message.content}\nUser ID: {message.author.id}"
+        await deleted_messages_channel.send(deleted_message)
 
         # Delete the question message
         await message.delete()
@@ -35,16 +31,42 @@ class qna(commands.Cog):
         answer_channel = self.bot.get_channel(self.answer_channel_id)
         deleted_messages_channel = self.bot.get_channel(self.deleted_messages_channel_id)
 
-        # Create an embed with the deleted message and user information
-        embed = discord.Embed(title="Deleted Answer", color=discord.Color.red())
-        embed.add_field(name="Content", value=message.content)
-        embed.add_field(name="User ID", value=message.author.id)
-
-        # Send the embed to the deleted messages channel
-        await deleted_messages_channel.send(embed=embed)
+        # Send the deleted answer content and user ID to the deleted messages channel
+        deleted_message = f"Deleted Answer\nContent: {message.content}\nUser ID: {message.author.id}"
+        await deleted_messages_channel.send(deleted_message)
 
         # Delete the answer message
         await message.delete()
+
+    @commands.command()
+    async def answer(self, ctx):
+        deleted_messages_channel = self.bot.get_channel(self.deleted_messages_channel_id)
+        answer_channel = self.bot.get_channel(self.answer_channel_id)
+
+        # Fetch the most recent message from the deleted messages channel
+        async for message in deleted_messages_channel.history(limit=1):
+            if "Deleted Question" in message.content:
+                # Extract the question content and user ID from the deleted message
+                lines = message.content.split("\n")
+                content = lines[1].split(": ")[1]
+                user_id = lines[2].split(": ")[1]
+
+                # Fetch the user who asked the question
+                user = await self.bot.fetch_user(user_id)
+
+                # Create an embed with the question, answer, and mention
+                embed = discord.Embed(title="Answer", color=discord.Color.green())
+                embed.add_field(name="Question", value=content)
+                embed.add_field(name="Answer", value=ctx.message.content)
+                embed.set_footer(text=f"In response to {user.name}")
+
+                # Send the answer embed to the answer channel
+                await answer_channel.send(f"<@{user.id}>", embed=embed)
+
+                # Notify the user who asked the question
+                await ctx.send(f"Answer sent to {user.mention} in {answer_channel.mention}.")
+                break
+
 
 
 async def setup(bot):
