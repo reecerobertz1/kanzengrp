@@ -123,10 +123,14 @@ class applications(commands.Cog):
         if ctx.guild.id == 1123347338841313331: 
             invite_server_id = 957987670787764224
             accepted_channel_id = 1123588246614577213
+            add_role_id = 1123356130970701878
+            remove_role_id = 1123356165246566491
             message = f"{member.mention} has been accepted."
         elif ctx.guild.id == 1122181605591621692:
             invite_server_id = 1121841073673736215
             accepted_channel_id = 1123588044180684800
+            add_role_id = 1122191098006224906
+            remove_role_id = 1122191119430733835
             message = f"{member.mention} has been accepted."
         else:
             await ctx.reply("You can only use this command in specific servers.")
@@ -143,17 +147,19 @@ class applications(commands.Cog):
         dm_message = f"Hello {member.mention}! You have been accepted into a server.\nHere is your invite:\n{invite}"
         await member.send(dm_message)
 
-    async def generate_invite(self, server_id):
-        server = self.bot.get_guild(server_id)
-        if server:
-            invites = await server.invites()
-            if invites:
-                return invites[0].url
-            else:
-                invite = await server.text_channels[0].create_invite()
-                return invite.url
+        guild = self.bot.get_guild(ctx.guild.id)
+        role_to_add = guild.get_role(add_role_id)
+        role_to_remove = guild.get_role(remove_role_id)
+
+        if role_to_add:
+            await member.add_roles(role_to_add)
         else:
-            raise ValueError("Failed to find the specified server.")
+            await ctx.reply("Failed to find the role to add.")
+
+        if role_to_remove:
+            await member.remove_roles(role_to_remove)
+        else:
+            await ctx.reply("Failed to find the role to remove.")
 
     async def generate_invite(self, server_id):
         server = self.bot.get_guild(server_id)
