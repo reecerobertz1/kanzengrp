@@ -6,7 +6,7 @@ class qna(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.question_channel_id = 1123696243911164054
-        self.answer_channel_id = 1123696762985656451
+        self.answer_channel = 1123696762985656451
         self.deleted_messages_channel_id = 1123696501441450107
 
     @commands.Cog.listener()
@@ -38,43 +38,40 @@ class qna(commands.Cog):
         # Delete the answer message
         await message.delete()
 
-    @commands.Cog.listener()
-    async def on_message(self, message):
+    @commands.command()
+    async def answer(self, ctx, message_id: int):
+        deleted_messages_channel = self.bot.get_channel(self.deleted_messages_channel_id)
         answer_channel = self.bot.get_channel(self.answer_channel_id)
 
-        if message.channel.id == answer_channel.id and not message.author.bot:
-            deleted_messages_channel = self.bot.get_channel(self.deleted_messages_channel_id)
+        # Fetch the message using the provided message ID
+        try:
+            message = await deleted_messages_channel.fetch_message(message_id)
+        except discord.NotFound:
+            await ctx.send("Invalid message ID.")
+            return
 
-            # Fetch the original question message
-            try:
-                original_message = await deleted_messages_channel.fetch_message(message.content)
-            except discord.NotFound:
-                return
+        if "Deleted Question" in message.content:
+            # Extract the question content and user ID from the deleted message
+            lines = message.content.split("\n")
+            content = lines[1].split(": ")[1]
+            user_id = lines[2].split(": ")[1]
 
-            if "Deleted Question" in original_message.content:
-                # Extract the question content and user ID from the deleted message
-                lines = original_message.content.split("\n")
-                content = lines[1].split(": ")[1]
-                user_id = lines[2].split(": ")[1]
+            # Fetch the user who asked the question
+            user = await self.bot.fetch_user(int(user_id))
 
-                # Fetch the user who asked the question
-                user = await self.bot.fetch_user(int(user_id))
+            # Create an embed with the question and answer
+            embed = discord.Embed(title="Answer", color=discord.Color.green())
+            embed.add_field(name="Question", value=content)
+            embed.add_field(name="Answer", value=ctx.message.content)
 
-                # Create an embed with the question and answer
-                embed = discord.Embed(title="Answer", color=discord.Color.green())
-                embed.add_field(name="Question", value=content)
-                embed.add_field(name="Answer", value=message.content)
+            # Send the answer embed to the answer channel
+            await answer_channel.send(f"<@{user.id}>")
+            await answer_channel.send(embed=embed)
 
-                # Ping the user who asked the question
-                await answer_channel.send(f"<@{user.id}>")
-
-                # Send the answer embed to the answer channel
-                await answer_channel.send(embed=embed)
-
-    @commands.command()
-    async def answer(self, ctx):
-        await ctx.send("Please reply to the message you want to answer in the answer channel.")
-
+            # Notify the user who asked the question
+            await ctx.send(f"Answer sent to {user.mention} in {answer_channel.mention}.")
+        else:
+            await ctx.send("The specified message is not a deleted question.")
 
 
 
