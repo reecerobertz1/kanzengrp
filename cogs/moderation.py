@@ -180,12 +180,20 @@ class Moderation(commands.Cog):
 
     @commands.command()
     async def suggest(self, ctx, *, suggestion):
-        suggestion_channel_id = 1124038649814724638  
+        server_id = ctx.guild.id
+
+        if server_id == 1121841073673736215:
+            suggestion_channel_id = 1124038649814724638
+        elif server_id == 957987670787764224:
+            suggestion_channel_id = 1124043648716247061
+        else:
+            await ctx.send("This command is not available in this server.")
+            return
 
         suggestion_channel = self.bot.get_channel(suggestion_channel_id)
         if suggestion_channel:
             embed = discord.Embed(title="New Suggestion", description=suggestion, color=0x2b2d31)
-            embed.set_footer(text='react with ✅ for yes and ❌ no')
+            embed.set_footer(text='React with ✅ for yes and ❌ for no')
 
             suggestion_message = await suggestion_channel.send(f"Suggestion made by {ctx.author.mention}", embed=embed)
             await suggestion_message.add_reaction("✅")
