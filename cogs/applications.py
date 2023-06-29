@@ -187,15 +187,11 @@ class applications(commands.Cog):
         if guild_id == 1122181605591621692:
             server_name = "Kanzen"
             decline_channel_id = 1123588044180684800
-            message = f'{member.mention} has been declined'
+            message = ''
         elif guild_id == 1123347338841313331:
             server_name = "Auragrp"
-            decline_channel_id = 1123588246614577213
-            message = f'{member.mention} has been declined'
         elif guild_id == 901409710572466217:
             server_name = "Daegutown"
-            decline_channel_id = 901410829218492456
-            message = f'{member.mention} has been declined'
         else:
             await ctx.reply("This command is not available in this server.")
             return
