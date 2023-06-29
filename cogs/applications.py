@@ -203,7 +203,7 @@ class applications(commands.Cog):
         decline_channel = self.bot.get_channel(decline_channel_id)
         if decline_channel:
             await decline_channel.send(message)
-            await ctx.send(f"** **")
+            await ctx.send(f"{member.mention} has been declined")
         else:
             await ctx.reply(f"Decline message has been sent to {member.mention}.")
 
