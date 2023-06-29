@@ -182,12 +182,12 @@ class Moderation(commands.Cog):
     async def suggest(self, ctx, *, suggestion):
         suggestion_channel_id = 1124038649814724638
 
-        suggestion_channel = self.bot.get_channel(f'Suggestion by {ctx.author.mention}', suggestion_channel_id)
+        suggestion_channel = self.bot.get_channel(suggestion_channel_id)
         if suggestion_channel:
             embed = discord.Embed(title="New Suggestion", description=suggestion, color=0x2b2d31)
             embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
 
-            suggestion_message = await suggestion_channel.send(embed=embed)
+            suggestion_message = await suggestion_channel.send(f"Suggestion made by {ctx.author.mention}", embed=embed)
             await suggestion_message.add_reaction("✅")
             await suggestion_message.add_reaction("❌")
 
