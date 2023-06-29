@@ -185,6 +185,7 @@ class Moderation(commands.Cog):
         suggestion_channel = self.bot.get_channel(suggestion_channel_id)
         if suggestion_channel:
             embed = discord.Embed(title="New Suggestion", description=suggestion, color=0x2b2d31)
+            embed.set_footer(text='react with ✅ for yes and ❌ no')
 
             suggestion_message = await suggestion_channel.send(f"Suggestion made by {ctx.author.mention}", embed=embed)
             await suggestion_message.add_reaction("✅")
