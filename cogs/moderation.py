@@ -199,7 +199,7 @@ class Moderation(commands.Cog):
             await suggestion_message.add_reaction("✅")
             await suggestion_message.add_reaction("❌")
 
-            confirmation_message = await ctx.send(f"Suggestion has been sent to {suggestion_channel.mention}.")
+            confirmation_message = await ctx.reply(f"Suggestion has been sent to {suggestion_channel.mention}.")
             await asyncio.sleep(5)
             await ctx.message.delete()
             await confirmation_message.delete()
