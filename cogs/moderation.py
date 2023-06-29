@@ -1,3 +1,4 @@
+import asyncio
 from datetime import datetime
 import discord
 from discord.ext import commands
@@ -176,6 +177,26 @@ class Moderation(commands.Cog):
         embed.add_field(name='✦ Chat Rules :', value='• please be as active as possible!\n• using any slurs / words that can be offensive!\n• please set your nickname as "your name | username"\n• no impersonation as other editors\n• no trash talking other editors and groups!')
         embed.set_image(url='https://serving.photos.photobox.com/0814269535cc11c4fac2f41446e80b4f01b10a9db227f0f8574292f78abe9067e6361440.jpg')
         await ctx.send(embed=embed)
+
+    @commands.command()
+    async def suggest(self, ctx, *, suggestion):
+        suggestion_channel_id = 1124038649814724638
+
+        suggestion_channel = self.bot.get_channel(f'Suggestion by {ctx.author.mention}', suggestion_channel_id)
+        if suggestion_channel:
+            embed = discord.Embed(title="New Suggestion", description=suggestion, color=0x2b2d31)
+            embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
+
+            suggestion_message = await suggestion_channel.send(embed=embed)
+            await suggestion_message.add_reaction("✅")
+            await suggestion_message.add_reaction("❌")
+
+            confirmation_message = await ctx.send(f"Suggestion has been sent to {suggestion_channel.mention}.")
+            await asyncio.sleep(5)
+            await ctx.message.delete()
+            await confirmation_message.delete()
+        else:
+            await ctx.send("Failed to find the suggestion channel.")
 
 
 async def setup(bot):
