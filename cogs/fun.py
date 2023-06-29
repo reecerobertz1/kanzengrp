@@ -293,7 +293,14 @@ class funcmds(commands.Cog):
         except asyncio.TimeoutError:
             await ctx.reply("⌛ Time's up! You took too long to answer.")
 
+    @commands.command()
+    async def avatar(self, ctx, member: discord.Member = None):
+        if member is None:
+            member = ctx.author
 
+        avatar_url = member.avatar_url
+
+        await ctx.reply(avatar_url)
 
 async def setup(bot):
     await bot.add_cog(funcmds(bot))
