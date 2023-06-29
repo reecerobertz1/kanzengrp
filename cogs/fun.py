@@ -298,7 +298,7 @@ class funcmds(commands.Cog):
         if member is None:
             member = ctx.author
 
-        avatar_url = member.avatar_url
+        avatar_url = member.display_avatar.url
 
         await ctx.reply(f"{avatar_url}")
 
