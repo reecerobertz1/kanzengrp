@@ -92,10 +92,10 @@ class welcandleave(commands.Cog):
         server_id = ctx.guild.id
         
         if server_id in [957987670787764224, 1123347338841313331]:
-            embed = discord.Embed(title="Perks", description="These are the perks for Server 1 and Server 2", color=discord.Color.blue())
+            embed = discord.Embed(title="Aura Perks", description="Thank you for boosting aura!", color=0x2b2d31)
             embed.add_field(name="Perk 1", value="Perk 1 description", inline=False)
             embed.add_field(name="Perk 2", value="Perk 2 description", inline=False)
-            embed.set_footer(text="Powered by MyBot")
+            embed.set_footer(text="We really appriciate the support!")
 
             if ctx.author.premium_since:
                 await ctx.author.send(embed=embed)
@@ -103,10 +103,10 @@ class welcandleave(commands.Cog):
                 await ctx.send("Sorry, this command is only available for server boosters.")
 
         elif server_id in [1121841073673736215, 1122181605591621692]:
-            embed = discord.Embed(title="Perks", description="These are the perks for Server 3 and Server 4", color=discord.Color.green())
+            embed = discord.Embed(title="Kanzen Perks", description="Thank you for boosting kanzengrp!", color=0x2b2d31)
             embed.add_field(name="Perk 3", value="Perk 3 description", inline=False)
             embed.add_field(name="Perk 4", value="Perk 4 description", inline=False)
-            embed.set_footer(text="Powered by MyBot")
+            embed.set_footer(text="We really appriciate the support!")
 
             if ctx.author.premium_since:
                 await ctx.author.send(embed=embed)
