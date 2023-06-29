@@ -195,7 +195,7 @@ class applications(commands.Cog):
         elif guild_id == 901409710572466217:
             server_name = "Daegutown"
             decline_channel_id = 901410829218492456
-            message = f"{member.name} has been declined"
+            message = "you died lol haha"
         else:
             await ctx.reply("This command is not available in this server.")
             return
