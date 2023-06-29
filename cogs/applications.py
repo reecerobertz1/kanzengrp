@@ -187,15 +187,15 @@ class applications(commands.Cog):
         if guild_id == 1122181605591621692:
             server_name = "Kanzen"
             decline_channel_id = 1123588044180684800
-            message = f"{member.mention} was declined"
+            message = f"{member.name} was declined"
         elif guild_id == 1123347338841313331:
             server_name = "Auragrp"
             decline_channel_id = 1123588246614577213
-            message = f"{member.mention} was declined"
+            message = f"{member.name} was declined"
         elif guild_id == 901409710572466217:
             server_name = "Daegutown"
             decline_channel_id = 901410829218492456
-            message = f"{member.mention} was declined"
+            message = f"{member.name} was declined"
         else:
             await ctx.reply("This command is not available in this server.")
             return
@@ -203,7 +203,7 @@ class applications(commands.Cog):
         decline_channel = self.bot.get_channel(decline_channel_id)
         if decline_channel:
             await decline_channel.send(message)
-            await ctx.send(f" ** **")
+            await ctx.send(f"** **")
         else:
             await ctx.reply(f"Decline message has been sent to {member.mention}.")
 
