@@ -205,7 +205,7 @@ class applications(commands.Cog):
             await decline_channel.send(message)
             await ctx.send(f"Hey you have been declined in {server_name} please don't be upset or discouraged! we will have more recruits again in the future <3")
         else:
-            await ctx.reply("")
+            await ctx.reply(f"decline message has been sent to {member.mention}")
 
         try:
             member = await commands.MemberConverter().convert(ctx, mention_or_id)
