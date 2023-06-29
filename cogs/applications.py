@@ -120,20 +120,23 @@ class applications(commands.Cog):
     @commands.command()
     @commands.has_permissions(manage_guild=True)
     async def accept(self, ctx, member: discord.Member):
-        if ctx.guild.id == 1123347338841313331: 
+        if ctx.guild.id == 1123347338841313331:  # Aura
             invite_server_id = 957987670787764224
             accepted_channel_id = 1123588246614577213
             add_role_id = 1123356130970701878
             remove_role_id = 1123356165246566491
             message = f"{member.mention} has been accepted."
-        elif ctx.guild.id == 1122181605591621692:
+        elif ctx.guild.id == 1122181605591621692:  # Kanzen
             invite_server_id = 1121841073673736215
             accepted_channel_id = 1123588044180684800
             add_role_id = 1122191098006224906
             remove_role_id = 1122191119430733835
-        elif ctx.guild_id == 901409710572466217:
+            message = f"{member.mention} has been accepted."
+        elif ctx.guild.id == 901409710572466217:  # daegu
+            invite_server_id = 896619762354892821  
             accepted_channel_id = 1123588044180684800
-
+            add_role_id = 1119012138640494594
+            remove_role_id = 901412966241554462
             message = f"{member.mention} has been accepted."
         else:
             await ctx.reply("You can only use this command in specific servers.")
