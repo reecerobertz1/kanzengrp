@@ -52,16 +52,13 @@ class levels(commands.Cog):
         xp = self.bot.xp_data.get(guild_id, {}).get(user_id, 0)
         level = self.get_level(xp)
 
-        # You can customize the rank card design to your liking
-        # Here's a basic example
-        rank_card = discord.File("rank_card.png", filename="rank_card.png")
         embed = discord.Embed(title="Rank Card", color=discord.Color.blue())
         embed.set_author(name=member.display_name, icon_url=member.avatar_url)
         embed.set_thumbnail(url=member.avatar_url)
         embed.add_field(name="Level", value=str(level))
         embed.add_field(name="XP", value=str(xp))
 
-        await ctx.send(file=rank_card, embed=embed)
+        await ctx.send(embed=embed)
 
     @commands.command()
     @commands.is_owner()
