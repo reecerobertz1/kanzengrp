@@ -187,15 +187,15 @@ class applications(commands.Cog):
         if guild_id == 1122181605591621692:
             server_name = "Kanzen"
             decline_channel_id = 1123588044180684800
-            message = "You have been declined from Kanzen."
+            message = f'{member.mention} has been declined'
         elif guild_id == 1123347338841313331:
             server_name = "Auragrp"
             decline_channel_id = 1123588246614577213
-            message = "You have been declined from Auragrp."
+            message = f'{member.mention} has been declined'
         elif guild_id == 901409710572466217:
             server_name = "Daegutown"
             decline_channel_id = 901410829218492456
-            message = "you died lol haha"
+            message = f'{member.mention} has been declined'
         else:
             await ctx.reply("This command is not available in this server.")
             return
@@ -218,7 +218,7 @@ class applications(commands.Cog):
 
         try:
             await member.send(f"Hey, you have been declined in {server_name}. Please don't be upset or discouraged! We will have more recruitments in the future. <3")
-            await ctx.reply(f"Decline message sent to {member.mention} in {server_name}.")
+            await ctx.reply(f"Decline message sent to {member.mention}")
         except discord.Forbidden:
             await ctx.send("Failed to send the decline message. Please make sure the user has their DMs enabled.")
 
