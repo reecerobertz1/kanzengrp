@@ -300,7 +300,7 @@ class funcmds(commands.Cog):
 
         avatar_url = member.avatar_url
 
-        await ctx.reply(avatar_url)
+        await ctx.reply(f"{avatar_url}")
 
 async def setup(bot):
     await bot.add_cog(funcmds(bot))
