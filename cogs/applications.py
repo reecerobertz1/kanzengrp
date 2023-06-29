@@ -134,7 +134,7 @@ class applications(commands.Cog):
             message = f"{member.mention} has been accepted."
         elif ctx.guild.id == 901409710572466217:  # daegu
             invite_server_id = 896619762354892821  
-            accepted_channel_id = 1123588044180684800
+            accepted_channel_id = 901410829218492456
             add_role_id = 1119012138640494594
             remove_role_id = 901412966241554462
             message = f"{member.mention} has been accepted."
