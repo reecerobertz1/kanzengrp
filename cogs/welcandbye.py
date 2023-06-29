@@ -93,7 +93,7 @@ class welcandleave(commands.Cog):
 
         if server_id in [957987670787764224, 1123347338841313331]:
             channel_ids = [1122994947444973709, 1123991454788894820]  
-            message = f"{ctx.author.name} has used this command in server {ctx.guild.name}."
+            message = f"{ctx.author.mention} has used the perks command!"
             for channel_id in channel_ids:
                 channel = self.bot.get_channel(channel_id)
                 await channel.send(message)
@@ -110,7 +110,7 @@ class welcandleave(commands.Cog):
 
         elif server_id in [1121841073673736215, 1122181605591621692]:
             channel_ids = [1122627075682078720, 1123991325763711096]  
-            message = f"{ctx.author.name} has used this command in server {ctx.guild.name}."
+            message = f"{ctx.author.mention} has used the perks command!"
             for channel_id in channel_ids:
                 channel = self.bot.get_channel(channel_id)
                 await channel.send(message)
