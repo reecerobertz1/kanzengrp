@@ -180,7 +180,7 @@ class Moderation(commands.Cog):
 
     @commands.command()
     async def suggest(self, ctx, *, suggestion):
-        suggestion_channel_id = 1124038649814724638
+        suggestion_channel_id = 1124038649814724638  
 
         suggestion_channel = self.bot.get_channel(suggestion_channel_id)
         if suggestion_channel:
