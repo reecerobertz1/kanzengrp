@@ -1,103 +1,256 @@
-import json
 import discord
+import json
+
+from discord import File
 from discord.ext import commands
-from discord.ext.commands import BucketType
-import random
+from typing import Optional
+from easy_pil import Editor, load_image_async, Font
+
+#if you want to give role to the user at any specific level upgrade then you can do like this
+#enter the name of the role in a list
+level = ["Level-5+", "Level-10+", "Level-15+"]
+
+#add the level number at which you want to give the role
+level_num = [5, 10, 15]
 
 class levels(commands.Cog):
-    def __init__(self, bot):
-        self.bot = bot
+  def __init__(self, bot):
+    self.bot = bot
 
-    def get_level(self, xp):
-        return int((xp // 100) ** 0.5)
 
-    def save_data(self):
-        with open("xp_data.json", "w") as file:
-            json.dump(self.xp_data, file)
+  #this will increase the user's xp everytime they message
+  @commands.Cog.listener()
+  async def on_message(self, message):
 
-    def load_data(self):
-        try:
-            with open("xp_data.json", "r") as file:
-                self.xp_data = json.load(file)
-        except FileNotFoundError:
-            self.xp_data = {}
+    #the bot's prefix is ? that's why we are adding this statement so user's xp doesn't increase when they use any commands
+    if not message.content.startswith("?"):
 
-    def update_xp(self, guild_id, user_id, xp):
-        if guild_id not in self.xp_data:
-            self.xp_data[guild_id] = {}
-        self.xp_data[guild_id][user_id] = self.xp_data[guild_id].get(user_id, 0) + xp
-        self.save_data()
-
-    @commands.Cog.listener()
-    async def on_ready(self):
-        self.load_data()
-
-    @commands.Cog.listener()
-    async def on_message(self, message):
-        if message.author.bot:
+      #checking if the bot has not sent the message
+      if not message.author.bot:
+        with open("levels.json", "r") as f:
+          data = json.load(f)
+        
+        #checking if the user's data is already there in the file or not
+        if str(message.guild.id) in data:
+          if str(message.author.id) in data[str(message.guild.id)]:
+            xp = data[str(message.guild.id)][str(message.author.id)]['xp']
+            lvl = data[str(message.guild.id)][str(message.author.id)]['level']
+  
+            #increase the xp by the number which has 100 as its multiple
+            increased_xp = xp+25
+            new_level = int(increased_xp/100)
+  
+            data[str(message.guild.id)][str(message.author.id)]['xp']=increased_xp
+  
+            with open("levels.json", "w") as f:
+              json.dump(data, f)
+  
+            if new_level > lvl:
+              await message.channel.send(f"{message.author.mention} Just Leveled Up to Level {new_level}!!!")
+  
+              data[str(message.guild.id)][str(message.author.id)]['level']=new_level
+              data[str(message.guild.id)][str(message.author.id)]['xp']=0
+  
+              with open("levels.json", "w") as f:
+                json.dump(data, f)
+              
+              for i in range(len(level)):
+                if new_level == level_num[i]:
+                  await message.author.add_roles(discord.utils.get(message.author.guild.roles, name=level[i]))
+  
+                  mbed = discord.Embed(title=f"{message.author} You Have Gotten role **{level[i]}**!", color = message.author.colour)
+                  mbed.set_thumbnail(url=message.author.avatar_url)
+                  await message.channel.send(embed=mbed)
             return
+  
+        if str(message.guild.id) in data:
+          data[str(message.guild.id)][str(message.author.id)] = {}
+          data[str(message.guild.id)][str(message.author.id)]['xp'] = 0
+          data[str(message.guild.id)][str(message.author.id)]['level'] = 1
+        else:
+          data[str(message.guild.id)] = {}
+          data[str(message.guild.id)][str(message.author.id)] = {}
+          data[str(message.guild.id)][str(message.author.id)]['xp'] = 0
+          data[str(message.guild.id)][str(message.author.id)]['level'] = 1
+  
+        with open("levels.json", "w") as f:
+          json.dump(data, f)
+  
+        with open("userdata.json", "r") as f:
+          user_data = json.load(f)
+  
+        if str(message.author.id) in user_data:
+          pass
+        else:
+          #these are the default value for user rank card
+          user_data[str(message.author.id)] = {}
+          user_data[str(message.author.id)]['card'] = 5
+          user_data[str(message.author.id)]['text_color'] = "#ff9933"
+          user_data[str(message.author.id)]['bar_color'] = "#ff9933"
+          user_data[str(message.author.id)]['blend'] = 1
+  
+        with open("userdata.json", "w") as f:
+          json.dump(user_data, f)
 
-        guild_id = message.guild.id
-        user_id = message.author.id
-        xp = 10  # Modify this to change the XP gained per message
+  @commands.command(name="rank")
+  async def rank(self, ctx: commands.Context, user: Optional[discord.Member]):
+    userr = user or ctx.author
 
-        self.update_xp(guild_id, user_id, xp)
+    with open("levels.json", "r") as f:
+      data = json.load(f)
 
-    @commands.command()
-    async def rank(self, ctx, member: discord.Member = None):
-        member = member or ctx.author
-        guild_id = ctx.guild.id
-        user_id = member.id
+    with open("userdata.json", "r") as f:
+      user_data = json.load(f)
 
-        xp = self.xp_data.get(guild_id, {}).get(user_id, 0)
-        level = self.get_level(xp)
+    xp = data[str(ctx.guild.id)][str(userr.id)]["xp"]
+    lvl = data[str(ctx.guild.id)][str(userr.id)]["level"]
 
-        rank_card = discord.File("rank_card.png", filename="rank_card.png")
-        embed = discord.Embed(title="Rank Card", color=discord.Color.blue())
-        embed.set_author(name=member.display_name, icon_url=member.avatar_url)
-        embed.set_thumbnail(url=member.avatar_url)
-        embed.add_field(name="Level", value=str(level))
-        embed.add_field(name="XP", value=str(xp))
+    next_level_xp = (lvl+1) * 100
+    xp_need = next_level_xp
+    xp_have = data[str(ctx.guild.id)][str(userr.id)]["xp"]
 
-        await ctx.send(file=rank_card, embed=embed)
+    card_num = str(user_data[str(userr.id)]['card'])
+    text_color = str(user_data[str(userr.id)]['text_color'])
+    bar_color = str(user_data[str(userr.id)]['bar_color'])
+    blend = int(user_data[str(userr.id)]['blend'])
 
-    @commands.command()
-    async def leaderboard(self, ctx, page: int = 1):
-        guild_id = ctx.guild.id
-        xp_data = self.xp_data.get(guild_id, {})
+    percentage = int(((xp_have * 100)/ xp_need))
 
-        sorted_users = sorted(xp_data, key=xp_data.get, reverse=True)
-        start_index = (page - 1) * 10
-        end_index = start_index + 10
-        leaderboard = ""
+    if percentage < 1:
+      percentage = 0
+    
+    ## Rank card
+    background = Editor(f"{card_num}.png")
+    profile = await load_image_async(str(userr.avatar_url))
 
-        for index, user_id in enumerate(sorted_users[start_index:end_index], start=start_index):
-            member = ctx.guild.get_member(user_id)
-            if member:
-                leaderboard += f"{index + 1}. {member.display_name} - Level {self.get_level(xp_data[user_id])}\n"
+    profile = Editor(profile).resize((150, 150)).circle_image()
+    
+    poppins = Font.poppins(size=40)
+    poppins_small = Font.poppins(size=30)
 
-        embed = discord.Embed(title="Leaderboard", description=leaderboard, color=discord.Color.blue())
-        embed.set_footer(text=f"Page {page}/{((len(sorted_users) - 1) // 10) + 1}")
+    #you can skip this part, I'm adding this because the text is difficult to read in my selected image
+    if blend == 1:
+      ima = Editor("zBLACK.png")
+      background.blend(image=ima, alpha=.5, on_top=False)
 
-        await ctx.send(embed=embed)
+    background.paste(profile.image, (30, 30))
 
-    @commands.command()
-    @commands.has_permissions(manage_guild=True)
-    async def addxp(self, ctx, member: discord.Member, xp: int):
-        guild_id = ctx.guild.id
-        user_id = member.id
+    background.rectangle((30, 220), width=650, height=40, fill="#fff", radius=20)
+    background.bar(
+        (30, 220),
+        max_width=650,
+        height=40,
+        percentage=percentage,
+        fill=bar_color,
+        radius=20,
+    )
+    background.text((200, 40), str(userr.name), font=poppins, color=text_color)
 
-        self.update_xp(guild_id, user_id, xp)
-        await ctx.send(f"Added {xp} XP to {member.display_name}.")
+    background.rectangle((200, 100), width=350, height=2, fill=bar_color)
+    background.text(
+        (200, 130),
+        f"Level : {lvl}   "
+        + f" XP : {xp} / {(lvl+1) * 100}",
+        font=poppins_small,
+        color=text_color,
+    )
 
-    @commands.command()
-    @commands.has_permissions(manage_guild=True)
-    async def removexp(self, ctx, member: discord.Member, xp: int):
-        guild_id = ctx.guild.id
-        user_id = member.id
+    card = File(fp=background.image_bytes, filename="zCARD.png")
+    await ctx.send(file=card)
 
-        self.update_xp(guild_id, user_id, -xp)
-        await ctx.send(f"Removed {xp} XP from {member.display_name}.")
+  @commands.command(name="leaderboard")
+  async def leaderboard(self, ctx, range_num=5):
+    with open("levels.json", "r") as f:
+      data = json.load(f)
+
+    l = {}
+    total_xp = []
+
+    for userid in data[str(ctx.guild.id)]:
+      xp = int(data[str(ctx.guild.id)][str(userid)]['xp']+(int(data[str(ctx.guild.id)][str(userid)]['level'])*100))
+
+      l[xp] = f"{userid};{data[str(ctx.guild.id)][str(userid)]['level']};{data[str(ctx.guild.id)][str(userid)]['xp']}"
+      total_xp.append(xp)
+
+    total_xp = sorted(total_xp, reverse=True)
+    index=1
+
+    mbed = discord.Embed(
+      title="Leaderboard Command Results"
+    )
+
+    for amt in total_xp:
+      id_ = int(str(l[amt]).split(";")[0])
+      level = int(str(l[amt]).split(";")[1])
+      xp = int(str(l[amt]).split(";")[2])
+
+      member = await self.bot.fetch_user(id_)
+
+      if member is not None:
+        name = member.name
+        mbed.add_field(name=f"{index}. {name}",
+        value=f"**Level: {level} | XP: {xp}**", 
+        inline=False)
+
+        if index == range_num:
+          break
+        else:
+          index += 1
+
+    await ctx.send(embed = mbed)
+
+  @commands.command("rank_reset")
+  async def rank_reset(self, ctx, user: Optional[discord.Member]):
+    member = user or ctx.author
+
+    #this if statement will check that user who's using this command is trying to remove his data or any other user data
+    #if she is trying to remove any other user's data then we are going to check that he has a specific role or not (in my case its 'Bot-Mod') so that only admins can remov any users data and not other people can remove other
+    if not member == ctx.author:
+      role = discord.utils.get(ctx.author.guild.roles, name="Bot-Mod")
+
+      if not role in member.roles:
+        await ctx.send(f"You can only reset your data, to reset other data you must have {role.mention} role")
+        return 
+    
+    with open("levels.json", "r") as f:
+      data = json.load(f)
+
+    del data[str(ctx.guild.id)][str(member.id)]
+
+    with open("levels.json", "w") as f:
+      json.dump(data, f)
+
+    await ctx.send(f"{member.mention}'s Data Got reset")
+  
+  @commands.command(name="increase_level")
+  @commands.has_role("Bot-Mod")
+  async def increase_level(self, ctx, increase_by: int, user: Optional[discord.Member]):
+    member = user or ctx.author
+
+    with open("levels.json", "r") as f:
+      data = json.load(f)
+    
+    data[str(ctx.guild.id)][str(member.id)]['level'] += increase_by
+
+    with open("levels.json", "w") as f:
+      json.dump(data, f)
+    
+    await ctx.send(f"{member.mention}, Your level was increased by {increase_by}")
+
+  @commands.command(name="increase_xp")
+  @commands.has_role("Bot-Mod")
+  async def increase_xp(self, ctx, increase_by: int, user: Optional[discord.Member]):
+    member = user or ctx.author
+
+    with open("levels.json", "r") as f:
+      data = json.load(f)
+
+    data[str(ctx.guild.id)][str(member.id)]['xp'] += increase_by
+
+    with open("levels.json", "w") as f:
+      json.dump(data, f)
+
+    await ctx.send(f"{member.mention}, Your Xp was increased by {increase_by}")
 
 
 async def setup(bot):
