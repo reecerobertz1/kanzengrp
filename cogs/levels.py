@@ -46,7 +46,7 @@ class levels(commands.Cog):
               json.dump(data, f)
   
             if new_level > lvl:
-              await message.channel.send(f"{message.author.mention} Just Leveled Up to Level {new_level}!!!")
+              await message.channel.send(f"{message.author.mention} You just Leveled Up to Level {new_level}!!!")
   
               data[str(message.guild.id)][str(message.author.id)]['level']=new_level
               data[str(message.guild.id)][str(message.author.id)]['xp']=0
