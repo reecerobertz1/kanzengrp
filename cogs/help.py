@@ -29,6 +29,7 @@ class Help(commands.Cog):
                 {"name": "+8ball", "value": "Ask Hoshi a question and get an answer", "inline": False},
                 {"name": "+ship", "value": "Mention 2 members to see if Hoshi ships them (+ship @mention @mention)", "inline": False},
                 {"name": "+trivia", "value": "Hoshi will ask you a question, make sure to answer correctly (answer with numbers 1-4)", "inline": False},
+                {"name": "+avatar", "value": "Get a photo of your avatar or someone elses", "inline": False},
                 {"name": "", "value": "`[page 2/7]`", "inline": True}
             ],
             "> Editing commands": [
