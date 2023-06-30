@@ -20,7 +20,8 @@ extensions = {
     "cogs.logos",
     "cogs.status",
     "cogs.qna",
-    "cogs.levels"
+    "cogs.levels",
+    "cogs.other"
 }
 
 # bot subclass
