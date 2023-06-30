@@ -20,12 +20,18 @@ class other(commands.Cog):
         author = message.author
         if author.id in self.afk_users:
             del self.afk_users[author.id]
-            await message.channel.reply(f"You is no longer AFK.")
+            await message.channel.send(f"You are no longer AFK.")
 
         for mention in message.mentions:
             if mention.id in self.afk_users:
                 reason = self.afk_users[mention.id]
-                await message.channel.send(f"{mention.display_name} is AFK. Reason: {reason}")
+                await message.channel.send(f"{mention.mention} is AFK. Reason: {reason}")
+
+    @commands.Cog.listener()
+    async def on_typing(self, channel, user, when):
+        if user.id in self.afk_users:
+            del self.afk_users[user.id]
+            await channel.send(f"{user.mention} is no longer AFK.")
 
     @commands.Cog.listener()
     async def on_member_update(self, before, after):
