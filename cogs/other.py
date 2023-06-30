@@ -10,7 +10,7 @@ class other(commands.Cog):
     async def afk(self, ctx, *, reason=""):
         member = ctx.author
         self.afk_users[member.id] = reason
-        await ctx.send(f"{member.mention} is now AFK. Reason: {reason}")
+        await ctx.send(f"You are now AFK. Reason: {reason}")
 
     @commands.Cog.listener()
     async def on_message(self, message):
@@ -20,12 +20,12 @@ class other(commands.Cog):
         author = message.author
         if author.id in self.afk_users:
             del self.afk_users[author.id]
-            await message.channel.send(f"{author.mention} is no longer AFK.")
+            await message.channel.reply(f"You is no longer AFK.")
 
         for mention in message.mentions:
             if mention.id in self.afk_users:
                 reason = self.afk_users[mention.id]
-                await message.channel.send(f"{mention.mention} is AFK. Reason: {reason}")
+                await message.channel.send(f"{mention.display_name} is AFK. Reason: {reason}")
 
     @commands.Cog.listener()
     async def on_member_update(self, before, after):
