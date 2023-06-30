@@ -78,23 +78,6 @@ class logos(commands.Cog):
 
         await ctx.send(embed=embed, view=view)
 
-    @commands.command()
-    async def daegulogos(self, ctx):
-        embed = discord.Embed(
-            title='> <:members:1119069738493026364> : Daegutown Logos',
-            description='<a:redarrow:1063328187599302716> Watermark the logos!\n<a:redarrow:1063328187599302716> Always use the group hashtag\n<a:redarrow:1063328187599302716> Send your edit [here](https://discord.com/channels/896619762354892821/1106539453440331826) for xp!\nInfo about xp is pinned in that channel',
-            color=0x2b2d31
-        )
-        button = discord.ui.Button(
-            label='Click here for the logos!',
-            url='https://mega.nz/folder/4QZWTBjR#ZmyJUH2HHj8lFrwkY1BrPw'
-        )
-
-        view = discord.ui.View()
-        view.add_item(button)
-        
-        await ctx.send(embed=embed, view=view)
-        await ctx.send('#𝗗𝗔𝗘𝗚𝗨𝗧𝗢𝗪𝗡')
 
 async def setup(bot):
     await bot.add_cog(logos(bot))

@@ -206,6 +206,20 @@ class Moderation(commands.Cog):
         else:
             await ctx.send("Failed to find the suggestion channel.")
 
+    @commands.command()
+    async def server_icon(self, ctx):
+        if ctx.guild.icon:
+            await ctx.send(ctx.guild.icon_url)
+        else:
+            await ctx.send("Sorry, I can't get the server icon.")
+
+    @commands.command()
+    async def server_banner(self, ctx):
+        if ctx.guild.banner:
+            await ctx.send(ctx.guild.banner_url)
+        else:
+            await ctx.send("Sorry, I can't get the server banner.")
+
 
 async def setup(bot):
     await bot.add_cog(Moderation(bot))
