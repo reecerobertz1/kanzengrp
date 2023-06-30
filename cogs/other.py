@@ -18,7 +18,7 @@ class other(commands.Cog):
             return
 
         author = message.author
-        if author.id in self.afk_users:
+        if author.id != self.bot.user.id and author.id in self.afk_users:
             del self.afk_users[author.id]
             await message.channel.send(f"You are no longer AFK.")
 
@@ -29,7 +29,7 @@ class other(commands.Cog):
 
     @commands.Cog.listener()
     async def on_typing(self, channel, user, when):
-        if user.id in self.afk_users:
+        if user.id != self.bot.user.id and user.id in self.afk_users:
             del self.afk_users[user.id]
             await channel.send(f"{user.mention} is no longer AFK.")
 
