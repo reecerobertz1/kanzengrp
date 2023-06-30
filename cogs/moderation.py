@@ -207,18 +207,23 @@ class Moderation(commands.Cog):
             await ctx.send("Failed to find the suggestion channel.")
 
     @commands.command()
-    async def server_icon(self, ctx):
+    async def servericon(self, ctx):
+        embed = discord.Embed(color=0x2b2d31)
+        embed.set_image(url=ctx.guild.icon)
         if ctx.guild.icon:
-            await ctx.send(url=ctx.guild.icon)
+         await ctx.reply(embed=embed)
         else:
-            await ctx.send("Sorry, I can't get the server icon.")
+         await ctx.reply("Sorry, i can't find the server icon")
 
     @commands.command()
-    async def server_banner(self, ctx):
+    async def serverbanner(self, ctx):
+        embed = discord.Embed(color=0x2b2d31)
+        embed.set_image(url=ctx.guild.banner)
         if ctx.guild.banner:
-            await ctx.send(url=ctx.guild.banner)
+         await ctx.reply(embed=embed)
         else:
-            await ctx.send("Sorry, I can't get the server banner.")
+         await ctx.reply("Sorry, i can't find the server banner")
+       
 
 
 async def setup(bot):
