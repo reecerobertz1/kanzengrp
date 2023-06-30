@@ -20,7 +20,7 @@ class other(commands.Cog):
         for mention in message.mentions:
             if mention.id in self.afk_users:
                 reason = self.afk_users[mention.id]
-                await message.channel.send(f"{mention.mention} is AFK. Reason: {reason}")
+                await message.channel.send(f"{mention.name} is AFK. Reason: {reason}")
 
     @commands.Cog.listener()
     async def on_member_update(self, before, after):
