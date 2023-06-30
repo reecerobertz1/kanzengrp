@@ -209,14 +209,14 @@ class Moderation(commands.Cog):
     @commands.command()
     async def server_icon(self, ctx):
         if ctx.guild.icon:
-            await ctx.send(url=f'{ctx.guild.icon_url}')
+            await ctx.send(url=ctx.guild.icon)
         else:
             await ctx.send("Sorry, I can't get the server icon.")
 
     @commands.command()
     async def server_banner(self, ctx):
         if ctx.guild.banner:
-            await ctx.send(url=f'{ctx.guild.banner_url}')
+            await ctx.send(url=ctx.guild.banner)
         else:
             await ctx.send("Sorry, I can't get the server banner.")
 
