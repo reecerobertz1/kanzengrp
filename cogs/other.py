@@ -10,7 +10,7 @@ class other(commands.Cog):
     async def afk(self, ctx, *, reason=""):
         member = ctx.author
         self.afk_users[member.id] = reason
-        await ctx.send(f"{member.mention} is now AFK. Reason: {reason}")
+        await ctx.send(f"You are now AFK. Reason: {reason}")
 
     @commands.Cog.listener()
     async def on_message(self, message):
