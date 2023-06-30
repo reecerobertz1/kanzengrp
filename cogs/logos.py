@@ -93,8 +93,9 @@ class logos(commands.Cog):
 
         view = discord.ui.View()
         view.add_item(button)
-        await ctx.send('#𝗗𝗔𝗘𝗚𝗨𝗧𝗢𝗪𝗡')
+        
         await ctx.send(embed=embed, view=view)
+        await ctx.send('#𝗗𝗔𝗘𝗚𝗨𝗧𝗢𝗪𝗡')
 
 async def setup(bot):
     await bot.add_cog(logos(bot))
