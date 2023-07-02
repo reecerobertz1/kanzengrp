@@ -297,7 +297,21 @@ class funcmds(commands.Cog):
                 "options": ["Ⓐ BTS", "Ⓑ Blackpink", "Ⓒ PSY", "Ⓓ Wonder Girls"],
                 "answer": 3
             },
-            
+            {
+                "question": 'What is Blackpinks most viewed music video on YouTube?',
+                "options": ["Ⓐ Kill This Love", "Ⓑ Lovesick Girls", "Ⓒ DDU-DU-DDU-DU", "Ⓓ Shut Down"],
+                "answer": 2
+            },
+            {
+                "question": 'How many sub-units of NCT are there?',
+                "options": ["Ⓐ 3", "Ⓑ 5", "Ⓒ 2", "Ⓓ 4"],
+                "answer": 3
+            },
+            {
+                "question": 'Which is the last music video to include all 12 original EXO members??',
+                "options": ["Ⓐ Call Me Baby", "Ⓑ Overdose", "Ⓒ Growl", "Ⓓ Wolf"],
+                "answer": 1
+            }
             
         ]
 
