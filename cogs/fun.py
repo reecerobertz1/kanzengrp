@@ -280,7 +280,7 @@ class funcmds(commands.Cog):
             {
                 "question": "How many languages are written from right to left?",
                 "options": ["Ⓐ 12", "Ⓑ 5", "Ⓒ 13", "Ⓓ 20"],
-                "answer": 2
+                "answer": 0
             },
             {
                 "question": "What is the name of the biggest technology company in South Korea?",
