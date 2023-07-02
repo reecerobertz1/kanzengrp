@@ -81,8 +81,8 @@ class editing(commands.Cog):
                    "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-45.png",
                    "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-46.png",
                    "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-47.png",]
-        raneffect = random.choice(choices)
-        await ctx.reply(raneffect)
+        rancolor = random.choice(choices)
+        await ctx.reply(rancolor)
 
 async def setup(bot):
     await bot.add_cog(editing(bot))

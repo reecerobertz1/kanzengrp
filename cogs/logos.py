@@ -58,7 +58,7 @@ class logos(commands.Cog):
         view = discord.ui.View()
         view.add_item(button)
 
-        await ctx.send(embed=embed, view=view)
+        await ctx.send('@everyone', embed=embed, view=view)
 
     @commands.command()
     async def kanzenpartner(self, ctx):
