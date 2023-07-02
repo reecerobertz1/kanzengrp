@@ -307,7 +307,7 @@ class funcmds(commands.Cog):
         # Send the question and options as an embedded message
         embed = discord.Embed(title="Trivia", description=question["question"], color=0x2b2d31)
         for i, option in enumerate(question["options"]):
-            embed.add_field(name=f"Option {i+1}", value=option, inline=False)
+            embed.add_field(name=f"Option {i+1}", value=option, inline=True)
             embed.set_footer(text='Answer with numbers (1 - 4)')
         question_msg = await ctx.reply(embed=embed)
 
