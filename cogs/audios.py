@@ -6,35 +6,21 @@ from discord.ext import commands
 class audios(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.bot = bot
+        self.audio_links = []
 
     @commands.command()
-    async def addaudio(self, ctx, link: str):
-        try:
-            with open('audios.json', 'r') as file:
-                data = json.load(file)
-        except (FileNotFoundError, json.JSONDecodeError):
-            data = []
-
-        data.append(link)
-
-        with open('audios.json', 'w') as file:
-            json.dump(data, file, indent=4)
-
-        await ctx.reply("Your audio was added successfully!")
+    async def addaudio(self, ctx, link):
+        self.audio_links.append(link)
+        await ctx.send("Audio added successfully.")
 
     @commands.command()
-    async def audio(self, ctx):
-        try:
-            with open('audios.json', 'r') as file:
-                data = json.load(file)
-        except (FileNotFoundError, json.JSONDecodeError):
-            data = []
-
-        if len(data) > 0:
-            selected_link = random.choice(data)
-            await ctx.reply('You can upload audios by doing `+addaudios`', selected_link)
+    async def audios(self, ctx):
+        if self.audio_links:
+            audio_link = random.choice(self.audio_links)
+            await ctx.reply('You can upload an audio by doing `+addaudio`', audio_link)
         else:
-            await ctx.reply("No one has added an audio yet! Be the first to add an audio by using the command `+addaudio (soundcloud link)`.")
+            await ctx.send("No one has added their edit yet! Be the first to add an edit by using the command `addedit (streamable link)`.")
 
 async def setup(bot):
     await bot.add_cog(audios(bot))
