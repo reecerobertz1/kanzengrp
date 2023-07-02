@@ -37,14 +37,14 @@ class welcandleave(commands.Cog):
             embed.set_footer(text='Have fun! Thank you for joining', icon_url=member.display_avatar.url)
             channel = self.bot.get_channel(self.server3_channel)
             embed.set_thumbnail(url=member.display_avatar.url)
-            await channel.send(f'{member.mention}', embed=embed)
+            await channel.send(f'{member.mention} <@&1123361940895445032>', embed=embed)
             """KANZEN FORMS"""
         elif member.guild.id == self.server4_id:
             embed = discord.Embed(title=f'<:brazy_milksip:958479364184490075> : {member.name} has joined the server!', color=0x2b2d31, description=f"• Make sure you read our [rules](https://discord.com/channels/1123347338841313331/1123351779158016060)\n• Go and get your [roles](https://discord.com/channels/1123347338841313331/1123351943549562950)\n• apply [here!](https://discord.com/channels/1123347338841313331/1123352172143329331)\n• need help? ping <@&1123361291113865226>")
             embed.set_footer(text='Have fun! Thank you for joining', icon_url=member.display_avatar.url)
             channel = self.bot.get_channel(self.server4_channel)
             embed.set_thumbnail(url=member.display_avatar.url)
-            await channel.send(f'{member.mention} <@&1123361940895445032>', embed=embed)
+            await channel.send(f'{member.mention}', embed=embed)
             """DAEGU"""
         elif member.guild.id == self.server5_id:
             embed = discord.Embed(title=f'<:members:1119069738493026364> : {member.name} has joined the server!', color=0x2b2d31, description=f"• Make sure you read our [server info](https://discord.com/channels/896619762354892821/896924214311911476)\n• Go and get your [roles](https://discord.com/channels/896619762354892821/1062169874748686386) + [biases](https://discord.com/channels/896619762354892821/1044478054258458685)\n• need help? ping <@&896881532671754260>, <@&1119948686550630410> or <@&903955975000698922>")
