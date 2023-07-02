@@ -23,40 +23,35 @@ class welcandleave(commands.Cog):
             embed.set_footer(text='Hope you enjoy your stay!', icon_url=member.display_avatar.url)
             channel = self.bot.get_channel(self.server1_welcome_channel_id)
             embed.set_thumbnail(url=member.display_avatar.url)
-            await channel.send(f'{member.mention}')
-            await channel.send(embed=embed)
+            await channel.send(f'{member.mention}', embed=embed)
             """AURA GRP WELCOME"""
         elif member.guild.id == self.server2_id:
             embed = discord.Embed(title=f'<:brazy_milksip:958479364184490075> : {member.name} has joined aura!', color=0x64a875, description=f"<a:greenarrow:1123286634629169203> Make sure you read our [rules](https://discord.com/channels/957987670787764224/958026887379173396)\n<a:greenarrow:1123286634629169203> Go and get your [roles](https://discord.com/channels/957987670787764224/1122304274408423566)\n<a:greenarrow:1123286634629169203> need help? ping <@&957993316794917024> or <@&965970726597296148>")
             embed.set_footer(text='Have fun! Thank you for joining', icon_url=member.display_avatar.url)
             channel = self.bot.get_channel(self.server2_welcome_channel_id)
             embed.set_thumbnail(url=member.display_avatar.url)
-            await channel.send(f'{member.mention}')
-            await channel.send(embed=embed)
+            await channel.send(f'{member.mention}', embed=embed)
             """AURA FORMS"""
         elif member.guild.id == self.server3_id:
             embed = discord.Embed(title=f'<:brazy_milksip:958479364184490075> : {member.name} has joined the server!', color=0x64a875, description=f"<a:greenarrow:1123286634629169203> Make sure you read our [rules](https://discord.com/channels/1123347338841313331/1123351779158016060)\n<a:greenarrow:1123286634629169203> Go and get your [roles](https://discord.com/channels/1123347338841313331/1123351943549562950)\n<a:greenarrow:1123286634629169203> apply [here!](https://discord.com/channels/1123347338841313331/1123352172143329331)\n<a:greenarrow:1123286634629169203> need help? ping <@&1123347897715527802> or <@&1123347913964269718>")
             embed.set_footer(text='Have fun! Thank you for joining', icon_url=member.display_avatar.url)
             channel = self.bot.get_channel(self.server3_channel)
             embed.set_thumbnail(url=member.display_avatar.url)
-            await channel.send(f'{member.mention} <@&1123361940895445032>')
-            await channel.send(embed=embed)
+            await channel.send(f'{member.mention}', embed=embed)
             """KANZEN FORMS"""
         elif member.guild.id == self.server4_id:
             embed = discord.Embed(title=f'<:brazy_milksip:958479364184490075> : {member.name} has joined the server!', color=0x2b2d31, description=f"• Make sure you read our [rules](https://discord.com/channels/1123347338841313331/1123351779158016060)\n• Go and get your [roles](https://discord.com/channels/1123347338841313331/1123351943549562950)\n• apply [here!](https://discord.com/channels/1123347338841313331/1123352172143329331)\n• need help? ping <@&1123361291113865226>")
             embed.set_footer(text='Have fun! Thank you for joining', icon_url=member.display_avatar.url)
             channel = self.bot.get_channel(self.server4_channel)
             embed.set_thumbnail(url=member.display_avatar.url)
-            await channel.send(f'{member.mention}')
-            await channel.send(embed=embed)
+            await channel.send(f'{member.mention}', embed=embed)
             """DAEGU"""
         elif member.guild.id == self.server5_id:
             embed = discord.Embed(title=f'<:members:1119069738493026364> : {member.name} has joined the server!', color=0x2b2d31, description=f"• Make sure you read our [server info](https://discord.com/channels/896619762354892821/896924214311911476)\n• Go and get your [roles](https://discord.com/channels/896619762354892821/1062169874748686386) + [biases](https://discord.com/channels/896619762354892821/1044478054258458685)\n• need help? ping <@&896881532671754260>, <@&1119948686550630410> or <@&903955975000698922>")
             embed.set_footer(text='Have fun! Thank you for joining', icon_url=member.display_avatar.url)
             channel = self.bot.get_channel(self.server5_channel)
             embed.set_thumbnail(url=member.display_avatar.url)
-            await channel.send(f'{member.mention}')
-            await channel.send(embed=embed)
+            await channel.send(f'{member.mention}', embed=embed)
 
     @commands.Cog.listener()
     async def on_member_remove(self, member: discord.Member):
@@ -65,24 +60,21 @@ class welcandleave(commands.Cog):
             embed.set_thumbnail(url=member.display_avatar.url)
             embed.set_footer(text='Hope to see you again <3')
             channel = self.bot.get_channel(self.server1_welcome_channel_id)
-            await channel.send(f'{member.mention}')
-            await channel.send(embed=embed)
+            await channel.send(f'{member.mention}', embed=embed)
             """AURA GRP LEAVE"""
         elif member.guild.id == self.server2_id:
             embed = discord.Embed(title=f"{member.name} has left Aura!", color=0x6475a8, description="We will miss you !")
             embed.set_thumbnail(url=member.display_avatar.url)
             embed.set_footer(text='Hope to see you again soon !!')
             channel = self.bot.get_channel(self.server2_welcome_channel_id)
-            await channel.send(f'{member.mention}')
-            await channel.send(embed=embed)
+            await channel.send(f'{member.mention}', embed=embed)
             """DAEGU LEAVE"""
         elif member.guild.id == self.server5_id:
             embed = discord.Embed(title=f"{member.name} has left Daegu!", color=0x2b2d31, description="We will miss you !")
             embed.set_thumbnail(url=member.display_avatar.url)
             embed.set_footer(text='Hope to see you again soon !!')
             channel = self.bot.get_channel(self.server5_channel)
-            await channel.send(f'{member.mention}')
-            await channel.send(embed=embed)
+            await channel.send(f'{member.mention}', embed=embed)
 
     @commands.Cog.listener()
     async def on_member_update(self, before, after):
