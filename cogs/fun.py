@@ -267,11 +267,38 @@ class funcmds(commands.Cog):
                 "options": ["Ⓐ Skin", "Ⓑ Liver", "Ⓒ Kidney", "D) Large Intestine"],
                 "answer": 0
             },
-                        {
+            {
                 "question": "How many oceans are there on earth?",
                 "options": ["Ⓐ 3", "Ⓑ 10", "Ⓒ 7", "Ⓓ 5"],
                 "answer": 3
-            }
+            },
+            {
+                "question": "How long is an Olympic swimming pool (in meters)?",
+                "options": ["Ⓐ 30 meters", "Ⓑ 100 meters", "Ⓒ 50 meters", "Ⓓ 25 meters"],
+                "answer": 2
+            },
+            {
+                "question": "How many languages are written from right to left?",
+                "options": ["Ⓐ 12", "Ⓑ 5", "Ⓒ 13", "Ⓓ 20"],
+                "answer": 2
+            },
+            {
+                "question": "What is the name of the biggest technology company in South Korea?",
+                "options": ["Ⓐ Asus", "Ⓑ Samsung", "Ⓒ Apple", "Ⓓ Windows"],
+                "answer": 1
+            },
+            {
+                "question": 'What group is often reffered to as "The kings of kpop"?',
+                "options": ["Ⓐ BTS", "Ⓑ Shinee", "Ⓒ Big Bang", "Ⓓ EXO"],
+                "answer": 2
+            },
+            {
+                "question": 'Which group were the first K-Pop artist to appear on the US Billboard Hot 100?',
+                "options": ["Ⓐ BTS", "Ⓑ Blackpink", "Ⓒ PSY", "Ⓓ Wonder Girls"],
+                "answer": 3
+            },
+            
+            
         ]
 
         # Choose a random question from the list
