@@ -14,21 +14,21 @@ class audios(commands.Cog):
         }
 
         try:
-            with open("audios.json", "r") as file:
+            with open("addedaudios.json", "r") as file:
                 data = json.load(file)
         except FileNotFoundError:
             data = []
 
         data.append(audio_data)
 
-        with open("audios.json", "w") as file:
+        with open("addedaudios.json", "w") as file:
             json.dump(data, file, indent=4)
 
         await ctx.reply("Audio added successfully.")
 
     @commands.group(aliases=['audios'])
     async def audio(self, ctx):
-        with open("audios.json", "r") as f:
+        with open("addedaudios.json", "r") as f:
             audios = json.load(f)
             choice = random.choice(audios)
             await ctx.reply(f"Add an audio with `+addaudio`\n{choice}")
