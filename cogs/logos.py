@@ -8,21 +8,23 @@ class logos(commands.Cog):
     @commands.command()
     async def logocommandwithbuttons(self, ctx):
         embed = discord.Embed(
-            title='<a:Lumi_penguin_fall:1122607666578063531> : Kanzen Logos',
-            description='• Please make sure you watermark the logos!\n• Use the watermark on every edit\n• Do not share this link with anyone outside the group!',
+            title='<:brazy_milksip:958479364184490075> : Aura Logos',
+            description='<a:greenarrow:1123286634629169203> Please make sure you watermark the logos!\n<a:greenarrow:1123286634629169203> Use the watermark on every edit\n<a:greenarrow:1123286634629169203> Do not share this link with anyone outside the group!',
             color=0x2b2d31
         )
-        embed.set_footer(text='Made us some logos? send them to Reece!')
+        embed.set_footer(text='Made us some logos? send them to a lead or co lead!')
+        embed.set_image(url='https://cdn.discordapp.com/attachments/1003438198862659644/1125109046316380230/TXT-2-2048x1365.jpg')
 
         button = discord.ui.Button(
             label='Click here for logos!',
-            url='https://mega.nz/folder/J40zCTYY#L73pTeQKWpCh15wpuQaIFA'
+            url='https://mega.nz/folder/fNkhXaTZ#HESDVux7S8DrUXYgiexxmg'
         )
 
         view = discord.ui.View()
         view.add_item(button)
 
         await ctx.send(embed=embed, view=view)
+        await ctx.send('#𝗮𝘂𝗿𝗮𝗴𝗿𝗽')
 
     @commands.command()
     async def daegupartner(self, ctx):
