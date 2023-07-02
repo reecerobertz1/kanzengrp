@@ -265,12 +265,12 @@ class funcmds(commands.Cog):
             {
                 "question": "What is the bodies largest organ?",
                 "options": ["A) Skin", "B) Liver", "C) Kidney", "D) Large Intestine"],
-                "answer": 1
+                "answer": 0
             },
                         {
                 "question": "How many oceans are there on earth?",
                 "options": ["A) 3", "B) 10", "C) 7", "D) 5"],
-                "answer": 4
+                "answer": 1
             }
         ]
 
