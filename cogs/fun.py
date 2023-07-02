@@ -270,7 +270,7 @@ class funcmds(commands.Cog):
                         {
                 "question": "How many oceans are there on earth?",
                 "options": ["A) 3", "B) 10", "C) 7", "D) 5"],
-                "answer": 1
+                "answer": 3
             }
         ]
 
