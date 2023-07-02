@@ -6,11 +6,21 @@ from discord.ext import commands
 class audios(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.audio_links = ['https://on.soundcloud.com/WwHQzqBHCafrdgLe6']
 
     @commands.command()
     async def addaudio(self, ctx, link):
-        self.audio_links.append(link)
+        audio_data = {
+            "link": link
+        }
+
+        with open("audios.json", "r") as file:
+            data = json.load(file)
+
+        data["audios"].append(audio_data)
+
+        with open("audios.json", "w") as file:
+            json.dump(data, file, indent=4)
+
         await ctx.send("Audio added successfully.")
 
     @commands.group(aliases=['audios'])
