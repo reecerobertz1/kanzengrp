@@ -28,8 +28,7 @@ class qna(commands.Cog):
                 embed = discord.Embed(title="Q&A", color=0x2b2d31, description=f"**question:** {question}**\nanswer:** {response}")
                 embed.set_footer(text=f"asked by {user.display_name} | answered by {ctx.author.display_name}")
 
-                await answer_channel.send(user.mention)
-                await answer_channel.send(embed=embed)
+                await answer_channel.send(user.mention, embed=embed)
                 return
 
         await ctx.send("Failed to retrieve the question or the question format is incorrect.")
