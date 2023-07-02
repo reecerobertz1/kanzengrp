@@ -13,22 +13,25 @@ class audios(commands.Cog):
             "link": link
         }
 
-        with open("audios.json", "r") as file:
-            data = json.load(file)
+        try:
+            with open("audios.json", "r") as file:
+                data = json.load(file)
+        except FileNotFoundError:
+            data = []
 
-        data["audios"].append(audio_data)
+        data.append(audio_data)
 
         with open("audios.json", "w") as file:
             json.dump(data, file, indent=4)
 
-        await ctx.send("Audio added successfully.")
+        await ctx.reply("Audio added successfully.")
 
     @commands.group(aliases=['audios'])
     async def audio(self, ctx):
         with open("audios.json", "r") as f:
             audios = json.load(f)
             choice = random.choice(audios)
-            await ctx.send(f"Add an audio with `+addaudio`\n{choice}")
+            await ctx.reply(f"Add an audio with `+addaudio`\n{choice}")
 
 async def setup(bot):
     await bot.add_cog(audios(bot))
