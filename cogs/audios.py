@@ -22,7 +22,7 @@ class audios(commands.Cog):
 
         await ctx.reply("Your audio was added successfully!")
 
-    @commands.command(aliases=['audios'])
+    @commands.command()
     async def audio(self, ctx):
         try:
             with open('audios.json', 'r') as file:
@@ -34,7 +34,7 @@ class audios(commands.Cog):
             selected_link = random.choice(data)
             await ctx.reply('You can upload audios by doing `+addaudios`', selected_link)
         else:
-            await ctx.reply("No one has added an audio yet! Be the first to add an audio by using the command `addaudio (soundcloud link)`.")
+            await ctx.reply("No one has added an audio yet! Be the first to add an audio by using the command `+addaudio (soundcloud link)`.")
 
 async def setup(bot):
     await bot.add_cog(audios(bot))
