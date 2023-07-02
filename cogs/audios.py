@@ -13,13 +13,12 @@ class audios(commands.Cog):
         self.audio_links.append(link)
         await ctx.send("Audio added successfully.")
 
-    @commands.command()
-    async def audios(self, ctx):
-        if self.audio_links:
-            audio_link = random.choice(self.audio_links)
-            await ctx.reply('You can upload an audio by doing `+addaudio`', audio_link)
-        else:
-            await ctx.send("No one has added their edit yet! Be the first to add an edit by using the command `addedit (streamable link)`.")
+    @commands.group(aliases=['audios'])
+    async def audio(self, ctx):
+        with open("audios.json", "r") as f:
+            audios = json.load(f)
+            choice = random.choice(audios)
+            await ctx.send(f"Add an audio with `+addaudio` ||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​|| _ _ _ _ _ _ {choice}")
 
 async def setup(bot):
     await bot.add_cog(audios(bot))
