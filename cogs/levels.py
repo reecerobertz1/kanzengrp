@@ -1,4 +1,4 @@
-""""import discord
+import discord
 import json
 
 from discord import File
@@ -254,4 +254,4 @@ class levels(commands.Cog):
 
 
 async def setup(bot):
-    await bot.add_cog(levels(bot))"""
+    await bot.add_cog(levels(bot))
