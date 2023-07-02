@@ -10,8 +10,6 @@ class audios(commands.Cog):
     @commands.command()
     async def addaudio(self, ctx, link):
         audio_data = link
-
-
         try:
             with open("addedaudios.json", "r") as file:
                 data = json.load(file)
