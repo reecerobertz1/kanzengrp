@@ -261,8 +261,17 @@ class funcmds(commands.Cog):
                 "question": "What is the chemical symbol for the element oxygen?",
                 "options": ["A) O", "B) H", "C) C", "D) N"],
                 "answer": 0
+            },
+            {
+                "question": "What is the bodies largest organ?",
+                "options": ["A) Skin", "B) Liver", "C) Kidney", "D) Large Intestine"],
+                "answer": 1
+            },
+                        {
+                "question": "How many oceans are there on earth?",
+                "options": ["A) 3", "B) 10", "C) 7", "D) 5"],
+                "answer": 4
             }
-            # Add more questions here
         ]
 
         # Choose a random question from the list
