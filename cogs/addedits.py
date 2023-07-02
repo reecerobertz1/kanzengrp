@@ -7,8 +7,6 @@ class addedits(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-
-
     @commands.command()
     async def addedit(self, ctx, link: str):
         try:
@@ -37,9 +35,6 @@ class addedits(commands.Cog):
             await ctx.reply('You can upload your own edits by doing `+addedit`', selected_link)
         else:
             await ctx.reply("No one has added their edit yet! Be the first to add an edit by using the command `addedit (streamable link)`.")
-
-
-
 
 async def setup(bot):
     await bot.add_cog(addedits(bot))
