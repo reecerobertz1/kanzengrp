@@ -28,7 +28,7 @@ class audios(commands.Cog):
         with open("audios.json", "r") as f:
             audios = json.load(f)
             choice = random.choice(audios)
-            await ctx.send(f"Add an audio with `+addaudio` {choice}")
+            await ctx.send(f"Add an audio with `+addaudio`\n{choice}")
 
 async def setup(bot):
     await bot.add_cog(audios(bot))
