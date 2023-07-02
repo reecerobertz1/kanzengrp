@@ -37,6 +37,7 @@ class Help(commands.Cog):
                 {"name": "+audio", "value": "Get an audio added by a member to use for your edit", "inline": False},
                 {"name": "+addaudio", "value": "Add an audio from SoundCloud for others to use", "inline": False},
                 {"name": "+effects", "value": "Get a random effect to use in your edit", "inline": False},
+                {"name": "+colorscheme", "value": "Get a random color scheme to use in your edit", "inline": False},
                 {"name": "", "value": "`[page 3/7]`", "inline": True}
             ],
             "> Other commands": [
