@@ -3,7 +3,7 @@ import random
 import discord
 from discord.ext import commands
 
-class addedits(commands.Cog):
+class audios(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
@@ -37,4 +37,4 @@ class addedits(commands.Cog):
             await ctx.reply("No one has added an audio yet! Be the first to add an audio by using the command `addaudio (soundcloud link)`.")
 
 async def setup(bot):
-    await bot.add_cog(addedits(bot))
+    await bot.add_cog(audios(bot))
