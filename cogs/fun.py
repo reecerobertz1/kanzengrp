@@ -249,27 +249,27 @@ class funcmds(commands.Cog):
         trivia_questions = [
             {
                 "question": "What is the capital of France?",
-                "options": ["A) London", "B) Paris", "C) Rome", "D) Berlin"],
+                "options": ["Ⓐ London", "Ⓑ Paris", "Ⓒ Rome", "Ⓓ Berlin"],
                 "answer": 1  # Index of the correct answer (starts from 0)
             },
             {
                 "question": "Which planet is known as the Red Planet?",
-                "options": ["A) Mars", "B) Jupiter", "C) Saturn", "D) Venus"],
+                "options": ["Ⓐ Mars", "Ⓑ Jupiter", "Ⓒ Saturn", "Ⓓ Venus"],
                 "answer": 0
             },
             {
                 "question": "What is the chemical symbol for the element oxygen?",
-                "options": ["A) O", "B) H", "C) C", "D) N"],
+                "options": ["Ⓐ O", "Ⓑ H", "Ⓒ C", "Ⓓ N"],
                 "answer": 0
             },
             {
                 "question": "What is the bodies largest organ?",
-                "options": ["A) Skin", "B) Liver", "C) Kidney", "D) Large Intestine"],
+                "options": ["Ⓐ Skin", "Ⓑ Liver", "Ⓒ Kidney", "D) Large Intestine"],
                 "answer": 0
             },
                         {
                 "question": "How many oceans are there on earth?",
-                "options": ["A) 3", "B) 10", "C) 7", "D) 5"],
+                "options": ["Ⓐ 3", "Ⓑ 10", "Ⓒ 7", "Ⓓ 5"],
                 "answer": 3
             }
         ]
