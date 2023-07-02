@@ -75,6 +75,14 @@ class welcandleave(commands.Cog):
             channel = self.bot.get_channel(self.server2_welcome_channel_id)
             await channel.send(f'{member.mention}')
             await channel.send(embed=embed)
+            """DAEGU LEAVE"""
+        elif member.guild.id == self.server5_id:
+            embed = discord.Embed(title=f"{member.name} has left Daegu!", color=0x2b2d31, description="We will miss you !")
+            embed.set_thumbnail(url=member.display_avatar.url)
+            embed.set_footer(text='Hope to see you again soon !!')
+            channel = self.bot.get_channel(self.server5_welcome_channel_id)
+            await channel.send(f'{member.mention}')
+            await channel.send(embed=embed)
 
     @commands.Cog.listener()
     async def on_member_update(self, before, after):
