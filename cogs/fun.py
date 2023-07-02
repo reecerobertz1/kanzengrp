@@ -308,8 +308,23 @@ class funcmds(commands.Cog):
                 "answer": 3
             },
             {
-                "question": 'Which is the last music video to include all 12 original EXO members??',
+                "question": 'Which is the last music video to include all 12 original EXO members?',
                 "options": ["Ⓐ Call Me Baby", "Ⓑ Overdose", "Ⓒ Growl", "Ⓓ Wolf"],
+                "answer": 1
+            },
+            {
+                "question": 'Whats the smallest country in the world?',
+                "options": ["Ⓐ Malta", "Ⓑ Vatican City", "Ⓒ Qatar", "Ⓓ Monaco"],
+                "answer": 1
+            },
+            {
+                "question": 'Which country cosumes the most chocolate per capita?',
+                "options": ["Ⓐ China", "Ⓑ Germany", "Ⓒ Switzerland", "Ⓓ Sweden"],
+                "answer": 2
+            },
+            {
+                "question": 'What is the most cosumed manufactured drink in the world?',
+                "options": ["Ⓐ Coca cola", "Ⓑ Tea", "Ⓒ Coffee", "Ⓓ Alcohol"],
                 "answer": 1
             }
             
