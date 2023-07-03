@@ -59,7 +59,9 @@ class Help(commands.Cog):
                 {"name": "+addrole", "value": "Add a role to a member (+addrole @role @mention)", "inline": False},
                 {"name": "+removerole", "value": "Remove a role from a member (+removerole @role @mention)", "inline": False},
                 {"name": "+buildembed", "value": "Create an embed", "inline": False},
-                {"name": "+suggest", "value": "suggest what we can do in the group (+suggest [suggestion])", "inline": False},
+                {"name": "+suggest", "value": "Suggest what we can do in the group (+suggest [suggestion])", "inline": False},
+                {"name": "+uptime", "value": "See how long the bot has been online for", "inline": False},
+                {"name": "+ping", "value": "See the bots ping", "inline": False},
                 {"name": "", "value": "`[page 6/7]`", "inline": True}
             ],
             "> Application commands": [
