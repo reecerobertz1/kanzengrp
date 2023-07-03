@@ -113,5 +113,37 @@ class Help(commands.Cog):
         embed.add_field(name='example', value='+jail <@609515684740988959>', inline=False)
         await ctx.reply(embed=embed)
 
+    @commands.command()
+    async def helpmemberinfo(self, ctx):
+        embed = discord.Embed(title='+memberinfo <member>', description='See info of yourself or other members', color=0x2b2d31)
+        embed.add_field(name='aliases', value='none', inline=False)
+        embed.add_field(name='arguments', value='`member`\n<:reply:1125269313432059904> mention someone to see their info\nor dont mention someone to see your own info', inline=False)
+        embed.add_field(name='example', value='+memberinfo <@609515684740988959>', inline=False)
+        await ctx.reply(embed=embed)
+
+    @commands.command()
+    async def helpkiss(self, ctx):
+        embed = discord.Embed(title='+kiss <member>', description='Kiss members, or get Hoshi to kiss you', color=0x2b2d31)
+        embed.add_field(name='aliases', value='none', inline=False)
+        embed.add_field(name='arguments', value='`member`\n<:reply:1125269313432059904> mention someone to kiss\nor dont mention someone to have Hoshi kiss you', inline=False)
+        embed.add_field(name='example', value='+kiss <@609515684740988959>', inline=False)
+        await ctx.reply(embed=embed)
+
+    @commands.command()
+    async def helphug(self, ctx):
+        embed = discord.Embed(title='+hug <member>', description='Hug members, or get Hoshi to hug you', color=0x2b2d31)
+        embed.add_field(name='aliases', value='none', inline=False)
+        embed.add_field(name='arguments', value='`member`\n<:reply:1125269313432059904> mention someone to hug\nor dont mention someone to have Hoshi hug you', inline=False)
+        embed.add_field(name='example', value='+hug <@609515684740988959>', inline=False)
+        await ctx.reply(embed=embed)
+
+    @commands.command()
+    async def helpslap(self, ctx):
+        embed = discord.Embed(title='+slap <member>', description='slap members, or get Hoshi to slap you', color=0x2b2d31)
+        embed.add_field(name='aliases', value='none', inline=False)
+        embed.add_field(name='arguments', value='`member`\n<:reply:1125269313432059904> mention someone to slap\nor dont mention someone to have Hoshi slap you', inline=False)
+        embed.add_field(name='example', value='+slap <@609515684740988959>', inline=False)
+        await ctx.reply(embed=embed)
+
 async def setup(bot):
     await bot.add_cog(Help(bot))
