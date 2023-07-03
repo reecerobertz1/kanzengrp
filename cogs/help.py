@@ -45,9 +45,12 @@ class Help(commands.Cog):
                 {"name": "", "value": "`[page 4/7]`", "inline": True}
             ],
             "> Levels commands": [
-                {"name": "Command 1", "value": "", "inline": False},
-                {"name": "Command 2", "value": "", "inline": False},
-                {"name": "Command 3", "value": "", "inline": False},
+                {"name": "+rank", "value": "See your rank, or someone elses", "inline": False},
+                {"name": "+levels", "value": "See the level leaderboard for the server", "inline": False},
+                {"name": "+rankcolor", "value": "Set your rank color with a hex code", "inline": False},
+                {"name": "+xp add", "value": "Add xp to a member (admin only command)", "inline": False},
+                {"name": "+xp remove", "value": "Remove xp from a member (admin only command)", "inline": False},
+                {"name": "+reset add", "value": "Resets xp for everyone (admin only)", "inline": False},
                 {"name": "", "value": "`[page 5/7]`", "inline": True}
             ],
             "> Moderation commands": [
