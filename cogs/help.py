@@ -107,7 +107,7 @@ class Help(commands.Cog):
 
     @commands.command()
     async def helpjail(self, ctx):
-        embed = discord.Embed(Title='+jail <member>', description='Put someone or yourself in jail!', color=0x2b2d31)
+        embed = discord.Embed(title='+jail <member>', description='Put someone or yourself in jail!', color=0x2b2d31)
         embed.add_field(name='aliases', value='prison, lockup', inline=False)
         embed.add_field(name='arguments', value='`member`\n<:reply:1125269313432059904> mention someone to put in jail\nor dont mention someone to put yourself in jail', inline=False)
         embed.add_field(name='example', value='+jail <@609515684740988959>', inline=False)
