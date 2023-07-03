@@ -379,7 +379,7 @@ class funcmds(commands.Cog):
             activity_type = activity.type.name.capitalize()
             activity_name = activity.name
 
-            await ctx.reply(f"{member.name}'s status: {activity_name}")
+            await ctx.reply(f"{member.name}'s status: `{activity_name}`")
 
 
 async def setup(bot):
