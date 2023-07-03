@@ -26,7 +26,16 @@ class editing(commands.Cog):
 
         choices = [
             "BTS - Taehyung", "BTS - Hoseok", "BTS - Yoongi",  "BTS - Namjoon", "BTS - Jimin", "BTS - Jin", "BTS - Jungkook", "Blackpink - Lisa", 
-            "Blackpink - Jennie", "Blackpink rosé", "Blackpink - Jisoo"
+            "Blackpink - Jennie", "Blackpink rosé", "Blackpink - Jisoo", "Lesserafim - Yunjin", "Lesserafim - Sakura", "Lesserafim - Chaewon", "Lesserafim - Kazuha", 
+            "Lesserafim - Eunchae", "Enhypen - Jake", "Enhypen - Jay", "Enhypen - Heeseung", "Enhypen - Sunghoon", "Enhypen - Sunoo", "Enhypen - Jungwon", "Enhypen - Ni-ki",
+            "New Jeans - Minji", "New Jeans - Hanni", "New Jeans - Danielle", "New Jeans - Haerin", "New Jeans - Hyein", "P1harmony - Keeho", "P1harmony - Intak",
+            "P1harmony - Theo", "P1harmony - Jiung", "P1harmony - Soul", "P1harmony - Jongseob", "Twice - Nayeon", "Twice - Jeonyeon", "Twice - Momo", "Twice - Sana",
+            "Twice - Jihyo", "Twice - Mina", "Twice - Dahyun", "Twice - Chaeyoung", "Twice - Tzuyu", "Ateez - Wooyoung", "Ateez - San", "Ateez - Hoongjoon", "Ateez - Seonghwa",
+            "Ateez - Jongho", "Ateez - Yunho", "Ateez - Mingi", "Seventeen - DK", "Seventeen - Seungkwan", "Seventeen - Mingyu", "Seventeen - Woozi", "Seventeen - Hoshi (not the bot)", "Seventeen - Dino",
+            "Seventeen - Wonwoo", "Seventeen - Junhui", "Seventeen - The8", "Seventeen - Scoups", "Seventeen - Joshua", "Seventeen - Vernon", "Seventeen - Jeonghan", "Aespa - Karina",
+            "Aespa - Ninging", "Aespa - Winter", "Aespa - Giselle", "Aespa - Karina", "TXT - Kai", "TXT - Soobin", "TXT - Yeonjun", "TXT - Beomgyu", "TXT - Taehyun", "Stray Kids - Bang Chan",
+            "Stray Kids - Lee Know", "Stray Kids - Changbin", "Stray Kids - Han", "Stray Kids - Felix", "Stray Kids - Seungmin", "Stray Kids - I.N", "Stray Kids - Hyunjin", "Itzy - Yeji",
+            "Itzy - Ryujin", "Itzy - Lia", "Itzy - Chaeryeong", "Itzy - Yuna"
         ]
 
         person = random.choice(choices)
