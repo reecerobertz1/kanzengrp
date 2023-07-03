@@ -368,5 +368,19 @@ class funcmds(commands.Cog):
 
         await ctx.reply(f"{avatar_url}")
 
+    @commands.command()
+    async def status(self, ctx, member: discord.Member):
+        status = member.status.name.capitalize()
+        activity = member.activity
+
+        if activity is None:
+            await ctx.send(f"{member.name}'s status: {status}")
+        else:
+            activity_type = activity.type.name.capitalize()
+            activity_name = activity.name
+
+            await ctx.send(f"{member.name}'s status: {status} | Activity: {activity_type} {activity_name}")
+
+
 async def setup(bot):
     await bot.add_cog(funcmds(bot))
