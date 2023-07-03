@@ -69,7 +69,7 @@ class funcmds(commands.Cog):
             await ctx.reply("Sorry, I couldn't fetch a cute cat at the moment. Please try again later.")
 
 
-    @commands.command()
+    @commands.command(aliases=['prison', 'lockup'])
     async def jail(self, ctx, member: Optional[discord.Member]):
         # Get the user's avatar URL
         member = member or ctx.author
