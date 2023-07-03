@@ -82,6 +82,16 @@ class logos(commands.Cog):
 
         await ctx.send(embed=embed, view=view)
 
+    @commands.command()
+    async def answerlol(self, ctx):
+        embed = discord.Embed(
+            title='New Update!',
+            description='New celebs have been added to the `+who2edit` command!\nthere is now members from Lesserafim, Itzy, Stray Kids, TXT, Aespa, Ateez, Seventeen, Twice, P1harmony, New Jeans and Enhypen!\n If you have any other ideas for new commands or other idols/celebs to add to `+who2edit` you can either do `+suggest` or ping Reece!',
+            color=0x2b2d31
+        )
+        embed.set_footer(text="Use the command in Hoshi's channel!")
+        await ctx.send('<@&1122999466438438962>', embed=embed)
+
 
 async def setup(bot):
     await bot.add_cog(logos(bot))
