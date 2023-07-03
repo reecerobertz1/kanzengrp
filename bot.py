@@ -3,6 +3,7 @@ from discord.ext import commands
 import discord
 import aiohttp
 from datetime import datetime
+import asqlite
 
 # the extensions/cogs i want to load
 extensions = {
@@ -67,11 +68,29 @@ class LalisaBot(commands.Bot):
         # defining the attributes i assigned above
         self.launch_time = datetime.utcnow()
         self.session = aiohttp.ClientSession()
+        self.pool = await asqlite.create_pool('databases/levels.db')
+
+        # sqlite database setup
+        async with self.pool.acquire() as conn:
+            await conn.execute('''CREATE TABLE IF NOT EXISTS levels (member_id INTEGER PRIMARY KEY, xp INTEGER, messages INTEGER, bar_color TEXT)''')
+            await conn.commit()
 
     # i have to have this here for when the bot closes
     async def close(self):
         await self.session.close()
         await super().close()
+
+# by your imports
+
+async def setup_hook(self):
+
+        # ur other setup stuff is here probably so just add this stuff at the bottom of setup_hook
+        self.pool = await asqlite.create_pool('databases/levels.db')
+
+        # sqlite database setup
+        async with self.pool.acquire() as conn:
+            await conn.execute('''CREATE TABLE IF NOT EXISTS levels (member_id INTEGER PRIMARY KEY, xp INTEGER, messages INTEGER, bar_color TEXT)''')
+            await conn.commit()
 
 # old stuff
 """ import discord
