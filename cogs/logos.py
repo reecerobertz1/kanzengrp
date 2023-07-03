@@ -48,7 +48,7 @@ class logos(commands.Cog):
     async def aurapartner(self, ctx):
         embed = discord.Embed(
             title='<:frogyay:1123652434913402950> : Aura Forms',
-            description='<a:greenarrow:1123286634629169203> editing server\n<a:greenarrow:1123286634629169203> cute aesthetic logos\n<a:greenarrow:1123286634629169203> custom bot',
+            description='<a:greenarrow:1123286634629169203> editing server\n<a:greenarrow:1123286634629169203> cute aesthetic logos\n<a:greenarrow:1123286634629169203> custom bot\n<a:greenarrow:1123286634629169203> recruitment happening now!',
             color=0x2b2d31
         )
 
@@ -57,6 +57,7 @@ class logos(commands.Cog):
             url='https://discord.gg/edDCM3JUvM'
         )
         embed.set_footer(text='Go support our partners!')
+        embed.set_thumbnail(url='https://cdn.discordapp.com/icons/1123347338841313331/b66ab79181757db75af6661670992a33.png?size=1024')
         view = discord.ui.View()
         view.add_item(button)
 
