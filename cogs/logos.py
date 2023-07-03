@@ -86,7 +86,7 @@ class logos(commands.Cog):
     async def answerlol(self, ctx):
         embed = discord.Embed(
             title='New Update!',
-            description='New celebs have been added to the `+who2edit` command!\nthere is now members from Lesserafim, Itzy, Stray Kids, TXT, Aespa, Ateez, Seventeen, Twice, P1harmony, New Jeans and Enhypen!\n If you have any other ideas for new commands or other idols/celebs to add to `+who2edit` you can either do `+suggest` or ping Reece!',
+            description='New celebs have been added to the `+who2edit` command!\nthere is now members from:\nLesserafim\nItzy\nStray Kids\nTXT\nAespa\nAteez\nSeventeen\nTwice\nP1harmony\nNew Jeans\nEnhypen!\n If you have any other ideas for new commands or other idols/celebs to add to `+who2edit` you can either do `+suggest` or ping Reece!',
             color=0x2b2d31
         )
         embed.set_footer(text="Use the command in Hoshi's channel!")
