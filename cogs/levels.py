@@ -98,7 +98,7 @@ class Levels(commands.Cog):
             lvl += 1
         next_level_xp = ((50*(lvl**2))+(50*(lvl-1)))
         if new_xp > next_level_xp: # author has leveled up
-            await message.channel.send(f"{message.author.mention} reached **level {lvl+1}**")
+            await message.channel.send(f"yay {message.author.mention} you reached **level {lvl+1}**")
 
     async def _level_handler(self, message: discord.Message, retry_after: Optional[commands.CooldownMapping], xp: int) -> None:
         """Handles levels for members when they send messages on Discord.
