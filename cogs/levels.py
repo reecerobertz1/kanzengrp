@@ -22,7 +22,7 @@ class Levels(commands.Cog):
     def __init__(self, bot: LalisaBot):
         self.bot = bot
         self.cd_mapping = commands.CooldownMapping.from_cooldown(1, 60, commands.BucketType.user) # cooldown for xp (1 minute/60 seconds)
-        self.top20_role_id = 1113200212811448352 # role id for top 20 role
+        self.top20_role_id = 1125233965599555615 # role id for top 20 role
         self.regex_hex = "^#(?:[0-9a-fA-F]{3}){1,2}$" # regex to match hex colors for progress bar color
                 
     async def _register_member_levels(self, member_id: int, xp: Optional[int] = 25) -> None:
