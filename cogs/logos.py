@@ -39,6 +39,7 @@ class logos(commands.Cog):
             url='https://discord.gg/R5d7TXVdcj'
         )
         embed.set_footer(text='Go support our partners!')
+        embed.set_thumbnail(url='https://cdn.discordapp.com/icons/901409710572466217/f8973672eb44f06548685f4ff8aa5b26.png?size=1024')
         view = discord.ui.View()
         view.add_item(button)
 
