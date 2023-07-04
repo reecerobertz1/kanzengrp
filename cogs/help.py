@@ -51,6 +51,9 @@ class Help(commands.Cog):
                 {"name": "+xp add", "value": "Add xp to a member (admin only command)", "inline": False},
                 {"name": "+xp remove", "value": "Remove xp from a member (admin only command)", "inline": False},
                 {"name": "+reset add", "value": "Resets xp for everyone (admin only)", "inline": False},
+                {"name": "+levelling on", "value": "Enables the levelling system for the server (admin only)", "inline": False},
+                {"name": "+levelling off", "value": "Disables the levelling system for the server (admin only)", "inline": False},
+                {"name": "+levelling setrole", "value": "Set the top 20 active role", "inline": False},
                 {"name": "", "value": "`[page 5/7]`", "inline": True}
             ],
             "> Moderation commands": [
