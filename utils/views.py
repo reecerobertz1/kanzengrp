@@ -15,7 +15,7 @@ class Paginator(ui.View):
 
     @ui.button(emoji='\N{LEFTWARDS BLACK ARROW}')
     async def previous_embed(self, interaction: Interaction, _):
-        self._queue.rotate(-1)
+        self._queue.rotate(1)
         if self._index == 1:
             self._index = self._len
         else:
@@ -26,7 +26,7 @@ class Paginator(ui.View):
 
     @ui.button(emoji='\N{BLACK RIGHTWARDS ARROW}')
     async def next_embed(self, interaction: Interaction, _):
-        self._queue.rotate(1)
+        self._queue.rotate(-1)
         if self._index == self._len:
             self._index = 1
         else:
