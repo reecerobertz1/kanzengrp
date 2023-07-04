@@ -6,6 +6,7 @@ class inactive(commands.Cog):
         self.bot = bot
         self.server1_channel_id = 1121913672822968330
         self.server2_channel_id = 1122251494700363868
+        self.server3_channel_id = 1058814073380274326
 
     @commands.command()
     async def ia(self, ctx, *, message):
@@ -30,6 +31,8 @@ class inactive(commands.Cog):
             return self.server1_channel_id
         elif guild_id == 957987670787764224:
             return self.server2_channel_id
+        elif guild_id == 896619762354892821:
+            return self.server3_channel_id
         else:
             return None
 
