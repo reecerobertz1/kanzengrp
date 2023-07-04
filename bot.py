@@ -33,6 +33,7 @@ class LalisaBot(commands.Bot):
     # access these through bot.session, bot.launch_time
     session: aiohttp.ClientSession
     launch_time: datetime
+    pool: asqlite.Pool
 
     # initalising the subclass
     # clarifying the intents
@@ -71,26 +72,17 @@ class LalisaBot(commands.Bot):
         self.pool = await asqlite.create_pool('databases/levels.db')
 
         # sqlite database setup
+        # sqlite database setup
         async with self.pool.acquire() as conn:
-            await conn.execute('''CREATE TABLE IF NOT EXISTS levels (member_id INTEGER PRIMARY KEY, xp INTEGER, messages INTEGER, bar_color TEXT)''')
+            await conn.execute('''CREATE TABLE IF NOT EXISTS levels (member_id BIGINT, guild_id BIGINT, xp INTEGER, messages INTEGER, bar_color TEXT, PRIMARY KEY(member_id, guild_id))''')
+            await conn.execute('''CREATE TABLE IF NOT EXISTS setup (guild_id BIGINT PRIMARY KEY, activated BOOL, top_20_role_id BIGINT)''')
             await conn.commit()
 
     # i have to have this here for when the bot closes
     async def close(self):
+        await self.pool.close()
         await self.session.close()
         await super().close()
-
-# by your imports
-
-async def setup_hook(self):
-
-        # ur other setup stuff is here probably so just add this stuff at the bottom of setup_hook
-        self.pool = await asqlite.create_pool('databases/levels.db')
-
-        # sqlite database setup
-        async with self.pool.acquire() as conn:
-            await conn.execute('''CREATE TABLE IF NOT EXISTS levels (member_id INTEGER PRIMARY KEY, xp INTEGER, messages INTEGER, bar_color TEXT)''')
-            await conn.commit()
 
 # old stuff
 """ import discord
