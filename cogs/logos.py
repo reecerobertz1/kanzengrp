@@ -85,11 +85,13 @@ class logos(commands.Cog):
     @commands.command()
     async def answerlol(self, ctx):
         embed = discord.Embed(
-            title='New Update!',
-            description='New celebs have been added to the `+who2edit` command!\nthere is now members from:\nLesserafim\nItzy\nStray Kids\nTXT\nAespa\nAteez\nSeventeen\nTwice\nP1harmony\nNew Jeans\nEnhypen!\n If you have any other ideas for new commands or other idols/celebs to add to `+who2edit` you can either do `+suggest` or ping Reece!',
+            title='> Earn XP!',
             color=0x2b2d31
         )
-        embed.set_footer(text="Use the command in Hoshi's channel!")
+        embed.set_footer(text="If you have any questions, feel free to ping @leads or @co lead")
+        embed.add_field(name='What is XP?', value='XP is what levels you up in the server, you can either levels up by just speaking in the server to other members, or you can use a logo and a hashtag in your edits and send it into the thread below!', inline=False)
+        embed.add_field(name='Logo and Hashtag rep', value='Using logos and a hashtag in your edits earns you xp! you can send your edits in the thread below to show us you have used a logo and hashtag.\nThe amount of XP you get is:\nUsing a logo - 1,000xp\nUsing the hashtag - 500xp\nUsing both - 1,500xp', inline=False)
+        embed.add_field(name='Events XP', value='Participating in events will also earn you XP but it varies depending on what the event is! We will tell you how much XP will be earned for the event in <#1125525995655549018>')
         await ctx.send('<@&1122999466438438962>', embed=embed)
 
 
