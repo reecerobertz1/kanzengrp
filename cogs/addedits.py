@@ -26,14 +26,12 @@ class addedits(commands.Cog):
         self.save_edits_data(data)
         await ctx.reply("Your edit added successfully.")
 
-    @commands.command()
-    async def edits(self, ctx):
-        data = self.get_edits_data()
-        if data:
-            response = "\n".join(data)
-            await ctx.reply(f"Add your own edit with `+addedit`\n{response}")
-        else:
-            await ctx.reply("No edit links found.")
+    @commands.group(aliases=['audios'])
+    async def audio(self, ctx):
+        with open("edits.json", "r") as f:
+            audios = json.load(f)
+            choice = random.choice(audios)
+            await ctx.reply(f"Add an audio with `+addaudio`\n{choice}")
 
 async def setup(bot):
     await bot.add_cog(addedits(bot))
