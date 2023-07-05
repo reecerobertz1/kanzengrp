@@ -24,16 +24,16 @@ class addedits(commands.Cog):
         data = self.get_edits_data()
         data.append(link)
         self.save_edits_data(data)
-        await ctx.send("Edit added successfully.")
+        await ctx.reply("Your edit added successfully.")
 
     @commands.command()
     async def edits(self, ctx):
         data = self.get_edits_data()
         if data:
             response = "\n".join(data)
-            await ctx.send(f"Edit links:\n{response}")
+            await ctx.reply(f"Add your own edit with `+addedit`\n{response}")
         else:
-            await ctx.send("No edit links found.")
+            await ctx.reply("No edit links found.")
 
 async def setup(bot):
     await bot.add_cog(addedits(bot))
