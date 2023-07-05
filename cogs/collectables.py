@@ -8,6 +8,7 @@ import random
 class Unlock(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.unlocked_items = {}
 
     @commands.Cog.listener()
     async def on_ready(self):
@@ -79,10 +80,7 @@ class Unlock(commands.Cog):
         emoji = random.choice(unlock_data["emojis"])
         await ctx.send(f"{xp_message} {emoji}")
 
-        if member.id not in self.unlocked_items:
-            self.unlocked_items[member.id] = []
-
-        self.unlocked_items[member.id].append((unlock_level, emoji))
+        self.record_unlocked_item(member.id, unlock_level, emoji)
 
     @commands.command()
     async def unlocked(self, ctx):
@@ -108,6 +106,11 @@ class Unlock(commands.Cog):
         else:
             await ctx.send(f"{member.mention}, you have not unlocked any items yet.")
 
+    def record_unlocked_item(self, member_id, unlock_level, emoji):
+        if member_id not in self.unlocked_items:
+            self.unlocked_items[member_id] = []
+
+        self.unlocked_items[member_id].append((unlock_level, emoji))
 
 async def setup(bot):
     await bot.add_cog(Unlock(bot))
