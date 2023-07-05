@@ -90,7 +90,7 @@ class logos(commands.Cog):
         )
         embed.set_footer(text="Go and use these commands in Hoshi's channel!")
         embed.add_field(name='Adding edits', value='The `+edits` and `+addedit` commands have been added! you can now upload your edits! do +addedit with a streamable link to add your edit! Just a heads up, your edit can be viewed in other servers, even if youre not in them. The `+edits` command just allows you to watch the edits that have been uploaded', inline=False)
-        embed.add_field(name='Adding audios', value='The `+edits` and `+addedit` commands have been fixed! you can now upload audios from soundcloud! do +addaudio with a soundcloud link to add an audio! The `+audios` command will randomly give you an audio added by a member and you can use that audio for your edits!', inline=False)
+        embed.add_field(name='Adding audios', value='The `+audios` and `+addaudio` commands have been fixed! you can now upload audios from soundcloud! do +addaudio with a soundcloud link to add an audio! The `+audios` command will randomly give you an audio added by a member and you can use that audio for your edits!', inline=False)
         await ctx.send('<@&939923109413290005>', embed=embed)
 
 
