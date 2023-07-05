@@ -104,11 +104,12 @@ class Unlock(commands.Cog):
 
         data = self.get_unlock_data()
 
-        if str(member.id) in data:
+        if str(member.id) in data and data[str(member.id)]:
             unlocked_items = ", ".join(data[str(member.id)])
             await ctx.send(f"{member.mention}, you have unlocked the following items: {unlocked_items}")
         else:
             await ctx.send(f"{member.mention}, you have not unlocked any items yet.")
+
 
 async def setup(bot):
     await bot.add_cog(Unlock(bot))
