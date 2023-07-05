@@ -112,5 +112,22 @@ class Unlock(commands.Cog):
 
         self.unlocked_items[member_id].append((unlock_level, emoji))
 
+    @commands.command()
+    async def resetunlocks(self, ctx, member: discord.Member = None):
+        guild_id = 1121841073673736215
+
+        if ctx.guild.id != guild_id:
+            await ctx.send("This command can only be used in the specified server.")
+            return
+
+        member = member or ctx.author
+
+        if member.id in self.unlocked_items:
+            del self.unlocked_items[member.id]
+            await ctx.send(f"Unlocked items for {member.mention} have been reset.")
+        else:
+            await ctx.send(f"{member.mention} does not have any unlocked items.")
+
+
 async def setup(bot):
     await bot.add_cog(Unlock(bot))
