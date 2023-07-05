@@ -80,17 +80,16 @@ class Unlock(commands.Cog):
             if unlock_level == "legendary":
                 embed = discord.Embed(
                     title="Legendary Unlock",
-                    description="Congratulations on unlocking a legendary item!\n\nPlease don't share this with anyone else in the server.",
+                    description="Congratulations on unlocking a legendary item!\nPlease don't share this with anyone else in the server.",
                     color=discord.Color.gold()
                 )
                 await member.send(embed=embed)
                 await unlock_channel.send(f"{member.mention} has unlocked 2000 XP!")
-            else:
-                await ctx.send(f"{xp_message} {random.choice(unlock_data['emojis'])}")
 
-        elif unlock_level in ["common", "uncommon"]:
+        else:
             xp_message = unlock_data["message"]
-            await ctx.send(f"{xp_message} {random.choice(unlock_data['emojis'])}")
+
+        await ctx.send(f"{xp_message} {random.choice(unlock_data['emojis'])}")
 
         guild_unlock_data = self.get_unlock_data(ctx.guild.id)
         if str(member.id) not in guild_unlock_data:
@@ -114,6 +113,7 @@ class Unlock(commands.Cog):
             await ctx.send(f"{member.mention}, you have unlocked the following items: {unlocked_items}")
         else:
             await ctx.send(f"{member.mention}, you have not unlocked any items yet.")
+
 
 
 async def setup(bot):
