@@ -27,12 +27,14 @@ class Unlock(commands.Cog):
             "common": {
                 "message": "Hey! You found a <:common_00000:1126105163225120780> item! Here's a cool badge to add to your collection :",
                 "xp": 0,
-                "emojis": ["emoji1", "emoji2", "emoji3", ...]  # Add 30 different emojis here
+                "emojis": ["<:y_kissy:1126153163901255710>", "<:pr_whatthefuck1:1126153390393655408>", "<:cuteface:1126153241235820574>", "<:brown4:1126153489370861618>", "<:baldpeppa:1126153356323344464>",
+                           "<:Cherry_Blossom:1126153286022594571>", "<:BARKKK:1126153208805458083>", "<:855647520058114078:1126153445582323913>"]  # Add 30 different emojis here
             },
             "uncommon": {
                 "message": "Hey! You found an <:uncommon_00001:1126105110972465193> item! Here's a cool badge to add to your collection :",
                 "xp": 0,
-                "emojis": ["emoji1", "emoji2", "emoji3", ...]  # Add 30 different emojis here
+                "emojis": ["<:brazy_milksip:1126154944404279336>", "<:silly:1126154885050683484>", "<:Lumi_purple_star:1126154848346325082>", "<:evilmilkbear:1126154798257938553>", 
+                           "<:teddy2:1126154757967462411>", "<:5106_Sakurahana:1126154666472898662>", "<:9115_HotLove:1126154597354979388>", "<:868918555939315773:1126154516497170493>"]  # Add 30 different emojis here
             },
             "rare": {
                 "message": "Hey! You found a <:rare_00002:1126105193960984577> item! You found **500 XP** and an badge to add to your collection :",
@@ -109,12 +111,12 @@ class Unlock(commands.Cog):
         unlocked_items = self.unlocked_items.get(member.id, [])
 
         if unlocked_items:
-            embed = discord.Embed(title="Unlocked Items", color=discord.Color.green())
+            embed = discord.Embed(title="Unlocked Items", color=0x2b2d31)
             for item in unlocked_items:
                 rarity = item['rarity'].capitalize()
                 emoji = item['emoji']
                 embed.add_field(name=rarity, value=emoji, inline=False)
-            await ctx.send(embed=embed)
+            await ctx.reply(embed=embed)
         else:
             await ctx.reply(f"You have not unlocked any items yet.")
 
