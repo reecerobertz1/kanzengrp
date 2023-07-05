@@ -106,18 +106,19 @@ class Unlock(commands.Cog):
                 "legendary": []
             }
 
-            for unlock in self.unlocked_items[member.id]:
-                unlock_level, emoji = unlock
-                rarity_categories[unlock_level].append(emoji)
+            for unlock_level, items in self.unlocked_items[member.id].items():
+                for item in items:
+                    rarity_categories[unlock_level].append(item)
 
-            for rarity, emojis in rarity_categories.items():
-                if emojis:
-                    emoji_list = " ".join(emojis)
+            for rarity, items in rarity_categories.items():
+                if items:
+                    emoji_list = " ".join(items)
                     embed.add_field(name=rarity.capitalize(), value=emoji_list, inline=False)
 
             await ctx.send(embed=embed)
         else:
             await ctx.send(f"{member.mention}, you have not unlocked any items yet.")
+
 
 
 
