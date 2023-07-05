@@ -94,18 +94,20 @@ class Unlock(commands.Cog):
         member = ctx.author
 
         if ctx.guild.id != guild_id:
-            await ctx.send("This command can only be used in the specified server.")
+            await ctx.reply("This command can only be used in the specified server.")
             return
 
-        unlocked_items = [f"{item['rarity'].capitalize()} - {item['emoji']}" for item in self.unlocked_items.get(member.id, [])]
+        unlocked_items = self.unlocked_items.get(member.id, [])
 
         if unlocked_items:
-            message = f"{member.mention}, you have unlocked the following items:\n\n"
-            message += "\n".join(unlocked_items)
+            embed = discord.Embed(title="Unlocked Items", color=discord.Color.green())
+            for item in unlocked_items:
+                rarity = item['rarity'].capitalize()
+                emoji = item['emoji']
+                embed.add_field(name=rarity, value=emoji, inline=False)
+            await ctx.send(embed=embed)
         else:
-            message = f"{member.mention}, you have not unlocked any items yet."
-
-        await ctx.send(message)
+            await ctx.reply(f"You have not unlocked any items yet.")
 
     @commands.command()
     async def resetunlocks(self, ctx, member: discord.Member = None):
