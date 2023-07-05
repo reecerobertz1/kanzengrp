@@ -87,9 +87,21 @@ class Unlock(commands.Cog):
             xp_message = unlock_data["message"]
             await ctx.send(f"{xp_message} {random.choice(unlock_data['emojis'])}")
 
+        data = self.get_unlock_data()
+        if str(member.id) not in data:
+            data[str(member.id)] = []
+        data[str(member.id)].append(unlock_level)
+        self.save_unlock_data(data)
+
     @commands.command()
     async def unlocked(self, ctx):
+        server_id = 1121841073673736215
         member = ctx.author
+
+        if ctx.guild.id != server_id:
+            await ctx.send("This command can only be used in the specified server.")
+            return
+
         data = self.get_unlock_data()
 
         if str(member.id) in data:
@@ -97,8 +109,6 @@ class Unlock(commands.Cog):
             await ctx.send(f"{member.mention}, you have unlocked the following items: {unlocked_items}")
         else:
             await ctx.send(f"{member.mention}, you have not unlocked any items yet.")
-
-
 
 async def setup(bot):
     await bot.add_cog(Unlock(bot))
