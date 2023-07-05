@@ -12,7 +12,7 @@ class addedits(commands.Cog):
             with open("edits.json", "r") as file:
                 data = json.load(file)
         except FileNotFoundError:
-            data = {}
+            data = []
         return data
 
     def save_edits_data(self, data):
@@ -21,30 +21,19 @@ class addedits(commands.Cog):
 
     @commands.command()
     async def addedit(self, ctx, link):
-        guild_id = str(ctx.guild.id)
         data = self.get_edits_data()
-
-        if guild_id not in data:
-            data[guild_id] = []
-
-        data[guild_id].append(link)
+        data.append(link)
         self.save_edits_data(data)
         await ctx.send("Edit added successfully.")
 
     @commands.command()
     async def edits(self, ctx):
-        guild_id = str(ctx.guild.id)
         data = self.get_edits_data()
-
-        if guild_id in data:
-            edit_links = data[guild_id]
-            if edit_links:
-                response = "\n".join(edit_links)
-                await ctx.send(f"Edit links for this server:\n{response}")
-            else:
-                await ctx.send("No edit links found for this server.")
+        if data:
+            response = "\n".join(data)
+            await ctx.send(f"Edit links:\n{response}")
         else:
-            await ctx.send("No edit links found for this server.")
+            await ctx.send("No edit links found.")
 
 async def setup(bot):
     await bot.add_cog(addedits(bot))
