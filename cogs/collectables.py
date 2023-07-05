@@ -25,27 +25,27 @@ class Unlock(commands.Cog):
 
         unlock_levels = {
             "common": {
-                "message": "Hey! You found a common item! Here's a cool emoji to add to your collection:",
+                "message": "Hey! You found a common item! Here's a cool emoji to add to your collection :",
                 "xp": 0,
                 "emojis": ["emoji1", "emoji2", "emoji3", ...]  # Add 30 different emojis here
             },
             "uncommon": {
-                "message": "Hey! You found an uncommon item! Here's a cool emoji to add to your collection:",
+                "message": "Hey! You found an uncommon item! Here's a cool emoji to add to your collection :",
                 "xp": 0,
                 "emojis": ["emoji1", "emoji2", "emoji3", ...]  # Add 30 different emojis here
             },
             "rare": {
-                "message": "Hey! You found a rare item! Here's an emoji to add to your collection and 500 XP:",
+                "message": "Hey! You found a rare item! You found **500 XP** and an emoji to add to your collection :",
                 "xp": 500,
                 "emojis": ["emoji1", "emoji2", "emoji3", ...]  # Add 30 different emojis here
             },
             "epic": {
-                "message": "Hey! You found an epic item! Here's an emoji to add to your collection and 1000 XP:",
+                "message": "Hey! You found an epic item! You found **1000 XP** and an emoji to add to your collection :",
                 "xp": 1000,
                 "emojis": ["emoji1", "emoji2", "emoji3", ...]  # Add 30 different emojis here
             },
             "legendary": {
-                "message": "Hey! You found a legendary item! Here's an emoji to add to your collection and 2000 XP:",
+                "message": "Hey! You found a legendary item! You found **2000 XP** and Here's an emoji to add to your collection :",
                 "xp": 2000,
                 "emojis": ["emoji1", "emoji2", "emoji3", ...]  # Add 30 different emojis here
             }
