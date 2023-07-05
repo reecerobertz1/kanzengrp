@@ -93,8 +93,8 @@ class Unlock(commands.Cog):
 
         if member.id in self.unlocked_items and self.unlocked_items[member.id]:
             embed = discord.Embed(
-                title="Unlocked Badges",
-                description="You have unlocked the following items:",
+                title="Unlocked Items",
+                description=f"{member.mention}, you have unlocked the following items:",
                 color=discord.Color.green()
             )
 
@@ -112,11 +112,13 @@ class Unlock(commands.Cog):
 
             for rarity, emojis in rarity_categories.items():
                 if emojis:
-                    embed.add_field(name=rarity.capitalize(), value="\n".join(emojis))
+                    emoji_list = " ".join(emojis)
+                    embed.add_field(name=rarity.capitalize(), value=emoji_list, inline=False)
 
-            await ctx.reply(embed=embed)
+            await ctx.send(embed=embed)
         else:
-            await ctx.reply(f"You have not unlocked any badges yet.")
+            await ctx.send(f"{member.mention}, you have not unlocked any items yet.")
+
 
 
     @commands.command()
