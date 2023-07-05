@@ -7,34 +7,44 @@ class addedits(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command()
-    async def addedit(self, ctx, link: str):
+    def get_edits_data(self):
         try:
-            with open('streamable_links.json', 'r') as file:
+            with open("edits.json", "r") as file:
                 data = json.load(file)
-        except (FileNotFoundError, json.JSONDecodeError):
-            data = []
+        except FileNotFoundError:
+            data = {}
+        return data
 
-        data.append(link)
-
-        with open('streamable_links.json', 'w') as file:
+    def save_edits_data(self, data):
+        with open("edits.json", "w") as file:
             json.dump(data, file, indent=4)
 
-        await ctx.reply("Your edit was added successfully!")
+    @commands.command()
+    async def addedit(self, ctx, link):
+        guild_id = str(ctx.guild.id)
+        data = self.get_edits_data()
+
+        if guild_id not in data:
+            data[guild_id] = []
+
+        data[guild_id].append(link)
+        self.save_edits_data(data)
+        await ctx.send("Edit added successfully.")
 
     @commands.command()
     async def edits(self, ctx):
-        try:
-            with open('streamable_links.json', 'r') as file:
-                data = json.load(file)
-        except (FileNotFoundError, json.JSONDecodeError):
-            data = []
+        guild_id = str(ctx.guild.id)
+        data = self.get_edits_data()
 
-        if len(data) > 0:
-            selected_link = random.choice(data)
-            await ctx.reply('You can upload your own edits by doing `+addedit`', selected_link)
+        if guild_id in data:
+            edit_links = data[guild_id]
+            if edit_links:
+                response = "\n".join(edit_links)
+                await ctx.send(f"Edit links for this server:\n{response}")
+            else:
+                await ctx.send("No edit links found for this server.")
         else:
-            await ctx.reply("No one has added their edit yet! Be the first to add an edit by using the command `addedit (streamable link)`.")
+            await ctx.send("No edit links found for this server.")
 
 async def setup(bot):
     await bot.add_cog(addedits(bot))
