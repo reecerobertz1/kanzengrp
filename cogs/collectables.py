@@ -80,19 +80,12 @@ class Unlock(commands.Cog):
                 )
                 embed.set_author(name=self.bot.user.name, icon_url=self.bot.user.avatar_url)
                 await member.send(embed=embed)
+            else:
+                await ctx.send(f"{xp_message} {random.choice(unlock_data['emojis'])}")
 
-        elif unlock_level in ["common", "uncommon"]:
+        if unlock_level in ["common", "uncommon"]:
             xp_message = unlock_data["message"]
-            emoji = random.choice(unlock_data["emojis"])
-            await ctx.send(f"{xp_message} {emoji}")
-
-        if unlock_level in ["rare", "epic", "legendary"]:
-            data = self.get_unlock_data()
-            if str(member.id) not in data:
-                data[str(member.id)] = []
-
-            data[str(member.id)].append(unlock_level)
-            self.save_unlock_data(data)
+            await ctx.send(f"{xp_message} {random.choice(unlock_data['emojis'])}")
 
     @commands.command()
     async def unlocked(self, ctx):
@@ -104,6 +97,7 @@ class Unlock(commands.Cog):
             await ctx.send(f"{member.mention}, you have unlocked the following items: {unlocked_items}")
         else:
             await ctx.send(f"{member.mention}, you have not unlocked any items yet.")
+
 
 
 async def setup(bot):
