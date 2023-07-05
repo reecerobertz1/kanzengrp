@@ -91,11 +91,11 @@ class Unlock(commands.Cog):
             await ctx.send("This command can only be used in the specified server.")
             return
 
-        unlocked_items = [f"{item['rarity'].capitalize()} - {item['emoji']}" for item in self.unlocked_items if item['member_id'] == member.id]
+        unlocked_items = [f"{item['emoji']}" for item in self.unlocked_items if item['member_id'] == member.id]
 
         if unlocked_items:
-            unlocked_text = "\n".join(unlocked_items)
-            message = f"{member.mention}, you have unlocked the following items:\n\n{unlocked_text}"
+            message = f"{member.mention}, you have unlocked the following items:\n\n"
+            message += "\n".join(unlocked_items)
         else:
             message = f"{member.mention}, you have not unlocked any items yet."
 
