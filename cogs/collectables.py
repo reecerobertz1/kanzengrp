@@ -14,8 +14,8 @@ class Unlock(commands.Cog):
     async def on_ready(self):
         self.unlocked_items = {}
 
-    @commands.command()
-    async def unlock(self, ctx):
+    @commands.command(aliases=['crate', 'crates'])
+    async def opencrate(self, ctx):
         guild_id = 1121841073673736215
         member = ctx.author
 
@@ -97,7 +97,7 @@ class Unlock(commands.Cog):
 
         await ctx.reply(f"{xp_message} {emoji}")
 
-    @commands.command()
+    @commands.command(aliases=['unlocks', 'badges', 'cratesunlocked'])
     async def unlocked(self, ctx):
         guild_id = 1121841073673736215
         member = ctx.author
@@ -118,7 +118,7 @@ class Unlock(commands.Cog):
         else:
             await ctx.reply(f"You have not unlocked any items yet.")
 
-    @commands.command()
+    @commands.command(aliases=['resetcrates', 'rc'])
     async def resetunlocks(self, ctx, member: discord.Member = None):
         guild_id = 1121841073673736215
 
