@@ -78,15 +78,24 @@ class Unlock(commands.Cog):
             xp_message = unlock_data["message"]
 
         emoji = random.choice(unlock_data["emojis"])
-        await ctx.reply(f"{xp_message} {emoji}")
 
-        self.record_unlocked_item(member.id, unlock_level, emoji)
-
-    def record_unlocked_item(self, member_id, rarity, emoji):
-        if member_id in self.unlocked_items:
-            self.unlocked_items[member_id].append({"rarity": rarity, "emoji": emoji})
+        # Check if the member has already unlocked the current rarity
+        if member.id in self.unlocked_items:
+            unlocked_rarities = [item['rarity'] for item in self.unlocked_items[member.id]]
+            if unlock_level in unlocked_rarities:
+                # Rarity already unlocked, append emoji to the existing rarity entry
+                for item in self.unlocked_items[member.id]:
+                    if item['rarity'] == unlock_level:
+                        item['emoji'] += f" {emoji}"
+                        break
+            else:
+                # Rarity not unlocked yet, create a new entry
+                self.unlocked_items[member.id].append({'rarity': unlock_level, 'emoji': emoji})
         else:
-            self.unlocked_items[member_id] = [{"rarity": rarity, "emoji": emoji}]
+            # First unlocked item for the member, create a new entry
+            self.unlocked_items[member.id] = [{'rarity': unlock_level, 'emoji': emoji}]
+
+        await ctx.reply(f"{xp_message} {emoji}")
 
     @commands.command()
     async def unlocked(self, ctx):
