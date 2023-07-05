@@ -52,7 +52,7 @@ class Unlock(commands.Cog):
                            "<a:btstata:1126189188635701248>", "<a:btskoya:1126189143957975051>", "<a:btsmang:1126189090635776041>", "<a:koyalove:1126189052622798869>"]  
             },
             "legendary": {
-                "message": "Hey! You found a <a:Lumi_star_spin:1126224020052910200> **LEGENDARY** item! You found **2000 XP** and Here's an badge to add to your collection :",
+                "message": "Hey! You found a <a:Lumi_star_spin:1126224020052910200> **LEGENDARY** item! You found **2000 XP** and a legendary Kanzen logo! Also here's an badge to add to your collection :",
                 "xp": 2000,
                 "emojis": ["e<a:811648167112212491:837044274868387862>", "<a:blobHYPERS:1076908032803479632>", "<a:miaumiau:1079242555310489610>", "<a:jeb:736589028991959090>", "<a:bunnygirl:1126202805833695242>",
                            "<a:blobcatdance:1101809422147268678>", "<a:blobparty:869277338779648100>", "<a:taesip:1126193847278510101>", "<:boobs:1126193765762203770><:boobs:1126197577189179462>", "<:hobi:1126193730538459287>", 
@@ -76,9 +76,13 @@ class Unlock(commands.Cog):
             await unlock_channel.send(f"{member.mention} has found {xp} XP!")
 
             if unlock_level == "legendary":
+                logos = ['https://mega.nz/file/2R0nBCYT#itQpn374M_BMNKHIeLub0iOk2Z-YZfPe36OrcgMoadc',
+                         'https://mega.nz/file/DdEglTgb#oaP2yiLhBrBn1PHaVeJyQEOaUChWKleIXC_lhEuE460',
+                         'https://mega.nz/file/Xc8mAArA#NpaPbCZDqgPQlzUt0Tfz-za3WSaXibHmhNgpxc_lyC8']
+                logolinks = random.choice(logos)
                 embed = discord.Embed(
                     title="Legendary Unlock",
-                    description=f"{member.mention}, you have unlocked a legendary item!",
+                    description=f"You have unlocked a legendary logo! please don't share the link with anyone else\n[click here]({logolinks})",
                     color=discord.Color.gold()
                 )
                 await member.send(embed=embed)
