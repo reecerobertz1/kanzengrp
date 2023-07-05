@@ -25,25 +25,25 @@ class Unlock(commands.Cog):
 
         unlock_levels = {
             "common": {
-                "message": "Hey! You found a <:common_00000:1126105163225120780> item! Here's a cool badge to add to your collection :",
+                "message": "Hey! You found a **COMMON** item! Here's a cool badge to add to your collection :",
                 "xp": 0,
                 "emojis": ["<:y_kissy:1126153163901255710>", "<:pr_whatthefuck1:1126153390393655408>", "<:cuteface:1126153241235820574>", "<:brown4:1126153489370861618>", "<:baldpeppa:1126153356323344464>",
                            "<:Cherry_Blossom:1126153286022594571>", "<:BARKKK:1126153208805458083>", "<:855647520058114078:1126153445582323913>"]  
             },
             "uncommon": {
-                "message": "Hey! You found an <:uncommon_00001:1126105110972465193> item! Here's a cool badge to add to your collection :",
+                "message": "Hey! You found an **UNCOMMON** item! Here's a cool badge to add to your collection :",
                 "xp": 0,
                 "emojis": ["<:brazy_milksip:1126154944404279336>", "<:silly:1126154885050683484>", "<:Lumi_purple_star:1126154848346325082>", "<:evilmilkbear:1126154798257938553>", 
                            "<:teddy2:1126154757967462411>", "<:5106_Sakurahana:1126154666472898662>", "<:9115_HotLove:1126154597354979388>", "<:868918555939315773:1126154516497170493>"]  
             },
             "rare": {
-                "message": "Hey! You found a <:rare_00002:1126105193960984577> item! You found **500 XP** and an badge to add to your collection :",
+                "message": "Hey! You found a **RARE** item! You found **500 XP** and an badge to add to your collection :",
                 "xp": 500,
                 "emojis": ["<:chimmy:1126187703243911278>", "<:frogyay:1126187746520731668>", "<:cooky:1126187789965340752>", "<:koya:1126187845271429260>", "<:mang:1126187898652332102>",
                            "<:shooky:1126187943061622886>", "<:rj:1126187982819446825>", "<:tata:1126188044098220134>"]  
             },
             "epic": {
-                "message": "Hey! You found an <:epic_00003:1126105134552850452> item! You found **1000 XP** and an badge to add to your collection :",
+                "message": "Hey! You found an **EPIC** item! You found **1000 XP** and an badge to add to your collection :",
                 "xp": 1000,
                 "emojis": ["<a:Lumi_penguinfall:1126190036627496970>", "<a:Spongebob:1126189963269124156>", "<a:cinnamorollhappylollipop:1126189918713028709>", "<a:GARY:1126189877952778340>", 
                            "<a:9440bugcatb2:1126189832725598309>", "<a:bun:1126189794196717588>", "<a:bearhugz:1126189744922050702>", "<a:cred:1126189703423602860>", "<a:abounce:1126190811554525346>",
@@ -52,7 +52,7 @@ class Unlock(commands.Cog):
                            "<a:btstata:1126189188635701248>", "<a:btskoya:1126189143957975051>", "<a:btsmang:1126189090635776041> <a:koyalove:1126189052622798869>"]  
             },
             "legendary": {
-                "message": "Hey! You found a <:legendary_00004:1126105079892680786> item! You found **2000 XP** and Here's an badge to add to your collection :",
+                "message": "Hey! You found a <a:Lumi_star_spin:1126224020052910200> **LEGENDARY** item! You found **2000 XP** and Here's an badge to add to your collection :",
                 "xp": 2000,
                 "emojis": ["e<a:811648167112212491:837044274868387862>", "<a:blobHYPERS:1076908032803479632>", "<a:miaumiau:1079242555310489610>", "<a:jeb:736589028991959090>", "<a:bunnygirl:741256335290662912>",
                            "<a:blobcatdance:1101809422147268678>", "<a:blobparty:869277338779648100>", "<a:taesip:1126193847278510101>", "<:boobs:1126193765762203770><:boobs:1126197577189179462>", "<:hobi:1126193730538459287>", 
