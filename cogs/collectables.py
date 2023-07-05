@@ -25,27 +25,27 @@ class Unlock(commands.Cog):
 
         unlock_levels = {
             "common": {
-                "message": "Hey! You found a common item! Here's a cool emoji to add to your collection :",
+                "message": "Hey! You found a <:common_00000:1126105163225120780> item! Here's a cool emoji to add to your collection :",
                 "xp": 0,
                 "emojis": ["emoji1", "emoji2", "emoji3", ...]  # Add 30 different emojis here
             },
             "uncommon": {
-                "message": "Hey! You found an uncommon item! Here's a cool emoji to add to your collection :",
+                "message": "Hey! You found an <:uncommon_00001:1126105110972465193> item! Here's a cool emoji to add to your collection :",
                 "xp": 0,
                 "emojis": ["emoji1", "emoji2", "emoji3", ...]  # Add 30 different emojis here
             },
             "rare": {
-                "message": "Hey! You found a rare item! You found **500 XP** and an emoji to add to your collection :",
+                "message": "Hey! You found a <:rare_00002:1126105193960984577> item! You found **500 XP** and an emoji to add to your collection :",
                 "xp": 500,
                 "emojis": ["emoji1", "emoji2", "emoji3", ...]  # Add 30 different emojis here
             },
             "epic": {
-                "message": "Hey! You found an epic item! You found **1000 XP** and an emoji to add to your collection :",
+                "message": "Hey! You found an <:epic_00003:1126105134552850452> item! You found **1000 XP** and an emoji to add to your collection :",
                 "xp": 1000,
                 "emojis": ["emoji1", "emoji2", "emoji3", ...]  # Add 30 different emojis here
             },
             "legendary": {
-                "message": "Hey! You found a legendary item! You found **2000 XP** and Here's an emoji to add to your collection :",
+                "message": "Hey! You found a <:legendary_00004:1126105079892680786> item! You found **2000 XP** and Here's an emoji to add to your collection :",
                 "xp": 2000,
                 "emojis": ["emoji1", "emoji2", "emoji3", ...]  # Add 30 different emojis here
             }
