@@ -9,22 +9,9 @@ class Unlock(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    def get_unlock_data(self, guild_id):
-        if guild_id not in self.unlock_data:
-            self.unlock_data[guild_id] = {}
-        return self.unlock_data[guild_id]
-
-    def save_unlock_data(self):
-        with open("unlock_data.json", "w") as file:
-            json.dump(self.unlock_data, file, indent=4)
-
     @commands.Cog.listener()
     async def on_ready(self):
-        try:
-            with open("unlock_data.json", "r") as file:
-                self.unlock_data = json.load(file)
-        except FileNotFoundError:
-            self.unlock_data = {}
+        self.unlocked_items = {}
 
     @commands.command()
     async def unlock(self, ctx):
@@ -80,7 +67,7 @@ class Unlock(commands.Cog):
             if unlock_level == "legendary":
                 embed = discord.Embed(
                     title="Legendary Unlock",
-                    description="Congratulations on unlocking a legendary item!\nPlease don't share this with anyone else in the server.",
+                    description=f"{member.mention}, you have unlocked a legendary item!",
                     color=discord.Color.gold()
                 )
                 await member.send(embed=embed)
@@ -89,13 +76,13 @@ class Unlock(commands.Cog):
         else:
             xp_message = unlock_data["message"]
 
-        await ctx.send(f"{xp_message} {random.choice(unlock_data['emojis'])}")
+        emoji = random.choice(unlock_data["emojis"])
+        await ctx.send(f"{xp_message} {emoji}")
 
-        guild_unlock_data = self.get_unlock_data(ctx.guild.id)
-        if str(member.id) not in guild_unlock_data:
-            guild_unlock_data[str(member.id)] = []
-        guild_unlock_data[str(member.id)].append(unlock_level)
-        self.save_unlock_data()
+        if member.id not in self.unlocked_items:
+            self.unlocked_items[member.id] = []
+
+        self.unlocked_items[member.id].append((unlock_level, emoji))
 
     @commands.command()
     async def unlocked(self, ctx):
@@ -106,14 +93,20 @@ class Unlock(commands.Cog):
             await ctx.send("This command can only be used in the specified server.")
             return
 
-        guild_unlock_data = self.get_unlock_data(ctx.guild.id)
+        if member.id in self.unlocked_items and self.unlocked_items[member.id]:
+            embed = discord.Embed(
+                title="Unlocked Items",
+                description=f"{member.mention}, you have unlocked the following items:",
+                color=discord.Color.green()
+            )
 
-        if str(member.id) in guild_unlock_data and guild_unlock_data[str(member.id)]:
-            unlocked_items = ", ".join(guild_unlock_data[str(member.id)])
-            await ctx.send(f"{member.mention}, you have unlocked the following items: {unlocked_items}")
+            for unlock in self.unlocked_items[member.id]:
+                unlock_level, emoji = unlock
+                embed.add_field(name=unlock_level.capitalize(), value=emoji)
+
+            await ctx.send(embed=embed)
         else:
             await ctx.send(f"{member.mention}, you have not unlocked any items yet.")
-
 
 
 async def setup(bot):
