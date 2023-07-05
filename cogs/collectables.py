@@ -49,7 +49,7 @@ class Unlock(commands.Cog):
                            "<a:9440bugcatb2:1126189832725598309>", "<a:bun:1126189794196717588>", "<a:bearhugz:1126189744922050702>", "<a:cred:1126189703423602860>", "<a:abounce:1126190811554525346>",
                            "<a:abounce:1126189618824499271>", "<a:btstaekook:1126189565472948384>", "<a:btscooky:1126191193584312350>", "<a:btschimmy:1126189488419381371>", "<a:btsrj:1126189228242509876>",
                            "<a:btsshooky:1126189405044998244>", "<a:cpurple:1126189354411380906>", "<a:btskoyashooky:1126189313311391855>", "<a:p:1126189265383079966>", "<a:btsrj:1126189447021604916>", 
-                           "<a:btstata:1126189188635701248>", "<a:btskoya:1126189143957975051>", "<a:btsmang:1126189090635776041> <a:koyalove:1126189052622798869>"]  
+                           "<a:btstata:1126189188635701248>", "<a:btskoya:1126189143957975051>", "<a:btsmang:1126189090635776041>", "<a:koyalove:1126189052622798869>"]  
             },
             "legendary": {
                 "message": "Hey! You found a <a:Lumi_star_spin:1126224020052910200> **LEGENDARY** item! You found **2000 XP** and Here's an badge to add to your collection :",
