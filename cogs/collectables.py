@@ -82,6 +82,12 @@ class Unlock(commands.Cog):
 
         self.record_unlocked_item(member.id, unlock_level, emoji)
 
+    def record_unlocked_item(self, member_id, rarity, emoji):
+        if member_id in self.unlocked_items:
+            self.unlocked_items[member_id].append({"rarity": rarity, "emoji": emoji})
+        else:
+            self.unlocked_items[member_id] = [{"rarity": rarity, "emoji": emoji}]
+
     @commands.command()
     async def unlocked(self, ctx):
         guild_id = 1121841073673736215
@@ -91,7 +97,7 @@ class Unlock(commands.Cog):
             await ctx.send("This command can only be used in the specified server.")
             return
 
-        unlocked_items = [f"{item['emoji']}" for item in self.unlocked_items if item['member_id'] == member.id]
+        unlocked_items = [f"{item['rarity'].capitalize()} - {item['emoji']}" for item in self.unlocked_items.get(member.id, [])]
 
         if unlocked_items:
             message = f"{member.mention}, you have unlocked the following items:\n\n"
