@@ -25,27 +25,27 @@ class Unlock(commands.Cog):
 
         unlock_levels = {
             "common": {
-                "message": "Hey! You found a <:common_00000:1126105163225120780> item! Here's a cool emoji to add to your collection :",
+                "message": "Hey! You found a <:common_00000:1126105163225120780> item! Here's a cool badge to add to your collection :",
                 "xp": 0,
                 "emojis": ["emoji1", "emoji2", "emoji3", ...]  # Add 30 different emojis here
             },
             "uncommon": {
-                "message": "Hey! You found an <:uncommon_00001:1126105110972465193> item! Here's a cool emoji to add to your collection :",
+                "message": "Hey! You found an <:uncommon_00001:1126105110972465193> item! Here's a cool badge to add to your collection :",
                 "xp": 0,
                 "emojis": ["emoji1", "emoji2", "emoji3", ...]  # Add 30 different emojis here
             },
             "rare": {
-                "message": "Hey! You found a <:rare_00002:1126105193960984577> item! You found **500 XP** and an emoji to add to your collection :",
+                "message": "Hey! You found a <:rare_00002:1126105193960984577> item! You found **500 XP** and an badge to add to your collection :",
                 "xp": 500,
                 "emojis": ["emoji1", "emoji2", "emoji3", ...]  # Add 30 different emojis here
             },
             "epic": {
-                "message": "Hey! You found an <:epic_00003:1126105134552850452> item! You found **1000 XP** and an emoji to add to your collection :",
+                "message": "Hey! You found an <:epic_00003:1126105134552850452> item! You found **1000 XP** and an badge to add to your collection :",
                 "xp": 1000,
                 "emojis": ["emoji1", "emoji2", "emoji3", ...]  # Add 30 different emojis here
             },
             "legendary": {
-                "message": "Hey! You found a <:legendary_00004:1126105079892680786> item! You found **2000 XP** and Here's an emoji to add to your collection :",
+                "message": "Hey! You found a <:legendary_00004:1126105079892680786> item! You found **2000 XP** and Here's an badge to add to your collection :",
                 "xp": 2000,
                 "emojis": ["emoji1", "emoji2", "emoji3", ...]  # Add 30 different emojis here
             }
@@ -93,24 +93,31 @@ class Unlock(commands.Cog):
 
         if member.id in self.unlocked_items and self.unlocked_items[member.id]:
             embed = discord.Embed(
-                title=f"{member.name}'s unlocked items",
-                description=f"You have unlocked the following items:",
-                color=0x2b2d31
+                title="Unlocked Badges",
+                description="You have unlocked the following items:",
+                color=discord.Color.green()
             )
+
+            rarity_categories = {
+                "common": [],
+                "uncommon": [],
+                "rare": [],
+                "epic": [],
+                "legendary": []
+            }
 
             for unlock in self.unlocked_items[member.id]:
                 unlock_level, emoji = unlock
-                embed.add_field(name=unlock_level.capitalize(), value=emoji)
+                rarity_categories[unlock_level].append(emoji)
+
+            for rarity, emojis in rarity_categories.items():
+                if emojis:
+                    embed.add_field(name=rarity.capitalize(), value="\n".join(emojis))
 
             await ctx.reply(embed=embed)
         else:
-            await ctx.reply("You have not unlocked any items yet.")
+            await ctx.reply(f"You have not unlocked any badges yet.")
 
-    def record_unlocked_item(self, member_id, unlock_level, emoji):
-        if member_id not in self.unlocked_items:
-            self.unlocked_items[member_id] = []
-
-        self.unlocked_items[member_id].append((unlock_level, emoji))
 
     @commands.command()
     async def resetunlocks(self, ctx, member: discord.Member = None):
