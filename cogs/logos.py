@@ -85,14 +85,13 @@ class logos(commands.Cog):
     @commands.command()
     async def answerlol(self, ctx):
         embed = discord.Embed(
-            title='> Earn XP!',
+            title='New update!',
             color=0x2b2d31
         )
-        embed.set_footer(text="If you have any questions, feel free to ping @leads or @co lead")
-        embed.add_field(name='What is XP?', value='XP is what levels you up in the server, you can either levels up by just speaking in the server to other members, or you can use a logo and a hashtag in your edits and send it into the thread below!', inline=False)
-        embed.add_field(name='Logo and Hashtag rep', value='Using logos and a hashtag in your edits earns you xp! you can send your edits in the thread below to show us you have used a logo and hashtag.\n\n> **__The amount of XP you get is:__**\n- Using a logo - **1,000xp**\n- Using the hashtag - **500xp**\n- Using both - **1,500xp**', inline=False)
-        embed.add_field(name='Events XP', value='Participating in events will also earn you XP but it varies depending on what the event is! We will tell you how much XP will be earned for the event in <#1125525995655549018>')
-        await ctx.send(embed=embed)
+        embed.set_footer(text="Go and use these commands in Hoshi's channel!")
+        embed.add_field(name='Adding edits', value='The `+edits` and `+addedit` commands have been added! you can now upload your edits! do +addedit with a streamable link to add your edit! Just a heads up, your edit can be viewed in other servers, even if youre not in them. The `+edits` command just allows you to watch the edits that have been uploaded', inline=False)
+        embed.add_field(name='Adding audios', value='The `+edits` and `+addedit` commands have been fixed! you can now upload audios from soundcloud! do +addaudio with a soundcloud link to add an audio! The `+audios` command will randomly give you an audio added by a member and you can use that audio for your edits!', inline=False)
+        await ctx.send('<@&1122999466438438962>', embed=embed)
 
 
 async def setup(bot):
