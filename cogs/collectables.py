@@ -72,32 +72,27 @@ class Unlock(commands.Cog):
             unlock_channel = self.bot.get_channel(channel_id)
             await unlock_channel.send(f"{member.mention} has found {xp} XP!")
 
+            if unlock_level == "legendary":
+                embed = discord.Embed(
+                    title="Legendary Unlock",
+                    description="Congratulations on unlocking a legendary item!\nPlease don't share this with anyone else in the server.",
+                    color=discord.Color.gold()
+                )
+                embed.set_author(name=self.bot.user.name, icon_url=self.bot.user.avatar_url)
+                await member.send(embed=embed)
+
         elif unlock_level in ["common", "uncommon"]:
             xp_message = unlock_data["message"]
             emoji = random.choice(unlock_data["emojis"])
             await ctx.send(f"{xp_message} {emoji}")
 
-        else:
-            xp_message = None
+        if unlock_level in ["rare", "epic", "legendary"]:
+            data = self.get_unlock_data()
+            if str(member.id) not in data:
+                data[str(member.id)] = []
 
-        if unlock_level == "legendary":
-            embed = discord.Embed(
-                title="Legendary Unlock",
-                description="Congratulations on unlocking a legendary item!\nPlease don't share this with anyone else in the server.",
-                color=discord.Color.gold()
-            )
-            embed.set_author(name=self.bot.user.name, icon_url=self.bot.user.avatar_url)
-            await member.send(embed=embed)
-
-        if xp_message:
-            await ctx.send(xp_message)
-
-        data = self.get_unlock_data()
-        if str(member.id) not in data:
-            data[str(member.id)] = []
-
-        data[str(member.id)].append(unlock_level)
-        self.save_unlock_data(data)
+            data[str(member.id)].append(unlock_level)
+            self.save_unlock_data(data)
 
     @commands.command()
     async def unlocked(self, ctx):
@@ -109,6 +104,7 @@ class Unlock(commands.Cog):
             await ctx.send(f"{member.mention}, you have unlocked the following items: {unlocked_items}")
         else:
             await ctx.send(f"{member.mention}, you have not unlocked any items yet.")
+
 
 async def setup(bot):
     await bot.add_cog(Unlock(bot))
