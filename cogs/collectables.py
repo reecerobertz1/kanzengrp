@@ -98,29 +98,13 @@ class Unlock(commands.Cog):
                 color=discord.Color.green()
             )
 
-            rarity_categories = {
-                "common": [],
-                "uncommon": [],
-                "rare": [],
-                "epic": [],
-                "legendary": []
-            }
-
             for unlock_level, items in self.unlocked_items[member.id].items():
-                for item in items:
-                    rarity_categories[unlock_level].append(item)
-
-            for rarity, items in rarity_categories.items():
-                if items:
-                    emoji_list = " ".join(items)
-                    embed.add_field(name=rarity.capitalize(), value=emoji_list, inline=False)
+                items_list = "\n".join(items)
+                embed.add_field(name=unlock_level.capitalize(), value=items_list, inline=False)
 
             await ctx.send(embed=embed)
         else:
             await ctx.send(f"{member.mention}, you have not unlocked any items yet.")
-
-
-
 
     @commands.command()
     async def resetunlocks(self, ctx, member: discord.Member = None):
