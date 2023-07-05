@@ -8,7 +8,6 @@ import random
 class Unlock(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.cooldown = commands.CooldownMapping.from_cooldown(1, 24*60*60, commands.BucketType.user)
 
     def get_unlock_data(self):
         try:
@@ -27,47 +26,66 @@ class Unlock(commands.Cog):
         server_id = 1121841073673736215
         channel_id = 1125999933149949982
         member = ctx.author
-        now = datetime.datetime.utcnow()
-        cooldown_bucket = self.cooldown.get_bucket(ctx.message)
-        retry_after = cooldown_bucket.update_rate_limit()
-
-        if retry_after:
-            seconds = round(retry_after)
-            minutes, seconds = divmod(seconds, 60)
-            hours, minutes = divmod(minutes, 60)
-            await ctx.send(f"Please wait {hours} hours, {minutes} minutes, and {seconds} seconds before using this command again.")
-            return
 
         if ctx.guild.id != server_id:
             await ctx.send("This command can only be used in the specified server.")
             return
 
         unlock_levels = {
-            "common": 0,
-            "uncommon": 0,
-            "rare": 500,
-            "epic": 1000,
-            "legendary": 2000
+            "common": {
+                "message": "Hey! You found a common item! Here's a cool emoji to add to your collection:",
+                "xp": 0,
+                "emojis": ["emoji1", "emoji2", "emoji3", ...]  # Add 30 different emojis here
+            },
+            "uncommon": {
+                "message": "Hey! You found an uncommon item! Here's a cool emoji to add to your collection:",
+                "xp": 0,
+                "emojis": ["emoji1", "emoji2", "emoji3", ...]  # Add 30 different emojis here
+            },
+            "rare": {
+                "message": "Hey! You found a rare item! Here's an emoji to add to your collection and 500 XP:",
+                "xp": 500,
+                "emojis": ["emoji1", "emoji2", "emoji3", ...]  # Add 30 different emojis here
+            },
+            "epic": {
+                "message": "Hey! You found an epic item! Here's an emoji to add to your collection and 1000 XP:",
+                "xp": 1000,
+                "emojis": ["emoji1", "emoji2", "emoji3", ...]  # Add 30 different emojis here
+            },
+            "legendary": {
+                "message": "Hey! You found a legendary item! Here's an emoji to add to your collection and 2000 XP:",
+                "xp": 2000,
+                "emojis": ["emoji1", "emoji2", "emoji3", ...]  # Add 30 different emojis here
+            }
         }
 
-        unlock_level = random.choice(["common", "uncommon", "rare", "epic", "legendary"])
-        xp = unlock_levels[unlock_level]
+        unlock_level = random.choices(
+            ["common", "uncommon", "rare", "epic", "legendary"],
+            weights=[40, 30, 15, 10, 5],
+            k=1
+        )[0]
+        unlock_data = unlock_levels[unlock_level]
 
-        if unlock_level in ["rare", "epic"]:
-            xp_message = f"You have unlocked {xp}xp!"
+        if unlock_level in ["rare", "epic", "legendary"]:
+            xp = unlock_data["xp"]
+            xp_message = unlock_data["message"]
             unlock_channel = self.bot.get_channel(channel_id)
-            await unlock_channel.send(f"{member.mention} has unlocked - {xp} xp")
+            await unlock_channel.send(f"{member.mention} has found {xp} XP!")
 
-        elif unlock_level == "legendary":
-            xp_message = f"You have unlocked a legendary logo! Check your dms!"
-            unlock_channel = self.bot.get_channel(channel_id)
-            await unlock_channel.send(f"{member.mention} has unlocked {xp}xp")
+        elif unlock_level in ["common", "uncommon"]:
+            xp_message = unlock_data["message"]
+            emoji = random.choice(unlock_data["emojis"])
+            await ctx.send(f"{xp_message} {emoji}")
 
         else:
             xp_message = None
 
         if unlock_level == "legendary":
-            embed = discord.Embed(title="Legendary Unlock", description="Congratulations on unlocking a legendary logo [click here](https://streamable.com/6l2840)!\nPlease don't share this logo with anyone else in the server!", color=discord.Color.gold())
+            embed = discord.Embed(
+                title="Legendary Unlock",
+                description="Congratulations on unlocking a legendary item!\nPlease don't share this with anyone else in the server.",
+                color=discord.Color.gold()
+            )
             embed.set_author(name=self.bot.user.name, icon_url=self.bot.user.avatar_url)
             await member.send(embed=embed)
 
