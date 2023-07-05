@@ -34,8 +34,10 @@ class Help(commands.Cog):
             ],
             "> Editing commands": [
                 {"name": "+transition", "value": "Get a random transition to use in your edit", "inline": False},
-                {"name": "+audio (is not working)", "value": "Get an audio added by a member to use for your edit", "inline": False},
-                {"name": "+addaudio (is not working)", "value": "Add an audio from SoundCloud for others to use", "inline": False},
+                {"name": "+audio", "value": "Get an audio added by a member to use for your edit", "inline": False},
+                {"name": "+addaudio", "value": "Add an audio from SoundCloud for others to use", "inline": False},
+                {"name": "+addedit", "value": "Add your own edit to Hoshi (must be a streamable link)", "inline": False},
+                {"name": "+edits", "value": "Watch edits added from members of, Aura, Kanzen and Daegu", "inline": False},
                 {"name": "+effects", "value": "Get a random effect to use in your edit", "inline": False},
                 {"name": "+colorscheme", "value": "Get a random color scheme to use in your edit", "inline": False},
                 {"name": "", "value": "`[page 3/7]`", "inline": True}
