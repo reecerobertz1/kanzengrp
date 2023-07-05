@@ -95,20 +95,21 @@ class Unlock(commands.Cog):
 
     @commands.command()
     async def unlocked(self, ctx):
-        server_id = 1121841073673736215
+        guild_id = 1121841073673736215
         member = ctx.author
 
-        if ctx.guild.id != server_id:
+        if ctx.guild.id != guild_id:
             await ctx.send("This command can only be used in the specified server.")
             return
 
-        data = self.get_unlock_data()
+        guild_unlock_data = self.get_unlock_data(ctx.guild.id)
 
-        if str(member.id) in data and data[str(member.id)]:
-            unlocked_items = ", ".join(data[str(member.id)])
+        if str(member.id) in guild_unlock_data and guild_unlock_data[str(member.id)]:
+            unlocked_items = ", ".join(guild_unlock_data[str(member.id)])
             await ctx.send(f"{member.mention}, you have unlocked the following items: {unlocked_items}")
         else:
             await ctx.send(f"{member.mention}, you have not unlocked any items yet.")
+
 
 
 async def setup(bot):
