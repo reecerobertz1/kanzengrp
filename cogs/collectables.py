@@ -107,21 +107,30 @@ class Unlock(commands.Cog):
             await ctx.send(f"{member.mention}, you have not unlocked any items yet.")
 
     @commands.command()
-    async def resetunlocks(self, ctx, member: discord.Member = None):
+    async def unlocked(self, ctx):
         guild_id = 1121841073673736215
+        member = ctx.author
 
         if ctx.guild.id != guild_id:
-            await ctx.reply("This command can only be used in the specified server.")
+            await ctx.send("This command can only be used in the specified server.")
             return
 
-        member = member or ctx.author
+        if member.id in self.unlocked_items and self.unlocked_items[member.id]:
+            unlocked_list = []
 
-        if member.id in self.unlocked_items:
-            del self.unlocked_items[member.id]
-            await ctx.send(f"Unlocked items for {member.mention} have been reset.")
+            for unlock_level, items in self.unlocked_items[member.id].items():
+                for item in items:
+                    unlocked_list.append(f"{unlock_level.capitalize()} - {item}")
+
+            if unlocked_list:
+                unlocked_text = "\n".join(unlocked_list)
+                message = f"{member.mention}, you have unlocked the following items:\n\n{unlocked_text}"
+            else:
+                message = f"{member.mention}, you have not unlocked any items yet."
+
+            await ctx.send(message)
         else:
-            await ctx.reply(f"{member.mention} does not have any unlocked items.")
-
+            await ctx.send(f"{member.mention}, you have not unlocked any items yet.")
 
 async def setup(bot):
     await bot.add_cog(Unlock(bot))
