@@ -20,7 +20,7 @@ class Unlock(commands.Cog):
         member = ctx.author
 
         if ctx.guild.id != guild_id:
-            await ctx.send("This command can only be used in the specified server.")
+            await ctx.reply("This command can only be used in the specified server.")
             return
 
         unlock_levels = {
@@ -78,7 +78,7 @@ class Unlock(commands.Cog):
             xp_message = unlock_data["message"]
 
         emoji = random.choice(unlock_data["emojis"])
-        await ctx.send(f"{xp_message} {emoji}")
+        await ctx.reply(f"{xp_message} {emoji}")
 
         self.record_unlocked_item(member.id, unlock_level, emoji)
 
@@ -93,18 +93,18 @@ class Unlock(commands.Cog):
 
         if member.id in self.unlocked_items and self.unlocked_items[member.id]:
             embed = discord.Embed(
-                title="Unlocked Items",
-                description=f"{member.mention}, you have unlocked the following items:",
-                color=discord.Color.green()
+                title=f"{member.name}'s unlocked items",
+                description=f"You have unlocked the following items:",
+                color=0x2b2d31
             )
 
             for unlock in self.unlocked_items[member.id]:
                 unlock_level, emoji = unlock
                 embed.add_field(name=unlock_level.capitalize(), value=emoji)
 
-            await ctx.send(embed=embed)
+            await ctx.reply(embed=embed)
         else:
-            await ctx.send(f"{member.mention}, you have not unlocked any items yet.")
+            await ctx.reply("You have not unlocked any items yet.")
 
     def record_unlocked_item(self, member_id, unlock_level, emoji):
         if member_id not in self.unlocked_items:
@@ -117,7 +117,7 @@ class Unlock(commands.Cog):
         guild_id = 1121841073673736215
 
         if ctx.guild.id != guild_id:
-            await ctx.send("This command can only be used in the specified server.")
+            await ctx.reply("This command can only be used in the specified server.")
             return
 
         member = member or ctx.author
@@ -126,7 +126,7 @@ class Unlock(commands.Cog):
             del self.unlocked_items[member.id]
             await ctx.send(f"Unlocked items for {member.mention} have been reset.")
         else:
-            await ctx.send(f"{member.mention} does not have any unlocked items.")
+            await ctx.reply(f"{member.mention} does not have any unlocked items.")
 
 
 async def setup(bot):
