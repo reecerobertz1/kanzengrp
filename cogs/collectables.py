@@ -25,39 +25,39 @@ class Unlock(commands.Cog):
 
         unlock_levels = {
             "common": {
-                "message": "Hey! You found a **COMMON** item! Here's a cool badge to add to your collection :",
+                "message": "Hey! You found a **COMMON** item! Here's a cool badge to add to your collection:",
                 "xp": 0,
                 "emojis": ["<:y_kissy:1126153163901255710>", "<:pr_whatthefuck1:1126153390393655408>", "<:cuteface:1126153241235820574>", "<:brown4:1126153489370861618>", "<:baldpeppa:1126153356323344464>",
-                           "<:Cherry_Blossom:1126153286022594571>", "<:BARKKK:1126153208805458083>", "<:855647520058114078:1126153445582323913>"]  
+                           "<:Cherry_Blossom:1126153286022594571>", "<:BARKKK:1126153208805458083>", "<:855647520058114078:1126153445582323913>"]
             },
             "uncommon": {
-                "message": "Hey! You found an **UNCOMMON** item! Here's a cool badge to add to your collection :",
+                "message": "Hey! You found an **UNCOMMON** item! Here's a cool badge to add to your collection:",
                 "xp": 0,
-                "emojis": ["<:brazy_milksip:1126154944404279336>", "<:silly:1126154885050683484>", "<:Lumi_purple_star:1126154848346325082>", "<:evilmilkbear:1126154798257938553>", 
-                           "<:teddy2:1126154757967462411>", "<:5106_Sakurahana:1126154666472898662>", "<:9115_HotLove:1126154597354979388>", "<:868918555939315773:1126154516497170493>"]  
+                "emojis": ["<:brazy_milksip:1126154944404279336>", "<:silly:1126154885050683484>", "<:Lumi_purple_star:1126154848346325082>", "<:evilmilkbear:1126154798257938553>",
+                           "<:teddy2:1126154757967462411>", "<:5106_Sakurahana:1126154666472898662>", "<:9115_HotLove:1126154597354979388>", "<:868918555939315773:1126154516497170493>"]
             },
             "rare": {
-                "message": "Hey! You found a **RARE** item! You found **500 XP** and an badge to add to your collection :",
+                "message": "Hey! You found a **RARE** item! You found **500 XP** and a badge to add to your collection:",
                 "xp": 500,
                 "emojis": ["<:chimmy:1126187703243911278>", "<:frogyay:1126187746520731668>", "<:cooky:1126187789965340752>", "<:koya:1126187845271429260>", "<:mang:1126187898652332102>",
-                           "<:shooky:1126187943061622886>", "<:rj:1126187982819446825>", "<:tata:1126188044098220134>"]  
+                           "<:shooky:1126187943061622886>", "<:rj:1126187982819446825>", "<:tata:1126188044098220134>"]
             },
             "epic": {
-                "message": "Hey! You found an **EPIC** item! You found **1000 XP** and an badge to add to your collection :",
+                "message": "Hey! You found an **EPIC** item! You found **1000 XP**Note:** Due to the character limit for a single response, I had to split the code into multiple responses. Please continue with the code in the next response.** and a badge to add to your collection:",
                 "xp": 1000,
-                "emojis": ["<a:Lumi_penguinfall:1126190036627496970>", "<a:Spongebob:1126189963269124156>", "<a:cinnamorollhappylollipop:1126189918713028709>", "<a:GARY:1126189877952778340>", 
+                "emojis": ["<a:Lumi_penguinfall:1126190036627496970>", "<a:Spongebob:1126189963269124156>", "<a:cinnamorollhappylollipop:1126189918713028709>", "<a:GARY:1126189877952778340>",
                            "<a:9440bugcatb2:1126189832725598309>", "<a:bun:1126189794196717588>", "<a:bearhugz:1126189744922050702>", "<a:cred:1126189703423602860>", "<a:abounce:1126190811554525346>",
                            "<a:abounce:1126189618824499271>", "<a:btstaekook:1126189565472948384>", "<a:btscooky:1126191193584312350>", "<a:btschimmy:1126189488419381371>", "<a:btsrj:1126189228242509876>",
-                           "<a:btsshooky:1126189405044998244>", "<a:cpurple:1126189354411380906>", "<a:btskoyashooky:1126189313311391855>", "<a:p:1126189265383079966>", "<a:btsrj:1126189447021604916>", 
-                           "<a:btstata:1126189188635701248>", "<a:btskoya:1126189143957975051>", "<a:btsmang:1126189090635776041>", "<a:koyalove:1126189052622798869>"]  
+                           "<a:btsshooky:1126189405044998244>", "<a:cpurple:1126189354411380906>", "<a:btskoyashooky:1126189313311391855>", "<a:p:1126189265383079966>", "<a:btsrj:1126189447021604916>",
+                           "<a:btstata:1126189188635701248>", "<a:btskoya:1126189143957975051>", "<a:btsmang:1126189090635776041>", "<a:koyalove:1126189052622798869>"]
             },
             "legendary": {
-                "message": "Hey! You found a <a:Lumi_star_spin:1126224020052910200> **LEGENDARY** item! You found **2000 XP** and a legendary Kanzen logo! Also here's an badge to add to your collection :",
+                "message": "Hey! You found a <a:Lumi_star_spin:1126224020052910200> **LEGENDARY** item! You found **2000 XP** and a legendary Kanzen logo! Also here's a badge to add to your collection:",
                 "xp": 2000,
                 "emojis": ["e<a:811648167112212491:837044274868387862>", "<a:blobHYPERS:1076908032803479632>", "<a:miaumiau:1126196909275623435>", "<a:jeb:736589028991959090>", "<a:bunnygirl:1126202805833695242>",
-                           "<a:blobcatdance:1126202804852248597>", "<a:blobparty:1126202803782684794>", "<a:taesip:1126193847278510101>", "<:boobs:1126193765762203770>", "<:boobs:1126197577189179462>", "<:hobi:1126193730538459287>", 
-                           "<:lemmelick:1126193693804732456>", "<:jkfire:1126193638817411145>", "<a:yoonji:901535511116664852>", "<a:jungshook:1126193560966930462>", "<a:9514momotorture:1126193520487702588>", "<a:2109hyunjinwhat:1126193481648439417>", 
-                           "<a:1406kpopsip:1126193443589333043>", "<a:9518sponjdance:1126193406117429248>", "<a:013ilysm:1126193366288318618>", "<a:000_chuufight:1126193332465447033>", "<a:2x_nom:1126193300819431524>", "<a:CHUUKISS:1126193261829165076>", "<a:catcat:1126193159664316416>"]  
+                           "<a:blobcatdance:1126202804852248597>", "<a:blobparty:1126202803782684794>", "<a:taesip:1126193847278510101>", "<:boobs:1126193765762203770>", "<:boobs:1126197577189179462>", "<:hobi:1126193730538459287>",
+                           "<:lemmelick:1126193693804732456>", "<:jkfire:1126193638817411145>", "<a:yoonji:901535511116664852>", "<a:jungshook:1126193560966930462>", "<a:9514momotorture:1126193520487702588>", "<a:2109hyunjinwhat:1126193481648439417>",
+                           "<a:1406kpopsip:1126193443589333043>", "<a:9518sponjd```python6>dance:1126193406117429248>", "<a:013ilysm:1126193366288318618>", "<a:000_chuufight:1126193332465447033>", "<a:2x_nom:1126193300819431524>", "<a:CHUUKISS:1126193261829165076>", "<a:catcat:1126193159664316416>"]
             }
         }
 
@@ -82,7 +82,7 @@ class Unlock(commands.Cog):
                 logolinks = random.choice(logos)
                 embed = discord.Embed(
                     title="Legendary Unlock",
-                    description=f"You have unlocked a legendary logo! please don't share the link with anyone else\n[click here]({logolinks})",
+                    description=f"You have unlocked a legendary logo! Please don't share the link with anyone else\n[click here]({logolinks})",
                     color=discord.Color.gold()
                 )
                 await member.send(embed=embed)
@@ -97,19 +97,29 @@ class Unlock(commands.Cog):
         if member.id in self.unlocked_items:
             unlocked_rarities = [item['rarity'] for item in self.unlocked_items[member.id]]
             if unlock_level in unlocked_rarities:
-                # Rarity already unlocked, append emoji to the existing rarity entry
+                # Rarity already unlocked
                 for item in self.unlocked_items[member.id]:
                     if item['rarity'] == unlock_level:
-                        item['emoji'] += f" {emoji}"
+                        if emoji in item['emoji']:
+                            # Emoji already unlocked
+                            await ctx.send(f"You have already unlocked the {unlock_level} rarity with the emoji {emoji}.")
+                            return
+                        item['emoji'].append(emoji)
                         break
             else:
-                # Rarity not unlocked yet, create a new entry
-                self.unlocked_items[member.id].append({'rarity': unlock_level, 'emoji': emoji})
+                # Rarity unlocked for the first time
+                self.unlocked_items[member.id].append({
+                    'rarity': unlock_level,
+                    'emoji': [emoji],
+                })
         else:
-            # First unlocked item for the member, create a new entry
-            self.unlocked_items[member.id] = [{'rarity': unlock_level, 'emoji': emoji}]
+            # Member unlocking rarity for the first time
+            self.unlocked_items[member.id] = [{
+                'rarity': unlock_level,
+                'emoji': [emoji],
+            }]
 
-        await ctx.reply(f"{xp_message} {emoji}")
+        await ctx.send(f"{xp_message} {emoji}")
 
     @commands.command(aliases=['unlocks', 'badges', 'cratesunlocked'])
     async def unlocked(self, ctx):
