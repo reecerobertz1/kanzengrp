@@ -43,7 +43,7 @@ class Unlock(commands.Cog):
                            "<:shooky:1126187943061622886>", "<:rj:1126187982819446825>", "<:tata:1126188044098220134>"]
             },
             "epic": {
-                "message": "Hey! You found an **EPIC** item! You found **1000 XP**Note:** Due to the character limit for a single response, I had to split the code into multiple responses. Please continue with the code in the next response.** and a badge to add to your collection:",
+                "message": "Hey! You found an **EPIC** item! You found **1000 XP** and a badge to add to your collection:",
                 "xp": 1000,
                 "emojis": ["<a:Lumi_penguinfall:1126190036627496970>", "<a:Spongebob:1126189963269124156>", "<a:cinnamorollhappylollipop:1126189918713028709>", "<a:GARY:1126189877952778340>",
                            "<a:9440bugcatb2:1126189832725598309>", "<a:bun:1126189794196717588>", "<a:bearhugz:1126189744922050702>", "<a:cred:1126189703423602860>", "<a:abounce:1126190811554525346>",
@@ -54,10 +54,10 @@ class Unlock(commands.Cog):
             "legendary": {
                 "message": "Hey! You found a <a:Lumi_star_spin:1126224020052910200> **LEGENDARY** item! You found **2000 XP** and a legendary Kanzen logo! Also here's a badge to add to your collection:",
                 "xp": 2000,
-                "emojis": ["e<a:811648167112212491:837044274868387862>", "<a:blobHYPERS:1076908032803479632>", "<a:miaumiau:1126196909275623435>", "<a:jeb:736589028991959090>", "<a:bunnygirl:1126202805833695242>",
+                "emojis": ["e<a:811648167112212491:837044274868387862>", "<a:blobHYPERS:1076908032803479632>", "<a:miaumiau:1126196909275623435>", "<a:jeb:1126196871254257796>", "<a:bunnygirl:1126202805833695242>",
                            "<a:blobcatdance:1126202804852248597>", "<a:blobparty:1126202803782684794>", "<a:taesip:1126193847278510101>", "<:boobs:1126193765762203770>", "<:boobs:1126197577189179462>", "<:hobi:1126193730538459287>",
                            "<:lemmelick:1126193693804732456>", "<:jkfire:1126193638817411145>", "<a:yoonji:901535511116664852>", "<a:jungshook:1126193560966930462>", "<a:9514momotorture:1126193520487702588>", "<a:2109hyunjinwhat:1126193481648439417>",
-                           "<a:1406kpopsip:1126193443589333043>", "<a:9518sponjd```python6>dance:1126193406117429248>", "<a:013ilysm:1126193366288318618>", "<a:000_chuufight:1126193332465447033>", "<a:2x_nom:1126193300819431524>", "<a:CHUUKISS:1126193261829165076>", "<a:catcat:1126193159664316416>"]
+                           "<a:1406kpopsip:1126193443589333043>", "<a:9518sponjddance:1126193406117429248>", "<a:013ilysm:1126193366288318618>", "<a:000_chuufight:1126193332465447033>", "<a:2x_nom:1126193300819431524>", "<a:CHUUKISS:1126193261829165076>", "<a:catcat:1126193159664316416>"]
             }
         }
 
