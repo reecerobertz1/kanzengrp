@@ -83,6 +83,28 @@ class logos(commands.Cog):
         await ctx.send(embed=embed, view=view)
 
     @commands.command()
+    async def kanzenformsrules(self, ctx):
+        embed = discord.Embed(
+            title='<a:Lumi_penguin_fall:1122607666578063531> : Kanzen Rules',
+            color=0x2b2d31
+        )
+        embed.set_footer(text='If you need help, do +qna')
+        button = discord.ui.Button(
+            label='Follow kanzengrp',
+            url='https://www.instagram.com/kanzengrp/'
+        )
+        button2 = discord.ui.Button(
+            label='Follow remqsi',
+            url='https://www.instagram.com/remqsi/'
+        )
+
+        view = discord.ui.View()
+        view.add_item(button)
+        view.add_item(button2)
+
+        await ctx.send(embed=embed, view=view)
+
+    @commands.command()
     async def newupdatehoshiupdates(self, ctx):
         embed = discord.Embed(
             title='New update!',
