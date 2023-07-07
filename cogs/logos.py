@@ -62,7 +62,7 @@ class logos(commands.Cog):
         view = discord.ui.View()
         view.add_item(button)
 
-        await ctx.send('@everyone', embed=embed, view=view)
+        await ctx.send(embed=embed, view=view)
 
     @commands.command()
     async def kanzenpartner(self, ctx):
@@ -83,7 +83,7 @@ class logos(commands.Cog):
         await ctx.send(embed=embed, view=view)
 
     @commands.command()
-    async def answerlol(self, ctx):
+    async def newupdatehoshiupdates(self, ctx):
         embed = discord.Embed(
             title='New update!',
             color=0x2b2d31
