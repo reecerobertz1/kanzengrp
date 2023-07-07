@@ -1,6 +1,10 @@
 import discord
 from discord.ext import commands
-import youtube_dl
+from youtube_dl import YoutubeDL
+from spotdl.search.songObj import SongObj
+from spotdl.search.spotifyClient import SpotifyClient
+from spotdl.download.downloader import download_song
+import asyncio
 
 class Music(commands.Cog):
     def __init__(self, bot):
@@ -20,6 +24,17 @@ class Music(commands.Cog):
         else:
             voice_client = await channel.connect()
 
+        if "soundcloud.com" in url:
+            source = await self.get_soundcloud_source(url)
+        elif "spotify.com" in url:
+            source = await self.get_spotify_source(url)
+        else:
+            await ctx.send("Invalid link provided.")
+            return
+
+        voice_client.play(source)
+
+    async def get_soundcloud_source(self, url):
         ydl_opts = {
             'format': 'bestaudio/best',
             'postprocessors': [{
@@ -29,12 +44,28 @@ class Music(commands.Cog):
             }],
         }
 
-        with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+        with YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(url, download=False)
             url2 = info['formats'][0]['url']
             source = await discord.FFmpegOpusAudio.from_probe(url2, method='fallback')
 
-        voice_client.play(source)
+        return source
+
+    async def get_spotify_source(self, url):
+        spotify_client = SpotifyClient()
+        song_obj = SongObj(url)
+
+        await spotify_client.build_song(song_obj)
+
+        try:
+            download_song(song_obj)
+        except Exception as e:
+            print(f"An error occurred while downloading the song: {e}")
+            return None
+
+        source = await discord.FFmpegOpusAudio.from_probe(song_obj.file_path, method='fallback')
+
+        return source
 
     @commands.command()
     async def pause(self, ctx):
@@ -65,6 +96,7 @@ class Music(commands.Cog):
             await ctx.send(f"Current queue: {queue}")
         else:
             await ctx.send("No audio is currently playing.")
+
 
 async def setup(bot):
     await bot.add_cog(Music(bot))
