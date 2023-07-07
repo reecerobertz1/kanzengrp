@@ -13,7 +13,7 @@ class Help(commands.Cog):
                 {"name": "The Coding", "value": "Hoshi is coded in Python 3.11.4\n[Download Python 3.11.4](https://www.python.org/downloads/)", "inline": False},
                 {"name": "Owner", "value": "Hoshi is owned by Reeceroberts\nReece coded Hoshi in [Visual Studio Code](https://code.visualstudio.com/)", "inline": False},
                 {"name": "Extra Information", "value": "Hoshi's prefix is `+`\nHoshi was made for **__Kanzengrp__**", "inline": False},
-                {"name": "", "value": "`[page 1/7]`", "inline": True}
+                {"name": "", "value": "`[page 1/8]`", "inline": True}
             ],
             "> Fun commands": [
                 {"name": "+dog", "value": "Sends you a random photo of a dog", "inline": False},
@@ -30,7 +30,7 @@ class Help(commands.Cog):
                 {"name": "+ship", "value": "Mention 2 members to see if Hoshi ships them (+ship @mention @mention)", "inline": False},
                 {"name": "+trivia", "value": "Hoshi will ask you a question, make sure to answer correctly (answer with numbers 1-4)", "inline": False},
                 {"name": "+avatar", "value": "Get a photo of your avatar or someone elses", "inline": False},
-                {"name": "", "value": "`[page 2/7]`", "inline": True}
+                {"name": "", "value": "`[page 2/8]`", "inline": True}
             ],
             "> Editing commands": [
                 {"name": "+transition", "value": "Get a random transition to use in your edit", "inline": False},
@@ -40,16 +40,16 @@ class Help(commands.Cog):
                 {"name": "+edits", "value": "Watch edits added from members of, Aura, Kanzen and Daegu", "inline": False},
                 {"name": "+effects", "value": "Get a random effect to use in your edit", "inline": False},
                 {"name": "+colorscheme", "value": "Get a random color scheme to use in your edit", "inline": False},
-                {"name": "", "value": "`[page 3/7]`", "inline": True}
+                {"name": "", "value": "`[page 3/8]`", "inline": True}
             ],
             "> Other commands": [
                 {"name": "+ia", "value": "Send us an inactivity message if you go inactive", "inline": False},
-                {"name": "", "value": "`[page 4/7]`", "inline": True}
+                {"name": "", "value": "`[page 4/8]`", "inline": True}
             ],
             "> Kanzen only commands": [
                 {"name": "+opencrate", "value": "Open a crate every 24 hours to see what you get", "inline": False},
                 {"name": "+badges", "value": "See all the collectables you have gotten from opening crates", "inline": False},
-                {"name": "", "value": "`[page 4/7]`", "inline": True}
+                {"name": "", "value": "`[page 5/8]`", "inline": True}
             ],
             "> Levels commands": [
                 {"name": "+rank", "value": "See your rank, or someone elses", "inline": False},
@@ -61,7 +61,7 @@ class Help(commands.Cog):
                 {"name": "+levelling on", "value": "Enables the levelling system for the server (admin only)", "inline": False},
                 {"name": "+levelling off", "value": "Disables the levelling system for the server (admin only)", "inline": False},
                 {"name": "+levelling setrole", "value": "Set the top 20 active role", "inline": False},
-                {"name": "", "value": "`[page 5/7]`", "inline": True}
+                {"name": "", "value": "`[page 6/8]`", "inline": True}
             ],
             "> Moderation commands": [
                 {"name": "+kick", "value": "Kick a member from the server", "inline": False},
@@ -72,7 +72,7 @@ class Help(commands.Cog):
                 {"name": "+suggest", "value": "Suggest what we can do in the group (+suggest [suggestion])", "inline": False},
                 {"name": "+uptime", "value": "See how long the bot has been online for", "inline": False},
                 {"name": "+ping", "value": "See the bots ping", "inline": False},
-                {"name": "", "value": "`[page 6/7]`", "inline": True}
+                {"name": "", "value": "`[page 7/8]`", "inline": True}
             ],
             "> Application commands": [
                 {"name": "+app", "value": "Apply for kanzengrp", "inline": False},
@@ -82,7 +82,7 @@ class Help(commands.Cog):
                 {"name": "+viewapps", "value": "See all applications sent", "inline": False},
                 {"name": "+qna", "value": "Ask the lead a question", "inline": False},
                 {"name": "+answer", "value": "Answer a question sent", "inline": False},
-                {"name": "", "value": "`[page 7/7]`", "inline": True}
+                {"name": "", "value": "`[page 8/8]`", "inline": True}
             ]
         }
 
