@@ -68,10 +68,11 @@ class logos(commands.Cog):
     async def kanzenpartner(self, ctx):
         embed = discord.Embed(
             title='<a:Lumi_penguin_fall:1122607666578063531> : Kanzen Forms',
-            description='<:pr_dash:1123654552843993099> editing group\n<:pr_dash:1123654552843993099> cute logos\n<:pr_dash:1123654552843993099> custom bot',
+            description='<a:bounceyarrow:1126865547255091343> editing group\n<a:bounceyarrow:1126865547255091343> cute logos\n<a:bounceyarrow:1126865547255091343> custom bot\n<a:bounceyarrow:1126865547255091343> recruit happening now!',
             color=0x2b2d31
         )
         embed.set_footer(text='Go support our partners!')
+        embed.set_thumbnail(url='https://cdn.discordapp.com/icons/1121841073673736215/ea48ddf8734b328c38e38accbce6bc25.png?size=1024')
         button = discord.ui.Button(
             label='Click here to join Kanzen Forms!',
             url='https://discord.gg/9MqbUTYthE'
