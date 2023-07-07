@@ -90,8 +90,8 @@ class logos(commands.Cog):
         )
         embed.set_image(url='https://cdn.discordapp.com/attachments/1122181606254330008/1127011636457250997/jisoo_and_rose_photo_00000.png')
         embed.set_footer(text='If you need help, do +qna')
-        embed.add_field(name='Server Rules', value="<:pr_dash:1123654552843993099> Be respectful of everyone\n<:pr_dash:1123654552843993099> No trash talk of other groups or editors\n<:pr_dash:1123654552843993099> No impersonation of other edits (you will be banned)\n<:pr_dash:1123654552843993099> Use channels for their intended purpose\n<:pr_dash:1123654552843993099> No spamming the lead for things! be patient", inline=False)
-        embed.add_field(name='Application Rules', value="<:pr_dash:1123654552843993099> Be patient with forms, you will get an answer at some point\n<:pr_dash:1123654552843993099> Apply with Instagram or Streamable links only!\n<:pr_dash:1123654552843993099> Follow Discord's [terms](https://discord.com/terms) and [guidelines](https://discord.com/guidelines)")
+        embed.add_field(name='Server Rules', value="<a:bounceyarrow:1126865547255091343> Be respectful of everyone\n<a:bounceyarrow:1126865547255091343> No trash talk of other groups or editors\n<a:bounceyarrow:1126865547255091343> No impersonation of other edits (you will be banned)\n<a:bounceyarrow:1126865547255091343> Use channels for their intended purpose\n<a:bounceyarrow:1126865547255091343> No spamming the lead for things! be patient", inline=False)
+        embed.add_field(name='Application Rules', value="<a:bounceyarrow:1126865547255091343> Be patient with forms, you will get an answer at some point\n<a:bounceyarrow:1126865547255091343> Apply with Instagram or Streamable links only!\n<a:bounceyarrow:1126865547255091343> Follow Discord's [terms](https://discord.com/terms) and [guidelines](https://discord.com/guidelines)")
         button = discord.ui.Button(
             label='Follow kanzengrp',
             url='https://www.instagram.com/kanzengrp/'
