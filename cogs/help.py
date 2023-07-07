@@ -46,6 +46,11 @@ class Help(commands.Cog):
                 {"name": "+ia", "value": "Send us an inactivity message if you go inactive", "inline": False},
                 {"name": "", "value": "`[page 4/7]`", "inline": True}
             ],
+            "> Kanzen only commands": [
+                {"name": "+opencrate", "value": "Open a crate every 24 hours to see what you get", "inline": False},
+                {"name": "+badges", "value": "See all the collectables you have gotten from opening crates", "inline": False},
+                {"name": "", "value": "`[page 4/7]`", "inline": True}
+            ],
             "> Levels commands": [
                 {"name": "+rank", "value": "See your rank, or someone elses", "inline": False},
                 {"name": "+levels", "value": "See the level leaderboard for the server", "inline": False},
