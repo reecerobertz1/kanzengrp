@@ -1,4 +1,4 @@
-import discord
+"""import discord
 from discord.ext import commands
 from youtube_dl import YoutubeDL
 from spotdl.search.songObj import SongObj
@@ -99,4 +99,4 @@ class Music(commands.Cog):
 
 
 async def setup(bot):
-    await bot.add_cog(Music(bot))
+    await bot.add_cog(Music(bot))"""
