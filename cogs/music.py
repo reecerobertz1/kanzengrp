@@ -13,7 +13,7 @@ class Music(commands.Cog):
     @commands.command()
     async def play(self, ctx, url):
         if not ctx.message.author.voice:
-            await ctx.send("You are not connected to a voice channel.")
+            await ctx.send("You are not connected to a voice channel...")
             return
 
         channel = ctx.message.author.voice.channel
@@ -29,7 +29,7 @@ class Music(commands.Cog):
         elif "spotify.com" in url:
             source = await self.get_spotify_source(url)
         else:
-            await ctx.send("Invalid link provided.")
+            await ctx.send("Invalid link provided...")
             return
 
         voice_client.play(source)
