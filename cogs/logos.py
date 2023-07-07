@@ -49,7 +49,7 @@ class logos(commands.Cog):
     async def aurapartner(self, ctx):
         embed = discord.Embed(
             title='<:frogyay:1123652434913402950> : Aura Forms',
-            description='<a:greenarrow:1123286634629169203> editing server\n<a:greenarrow:1123286634629169203> cute aesthetic logos\n<a:greenarrow:1123286634629169203> custom bot\n<a:greenarrow:1123286634629169203> recruitment happening now!',
+            description='<a:greenarrow:1123286634629169203> editing server\n<a:greenarrow:1123286634629169203> cute aesthetic logos\n<a:greenarrow:1123286634629169203> custom bot',
             color=0x2b2d31
         )
 
