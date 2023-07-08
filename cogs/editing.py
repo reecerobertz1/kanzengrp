@@ -93,5 +93,11 @@ class editing(commands.Cog):
         rancolor = random.choice(choices)
         await ctx.reply(rancolor)
 
+    @commands.command()
+    async def coke(self, ctx):
+            embed = discord.Embed(title='sniffcock', description='drinking a bottle of coke', color=0x000001)
+            embed.set_image(url='https://i.chzbgr.com/original/20453125/h8A79C73D/coke-coca-cola-diet-coke-drink-beverage-drinking-soda-memes-funny-funny-memes')
+            await ctx.reply(embed=embed)
+
 async def setup(bot):
     await bot.add_cog(editing(bot))
