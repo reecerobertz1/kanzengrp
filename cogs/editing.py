@@ -99,5 +99,12 @@ class editing(commands.Cog):
             embed.set_image(url='https://i.chzbgr.com/original/20453125/h8A79C73D/coke-coca-cola-diet-coke-drink-beverage-drinking-soda-memes-funny-funny-memes')
             await ctx.reply(embed=embed)
 
+    @commands.command()
+    async def biatchhhhh(self, ctx):
+         embed = discord.Embed(title= 'gayyyysucksomecock', description='loveyamumyall', color=0x0BFF00)
+         embed.set_image(url='https://i.pinimg.com/originals/a5/ed/41/a5ed417341a559888fdd37d6a1db6f15.jpg')
+         await ctx.reply(embed=embed)
+
+
 async def setup(bot):
     await bot.add_cog(editing(bot))
