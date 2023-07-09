@@ -18,9 +18,7 @@ class Unlock(commands.Cog):
 
     @commands.command()
     async def xpshop(self, ctx):
-        embed = discord.Embed(title='XP Shop',
-                              description='Use the command `+buy (XP amount) to buy XP!',
-                              color=0x2b2d31)
+        embed = discord.Embed(title='XP Shop', description='Use the command `+buy (XP amount) to buy XP!', color=0x2b2d31)
         embed.add_field(name='<:coin:1127703632389865682> 350', value='500xp', inline=False)
         embed.add_field(name='<:coin:1127703632389865682> 500', value='750xp', inline=False)
         embed.add_field(name='<:coin:1127703632389865682> 750', value='1,000xp', inline=False)
