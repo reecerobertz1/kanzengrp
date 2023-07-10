@@ -26,6 +26,7 @@ class Unlock(commands.Cog):
 
         user_id = ctx.author.id
         self.update_user_coins(user_id, coins)
+        self.update_user_xp(user_id, xp)
 
     @commands.command()
     async def shop(self, ctx):
@@ -40,12 +41,24 @@ class Unlock(commands.Cog):
         if item.lower() == "xp":
             price = 100
             if coins >= price:
-                # Deduct coins from user's balance
                 coins -= price
                 self.update_user_coins(ctx.author.id, coins)
                 await ctx.send(f"{ctx.author.mention} bought XP!")
+                channel = self.bot.get_channel(1125999933149949982)
+                await channel.send(f"{ctx.author.mention} bought {price} XP!")
             else:
                 await ctx.send("Insufficient coins!")
+        elif item.lower() == "emoji":
+            price = 200
+            if coins >= price:
+                coins -= price
+                self.update_user_coins(ctx.author.id, coins)
+                # Perform logic for buying emoji
+                await ctx.send(f"{ctx.author.mention} bought an emoji!")
+            else:
+                await ctx.send("Insufficient coins!")
+        else:
+            await ctx.send("Item not found in the shop!")
 
     @commands.command()
     async def balance(self, ctx):
@@ -63,6 +76,10 @@ class Unlock(commands.Cog):
     def update_user_coins(self, user_id, coins):
         self.cursor.execute("INSERT OR REPLACE INTO user_data (user_id, coins) VALUES (?, ?)", (user_id, coins))
         self.conn.commit()
+
+    def update_user_xp(self, user_id, xp):
+        # Perform logic for updating XP
+        pass
 
 async def setup(bot):
     await bot.add_cog(Unlock(bot))
