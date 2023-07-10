@@ -64,7 +64,7 @@ class Unlock(commands.Cog):
     async def balance(self, ctx):
         user_id = ctx.author.id
         total_coins = self.get_total_coins(user_id)
-        await ctx.send(f"{ctx.author.mention} has {total_coins} coins.")
+        await ctx.send(f"{ctx.author.mention} has obtained a total of {total_coins} coins.")
 
     def get_user_coins(self, user_id):
         self.cursor.execute("SELECT coins FROM user_data WHERE user_id = ?", (user_id,))
@@ -86,7 +86,7 @@ class Unlock(commands.Cog):
         self.cursor.execute("SELECT SUM(coins) FROM user_data WHERE user_id = ?", (user_id,))
         result = self.cursor.fetchone()
         if result:
-            return result[0]
+            return result[0] or 0
         else:
             return 0
 
