@@ -64,6 +64,29 @@ class Unlock(commands.Cog):
         coins = self.get_user_coins(ctx.author.id)
         await ctx.send(f"{ctx.author.mention} has obtained a total of {coins} coins.")
 
+    @commands.command()
+    @commands.is_owner()
+    async def resetcoins(self, ctx):
+        self.cursor.execute("UPDATE user_data SET coins = 0")
+        self.conn.commit()
+        await ctx.send("All user coins have been reset.")
+
+    @commands.command()
+    @commands.is_owner()
+    async def givecoins(self, ctx, member: discord.Member, amount: int):
+        self.update_user_coins(member.id, amount)
+        await ctx.send(f"Gave {amount} coins to {member.mention}.")
+
+    @commands.command()
+    @commands.is_owner()
+    async def removecoins(self, ctx, member: discord.Member, amount: int):
+        current_coins = self.get_user_coins(member.id)
+        if current_coins >= amount:
+            self.update_user_coins(member.id, -amount)
+            await ctx.send(f"Removed {amount} coins from {member.mention}.")
+        else:
+            await ctx.send("Insufficient coins!")
+
     def get_user_coins(self, user_id):
         self.cursor.execute("SELECT coins FROM user_data WHERE user_id = ?", (user_id,))
         result = self.cursor.fetchone()
