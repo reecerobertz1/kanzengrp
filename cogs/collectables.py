@@ -81,6 +81,7 @@ class Unlock(commands.Cog):
     def update_user_xp(self, user_id, xp):
         # Perform logic for updating XP
         pass
-    
+
+
 async def setup(bot):
     await bot.add_cog(Unlock(bot))
