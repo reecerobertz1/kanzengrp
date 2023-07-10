@@ -4,11 +4,15 @@ from discord.ext import commands
 from discord.utils import get
 import datetime
 import random
+import sqlite3
 
 class Unlock(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-
+        self.conn = sqlite3.connect('bot.db')
+        self.cursor = self.conn.cursor()
+        self.cursor.execute('CREATE TABLE IF NOT EXISTS user_data (user_id INTEGER PRIMARY KEY, coins INTEGER)')
+        self.conn.commit()
 
     @commands.command()
     async def daily(self, ctx):
@@ -20,9 +24,8 @@ class Unlock(commands.Cog):
             channel = self.bot.get_channel(1125999933149949982)
             await channel.send(f"{ctx.author.mention} found {xp} XP!")
 
-        user_id = str(ctx.author.id)
-        update_user_coins(user_id, coins)
-        update_user_xp(user_id, xp)
+        user_id = ctx.author.id
+        self.update_user_coins(user_id, coins)
 
     @commands.command()
     async def shop(self, ctx):
@@ -33,43 +36,33 @@ class Unlock(commands.Cog):
 
     @commands.command()
     async def buy(self, ctx, item: str):
-        coins = get_user_coins(str(ctx.author.id))
+        coins = self.get_user_coins(ctx.author.id)
         if item.lower() == "xp":
             price = 100
             if coins >= price:
                 # Deduct coins from user's balance
                 coins -= price
-                update_user_coins(str(ctx.author.id), coins)  # Update user's coin balance
+                self.update_user_coins(ctx.author.id, coins)
                 await ctx.send(f"{ctx.author.mention} bought XP!")
             else:
                 await ctx.send("Insufficient coins!")
 
     @commands.command()
     async def balance(self, ctx):
-        coins = get_user_coins(str(ctx.author.id))
+        coins = self.get_user_coins(ctx.author.id)
         await ctx.send(f"{ctx.author.mention} has {coins} coins.")
 
-def get_user_coins(user_id):
-    with open("coin_data.json", "r") as file:
-        coin_data = json.load(file)
-    print("Coin Data:", coin_data)  # Add this line for debugging
-    return coin_data.get(user_id, {}).get("coins", 0)
+    def get_user_coins(self, user_id):
+        self.cursor.execute("SELECT coins FROM user_data WHERE user_id = ?", (user_id,))
+        result = self.cursor.fetchone()
+        if result:
+            return result[0]
+        else:
+            return 0
 
-def update_user_coins(user_id, coins):
-    with open("coin_data.json", "r") as file:
-        coin_data = json.load(file)
-    coin_data[user_id] = {"coins": coins}
-    with open("coin_data.json", "w") as file:
-        json.dump(coin_data, file)
-    print("Updated Coin Data:", coin_data)  # Add this line for debugging
-
-def update_user_xp(user_id, xp):
-    with open("xp_data.json", "r") as file:
-        xp_data = json.load(file)
-    xp_data[user_id] = xp
-    with open("xp_data.json", "w") as file:
-        json.dump(xp_data, file)
-    print("Updated XP Data:", xp_data)  # Add this line for debugging
+    def update_user_coins(self, user_id, coins):
+        self.cursor.execute("INSERT OR REPLACE INTO user_data (user_id, coins) VALUES (?, ?)", (user_id, coins))
+        self.conn.commit()
 
 async def setup(bot):
     await bot.add_cog(Unlock(bot))
