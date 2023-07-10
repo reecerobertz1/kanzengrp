@@ -83,10 +83,12 @@ class Unlock(commands.Cog):
         pass
 
     def get_total_coins(self, user_id):
-        self.cursor.execute("SELECT coins FROM user_data WHERE user_id = ?", (user_id,))
-        results = self.cursor.fetchall()
-        total_coins = sum(result[0] for result in results)
-        return total_coins
+        self.cursor.execute("SELECT SUM(coins) FROM user_data WHERE user_id = ?", (user_id,))
+        result = self.cursor.fetchone()
+        if result:
+            return result[0]
+        else:
+            return 0
 
 async def setup(bot):
     await bot.add_cog(Unlock(bot))
