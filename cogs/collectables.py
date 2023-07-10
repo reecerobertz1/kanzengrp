@@ -65,11 +65,9 @@ class Unlock(commands.Cog):
         user_id = ctx.author.id
         self.cursor.execute("SELECT total_coins FROM user_data WHERE user_id = ?", (user_id,))
         result = self.cursor.fetchone()
-        if result:
-            total_coins = result[0]
-            await ctx.send(f"{ctx.author.mention} has obtained a total of {total_coins} coins.")
-        else:
-            await ctx.send("No balance found.")
+        total_coins = result[0] if result else 0
+        await ctx.send(f"{ctx.author.mention} has obtained a total of {total_coins} coins.")
+
 
     def get_user_coins(self, user_id):
         self.cursor.execute("SELECT total_coins FROM user_data WHERE user_id = ?", (user_id,))
