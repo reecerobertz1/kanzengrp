@@ -22,6 +22,7 @@ class Unlock(commands.Cog):
 
         user_id = str(ctx.author.id)
         update_user_coins(user_id, coins)
+        update_user_xp(user_id, xp)
 
     @commands.command()
     async def shop(self, ctx):
@@ -59,6 +60,13 @@ def update_user_coins(user_id, coins):
     coin_data[user_id] = {"coins": coins}
     with open("coin_data.json", "w") as file:
         json.dump(coin_data, file)
+
+def update_user_xp(user_id, xp):
+    with open("xp_data.json", "r") as file:
+        xp_data = json.load(file)
+    xp_data[user_id] = xp
+    with open("xp_data.json", "w") as file:
+        json.dump(xp_data, file)
 
 async def setup(bot):
     await bot.add_cog(Unlock(bot))
