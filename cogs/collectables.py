@@ -68,12 +68,5 @@ def update_user_xp(user_id, xp):
     with open("xp_data.json", "w") as file:
         json.dump(xp_data, file)
 
-bot = commands.Bot(command_prefix='+')
-bot.add_cog(MyCog(bot))
-
-@bot.event
-async def on_ready():
-    print(f'Logged in as {bot.user.name}')
-
 async def setup(bot):
     await bot.add_cog(Unlock(bot))
