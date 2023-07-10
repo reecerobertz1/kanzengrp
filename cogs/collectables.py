@@ -24,9 +24,8 @@ class Unlock(commands.Cog):
             channel = self.bot.get_channel(1125999933149949982)
             await channel.send(f"{ctx.author.mention} found {xp} XP!")
 
-        user_id = ctx.author.id
-        self.update_user_coins(user_id, coins)
-        self.update_user_xp(user_id, xp)
+        self.update_user_coins(ctx.author.id, coins)
+        self.update_user_xp(ctx.author.id, xp)
 
     @commands.command()
     async def shop(self, ctx):
@@ -62,15 +61,11 @@ class Unlock(commands.Cog):
 
     @commands.command()
     async def balance(self, ctx):
-        user_id = ctx.author.id
-        self.cursor.execute("SELECT total_coins FROM user_data WHERE user_id = ?", (user_id,))
-        result = self.cursor.fetchone()
-        total_coins = result[0] if result else 0
-        await ctx.send(f"{ctx.author.mention} has obtained a total of {total_coins} coins.")
-
+        coins = self.get_user_coins(ctx.author.id)
+        await ctx.send(f"{ctx.author.mention} has obtained a total of {coins} coins.")
 
     def get_user_coins(self, user_id):
-        self.cursor.execute("SELECT total_coins FROM user_data WHERE user_id = ?", (user_id,))
+        self.cursor.execute("SELECT coins FROM user_data WHERE user_id = ?", (user_id,))
         result = self.cursor.fetchone()
         if result:
             return result[0]
@@ -78,17 +73,14 @@ class Unlock(commands.Cog):
             return 0
 
     def update_user_coins(self, user_id, coins):
-        current_total = self.get_user_coins(user_id)
-        total_coins = current_total + coins
-        self.cursor.execute("INSERT OR IGNORE INTO user_data (user_id, total_coins) VALUES (?, ?)", (user_id, total_coins))
-        self.cursor.execute("UPDATE user_data SET total_coins = ? WHERE user_id = ?", (total_coins, user_id))
+        current_coins = self.get_user_coins(user_id)
+        total_coins = current_coins + coins
+        self.cursor.execute("INSERT OR REPLACE INTO user_data (user_id, coins) VALUES (?, ?)", (user_id, total_coins))
         self.conn.commit()
 
     def update_user_xp(self, user_id, xp):
         # Perform logic for updating XP
         pass
-
-
-
+    
 async def setup(bot):
     await bot.add_cog(Unlock(bot))
