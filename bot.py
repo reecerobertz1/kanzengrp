@@ -23,7 +23,8 @@ extensions = {
     "cogs.qna",
     "cogs.levels",
     "cogs.other",
-    "cogs.audios"
+    "cogs.audios",
+    "cogs.music"
 }
 
 # bot subclass
