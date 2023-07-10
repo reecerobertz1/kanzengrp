@@ -18,7 +18,7 @@ class Unlock(commands.Cog):
     async def daily(self, ctx):
         coins = random.randint(1, 1000)
         xp = random.randint(1, 500)
-        await ctx.send(f"You found {coins} coins!")
+        await ctx.send(f"You found <:coin:1127703632389865682> {coins}")
 
         if random.random() < 0.5:
             channel = self.bot.get_channel(1125999933149949982)
@@ -30,8 +30,8 @@ class Unlock(commands.Cog):
     @commands.command()
     async def shop(self, ctx):
         embed = discord.Embed(title="Shop", description="Welcome to the shop!")
-        embed.add_field(name="XP", value="Price: 100 coins", inline=False)
-        embed.add_field(name="Emoji", value="Price: 200 coins", inline=False)
+        embed.add_field(name="XP", value="Price: <:coin:1127703632389865682> 100", inline=False)
+        embed.add_field(name="Emoji", value="Price: <:coin:1127703632389865682> 200", inline=False)
         await ctx.send(embed=embed)
 
     @commands.command()
@@ -62,7 +62,7 @@ class Unlock(commands.Cog):
     @commands.command()
     async def balance(self, ctx):
         coins = self.get_user_coins(ctx.author.id)
-        await ctx.send(f"{ctx.author.mention} has obtained a total of {coins} coins.")
+        await ctx.send(f"{ctx.author.mention} has obtained a total of <:coin:1127703632389865682> {coins}.")
 
     @commands.command()
     @commands.is_owner()
