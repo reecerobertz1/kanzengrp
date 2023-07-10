@@ -20,6 +20,10 @@ class Unlock(commands.Cog):
             channel = self.bot.get_channel(1125999933149949982)
             await channel.send(f"{ctx.author.mention} found {xp} XP!")
 
+        user_id = str(ctx.author.id)
+        update_user_coins(user_id, coins)
+        update_user_xp(user_id, xp)
+
     @commands.command()
     async def shop(self, ctx):
         embed = discord.Embed(title="Shop", description="Welcome to the shop!")
@@ -29,35 +33,47 @@ class Unlock(commands.Cog):
 
     @commands.command()
     async def buy(self, ctx, item: str):
-        coins = get_user_coins(ctx.author.id)
+        coins = get_user_coins(str(ctx.author.id))
         if item.lower() == "xp":
             price = 100
             if coins >= price:
                 # Deduct coins from user's balance
                 coins -= price
-                update_user_coins(ctx.author.id, coins)  # Update user's coin balance
+                update_user_coins(str(ctx.author.id), coins)  # Update user's coin balance
                 await ctx.send(f"{ctx.author.mention} bought XP!")
             else:
                 await ctx.send("Insufficient coins!")
 
     @commands.command()
     async def balance(self, ctx):
-        coins = get_user_coins(ctx.author.id)
+        coins = get_user_coins(str(ctx.author.id))
         await ctx.send(f"{ctx.author.mention} has {coins} coins.")
 
 def get_user_coins(user_id):
-    coins_dict = {
-        1234567890: 500,  # Example user ID and coin balance
-        # Add more user ID and coin balance pairs as needed
-    }
-    return coins_dict.get(user_id, 0)
+    with open("coin_data.json", "r") as file:
+        coin_data = json.load(file)
+    return coin_data.get(user_id, 0)
 
 def update_user_coins(user_id, coins):
-    coins_dict = {
-        1234567890: 500,  # Example user ID and coin balance
-        # Add more user ID and coin balance pairs as needed
-    }
-    coins_dict[user_id] = coins
+    with open("coin_data.json", "r") as file:
+        coin_data = json.load(file)
+    coin_data[user_id] = coins
+    with open("coin_data.json", "w") as file:
+        json.dump(coin_data, file)
+
+def update_user_xp(user_id, xp):
+    with open("xp_data.json", "r") as file:
+        xp_data = json.load(file)
+    xp_data[user_id] = xp
+    with open("xp_data.json", "w") as file:
+        json.dump(xp_data, file)
+
+bot = commands.Bot(command_prefix='+')
+bot.add_cog(MyCog(bot))
+
+@bot.event
+async def on_ready():
+    print(f'Logged in as {bot.user.name}')
 
 async def setup(bot):
     await bot.add_cog(Unlock(bot))
