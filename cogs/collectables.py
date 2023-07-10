@@ -14,7 +14,7 @@ class Unlock(commands.Cog):
     async def daily(self, ctx):
         coins = random.randint(1, 1000)
         xp = random.randint(1, 500)
-        await ctx.send(f"You found {coins} coins!")
+        await ctx.send(f"You found {coins} coins and {xp} XP!")
 
         if random.random() < 0.5:
             channel = self.bot.get_channel(1125999933149949982)
