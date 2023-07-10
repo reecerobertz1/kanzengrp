@@ -63,7 +63,9 @@ class Unlock(commands.Cog):
     @commands.command()
     async def balance(self, ctx):
         user_id = ctx.author.id
+        print(f"Fetching balance for user {user_id}")
         total_coins = self.get_total_coins(user_id)
+        print(f"Total coins: {total_coins}")
         await ctx.send(f"{ctx.author.mention} has obtained a total of {total_coins} coins.")
 
     def get_user_coins(self, user_id):
