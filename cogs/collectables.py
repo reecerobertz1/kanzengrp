@@ -14,7 +14,7 @@ class Unlock(commands.Cog):
     async def daily(self, ctx):
         coins = random.randint(1, 1000)
         xp = random.randint(1, 500)
-        await ctx.send(f"You found {coins} coins and {xp} XP!")
+        await ctx.send(f"You found {coins} coins!")
 
         if random.random() < 0.5:
             channel = self.bot.get_channel(1125999933149949982)
@@ -34,28 +34,30 @@ class Unlock(commands.Cog):
             price = 100
             if coins >= price:
                 # Deduct coins from user's balance
-                # Perform other logic for buying XP
                 coins -= price
-                await ctx.send(f"{ctx.author.mention} bought XP!")
                 update_user_coins(ctx.author.id, coins)  # Update user's coin balance
+                await ctx.send(f"{ctx.author.mention} bought XP!")
             else:
                 await ctx.send("Insufficient coins!")
 
+    @commands.command()
+    async def balance(self, ctx):
+        coins = get_user_coins(ctx.author.id)
+        await ctx.send(f"{ctx.author.mention} has {coins} coins.")
+
 def get_user_coins(user_id):
-    # Replace this with your own logic to retrieve the user's coin balance from a database or any other source
     coins_dict = {
         1234567890: 500,  # Example user ID and coin balance
         # Add more user ID and coin balance pairs as needed
     }
-    return coins_dict.get(user_id, 0)  # Return the user's coin balance, or 0 if not found
+    return coins_dict.get(user_id, 0)
 
 def update_user_coins(user_id, coins):
-    # Replace this with your own logic to update the user's coin balance in a database or any other source
     coins_dict = {
         1234567890: 500,  # Example user ID and coin balance
         # Add more user ID and coin balance pairs as needed
     }
-    coins_dict[user_id] = coins  # Update the user's coin balance
+    coins_dict[user_id] = coins
 
 async def setup(bot):
     await bot.add_cog(Unlock(bot))
