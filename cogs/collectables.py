@@ -62,8 +62,9 @@ class Unlock(commands.Cog):
 
     @commands.command()
     async def balance(self, ctx):
-        coins = self.get_user_coins(ctx.author.id)
-        await ctx.send(f"{ctx.author.mention} has {coins} coins.")
+        user_id = ctx.author.id
+        total_coins = self.get_total_coins(user_id)
+        await ctx.send(f"{ctx.author.mention} has {total_coins} coins.")
 
     def get_user_coins(self, user_id):
         self.cursor.execute("SELECT coins FROM user_data WHERE user_id = ?", (user_id,))
@@ -80,6 +81,12 @@ class Unlock(commands.Cog):
     def update_user_xp(self, user_id, xp):
         # Perform logic for updating XP
         pass
+
+    def get_total_coins(self, user_id):
+        self.cursor.execute("SELECT coins FROM user_data WHERE user_id = ?", (user_id,))
+        results = self.cursor.fetchall()
+        total_coins = sum(result[0] for result in results)
+        return total_coins
 
 async def setup(bot):
     await bot.add_cog(Unlock(bot))
