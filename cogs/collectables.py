@@ -63,15 +63,11 @@ class Unlock(commands.Cog):
     @commands.command()
     async def balance(self, ctx):
         user_id = ctx.author.id
-        print(f"Fetching balance for user {user_id}")
         self.cursor.execute("SELECT total_coins FROM user_data WHERE user_id = ?", (user_id,))
         result = self.cursor.fetchone()
-        print(f"Result: {result}")
-        if result:
-            total_coins = result[0]
-            await ctx.send(f"{ctx.author.mention} has obtained a total of {total_coins} coins.")
-        else:
-            await ctx.send("No balance found.")
+        total_coins = result[0] if result else 0
+        await ctx.send(f"{ctx.author.mention} has obtained a total of {total_coins} coins.")
+
 
     def get_user_coins(self, user_id):
         self.cursor.execute("SELECT total_coins FROM user_data WHERE user_id = ?", (user_id,))
@@ -84,7 +80,8 @@ class Unlock(commands.Cog):
     def update_user_coins(self, user_id, coins):
         current_total = self.get_user_coins(user_id)
         total_coins = current_total + coins
-        self.cursor.execute("INSERT OR REPLACE INTO user_data (user_id, total_coins) VALUES (?, ?)", (user_id, total_coins))
+        self.cursor.execute("INSERT OR IGNORE INTO user_data (user_id, total_coins) VALUES (?, ?)", (user_id, total_coins))
+        self.cursor.execute("UPDATE user_data SET total_coins = ? WHERE user_id = ?", (total_coins, user_id))
         self.conn.commit()
 
     def update_user_xp(self, user_id, xp):
