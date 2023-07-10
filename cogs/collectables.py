@@ -10,17 +10,6 @@ class Unlock(commands.Cog):
         self.bot = bot
         self.unlocked_items = {}
 
-def get_user_coins(user_id):
-    coins_dict = {
-        1234567890: 500,  # Example user ID and coin balance
-        # Add more user ID and coin balance pairs as needed
-    }
-    return coins_dict.get(user_id, 0)  # Return the user's coin balance, or 0 if not found
-
-class MyCog(commands.Cog):
-    def __init__(self, bot):
-        self.bot = bot
-
     @commands.command()
     async def daily(self, ctx):
         coins = random.randint(1, 1000)
@@ -40,14 +29,33 @@ class MyCog(commands.Cog):
 
     @commands.command()
     async def buy(self, ctx, item: str):
+        coins = get_user_coins(ctx.author.id)
         if item.lower() == "xp":
-            coins = 100
-            if coins <= get_user_coins(ctx.author.id):
+            price = 100
+            if coins >= price:
                 # Deduct coins from user's balance
                 # Perform other logic for buying XP
+                coins -= price
                 await ctx.send(f"{ctx.author.mention} bought XP!")
+                update_user_coins(ctx.author.id, coins)  # Update user's coin balance
             else:
                 await ctx.send("Insufficient coins!")
+
+def get_user_coins(user_id):
+    # Replace this with your own logic to retrieve the user's coin balance from a database or any other source
+    coins_dict = {
+        1234567890: 500,  # Example user ID and coin balance
+        # Add more user ID and coin balance pairs as needed
+    }
+    return coins_dict.get(user_id, 0)  # Return the user's coin balance, or 0 if not found
+
+def update_user_coins(user_id, coins):
+    # Replace this with your own logic to update the user's coin balance in a database or any other source
+    coins_dict = {
+        1234567890: 500,  # Example user ID and coin balance
+        # Add more user ID and coin balance pairs as needed
+    }
+    coins_dict[user_id] = coins  # Update the user's coin balance
 
 async def setup(bot):
     await bot.add_cog(Unlock(bot))
