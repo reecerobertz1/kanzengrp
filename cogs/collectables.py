@@ -6,7 +6,7 @@ import datetime
 import random
 import sqlite3
 
-class Unlock(commands.Cog):
+"""class Unlock(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.conn = sqlite3.connect('bot.db')
@@ -103,7 +103,7 @@ class Unlock(commands.Cog):
 
     def update_user_xp(self, user_id, xp):
         # Perform logic for updating XP
-        pass
+        pass"""
 
 
 async def setup(bot):
