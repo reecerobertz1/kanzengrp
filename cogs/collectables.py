@@ -8,7 +8,7 @@ import random
 class Unlock(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.unlocked_items = {}
+
 
     @commands.command()
     async def daily(self, ctx):
@@ -52,6 +52,7 @@ class Unlock(commands.Cog):
 def get_user_coins(user_id):
     with open("coin_data.json", "r") as file:
         coin_data = json.load(file)
+    print("Coin Data:", coin_data)  # Add this line for debugging
     return coin_data.get(user_id, {}).get("coins", 0)
 
 def update_user_coins(user_id, coins):
@@ -60,6 +61,7 @@ def update_user_coins(user_id, coins):
     coin_data[user_id] = {"coins": coins}
     with open("coin_data.json", "w") as file:
         json.dump(coin_data, file)
+    print("Updated Coin Data:", coin_data)  # Add this line for debugging
 
 def update_user_xp(user_id, xp):
     with open("xp_data.json", "r") as file:
@@ -67,6 +69,7 @@ def update_user_xp(user_id, xp):
     xp_data[user_id] = xp
     with open("xp_data.json", "w") as file:
         json.dump(xp_data, file)
+    print("Updated XP Data:", xp_data)  # Add this line for debugging
 
 async def setup(bot):
     await bot.add_cog(Unlock(bot))
