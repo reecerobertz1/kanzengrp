@@ -175,7 +175,7 @@ class Moderation(commands.Cog):
         embed.set_footer(text='If you need to go inactive, use the command +ia')
         embed.add_field(name='✦ Group Rules :', value='<a:bounceyarrow:1128155233437106187> always watermark the logos\n<a:bounceyarrow:1128155233437106187> do not share the logos link outside the server!\n<a:bounceyarrow:1128155233437106187> make sure you are following [@remqsi](https://www.instagram.com/remqsi/) + [@kanzengrp](https://www.instagram.com/kanzengrp/)!\n<a:bounceyarrow:1128155233437106187> if you do ever decide to leave the grp, or move accounts. please let reece know!', inline= False)
         embed.add_field(name='✦ Chat Rules :', value='<a:bounceyarrow:1128155233437106187> please be as active as possible!\n<a:bounceyarrow:1128155233437106187> using any slurs / words that can be offensive!\n<a:bounceyarrow:1128155233437106187> please set your nickname as "your name | username"\n<a:bounceyarrow:1128155233437106187> no impersonation as other editors\n<a:bounceyarrow:1128155233437106187> no trash talking other editors and groups!')
-        embed.set_image(url='https://serving.photos.photobox.com/0814269535cc11c4fac2f41446e80b4f01b10a9db227f0f8574292f78abe9067e6361440.jpg')
+        embed.set_image(url='https://cdn.discordapp.com/attachments/1121841074512605186/1128422069336543232/Comp_1_00000.png')
         await ctx.send(embed=embed)
 
     @commands.command()
