@@ -168,17 +168,15 @@ class applications(commands.Cog):
         else:
             await ctx.reply("Failed to find the role to remove.")
 
-    async def generate_invite(self, server_id):
-        server = self.bot.get_guild(server_id)
-        if server:
-            invites = await server.invites()
-            if invites:
-                return invites[0].url
-            else:
-                invite = await server.text_channels[0].create_invite()
-                return invite.url
-        else:
-            raise ValueError("Failed to find the specified server.")
+        # Extract Instagram account from the application data
+        user_id = str(member.id)
+        if user_id in self.applications:
+            application = self.applications[user_id]
+        instagram_account = application.get("edit_link", "").split("|")[-1].strip()
+        if instagram_account.startswith("https://www.instagram.com/"):
+            instagram_account = instagram_account.replace("https://www.instagram.com/", "")
+            instagram_message = f"Accepted! Please follow the Instagram account: {instagram_account}"
+            await accepted_channel.send(instagram_message)
 
 
     @commands.command()
