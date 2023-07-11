@@ -173,8 +173,8 @@ class Moderation(commands.Cog):
             color=0x2b2d31
         )
         embed.set_footer(text='If you need to go inactive, use the command +ia')
-        embed.add_field(name='✦ Group Rules :', value='• always watermark the logos\n• do not share the logos link outside the server!\n• make sure you are following [@remqsi](https://www.instagram.com/remqsi/) + [@kanzengrp](https://www.instagram.com/kanzengrp/)!\n• if you do ever decide to leave the grp, or move accounts. please let reece know!', inline= False)
-        embed.add_field(name='✦ Chat Rules :', value='• please be as active as possible!\n• using any slurs / words that can be offensive!\n• please set your nickname as "your name | username"\n• no impersonation as other editors\n• no trash talking other editors and groups!')
+        embed.add_field(name='✦ Group Rules :', value='<a:bounceyarrow:1128155233437106187> always watermark the logos\n<a:bounceyarrow:1128155233437106187> do not share the logos link outside the server!\n<a:bounceyarrow:1128155233437106187> make sure you are following [@remqsi](https://www.instagram.com/remqsi/) + [@kanzengrp](https://www.instagram.com/kanzengrp/)!\n<a:bounceyarrow:1128155233437106187> if you do ever decide to leave the grp, or move accounts. please let reece know!', inline= False)
+        embed.add_field(name='✦ Chat Rules :', value='<a:bounceyarrow:1128155233437106187> please be as active as possible!\n<a:bounceyarrow:1128155233437106187> using any slurs / words that can be offensive!\n<a:bounceyarrow:1128155233437106187> please set your nickname as "your name | username"\n<a:bounceyarrow:1128155233437106187> no impersonation as other editors\n<a:bounceyarrow:1128155233437106187> no trash talking other editors and groups!')
         embed.set_image(url='https://serving.photos.photobox.com/0814269535cc11c4fac2f41446e80b4f01b10a9db227f0f8574292f78abe9067e6361440.jpg')
         await ctx.send(embed=embed)
 
