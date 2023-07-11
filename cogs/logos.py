@@ -13,7 +13,7 @@ class logos(commands.Cog):
             color=0x2b2d31
         )
         embed.set_footer(text='Made us some logos? send them to a lead or co lead!')
-        embed.set_image(url='https://cdn.discordapp.com/attachments/1003438198862659644/1125109046316380230/TXT-2-2048x1365.jpg')
+        embed.set_image(url='https://cdn.discordapp.com/attachments/1121841074512605186/1128394231115948072/theme_3_00000.png')
 
         button = discord.ui.Button(
             label='Click here for logos!',
