@@ -115,21 +115,21 @@ class applications(commands.Cog):
             add_role_id = 1123356130970701878
             remove_role_id = 1123356165246566491
             message = f"{member.mention} has been accepted."
-            embed_color = 0xFF0000  # Red color for the embed
+            embed_color = 0x2b2d31
         elif ctx.guild.id == 1122181605591621692:  # Kanzen
             invite_server_id = 1121841073673736215
             accepted_channel_id = 1123588044180684800
             add_role_id = 1122191098006224906
             remove_role_id = 1122191119430733835
             message = f"{member.mention} has been accepted."
-            embed_color = 0x00FF00  # Green color for the embed
+            embed_color = 0x2b2d31
         elif ctx.guild.id == 901409710572466217:  # daegu
             invite_server_id = 896619762354892821  
             accepted_channel_id = 901410829218492456
             add_role_id = 1119012138640494594
             remove_role_id = 901412966241554462
             message = f"{member.mention} has been accepted."
-            embed_color = 0x0000FF  # Blue color for the embed
+            embed_color = 0x2b2d31
         else:
             await ctx.reply("You can only use this command in specific servers.")
             return
@@ -145,11 +145,14 @@ class applications(commands.Cog):
 
         # Create server-specific embeds
         embed1 = discord.Embed(title="Accepted!", description="You have been accepted!", color=embed_color)
-        embed1.add_field(name="Server 1", value=f"Invite Link: {invite}")
+        embed1.set_image(url='https://cdn.discordapp.com/attachments/1121841074512605186/1128394231115948072/theme_3_00000.png')
+        embed1.add_field(name="You have been accepted into Kanzen!", value=f"[**Click here to join**]({invite})")
         embed2 = discord.Embed(title="Accepted!", description="You have been accepted!", color=embed_color)
-        embed2.add_field(name="Server 2", value=f"Invite Link: {invite}")
+        embed2.set_image(url='https://cdn.discordapp.com/banners/957987670787764224/3b81da990294e7cf80a6b53d3ee98a1f.png?size=1024')
+        embed2.add_field(name="You have been accepted into Auragrp!", value=f"[**Click here to join**]({invite})")
         embed3 = discord.Embed(title="Accepted!", description="You have been accepted!", color=embed_color)
-        embed3.add_field(name="Server 3", value=f"Invite Link: {invite}")
+        embed3.set_image(url='https://cdn.discordapp.com/banners/896619762354892821/906d72346deed85c1abe719216180be0.png?size=1024')
+        embed3.add_field(name="You have been accepted into Daegu!", value=f"[**Click here to join**]({invite})")
 
         guild = self.bot.get_guild(ctx.guild.id)
         role_to_add = guild.get_role(add_role_id)
