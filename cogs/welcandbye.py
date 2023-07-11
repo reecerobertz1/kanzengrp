@@ -56,21 +56,21 @@ class welcandleave(commands.Cog):
     @commands.Cog.listener()
     async def on_member_remove(self, member: discord.Member):
         if member.guild.id == self.server1_id:
-            embed = discord.Embed(title=f"{member.name} has left Kanzen!", color=0x2b2d31, description="We will miss you !")
+            embed = discord.Embed(title=f"{member.display_name} has left Kanzen!", color=0x2b2d31, description="We will miss you !")
             embed.set_thumbnail(url=member.display_avatar.url)
             embed.set_footer(text='Hope to see you again <3')
             channel = self.bot.get_channel(self.server1_welcome_channel_id)
             await channel.send(f'{member.mention}', embed=embed)
             """AURA GRP LEAVE"""
         elif member.guild.id == self.server2_id:
-            embed = discord.Embed(title=f"{member.name} has left Aura!", color=0x6475a8, description="We will miss you !")
+            embed = discord.Embed(title=f"{member.display_name} has left Aura!", color=0x6475a8, description="We will miss you !")
             embed.set_thumbnail(url=member.display_avatar.url)
             embed.set_footer(text='Hope to see you again soon !!')
             channel = self.bot.get_channel(self.server2_welcome_channel_id)
             await channel.send(f'{member.mention}', embed=embed)
             """DAEGU LEAVE"""
         elif member.guild.id == self.server5_id:
-            embed = discord.Embed(title=f"{member.name} has left Daegu!", color=0x2b2d31, description="We will miss you !")
+            embed = discord.Embed(title=f"{member.display_name} has left Daegu!", color=0x2b2d31, description="We will miss you !")
             embed.set_thumbnail(url=member.display_avatar.url)
             embed.set_footer(text='Hope to see you again soon !!')
             channel = self.bot.get_channel(self.server5_channel)
