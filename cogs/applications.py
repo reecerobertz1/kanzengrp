@@ -7,11 +7,11 @@ class applications(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.questions = [
-            {"name": "discord_name", "question": "What is your Discord name?"},
-            {"name": "instagram_name", "question": "What is your Instagram name?"},
-            {"name": "edit_link", "question": "Link for the edit you want to apply with:"},
-            {"name": "activity_level", "question": "How active will you be (1 - 5)?"},
-            {"name": "additional_info", "question": "Anything else you want us to know?"}
+            {"name": "discord_name", "question": f"What is your Discord name?"},
+            {"name": "instagram_name", "question": f"What is your Instagram name?"},
+            {"name": "edit_link", "question": f"Link for the edit you want to apply with (instagram only!)"},
+            {"name": "activity_level", "question": f"How active will you be (1 - 5)?"},
+            {"name": "additional_info", "question": f"Anything else you want us to know?"}
         ]
         self.application_file = "applications.json"
         self.applications = self.load_applications()
@@ -214,7 +214,6 @@ class applications(commands.Cog):
             await member.send(f"Hey, you have been declined in {server_name}. Please don't be upset or discouraged! We will have more recruitments in the future. <3")
         else:
             await ctx.reply(f"Failed to find the decline channel.")
-
 
 async def setup(bot):
     await bot.add_cog(applications(bot))
