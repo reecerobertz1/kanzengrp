@@ -144,13 +144,13 @@ class applications(commands.Cog):
         invite = await self.generate_invite(invite_server_id)
 
         # Create server-specific embeds
-        embed1 = discord.Embed(title="Accepted!", description="You have been accepted!", color=embed_color)
+        embed1 = discord.Embed(color=embed_color)
         embed1.set_image(url='https://cdn.discordapp.com/attachments/1121841074512605186/1128394231115948072/theme_3_00000.png')
         embed1.add_field(name="You have been accepted into Kanzen!", value=f"[**Click here to join**]({invite})")
-        embed2 = discord.Embed(title="Accepted!", description="You have been accepted!", color=embed_color)
+        embed2 = discord.Embed(color=embed_color)
         embed2.set_image(url='https://cdn.discordapp.com/banners/957987670787764224/3b81da990294e7cf80a6b53d3ee98a1f.png?size=1024')
         embed2.add_field(name="You have been accepted into Auragrp!", value=f"[**Click here to join**]({invite})")
-        embed3 = discord.Embed(title="Accepted!", description="You have been accepted!", color=embed_color)
+        embed3 = discord.Embed(color=embed_color)
         embed3.set_image(url='https://cdn.discordapp.com/banners/896619762354892821/906d72346deed85c1abe719216180be0.png?size=1024')
         embed3.add_field(name="You have been accepted into Daegu!", value=f"[**Click here to join**]({invite})")
 
