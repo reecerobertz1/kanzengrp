@@ -179,6 +179,17 @@ class Moderation(commands.Cog):
         await ctx.send(embed=embed)
 
     @commands.command()
+    async def earnxp(self, ctx):
+        embed = discord.Embed(
+            title='<a:kanzenflower:1128154723262943282> Earn XP',
+            description="XP goes towards your activity rank! you can do `+rank` to see what level you are at",
+            color=0x2b2d31
+        )
+        embed.add_field(name='Logo and Hashtag rep', value='<a:bounceyarrow:1128155233437106187> Send your edit to the thread below to gain XP! You can either use the group logos, hashtag or both to earn XP!\n<a:bounceyarrow:1128155233437106187> the logos and the hashtag can be found in [this channel](https://discord.com/channels/1121841073673736215/1121922101708857344)', inline= False)
+        embed.add_field(name='How much XP do you earn?', value='<a:bounceyarrow:1128155233437106187> Using the logos will give you **1,000xp**\n<a:bounceyarrow:1128155233437106187> Using the hashtag will give you **150xp**\n<a:bounceyarrow:1128155233437106187> Using both will give you **1,150xp**')
+        await ctx.send(embed=embed)
+
+    @commands.command()
     async def suggest(self, ctx, *, suggestion):
         server_id = ctx.guild.id
 
