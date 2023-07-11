@@ -61,8 +61,22 @@ class applications(commands.Cog):
 
         if ctx.guild.id == 1122181605591621692:
             channel_id = 1122183100038905908  # Channel ID for server 1122181605591621692
+            invite_server_id = 1121841073673736215  # Invite Server ID for server 1122181605591621692
+            add_role_id = 1122191098006224906  # Role ID to add for server 1122181605591621692
+            remove_role_id = 1122191119430733835  # Role ID to remove for server 1122181605591621692
+            embed_color = 0x00FF00  # Green color for the embed
         elif ctx.guild.id == 1123347338841313331:
             channel_id = 1123353889228468305  # Channel ID for server 1123347338841313331
+            invite_server_id = 957987670787764224  # Invite Server ID for server 1123347338841313331
+            add_role_id = 1123356130970701878  # Role ID to add for server 1123347338841313331
+            remove_role_id = 1123356165246566491  # Role ID to remove for server 1123347338841313331
+            embed_color = 0xFF0000  # Red color for the embed
+        elif ctx.guild.id == 901409710572466217:
+            channel_id = 901410829218492456  # Channel ID for server 901409710572466217
+            invite_server_id = 896619762354892821  # Invite Server ID for server 901409710572466217
+            add_role_id = 1119012138640494594  # Role ID to add for server 901409710572466217
+            remove_role_id = 901412966241554462  # Role ID to remove for server 901409710572466217
+            embed_color = 0x0000FF  # Blue color for the embed
         else:
             await ctx.send("You can't apply with this command in this group!")
             return
@@ -82,42 +96,6 @@ class applications(commands.Cog):
         await asyncio.sleep(5)  # Wait for 5 seconds (you can adjust the duration)
         await confirmation_msg.delete()  # Delete the confirmation message
 
-
-    @commands.command()
-    @commands.has_permissions(manage_guild=True)
-    async def resetapps(self, ctx):
-        if ctx.author.guild_permissions.administrator:
-            self.applications = {}
-            self.save_applications()
-            await ctx.send("Application IDs have been reset.")
-        else:
-            await ctx.send("You don't have permission to reset application IDs.")
-
-    @commands.command()
-    @commands.has_permissions(manage_guild=True)
-    async def viewapps(self, ctx):
-        if ctx.author.guild_permissions.administrator:
-            if not self.applications:
-                await ctx.send("No applications have been submitted.")
-                return
-
-            for application in self.applications.values():
-                user_id = application["discord_id"]
-                user = self.bot.get_user(int(user_id))
-
-                embed = discord.Embed(title="Application Form", color=0x2b2d31)
-                embed.add_field(name="Discord ID", value=f"<@{user_id}>", inline=False)
-                embed.add_field(name="Instagram Name", value=application.get("instagram_name", "N/A"), inline=False)
-                embed.add_field(name="Edit Link", value=application.get("edit_link", "N/A"), inline=False)
-                embed.add_field(name="Activity Level", value=application.get("activity_level", "N/A"), inline=False)
-                embed.add_field(name="Additional Info", value=application.get("additional_info", "N/A"), inline=False)
-                embed.set_footer(text=f"User ID: {user_id}")
-
-                await ctx.reply(f"Application by {user.mention}:")
-                await ctx.reply(embed=embed)
-        else:
-            await ctx.reply("You don't have permission to view applications.")
-
     @commands.command()
     @commands.has_permissions(manage_guild=True)
     async def accept(self, ctx, member: discord.Member):
@@ -127,18 +105,21 @@ class applications(commands.Cog):
             add_role_id = 1123356130970701878
             remove_role_id = 1123356165246566491
             message = f"{member.mention} has been accepted."
+            embed_color = 0xFF0000  # Red color for the embed
         elif ctx.guild.id == 1122181605591621692:  # Kanzen
             invite_server_id = 1121841073673736215
             accepted_channel_id = 1123588044180684800
             add_role_id = 1122191098006224906
             remove_role_id = 1122191119430733835
             message = f"{member.mention} has been accepted."
+            embed_color = 0x00FF00  # Green color for the embed
         elif ctx.guild.id == 901409710572466217:  # daegu
             invite_server_id = 896619762354892821  
             accepted_channel_id = 901410829218492456
             add_role_id = 1119012138640494594
             remove_role_id = 901412966241554462
             message = f"{member.mention} has been accepted."
+            embed_color = 0x0000FF  # Blue color for the embed
         else:
             await ctx.reply("You can only use this command in specific servers.")
             return
@@ -151,8 +132,14 @@ class applications(commands.Cog):
             await ctx.reply("Failed to find the specified channel.")
 
         invite = await self.generate_invite(invite_server_id)
-        dm_message = f"Hello {member.mention}! You have been accepted!.\nHere is your invite:\n{invite} thank you for applying!"
-        await member.send(dm_message)
+
+        # Create server-specific embeds
+        embed1 = discord.Embed(title="Accepted!", description="You have been accepted!", color=embed_color)
+        embed1.add_field(name="Server 1", value=f"Invite Link: {invite}")
+        embed2 = discord.Embed(title="Accepted!", description="You have been accepted!", color=embed_color)
+        embed2.add_field(name="Server 2", value=f"Invite Link: {invite}")
+        embed3 = discord.Embed(title="Accepted!", description="You have been accepted!", color=embed_color)
+        embed3.add_field(name="Server 3", value=f"Invite Link: {invite}")
 
         guild = self.bot.get_guild(ctx.guild.id)
         role_to_add = guild.get_role(add_role_id)
@@ -172,11 +159,31 @@ class applications(commands.Cog):
         user_id = str(member.id)
         if user_id in self.applications:
             application = self.applications[user_id]
-        instagram_account = application.get("edit_link", "").split("|")[-1].strip()
-        if instagram_account.startswith("https://www.instagram.com/"):
-            instagram_account = instagram_account.replace("https://www.instagram.com/", "")
-            instagram_message = f"Accepted! Please follow the Instagram account: {instagram_account}"
-            await accepted_channel.send(instagram_message)
+            instagram_account = application.get("edit_link", "").split("|")[-1].strip()
+            if instagram_account.startswith("https://www.instagram.com/"):
+                instagram_account = instagram_account.replace("https://www.instagram.com/", "")
+                embed1.add_field(name="Instagram Account", value=instagram_account)
+                embed2.add_field(name="Instagram Account", value=instagram_account)
+                embed3.add_field(name="Instagram Account", value=instagram_account)
+
+        if ctx.guild.id == 1122181605591621692:
+            await member.send(embed=embed1)
+        elif ctx.guild.id == 1123347338841313331:
+            await member.send(embed=embed2)
+        elif ctx.guild.id == 901409710572466217:
+            await member.send(embed=embed3)
+
+    async def generate_invite(self, server_id):
+        server = self.bot.get_guild(server_id)
+        if server:
+            invites = await server.invites()
+            if invites:
+                return invites[0].url
+            else:
+                invite = await server.text_channels[0].create_invite()
+                return invite.url
+        else:
+            raise ValueError("Failed to find the specified server.")
 
 
     @commands.command()
