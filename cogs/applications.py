@@ -98,6 +98,16 @@ class applications(commands.Cog):
 
     @commands.command()
     @commands.has_permissions(manage_guild=True)
+    async def resetapps(self, ctx):
+        if ctx.author.guild_permissions.administrator:
+            self.applications = {}
+            self.save_applications()
+            await ctx.send("Application IDs have been reset.")
+        else:
+            await ctx.send("You don't have permission to reset application IDs.")
+
+    @commands.command()
+    @commands.has_permissions(manage_guild=True)
     async def accept(self, ctx, member: discord.Member):
         if ctx.guild.id == 1123347338841313331:  # Aura
             invite_server_id = 957987670787764224
