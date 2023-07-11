@@ -40,7 +40,7 @@ class welcandleave(commands.Cog):
             await channel.send(f'{member.mention} <@&1123361940895445032>', embed=embed)
             """KANZEN FORMS"""
         elif member.guild.id == self.server4_id:
-            embed = discord.Embed(title=f'<:brazy_milksip:958479364184490075> : {member.name} has joined the server!', color=0x2b2d31, description=f"• Make sure you read our [rules](https://discord.com/channels/1123347338841313331/1123351779158016060)\n• Go and get your [roles](https://discord.com/channels/1123347338841313331/1123351943549562950)\n• apply [here!](https://discord.com/channels/1123347338841313331/1123352172143329331)\n• need help? ping <@&1123361291113865226>")
+            embed = discord.Embed(title=f'<:brazy_milksip:958479364184490075> : {member.name} has joined the server!', color=0x2b2d31, description=f"• Make sure you read our [rules](https://discord.com/channels/1122181605591621692/1122195332516810873)\n• Go and get your [roles](https://discord.com/channels/1122181605591621692/1123334720969789521)\n• apply [here!](https://discord.com/channels/1122181605591621692/1122195260735500348)\n• need help? ping <@609515684740988959>")
             embed.set_footer(text='Have fun! Thank you for joining', icon_url=member.display_avatar.url)
             channel = self.bot.get_channel(self.server4_channel)
             embed.set_thumbnail(url=member.display_avatar.url)

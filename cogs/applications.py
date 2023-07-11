@@ -29,7 +29,6 @@ class applications(commands.Cog):
             json.dump(self.applications, file, indent=4)
 
     @commands.command()
-    @commands.has_permissions(manage_guild=True)
     async def app(self, ctx):
         def check(message):
             return message.author == ctx.author and message.channel == ctx.channel
