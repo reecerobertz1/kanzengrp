@@ -42,52 +42,54 @@ class MemberInfo(commands.Cog):
         if member.premium_since is not None:
             badgeslist.append("<a:938021210984419338:1122702983277330512> Booster")
 
-@commands.command()
-async def memberinfo(self, ctx, member: discord.Member = None):
-    if member is None:
-        member = ctx.author
 
-    now = datetime.now(timezone.utc)
-    joined_at_utc = member.joined_at.replace(tzinfo=timezone.utc)
+    @commands.command()
+    async def memberinfo(self, ctx, member: discord.Member = None):
+        if member is None:
+            member = ctx.author
 
-    online_duration = now - joined_at_utc
-    online_days = online_duration.days
-    online_hours = online_duration.seconds // 3600
+        now = datetime.now(timezone.utc)
+        joined_at_utc = member.joined_at.replace(tzinfo=timezone.utc)
 
-    discord_join_date = member.created_at.strftime("%A, %B %d %Y")
-    server_join_date = member.joined_at.strftime("%A, %B %d")
+        online_duration = now - joined_at_utc
+        online_days = online_duration.days
+        online_hours = online_duration.seconds // 3600
 
-    nickname = member.nick
-    badges = member.public_flags.all()
+        discord_join_date = member.created_at.strftime("%A, %B %d %Y")
+        server_join_date = member.joined_at.strftime("%A, %B %d")
 
-    user = member
-    avatar_url = user.avatar.url if user.avatar else None
-    banner_url = await self.get_banner_url(user)
+        nickname = member.nick
+        badges = member.public_flags.all()
 
-    badgeslist = []
-    self.get_badges(member, user, badges, badgeslist)
+        user = member
+        avatar_url = user.avatar.url if user.avatar else None
+        banner_url = await self.get_banner_url(user)
 
-    # Extract Instagram account from the member nickname
-    instagram_account = nickname.split("|")[-1].strip()
+        badgeslist = []
+        self.get_badges(member, user, badges, badgeslist)
 
-    embed = discord.Embed(title=f"{member.name}", color=0x2b2d31)
-    embed.add_field(name="� Instagram", value=f"[{instagram_account}](https://www.instagram.com/{instagram_account})", inline=False)
-    embed.add_field(name="<:concoursdiscordcartesvoeuxfortni:1122702096085549076> Joined Discord", value=discord_join_date, inline=False)
-    embed.add_field(name="<:dash:1123654552843993099> Joined", value=server_join_date, inline=False)
-    embed.add_field(name="<:1faaa:1122701643536937011> Nickname", value=nickname, inline=False)
-    embed.set_footer(text=f'Member ID {user.id}')
-    if badgeslist:
-        embed.add_field(name="<a:938023584142622791:1122700150641528873> Badges", value='\n'.join(badgeslist), inline=False)
-    else:
-        embed.add_field(name="<a:938023584142622791:1122700150641528873> Badges", value="None", inline=False)
+        # Extract Instagram account from the member nickname
+        instagram_account = nickname.split("|")[-1].strip()
 
-    if avatar_url:
-        embed.set_thumbnail(url=avatar_url)
+        embed = discord.Embed(title=f"{member.name}", color=0x2b2d31)
+        embed.add_field(name="� Instagram", value=f"[{instagram_account}](https://www.instagram.com/{instagram_account})", inline=False)
+        embed.add_field(name="<:concoursdiscordcartesvoeuxfortni:1122702096085549076> Joined Discord", value=discord_join_date, inline=False)
+        embed.add_field(name="<:dash:1123654552843993099> Joined", value=server_join_date, inline=False)
+        embed.add_field(name="<:1faaa:1122701643536937011> Nickname", value=nickname, inline=False)
+        embed.set_footer(text=f'Member ID {user.id}')
+        if badgeslist:
+            embed.add_field(name="<a:938023584142622791:1122700150641528873> Badges", value='\n'.join(badgeslist), inline=False)
+        else:
+            embed.add_field(name="<a:938023584142622791:1122700150641528873> Badges", value="None", inline=False)
 
-    if banner_url:
-        embed.set_image(url=banner_url)
+        if avatar_url:
+            embed.set_thumbnail(url=avatar_url)
 
-    await ctx.reply(embed=embed)
+        if banner_url:
+            embed.set_image(url=banner_url)
+
+        await ctx.reply(embed=embed)
+
 
 
 
