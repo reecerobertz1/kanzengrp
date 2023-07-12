@@ -72,7 +72,7 @@ class MemberInfo(commands.Cog):
         instagram_account = nickname.split("|")[-1].strip()
 
         embed = discord.Embed(title=f"{member.name}", color=0x2b2d31)
-        embed.add_field(name="� Instagram", value=f"[{instagram_account}](https://www.instagram.com/{instagram_account})", inline=False)
+        embed.add_field(name="<:instagram:1128753024718872717> Instagram", value=f"[{instagram_account}](https://www.instagram.com/{instagram_account})", inline=False)
         embed.add_field(name="<:concoursdiscordcartesvoeuxfortni:1122702096085549076> Joined Discord", value=discord_join_date, inline=False)
         embed.add_field(name="<:dash:1123654552843993099> Joined", value=server_join_date, inline=False)
         embed.add_field(name="<:1faaa:1122701643536937011> Nickname", value=nickname, inline=False)
