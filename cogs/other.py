@@ -34,7 +34,7 @@ class other(commands.Cog):
          return
 
         # Check if the trigger phrase is mentioned in the message content
-        if "reece" in message.content.lower():
+        if "<@609515684740988959>" in message.content.lower():
             # Send the reply message
             await message.channel.send("<@609515684740988959> is the best lead")
 
