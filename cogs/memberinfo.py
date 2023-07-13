@@ -97,20 +97,33 @@ class MemberInfo(commands.Cog):
 
     @commands.command(aliases=["hoshiinfo", "about"])
     async def abouthoshi(self, ctx):
-        delta_uptime = datetime.datetime.utcnow() - self.bot.launch_time
+        delta_uptime = datetime.utcnow() - self.bot.launch_time
         hours, remainder = divmod(int(delta_uptime.total_seconds()), 3600)
         days, hours = divmod(hours, 24)
         minutes, seconds = divmod(remainder, 60)
-        
-        embed = discord.Embed(title="About Hoshi", description=f"Hoshi is a multi-purpose bot made for [kanzengrp](https://instagram.com/kanzengrp)\nFor help with commands, do `+help`\n\n**Hoshi was made on:** {discord.utils.format_dt(self.bot.user.created_at, 'D')}\n\n**Last reboot**: {discord.utils.format_dt(self.bot.launch_time, 'D')}\n\n**Uptime: **{days} days, {hours} hours, {minutes} minutes, {seconds} seconds\n\n**Total users:** {sum(g.member_count for g in self.bot.guilds)}\n\n**Python version:** {platform.python_version()}\n\n**Discord.py version:** {discord.__version__}\n\n**Ping:** Loading...")
+
+        embed = discord.Embed(title="About Hoshi", description=f"Hoshi is a multi-purpose bot made for [kanzengrp](https://instagram.com/kanzengrp)\nFor help with commands, do `+help`\n", color=0x2b2d31)
+        embed.add_field(name="Hoshi was made on", value=f"{discord.utils.format_dt(self.bot.user.created_at, 'D')}", inline=False)
+        embed.add_field(name="Last reboot", value=f"{discord.utils.format_dt(self.bot.launch_time, 'D')}", inline=False)
+        embed.add_field(name="Uptime", value=f"{days} days, {hours} hours, {minutes} minutes, {seconds} seconds", inline=False)
+        embed.add_field(name="Total users", value=f"{sum(g.member_count for g in self.bot.guilds)}", inline=False)
+        embed.add_field(name="Python version", value=f"{platform.python_version()}", inline=False)
+        embed.add_field(name="Discord.py version", value=f"{discord.__version__}", inline=False)
         embed.set_thumbnail(url=self.bot.user.display_avatar.url)
         embed.set_footer(text=f"Made by {self.bot.application.owner.name}")
 
-        start = time.perf_counter()
+        message = await ctx.send(embed=embed)
+
         # Simulate some action that takes time
         await asyncio.sleep(1)
 
-        await ctx.send(embed=embed)
+        # Update the embed with the ping duration
+        end = datetime.utcnow()
+        duration = (end - self.bot.launch_time).total_seconds() * 1000
+        embed.set_field_at(5, name="Ping", value=f"{int(duration)}ms", inline=False)
+
+        # Edit the message with the updated embed
+        await message.edit(embed=embed)
 
 
 async def setup(bot):
