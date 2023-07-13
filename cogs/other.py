@@ -36,7 +36,7 @@ class other(commands.Cog):
         # Check if the trigger phrase is mentioned in the message content
         if "reece" in message.content.lower():
             # Send the reply message
-            await message.channel.reply("best lead")
+            await message.channel.send("best lead")
 
 async def setup(bot):
     await bot.add_cog(other(bot))
