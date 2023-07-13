@@ -109,13 +109,8 @@ class MemberInfo(commands.Cog):
         start = time.perf_counter()
         # Simulate some action that takes time
         await asyncio.sleep(1)
-        end = time.perf_counter()
-        duration = (end - start) * 1000
 
-        # Update the description with the correct duration
-        embed.description = f"Hoshi is a multi-purpose bot made for [kanzengrp](https://instagram.com/kanzengrp)\nFor help with commands, do `+help`\n\n**Hoshi was made on:** {discord.utils.format_dt(self.bot.user.created_at, 'D')}\n\n**Last reboot**: {discord.utils.format_dt(self.bot.launch_time, 'D')}\n\n**Uptime: **{days} days, {hours} hours, {minutes} minutes, {seconds} seconds\n\n**Total users:** {sum(g.member_count for g in self.bot.guilds)}\n\n**Python version:** {platform.python_version()}\n\n**Discord.py version:** {discord.__version__}\n\n**Ping:** {int(duration)}ms"
-
-        message = await ctx.send(embed=embed)
+        await ctx.send(embed=embed)
 
 
 async def setup(bot):
