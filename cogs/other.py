@@ -26,5 +26,17 @@ class other(commands.Cog):
         embed.set_footer(text='If you have any question, do +qna')
         await ctx.send(embed=embed)
 
+
+    @commands.Cog.listener()
+    async def on_message(self, message):
+        # Ignore messages from bots to avoid potential loops
+        if message.author.bot:
+         return
+
+        # Check if the trigger phrase is mentioned in the message content
+        if "reece" in message.content.lower():
+            # Send the reply message
+            await message.channel.reply("best lead")
+
 async def setup(bot):
     await bot.add_cog(other(bot))
