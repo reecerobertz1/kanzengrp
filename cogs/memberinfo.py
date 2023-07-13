@@ -103,12 +103,12 @@ class MemberInfo(commands.Cog):
         minutes, seconds = divmod(remainder, 60)
 
         embed = discord.Embed(title="About Hoshi", description=f"Hoshi is a multi-purpose bot made for [kanzengrp](https://instagram.com/kanzengrp)\nFor help with commands, do `+help`\n", color=0x2b2d31)
-        embed.add_field(name="Hoshi was made on", value=f"{discord.utils.format_dt(self.bot.user.created_at, 'D')}", inline=False)
-        embed.add_field(name="Last reboot", value=f"{discord.utils.format_dt(self.bot.launch_time, 'D')}", inline=False)
-        embed.add_field(name="Uptime", value=f"{days} days, {hours} hours, {minutes} minutes, {seconds} seconds", inline=False)
-        embed.add_field(name="Total users", value=f"{sum(g.member_count for g in self.bot.guilds)}", inline=False)
-        embed.add_field(name="Python version", value=f"{platform.python_version()}", inline=False)
-        embed.add_field(name="Discord.py version", value=f"{discord.__version__}", inline=False)
+        embed.add_field(name="** **", value=f"** Hoshi was made on:** {discord.utils.format_dt(self.bot.user.created_at, 'D')}", inline=False)
+        embed.add_field(name="** **", value=f"**Last reboot:** {discord.utils.format_dt(self.bot.launch_time, 'D')}", inline=False)
+        embed.add_field(name="** **", value=f"**Uptime:** {days} days, {hours} hours, {minutes} minutes, {seconds} seconds", inline=False)
+        embed.add_field(name="** **", value=f"**Total users:** {sum(g.member_count for g in self.bot.guilds)}", inline=False)
+        embed.add_field(name="** **", value=f"**Python version:** {platform.python_version()}", inline=False)
+        embed.add_field(name='** **', value=f"**Discord.py version:** {discord.__version__}", inline=False)
         embed.set_thumbnail(url=self.bot.user.display_avatar.url)
         embed.set_footer(text=f"Made by {self.bot.application.owner.name}")
 
@@ -119,7 +119,7 @@ class MemberInfo(commands.Cog):
 
         # Update the embed with the latency as the ping value
         latency = round(self.bot.latency * 1000, 2)
-        embed.set_field_at(5, name="Latency", value=f"{latency}ms", inline=False)
+        embed.set_field_at(5, name="** **", value=f"**Latency:** {latency}ms", inline=False)
 
         # Edit the message with the updated embed
         await message.edit(embed=embed)
