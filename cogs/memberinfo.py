@@ -100,7 +100,9 @@ class MemberInfo(commands.Cog):
         delta_uptime = datetime.datetime.utcnow() - self.bot.launch_time
         hours, remainder = divmod(int(delta_uptime.total_seconds()), 3600)
         days, hours = divmod(hours, 24)
-        embed = discord.Embed(title="About Hoshi", description=f"Hoshi is a multi-purpose bot made for [kanzengrp](https://instagram.com/kanzengrp)\nFor help with commands, do `+help`\n\n**Hoshi was made on:** {discord.utils.format_dt(self.bot.user.created_at, 'D')}\n\n**Last reboot**: {discord.utils.format_dt(self.bot.launch_time, 'D')}\n\n**Uptime: **{days} days and {hours} hours\n\n**Total users:** {sum(g.member_count for g in self.bot.guilds)}\n\n**Python version:** {platform.python_version()}\n\n**Discord.py version:** {discord.__version__}\n\n**Ping:** Loading...")
+        minutes, seconds = divmod(remainder, 60)
+        
+        embed = discord.Embed(title="About Hoshi", description=f"Hoshi is a multi-purpose bot made for [kanzengrp](https://instagram.com/kanzengrp)\nFor help with commands, do `+help`\n\n**Hoshi was made on:** {discord.utils.format_dt(self.bot.user.created_at, 'D')}\n\n**Last reboot**: {discord.utils.format_dt(self.bot.launch_time, 'D')}\n\n**Uptime: **{days} days, {hours} hours, {minutes} minutes, {seconds} seconds\n\n**Total users:** {sum(g.member_count for g in self.bot.guilds)}\n\n**Python version:** {platform.python_version()}\n\n**Discord.py version:** {discord.__version__}\n\n**Ping:** Loading...")
         embed.set_thumbnail(url=self.bot.user.display_avatar.url)
         embed.set_footer(text=f"Made by {self.bot.application.owner.name}")
 
@@ -111,12 +113,11 @@ class MemberInfo(commands.Cog):
         duration = (end - start) * 1000
 
         # Update the description with the correct duration
-        embed.description = f"Hoshi is a multi-purpose bot made for [kanzengrp](https://instagram.com/kanzengrp)\nFor help with commands, do `+help`\n\n**Hoshi was made on:** {discord.utils.format_dt(self.bot.user.created_at, 'D')}\n\n**Last reboot**: {discord.utils.format_dt(self.bot.launch_time, 'D')}\n\n**Uptime: **{days} days and {hours} hours\n\n**Total users:** {sum(g.member_count for g in self.bot.guilds)}\n\n**Python version:** {platform.python_version()}\n\n**Discord.py version:** {discord.__version__}\n\n**Ping:** {int(duration)}ms"
+        embed.description = f"Hoshi is a multi-purpose bot made for [kanzengrp](https://instagram.com/kanzengrp)\nFor help with commands, do `+help`\n\n**Hoshi was made on:** {discord.utils.format_dt(self.bot.user.created_at, 'D')}\n\n**Last reboot**: {discord.utils.format_dt(self.bot.launch_time, 'D')}\n\n**Uptime: **{days} days, {hours} hours, {minutes} minutes, {seconds} seconds\n\n**Total users:** {sum(g.member_count for g in self.bot.guilds)}\n\n**Python version:** {platform.python_version()}\n\n**Discord.py version:** {discord.__version__}\n\n**Ping:** {int(duration)}ms"
 
         message = await ctx.send(embed=embed)
 
         # Edit the message with the updated embed
         await message.edit(embed=embed)
-
 async def setup(bot):
     await bot.add_cog(MemberInfo(bot))
