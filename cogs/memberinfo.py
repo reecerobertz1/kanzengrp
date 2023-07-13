@@ -106,11 +106,11 @@ class MemberInfo(commands.Cog):
         total_users = sum(len(guild.members) for guild in self.bot.guilds)
 
         embed = discord.Embed(title="Bot Information", color=0x2b2d31)
-        embed.add_field(name="Uptime", value=f"{days} days, {hours} hours, {minutes} minutes, {seconds} seconds")
-        embed.add_field(name="Join Date", value=join_date)
-        embed.add_field(name="Websocket Latency", value=f"{latency} ms")
-        embed.add_field(name="Last Reboot", value=last_reboot.strftime("%A, %B %d, %Y %H:%M:%S UTC"))
-        embed.add_field(name="Total Users", value=total_users)
+        embed.add_field(name="Uptime", value=f"{days} days, {hours} hours, {minutes} minutes, {seconds} seconds", inline=True)
+        embed.add_field(name="Join Date", value=join_date, inline=True)
+        embed.add_field(name="Websocket Latency", value=f"{latency} ms", inline=True)
+        embed.add_field(name="Last Reboot", value=last_reboot.strftime("%A, %B %d, %Y %H:%M:%S UTC"), inline=True)
+        embed.add_field(name="Total Users", value=total_users, inline=True)
         
         await ctx.reply(embed=embed)
 
