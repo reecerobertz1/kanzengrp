@@ -117,9 +117,6 @@ class MemberInfo(commands.Cog):
 
         message = await ctx.send(embed=embed)
 
-        # Edit the message with the updated embed
-        await message.edit(embed=embed)
-
 
 async def setup(bot):
     await bot.add_cog(MemberInfo(bot))
