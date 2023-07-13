@@ -117,10 +117,9 @@ class MemberInfo(commands.Cog):
         # Simulate some action that takes time
         await asyncio.sleep(1)
 
-        # Update the embed with the ping duration
-        end = datetime.utcnow()
-        duration = (end - self.bot.launch_time).total_seconds() * 1000
-        embed.set_field_at(5, name="Ping", value=f"{int(duration)}ms", inline=False)
+        # Update the embed with the latency as the ping value
+        latency = round(self.bot.latency * 1000, 2)
+        embed.set_field_at(5, name="Latency", value=f"{latency}ms", inline=False)
 
         # Edit the message with the updated embed
         await message.edit(embed=embed)
