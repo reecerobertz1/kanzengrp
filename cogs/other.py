@@ -38,5 +38,9 @@ class other(commands.Cog):
             # Send the reply message
             await message.channel.send("best lead")
 
+        if "tae" in message.content.lower():
+            # Send the reply message
+            await message.channel.send("<@718144988688679043> is mommy")
+
 async def setup(bot):
     await bot.add_cog(other(bot))
