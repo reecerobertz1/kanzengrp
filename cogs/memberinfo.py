@@ -1,11 +1,12 @@
 import discord
 from discord.ext import commands
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 import aiohttp
 
 class MemberInfo(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.start_time = datetime.utcnow()
 
     async def get_banner_url(self, user):
         headers = {
@@ -91,7 +92,27 @@ class MemberInfo(commands.Cog):
         await ctx.reply(embed=embed)
 
 
+    @commands.command()
+    async def aboutbot(self, ctx):
+        uptime = datetime.utcnow() - self.start_time
+        days = uptime.days
+        hours, remainder = divmod(uptime.seconds, 3600)
+        minutes, seconds = divmod(remainder, 60)
 
+        join_date = self.bot.user.created_at.strftime("%A, %B %d, %Y")
+        latency = round(self.bot.latency * 1000, 2)
+        last_reboot = datetime.utcnow() - timedelta(seconds=self.bot.uptime)
+
+        total_users = sum(len(guild.members) for guild in self.bot.guilds)
+
+        embed = discord.Embed(title="Bot Information", color=0x2b2d31)
+        embed.add_field(name="Uptime", value=f"{days} days, {hours} hours, {minutes} minutes, {seconds} seconds")
+        embed.add_field(name="Join Date", value=join_date)
+        embed.add_field(name="Websocket Latency", value=f"{latency} ms")
+        embed.add_field(name="Last Reboot", value=last_reboot.strftime("%A, %B %d, %Y %H:%M:%S UTC"))
+        embed.add_field(name="Total Users", value=total_users)
+        
+        await ctx.reply(embed=embed)
 
 async def setup(bot):
     await bot.add_cog(MemberInfo(bot))
