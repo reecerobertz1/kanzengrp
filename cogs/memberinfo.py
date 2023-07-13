@@ -6,7 +6,6 @@ import aiohttp
 class MemberInfo(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.start_time = datetime.utcnow()
 
     async def get_banner_url(self, user):
         headers = {
@@ -91,6 +90,7 @@ class MemberInfo(commands.Cog):
 
         await ctx.reply(embed=embed)
 
+        self.start_time = datetime.utcnow()
 
     @commands.command()
     async def aboutbot(self, ctx):
