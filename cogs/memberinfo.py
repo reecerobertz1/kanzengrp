@@ -1,3 +1,5 @@
+import platform
+import time
 import discord
 from discord.ext import commands
 from datetime import datetime, timedelta, timezone
@@ -92,27 +94,20 @@ class MemberInfo(commands.Cog):
 
         self.start_time = datetime.utcnow()
 
-    @commands.command()
-    async def aboutbot(self, ctx):
-        uptime = datetime.utcnow() - self.start_time
-        days = uptime.days
-        hours, remainder = divmod(uptime.seconds, 3600)
+    @commands.command(aliases=["hoshiinfo", "about"])
+    async def abouthoshi(self, ctx):
+        delta_uptime = datetime.datetime.utcnow() - self.bot.launch_time
+        hours, remainder = divmod(int(delta_uptime.total_seconds()), 3600)
         minutes, seconds = divmod(remainder, 60)
-
-        join_date = self.bot.user.created_at.strftime("%A, %B %d, %Y")
-        latency = round(self.bot.latency * 1000, 2)
-        last_reboot = datetime.utcnow() - timedelta(seconds=self.bot.uptime)
-
-        total_users = sum(len(guild.members) for guild in self.bot.guilds)
-
-        embed = discord.Embed(title="Bot Information", color=0x2b2d31)
-        embed.add_field(name="Uptime", value=f"{days} days, {hours} hours, {minutes} minutes, {seconds} seconds", inline=True)
-        embed.add_field(name="Join Date", value=join_date, inline=True)
-        embed.add_field(name="Websocket Latency", value=f"{latency} ms", inline=True)
-        embed.add_field(name="Last Reboot", value=last_reboot.strftime("%A, %B %d, %Y %H:%M:%S UTC"), inline=True)
-        embed.add_field(name="Total Users", value=total_users, inline=True)
-        
-        await ctx.reply(embed=embed)
+        duration = (end - start) * 1000
+        embed = discord.Embed(title="About Hoshi", description=f"Hoshi is a multi-purpose bot made for [kanzengrp](https://instagram.com/kanzengrp)\nFor help with commands, do `+help`\n\n**Hoshi was made on:** {discord.utils.format_dt(self.bot.user.created_at, 'D')}\n\n**Last reboot**: {discord.utils.format_dt(self.bot.launch_time, 'D')}\n\n**Uptime: **{days} days and {hours} hours\n\n**Total users:** {sum(g.member_count for g in self.bot.guilds)}\n\n**Python version:** {platform.python_version()}\n\n**Discord.py version:** {discord.__version__}\n\n**Ping:** {round(self.bot.latency * 1000)}ms")
+        days, hours = divmod(hours, 24)
+        embed.set_thumbnail(url=self.bot.user.display_avatar.url)
+        embed.set_footer(text=f"Made by {self.bot.application.owner.name}")
+        start = time.perf_counter()
+        message = await ctx.send(embed=embed)
+        end = time.perf_counter()
+        await message.edit(embed = embed)
 
 async def setup(bot):
     await bot.add_cog(MemberInfo(bot))
