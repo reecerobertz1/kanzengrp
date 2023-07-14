@@ -250,6 +250,18 @@ class Moderation(commands.Cog):
         else:
          await ctx.reply("Sorry, i can't find the server banner")
        
+    @commands.command()
+    async def softcollab(self, ctx):
+        embed = discord.Embed(title='> Soft Collab', description="Hey and thank you for joining Kanzen's soft collab!!\nAnd you can choose what audio to use (linked below)\n\n> Collab info\n- the collabs format will either be **1080x1080**\n- edit in **30fps only** (no more no less)\n\n- you can edit videos and photos if you want (this is mostly a photos collab though)\n- everyone edits 1 person to edit\n- this collab is due for the **15th of august** (we can extend to the 25th if needed, but will get replacements if there is no communication from you)\n\nPing Reece and tell him what part + person you want so you can be added to the list!\nIf you do have any questions, feel free to ping Reece", color=0x2b2d31)
+        embed.set_footer(text='here are the audios, just say 1 or 2 to vote!')
+        await ctx.send(embed=embed)
+
+    @commands.command()
+    async def hotcollab(self, ctx):
+        embed = discord.Embed(title='> Hot Collab', description="Hey and thank you for joining Kanzen's hot collab!!\nIn this collab you can choose whether or not we edit photos, video or both\nAnd you can choose what audio to use (linked below)\n\n> Collab info\n- the collabs format will either be:\n<:reply:1125269313432059904> **1080x1080** if we do photos (or photos and videos)\n\n<:reply:1125269313432059904> **1920x1080*** if we do videos\n- edit in **30fps only** (no more no less)\n- everyone edits 1 person to edit\n- this collab is due for the **15th of august** (we can extend to the 25th if needed, but will get replacements if there is no communication from you)\n\nPing Reece and tell him what part + person you want so you can be added to the list!\nIf you do have any questions, feel free to ping Reece", color=0x2b2d31)
+        embed.set_footer(text='here are the audios, just say 1 or 2 to vote!')
+        await ctx.send(embed=embed)
+
 
 
 async def setup(bot):
