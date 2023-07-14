@@ -39,7 +39,7 @@ class Moderation(commands.Cog):
         author_mention = deleted_message.author.mention
         content = deleted_message.content
 
-        embed = discord.Embed(title="Deleted Message",description='**Sent by:** author_mention, inline=False\n\n**Content**: content',color=0x2b2d31)
+        embed = discord.Embed(title="Deleted Message", description=f'**Sent by:** {author_mention}\n\n**Content**: {content}', color=0x2b2d31)
 
         await ctx.send(embed=embed)
 
