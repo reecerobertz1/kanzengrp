@@ -31,16 +31,12 @@ class Moderation(commands.Cog):
     async def snipe(self, ctx):
         channel = ctx.channel
         deleted_message = self.deleted_messages.get(channel.id)
-
         if deleted_message is None:
             await ctx.send("There are no recently deleted messages in this channel.")
             return
-
         author_mention = deleted_message.author.mention
         content = deleted_message.content
-
         embed = discord.Embed(title="Deleted Message", description=f'**Sent by:** {author_mention}\n\n**Content**: {content}', color=0x2b2d31)
-
         await ctx.send(embed=embed)
 
     @commands.command()
