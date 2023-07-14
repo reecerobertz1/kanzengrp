@@ -200,6 +200,16 @@ class Moderation(commands.Cog):
         await ctx.send(embed=embed)
 
     @commands.command()
+    async def boostaura(self, ctx):
+        embed = discord.Embed(
+            title='> Aura booster perks',
+            description="<a:greenarrow:1123286634629169203> Dm a lead or a co lead to make you a custom role! you can have your role have any name, color and icon of your choice!\n\n<a:greenarrow:1123286634629169203> Our booster pack is in the works right now. if you do want to contribute to the booster pack you can, send a lead or co lead the thing's you would like to add and we will add it!",
+            color=0x2b2d31)
+        embed.set_footer(text='do +perks to get the perks, we will let you know when they have been added!')
+        await ctx.send('<@&1123757238272659556>', embed=embed)
+        
+
+    @commands.command()
     async def suggest(self, ctx, *, suggestion):
         server_id = ctx.guild.id
 
