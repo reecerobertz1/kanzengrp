@@ -113,18 +113,18 @@ class funcmds(commands.Cog):
             async with session.get(str(avatar_url)) as response:
                 avatar_image = await response.read()
 
-        # Open the jail cell door image
-        jail_image = Image.open("pride.png").convert("RGBA")
+        # Open the pride image
+        pride = Image.open("pride.png").convert("RGBA")
 
         # Open the avatar image using PIL
         avatar_pil = Image.open(io.BytesIO(avatar_image)).convert("RGBA")
         avatar_pil = avatar_pil.resize((400, 400))
 
-        # Resize the jail cell door image to match the avatar size
-        jail_image = jail_image.resize(avatar_pil.size)
+        # Resize the pride image to match the avatar size
+        pride = pride.resize(avatar_pil.size)
 
         # Composite the images
-        final_image = Image.alpha_composite(avatar_pil, jail_image)
+        final_image = Image.alpha_composite(avatar_pil, pride)
 
         # Save the final image
         final_image.save("pride.png")
