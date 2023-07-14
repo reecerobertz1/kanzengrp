@@ -166,6 +166,16 @@ class Moderation(commands.Cog):
         await ctx.send(embed=embed)
 
     @commands.command()
+    async def roles6(self, ctx):
+        embed = discord.Embed(
+            title='✦ Events',
+            description="<a:number_1:1122926192018870382> <@&1129219295310794874>",
+            color=0x2b2d31
+        )
+        embed.set_footer(text='- React with the emojis below to select your roles')
+        await ctx.send(embed=embed)
+
+    @commands.command()
     async def rules(self, ctx):
         embed = discord.Embed(
             title='<a:3b56330f710c3a978f27c9cc7e099180:1122633149764088030> : __Kanzen rules__',
