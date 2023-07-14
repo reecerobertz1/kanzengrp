@@ -43,7 +43,7 @@ class Help(commands.Cog):
                 {"name": "", "value": "`[page 3/8]`", "inline": True}
             ],
             "> Other commands": [
-                {"name": "+ia", "value": "Send us an inactivity message if you go inactive", "inline": False},
+                {"name": "+ia", "value": "<:reply:1125269313432059904> Send us an inactivity message if you go inactive", "inline": False},
                 {"name": "", "value": "`[page 4/8]`", "inline": True}
             ],
             "> Kanzen only commands": [
