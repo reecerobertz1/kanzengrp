@@ -85,7 +85,7 @@ class funcmds(commands.Cog):
 
         # Open the avatar image using PIL
         avatar_pil = Image.open(io.BytesIO(avatar_image)).convert("RGBA")
-        avatar_pil = avatar_pil.resize((400, 400))
+        avatar_pil = avatar_pil.resize((128, 128))
 
         # Resize the jail cell door image to match the avatar size
         jail_image = jail_image.resize(avatar_pil.size)
