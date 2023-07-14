@@ -8,20 +8,20 @@ class Moderation(commands.Cog):
         self.bot = bot
         self.start_time = datetime.now()
 
-    @commands.command()
-    async def uptime(self, ctx):
-        current_time = datetime.now()
-        uptime = current_time - self.start_time
+#    @commands.command()
+#    async def uptime(self, ctx):
+#        current_time = datetime.now()
+#        uptime = current_time - self.start_time
 
-        days = uptime.days
-        hours, remainder = divmod(uptime.seconds, 3600)
-        minutes, seconds = divmod(remainder, 60)
+#        days = uptime.days
+#        hours, remainder = divmod(uptime.seconds, 3600)
+#        minutes, seconds = divmod(remainder, 60)
 
-        uptime_str = f"{days} days, {hours} hours, {minutes} minutes, {seconds} seconds"
+#        uptime_str = f"{days} days, {hours} hours, {minutes} minutes, {seconds} seconds"
 
-        await ctx.reply(f"Bot Uptime: {uptime_str}")
+#        await ctx.reply(f"Bot Uptime: {uptime_str}")
 
-        self.deleted_messages = {}
+#        self.deleted_messages = {}
 
     @commands.Cog.listener()
     async def on_message_delete(self, message):
@@ -39,10 +39,7 @@ class Moderation(commands.Cog):
         author_mention = deleted_message.author.mention
         content = deleted_message.content
 
-        embed = discord.Embed(color=0xff0000)
-        embed.set_author(name="Deleted Message")
-        embed.add_field(name="Author", value=author_mention, inline=False)
-        embed.add_field(name="Content", value=content, inline=False)
+        embed = discord.Embed(title="Deleted Message",description='**Sent by:** author_mention, inline=False\n\n**Content**: content',color=0x2b2d31)
 
         await ctx.send(embed=embed)
 
