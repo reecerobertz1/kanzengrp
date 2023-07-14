@@ -136,7 +136,7 @@ class funcmds(commands.Cog):
         os.remove("pride.png")
 
 
-    @commands.command()
+    @commands.command(aliases=['pp'])
     async def ppsize(self, ctx, member: discord.Member = None):
         if member is None:
             member = ctx.author
