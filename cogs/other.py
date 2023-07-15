@@ -42,5 +42,8 @@ class other(commands.Cog):
             # Send the reply message
             await message.channel.send("<@718144988688679043> is mommy")
 
+        if message.content.lower() == "nani":
+            await message.channel.send("i woke up in a new 🔥bugatti🔥")
+
 async def setup(bot):
     await bot.add_cog(other(bot))
