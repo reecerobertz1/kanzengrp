@@ -118,7 +118,7 @@ class funcmds(commands.Cog):
 
         # Open the avatar image using PIL
         avatar_pil = Image.open(io.BytesIO(avatar_image)).convert("RGBA")
-        avatar_pil = avatar_pil.resize((128, 128))
+        avatar_pil = avatar_pil.resize((500, 500))
 
         # Resize the pride image to match the avatar size
         pride = pride.resize(avatar_pil.size)
