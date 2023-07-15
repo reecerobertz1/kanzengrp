@@ -98,6 +98,7 @@ class welcandleave(commands.Cog):
                 await channel.send(embed=embed)
 
     @commands.command()
+    @commands.has_permissions(manage_guild=True)
     async def perks(self, ctx):
         server_id = ctx.guild.id
 
