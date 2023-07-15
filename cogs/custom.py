@@ -5,27 +5,17 @@ from discord.ext import commands
 class custom(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.custom_commands = {}  # Dictionary to store custom commands
-
-        # Load custom commands from JSON file
-        self.load_custom_commands()
-
-    def load_custom_commands(self):
-        try:
-            with open("custom.json", "r") as file:
-                self.custom_commands = json.load(file)
-        except FileNotFoundError:
-            self.custom_commands = {}
-
-    def save_custom_commands(self):
-        with open("custom.json", "w") as file:
-            json.dump(self.custom_commands, file)
+        self.custom_commands = {}
 
         try:
             with open("custom.json", "r") as file:
                 self.custom_commands = json.load(file)
         except FileNotFoundError:
             pass
+
+    def save_custom_commands(self):
+        with open("custom.json", "w") as file:
+            json.dump(self.custom_commands, file, indent=4)
 
     @commands.command()
     @commands.guild_only()  # Make the command only work in guilds (servers)
@@ -57,21 +47,13 @@ class custom(commands.Cog):
     @commands.command()
     async def removecmd(self, ctx, command_name):
         server_id = str(ctx.guild.id)
-        custom_commands = {}
 
-        try:
-            with open("custom.json", "r") as file:
-                custom_commands = json.load(file)
-        except FileNotFoundError:
-            pass
-
-        if server_id in custom_commands and command_name in custom_commands[server_id]:
-            del custom_commands[server_id][command_name]
-            with open("custom.json", "w") as file:
-                json.dump(custom_commands, file, indent=4)
-            await ctx.reply(f"The custom command `{command_name}` has been removed.")
+        if server_id in self.custom_commands and command_name in self.custom_commands[server_id]:
+            del self.custom_commands[server_id][command_name]
+            self.save_custom_commands()
+            await ctx.reply(f"The custom command '{command_name}' has been removed.")
         else:
-            await ctx.reply(f"The custom command `{command_name}` does not exist.")
+            await ctx.reply(f"The custom command '{command_name}' does not exist.")
 
     @commands.command()
     async def listcmds(self, ctx):
@@ -80,15 +62,8 @@ class custom(commands.Cog):
         if server_id in self.custom_commands and self.custom_commands[server_id]:
             embed = discord.Embed(title="Custom Commands", color=0x2b2d31)
 
-            for command_data in self.custom_commands[server_id]:
-                command_name = command_data["name"]
-                response = command_data["response"]
-                user_id = command_data["user_id"]
-
-                user = self.bot.get_user(user_id)
-                user_mention = user.mention if user else f"Unknown User ({user_id})"
-
-                embed.add_field(name=f"Command: {command_name}", value=f"Response: {response}\nAdded by: {user_mention}", inline=False)
+            for command_name, command_response in self.custom_commands[server_id].items():
+                embed.add_field(name=f"Command: {command_name}", value=f"Response: {command_response}", inline=False)
 
             await ctx.reply(embed=embed)
         else:
