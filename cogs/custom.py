@@ -21,6 +21,12 @@ class custom(commands.Cog):
         with open("custom.json", "w") as file:
             json.dump(self.custom_commands, file)
 
+        try:
+            with open("custom.json", "r") as file:
+                self.custom_commands = json.load(file)
+        except FileNotFoundError:
+            pass
+
     @commands.command()
     @commands.guild_only()  # Make the command only work in guilds (servers)
     @commands.has_permissions(manage_guild=True)  # Make the command only accessible by users with 'manage_guild' permission
@@ -66,12 +72,6 @@ class custom(commands.Cog):
             await ctx.reply(f"The custom command `{command_name}` has been removed.")
         else:
             await ctx.reply(f"The custom command `{command_name}` does not exist.")
-
-        try:
-            with open("custom.json", "r") as file:
-                self.custom_commands = json.load(file)
-        except FileNotFoundError:
-            pass
 
     @commands.command()
     async def listcmds(self, ctx):
