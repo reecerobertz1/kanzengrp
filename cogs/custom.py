@@ -70,17 +70,10 @@ class custom(commands.Cog):
     @commands.command()
     async def listcmds(self, ctx):
         server_id = str(ctx.guild.id)
-        custom_commands = {}
 
-        try:
-            with open("custom.json", "r") as file:
-                custom_commands = json.load(file)
-        except FileNotFoundError:
-            pass
-
-        if server_id in custom_commands:
+        if server_id in self.custom_commands:
             embed = discord.Embed(title="Custom Commands", color=0x2b2d31)
-            for command_name, command_data in custom_commands[server_id].items():
+            for command_name, command_data in self.custom_commands[server_id].items():
                 user_id = command_data["user_id"]
                 response = command_data["response"]
 
@@ -91,7 +84,6 @@ class custom(commands.Cog):
 
             await ctx.send(embed=embed)
         else:
-            print(custom_commands)  # Print custom_commands for debugging purposes
             await ctx.send("There are no custom commands.")
 
 
