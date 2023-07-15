@@ -125,9 +125,8 @@ class welcandleave(commands.Cog):
                 channel = self.bot.get_channel(channel_id)
                 await channel.send(message)
 
-            embed = discord.Embed(title="Kanzen Perks", description="Thank you for boosting kanzengrp!", color=0x2b2d31)
-            embed.add_field(name="Perk 3", value="Perk 3 description", inline=False)
-            embed.add_field(name="Perk 4", value="Perk 4 description", inline=False)
+            embed = discord.Embed(title="Kanzen Perks", description="Thank you for boosting kanzengrp!\n[Click here for the booster pack!](https://mega.nz/folder/N1tgSLqD#DZ73U23GXk1LqyZKUpdNww)", color=0x2b2d31)
+            embed.add_field(name="Remqsi's pack", value="<a:bounceyarrow:1126865547255091343> Remqsi's colouring packs 1 & 2\n<a:bounceyarrow:1126865547255091343> BTS Photos\n<a:bounceyarrow:1126865547255091343> Enhypen Photos\n<a:bounceyarrow:1126865547255091343> Blackpink Photos\n<a:bounceyarrow:1126865547255091343> Break your heart project file\n<a:bounceyarrow:1126865547255091343> Lisa candy project file", inline=False)
             embed.set_footer(text="We really appreciate the support!")
 
             if ctx.author.premium_since:
