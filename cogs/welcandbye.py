@@ -108,7 +108,7 @@ class welcandleave(commands.Cog):
                 channel = self.bot.get_channel(channel_id)
                 await channel.send(message)
 
-            embed = discord.Embed(title="Aura Perks", description="Thank you for boosting aura!\n\n[Click here for the booster pack!](https://mega.nz/folder/QpkzFIRB#FHWAnwOGU6-0vZQ_AjDn8g)", color=0x2b2d31)
+            embed = discord.Embed(title="Aura Perks", description="Thank you for boosting aura!\n[Click here for the booster pack!](https://mega.nz/folder/QpkzFIRB#FHWAnwOGU6-0vZQ_AjDn8g)", color=0x2b2d31)
             embed.add_field(name="Remqsi's pack", value="<a:greenarrow:1123286634629169203> Remqsi's colouring packs 1 & 2\n<a:greenarrow:1123286634629169203> BTS Photos\n<a:greenarrow:1123286634629169203> Enhypen Photos\n<a:greenarrow:1123286634629169203> Blackpink Photos", inline=False)
             embed.add_field(name="Yoongiaeps pack", value="<a:greenarrow:1123286634629169203> AE effects\n<a:greenarrow:1123286634629169203> AE shakes\n<a:greenarrow:1123286634629169203> BTS photos\n<a:greenarrow:1123286634629169203> Itzy photos\n<a:greenarrow:1123286634629169203> Kep1er photos\n<a:greenarrow:1123286634629169203> Twice photos", inline=False)
             embed.set_footer(text="We really appreciate the support!")
