@@ -75,7 +75,7 @@ class custom(commands.Cog):
             embed = discord.Embed(title="Custom Commands", color=0x2b2d31)
 
             for command_name, command_response in self.custom_commands[server_id].items():
-                embed.add_field(name=f"Command: {command_name}", value=f"Response: {command_response}", inline=False)
+                embed.add_field(name=f"** **", value=f"**Command:** {command_name} **Responce:** {command_response}", inline=False)
 
             await ctx.reply(embed=embed)
         else:
