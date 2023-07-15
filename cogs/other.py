@@ -31,14 +31,14 @@ class other(commands.Cog):
     async def on_message(self, message):
         # Ignore messages from bots to avoid potential loops
         if message.author.bot:
-         return
+            return
 
-        # Check if the trigger phrase is mentioned in the message content
-        if "reece" in message.content.lower():
+        # Check if the message content matches the trigger phrase exactly
+        if message.content.lower() == "reece":
             # Send the reply message
-            await message.channel.send("<@609515684740988959> is sexiest")
+            await message.channel.send("best lead")
 
-        if "tae" in message.content.lower():
+        if message.content.lower() == "tae":
             # Send the reply message
             await message.channel.send("<@718144988688679043> is mommy")
 
