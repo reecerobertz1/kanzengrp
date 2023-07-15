@@ -8,7 +8,7 @@ import aiohttp
 import discord
 from discord.ext import commands
 import requests
-from PIL import Image
+from PIL import Image, ImageDraw, ImageFont
 
 class funcmds(commands.Cog):
     def __init__(self, bot):
@@ -413,6 +413,53 @@ class funcmds(commands.Cog):
             activity_name = activity.name
 
             await ctx.reply(f"{member.name}'s status: `{activity_name}`")
+
+    @commands.command()
+    async def tweet(self, ctx, *, message):
+        # Load the tweet template image
+        template = Image.open("tweet_template.png")
+
+        # Set up the font
+        font = ImageFont.truetype("arial.ttf", 16)
+
+        # Create a new image with the same size as the template
+        tweet_image = Image.new("RGB", template.size, (255, 255, 255))
+
+        # Paste the template onto the new image
+        tweet_image.paste(template, (0, 0))
+
+        # Draw the user's message
+        draw = ImageDraw.Draw(tweet_image)
+        message_position = (40, 40)
+        draw.text(message_position, message, fill=(0, 0, 0), font=font)
+
+        # Get the user's username and avatar
+        username = str(ctx.author)
+        avatar_url = str(ctx.author.avatar_url_as(format="png"))
+
+        # Load the user's avatar image
+        async with self.bot.session.get(avatar_url) as response:
+            avatar_data = await response.read()
+        avatar_image = Image.open(io.BytesIO(avatar_data)).resize((32, 32))
+
+        # Paste the user's avatar onto the tweet image
+        avatar_position = (10, 10)
+        tweet_image.paste(avatar_image, avatar_position)
+
+        # Draw the user's username
+        username_position = (48, 14)
+        draw.text(username_position, username, fill=(0, 0, 0), font=font)
+
+        # Save the tweet image
+        tweet_image.save("tweet.png")
+
+        # Send the tweet image in the chat
+        with open("tweet.png", "rb") as f:
+            tweet_file = discord.File(f)
+            await ctx.send(file=tweet_file)
+
+        # Clean up the temporary tweet image file
+        os.remove("tweet.png")
 
 
 async def setup(bot):
