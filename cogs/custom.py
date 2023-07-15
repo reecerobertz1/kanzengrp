@@ -67,12 +67,19 @@ class custom(commands.Cog):
         else:
             await ctx.reply(f"The custom command `{command_name}` does not exist.")
 
+        try:
+            with open("custom.json", "r") as file:
+                self.custom_commands = json.load(file)
+        except FileNotFoundError:
+            pass
+
     @commands.command()
     async def listcmds(self, ctx):
         server_id = str(ctx.guild.id)
 
-        if server_id in self.custom_commands:
+        if server_id in self.custom_commands and self.custom_commands[server_id]:
             embed = discord.Embed(title="Custom Commands", color=0x2b2d31)
+
             for command_name, command_data in self.custom_commands[server_id].items():
                 user_id = command_data["user_id"]
                 response = command_data["response"]
