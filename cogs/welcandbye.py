@@ -98,7 +98,8 @@ class welcandleave(commands.Cog):
                 await channel.send(embed=embed)
 
     @commands.command()
-    @commands.has_permissions(manage_guild=True)
+    @commands.bot_has_permissions(manage_guild=True)
+    @commands.has_any_role("Booster", "Administrator")
     async def perks(self, ctx):
         server_id = ctx.guild.id
 
@@ -117,7 +118,7 @@ class welcandleave(commands.Cog):
             if ctx.author.premium_since:
                 await ctx.author.send(embed=embed)
             else:
-                await ctx.send("Sorry, this command is only available for server boosters.")
+                await ctx.send("Sorry, this command is only available for server boosters")
 
         elif server_id in [1121841073673736215, 1122181605591621692]:
             channel_ids = [1122627075682078720, 1123991325763711096]  
@@ -134,7 +135,8 @@ class welcandleave(commands.Cog):
             if ctx.author.premium_since:
                 await ctx.author.send(embed=embed)
             else:
-                await ctx.send("Sorry, this command is only available for server boosters.")
+                await ctx.send("Sorry, this command is only available for server boosters")
+
 
 
 async def setup(bot):
