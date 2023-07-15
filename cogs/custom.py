@@ -20,7 +20,7 @@ class custom(commands.Cog):
     @commands.command()
     @commands.guild_only()  # Make the command only work in guilds (servers)
     @commands.has_permissions(manage_guild=True)  # Make the command only accessible by users with 'manage_guild' permission
-    async def newcmd(self, ctx, command_name, command_response):
+    async def newcmd(self, ctx, command_name, *, command_response):
         # Check if the command is being executed in the desired server
         if ctx.guild.id != 1121841073673736215:
             return
@@ -75,7 +75,7 @@ class custom(commands.Cog):
             embed = discord.Embed(title="Custom Commands", color=0x2b2d31)
 
             for command_name, command_response in self.custom_commands[server_id].items():
-                embed.add_field(name=f"** **", value=f"**Command:** {command_name} **Responce:** {command_response}", inline=False)
+                embed.add_field(name=f"Command: {command_name}", value=f"Response: {command_response}", inline=False)
 
             await ctx.reply(embed=embed)
         else:
