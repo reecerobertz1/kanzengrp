@@ -417,7 +417,7 @@ class funcmds(commands.Cog):
     @commands.command()
     async def tweet(self, ctx, *, message):
         # Load the tweet template image
-        template = Image.open("tweet_template.png")
+        template = Image.open("0.png")
 
         # Set up the font
         font = ImageFont.truetype("arial.ttf", 16)
@@ -451,15 +451,15 @@ class funcmds(commands.Cog):
         draw.text(username_position, username, fill=(0, 0, 0), font=font)
 
         # Save the tweet image
-        tweet_image.save("tweet.png")
+        tweet_image.save("0.png")
 
         # Send the tweet image in the chat
-        with open("tweet.png", "rb") as f:
+        with open("0.png", "rb") as f:
             tweet_file = discord.File(f)
             await ctx.send(file=tweet_file)
 
         # Clean up the temporary tweet image file
-        os.remove("tweet.png")
+        os.remove("0.png")
 
 
 async def setup(bot):
