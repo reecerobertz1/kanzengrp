@@ -91,6 +91,7 @@ class custom(commands.Cog):
 
             await ctx.send(embed=embed)
         else:
+            print(custom_commands)  # Print custom_commands for debugging purposes
             await ctx.send("There are no custom commands.")
 
 
