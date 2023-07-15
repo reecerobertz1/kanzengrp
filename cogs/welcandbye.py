@@ -98,6 +98,7 @@ class welcandleave(commands.Cog):
                 await channel.send(embed=embed)
 
     @commands.command()
+    @commands.has_permissions(manage_guild=True)
     async def perks(self, ctx):
         server_id = ctx.guild.id
 
@@ -109,7 +110,7 @@ class welcandleave(commands.Cog):
                 await channel.send(message)
 
             embed = discord.Embed(title="Aura Perks", description="Thank you for boosting aura!", color=0x2b2d31)
-            embed.add_field(name="Perk 1", value="Perk 1 description", inline=False)
+            embed.add_field(name="Remqsi's pack", value="", inline=False)
             embed.add_field(name="Perk 2", value="Perk 2 description", inline=False)
             embed.set_footer(text="We really appreciate the support!")
 
