@@ -80,9 +80,10 @@ class custom(commands.Cog):
         if server_id in self.custom_commands and self.custom_commands[server_id]:
             embed = discord.Embed(title="Custom Commands", color=0x2b2d31)
 
-            for command_name, command_data in self.custom_commands[server_id].items():
-                user_id = command_data["user_id"]
+            for command_data in self.custom_commands[server_id]:
+                command_name = command_data["name"]
                 response = command_data["response"]
+                user_id = command_data["user_id"]
 
                 user = self.bot.get_user(user_id)
                 user_mention = user.mention if user else f"Unknown User ({user_id})"
@@ -92,7 +93,6 @@ class custom(commands.Cog):
             await ctx.reply(embed=embed)
         else:
             await ctx.reply("There are no custom commands.")
-
 
 async def setup(bot):
     await bot.add_cog(custom(bot))
