@@ -32,12 +32,13 @@ class custom(commands.Cog):
             self.custom_commands[server_id] = {}
 
         # Add the custom command to the dictionary
-        self.custom_commands[server_id][command_name.lower()] = command_response
+        command_name_with_prefix = "+" + command_name
+        self.custom_commands[server_id][command_name_with_prefix.lower()] = command_response
 
         # Save the updated custom commands to JSON file
         self.save_custom_commands()
 
-        await ctx.reply(f"Custom command '{command_name}' has been added!")
+        await ctx.reply(f"Custom command '{command_name_with_prefix}' has been added!")
 
     @commands.Cog.listener()
     async def on_message(self, message):
