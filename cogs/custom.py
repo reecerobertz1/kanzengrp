@@ -47,6 +47,26 @@ class custom(commands.Cog):
             response = self.custom_commands[content]
             await message.channel.send(response)
 
+    @commands.command()
+    async def removecmd(self, ctx, command_name):
+        server_id = str(ctx.guild.id)
+        custom_commands = {}
+
+        try:
+            with open("custom.json", "r") as file:
+                custom_commands = json.load(file)
+        except FileNotFoundError:
+            pass
+
+        if server_id in custom_commands and command_name in custom_commands[server_id]:
+            del custom_commands[server_id][command_name]
+            with open("custom.json", "w") as file:
+                json.dump(custom_commands, file, indent=4)
+            await ctx.send(f"The custom command `{command_name}` has been removed.")
+        else:
+            await ctx.send(f"The custom command `{command_name}` does not exist.")
+
+
 
 async def setup(bot):
     await bot.add_cog(custom(bot))
