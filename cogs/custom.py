@@ -35,7 +35,7 @@ class custom(commands.Cog):
         # Save the updated custom commands to JSON file
         self.save_custom_commands()
 
-        await ctx.send(f"Custom command '{command_name}' has been added!")
+        await ctx.reply(f"Custom command '{command_name}' has been added!")
 
     @commands.Cog.listener()
     async def on_message(self, message):
@@ -63,9 +63,9 @@ class custom(commands.Cog):
             del custom_commands[server_id][command_name]
             with open("custom.json", "w") as file:
                 json.dump(custom_commands, file, indent=4)
-            await ctx.send(f"The custom command `{command_name}` has been removed.")
+            await ctx.reply(f"The custom command `{command_name}` has been removed.")
         else:
-            await ctx.send(f"The custom command `{command_name}` does not exist.")
+            await ctx.reply(f"The custom command `{command_name}` does not exist.")
 
     @commands.command()
     async def listcmds(self, ctx):
@@ -82,9 +82,9 @@ class custom(commands.Cog):
 
                 embed.add_field(name=f"Command: {command_name}", value=f"Response: {response}\nAdded by: {user_mention}", inline=False)
 
-            await ctx.send(embed=embed)
+            await ctx.reply(embed=embed)
         else:
-            await ctx.send("There are no custom commands.")
+            await ctx.reply("There are no custom commands.")
 
 
 async def setup(bot):
