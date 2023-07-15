@@ -36,7 +36,7 @@ class other(commands.Cog):
         # Check if the message content matches the trigger phrase exactly
         if message.content.lower() == "reece":
             # Send the reply message
-            await message.channel.send("best lead")
+            await message.channel.send("<@609515684740988959> is the sexiest")
 
         if message.content.lower() == "tae":
             # Send the reply message
