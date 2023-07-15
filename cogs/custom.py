@@ -25,8 +25,14 @@ class custom(commands.Cog):
         if ctx.guild.id != 1121841073673736215:
             return
 
+        server_id = str(ctx.guild.id)
+
+        # Check if the custom commands for the server already exist
+        if server_id not in self.custom_commands:
+            self.custom_commands[server_id] = {}
+
         # Add the custom command to the dictionary
-        self.custom_commands[command_name.lower()] = command_response
+        self.custom_commands[server_id][command_name.lower()] = command_response
 
         # Save the updated custom commands to JSON file
         self.save_custom_commands()
@@ -38,11 +44,16 @@ class custom(commands.Cog):
         if message.author.bot:
             return
 
-        # Check if the message is a custom command
-        content = message.content.lower()
-        if content in self.custom_commands:
-            response = self.custom_commands[content]
-            await message.channel.send(response)
+        server_id = str(message.guild.id)
+
+        # Check if the server has custom commands
+        if server_id in self.custom_commands:
+            content = message.content.lower()
+
+            # Check if the message is a custom command
+            if content in self.custom_commands[server_id]:
+                response = self.custom_commands[server_id][content]
+                await message.channel.send(response)
 
     @commands.command()
     async def removecmd(self, ctx, command_name):
