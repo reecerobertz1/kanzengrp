@@ -2,7 +2,6 @@ import datetime
 import random
 import discord
 from discord.ext import commands
-import pytz
 
 class other(commands.Cog):
     def __init__(self, bot):
@@ -51,7 +50,7 @@ class other(commands.Cog):
     @commands.command()
     async def daily(self, ctx):
         user = ctx.author
-        current_time = datetime.datetime.now(pytz.timezone("UTC"))
+        current_time = datetime.datetime.utcnow()
 
         # Check user's roles for wait time
         wait_time = datetime.timedelta(hours=24)  # Default wait time for non-boosters
