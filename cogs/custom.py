@@ -19,7 +19,6 @@ class custom(commands.Cog):
 
     @commands.command()
     @commands.guild_only()  # Make the command only work in guilds (servers)
-    @commands.has_permissions(manage_guild=True)  # Make the command only accessible by users with 'manage_guild' permission
     async def newcmd(self, ctx, command_name, *, command_response):
         # Check if the command is being executed in the desired server
         if ctx.guild.id != 1121841073673736215:
