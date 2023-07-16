@@ -17,7 +17,9 @@ class other(commands.Cog):
         if user.id in self.cooldowns:
             remaining_time = self.cooldowns[user.id] - current_time
             if remaining_time.total_seconds() > 0:
-                return await ctx.send(f"{user.mention}, you need to wait {remaining_time} before claiming daily XP again!")
+                hours = remaining_time.seconds // 3600
+                minutes = (remaining_time.seconds % 3600) // 60
+                return await ctx.send(f"{user.mention}, you need to wait {hours} hours {minutes} minutes before claiming daily XP again!")
 
         # Calculate XP and cooldown based on user's roles
         xp = random.randint(100, 300)
