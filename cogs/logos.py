@@ -116,7 +116,7 @@ class logos(commands.Cog):
             color=0x2b2d31
         )
         embed.set_footer(text="Go and use these commands in Hoshi's channel!")
-        embed.add_field(name='Create Custom Commands', value='Create your own command with Hoshi with the `+newcmd` command!\nYou can create as many commands as you would like.\n\n**Example:**\n`+newcmd (command) (responce)`\nThe command name is what you would say `+hello` the responce is what Hoshi will say `Hi`\nAny inappropriate commands will be removed!\nYou can also do `+listcmds` to see all the commands added\nOr if you have made a mistake with your command, do `+removecmd` and then remove it\nIf you get stuck and confused, ask other zennies or <@609515684740988959> for help!\n\n**Disclaimer**\nThis command and the custom commands can only be used in Kanzens server!', inline=False)
+        embed.add_field(name='Daily XP', value='Use the new command `+daily` to get your daily xp!\nThe xp doesnt get added automatically... Reece has to add it manually. The command can only be used every 24 hours!\n\n**Disclaimer**\nThis command and the custom commands can only be used in Kanzens server!', inline=False)
         await ctx.send('<@&1122655473368314017>', embed=embed)
 
 
