@@ -29,7 +29,7 @@ class other(commands.Cog):
         xp = random.randint(100, 300)
         cooldown = datetime.timedelta(hours=24)  # Default cooldown for non-boosters
 
-        if any(role.name.lower() == "booster" for role in user.roles):
+        if any(role.name.lower() == "Kanzen Booster" for role in user.roles):
             cooldown = datetime.timedelta(hours=12)  # Cooldown for server boosters
 
         # Check if user has bypass permission
