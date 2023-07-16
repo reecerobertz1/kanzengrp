@@ -109,14 +109,14 @@ class logos(commands.Cog):
         await ctx.send(embed=embed, view=view)
 
     @commands.command()
+    @commands.has_permissions(manage_guild=True)
     async def newupdatehoshiupdates(self, ctx):
         embed = discord.Embed(
             title='New update!',
             color=0x2b2d31
         )
         embed.set_footer(text="Go and use these commands in Hoshi's channel!")
-        embed.add_field(name='Adding edits', value='The `+edits` and `+addedit` commands have been added! you can now upload your edits! do +addedit with a streamable link to add your edit! Just a heads up, your edit can be viewed in other servers, even if youre not in them. The `+edits` command just allows you to watch the edits that have been uploaded', inline=False)
-        embed.add_field(name='Adding audios', value='The `+audios` and `+addaudio` commands have been fixed! you can now upload audios from soundcloud! do +addaudio with a soundcloud link to add an audio! The `+audios` command will randomly give you an audio added by a member and you can use that audio for your edits!', inline=False)
+        embed.add_field(name='Create Custom Commands', value='Create your own command with Hoshi with the `+newcmd` command!\nYou can create as many commands as you would like.\n\n**Example:**\n`+newcmd (command) (responce)`\nThe command name is what you would say `+hello` the responce is what Hoshi will say `Hi`\nAny inappropriate commands will be removed!\nYou can also do `+listcmds` to see all the commands added\nOr if you have made a mistake with your command, do `+removecmd` and then remove it\nIf you get stuck and confused, ask other zennies or <@609515684740988959> for help!', inline=False)
         await ctx.send('<@&1122999466438438962>', embed=embed)
 
 
