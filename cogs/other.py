@@ -7,9 +7,13 @@ class other(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.cooldowns = {}
+        self.allowed_server_id = 1121841073673736215  # Change to your desired server ID
 
     @commands.command()
     async def daily(self, ctx):
+        if ctx.guild.id != self.allowed_server_id:
+            return  # Exit the command if not in the allowed server
+
         user = ctx.author
         current_time = datetime.datetime.utcnow()
 
