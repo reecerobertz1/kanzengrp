@@ -19,6 +19,7 @@ class Help(commands.Cog):
                 {"name": "+dog", "value": "<:reply:1125269313432059904> Sends you a random photo of a dog", "inline": False},
                 {"name": "+cat", "value": "<:reply:1125269313432059904> Sends you a random photo of a cat", "inline": False},
                 {"name": "+jail", "value": "<:reply:1125269313432059904> Put someone or yourself in jail", "inline": False},
+                {"name": "+pride", "value": "<:reply:1125269313432059904> Puts the pride flag on someones avatar", "inline": False},
                 {"name": "+memberinfo", "value": "<:reply:1125269313432059904> View info for yourself or others", "inline": False},
                 {"name": "+kiss", "value": "<:reply:1125269313432059904> Mention someone to kiss, or don't mention anyone for Hoshi to kiss you", "inline": False},
                 {"name": "+hug", "value": "<:reply:1125269313432059904> Mention someone to hug, or don't mention anyone for Hoshi to hug you", "inline": False},
