@@ -33,14 +33,14 @@ class other(commands.Cog):
             cooldown = datetime.timedelta(seconds=0)  # No cooldown for admins
 
         # Send a message in the current channel
-        await ctx.send(f"{user.mention}, you received {xp} XP for your daily activity!")
+        await ctx.reply(f"You claimed your daily xp! you got **{xp}xp**")
 
         # Send a message in the specified channel with user and XP information
         channel_id = 1125999933149949982  # Change to your desired channel ID
         channel = self.bot.get_channel(channel_id)
 
         if channel:
-            await channel.send(f"{user.name}#{user.discriminator} ({user.id}) earned {xp} XP for their daily activity!")
+            await channel.send(f"{user.mention} earned {xp} XP for their daily xp!")
 
         # Set the cooldown for the user
         self.cooldowns[user.id] = current_time + cooldown
