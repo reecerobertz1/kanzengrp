@@ -49,7 +49,7 @@ class Help(commands.Cog):
             "> Kanzen only commands": [
                 {"name": "+newcmd", "value": "<:reply:1125269313432059904> Make your own command! `+newcmd (command name) (hoshi's responce)`", "inline": False},
                 {"name": "+listcmds", "value": "<:reply:1125269313432059904> See all the commands other zennies have added", "inline": False},
-                {"name": "+removecmd", "value": "<:reply:1125269313432059904> Made a mistake in your command? do `+removecmd (+commandname)", "inline": False},
+                {"name": "+removecmd", "value": "<:reply:1125269313432059904> Made a mistake in your command? do `+removecmd (+commandname)`", "inline": False},
                 {"name": "", "value": "`[page 5/8]`", "inline": True}
             ],
             "> Levels commands": [
