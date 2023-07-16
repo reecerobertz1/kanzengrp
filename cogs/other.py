@@ -6,6 +6,42 @@ from discord.ext import commands
 class other(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.cooldowns = {}
+
+    @commands.command()
+    async def daily(self, ctx):
+        user = ctx.author
+        current_time = datetime.datetime.utcnow()
+
+        # Check if user is on cooldown
+        if user.id in self.cooldowns:
+            remaining_time = self.cooldowns[user.id] - current_time
+            if remaining_time.total_seconds() > 0:
+                return await ctx.send(f"{user.mention}, you need to wait {remaining_time} before claiming daily XP again!")
+
+        # Calculate XP and cooldown based on user's roles
+        xp = random.randint(100, 300)
+        cooldown = datetime.timedelta(hours=24)  # Default cooldown for non-boosters
+
+        if any(role.name.lower() == "booster" for role in user.roles):
+            cooldown = datetime.timedelta(hours=12)  # Cooldown for server boosters
+
+        # Check if user has bypass permission
+        if ctx.author.guild_permissions.manage_guild:
+            cooldown = datetime.timedelta(seconds=0)  # No cooldown for admins
+
+        # Send a message in the current channel
+        await ctx.send(f"{user.mention}, you received {xp} XP for your daily activity!")
+
+        # Send a message in the specified channel with user and XP information
+        channel_id = 1125999933149949982  # Change to your desired channel ID
+        channel = self.bot.get_channel(channel_id)
+
+        if channel:
+            await channel.send(f"{user.name}#{user.discriminator} ({user.id}) earned {xp} XP for their daily activity!")
+
+        # Set the cooldown for the user
+        self.cooldowns[user.id] = current_time + cooldown
 
     @commands.command()
     async def randomembed1(self, ctx):
@@ -46,51 +82,6 @@ class other(commands.Cog):
 
         if message.content.lower() == "nani":
             await message.channel.send("i woke up in a new 🔥bugatti🔥")
-
-    @commands.command()
-    async def daily(self, ctx):
-        user = ctx.author
-        current_time = datetime.datetime.utcnow()
-
-        # Check user's roles for wait time
-        wait_time = datetime.timedelta(hours=24)  # Default wait time for non-boosters
-        if any(role.name.lower() == "Kanzen Booster" for role in user.roles):
-            wait_time = datetime.timedelta(hours=12)  # Wait time for server boosters
-
-        # Check if user has bypass permission
-        if ctx.author.guild_permissions.manage_guild:
-            wait_time = datetime.timedelta(seconds=0)  # No wait time for admins
-
-        # Check if user has previously claimed daily XP
-        last_claimed = self.get_last_claimed(user)
-        if last_claimed:
-            next_claim = last_claimed + wait_time
-            if current_time < next_claim:
-                remaining_time = next_claim - current_time
-                return await ctx.send(f"{user.mention}, you need to wait {remaining_time} before claiming daily XP again!")
-
-        xp = random.randint(100, 300)
-
-        # Send a message in the current channel
-        await ctx.send(f"{user.mention}, you received {xp} XP for your daily activity!")
-
-        # Send a message in the specified channel with user and XP information
-        channel_id = 1125999933149949982  # Change to your desired channel ID
-        channel = self.bot.get_channel(channel_id)
-
-        if channel:
-            await channel.send(f"{user.name}#{user.discriminator} ({user.id}) earned {xp} XP for their daily activity!")
-
-        # Save the current time as the last claimed time
-        self.save_last_claimed(user, current_time)
-
-    def get_last_claimed(self, user):
-        # Retrieve the last claimed time from storage (not implemented in the code)
-        return None  # Replace with your code to retrieve the last claimed time
-
-    def save_last_claimed(self, user, current_time):
-        # Save the last claimed time to storage (not implemented in the code)
-        pass  # Replace with your code to save the last claimed time
 
 async def setup(bot):
     await bot.add_cog(other(bot))
