@@ -161,5 +161,61 @@ class Help(commands.Cog):
         embed.add_field(name='example', value='+slap <@609515684740988959>', inline=False)
         await ctx.reply(embed=embed)
 
+    @commands.command()
+    async def helproast(self, ctx):
+        embed = discord.Embed(title='+roast', description='Hoshi roasts you', color=0x2b2d31)
+        embed.add_field(name='aliases', value='none', inline=False)
+        embed.add_field(name='arguments', value='none', inline=False)
+        embed.add_field(name='example', value='+roast', inline=False)
+        await ctx.reply(embed=embed)
+
+    @commands.command()
+    async def helpcompliment(self, ctx):
+        embed = discord.Embed(title='+compliment', description='Hoshi compliments you', color=0x2b2d31)
+        embed.add_field(name='aliases', value='none', inline=False)
+        embed.add_field(name='arguments', value='none', inline=False)
+        embed.add_field(name='example', value='+compliment', inline=False)
+        await ctx.reply(embed=embed)
+
+    @commands.command()
+    async def helpsay(self, ctx):
+        embed = discord.Embed(title='+say <message>', description='Hoshi will repeat whatever you say', color=0x2b2d31)
+        embed.add_field(name='aliases', value='none', inline=False)
+        embed.add_field(name='arguments', value='`message`\n<:reply:1125269313432059904> the text you want hoshi to say', inline=False)
+        embed.add_field(name='example', value='+say hello', inline=False)
+        await ctx.reply(embed=embed)
+
+    @commands.command()
+    async def help8ball(self, ctx):
+        embed = discord.Embed(title='+8ball <question>', description='Hoshi will tell you if something is likely or not likely to happen', color=0x2b2d31)
+        embed.add_field(name='aliases', value='none', inline=False)
+        embed.add_field(name='arguments', value='`question`\n<:reply:1125269313432059904> the question you want hoshi to answer', inline=False)
+        embed.add_field(name='example', value='+8ball will i get rich?', inline=False)
+        await ctx.reply(embed=embed)
+
+    @commands.command()
+    async def helpship(self, ctx):
+        embed = discord.Embed(title='+ship <mention > <mention>', description='Hoshi will tell you you and your mentioned are a good match', color=0x2b2d31)
+        embed.add_field(name='aliases', value='none', inline=False)
+        embed.add_field(name='arguments', value='`mention`\n<:reply:1125269313432059904> mention yourself first\n`mention`\n<:reply:1125269313432059904> the person you want to be shipped with', inline=False)
+        embed.add_field(name='example', value='+ship <@609515684740988959> <@718144988688679043>', inline=False)
+        await ctx.reply(embed=embed)
+
+    @commands.command()
+    async def helptrivia(self, ctx):
+        embed = discord.Embed(title='+trivia', description='Play trivia with hoshi (answer questions with numbers : 1 - 4)', color=0x2b2d31)
+        embed.add_field(name='aliases', value='none', inline=False)
+        embed.add_field(name='arguments', value='`none', inline=False)
+        embed.add_field(name='example', value='+trivia', inline=False)
+        await ctx.reply(embed=embed)
+
+    @commands.command()
+    async def helpavatar(self, ctx):
+        embed = discord.Embed(title='+avatar <mention >', description='Hoshi will get your avatar, or the person you mentioned avatar', color=0x2b2d31)
+        embed.add_field(name='aliases', value='pfp, icon', inline=False)
+        embed.add_field(name='arguments', value='`mention`\n<:reply:1125269313432059904> hoshi will get this persons avatar instead', inline=False)
+        embed.add_field(name='example', value='+avatar <@609515684740988959>', inline=False)
+        await ctx.reply(embed=embed)
+
 async def setup(bot):
     await bot.add_cog(Help(bot))
