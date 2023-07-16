@@ -393,7 +393,7 @@ class funcmds(commands.Cog):
         except asyncio.TimeoutError:
             await ctx.reply("⌛ Time's up! You took too long to answer.")
 
-    @commands.command()
+    @commands.command(aliases=['pfp', 'icon'])
     async def avatar(self, ctx, member: discord.Member = None):
         if member is None:
             member = ctx.author
