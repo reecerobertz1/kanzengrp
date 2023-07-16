@@ -54,7 +54,7 @@ class other(commands.Cog):
 
         # Check user's roles for wait time
         wait_time = datetime.timedelta(hours=24)  # Default wait time for non-boosters
-        if any(role.name.lower() == "booster" for role in user.roles):
+        if any(role.name.lower() == "Kanzen Booster" for role in user.roles):
             wait_time = datetime.timedelta(hours=12)  # Wait time for server boosters
 
         # Check if user has bypass permission
