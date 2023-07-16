@@ -130,6 +130,14 @@ class Help(commands.Cog):
         await ctx.reply(embed=embed)
 
     @commands.command()
+    async def helppride(self, ctx):
+        embed = discord.Embed(title='+pride <member>', description='Puts the pride flag over your or the mentioned users avatar', color=0x2b2d31)
+        embed.add_field(name='aliases', value='gay, pridemonth', inline=False)
+        embed.add_field(name='arguments', value='`member`\n<:reply:1125269313432059904> mention someone for hoshi to put the pride flag on their avatar\nor dont mention someone so hoshi puts the pride flag on your avatar', inline=False)
+        embed.add_field(name='example', value='+pride <@609515684740988959>', inline=False)
+        await ctx.reply(embed=embed)
+
+    @commands.command()
     async def helpmemberinfo(self, ctx):
         embed = discord.Embed(title='+memberinfo <member>', description='See info of yourself or other members', color=0x2b2d31)
         embed.add_field(name='aliases', value='none', inline=False)
@@ -195,7 +203,7 @@ class Help(commands.Cog):
 
     @commands.command()
     async def helpship(self, ctx):
-        embed = discord.Embed(title='+ship <mention > <mention>', description='Hoshi will tell you you and your mentioned are a good match', color=0x2b2d31)
+        embed = discord.Embed(title='+ship <mention> <mention>', description='Hoshi will tell you you and your mentioned are a good match', color=0x2b2d31)
         embed.add_field(name='aliases', value='none', inline=False)
         embed.add_field(name='arguments', value='`mention`\n<:reply:1125269313432059904> mention yourself first\n`mention`\n<:reply:1125269313432059904> the person you want to be shipped with', inline=False)
         embed.add_field(name='example', value='+ship <@609515684740988959> <@718144988688679043>', inline=False)
@@ -211,7 +219,7 @@ class Help(commands.Cog):
 
     @commands.command()
     async def helpavatar(self, ctx):
-        embed = discord.Embed(title='+avatar <mention >', description='Hoshi will get your avatar, or the person you mentioned avatar', color=0x2b2d31)
+        embed = discord.Embed(title='+avatar <mention>', description='Hoshi will get your avatar, or the person you mentioned avatar', color=0x2b2d31)
         embed.add_field(name='aliases', value='pfp, icon', inline=False)
         embed.add_field(name='arguments', value='`mention`\n<:reply:1125269313432059904> hoshi will get this persons avatar instead', inline=False)
         embed.add_field(name='example', value='+avatar <@609515684740988959>', inline=False)
