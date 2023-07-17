@@ -30,7 +30,7 @@ class testmodal(ui.Modal, title='Testing it'):
      test2 = ui.TextInput(label='Testing modals', placeholder="you make me wanna die...", style=discord.TextStyle.long)
      test3 = ui.TextInput(label='Testing modals', placeholder="lol jk....", style=discord.TextStyle.short)
      async def on_submit(self, interaction: discord.Interaction):
-          await interaction.response.send_message("lol modal hahahaha")
+          await interaction.response.send_message(f"{self.test1} {self.test2} {self.test3}")
 
 async def setup(bot: commands.Bot) -> None:
 	await bot.add_cog(Slash(bot))
