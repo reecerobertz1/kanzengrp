@@ -4,6 +4,7 @@ from discord import app_commands
 import traceback
 from typing import Optional
 from io import BytesIO
+from discord_slash import cog_ext
 
 class newapps(commands.Cog):
     def __init__(self, bot):
