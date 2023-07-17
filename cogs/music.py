@@ -1,9 +1,7 @@
 import discord
 from discord.ext import commands
-from discord.ext import NativeVoiceClient  # important!
+from discord.ext.audiorec import NativeVoiceClient  # important!
 import random
-
-
 
 class Music(commands.Cog):
     def __init__(self, bot):
