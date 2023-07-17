@@ -97,8 +97,8 @@ class Slash(commands.Cog):
         # Add the "Accepted ✅" status to the embed of the replied message
         embed.add_field(name="Status", value="Accepted ✅", inline=False)
 
-        # Edit the reply message with the updated embed
-        await sent_msg.edit(embed=embed)
+        # Edit the replied message with the updated embed
+        await ctx.message.edit(embed=embed)
 
 # slash commands
 
