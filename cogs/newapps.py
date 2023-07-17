@@ -18,6 +18,11 @@ class Slash(commands.Cog):
     async def test(self, interaction: discord.Interaction):
         await interaction.response.send_message('testing')
 
+    @app_commands.command(name='logos', description='Get Kanzen logos')
+    @app_commands.guilds(discord.Object(id=1121841073673736215))
+    async def kanzenlogos(self, interaction: discord.Interaction):
+        await interaction.response.send_message('https://mega.nz/folder/J40zCTYY#L73pTeQKWpCh15wpuQaIFA', ephemeral=True)
+
 
     @app_commands.command(name='modal', description='open testing modal')
     async def testmodal(self, interaction: discord.Interaction):
