@@ -4,6 +4,7 @@ import discord
 import aiohttp
 from datetime import datetime
 import asqlite
+from discord import app_commands
 
 # the extensions/cogs i want to load
 extensions = {
@@ -28,6 +29,7 @@ extensions = {
     "cogs.newapps"
 }
 
+my_guild = discord.Object(id=1121841073673736215)
 # bot subclass
 class LalisaBot(commands.Bot):
 
@@ -55,6 +57,10 @@ class LalisaBot(commands.Bot):
             intents=intents,
             help_command=None
         )
+        self.tree = app_commands.CommandTree(self)
+        async def setup_hook(self):
+            self.tree.copy_global_to(guild=my_guild)
+            await self.tree.sync(guild=my_guild)
 
         # makes it so that the cog commands are case insensitive
         self._BotBase__cogs = commands.core._CaseInsensitiveDict()
