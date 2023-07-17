@@ -1,29 +1,5 @@
-import asyncio
 import discord
 from discord.ext import commands
-import youtube_dl
-
-
-youtube_dl.utils.bug_reports_message = lambda: ''
-
-ytdl_format_options = {
-    'format': 'bestaudio/best',
-    'restrictfilenames': True,
-    'noplaylist': True,
-    'nocheckcertificate': True,
-    'ignoreerrors': False,
-    'logtostderr': False,
-    'quiet': True,
-    'no_warnings': True,
-    'default_search': 'auto',
-    'source_address': '0.0.0.0' # bind to ipv4 since ipv6 addresses cause issues sometimes
-}
-
-ffmpeg_options = {
-    'options': '-vn'
-}
-
-ytdl = youtube_dl.YoutubeDL(ytdl_format_options)
 
 
 class Music(commands.Cog):
@@ -35,17 +11,8 @@ class Music(commands.Cog):
         server = ctx.guild
         voice_channel = server.voice_client
         async with ctx.typing():
-            filename = await self.ytdl_source(url)
-            voice_channel.play(discord.FFmpegPCMAudio(executable="C:\\Users\\abhisar.ahuja\\Documents\\ffmpeg\\ffmpeg.exe", source=filename))
-        await ctx.send('**Now playing:** {}'.format(filename))
-
-    async def ytdl_source(self, url):
-        data = await self.bot.loop.run_in_executor(None, lambda: self.ytdl.extract_info(url, download=False))
-        if 'entries' in data:
-            # take first item from a playlist
-            data = data['entries'][0]
-        filename = data['title']
-        return filename
+            voice_channel.play(discord.FFmpegPCMAudio(url))
+        await ctx.send('Now playing: {}'.format(url))
 
     @commands.command(name='join', help='Tells the bot to join the voice channel')
     async def join(self, ctx):
@@ -60,7 +27,7 @@ class Music(commands.Cog):
     async def pause(self, ctx):
         voice_client = ctx.guild.voice_client
         if voice_client.is_playing():
-            await voice_client.pause()
+            voice_client.pause()
         else:
             await ctx.send("The bot is not playing anything at the moment.")
 
@@ -68,7 +35,7 @@ class Music(commands.Cog):
     async def resume(self, ctx):
         voice_client = ctx.guild.voice_client
         if voice_client.is_paused():
-            await voice_client.resume()
+            voice_client.resume()
         else:
             await ctx.send("The bot was not playing anything before this. Use play_song command")
 
@@ -84,7 +51,7 @@ class Music(commands.Cog):
     async def stop(self, ctx):
         voice_client = ctx.guild.voice_client
         if voice_client.is_playing():
-            await voice_client.stop()
+            voice_client.stop()
         else:
             await ctx.send("The bot is not playing anything at the moment.")
 
