@@ -11,5 +11,10 @@ class Slash(commands.Cog):
     async def test(self, interaction: discord.Interaction):
         await interaction.response.send_message('testing')
 
+    @app_commands.command(name='lol', description='testing slash commands')
+    @app_commands.guilds(discord.Object)
+    async def test(self, interaction: discord.Interaction):
+        await interaction.response.send_message('testing')
+
 async def setup(bot: commands.Bot) -> None:
 	await bot.add_cog(Slash(bot))
