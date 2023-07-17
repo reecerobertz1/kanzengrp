@@ -18,17 +18,16 @@ class Music(commands.Cog):
     async def join(self, ctx):
         channel_id = 1055799905978957854  # Replace with your desired voice channel ID
 
-        voice_channel = discord.utils.get(ctx.guild.voice_channels, id=channel_id)
+        voice_channel = self.bot.get_channel(channel_id)
 
         if voice_channel:
-            voice_client = ctx.voice_client
-            if voice_client is not None:
-                await voice_client.move_to(voice_channel)
-            else:
+            if not ctx.voice_client:
                 await voice_channel.connect()
-            await ctx.send(f"Joined {voice_channel.name}")
+                await ctx.send(f"Joined {voice_channel.name}")
+            else:
+                await ctx.send("I'm already in a voice channel.")
         else:
-            await ctx.send("Unable to find the voice channel.")
+            await ctx.send("Voice channel not found.")
 
 
     @commands.command(name='pause', help='This command pauses the song')
