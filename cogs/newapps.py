@@ -1,8 +1,5 @@
 import discord
 from discord.ext import commands
-from colorama import Back, Fore, Style
-import time
-import json
 from discord import ui
 
 class modals(commands.Cog):
