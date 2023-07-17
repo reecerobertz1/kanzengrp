@@ -20,7 +20,7 @@ class Slash(commands.Cog):
 
 
     @app_commands.command(name='modal', description='open testing modal')
-    async def test(self, interaction: discord.Interaction):
+    async def testmodal(self, interaction: discord.Interaction):
          await interaction.response.send_modal(testmodal())
 
 # modals
