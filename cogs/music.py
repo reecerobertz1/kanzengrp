@@ -1,5 +1,8 @@
 import discord
 from discord.ext import commands
+from discord.ext import NativeVoiceClient  # important!
+import random
+
 
 
 class Music(commands.Cog):
@@ -14,20 +17,13 @@ class Music(commands.Cog):
             voice_client.play(discord.FFmpegPCMAudio(url))
         await ctx.send('Now playing: {}'.format(url))
 
-    @commands.command(name='join', help='Tells the bot to join the voice channel')
-    async def join(self, ctx):
-        channel_id = 1055799905978957854  # Replace with your desired voice channel ID
-
-        voice_channel = self.bot.get_channel(channel_id)
-
-        if voice_channel:
-            if not ctx.voice_client:
-                await voice_channel.connect()
-                await ctx.send(f"Joined {voice_channel.name}")
-            else:
-                await ctx.send("I'm already in a voice channel.")
-        else:
-            await ctx.send("Voice channel not found.")
+    @commands.command()
+    async def join(ctx: commands.Context):
+        channel: discord.VoiceChannel = ctx.author.voice.channel
+        if ctx.voice_client is not None:
+            return await ctx.voice_client.move_to(channel)
+        await channel.connect(cls=NativeVoiceClient)
+        await ctx.invoke(commands.get_command('rec'))
 
 
     @commands.command(name='pause', help='This command pauses the song')
