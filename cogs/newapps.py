@@ -25,7 +25,7 @@ class Slash(commands.Cog):
 
     @app_commands.command(name='aura', description='Get Aura logos')
     @app_commands.guilds(discord.Object(id=957987670787764224))
-    async def kanzenlogos(self, interaction: discord.Interaction):
+    async def auralogos(self, interaction: discord.Interaction):
         await interaction.response.send_message('https://mega.nz/folder/SNkySBBb#kNViVZOVnHzEFmFsuhtLOQ', ephemeral=True)
 
 
