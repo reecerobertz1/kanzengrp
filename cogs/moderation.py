@@ -68,45 +68,6 @@ class Moderation(commands.Cog):
         latency = round(self.bot.latency * 1000)  # Convert to milliseconds
 
         await ctx.reply(f"Pong! :ping_pong: Latency: {latency}ms")
-
-
-    @commands.command()
-    async def createrole(self, ctx, role_name, role_color):
-        guild = ctx.guild
-
-        # Check if the role already exists
-        existing_role = discord.utils.get(guild.roles, name=role_name)
-        if existing_role:
-            await ctx.send(f"A role with the name '{role_name}' already exists.")
-            return
-
-        # Create the role
-        try:
-            role = await guild.create_role(name=role_name, color=discord.Color(role_color))
-            await ctx.send(f"Role '{role_name}' has been created with color #{role.color.value:06x}.")
-        except discord.Forbidden:
-            await ctx.send("I don't have permission to create roles.")
-        except discord.HTTPException:
-            await ctx.send("Failed to create the role.")
-
-    @commands.command()
-    async def openapps(self, ctx):
-        embed = discord.Embed(
-            title='Apply Here!',
-            description='Please make sure you read the [Rules](https://discord.com/channels/1122181605591621692/1122195332516810873) and the info below!',
-            color=0x2b2d31
-        )
-        embed.add_field(name='Application Rules', value='<:arrow_00000:1121934367569227837> Make sure you are following [@remqsi](https://www.instagram.com/remqsi/) and the [group account](https://www.instagram.com/uzaigrp/)\n<:arrow_00000:1121934367569227837> Please only send one form!', inline=False)
-        embed.add_field(name='Application Info', value='<:arrow_00000:1121934367569227837> Velocity edits are an **auto decline**\n<:arrow_00000:1121934367569227837> You will receive an acceptence message if you are accepted, and a decline message if you get declined.\n<:arrow_00000:1121934367569227837> There is no doing reapps so choose the edit you want to apply with wisely\n <:arrow_00000:1121934367569227837> Make sure you answer all the questions on the form before sending!\n<:arrow_00000:1121934367569227837> Apply with your best edit. We look for creative and smooth edits', inline=False)
-        embed.set_image(url='https://cdn.discordapp.com/attachments/1122195332516810874/1122208438345281666/IMG_2232_00000_00000.png')
-        embed.set_footer(text='If you need any help, feel free to ping @lead')
-
-        button = discord.ButtonStyle.link(label='Click to apply!', url='https://example.com')
-
-        view = discord.ui.View()
-        view.add_item(button)
-
-        await ctx.send(embed=embed, view=view)
         
     @commands.command()
     async def roles(self, ctx):
