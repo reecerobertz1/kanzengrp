@@ -61,9 +61,9 @@ class ia(ui.Modal, title='Inactivity Message'):
         await interaction.client.get_channel(id=1121913672822968330).send(embed=embed)
         await interaction.followup.send(f'Your inactive message has been sent successfully', ephemeral=True)
         
-        async def on_error(self, interaction: discord.Interaction, error: Exception) -> None:
-             await interaction.response.send_message('Oops! Something went wrong.', ephemeral=True)
-             traceback.print_tb(error.__traceback__)
+    async def on_error(self, interaction: discord.Interaction, error: Exception) -> None:
+            await interaction.response.send_message('Oops! Something went wrong.', ephemeral=True)
+            traceback.print_tb(error.__traceback__)
 
 async def setup(bot: commands.Bot) -> None:
 	await bot.add_cog(Slash(bot))
