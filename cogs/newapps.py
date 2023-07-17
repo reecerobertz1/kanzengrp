@@ -6,14 +6,12 @@ from typing import Optional
 from io import BytesIO
 
 class newapps(commands.Cog):
-	def __init__(self, bot: commands.Bot) -> None:
-		self.bot: commands.Bot = bot
-		super().__init__()
-		
-@app_commands.command()
-async def hello(interaction: discord.Interaction):
-	await interaction.responce.send_message('hello')
-		
+    def __init__(self, bot):
+        self.bot = bot
+
+    @app_commands.command(name='test', description='testing')
+    async def test(self, interaction: discord.Interaction, name: str, age: int) -> None:
+         await interaction.response.send_message(f'My name is {name} and i am {age} years old!')
 
 async def setup(bot: commands.Bot) -> None:
 	await bot.add_cog(newapps(bot))
