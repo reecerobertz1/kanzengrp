@@ -48,7 +48,9 @@ class LalisaBot(commands.Bot):
             messages=True,
             reactions=True,
             message_content=True,
-            presences=True
+            presences=True,
+            voice_states = True,
+            voice_states = True
         )
         super().__init__(
             command_prefix='+',

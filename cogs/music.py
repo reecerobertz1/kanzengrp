@@ -20,15 +20,28 @@ class Music(commands.Cog):
         channel = self.bot.get_channel(channel_id)
 
         if channel and channel.type == discord.ChannelType.voice:
-            voice_client = ctx.guild.voice_client
+            voice_state = ctx.author.voice
+            bot_voice_state = ctx.guild.me.voice
 
-            if voice_client:
-                await voice_client.move_to(channel)
+            if voice_state and voice_state.channel:
+                if voice_state.channel.id != channel.id:
+                    await ctx.send("You must be in the same voice channel as me to use this command.")
+                    return
+
+                if bot_voice_state and bot_voice_state.channel:
+                    if bot_voice_state.channel.id == channel.id:
+                        await ctx.send("I am already in the specified voice channel.")
+                        return
+
+                    await bot_voice_state.move_to(channel)
+                else:
+                    await channel.connect()
+                await ctx.send(f"Joined the voice channel: {channel.name}")
             else:
-                await channel.connect()
-            await ctx.send(f"Joined the voice channel: {channel.name}")
+                await ctx.send("You must be in a voice channel to use this command.")
         else:
             await ctx.send("The specified voice channel does not exist or is not a voice channel.")
+
 
 
     @commands.command(name='pause', help='This command pauses the song')
