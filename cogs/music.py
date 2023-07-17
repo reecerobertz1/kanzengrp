@@ -18,16 +18,14 @@ class Music(commands.Cog):
     async def join(self, ctx):
         channel_id = 1055799905978957854  # Replace with your desired voice channel ID
 
-        # Get the voice channel by its ID
         voice_channel = self.bot.get_channel(channel_id)
 
         if voice_channel:
-            # Check if the bot is already connected to a voice channel
-            if ctx.voice_client:
-                await ctx.voice_client.move_to(voice_channel)
-            else:
-                await voice_channel.connect()
-                await ctx.send(f"Joined {voice_channel.name}")
+            voice_client = ctx.guild.voice_client
+            if voice_client is not None:
+                await voice_client.disconnect()
+            await voice_channel.connect()
+            await ctx.send(f"Joined {voice_channel.name}")
         else:
             await ctx.send("Unable to find the voice channel.")
 
