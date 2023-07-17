@@ -18,17 +18,21 @@ class Music(commands.Cog):
     async def join(self, ctx):
         voice_state = ctx.author.voice
 
-        if voice_state is None:
+        if voice_state is None or voice_state.channel is None:
             return await ctx.send("You are not connected to a voice channel.")
 
         voice_channel = voice_state.channel
         voice_client = ctx.guild.voice_client
 
-        if voice_client and voice_client.is_connected():
+        if voice_client is not None:
+            if voice_client.channel.id == voice_channel.id:
+                return
+
             await voice_client.move_to(voice_channel)
         else:
             await voice_channel.connect()
-            await ctx.send(f"Joined voice channel: {voice_channel}")
+
+        await ctx.send(f"Joined voice channel: {voice_channel}")
 
     @commands.command(name='pause', help='This command pauses the song')
     async def pause(self, ctx):
