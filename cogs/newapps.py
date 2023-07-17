@@ -16,9 +16,20 @@ class ia(ui.Modal, title='Inactivity Message'):
         await interation.responce.send_message('boobs')
 
 
-    @app_commands.command()
-    async def ianewtest(self, interation: discord.Integration):
-        await interation.responce.send_modal(ia())
+class Slash(commands.Cog):
+	"""All of cloudy's slash commands"""
+	def __init__(self, bot: commands.Bot) -> None:
+		self.bot: commands.Bot = bot
+		super().__init__()
+
+	@app_commands.command(description="im sorry alex im testing this- its not working i wanna die- i am deleteting this i promise AAAH")
+	async def apply(self, interaction: discord.Interaction):
+		async with interaction.client.db.cursor() as cursor:
+			await cursor.execute('''SELECT * FROM applications WHERE user_id = ?''', (interaction.user.id,))
+			row = await cursor.fetchone()
+			if row:
+				return await interaction.response.send_message('You have already applied!', ephemeral=True)
+		await interaction.response.send_modal(ia())
 
 async def setup(bot):
     await bot.add_cog(modals(bot))
