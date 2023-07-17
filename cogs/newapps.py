@@ -13,7 +13,7 @@ class ia(ui.Modal):
 
 
     @commands.command()
-    async def ia(self, interation: discord.Integration):
+    async def ianewtest(self, interation: discord.Integration):
         await interation.responce.send_modal(ia())
 
 async def setup(bot):
