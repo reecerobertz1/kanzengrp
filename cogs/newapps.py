@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 from discord import ui
+from discord import app_commands
 
 class modals(commands.Cog):
     def __init__(self, bot):
@@ -15,7 +16,7 @@ class ia(ui.Modal, title='Inactivity Message'):
         await interation.responce.send_message('boobs')
 
 
-    @commands.tree.command()
+    @app_commands.command()
     async def ianewtest(self, interation: discord.Integration):
         await interation.responce.send_modal(ia())
 
