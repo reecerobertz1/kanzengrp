@@ -15,7 +15,7 @@ class Music(commands.Cog):
         await ctx.send('Now playing: {}'.format(url))
 
     @commands.command(name='join', help='Tells the bot to join the voice channel')
-    async def join(ctx):
+    async def join(self, ctx):
         voice_state = ctx.author.voice
 
         if voice_state is None:
