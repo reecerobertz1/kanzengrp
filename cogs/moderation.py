@@ -216,14 +216,14 @@ class Moderation(commands.Cog):
         embed = discord.Embed(title='> Soft Collab', description="Hey and thank you for joining Kanzen's soft collab!!\nAnd you can choose what audio to use (linked below)\n\n> Collab info\n- the collabs format will either be **1080x1080**\n- edit in **30fps only** (no more no less)\n\n- you can edit videos and photos if you want (this is mostly a photos collab though)\n- everyone edits 1 person to edit\n- this collab is due for the <t:1692054000:D> (we can extend to the 25th if needed, but will get replacements if there is no communication from you)\n-**__PLEASE DON'T ADD COLOURINGS, WATERMARKS, SHARPEN AND PANNING!!!__** ill add all of that\n\nPing Reece and tell him what part + person you want so you can be added to the list!\nIf you do have any questions, feel free to ping Reece", color=0x2b2d31)
         embed.set_footer(text='here are the audios, just say 1 or 2 to vote!')
         await ctx.send('<@&1129221200359469076>', embed=embed)
-        await ctx.send('https://www.instagram.com/reel/CnfmNVoPRFx/?igshid=MzRlODBiNWFlZA== \nhttps://www.instagram.com/p/CkDUa5RtQXh/?igshid=MzRlODBiNWFlZA==')
+        await ctx.send('**audio one** - https://www.instagram.com/reel/CnfmNVoPRFx/?igshid=MzRlODBiNWFlZA== \n**audio two** - https://www.instagram.com/p/CkDUa5RtQXh/?igshid=MzRlODBiNWFlZA==')
 
     @commands.command()
     async def hotcollab(self, ctx):
         embed = discord.Embed(title='> Hot Collab', description="Hey and thank you for joining Kanzen's hot collab!!\nIn this collab you can choose whether or not we edit photos, video or both\nAnd you can choose what audio to use (linked below)\n\n> Collab info\n- the collabs format will either be:\n<:reply:1125269313432059904> **1080x1080** if we do photos (or photos and videos)\n\n<:reply:1125269313432059904> **1920x1080*** if we do videos\n- edit in **30fps only** (no more no less)\n- everyone edits 1 person to edit\n- this collab is due for the <t:1692054000:D> (we can extend to the 25th if needed, but will get replacements if there is no communication from you)\n-**__PLEASE DON'T ADD COLOURINGS, WATERMARKS, SHARPEN AND PANNING!!!__** ill add all of that\n\nPing Reece and tell him what part + person you want so you can be added to the list!\nIf you do have any questions, feel free to ping Reece", color=0x2b2d31)
         embed.set_footer(text='here are the audios, just say 1 or 2 to vote!')
         await ctx.send('<@&1129221206764175450>', embed=embed)
-        await ctx.send('https://streamable.com/087bcn \nhttps://soundcloud.com/elxniip7/my-familia?ref=clipboard&p=i&c=0&si=F1323A37AB3641FCBC4C01CF6FA8057D&utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing')
+        await ctx.send('**audio one** - https://streamable.com/087bcn \n**audio two** - https://soundcloud.com/elxniip7/my-familia?ref=clipboard&p=i&c=0&si=F1323A37AB3641FCBC4C01CF6FA8057D&utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing')
 
 
 
