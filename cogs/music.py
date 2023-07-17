@@ -16,25 +16,32 @@ class Music(commands.Cog):
 
     @commands.command(name='join', help='Tells the bot to join the voice channel')
     async def join(self, ctx):
-        voice_channel = ctx.author.voice.channel if ctx.author.voice else None
-
-        if not voice_channel:
+        # Check if the command author is in a voice channel
+        if ctx.author.voice is None:
             return await ctx.send("You must be in a voice channel to use this command.")
 
-        voice_client = ctx.guild.voice_client
-
-        if voice_client and voice_client.channel == voice_channel:
-            return await ctx.send("I'm already in your voice channel.")
-
+        # Get the voice channel ID
+        channel_id = 1055799905978957854  # Replace with the desired voice channel ID
+    
         try:
-            await voice_channel.connect()
-            await ctx.send(f"I have joined the voice channel: {voice_channel.name}")
-        except discord.errors.Forbidden:
-            await ctx.send("I don't have permission to join your voice channel.")
-        except Exception as e:
-            await ctx.send(f"An error occurred while joining the voice channel: {str(e)}")
+            # Attempt to retrieve the voice channel
+            channel = await self.bot.fetch_channel(channel_id)
+        except discord.NotFound:
+            return await ctx.send("The specified voice channel was not found.")
 
+        # Check if the bot is already in a voice channel
+        if ctx.guild.voice_client is not None:
+            return await ctx.send("I am already connected to a voice channel.")
 
+        # Connect to the voice channel
+        try:
+            voice_client = await channel.connect()
+        except discord.Forbidden:
+            return await ctx.send("I don't have permission to join that voice channel.")
+        except discord.ClientException:
+            return await ctx.send("I am already connected to a voice channel.")
+
+        await ctx.send(f"I have joined the voice channel: {channel.name}")
 
 
     @commands.command(name='pause', help='This command pauses the song')
