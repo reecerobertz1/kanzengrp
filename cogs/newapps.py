@@ -58,7 +58,7 @@ class ia(ui.Modal, title='Inactivity Message'):
      reason = ui.TextInput(label='Inactivity Reason', placeholder="", style=discord.TextStyle.long)
      async def on_submit(self, interaction: discord.Interaction):
           await interaction.response.defer()
-          embed = discord.Embed(title='Inactivity Message', color=0x2b2d31)
+          embed = discord.Embed(title='Kanzen Forms', color=0x2b2d31)
           embed.add_field(name='Instagram Name:', value=f'{self.instagram.value}', inline=False)
           embed.add_field(name='Instagram Account Link:', value=f'https://instagram.com/{self.instagram.value}', inline=False)
           embed.add_field(name='Inactivity Reason:', value=f'{self.reason.value}', inline=False)
