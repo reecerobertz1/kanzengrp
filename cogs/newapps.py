@@ -7,6 +7,11 @@ from discord import ui
 class Slash(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.applications = {}  # Initialize the applications dictionary here
+
+    @commands.Cog.listener()  # This is required for the on_ready event to work in the cog
+    async def on_ready(self):
+        print(f"{self.__class__.__name__} cog has been loaded.")
 
     @commands.command()
     @commands.has_permissions(manage_guild=True)
