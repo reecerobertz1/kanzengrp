@@ -34,7 +34,7 @@ class Slash(commands.Cog):
          await interaction.response.send_modal(testmodal())
 
     @app_commands.command(name='ia', description='Send an inactivity message!')
-    async def testmodal(self, interaction: discord.Interaction):
+    async def ia(self, interaction: discord.Interaction):
          await interaction.response.send_modal(ia())
 
 # modals
