@@ -15,7 +15,7 @@ class ia(ui.Modal, title='Inactivity Message'):
         await interation.responce.send_message('boobs')
 
 
-    @commands.command()
+    @commands.tree.command()
     async def ianewtest(self, interation: discord.Integration):
         await interation.responce.send_modal(ia())
 
