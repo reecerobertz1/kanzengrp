@@ -17,21 +17,19 @@ class Music(commands.Cog):
     @commands.command(name='join', help='Tells the bot to join the voice channel')
     async def join(self, ctx):
         channel = ctx.author.voice.channel if ctx.author.voice else None
-        voice_client = ctx.guild.voice_client
 
-        if voice_client:
-            if voice_client.channel == channel:
-                await ctx.send("I am already in your voice channel.")
-                return
-            await voice_client.move_to(channel)
-        else:
-            if channel:
-                voice_client = await channel.connect()
+        if channel:
+            voice_client = ctx.guild.voice_client
+            if voice_client:
+                if voice_client.channel == channel:
+                    await ctx.send("I am already in your voice channel.")
+                else:
+                    await voice_client.move_to(channel)
             else:
-                await ctx.send("You are not connected to a voice channel.")
-                return
-
-        await ctx.send(f"I have joined the voice channel: {channel}")
+                await channel.connect()
+            await ctx.send(f"I have joined the voice channel: {channel}")
+        else:
+            await ctx.send("You are not connected to a voice channel.")
 
     @commands.command(name='pause', help='This command pauses the song')
     async def pause(self, ctx):
