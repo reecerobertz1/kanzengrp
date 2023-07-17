@@ -66,9 +66,13 @@ class LalisaBot(commands.Bot):
 
         # loads cogs/extensions
         for ext in extensions:
-            await self.load_extension(ext)
+            await self.load_extension(ext) # -
 
-        # defining the attributes i assigned above
+        await self.tree.sync(guild=1121841073673736215)
+        self.session = aiohttp.ClientSession()
+        self.launch_time = datetime.utcnow()
+
+        # defining the attributes i assigned above -
         self.launch_time = datetime.utcnow()
         self.session = aiohttp.ClientSession()
         self.pool = await asqlite.create_pool('databases/levels.db')
