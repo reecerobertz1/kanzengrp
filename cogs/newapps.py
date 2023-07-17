@@ -43,7 +43,7 @@ class Slash(commands.Cog):
 
         accepted_channel = self.bot.get_channel(accepted_channel_id)
         if accepted_channel:
-            await accepted_channel.send(message)
+            sent_msg = await accepted_channel.send(message)
             await ctx.reply(f"Accept message sent to {member.mention}.")
         else:
             await ctx.reply("Failed to find the specified channel.")
@@ -67,9 +67,6 @@ class Slash(commands.Cog):
         else:
             await ctx.reply("You can only use this command in specific servers.")
             return
-
-        # Add the new "Status" field to the embed
-        embed.add_field(name="Status", value="Accepted ✅", inline=False)
 
         guild = self.bot.get_guild(ctx.guild.id)
         role_to_add = guild.get_role(add_role_id)
@@ -95,22 +92,13 @@ class Slash(commands.Cog):
                 embed.add_field(name="Instagram Account", value=instagram_account)
 
         # Send the server-specific embed to the author's DM
-        await ctx.author.send(embed=embed)
+        sent_dm_msg = await ctx.author.send(embed=embed)
 
-        # Edit the reply message with the "Accepted ✅" status
-        await ctx.message.edit(embed=embed)
+        # Add the "Accepted ✅" status to the embed of the replied message
+        embed.add_field(name="Status", value="Accepted ✅", inline=False)
 
-    async def generate_invite(self, server_id):
-        server = self.bot.get_guild(server_id)
-        if server:
-            invites = await server.invites()
-            if invites:
-                return invites[0].url
-            else:
-                invite = await server.text_channels[0].create_invite()
-                return invite.url
-        else:
-            raise ValueError("Failed to find the specified server.")
+        # Edit the reply message with the updated embed
+        await sent_msg.edit(embed=embed)
 
 # slash commands
 
