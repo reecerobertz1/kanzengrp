@@ -85,7 +85,7 @@ class apps(ui.Modal, title='Kanzengrp Applications'):
           embed.add_field(name="Discord ID:", value=interaction.user.id, inline=False)
           channel = interaction.client.get_channel(1122183100038905908)
           await channel.send(embed=embed)
-          await interaction.followup.send(f'Your inactive message has been sent successfully', ephemeral=True)
+          await interaction.followup.send(f'Your application has been sent successfully', ephemeral=True)
 
 async def setup(bot: commands.Bot) -> None:
 	await bot.add_cog(Slash(bot))
