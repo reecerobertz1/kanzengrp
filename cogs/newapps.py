@@ -11,7 +11,7 @@ class ia(ui.Modal, title='Inactivity Message'):
     instagram = ui.TextInput(label='What is your instagram username?', placeholder='Enter your instagram username here...', style=discord.TextStyle.short)
     iareason = ui.TextInput(label='What is your inactivity reason?', placeholder='Enter your reason here...', style=discord.TextStyle.long)
 
-    async def on_submit(interation: discord.Interation):
+    async def on_submit(interation: discord.Interaction):
         await interation.responce.send_message('boobs')
 
 
