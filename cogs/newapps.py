@@ -49,7 +49,7 @@ class testmodal(ui.Modal, title='Testing it'):
 
 class ia(ui.Modal, title='Inactivity Message'):
      instagram = ui.TextInput(label='Instagram username', placeholder="Enter your Instagram username here...", style=discord.TextStyle.short)
-     reason = ui.TextInput(label='Inactivity Reason', placeholder="", style=discord.TextStyle.long)
+     reason = ui.TextInput(label='Inactivity Reason', placeholder="Enter your inactivity reason here...", style=discord.TextStyle.long)
      async def on_submit(self, interaction: discord.Interaction):
           await interaction.response.defer()
           embed = discord.Embed(title='Inactivity Message', color=0x2b2d31)
