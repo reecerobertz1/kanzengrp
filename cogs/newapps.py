@@ -7,11 +7,6 @@ from discord import ui
 class Slash(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.applications = {}  # Initialize the applications dictionary here
-
-    @commands.Cog.listener()  # This is required for the on_ready event to work in the cog
-    async def on_ready(self):
-        print(f"{self.__class__.__name__} cog has been loaded.")
 
     @commands.command()
     @commands.has_permissions(manage_guild=True)
@@ -43,30 +38,23 @@ class Slash(commands.Cog):
 
         accepted_channel = self.bot.get_channel(accepted_channel_id)
         if accepted_channel:
-            sent_msg = await accepted_channel.send(message)
+            await accepted_channel.send(message)
             await ctx.reply(f"Accept message sent to {member.mention}.")
         else:
             await ctx.reply("Failed to find the specified channel.")
 
         invite = await self.generate_invite(invite_server_id)
 
-        # Create server-specific embed
-        embed = None
-        if ctx.guild.id == 1122181605591621692:
-            embed = discord.Embed(color=embed_color)
-            embed.set_image(url='https://cdn.discordapp.com/attachments/1121841074512605186/1128394231115948072/theme_3_00000.png')
-            embed.add_field(name="You have been accepted into Kanzen!", value=f"[**Click here to join**]({invite})")
-        elif ctx.guild.id == 1123347338841313331:
-            embed = discord.Embed(color=embed_color)
-            embed.set_image(url='https://cdn.discordapp.com/banners/957987670787764224/3b81da990294e7cf80a6b53d3ee98a1f.png?size=1024')
-            embed.add_field(name="You have been accepted into Auragrp!", value=f"[**Click here to join**]({invite})")
-        elif ctx.guild.id == 901409710572466217:
-            embed = discord.Embed(color=embed_color)
-            embed.set_image(url='https://cdn.discordapp.com/banners/896619762354892821/906d72346deed85c1abe719216180be0.png?size=1024')
-            embed.add_field(name="You have been accepted into Daegu!", value=f"[**Click here to join**]({invite})")
-        else:
-            await ctx.reply("You can only use this command in specific servers.")
-            return
+        # Create server-specific embeds
+        embed1 = discord.Embed(color=embed_color)
+        embed1.set_image(url='https://cdn.discordapp.com/attachments/1121841074512605186/1128394231115948072/theme_3_00000.png')
+        embed1.add_field(name="You have been accepted into Kanzen!", value=f"[**Click here to join**]({invite})")
+        embed2 = discord.Embed(color=embed_color)
+        embed2.set_image(url='https://cdn.discordapp.com/banners/957987670787764224/3b81da990294e7cf80a6b53d3ee98a1f.png?size=1024')
+        embed2.add_field(name="You have been accepted into Auragrp!", value=f"[**Click here to join**]({invite})")
+        embed3 = discord.Embed(color=embed_color)
+        embed3.set_image(url='https://cdn.discordapp.com/banners/896619762354892821/906d72346deed85c1abe719216180be0.png?size=1024')
+        embed3.add_field(name="You have been accepted into Daegu!", value=f"[**Click here to join**]({invite})")
 
         guild = self.bot.get_guild(ctx.guild.id)
         role_to_add = guild.get_role(add_role_id)
@@ -89,17 +77,37 @@ class Slash(commands.Cog):
             instagram_account = application.get("edit_link", "").split("|")[-1].strip()
             if instagram_account.startswith("https://www.instagram.com/"):
                 instagram_account = instagram_account.replace("https://www.instagram.com/", "")
-                embed.add_field(name="Instagram Account", value=instagram_account)
+                embed1.add_field(name="Instagram Account", value=instagram_account)
+                embed2.add_field(name="Instagram Account", value=instagram_account)
+                embed3.add_field(name="Instagram Account", value=instagram_account)
 
-        # Send the server-specific embed to the author's DM
-        sent_dm_msg = await ctx.author.send(embed=embed)
+        # Get the referenced message
+        if ctx.message.reference:
+            referenced_msg = await ctx.fetch_message(ctx.message.reference.message_id)
+            # Make sure the referenced message contains an embed with fields
+            if referenced_msg.embeds:
+                referenced_embed = referenced_msg.embeds[0].copy()
+                referenced_embed.add_field(name="Status", value="Accepted ✅", inline=False)
+                await referenced_msg.edit(embed=referenced_embed)
 
-        # Add the "Accepted ✅" status to the embed of the replied message
-        accepted_embed = sent_msg.embeds[0].copy()
-        accepted_embed.add_field(name="Status", value="Accepted ✅", inline=False)
+        if ctx.guild.id == 1122181605591621692:
+            await member.send(embed=embed1)
+        elif ctx.guild.id == 1123347338841313331:
+            await member.send(embed=embed2)
+        elif ctx.guild.id == 901409710572466217:
+            await member.send(embed=embed3)
 
-        # Edit the replied message with the updated embed
-        await ctx.message.reply(embed=accepted_embed)
+    async def generate_invite(self, server_id):
+        server = self.bot.get_guild(server_id)
+        if server:
+            invites = await server.invites()
+            if invites:
+                return invites[0].url
+            else:
+                invite = await server.text_channels[0].create_invite()
+                return invite.url
+        else:
+            raise ValueError("Failed to find the specified server.")
 
 # slash commands
 
