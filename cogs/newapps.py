@@ -45,7 +45,8 @@ class Slash(commands.Cog):
 
         invite = await self.generate_invite(invite_server_id)
 
-        # Create server-specific embeds
+        # Create server-specific embed
+        embed = None
         if ctx.guild.id == 1122181605591621692:
             embed = discord.Embed(color=embed_color)
             embed.set_image(url='https://cdn.discordapp.com/attachments/1121841074512605186/1128394231115948072/theme_3_00000.png')
@@ -88,7 +89,23 @@ class Slash(commands.Cog):
                 instagram_account = instagram_account.replace("https://www.instagram.com/", "")
                 embed.add_field(name="Instagram Account", value=instagram_account)
 
-        await member.send(embed=embed)
+        # Send the server-specific embed to the author's DM
+        await ctx.author.send(embed=embed)
+
+        # Edit the reply message with the "Accepted ✅" status
+        await ctx.message.edit(embed=embed)
+
+    async def generate_invite(self, server_id):
+        server = self.bot.get_guild(server_id)
+        if server:
+            invites = await server.invites()
+            if invites:
+                return invites[0].url
+            else:
+                invite = await server.text_channels[0].create_invite()
+                return invite.url
+        else:
+            raise ValueError("Failed to find the specified server.")
 
 # slash commands
 
