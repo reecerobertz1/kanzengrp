@@ -12,7 +12,7 @@ class ia(ui.Modal, title='Inactivity Message'):
     iareason = ui.TextInput(label='What is your inactivity reason?', placeholder='Enter your reason here...', style=discord.TextStyle.long)
 
 
-    @commands.command()
+    @commands.tree.command()
     async def ianewtest(self, interation: discord.Integration):
         await interation.responce.send_modal(ia())
 
