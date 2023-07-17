@@ -16,20 +16,20 @@ class Music(commands.Cog):
 
     @commands.command(name='join', help='Tells the bot to join the voice channel')
     async def join(self, ctx):
-        if not ctx.author.voice or not ctx.author.voice.channel:
-            await ctx.send("You are not connected to a voice channel.")
-            return
-
-        channel = ctx.author.voice.channel
+        channel = ctx.author.voice.channel if ctx.author.voice else None
         voice_client = ctx.guild.voice_client
 
-        if voice_client and voice_client.is_connected():
-            if voice_client.channel.id == channel.id:
+        if voice_client:
+            if voice_client.channel == channel:
                 await ctx.send("I am already in your voice channel.")
                 return
             await voice_client.move_to(channel)
         else:
-            voice_client = await channel.connect()
+            if channel:
+                voice_client = await channel.connect()
+            else:
+                await ctx.send("You are not connected to a voice channel.")
+                return
 
         await ctx.send(f"I have joined the voice channel: {channel}")
 
