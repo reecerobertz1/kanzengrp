@@ -81,15 +81,6 @@ class Slash(commands.Cog):
                 embed2.add_field(name="Instagram Account", value=instagram_account)
                 embed3.add_field(name="Instagram Account", value=instagram_account)
 
-        # Get the referenced message
-        if ctx.message.reference:
-            referenced_msg = await ctx.fetch_message(ctx.message.reference.message_id)
-            # Make sure the referenced message contains an embed with fields
-            if referenced_msg.embeds:
-                referenced_embed = referenced_msg.embeds[0].copy()
-                referenced_embed.add_field(name="Status", value="Accepted ✅", inline=False)
-                await referenced_msg.edit(embed=referenced_embed)
-
         if ctx.guild.id == 1122181605591621692:
             await member.send(embed=embed1)
         elif ctx.guild.id == 1123347338841313331:
