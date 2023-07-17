@@ -68,11 +68,11 @@ class ia(ui.Modal, title='Inactivity Message'):
           await interaction.followup.send(f'Your inactive message has been sent successfully', ephemeral=True)
 
 class apps(ui.Modal, title='Kanzengrp Applications'):
-     instagram = ui.TextInput(label='Instagram username', placeholder="Enter your Instagram username here...")
-     discord = ui.TextInput(label='Discord username', placeholder="Enter your Discord username here...")
-     edit = ui.TextInput(label='Edit link (Instagran or Streamable)', placeholder="Paste link here...")
-     app = ui.TextInput(label='What app do you use for editing', placeholder="Editing app name...")
-     extra = ui.TextInput(label='Anything else you would like us to know?', placeholder="Extra info here...", required=False)
+     instagram = ui.TextInput(label='Instagram username', placeholder="Enter your Instagram username here...", style=discord.TextStyle.short)
+     dcname = ui.TextInput(label='Discord username', placeholder="Enter your Discord username here...", style=discord.TextStyle.short)
+     edit = ui.TextInput(label='Edit link (Instagran or Streamable)', placeholder="Paste link here...", style=discord.TextStyle.short)
+     app = ui.TextInput(label='What app do you use for editing', placeholder="Editing app name...", style=discord.TextStyle.short)
+     extra = ui.TextInput(label='Anything else you would like us to know?', placeholder="Extra info here...", style=discord.TextStyle.paragraph, required=False)
      async def on_submit(self, interaction: discord.Interaction):
           await interaction.response.defer()
           embed = discord.Embed(title='Inactivity Message', color=0x2b2d31)
