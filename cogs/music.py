@@ -14,21 +14,22 @@ class Music(commands.Cog):
             voice_client.play(discord.FFmpegPCMAudio(url))
         await ctx.send('Now playing: {}'.format(url))
 
-    @commands.command(name='join', help='Tells the bot to join the voice channel')
+    @commands.command()
     async def join(self, ctx):
-        voice_state = ctx.author.voice
+        channel_id = 1055799905978957854  # Replace with your desired voice channel ID
+        channel = self.bot.get_channel(channel_id)
 
-        if voice_state is None or voice_state.channel is None:
-            return await ctx.send("You are not connected to a voice channel.")
-
-        voice_channel = voice_state.channel
-
-        try:
-            voice_client = await voice_channel.connect()
-        except discord.errors.ClientException:
+        if channel and channel.type == discord.ChannelType.voice:
             voice_client = ctx.guild.voice_client
 
-        await ctx.send(f"Joined voice channel: {voice_channel}")
+            if voice_client:
+                await voice_client.move_to(channel)
+            else:
+                await channel.connect()
+            await ctx.send(f"Joined the voice channel: {channel.name}")
+        else:
+            await ctx.send("The specified voice channel does not exist or is not a voice channel.")
+
 
     @commands.command(name='pause', help='This command pauses the song')
     async def pause(self, ctx):
