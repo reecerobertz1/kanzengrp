@@ -26,9 +26,9 @@ class Slash(commands.Cog):
 # modals
 
 class testmodal(ui.Modal, title='Testing it'):
-     test1 = ui.TextImput(label='Testing modals', placeholder="you're ugly...", style=discord.TextStyle.short)
-     test2 = ui.TextImput(label='Testing modals', placeholder="you make me wanna die...", style=discord.TextStyle.long)
-     test3 = ui.TextImput(label='Testing modals', placeholder="lol jk....", style=discord.TextStyle.short)
+     test1 = ui.TextInput(label='Testing modals', placeholder="you're ugly...", style=discord.TextStyle.short)
+     test2 = ui.TextInput(label='Testing modals', placeholder="you make me wanna die...", style=discord.TextStyle.long)
+     test3 = ui.TextInput(label='Testing modals', placeholder="lol jk....", style=discord.TextStyle.short)
      async def on_submit(self, interaction: discord.Interaction):
           await interaction.response.send_message("lol modal hahahaha")
 
