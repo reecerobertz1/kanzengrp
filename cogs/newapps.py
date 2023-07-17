@@ -41,7 +41,7 @@ class Slash(commands.Cog):
 
     @app_commands.command(name='apply', description='Apply for kanzen!')
     @app_commands.guilds(discord.Object(id=1122181605591621692))
-    async def ia(self, interaction: discord.Interaction):
+    async def apps(self, interaction: discord.Interaction):
          await interaction.response.send_modal(apps())
 
 # modals
