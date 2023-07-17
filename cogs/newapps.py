@@ -9,14 +9,10 @@ class newapps(commands.Cog):
 	def __init__(self, bot: commands.Bot) -> None:
 		self.bot: commands.Bot = bot
 		super().__init__()
-
-	@app_commands.command(description="im dying")
-	@app_commands.guilds(discord.Object(id=1121841073673736215))
-	async def sumn(self, interaction: discord.Interaction):
-		await interaction.response.defer(ephemeral=True)
-		channel = self.bot.get_channel(1122627075682078720)
-		await channel.send(f"{interaction.user.mention} used the `logos` command!")
-		await interaction.followup.send(content=f"yay", ephemeral=True)
+		
+@app_commands.command()
+async def hello(interaction: discord.Interaction):
+	await interaction.responce.send_message('hello')
 		
 
 async def setup(bot: commands.Bot) -> None:
