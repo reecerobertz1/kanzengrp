@@ -58,7 +58,7 @@ class ia(ui.Modal, title='Inactivity Message'):
           embed.add_field(name='Instagram Account Link:', value=f'https://instagram.com/{self.instagram.value}', inline=False)
           embed.add_field(name='Inactivity Reason:', value=f'{self.reason.value}', inline=False)
           embed.add_field(name="Discord ID:", value=interaction.user.id, inline=False)
-          channel = await interaction.client.get_channel(id=1121913672822968330)
+          channel = interaction.client.get_channel(1121913672822968330)
           await channel.send(embed=embed)
           await interaction.followup.send(f'Your inactive message has been sent successfully', ephemeral=True)
 
