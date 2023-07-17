@@ -17,11 +17,19 @@ class Music(commands.Cog):
     @commands.command(name='join', help='Tells the bot to join the voice channel')
     async def join(self, ctx):
         if not ctx.author.voice:
-            await ctx.send("{} is not connected to a voice channel".format(ctx.author.name))
+            await ctx.send("You are not connected to a voice channel.")
             return
+
+        voice_channel = ctx.author.voice.channel
+        if not voice_channel:
+            await ctx.send("You are not connected to a voice channel.")
+            return
+
+        voice_client = discord.utils.get(self.bot.voice_clients, guild=ctx.guild)
+        if voice_client and voice_client.is_connected():
+            await voice_client.move_to(voice_channel)
         else:
-            channel = ctx.author.voice.channel
-        await channel.connect()
+            voice_client = await voice_channel.connect()
 
     @commands.command(name='pause', help='This command pauses the song')
     async def pause(self, ctx):
