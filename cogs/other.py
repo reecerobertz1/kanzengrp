@@ -9,7 +9,7 @@ class other(commands.Cog):
         self.cooldowns = {}
         self.allowed_server_id = 1121841073673736215  # Change to your desired server ID
 
-    @commands.command()
+    """ @commands.command()
     async def daily(self, ctx):
         if ctx.guild.id != self.allowed_server_id:
             return  # Exit the command if not in the allowed server
@@ -47,7 +47,7 @@ class other(commands.Cog):
             await channel.send(f"{user.mention} earned {xp} XP for their daily xp!")
 
         # Set the cooldown for the user
-        self.cooldowns[user.id] = current_time + cooldown
+        self.cooldowns[user.id] = current_time + cooldown """
 
     @commands.command()
     async def randomembed1(self, ctx):

@@ -45,7 +45,30 @@ class Levels(commands.Cog):
             return status == 1
         return commands.check(predicate)
 
-    async def _register_member_levels(self, member_id: int, guild_id: int, xp: Optional[int] = 25) -> None:
+    # check for commands that are only for kanzen
+    def kanzen_only():
+        def predicate(ctx: commands.Context):
+            if ctx.guild.id == 1121841073673736215:
+                return True
+            else:
+                return False
+        return commands.check(predicate)
+
+    def kanzen_cooldown(message: discord.Message):
+
+        # reece has no cooldown
+        if message.author.id == 609515684740988959:
+            return None
+
+        role = message.guild.get_role(1128460924886458489)
+        if role in message.author.roles:
+            # boosters have a 12 hour cooldown
+            return commands.Cooldown(1, 43200)
+        
+        # other members have a 24 hour cooldown
+        return commands.Cooldown(1, 86400)
+
+    async def register_member_levels(self, member_id: int, guild_id: int, xp: Optional[int] = 25) -> None:
         """Registers a member to the levels database
         
         Parameters
@@ -143,7 +166,7 @@ class Levels(commands.Cog):
         levels = await self.get_member_levels(member_id, guild_id)
         if levels == None: # the member hasn't sent a message yet
             # so we have to add them to the database
-            await self._register_member_levels(member_id, guild_id)
+            await self.register_member_levels(member_id, guild_id)
         else: # have sent a message before
             if retry_after: # on cooldown
                 await self._update_message_count(member_id, guild_id, levels)
@@ -443,7 +466,7 @@ class Levels(commands.Cog):
                     await conn.commit()
                 await self.bot.pool.release(conn)
         else:
-            await self._register_member_levels(member_id, guild_id, xp)
+            await self.register_member_levels(member_id, guild_id, xp)
 
     async def remove_xp(self, member_id: int, guild_id: int, xp: int, levels: LevelRow) -> None:
         """Removes XP from a member's levels.
@@ -924,6 +947,31 @@ class Levels(commands.Cog):
             return await message.edit(content=None, embed=embed)
         except asyncio.TimeoutError:
             await message.edit(content="~~are you sure you want to reset the ranks? it's irreversible!~~\nreset has been cancelled!")
+
+    @commands.command()
+    @kanzen_only()
+    @commands.dynamic_cooldown(kanzen_cooldown, commands.BucketType.user)
+    async def daily(self, ctx: commands.Context):
+        """Command to claim daily xp"""
+        xp = randint(100, 300)
+        levels = await self.get_member_levels(ctx.author.id, ctx.guild.id)
+        if levels is not None:
+            await self.add_xp(ctx.author.id, ctx.guild.id, xp, levels)
+        else:
+            await self.register_member_levels(ctx.member.id, ctx.guild.id, xp)
+        await ctx.reply(f"You claimed your daily xp! you got **{xp}xp**")
+
+    @daily.error
+    async def daily_error(self, ctx: commands.Context, error: commands.CommandError):
+        if isinstance(error, commands.CommandOnCooldown):
+            if error.retry_after > 3600:
+                hours = error.retry_after / 3600
+                await ctx.reply(f"You need to wait {int(hours)} hours before claiming daily XP again!")
+            elif error.retry_after > 60:
+                minutes = error.retry_after / 60
+                await ctx.reply(f"You need to wait {int(minutes)} minutes before claiming daily XP again!")
+            else:
+                await ctx.reply(f"You need to wait {int(error.retry_after)} seconds before claiming daily XP again!")
 
     @commands.Cog.listener()
     async def on_message(self, message: discord.Message) -> None:
