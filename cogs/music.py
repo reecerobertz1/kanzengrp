@@ -1,4 +1,4 @@
-import discord
+"""import discord
 from discord.ext import commands
 from discord import FFmpegPCMAudio
 from discord import Embed
@@ -202,4 +202,4 @@ class Music(commands.Cog):
             await member.edit(deafen=True)
 
 async def setup(bot: commands.Bot) -> None:
-	await bot.add_cog(Music(bot))
+	await bot.add_cog(Music(bot))"""
