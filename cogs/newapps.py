@@ -49,9 +49,9 @@ class testmodal(ui.Modal, title='Testing it'):
           await interaction.response.send_message(f"{self.test1} {self.test2} {self.test3}", ephemeral=True)
 
 class ia(ui.Modal, title='Inactivity Message'):
-     instagram = ui.TextInput(label='Instagram username', placeholder="Enter your Instagram username here...", style=discord.TextStyle.short)
-     reason = ui.TextInput(label='Inactivity Reason', placeholder="Enter your inactivity reason here...", style=discord.TextStyle.long)
-     async def on_submit(self, interaction: discord.Interaction):
+    instagram = ui.TextInput(label='Instagram username', placeholder="Enter your Instagram username here...", style=discord.TextStyle.short)
+    reason = ui.TextInput(label='Inactivity Reason', placeholder="Enter your inactivity reason here...", style=discord.TextStyle.long)
+    async def on_submit(self, interaction: discord.Interaction):
         await interaction.response.defer()
         embed = discord.Embed(title='Inactivity Message', color=0x2b2d31)
         embed.add_field(name='Instagram Name:', value=f'{self.instagram}', inline=False)
