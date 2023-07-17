@@ -14,33 +14,26 @@ class Music(commands.Cog):
             voice_client.play(discord.FFmpegPCMAudio(url))
         await ctx.send('Now playing: {}'.format(url))
 
-    @commands.command()
+    @commands.command(name='join', help='Tells the bot to join the voice channel')
     async def join(self, ctx):
-        channel_id = 1055799905978957854  # Replace with your desired voice channel ID
-        channel = self.bot.get_channel(channel_id)
+        voice_channel = ctx.author.voice.channel if ctx.author.voice else None
 
-        if channel and channel.type == discord.ChannelType.voice:
-            voice_state = ctx.author.voice
-            bot_voice_state = ctx.guild.me.voice
+        if not voice_channel:
+            return await ctx.send("You must be in a voice channel to use this command.")
 
-            if voice_state and voice_state.channel:
-                if voice_state.channel.id != channel.id:
-                    await ctx.send("You must be in the same voice channel as me to use this command.")
-                    return
+        voice_client = ctx.guild.voice_client
 
-                if bot_voice_state and bot_voice_state.channel:
-                    if bot_voice_state.channel.id == channel.id:
-                        await ctx.send("I am already in the specified voice channel.")
-                        return
+        if voice_client and voice_client.channel == voice_channel:
+            return await ctx.send("I'm already in your voice channel.")
 
-                    await bot_voice_state.move_to(channel)
-                else:
-                    await channel.connect()
-                await ctx.send(f"Joined the voice channel: {channel.name}")
-            else:
-                await ctx.send("You must be in a voice channel to use this command.")
-        else:
-            await ctx.send("The specified voice channel does not exist or is not a voice channel.")
+        try:
+            await voice_channel.connect()
+            await ctx.send(f"I have joined the voice channel: {voice_channel.name}")
+        except discord.errors.Forbidden:
+            await ctx.send("I don't have permission to join your voice channel.")
+        except Exception as e:
+            await ctx.send(f"An error occurred while joining the voice channel: {str(e)}")
+
 
 
 
