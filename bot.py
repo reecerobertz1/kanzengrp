@@ -68,8 +68,8 @@ class LalisaBot(commands.Bot):
         print(f"Logged in as {self.user}")
 
         # loads cogs/extensions
+        await self.tree.sync(guild=my_guild)
         for ext in extensions:
-            await self.tree.sync(guild=my_guild)
             self.tree = app_commands.CommandTree(self)
             self.tree.copy_global_to(guild=my_guild)
             await self.load_extension(ext) # -
