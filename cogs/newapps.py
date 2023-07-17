@@ -5,9 +5,7 @@ import traceback
 from typing import Optional
 from io import BytesIO
 
-
-		
-class Slash(commands.Cog):
+class newapps(commands.Cog):
 	def __init__(self, bot: commands.Bot) -> None:
 		self.bot: commands.Bot = bot
 		super().__init__()
@@ -22,4 +20,4 @@ class Slash(commands.Cog):
 		
 
 async def setup(bot: commands.Bot) -> None:
-	await bot.add_cog(Slash(bot))
+	await bot.add_cog(newapps(bot))
