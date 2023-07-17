@@ -57,7 +57,7 @@ class ia(ui.Modal, title='Inactivity Message'):
           embed.add_field(name='Instagram Account Link:', value=f'https://instagram.com/{self.instagram}', inline=False)
           embed.add_field(name='Inactivity Reason:', value=f'{self.reason}', inline=False)
           embed.add_field(name="Discord ID:", value=interaction.user.id, inline=False)
-          msg = await interaction.client.get_channel(id=1121913672822968330).send(embed=embed)
+          await interaction.client.get_channel(id=1121913672822968330).send(embed=embed)
           await interaction.followup.send(f'Thanks for joining the recruit!', ephemeral=True)
 
 
