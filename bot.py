@@ -68,10 +68,6 @@ class LalisaBot(commands.Bot):
         for ext in extensions:
             await self.load_extension(ext) # -
 
-        await self.tree.sync(guild=1121841073673736215)
-        self.session = aiohttp.ClientSession()
-        self.launch_time = datetime.utcnow()
-
         # defining the attributes i assigned above -
         self.launch_time = datetime.utcnow()
         self.session = aiohttp.ClientSession()
