@@ -22,15 +22,15 @@ class Music(commands.Cog):
             return await ctx.send("You are not connected to a voice channel.")
 
         voice_channel = voice_state.channel
-        voice_client = ctx.guild.voice_client
+        voice_client = discord.utils.get(self.bot.voice_clients, guild=ctx.guild)
 
-        if voice_client is not None:
+        if voice_client and voice_client.is_connected():
             if voice_client.channel.id == voice_channel.id:
                 return
 
             await voice_client.move_to(voice_channel)
         else:
-            await voice_channel.connect()
+            voice_client = await voice_channel.connect()
 
         await ctx.send(f"Joined voice channel: {voice_channel}")
 
