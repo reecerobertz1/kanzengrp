@@ -19,20 +19,17 @@ class Music(commands.Cog):
         channel_id = 1055799905978957854  # Replace with your desired voice channel ID
 
         # Get the voice channel by its ID
-        voice_channel = ctx.guild.get_channel(channel_id)
+        voice_channel = self.bot.get_channel(channel_id)
 
-        print(f"voice_channel: {voice_channel}")
-        print(f"ctx.voice_client: {ctx.voice_client}")
-
-        # Check if the voice channel exists and the bot is not already in a voice channel
-        if voice_channel and not ctx.voice_client:
-            print("Joining voice channel")
-            # Join the voice channel
-            await voice_channel.connect()
-            await ctx.send(f"Joined {voice_channel.name}")
+        if voice_channel:
+            # Check if the bot is already connected to a voice channel
+            if ctx.voice_client:
+                await ctx.voice_client.move_to(voice_channel)
+            else:
+                await voice_channel.connect()
+                await ctx.send(f"Joined {voice_channel.name}")
         else:
-            print("Unable to join the voice channel.")
-            await ctx.send("Unable to join the voice channel.")
+            await ctx.send("Unable to find the voice channel.")
 
 
     @commands.command(name='pause', help='This command pauses the song')
