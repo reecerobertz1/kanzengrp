@@ -16,10 +16,6 @@ class Music(commands.Cog):
 
     @commands.command(name='join', help='Tells the bot to join the voice channel')
     async def join(self, ctx):
-        # Check if the command author is in a voice channel
-        if ctx.author.voice is None:
-            return await ctx.send("You must be in a voice channel to use this command.")
-
         # Get the voice channel ID
         channel_id = 1055799905978957854  # Replace with the desired voice channel ID
     
@@ -29,17 +25,13 @@ class Music(commands.Cog):
         except discord.NotFound:
             return await ctx.send("The specified voice channel was not found.")
 
-        # Check if the bot is already in a voice channel
-        if ctx.guild.voice_client is not None:
-            return await ctx.send("I am already connected to a voice channel.")
-
         # Connect to the voice channel
         try:
             voice_client = await channel.connect()
         except discord.Forbidden:
             return await ctx.send("I don't have permission to join that voice channel.")
         except discord.ClientException:
-            return await ctx.send("I am already connected to a voice channel.")
+            return await ctx.send("An error occurred while attempting to join the voice channel.")
 
         await ctx.send(f"I have joined the voice channel: {channel.name}")
 
