@@ -21,11 +21,8 @@ class Music(commands.Cog):
             return
 
         voice_channel = ctx.author.voice.channel
-        if not voice_channel:
-            await ctx.send("You are not connected to a voice channel.")
-            return
+        voice_client = discord.utils.get(ctx.bot.voice_clients, guild=ctx.guild)
 
-        voice_client = discord.utils.get(self.bot.voice_clients, guild=ctx.guild)
         if voice_client and voice_client.is_connected():
             await voice_client.move_to(voice_channel)
         else:
@@ -34,7 +31,7 @@ class Music(commands.Cog):
     @commands.command(name='pause', help='This command pauses the song')
     async def pause(self, ctx):
         voice_client = ctx.guild.voice_client
-        if voice_client.is_playing():
+        if voice_client and voice_client.is_playing():
             voice_client.pause()
         else:
             await ctx.send("The bot is not playing anything at the moment.")
@@ -42,7 +39,7 @@ class Music(commands.Cog):
     @commands.command(name='resume', help='Resumes the song')
     async def resume(self, ctx):
         voice_client = ctx.guild.voice_client
-        if voice_client.is_paused():
+        if voice_client and voice_client.is_paused():
             voice_client.resume()
         else:
             await ctx.send("The bot was not playing anything before this. Use play_song command")
@@ -50,7 +47,7 @@ class Music(commands.Cog):
     @commands.command(name='leave', help='To make the bot leave the voice channel')
     async def leave(self, ctx):
         voice_client = ctx.guild.voice_client
-        if voice_client.is_connected():
+        if voice_client and voice_client.is_connected():
             await voice_client.disconnect()
         else:
             await ctx.send("The bot is not connected to a voice channel.")
@@ -58,7 +55,7 @@ class Music(commands.Cog):
     @commands.command(name='stop', help='Stops the song')
     async def stop(self, ctx):
         voice_client = ctx.guild.voice_client
-        if voice_client.is_playing():
+        if voice_client and voice_client.is_playing():
             voice_client.stop()
         else:
             await ctx.send("The bot is not playing anything at the moment.")
