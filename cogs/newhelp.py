@@ -4,10 +4,6 @@ from discord.ext import commands
 from discord.interactions import Interaction
 from discord.ui import View, Select
 
-class newhelp(commands.Cog):
-    def __init__(self, bot):
-        self.bot = bot
-
 class HelpSelect(Select):
     def __init__(self, bot: commands.bot):
         super().__init__(
@@ -50,6 +46,10 @@ class HelpSelect(Select):
             )
             view = View().add_item(HelpSelect(self.bot))
             await ctx.send(embed=embed, view=view)
+
+class newhelp(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
 
 async def setup(bot: commands.Bot) -> None:
 	await bot.add_cog(newhelp(bot))
