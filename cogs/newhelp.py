@@ -42,8 +42,8 @@ class HelpSelect(Select):
         await interaction.response.send_message(embed=embed)
 
 
-        @commands.hybrid_command(name=help, description='Shows list of commands')
-        async def help(self, ctx):
+        @commands.hybrid_command(name=newhelp, description='Shows list of commands')
+        async def newhelp(self, ctx):
             embed = discord.Embed(
                 title='Help command',
                 description='This is a help command'
