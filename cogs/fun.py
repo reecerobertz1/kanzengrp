@@ -171,10 +171,18 @@ class funcmds(commands.Cog):
     async def slap(self, ctx, member: typing.Optional[discord.Member]):
         author = ctx.message.author.mention
         if member is None:
-            await ctx.reply(f"Hoshi slapped {author}! HAHAHAHAHAHAHA")
+            await ctx.reply(f"Hoshi slap {author}! HAHAHAHAHAHAHA")
         else:
-            embed = discord.Embed(description=f'{author} slapped {member.mention}!', color=0x2b2d31)
-            embed.set_image(url='https://cdn.discordapp.com/attachments/804482120671821865/814100958463524884/nK.gif')
+            embed = discord.Embed(description=f"{author} slapped {member.mention}!", color=0x2b2d31)
+            hugs = ['https://cdn.discordapp.com/attachments/804482120671821865/814100958463524884/nK.gif',
+                    'https://media.tenor.com/XiYuU9h44-AAAAAM/anime-slap-mad.gif',
+                    'https://media.tenor.com/Ws6Dm1ZW_vMAAAAC/girl-slap.gif',
+                    'https://media.tenor.com/yJmrNruFNtEAAAAC/slap.gif',
+                    'https://media.tenor.com/eU5H6GbVjrcAAAAM/slap-jjk.gif',
+                    'https://media.tenor.com/PeJyQRCSHHkAAAAM/saki-saki-mukai-naoya.gif',
+                    'https://media.tenor.com/ra17G61QRQQAAAAM/tapa-slap.gif',
+                    'https://media.tenor.com/kggzZQ1ldoUAAAAC/slapped-anime-slap.gif']
+            embed.set_image(url=(random.choice(hugs)))
             await ctx.reply(embed=embed)
 
     @commands.command(name='roast')
