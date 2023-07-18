@@ -44,7 +44,7 @@ class Slash(commands.Cog):
     async def apps(self, interaction: discord.Interaction):
          await interaction.response.send_modal(apps())
 
-    @app_commands.command(name='apply', description='Apply for aura!')
+    @app_commands.command(name='app', description='Apply for aura!')
     @app_commands.guilds(discord.Object(id=1122181605591621692))
     async def auraapps(self, interaction: discord.Interaction):
          await interaction.response.send_modal(auraapps())
