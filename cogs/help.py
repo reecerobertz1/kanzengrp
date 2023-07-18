@@ -45,6 +45,7 @@ class Help(commands.Cog):
             ],
             "> Other commands": [
                 {"name": "+ia", "value": "<:reply:1125269313432059904> Send us an inactivity message if you go inactive", "inline": False},
+                {"name": "/ia", "value": "<:reply:1125269313432059904> Send us an inactivity message if you go inactive (kanzengrp only)", "inline": False},
                 {"name": "", "value": "`[page 4/8]`", "inline": True}
             ],
             "> Kanzen only commands": [
@@ -77,7 +78,8 @@ class Help(commands.Cog):
                 {"name": "", "value": "`[page 7/8]`", "inline": True}
             ],
             "> Application commands": [
-                {"name": "+app", "value": "<:reply:1125269313432059904> Apply for kanzengrp", "inline": False},
+                {"name": "/apply", "value": "<:reply:1125269313432059904> Apply for kanzengrp", "inline": False},
+                {"name": "/app", "value": "<:reply:1125269313432059904> Apply for auragrp", "inline": False},
                 {"name": "+accept @mention", "value": "<:reply:1125269313432059904> Accepts member into kanzen", "inline": False},
                 {"name": "+decline @mention", "value": "<:reply:1125269313432059904> Declines a member from kanzen", "inline": False},
                 {"name": "+resetapps", "value": "<:reply:1125269313432059904> Resets all IDs from forms", "inline": False},

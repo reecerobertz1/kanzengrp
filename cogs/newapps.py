@@ -74,7 +74,6 @@ class ia(ui.Modal, title='Inactivity Message'):
 
 # kanzen apps
 
-
 class apps(ui.Modal, title='Kanzengrp Applications'):
      instagram = ui.TextInput(label='Instagram username', placeholder="Enter your Instagram username here...", style=discord.TextStyle.short)
      dcname = ui.TextInput(label='Discord username', placeholder="Enter your Discord username here...", style=discord.TextStyle.short)
