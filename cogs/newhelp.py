@@ -4,6 +4,10 @@ from discord.ext import commands
 from discord.interactions import Interaction
 from discord.ui import View, Select
 
+class newhelp(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+
 class HelpSelect(Select):
     def __init__(self, bot: commands.bot):
         super().__init__(
@@ -38,11 +42,6 @@ class HelpSelect(Select):
         await interaction.response.send_message(embed=embed)
 
 
-class Utils(commands.cog):
-
-    def __init__(self, bot):
-        self.bot = bot
-
         @commands.hybrid_command(name=help, description='Shows list of commands')
         async def help(self, ctx):
             embed = discord.Embed(
@@ -53,4 +52,4 @@ class Utils(commands.cog):
             await ctx.send(embed=embed, view=view)
 
 async def setup(bot: commands.Bot) -> None:
-	await bot.add_cog(Utils(bot))
+	await bot.add_cog(newhelp(bot))
