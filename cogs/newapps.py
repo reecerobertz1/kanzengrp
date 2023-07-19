@@ -113,7 +113,6 @@ class auraapps(ui.Modal, title='Auragrp Applications'):
 
 class grprctkda(ui.Modal, title='Applications'):
      instagram = ui.TextInput(label='Instagram username', placeholder="Enter your Instagram username here...", style=discord.TextStyle.short)
-     dcname = ui.TextInput(label='Discord username', placeholder="Enter your Discord username here...", style=discord.TextStyle.short)
      edit = ui.TextInput(label='Edit link (Instagran or Streamable)', placeholder="Paste link here...", style=discord.TextStyle.short)
      grps = ui.TextInput(label='What group(s) do you want to join?', placeholder="Kanzen, Aura, Daegu...", style=discord.TextStyle.short)
      app = ui.TextInput(label='What app do you use for editing', placeholder="Editing app name...", style=discord.TextStyle.short)
@@ -123,7 +122,6 @@ class grprctkda(ui.Modal, title='Applications'):
           embed = discord.Embed(title='Forms', color=0x2b2d31)
           embed.add_field(name='Instagram Name:', value=f'{self.instagram.value}', inline=False)
           embed.add_field(name='Instagram Account Link:', value=f'https://instagram.com/{self.instagram.value}', inline=False)
-          embed.add_field(name='Discord Username:', value=f'{self.dcname.value}', inline=False)
           embed.add_field(name='Edit:', value=f'{self.edit.value}', inline=False)
           embed.add_field(name='Editing app:', value=f'{self.app.value}', inline=False)
           embed.add_field(name='Group(s) they want to be in:', value=f'{self.grps.value}', inline=False)
