@@ -116,7 +116,7 @@ class logos(commands.Cog):
         )
         embed.set_image(url='https://cdn.discordapp.com/attachments/1122181606254330008/1127011636457250997/jisoo_and_rose_photo_00000.png')
         embed.set_footer(text='Thank you for joining!')
-        embed.add_field(name='Group Leads', value="<a:bounceyarrow:1126865547255091343> **kanzengrp** - <@609515684740988959>\n<a:bounceyarrow:1126865547255091343> **daegutowngrp** - <@609515684740988959> + <@541538705106534423>\n<a:bounceyarrow:1126865547255091343> **daegutowngrp** - <@609515684740988959> + <@718144988688679043> + <@603077306956644353>", inline=False)
+        embed.add_field(name='Group Leads', value="<a:bounceyarrow:1126865547255091343> **kanzengrp** - <@609515684740988959>\n<a:bounceyarrow:1126865547255091343> **daegutowngrp** - <@609515684740988959> + <@541538705106534423>\n<a:bounceyarrow:1126865547255091343> **auragrps** - <@609515684740988959> + <@718144988688679043> + <@603077306956644353>", inline=False)
         button = discord.ui.Button(
             label='Follow kanzengrp',
             url='https://www.instagram.com/kanzengrp/'
