@@ -120,5 +120,52 @@ class applications(commands.Cog):
         else:
             await ctx.reply(f"Failed to find the decline channel.")
 
+
+    @commands.command()
+    async def kdaaccept(self, ctx):
+        # Check if the message has an embed
+        if ctx.message.embeds:
+            embed = ctx.message.embeds[0]
+            content = embed.description.lower()  # Convert to lowercase to make it case-insensitive
+
+            # Mapping of keywords to server IDs and group names
+            server_mapping = {
+                "kanzen": (1122181605591621692, "Kanzen"),
+                "daegu": (901409710572466217, "Daegu"),
+                "aura": (1123347338841313331, "Aura"),
+            }
+
+            groups = []  # List to store accepted groups
+
+            # Check if the content contains any of the keywords and get the associated server ID and group name
+            for keyword, (server_id, group_name) in server_mapping.items():
+                if keyword in content:
+                    groups.append(group_name)
+                    invite = await self.generate_invite(server_id)
+                    await ctx.author.send(f"Congratulations! You have been accepted into {group_name}!\nHere's the invite link: {invite}")
+
+            if groups:
+                # React with a tick emoji
+                await ctx.message.add_reaction("✅")
+
+                # Send a message in the specified channel with the accepted groups
+                channel_id = 1131006361921130526
+                channel = self.bot.get_channel(channel_id)
+                mention = ctx.author.mention
+                groups_text = ", ".join(groups)
+                await channel.send(f"{mention} was accepted into {groups_text}")
+
+    async def generate_invite(self, server_id):
+        server = self.bot.get_guild(server_id)
+        if server:
+            invites = await server.invites()
+            if invites:
+                return invites[0].url
+            else:
+                invite = await server.text_channels[0].create_invite()
+                return invite.url
+        else:
+            raise ValueError("Failed to find the specified server.")
+
 async def setup(bot):
     await bot.add_cog(applications(bot))
