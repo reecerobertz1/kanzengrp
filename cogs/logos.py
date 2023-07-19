@@ -68,8 +68,7 @@ class logos(commands.Cog):
     async def kanzenpartner(self, ctx):
         embed = discord.Embed(
             title='<a:Lumi_penguin_fall:1122607666578063531> : Kanzen Forms',
-            description='<a:bounceyarrow:1126865547255091343> editing group\n<a:bounceyarrow:1126865547255091343> cute logos\n<a:bounceyarrow:1126865547255091343> custom bot\n<a:bounceyarrow:1126865547255091343> recruit happening now!',
-            color=0x2b2d31
+            description='<a:bounceyarrow:1126865547255091343> editing group\n<a:bounceyarrow:1126865547255091343> cute logos\n<a:bounceyarrow:1126865547255091343> custom bot\n<a:bounceyarrow:1126865547255091343> group activities',
         )
         embed.set_footer(text='Go support our partners!')
         embed.set_thumbnail(url='https://cdn.discordapp.com/icons/1121841073673736215/ea48ddf8734b328c38e38accbce6bc25.png?size=1024')
@@ -81,7 +80,7 @@ class logos(commands.Cog):
         view = discord.ui.View()
         view.add_item(button)
 
-        await ctx.send('@everyone', embed=embed, view=view)
+        await ctx.send(embed=embed, view=view)
 
     @commands.command()
     async def kanzenformsrules(self, ctx):
