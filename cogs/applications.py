@@ -132,21 +132,19 @@ class applications(commands.Cog):
                     embed = replied_msg.embeds[0]
                     content = embed.description.lower()  # Convert to lowercase to make it case-insensitive
 
-                    # Mapping of keywords to server IDs and group names
-                    server_mapping = {
-                        "kanzen": (1122181605591621692, "Kanzen"),
-                        "daegu": (901409710572466217, "Daegu"),
-                        "aura": (1123347338841313331, "Aura"),
+                    # Mapping of keywords to group names
+                    group_mapping = {
+                        "kanzen": "Kanzen",
+                        "daegu": "Daegu",
+                        "aura": "Aura",
                     }
 
                     groups = []  # List to store accepted groups
 
-                    # Check if the content contains any of the keywords and get the associated server ID and group name
-                    for keyword, (server_id, group_name) in server_mapping.items():
+                    # Check if the content contains any of the keywords and get the associated group name
+                    for keyword, group_name in group_mapping.items():
                         if keyword in content:
                             groups.append(group_name)
-                            invite = await self.generate_invite(server_id)
-                            await ctx.author.send(f"Congratulations! You have been accepted into {group_name}!\nHere's the invite link: {invite}")
 
                     if groups:
                         # React with a tick emoji
@@ -163,18 +161,6 @@ class applications(commands.Cog):
                 await ctx.send("The replied message was not found.")
         else:
             await ctx.send("You need to reply to a message with an embed to use this command.")
-
-    async def generate_invite(self, server_id):
-        server = self.bot.get_guild(server_id)
-        if server:
-            invites = await server.invites()
-            if invites:
-                return invites[0].url
-            else:
-                invite = await server.text_channels[0].create_invite()
-                return invite.url
-        else:
-            raise ValueError("Failed to find the specified server.")
 
 async def setup(bot):
     await bot.add_cog(applications(bot))
