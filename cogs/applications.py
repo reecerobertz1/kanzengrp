@@ -122,38 +122,47 @@ class applications(commands.Cog):
 
 
     @commands.command()
-    async def kdaaccept(self, ctx):
-        # Check if the message has an embed
-        if ctx.message.embeds:
-            embed = ctx.message.embeds[0]
-            content = embed.description.lower()  # Convert to lowercase to make it case-insensitive
+    async def accept(self, ctx):
+        if ctx.message.reference is not None:
+            try:
+                # Fetch the replied message
+                replied_msg = await ctx.channel.fetch_message(ctx.message.reference.message_id)
 
-            # Mapping of keywords to server IDs and group names
-            server_mapping = {
-                "kanzen": (1122181605591621692, "Kanzen"),
-                "daegu": (901409710572466217, "Daegu"),
-                "aura": (1123347338841313331, "Aura"),
-            }
+                if replied_msg.embeds:
+                    embed = replied_msg.embeds[0]
+                    content = embed.description.lower()  # Convert to lowercase to make it case-insensitive
 
-            groups = []  # List to store accepted groups
+                    # Mapping of keywords to server IDs and group names
+                    server_mapping = {
+                        "kanzen": (1122181605591621692, "Kanzen"),
+                        "daegu": (901409710572466217, "Daegu"),
+                        "aura": (1123347338841313331, "Aura"),
+                    }
 
-            # Check if the content contains any of the keywords and get the associated server ID and group name
-            for keyword, (server_id, group_name) in server_mapping.items():
-                if keyword in content:
-                    groups.append(group_name)
-                    invite = await self.generate_invite(server_id)
-                    await ctx.author.send(f"Congratulations! You have been accepted into {group_name}!\nHere's the invite link: {invite}")
+                    groups = []  # List to store accepted groups
 
-            if groups:
-                # React with a tick emoji
-                await ctx.message.add_reaction("✅")
+                    # Check if the content contains any of the keywords and get the associated server ID and group name
+                    for keyword, (server_id, group_name) in server_mapping.items():
+                        if keyword in content:
+                            groups.append(group_name)
+                            invite = await self.generate_invite(server_id)
+                            await ctx.author.send(f"Congratulations! You have been accepted into {group_name}!\nHere's the invite link: {invite}")
 
-                # Send a message in the specified channel with the accepted groups
-                channel_id = 1131006361921130526
-                channel = self.bot.get_channel(channel_id)
-                mention = ctx.author.mention
-                groups_text = ", ".join(groups)
-                await channel.send(f"{mention} was accepted into {groups_text}")
+                    if groups:
+                        # React with a tick emoji
+                        await ctx.message.add_reaction("✅")
+
+                        # Send a message in the specified channel with the accepted groups
+                        channel_id = 1131006361921130526
+                        channel = self.bot.get_channel(channel_id)
+                        mention = ctx.author.mention
+                        groups_text = ", ".join(groups)
+                        await channel.send(f"{mention} was accepted into {groups_text}")
+
+            except discord.errors.NotFound:
+                await ctx.send("The replied message was not found.")
+        else:
+            await ctx.send("You need to reply to a message with an embed to use this command.")
 
     async def generate_invite(self, server_id):
         server = self.bot.get_guild(server_id)
