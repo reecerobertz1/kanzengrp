@@ -105,40 +105,47 @@ class applications(commands.Cog):
         else:
             await ctx.send("You don't have permission to reset application IDs.")
 
-    @commands.command()
-    @commands.has_permissions(manage_guild=True)
-    async def accept(self, ctx, member: discord.Member):
-        if ctx.guild.id == 1123347338841313331:  # Aura
-            invite_server_id = 957987670787764224
-            accepted_channel_id = 1123588246614577213
-            add_role_id = 1123356130970701878
-            remove_role_id = 1123356165246566491
-            message = f"{member.mention} has been accepted."
-            embed_color = 0x2b2d31
-        elif ctx.guild.id == 1122181605591621692:  # Kanzen
-            invite_server_id = 1121841073673736215
-            accepted_channel_id = 1123588044180684800
-            add_role_id = 1122191098006224906
-            remove_role_id = 1122191119430733835
-            message = f"{member.mention} has been accepted."
-            embed_color = 0x2b2d31
-        elif ctx.guild.id == 901409710572466217:  # daegu
-            invite_server_id = 896619762354892821  
-            accepted_channel_id = 901410829218492456
-            add_role_id = 1119012138640494594
-            remove_role_id = 901412966241554462
-            message = f"{member.mention} has been accepted."
-            embed_color = 0x2b2d31
-        else:
-            await ctx.reply("You can only use this command in specific servers.")
-            return
+@commands.command()
+@commands.has_permissions(manage_guild=True)
+async def accept(self, ctx, member: discord.Member):
+    if ctx.guild.id == 1123347338841313331:  # Aura
+        invite_server_id = 957987670787764224
+        accepted_channel_id = 1123588246614577213
+        add_role_id = 1123356130970701878
+        remove_role_id = 1123356165246566491
+        message = f"{member.mention} has been accepted."
+        embed_color = 0x2b2d31
+    elif ctx.guild.id == 1122181605591621692:  # Kanzen
+        invite_server_id = 1121841073673736215
+        accepted_channel_id = 1123588044180684800
+        add_role_id = 1122191098006224906
+        remove_role_id = 1122191119430733835
+        message = f"{member.mention} has been accepted."
+        embed_color = 0x2b2d31
+    elif ctx.guild.id == 901409710572466217:  # daegu
+        invite_server_id = 896619762354892821  
+        accepted_channel_id = 901410829218492456
+        add_role_id = 1119012138640494594
+        remove_role_id = 901412966241554462
+        message = f"{member.mention} has been accepted."
+        embed_color = 0x2b2d31
+    else:
+        await ctx.reply("You can only use this command in specific servers.")
+        return
 
-        accepted_channel = self.bot.get_channel(accepted_channel_id)
-        if accepted_channel:
+    accepted_channel = self.bot.get_channel(accepted_channel_id)
+    if accepted_channel:
+        # Check if the message has been sent, and react to it with a tick emoji
+        async for message in accepted_channel.history():
+            if message.author == self.bot.user and message.embeds and message.embeds[0].author.name.startswith(member.name):
+                await message.add_reaction("✅")
+                break
+        else:
+            # Message hasn't been sent, send it now
             await accepted_channel.send(message)
             await ctx.reply(f"Accept message sent to {member.mention}.")
-        else:
-            await ctx.reply("Failed to find the specified channel.")
+    else:
+        await ctx.reply("Failed to find the specified channel.")
 
         invite = await self.generate_invite(invite_server_id)
 
