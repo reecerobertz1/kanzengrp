@@ -164,17 +164,6 @@ class applications(commands.Cog):
         else:
             await ctx.reply("Failed to find the role to remove.")
 
-        # Extract Instagram account from the application data
-        user_id = str(member.id)
-        if user_id in self.applications:
-            application = self.applications[user_id]
-            instagram_account = application.get("edit_link", "").split("|")[-1].strip()
-            if instagram_account.startswith("https://www.instagram.com/"):
-                instagram_account = instagram_account.replace("https://www.instagram.com/", "")
-                embed1.add_field(name="Instagram Account", value=instagram_account)
-                embed2.add_field(name="Instagram Account", value=instagram_account)
-                embed3.add_field(name="Instagram Account", value=instagram_account)
-
         if ctx.guild.id == 1122181605591621692:
             await member.send(embed=embed1)
         elif ctx.guild.id == 1123347338841313331:
