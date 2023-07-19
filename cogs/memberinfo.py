@@ -107,7 +107,7 @@ class MemberInfo(commands.Cog):
         embed.add_field(name="** **", value=f"**Last reboot:** {discord.utils.format_dt(self.bot.launch_time, 'D')}", inline=False)
         embed.add_field(name="** **", value=f"**Uptime:** {days} days, {hours} hours, {minutes} minutes, {seconds} seconds", inline=False)
         embed.add_field(name="** **", value=f"**Total users:** {sum(g.member_count for g in self.bot.guilds)}", inline=False)
-        embed.add_field(name="Servers", value=f"{len(ctx.bot.guilds)}")
+        embed.add_field(name="** **", value=f"**Total Servers:** {len(ctx.bot.guilds)}")
         embed.add_field(name="** **", value=f"**Python version:** {platform.python_version()}", inline=False)
         embed.add_field(name='** **', value=f"**Discord.py version:** {discord.__version__}", inline=False)
         embed.set_thumbnail(url=self.bot.user.display_avatar.url)
