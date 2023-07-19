@@ -122,7 +122,7 @@ class applications(commands.Cog):
 
 
     @commands.command()
-    async def accept(self, ctx):
+    async def taccept(self, ctx):
         if ctx.message.reference is not None:
             try:
                 # Fetch the replied message
