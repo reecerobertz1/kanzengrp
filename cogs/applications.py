@@ -132,11 +132,10 @@ class applications(commands.Cog):
 
         accepted_channel = self.bot.get_channel(accepted_channel_id)
         if accepted_channel:
-            # Check if the message has been sent, and react to it with a tick emoji
-            async for message in accepted_channel.history():
-                if message.author == self.bot.user and message.embeds and message.embeds[0].author.name.startswith(member.name):
-                    await message.add_reaction("✅")
-                    break
+            await accepted_channel.send(f"{member.mention} has been accepted.")
+            await ctx.message.add_reaction("✅")
+        else:
+            await ctx.reply("Failed to find the specified channel.")
 
         invite = await self.generate_invite(invite_server_id)
 
