@@ -109,6 +109,34 @@ class logos(commands.Cog):
         await ctx.send(embed=embed, view=view)
 
     @commands.command()
+    async def kda(self, ctx):
+        embed = discord.Embed(
+            title='<a:bearhugz:1131122693085868172> : Welcome to the server!',
+            color=0x2b2d31
+        )
+        embed.set_image(url='https://cdn.discordapp.com/attachments/1122181606254330008/1127011636457250997/jisoo_and_rose_photo_00000.png')
+        embed.set_footer(text='Thank you for joining!')
+        embed.add_field(name='Group Leads', value="<a:bounceyarrow:1126865547255091343> **kanzengrp** - <@609515684740988959>\n<a:bounceyarrow:1126865547255091343> **daegutowngrp** - <@609515684740988959> + <@541538705106534423>\n<a:bounceyarrow:1126865547255091343> **daegutowngrp** - <@609515684740988959> + <@718144988688679043> + <@603077306956644353>", inline=False)
+        button = discord.ui.Button(
+            label='Follow kanzengrp',
+            url='https://www.instagram.com/kanzengrp/'
+        )
+        button2 = discord.ui.Button(
+            label='Follow daegutowngrp',
+            url='https://www.instagram.com/daegutowngrp/'
+        )
+        button2 = discord.ui.Button(
+            label='Follow auragrps',
+            url='https://www.instagram.com/auragrps/'
+        )
+
+        view = discord.ui.View()
+        view.add_item(button)
+        view.add_item(button2)
+
+        await ctx.send(embed=embed, view=view)
+
+    @commands.command()
     @commands.has_permissions(manage_guild=True)
     async def newupdatehoshiupdates(self, ctx):
         embed = discord.Embed(
