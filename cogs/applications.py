@@ -6,37 +6,6 @@ from discord.ext import commands
 class applications(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.questions = [
-            {"name": "discord_name", "question": f"What is your Discord name?"},
-            {"name": "instagram_name", "question": f"What is your Instagram name?"},
-            {"name": "edit_link", "question": f"Link for the edit you want to apply with (instagram only!)"},
-            {"name": "activity_level", "question": f"How active will you be (1 - 5)?"},
-            {"name": "additional_info", "question": f"Anything else you want us to know?"}
-        ]
-        self.application_file = "applications.json"
-        self.applications = self.load_applications()
-
-    def load_applications(self):
-        try:
-            with open(self.application_file, "r") as file:
-                applications = json.load(file)
-                return applications
-        except FileNotFoundError:
-            return {}
-    
-    def save_applications(self):
-        with open(self.application_file, "w") as file:
-            json.dump(self.applications, file, indent=4)
-
-    @commands.command()
-    @commands.has_permissions(manage_guild=True)
-    async def resetapps(self, ctx):
-        if ctx.author.guild_permissions.administrator:
-            self.applications = {}
-            self.save_applications()
-            await ctx.send("Application IDs have been reset.")
-        else:
-            await ctx.send("You don't have permission to reset application IDs.")
 
     @commands.command()
     @commands.has_permissions(manage_guild=True)
