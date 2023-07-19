@@ -51,7 +51,7 @@ class Slash(commands.Cog):
 
     @app_commands.command(name='apps', description='Apply for Kanzen, Aura or Daegu!')
     @app_commands.guilds(discord.Object(id=1131003330810871979))
-    async def KDArct(self, interaction: discord.Interaction):
+    async def kdarct(self, interaction: discord.Interaction):
          await interaction.response.send_modal(grprctkda())
 
 # modals
@@ -120,6 +120,8 @@ class auraapps(ui.Modal, title='Auragrp Applications'):
           channel = interaction.client.get_channel(1123353889228468305)
           await channel.send(embed=embed)
           await interaction.followup.send(f'Your application has been sent successfully', ephemeral=True)
+
+     # KDA APPS
 
 class grprctkda(ui.Modal, title='Applications'):
      instagram = ui.TextInput(label='Instagram username', placeholder="Enter your Instagram username here...", style=discord.TextStyle.short)
