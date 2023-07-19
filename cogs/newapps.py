@@ -50,7 +50,7 @@ class Slash(commands.Cog):
          await interaction.response.send_modal(auraapps())
 
     @app_commands.command(name='apps', description='Apply for Kanzen, Aura or Daegu!')
-    @app_commands.guilds(discord.Object(id=1123347338841313331))
+    @app_commands.guilds(discord.Object(id=1131003330810871979))
     async def KDArct(self, interaction: discord.Interaction):
          await interaction.response.send_modal(grprctkda())
 
