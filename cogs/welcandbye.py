@@ -56,11 +56,10 @@ class welcandleave(commands.Cog):
             await channel.send(f'{member.mention}', embed=embed)
             """AUA DAEGU KANZEN FORMS"""
         elif member.guild.id == self.server6_id:
-            embed = discord.Embed(title=f'<:members:1119069738493026364> : {member.name} has joined the server!', color=0x2b2d31, description=f"• Make sure you read our [rules](https://discord.com/channels/1131003330810871979/1131005271502753812)\n• Go and get your [roles](https://discord.com/channels/1131003330810871979/1131005364654067823) \n• if you need help, ping <@1131006052209541212> or <@1131006067564875806>")
-            embed.set_footer(text='Have fun! Thank you for joining', icon_url=member.display_avatar.url)
+            embed = discord.Embed(title=f'<:members:1119069738493026364> : {member.name} has joined the server!', color=0x2b2d31, description=f"• Make sure you read our [rules](https://discord.com/channels/1131003330810871979/1131005271502753812)\n• Go and get your [roles](https://discord.com/channels/1131003330810871979/1131005364654067823) \n• if you need help, ping <@&1131006052209541212> or <@&1131006067564875806>")
             channel = self.bot.get_channel(self.server6_channel)
             embed.set_thumbnail(url=member.display_avatar.url)
-            await channel.send(f'{member.mention} <@1131005057417105418>', embed=embed)
+            await channel.send(f'{member.mention} <@&1131005057417105418>', embed=embed)
 
     @commands.Cog.listener()
     async def on_member_remove(self, member: discord.Member):
