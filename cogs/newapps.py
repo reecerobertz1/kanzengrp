@@ -15,10 +15,6 @@ class Slash(commands.Cog):
     async def test(self, interaction: discord.Interaction):
         await interaction.response.send_message('testing')
 
-    @app_commands.command(name='lol', description='testing slash commands')
-    async def test(self, interaction: discord.Interaction):
-        await interaction.response.send_message('testing')
-
     @app_commands.command(name='kanzen', description='Get Kanzen logos')
     @app_commands.guilds(discord.Object(id=1121841073673736215))
     async def kanzenlogos(self, interaction: discord.Interaction):
