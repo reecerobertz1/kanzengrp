@@ -114,7 +114,7 @@ class logos(commands.Cog):
             title='<a:bearhugz:1131122693085868172> : Welcome to the server!',
             color=0x2b2d31
         )
-        embed.set_image(url='https://cdn.discordapp.com/attachments/1122181606254330008/1127011636457250997/jisoo_and_rose_photo_00000.png')
+        embed.set_image(url='https://cdn.discordapp.com/attachments/1131006428631539773/1131124927685214268/blackpink-jisoo-jennie-rose-lisa-k-pop-singers-red-2048x1536-4679.jpg')
         embed.set_footer(text='Thank you for joining!')
         embed.add_field(name='Group Leads', value="<a:bounceyarrow:1126865547255091343> **kanzengrp** - <@609515684740988959>\n<a:bounceyarrow:1126865547255091343> **daegutowngrp** - <@609515684740988959> + <@541538705106534423>\n<a:bounceyarrow:1126865547255091343> **auragrps** - <@609515684740988959> + <@718144988688679043> + <@603077306956644353>", inline=False)
         button = discord.ui.Button(
