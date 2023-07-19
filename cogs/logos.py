@@ -125,7 +125,7 @@ class logos(commands.Cog):
             label='Follow daegutowngrp',
             url='https://www.instagram.com/daegutowngrp/'
         )
-        button2 = discord.ui.Button(
+        button3 = discord.ui.Button(
             label='Follow auragrps',
             url='https://www.instagram.com/auragrps/'
         )
@@ -133,6 +133,7 @@ class logos(commands.Cog):
         view = discord.ui.View()
         view.add_item(button)
         view.add_item(button2)
+        view.add_item(button3)
 
         await ctx.send(embed=embed, view=view)
 
