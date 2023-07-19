@@ -69,6 +69,7 @@ class logos(commands.Cog):
         embed = discord.Embed(
             title='<a:Lumi_penguin_fall:1122607666578063531> : Kanzen Forms',
             description='<a:bounceyarrow:1126865547255091343> editing group\n<a:bounceyarrow:1126865547255091343> cute logos\n<a:bounceyarrow:1126865547255091343> custom bot\n<a:bounceyarrow:1126865547255091343> group activities',
+            color=0x2b2d31
         )
         embed.set_footer(text='Go support our partners!')
         embed.set_thumbnail(url='https://cdn.discordapp.com/icons/1121841073673736215/ea48ddf8734b328c38e38accbce6bc25.png?size=1024')
