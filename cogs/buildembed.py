@@ -6,9 +6,9 @@ class buildembed(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command()
+    @commands.command(aliases=['be', 'embed'])
     @commands.has_permissions(manage_guild=True)
-    async def createembed(self, ctx: commands.Context, channel: Optional[discord.TextChannel] = None):
+    async def buildembed(self, ctx: commands.Context, channel: Optional[discord.TextChannel] = None):
         """makes a custom embed
         
         Parameters
