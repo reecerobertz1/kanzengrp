@@ -12,14 +12,13 @@ class NewHelp(commands.Cog):
     async def newhelp(self, ctx):
         # Create the dropdown menu with different categories
         categories = [
-            "> About Hoshi",
-            "> Fun commands",
-            "> Editing commands",
-            "> Other commands",
-            "> Kanzen only commands",
-            "> Levels commands",
-            "> Moderation commands",
-            "> Application commands"
+            "Fun commands",
+            "Editing commands",
+            "Other commands",
+            "Kanzen only commands",
+            "Levels commands",
+            "Moderation commands",
+            "Application commands"
         ]
         dropdown = discord.ui.Select(placeholder="Select a category...", options=[discord.SelectOption(label=category) for category in categories])
 
@@ -40,11 +39,6 @@ class NewHelp(commands.Cog):
         async def dropdown_callback(interaction: discord.Interaction):
             selected_category = interaction.data["values"][0]
             if selected_category == categories[0]:
-                embed = discord.Embed(title="About Hoshi", description="This is the bot information page.")
-                embed.add_field(name="Bot Name", value="Hoshi Bot")
-                embed.add_field(name="Author", value="YourName#1234")
-                embed.add_field(name="Version", value="1.0.0")
-            elif selected_category == categories[1]:
                 embed = discord.Embed(title="Fun commands")
                 embed.add_field(name="+dog", value="<:reply:1125269313432059904> Sends you a random photo of a dog", inline=False)
                 embed.add_field(name="+cat", value="<:reply:1125269313432059904> Sends you a random photo of a cat", inline=False)
@@ -61,21 +55,24 @@ class NewHelp(commands.Cog):
                 embed.add_field(name="+ship", value="<:reply:1125269313432059904> Mention 2 members to see if Hoshi ships them (+ship @mention @mention)", inline=False)
                 embed.add_field(name="+trivia", value="<:reply:1125269313432059904> Hoshi will ask you a question, make sure to answer correctly (answer with numbers 1-4)", inline=False)
                 embed.add_field(name="+avatar", value="<:reply:1125269313432059904> Get a photo of your avatar or someone elses", inline=False)
-                # Add more fun commands fields here
-                embed.add_field(name="", value="`[page 2/8]`", inline=True)
-            elif selected_category == categories[2]:
+            elif selected_category == categories[1]:
                 embed = discord.Embed(title="Editing commands")
                 embed.add_field(name="+transition", value="<:reply:1125269313432059904> Get a random transition to use in your edit", inline=False)
                 embed.add_field(name="+audio", value="<:reply:1125269313432059904> Get an audio added by a member to use for your edit", inline=False)
-                # Add more editing commands fields here
-                embed.add_field(name="", value="`[page 3/8]`", inline=True)
-            elif selected_category == categories[3]:
+                embed.add_field(name="+addaudio", value="<:reply:1125269313432059904> Add an audio from SoundCloud for others to use", inline=False)
+                embed.add_field(name="+addedit", value="<:reply:1125269313432059904> Add your own edit to Hoshi (must be a streamable link)", inline=False)
+                embed.add_field(name="+edits", value="<:reply:1125269313432059904> Watch edits added from members of, Aura, Kanzen and Daegu", inline=False)
+                embed.add_field(name="+effects", value="<:reply:1125269313432059904> Get a random effect to use in your edit", inline=False)
+                embed.add_field(name="+colorscheme", value="<:reply:1125269313432059904> Get a random color scheme to use in your edit", inline=False)
+            elif selected_category == categories[2]:
                 embed = discord.Embed(title="Other commands")
                 embed.add_field(name="+ia", value="<:reply:1125269313432059904> Send us an inactivity message if you go inactive", inline=False)
                 embed.add_field(name="/ia", value="<:reply:1125269313432059904> Send us an inactivity message if you go inactive (kanzengrp only)", inline=False)
-                # Add more other commands fields here
-                embed.add_field(name="", value="`[page 4/8]`", inline=True)
-            # Add more categories and their fields here
+            elif selected_category == categories[3]:
+                embed = discord.Embed(title="Kanzen only commands")
+                embed.add_field(name="+newcmd", value="<:reply:1125269313432059904> Make your own command! `+newcmd (command name) (hoshi's responce)`", inline=False)
+                embed.add_field(name="+listcmds", value="<:reply:1125269313432059904> See all the commands other zennies have added", inline=False)
+                embed.add_field(name="+removecmd", value="<:reply:1125269313432059904> Made a mistake in your command? do `+removecmd (+commandname)`", inline=False)
             else:
                 embed = discord.Embed(title="Invalid category", description="Please select a valid category from the dropdown menu.")
 
