@@ -103,7 +103,7 @@ class Help(commands.Cog):
                 embed.add_field(name="+uptime", value="<:reply:1125269313432059904> See how long the bot has been online for", inline=False)
                 embed.add_field(name="+ping", value="<:reply:1125269313432059904> See the bots ping", inline=False)
                 embed.set_thumbnail(url=ctx.guild.icon)
-            elif selected_category == categories[7]:
+            elif selected_category == categories[6]:
                 embed = discord.Embed(title="> Application commands", color=0x2b2d31)
                 embed.add_field(name="/apply", value="<:reply:1125269313432059904> Apply for kanzengrp", inline=False)
                 embed.add_field(name="/app", value="<:reply:1125269313432059904> Apply for auragrp", inline=False)
@@ -114,7 +114,7 @@ class Help(commands.Cog):
                 embed.add_field(name="+qna", value="<:reply:1125269313432059904> Ask the lead a question", inline=False)
                 embed.add_field(name="+answer", value="<:reply:1125269313432059904> Answer a question sent", inline=False)
                 embed.set_thumbnail(url=ctx.guild.icon)
-            elif selected_category == categories[6]:
+            elif selected_category == categories[7]:
                 embed = discord.Embed(title="> Community commands", color=0x2b2d31)
                 embed.add_field(name="+giveaway", value="<:reply:1125269313432059904> Start a giveaway", inline=False)
                 embed.set_thumbnail(url=ctx.guild.icon)
