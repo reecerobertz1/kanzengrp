@@ -15,7 +15,16 @@ class buildembed(commands.Cog):
             response = await self.bot.wait_for('message', check=check_author)
             await message.delete()
             await response.delete()
-            return response.content.lower()
+            return response.content
+
+        async def ask_confirmation():
+            message = await ctx.send("Are you finished with this embed?\nReact with ✅ to send the embed, or ❌ to continue editing.")
+            await message.add_reaction("✅")
+            await message.add_reaction("❌")
+
+            reaction, _ = await self.bot.wait_for('reaction_add', check=lambda r, u: u == ctx.author and str(r.emoji) in ["✅", "❌"])
+            await message.clear_reactions()
+            return str(reaction.emoji)
 
         title = await ask_question("What should the title be? (Type 'X' to skip)")
         description = await ask_question("What should the description be? (Type 'X' to skip)")
@@ -24,7 +33,7 @@ class buildembed(commands.Cog):
         footer = await ask_question("What should the footer be? (Type 'X' to skip)")
         color_input = await ask_question("What should the color be? (Type 'X' to skip or enter a hexadecimal color code)")
 
-        if color_input == 'x':
+        if color_input.lower() == 'x':
             color = None
         else:
             try:
@@ -34,22 +43,19 @@ class buildembed(commands.Cog):
                 color = None
 
         embed = discord.Embed(title=title, description=description, color=color)
-        if thumbnail_url != 'x':
+        if thumbnail_url.lower() != 'x':
             embed.set_thumbnail(url=thumbnail_url)
-        if image_url != 'x':
+        if image_url.lower() != 'x':
             embed.set_image(url=image_url)
-        if footer != 'x':
+        if footer.lower() != 'x':
             embed.set_footer(text=footer)
 
         message = await ctx.send(embed=embed)
         await ctx.message.delete()
 
-        if thumbnail_url != 'x' and not embed.thumbnail:
-            await ctx.send("Invalid thumbnail URL. Please make sure the URL is correct and accessible.")
-            await message.delete()
-        if image_url != 'x' and not embed.image:
-            await ctx.send("Invalid image URL. Please make sure the URL is correct and accessible.")
-            await message.delete()
+        confirmation = await ask_confirmation()
+        if confirmation == "❌":
+            await ctx.invoke(self.buildembed)
 
 
 
