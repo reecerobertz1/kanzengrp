@@ -18,7 +18,8 @@ class Help(commands.Cog):
             "Kanzen only commands",
             "Levels commands",
             "Moderation commands",
-            "Application commands"
+            "Application commands",
+            "Community commands"
         ]
         dropdown = discord.ui.Select(placeholder="Select a category...", options=[discord.SelectOption(label=category) for category in categories])
 
@@ -112,6 +113,10 @@ class Help(commands.Cog):
                 embed.add_field(name="+viewapps", value="<:reply:1125269313432059904> See all applications sent", inline=False)
                 embed.add_field(name="+qna", value="<:reply:1125269313432059904> Ask the lead a question", inline=False)
                 embed.add_field(name="+answer", value="<:reply:1125269313432059904> Answer a question sent", inline=False)
+                embed.set_thumbnail(url=ctx.guild.icon)
+            elif selected_category == categories[6]:
+                embed = discord.Embed(title="> Community commands", color=0x2b2d31)
+                embed.add_field(name="+giveaway", value="<:reply:1125269313432059904> Start a giveaway", inline=False)
                 embed.set_thumbnail(url=ctx.guild.icon)
             else:
                 embed = discord.Embed(title="Invalid category", description="Please select a valid category from the dropdown menu.")
