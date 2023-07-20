@@ -10,20 +10,17 @@ class Help(commands.Cog):
 
     @commands.command()
     async def help(self, ctx):
-        # Create the dropdown menu with different categories and descriptions
-        categories = {
-            "Fun commands": "Commands to have fun and interact with the bot.",
-            "Editing commands": "Commands related to editing",
-            "Other commands": "Miscellaneous commands for various purposes.",
-            "Kanzen only commands": "Commands exclusive to the Kanzen group.",
-            "Levels commands": "Commands related to the leveling system.",
-            "Moderation commands": "Commands to moderate the server.",
-            "Application commands": "Commands for group applications."
-        }
-        dropdown = discord.ui.Select(placeholder="Select a category...", options=[discord.SelectOption(label=category, description=description) for category, description in categories.items()])
-
-    # ... Rest of the code remains the same
-
+        # Create the dropdown menu with different categories
+        categories = [
+            "Fun commands",
+            "Editing commands",
+            "Other commands",
+            "Kanzen only commands",
+            "Levels commands",
+            "Moderation commands",
+            "Application commands"
+        ]
+        dropdown = discord.ui.Select(placeholder="Select a category...", options=[discord.SelectOption(label=category) for category in categories])
 
         # Create the initial "About Hoshi" embed with fields
         about_hoshi_embed = discord.Embed(title="> <a:kanzenflower:1128154723262943282> : About Hoshi", color=0x2b2d31)
