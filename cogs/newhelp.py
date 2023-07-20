@@ -11,19 +11,22 @@ class NewHelp(commands.Cog):
     @commands.command()
     async def newhelp(self, ctx):
         # Create the dropdown menu with different categories
-        categories = ["Fun Commands", "Editing Commands", "Moderation Commands", "Kanzen Only"]
+        categories = ["Category 1", "Category 2", "Category 3", "Category 4"]
         dropdown = discord.ui.Select(placeholder="Select a category...", options=[discord.SelectOption(label=category) for category in categories])
         
-        # Create the initial embed
+        # Create the "About Hoshi" initial embed
+        about_hoshi_embed = discord.Embed(title="> <a:Lumi_penguin_fall:1122607666578063531> : About Hoshi", description="**The coding**\nHoshi is coded in Python 3.11.4\n[Download Python 3.11.4](https://www.python.org/downloads/)\n\n**Owner**\nHoshi is owned by Reeceroberts\nReece coded Hoshi in [Visual Studio Code](https://code.visualstudio.com/)\n\n**Extra Information**\nHoshi's prefix is `+`\nHoshi was made for **__Kanzengrp__")
+        
+        # Create the initial category embed
         initial_category = categories[0]
-        embed = discord.Embed(title=initial_category, description="**The coding**\nHoshi is coded in Python 3.11.4\n[Download Python 3.11.4](https://www.python.org/downloads/)\n\n**Owner**\nHoshi is owned by Reeceroberts\nReece coded Hoshi in [Visual Studio Code](https://code.visualstudio.com/)\n\n**Extra Information**\nHoshi's prefix is `+`\nHoshi was made for **__Kanzengrp__")
+        embed = discord.Embed(title=initial_category, description="This is the description for the first category.")
         
         # Create a view to handle the interaction
         view = discord.ui.View()
         view.add_item(dropdown)
 
-        # Send the initial embed with the dropdown menu
-        message = await ctx.send(embed=embed, view=view)
+        # Send the initial "About Hoshi" embed with the dropdown menu
+        message = await ctx.send(embed=about_hoshi_embed, view=view)
 
         # Function to handle the dropdown selection
         async def dropdown_callback(interaction: discord.Interaction):
@@ -41,6 +44,8 @@ class NewHelp(commands.Cog):
 
         # Assign the callback function to the dropdown
         dropdown.callback = dropdown_callback
+
+    # Add other commands and functions for the cog, if needed.
 
 async def setup(bot: commands.Bot) -> None:
 	await bot.add_cog(NewHelp(bot))
