@@ -32,7 +32,7 @@ class NewHelp(commands.Cog):
         async def dropdown_callback(interaction: discord.Interaction):
             selected_category = interaction.data["values"][0]
             if selected_category == initial_category:
-                embed.description = "**+dog**\n<:reply:1125269313432059904> Sends you a random photo of a dog.\n\n**+cat**\n<:reply:1125269313432059904> Sends you a random photo of a cat.\n\n**+jail**\n<:reply:1125269313432059904> Put someone or yourself in jail"
+                embed.description = "**+dog**\n<:reply:1125269313432059904> Sends you a random photo of a dog.\n\n**+cat**\n<:reply:1125269313432059904> Sends you a random photo of a cat.\n\n**+jail**\n<:reply:1125269313432059904> Put someone or yourself in jail\n\n**+pride**\n<:reply:1125269313432059904> Puts the pride flag on someones avatar.\n\n**+memberinfo**\n<:reply:1125269313432059904> View info for yourself or others\n\n**+kiss**\n<:reply:1125269313432059904> Mention someone to kiss, or don't mention anyone for Hoshi to kiss you\n\n**+hug**\n<:reply:1125269313432059904> Mention someone to hug, or don't mention anyone for Hoshi to hug you\n\n**+slap**\n<:reply:1125269313432059904> Mention someone to slap, or don't mention anyone for Hoshi to slap you"
             elif selected_category == "Category 2":
                 embed.description = "This is the description for the second category."
             elif selected_category == "Category 3":
