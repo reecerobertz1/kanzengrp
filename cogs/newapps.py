@@ -45,6 +45,10 @@ class Slash(commands.Cog):
     async def kdarct(self, interaction: discord.Interaction):
          await interaction.response.send_modal(grprctkda())
 
+    @app_commands.command(name='staffapp', description='Apply for Daegu staff!')
+    async def staffapp(self, interaction: discord.Interaction):
+         await interaction.response.send_modal(staffapps())
+
 # modals
 
 class ia(ui.Modal, title='Inactivity Message'):
@@ -121,6 +125,26 @@ class grprctkda(ui.Modal, title='Applications'):
           embed.add_field(name='Edit:', value=f'{self.edit.value}', inline=False)
           embed.add_field(name='Editing app:', value=f'{self.app.value}', inline=False)
           embed.add_field(name='Group(s) they want to be in:', value=f'{self.grps.value}', inline=False)
+          embed.add_field(name='Anything else:', value=f'{self.extra.value}', inline=False)
+          embed.add_field(name="Discord ID:", value=interaction.user.id, inline=False)
+          channel = interaction.client.get_channel(1131006328207327294)
+          await channel.send(embed=embed)
+          await interaction.followup.send(f'Your application has been sent successfully', ephemeral=True)
+
+class staffapps(ui.Modal, title='Staff Applications'):
+     instagram = ui.TextInput(label='Instagram username', placeholder="Enter your Instagram username here...", style=discord.TextStyle.short)
+     dcname = ui.TextInput(label='Discord username', placeholder="Enter your Instagram username here...", style=discord.TextStyle.short)
+     exp = ui.TextInput(label='What experience do you have with managing a server?', placeholder="List experiences here...", style=discord.TextStyle.long)
+     active = ui.TextInput(label='How active are you in daegu? (1-10)', placeholder="Editing app name...", style=discord.TextStyle.short)
+     extra = ui.TextInput(label='If you were daegu staff. What would you do differently / how would you help', placeholder="Details here...", style=discord.TextStyle.paragraph, required=True)
+     async def on_submit(self, interaction: discord.Interaction):
+          await interaction.response.defer()
+          embed = discord.Embed(title='Forms', color=0x2b2d31)
+          embed.add_field(name='Instagram Name:', value=f'{self.instagram.value}', inline=False)
+          embed.add_field(name='Instagram Account Link:', value=f'https://instagram.com/{self.instagram.value}', inline=False)
+          embed.add_field(name='Discord Name:', value=f'{self.dcname.value}', inline=False)
+          embed.add_field(name='Experiences:', value=f'{self.exp.value}', inline=False)
+          embed.add_field(name='Activity:', value=f'{self.active.value}', inline=False)
           embed.add_field(name='Anything else:', value=f'{self.extra.value}', inline=False)
           embed.add_field(name="Discord ID:", value=interaction.user.id, inline=False)
           channel = interaction.client.get_channel(1131006328207327294)
