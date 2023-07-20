@@ -17,8 +17,8 @@ class Giveaway(commands.Cog):
             return await ctx.send("The duration must be greater than 0.")
         
         giveaway_message = f"React with 🎉 to enter the giveaway for **{prize}**!\nDuration: {duration} seconds"
-        giveaway_embed = discord.Embed(title="Giveaway", description=giveaway_message)
-        giveaway_msg = await ctx.send(embed=giveaway_embed)
+        giveaway_embed = discord.Embed(title="Giveaway", description=giveaway_message, color=0x2b2d31)
+        giveaway_msg = await ctx.send('<@&1131127104226992208>', embed=giveaway_embed)
 
         await giveaway_msg.add_reaction("🎉")
         self.giveaway_data[giveaway_msg.id] = {"prize": prize, "duration": duration, "entries": []}
