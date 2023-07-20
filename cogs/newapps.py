@@ -46,6 +46,7 @@ class Slash(commands.Cog):
          await interaction.response.send_modal(grprctkda())
 
     @app_commands.command(name='staffapp', description='Apply for Daegu staff!')
+    @app_commands.guilds(discord.Object(id=896619762354892821))
     async def staffapp(self, interaction: discord.Interaction):
          await interaction.response.send_modal(staffapps())
 
