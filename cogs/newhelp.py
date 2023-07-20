@@ -11,12 +11,12 @@ class NewHelp(commands.Cog):
     @commands.command()
     async def newhelp(self, ctx):
         # Create the dropdown menu with different categories
-        categories = ["> <a:Lumi_penguin_fall:1122607666578063531> : About Hoshi", "Fun Commands", "Moderation Commands", "Kanzen Only"]
+        categories = ["About Hoshi", "Fun Commands", "Moderation Commands", "Kanzen Only"]
         dropdown = discord.ui.Select(placeholder="Select a category...", options=[discord.SelectOption(label=category) for category in categories])
         
         # Create the initial embed
         initial_category = categories[0]
-        embed = discord.Embed(title=initial_category, description="This is the description for the first category.")
+        embed = discord.Embed(title=initial_category, description="**The coding**\nHoshi is coded in Python 3.11.4\n[Download Python 3.11.4](https://www.python.org/downloads/)\n\n**Owner**\nHoshi is owned by Reeceroberts\nReece coded Hoshi in [Visual Studio Code](https://code.visualstudio.com/)\n\n**Extra Information**\nHoshi's prefix is `+`\nHoshi was made for **__Kanzengrp__")
         
         # Create a view to handle the interaction
         view = discord.ui.View()
