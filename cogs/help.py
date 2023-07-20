@@ -18,7 +18,7 @@ class Help(commands.Cog):
             "Kanzen only commands": "Commands exclusive to the Kanzen group.",
             "Levels commands": "Commands related to the leveling system.",
             "Moderation commands": "Commands to moderate the server.",
-            "Application commands": "Commands for group applications"
+            "Application commands": "Commands for group applications."
         }
         dropdown = discord.ui.Select(placeholder="Select a category...", options=[discord.SelectOption(label=category, description=description) for category, description in categories.items()])
 
