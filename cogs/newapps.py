@@ -136,7 +136,7 @@ class staffapps(ui.Modal, title='Staff Applications'):
      instagram = ui.TextInput(label='Instagram username', placeholder="Enter your Instagram username here...", style=discord.TextStyle.short)
      dcname = ui.TextInput(label='Discord username', placeholder="Enter your Instagram username here...", style=discord.TextStyle.short)
      exp = ui.TextInput(label='Experiences with managing a server?', placeholder="List experiences here...", style=discord.TextStyle.long)
-     active = ui.TextInput(label='How active are you in daegu? (1-10)', placeholder="Editing app name...", style=discord.TextStyle.short)
+     active = ui.TextInput(label='How active are you in daegu? (1-10)', placeholder="Scale of 1 to 10...", style=discord.TextStyle.short)
      extra = ui.TextInput(label='How would you help', placeholder="Details here...", style=discord.TextStyle.paragraph, required=True)
      async def on_submit(self, interaction: discord.Interaction):
           await interaction.response.defer()
