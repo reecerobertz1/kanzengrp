@@ -6,56 +6,61 @@ class buildembed(commands.Cog):
         self.bot = bot
 
     @commands.command()
-    async def buildembed(self, ctx):
-        def check_author(m):
-            return m.author == ctx.author
+    @commands.has_permissions(manage_guild=True)
+    async def createembed(self, ctx: commands.Context, channel: Optional[discord.TextChannel] = None):
+        """makes a custom embed
+        
+        Parameters
+        -----------
+        channel: discord.TextChannel, optional
+            the channel to send the embed in
+        """
 
-        async def ask_question(question):
-            message = await ctx.send(question)
-            response = await self.bot.wait_for('message', check=check_author)
-            await message.delete()
-            await response.delete()
-            return response.content
+        if channel == None:
+            channel = ctx.channel
 
-        async def ask_confirmation():
-            message = await ctx.send("Are you finished with this embed?\nReact with ✅ to send the embed, or ❌ to continue editing.")
-            await message.add_reaction("✅")
-            await message.add_reaction("❌")
-
-            reaction, _ = await self.bot.wait_for('reaction_add', check=lambda r, u: u == ctx.author and str(r.emoji) in ["✅", "❌"])
-            await message.clear_reactions()
-            return str(reaction.emoji)
-
-        title = await ask_question("What should the title be? (Type 'X' to skip)")
-        description = await ask_question("What should the description be? (Type 'X' to skip)")
-        thumbnail_url = await ask_question("Enter the thumbnail URL (Type 'X' to skip)")
-        image_url = await ask_question("Enter the image URL (Type 'X' to skip)")
-        footer = await ask_question("What should the footer be? (Type 'X' to skip)")
-        color_input = await ask_question("What should the color be? (Type 'X' to skip or enter a hexadecimal color code)")
-
-        if color_input.lower() == 'x':
-            color = None
-        else:
-            try:
-                color = int(color_input, 16)
-            except ValueError:
-                await ctx.send("Invalid color code. Using default color.")
-                color = None
-
-        embed = discord.Embed(title=title, description=description, color=color)
-        if thumbnail_url.lower() != 'x':
-            embed.set_thumbnail(url=thumbnail_url)
-        if image_url.lower() != 'x':
-            embed.set_image(url=image_url)
-        if footer.lower() != 'x':
-            embed.set_footer(text=footer)
-
-        message = await ctx.send(embed=embed)
         await ctx.message.delete()
+        first = await ctx.send("What title do you want your embed to have?")
 
-        confirmation = await ask_confirmation()
-        if confirmation == "❌":
-            await ctx.invoke(self.buildembed)
+        title1 = await self.bot.wait_for('message', check=lambda message: message.author == ctx.author)
+        title = title1.content
+        await title1.delete()
+        await first.delete()
+        second = await ctx.send('Okay! What do you want your description to be?')
+
+        desc1 = await self.bot.wait_for('message', check=lambda message: message.author == ctx.author)
+        desc = desc1.content
+        await desc1.delete()
+        await second.delete()
+
+        col = await ctx.send('What color do you want your embed to be? (in hex; eg., 2B2D31)')
+        color = await self.bot.wait_for('message', check=lambda message: message.author == ctx.author)
+        await col.delete()
+        await color.delete()
+
+        third = await ctx.send('Are you finished with your embed? Say ``yes`` if you are and ``no`` if you arent!')
+        answer1 = await self.bot.wait_for('message', check=lambda message: message.author == ctx.author)
+        if 'yes' in answer1.content:
+            await answer1.delete()
+            await third.delete()
+            embed0 = discord.Embed(title=f'{title}', description=f'{desc}', colour=int(color.content, 16))
+            await channel.send(embed=embed0)
+        else:
+            four = await ctx.send('OK! What do you want the name of the first field to be!')
+
+            name0 = await self.bot.wait_for('message', check=lambda message: message.author == ctx.author)
+            name1 = name0.content
+            await name0.delete()
+            await four.delete()
+            five = await ctx.send('Cool! What do you want your value to be?')
+
+            value0 = await self.bot.wait_for('message', check=lambda message: message.author == ctx.author)
+            value1 = value0.content
+            await value0.delete()
+            await five.delete()
+            embed = discord.Embed(title=f'{title}', description=f'{desc}', colour=0x60e5fc)
+            embed.add_field(name=f'{name1}', value=f'{value1}')
+            await channel.send(embed=embed)
 
 
 
