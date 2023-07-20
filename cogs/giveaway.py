@@ -8,6 +8,7 @@ class Giveaway(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.giveaway_data = {}
+        self.load_giveaway_data()
 
     @commands.command()
     async def giveaway(self, ctx, duration: int, *, prize: str):
@@ -63,7 +64,7 @@ class Giveaway(commands.Cog):
     @commands.command()
     async def gaclear(self, ctx):
         """Clear the giveaway data."""
-        self.giveaway_data = {}
+        self.giveaway_data.clear()
         await self.save_giveaway_data()
         await ctx.send("Giveaway data has been cleared.")
 
