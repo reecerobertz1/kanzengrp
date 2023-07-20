@@ -59,17 +59,14 @@ class buildembed(commands.Cog):
                 fields_completed = True
             else:
                 field_value = await ask_question("What do you want the value of the field to be?")
-                embed.add_field(name=field_name, value=field_value)
+                inline_input = await ask_question("Do you want this field to be inline? (yes/no)")
+                if inline_input.lower() == 'yes':
+                    inline = True
+                else:
+                    inline = False
+                embed.add_field(name=field_name, value=field_value, inline=inline)
 
         message = await channel.send(embed=embed)
-        await message.add_reaction("✅")
-        await message.add_reaction("❌")
-
-        reaction, _ = await self.bot.wait_for('reaction_add', check=lambda r, u: u == ctx.author and str(r.emoji) in ["✅", "❌"])
-        await message.clear_reactions()
-
-        if str(reaction.emoji) == "❌":
-            await ctx.invoke(self.createembed, channel=channel)
 
 
 async def setup(bot):
