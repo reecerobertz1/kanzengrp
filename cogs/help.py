@@ -77,6 +77,7 @@ class Help(commands.Cog):
                 embed.add_field(name="+newcmd", value="<:reply:1125269313432059904> Make your own command! `+newcmd (command name) (hoshi's responce)`", inline=False)
                 embed.add_field(name="+listcmds", value="<:reply:1125269313432059904> See all the commands other zennies have added", inline=False)
                 embed.add_field(name="+removecmd", value="<:reply:1125269313432059904> Made a mistake in your command? do `+removecmd (+commandname)`", inline=False)
+                embed.add_field(name="+daily", value="<:reply:1125269313432059904> Get anywhere from 100xp - 300xp everyday! (server boosters only wait 12 hours)", inline=False)
                 embed.set_thumbnail(url=ctx.guild.icon)
             elif selected_category == categories[4]:
                 embed = discord.Embed(title="> Levels commands", color=0x2b2d31)
