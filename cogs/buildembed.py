@@ -44,17 +44,17 @@ class buildembed(commands.Cog):
 
         embed = discord.Embed(title=title, description=description, colour=color)
 
-        thumbnail_url = await ask_question("Enter the thumbnail URL (Type 'X' to skip)")
+        thumbnail_url = await ask_question("Enter the thumbnail URL (Type `X` to skip)")
         if thumbnail_url.lower() != 'x':
             embed.set_thumbnail(url=thumbnail_url)
 
-        image_url = await ask_question("Enter the image URL (Type 'X' to skip)")
+        image_url = await ask_question("Enter the image URL (Type `X` to skip)")
         if image_url.lower() != 'x':
             embed.set_image(url=image_url)
 
         fields_completed = False
         while not fields_completed:
-            field_name = await ask_question("What do you want the name of the field to be? (Type 'X' to finish adding fields)")
+            field_name = await ask_question("What do you want the name of the field to be? (Type `X` to finish adding fields)")
             if field_name.lower() == 'x':
                 fields_completed = True
             else:
