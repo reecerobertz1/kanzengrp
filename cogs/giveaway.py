@@ -21,7 +21,7 @@ class Giveaway(commands.Cog):
         giveaway_msg = await ctx.send(embed=giveaway_embed)
 
         await giveaway_msg.add_reaction("🎉")
-        self.giveaway_data[giveaway_msg.id] = {"prize": prize, "duration": duration, "entries": set()}
+        self.giveaway_data[giveaway_msg.id] = {"prize": prize, "duration": duration, "entries": []}
         await self.save_giveaway_data()
 
         await asyncio.sleep(duration)
@@ -35,7 +35,7 @@ class Giveaway(commands.Cog):
         if not data["entries"]:
             return await message.channel.send("No one entered the giveaway. The prize will go unclaimed.")
 
-        winner_id = random.choice(list(data["entries"]))
+        winner_id = random.choice(data["entries"])
         winner = self.bot.get_user(winner_id)
 
         if winner:
@@ -52,7 +52,7 @@ class Giveaway(commands.Cog):
         if not user.bot and str(reaction.emoji) == "🎉":
             data = self.giveaway_data.get(reaction.message.id)
             if data:
-                data["entries"].add(user.id)
+                data["entries"].append(user.id)
                 await self.save_giveaway_data()
 
     @commands.command()
@@ -70,7 +70,7 @@ class Giveaway(commands.Cog):
 
     async def save_giveaway_data(self):
         with open("giveaway_data.json", "w") as f:
-            json.dump(self.giveaway_data, f)
+            json.dump(self.giveaway_data, f, indent=4)
 
     async def load_giveaway_data(self):
         try:
