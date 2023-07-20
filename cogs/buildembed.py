@@ -52,6 +52,10 @@ class buildembed(commands.Cog):
         if image_url.lower() != 'x':
             embed.set_image(url=image_url)
 
+        footer_input = await ask_question("What should the footer be? (Type `X` to skip)")
+        if footer_input.lower() != 'x':
+            embed.set_footer(text=footer_input)
+
         fields_completed = False
         while not fields_completed:
             field_name = await ask_question("What do you want the name of the field to be? (Type `X` to finish adding fields)")
