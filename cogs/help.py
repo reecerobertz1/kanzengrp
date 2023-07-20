@@ -109,8 +109,6 @@ class Help(commands.Cog):
                 embed.add_field(name="/app", value="<:reply:1125269313432059904> Apply for auragrp", inline=False)
                 embed.add_field(name="+accept @mention", value="<:reply:1125269313432059904> Accepts member into kanzen", inline=False)
                 embed.add_field(name="+decline @mention", value="<:reply:1125269313432059904> Declines a member from kanzen", inline=False)
-                embed.add_field(name="+resetapps", value="<:reply:1125269313432059904> Resets all IDs from forms", inline=False)
-                embed.add_field(name="+viewapps", value="<:reply:1125269313432059904> See all applications sent", inline=False)
                 embed.add_field(name="+qna", value="<:reply:1125269313432059904> Ask the lead a question", inline=False)
                 embed.add_field(name="+answer", value="<:reply:1125269313432059904> Answer a question sent", inline=False)
                 embed.set_thumbnail(url=ctx.guild.icon)
