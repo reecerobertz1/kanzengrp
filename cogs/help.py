@@ -12,13 +12,13 @@ class Help(commands.Cog):
     async def help(self, ctx):
         # Create the dropdown menu with different categories
         categories = [
-            "<:rj:948018817005662248> Fun commands",
-            "<:shooky:948023220966162532> Editing commands",
-            "<:tata:948022373691588648> Other commands",
-            "<:chimmy:1126149106742603896> Kanzen only commands",
-            "<:mang:948023547387854859>  Levels commands",
-            "<:koya:948019838452899911> Moderation commands",
-            "<:cooky:1126187789965340752> Application commands"
+            "Fun commands",
+            "Editing commands",
+            "Other commands",
+            "Kanzen only commands",
+            "Levels commands",
+            "Moderation commands",
+            "Application commands"
         ]
         dropdown = discord.ui.Select(placeholder="Select a category...", options=[discord.SelectOption(label=category) for category in categories])
 
