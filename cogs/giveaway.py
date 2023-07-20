@@ -20,7 +20,7 @@ class Giveaway(commands.Cog):
         giveaway_msg = await ctx.send(embed=giveaway_embed)
 
         await giveaway_msg.add_reaction("🎉")
-        self.giveaway_data[giveaway_msg.id] = {"prize": prize, "duration": duration, "entries": []}
+        self.giveaway_data[giveaway_msg.id] = {"prize": prize, "duration": duration, "entries": set()}
         await self.save_giveaway_data()
 
         await asyncio.sleep(duration)
@@ -34,7 +34,7 @@ class Giveaway(commands.Cog):
         if not data["entries"]:
             return await message.channel.send("No one entered the giveaway. The prize will go unclaimed.")
 
-        winner_id = random.choice(data["entries"])
+        winner_id = random.choice(list(data["entries"]))
         winner = self.bot.get_user(winner_id)
 
         if winner:
@@ -45,6 +45,14 @@ class Giveaway(commands.Cog):
 
         del self.giveaway_data[message.id]
         await self.save_giveaway_data()
+
+    @commands.Cog.listener()
+    async def on_reaction_add(self, reaction, user):
+        if not user.bot and str(reaction.emoji) == "🎉":
+            data = self.giveaway_data.get(reaction.message.id)
+            if data:
+                data["entries"].add(user.id)
+                await self.save_giveaway_data()
 
     @commands.command()
     async def gapick(self, ctx, message_id: int):
