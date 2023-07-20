@@ -11,7 +11,7 @@ class NewHelp(commands.Cog):
     @commands.command()
     async def newhelp(self, ctx):
         # Create the dropdown menu with different categories
-        categories = ["About Hoshi", "Fun Commands", "Moderation Commands", "Kanzen Only"]
+        categories = ["Fun Commands", "Editing Commands", "Moderation Commands", "Kanzen Only"]
         dropdown = discord.ui.Select(placeholder="Select a category...", options=[discord.SelectOption(label=category) for category in categories])
         
         # Create the initial embed
