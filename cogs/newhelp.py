@@ -11,11 +11,11 @@ class NewHelp(commands.Cog):
     @commands.command()
     async def newhelp(self, ctx):
         # Create the dropdown menu with different categories
-        categories = ["Category 1", "Category 2", "Category 3", "Category 4"]
+        categories = ["Fun Commands", "Category 2", "Category 3", "Category 4"]
         dropdown = discord.ui.Select(placeholder="Select a category...", options=[discord.SelectOption(label=category) for category in categories])
         
         # Create the "About Hoshi" initial embed
-        about_hoshi_embed = discord.Embed(title="> <a:Lumi_penguin_fall:1122607666578063531> : About Hoshi", description="**The coding**\nHoshi is coded in Python 3.11.4\n[Download Python 3.11.4](https://www.python.org/downloads/)\n\n**Owner**\nHoshi is owned by Reeceroberts\nReece coded Hoshi in [Visual Studio Code](https://code.visualstudio.com/)\n\n**Extra Information**\nHoshi's prefix is `+`\nHoshi was made for **__Kanzengrp__")
+        about_hoshi_embed = discord.Embed(title="> <a:Lumi_penguin_fall:1122607666578063531> : About Hoshi", description="**The coding**\nHoshi is coded in Python 3.11.4\n[Download Python 3.11.4](https://www.python.org/downloads/)\n\n**Owner**\nHoshi is owned by Reeceroberts\nReece coded Hoshi in [Visual Studio Code](https://code.visualstudio.com/)\n\n**Extra Information**\nHoshi's prefix is `+`\nHoshi was made for **__Kanzengrp__**")
         
         # Create the initial category embed
         initial_category = categories[0]
@@ -32,7 +32,7 @@ class NewHelp(commands.Cog):
         async def dropdown_callback(interaction: discord.Interaction):
             selected_category = interaction.data["values"][0]
             if selected_category == initial_category:
-                embed.description = "This is the description for the first category."
+                embed.description = "**+dog**\n<:reply:1125269313432059904> Sends you a random photo of a dog.\n\n**+cat**\n<:reply:1125269313432059904> Sends you a random photo of a cat.\n\n**+jail**\n<:reply:1125269313432059904> Put someone or yourself in jail"
             elif selected_category == "Category 2":
                 embed.description = "This is the description for the second category."
             elif selected_category == "Category 3":
