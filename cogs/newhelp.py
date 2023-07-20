@@ -4,52 +4,43 @@ from discord.ext import commands
 from discord.interactions import Interaction
 from discord.ui import View, Select
 
-class HelpSelect(Select):
-    def __init__(self, bot: commands.bot):
-        super().__init__(
-            placeholder="Choose a category",
-            options=[
-                discord.SelectOption(
-            label=cog_name, description=cog.__doc__
-                ) for cog_name, cog in bot.cogs.items if cog.__cog__commands and cog_name not in ['Jishaku']
-            ]
-        )
-
-        self.bot = bot
-
-    async def callback(self, interaction: discord.Interaction) -> None:
-        cog = self.bot.get_cog(self.values[0])
-        assert cog
-
-        commands_mixer = []
-        for i in cog.walk_commands():
-            commands_mixer.append(i)
-
-        for i in cog.walk_commands():
-            commands_mixer.append(i)
-
-        embed = discord.Embed(
-            title=f'{cog.__cog_name__} Commands',
-            description='\n'.join(
-            f"**{command}**, `{command.description}`"
-            for command in commands_mixer
-            )
-        )
-        await interaction.response.send_message(embed=embed)
-
-
-        @commands.hybrid_command(name=newhelp, description='Shows list of commands')
-        async def newhelp(self, ctx):
-            embed = discord.Embed(
-                title='Help command',
-                description='This is a help command'
-            )
-            view = View().add_item(HelpSelect(self.bot))
-            await ctx.send(embed=embed, view=view)
-
-class newhelp(commands.Cog):
+class NewHelp(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
+    @commands.command()
+    async def newhelp(self, ctx):
+        # Create the dropdown menu with different categories
+        categories = ["Category 1", "Category 2", "Category 3", "Category 4"]
+        dropdown = discord.ui.Select(placeholder="Select a category...", options=[discord.SelectOption(label=category) for category in categories])
+        
+        # Create the initial embed
+        initial_category = categories[0]
+        embed = discord.Embed(title=initial_category, description="This is the description for the first category.")
+        
+        # Create a view to handle the interaction
+        view = discord.ui.View()
+        view.add_item(dropdown)
+
+        # Send the initial embed with the dropdown menu
+        message = await ctx.send(embed=embed, view=view)
+
+        # Function to handle the dropdown selection
+        async def dropdown_callback(interaction: discord.Interaction):
+            selected_category = interaction.data["values"][0]
+            if selected_category == initial_category:
+                embed.description = "This is the description for the first category."
+            elif selected_category == "Category 2":
+                embed.description = "This is the description for the second category."
+            elif selected_category == "Category 3":
+                embed.description = "This is the description for the third category."
+            elif selected_category == "Category 4":
+                embed.description = "This is the description for the fourth category."
+            
+            await interaction.response.edit_message(embed=embed)
+
+        # Assign the callback function to the dropdown
+        dropdown.callback = dropdown_callback
+
 async def setup(bot: commands.Bot) -> None:
-	await bot.add_cog(newhelp(bot))
+	await bot.add_cog(NewHelp(bot))
