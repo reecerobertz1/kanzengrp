@@ -22,6 +22,9 @@ class Help(commands.Cog):
         }
         dropdown = discord.ui.Select(placeholder="Select a category...", options=[discord.SelectOption(label=category, description=description) for category, description in categories.items()])
 
+    # ... Rest of the code remains the same
+
+
         # Create the initial "About Hoshi" embed with fields
         about_hoshi_embed = discord.Embed(title="> <a:kanzenflower:1128154723262943282> : About Hoshi", color=0x2b2d31)
         about_hoshi_embed.add_field(name="The coding", value="Hoshi is coded in Python 3.11.4\n[Download Python 3.11.4](https://www.python.org/downloads/)", inline=False)
@@ -29,15 +32,14 @@ class Help(commands.Cog):
         about_hoshi_embed.add_field(name="Extra Information", value="Hoshi's prefix is `+`\nHoshi was made for **__Kanzengrp__**", inline=False)
         about_hoshi_embed.set_thumbnail(url=ctx.guild.icon)
 
-        # Create the view and assign the callback function to the dropdown
+        # Create a view to handle the interaction
         view = discord.ui.View()
         view.add_item(dropdown)
-        view.callback = dropdown_callback
 
         # Send the initial "About Hoshi" embed with the dropdown menu
         message = await ctx.send(embed=about_hoshi_embed, view=view)
 
-        # Define the dropdown callback function
+        # Function to handle the dropdown selection
         async def dropdown_callback(interaction: discord.Interaction):
             selected_category = interaction.data["values"][0]
             if selected_category == categories[0]:
@@ -120,8 +122,6 @@ class Help(commands.Cog):
 
         # Assign the callback function to the dropdown
         dropdown.callback = dropdown_callback
-        interaction = await self.bot.wait_for("select_option", check=lambda i: i.message.id == message.id and i.user.id == ctx.author.id)
-        await dropdown_callback(interaction)
 
     @commands.command()
     async def helpjail(self, ctx):
