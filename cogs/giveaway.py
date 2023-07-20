@@ -11,6 +11,7 @@ class Giveaway(commands.Cog):
         self.load_giveaway_data()
 
     @commands.command()
+    @commands.has_permissions(administrator=True)
     async def giveaway(self, ctx, duration: int, *, prize: str):
         """Start a giveaway."""
         if duration <= 0:
@@ -56,12 +57,14 @@ class Giveaway(commands.Cog):
                 await self.save_giveaway_data()
 
     @commands.command()
+    @commands.has_permissions(administrator=True)
     async def gapick(self, ctx, message_id: int):
         """Pick a winner for a specific giveaway."""
         message = await ctx.fetch_message(message_id)
         await self.pick_winner(message)
 
     @commands.command()
+    @commands.has_permissions(administrator=True)
     async def gaclear(self, ctx):
         """Clear the giveaway data."""
         self.giveaway_data.clear()
