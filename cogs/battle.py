@@ -16,12 +16,22 @@ class Battle(commands.Cog):
             "fortnite dance": 100
         }
         self.unlocked_actions = ["punch", "kick", "slap"]  # Start with these unlocked actions
+        self.battle_in_progress = False
 
     def get_random_action(self):
         return random.choice(list(self.battle_actions.keys()))
 
+    def get_battle_status_embed(self, ctx, opponent):
+        return discord.Embed(title="Battle!", description=f"{ctx.author.mention} vs {opponent.mention}\n"
+                                                          f"{ctx.author.display_name} HP: {self.hp}\n"
+                                                          f"{opponent.display_name} HP: {self.hp}", color=0xFF5733)
+
     @commands.command()
     async def battle(self, ctx, opponent: discord.Member):
+        if self.battle_in_progress:
+            await ctx.send("A battle is already in progress.")
+            return
+
         if opponent == ctx.author:
             await ctx.send("You cannot battle yourself!")
             return
@@ -31,11 +41,6 @@ class Battle(commands.Cog):
 
         def check_opponent(m):
             return m.author == opponent and m.content.lower() in self.battle_actions
-
-        def get_battle_status_embed():
-            return discord.Embed(title="Battle!", description=f"{ctx.author.mention} vs {opponent.mention}\n"
-                                                              f"{ctx.author.display_name} HP: {self.hp}\n"
-                                                              f"{opponent.display_name} HP: {self.hp}", color=0xFF5733)
 
         await ctx.send(f"{ctx.author.mention} has challenged {opponent.mention} to a battle!")
         await ctx.send(f"{opponent.mention}, do you accept the challenge? Type `yes` or `no`.")
@@ -50,7 +55,8 @@ class Battle(commands.Cog):
             await ctx.send(f"{opponent.mention} declined the challenge. The battle has been canceled.")
             return
 
-        player_embed = get_battle_status_embed()
+        self.battle_in_progress = True
+        player_embed = self.get_battle_status_embed(ctx, opponent)
         await ctx.send(embed=player_embed)
 
         await ctx.send(f"The battle has begun between {ctx.author.mention} and {opponent.mention}!")
@@ -61,6 +67,7 @@ class Battle(commands.Cog):
                 action = await self.bot.wait_for('message', timeout=30.0, check=check_author)
             except asyncio.TimeoutError:
                 await ctx.send(f"{ctx.author.mention} did not respond in time. The battle has been canceled.")
+                self.battle_in_progress = False
                 return
 
             action = action.content.lower()
@@ -89,6 +96,14 @@ class Battle(commands.Cog):
         else:
             await ctx.send(f"{ctx.author.mention} won the battle! Congratulations!")
 
+        self.battle_in_progress = False
 
+    @commands.command()
+    async def endbattle(self, ctx):
+        if self.battle_in_progress:
+            self.battle_in_progress = False
+            await ctx.send("The battle has been ended.")
+        else:
+            await ctx.send("There is no battle in progress.")
 async def setup(bot):
     await bot.add_cog(Battle(bot))
