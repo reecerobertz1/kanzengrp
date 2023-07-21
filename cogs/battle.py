@@ -52,7 +52,7 @@ class Battle(commands.Cog):
             return m.author == ctx.author and self.is_battle_action(m.content.lower())
 
         def check_opponent(m):
-            return m.author == opponent and self.is_battle_action(m.content.lower())
+            return m.author == opponent and m.content.lower() in ["yes", "no"]
 
         await ctx.send(f"{ctx.author.mention} has challenged {opponent.mention} to a battle!")
         await ctx.send(f"{opponent.mention}, do you accept the challenge? Type `yes` or `no`.")
