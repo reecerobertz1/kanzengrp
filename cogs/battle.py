@@ -49,7 +49,7 @@ class Battle(commands.Cog):
             return
 
         def check_author(m):
-            return m.author == ctx.author and self.is_battle_action(m.content.lower())
+            return m.author == ctx.author and m.content.lower() in ["punch", "kick", "slap", "super kick", "explode", "atomic bomb", "fortnite dance"]
 
         def check_opponent(m):
             return m.author == opponent and m.content.lower() in ["yes", "no"]
@@ -81,16 +81,9 @@ class Battle(commands.Cog):
                 self.battle_in_progress = False
                 break
 
-            if response.content.lower() == "end":
-                await ctx.send("The battle has ended.")
-                self.battle_in_progress = False
-                break
-
             action = response.content.lower()
             damage = self.get_damage(action)
-            # Update the player's health and create a new embed with updated health
-            # ...
-            player_embed = self.get_battle_status_embed(ctx, opponent)  # Replace with your logic to update the health
+            player_embed = self.get_battle_status_embed(ctx, opponent)
             await status_message.edit(embed=player_embed)
 
     @commands.command()
