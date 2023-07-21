@@ -7,6 +7,12 @@ class applications(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
+    async def send_invite(self, user_id, server_id):
+        user = self.bot.get_user(user_id)
+        if user is not None:
+            invite = await self.bot.get_guild(server_id).create_invite(max_uses=1, unique=True)
+            await user.send(f"Here is your invite to the server: {invite}")
+
     @commands.command()
     @commands.has_permissions(manage_guild=True)
     async def accept(self, ctx, member: discord.Member):
@@ -162,59 +168,60 @@ class applications(commands.Cog):
         else:
             await ctx.send("You need to reply to a message with an embed to use this command.")
 
+    @commands.Cog.listener()
+    async def on_message(self, message):
+        if not message.author.bot and message.content:
+            if message.content.lower() == "+acceptt":
+                # Send the reply embed message
+                embed = discord.Embed(title="Accept Invitation", description="Please provide the embed information.")
+                reply_msg = await message.channel.send(embed=embed)
 
-    @commands.command()
-    async def acceptt(self, ctx):
-        def check_author(m):
-            return m.author == ctx.author and m.channel == ctx.channel
+                def check_author(m):
+                    return m.author == message.author and m.channel == message.channel
 
-        # Wait for the user to reply with the embed
-        await ctx.send("Please reply with the embed you want to process.")
-        msg = await self.bot.wait_for('message', check=check_author)
+                # Wait for the user to reply with the embed
+                msg = await self.bot.wait_for('message', check=check_author)
 
-        if not msg.embeds and not msg.content:
-            await ctx.send("No embed found in the reply. Please make sure to reply with the embed information.")
-            return
+                if not msg.embeds and not msg.content:
+                    await message.channel.send("No embed found in the reply. Please make sure to reply with the embed information.")
+                    await reply_msg.delete()
+                    return
 
-        embed = msg.embeds[0] if msg.embeds else None
-        if embed:
-            group_field = next((field for field in embed.fields if field.name == 'Group'), None)
-            user_id_field = next((field for field in embed.fields if field.name == 'User ID'), None)
+                embed = msg.embeds[0] if msg.embeds else None
+                if embed:
+                    group_field = next((field for field in embed.fields if field.name == 'Group'), None)
+                    user_id_field = next((field for field in embed.fields if field.name == 'User ID'), None)
 
-            if not group_field or not user_id_field:
-                await ctx.send("Invalid embed format. Please make sure the embed contains fields 'Group' and 'User ID'.")
-                return
+                    if not group_field or not user_id_field:
+                        await message.channel.send("Invalid embed format. Please make sure the embed contains fields 'Group' and 'User ID'.")
+                        await reply_msg.delete()
+                        return
 
-            grps = group_field.value.lower()
-            user_id = user_id_field.value.strip()
-            accepted_server_id = None
+                    grps = group_field.value.lower()
+                    user_id = user_id_field.value.strip()
+                    accepted_server_id = None
 
-            if "kanzen" in grps:
-                accepted_server_id = 1121841073673736215
-            elif "aura" in grps:
-                accepted_server_id = 957987670787764224
-            elif "daegu" in grps:
-                accepted_server_id = 896619762354892821
-            else:
-                await ctx.send("Sorry, the server name (kanzen, aura, or daegu) was not found in the embed.")
-                return
+                    if "kanzen" in grps:
+                        accepted_server_id = 1121841073673736215
+                    elif "aura" in grps:
+                        accepted_server_id = 957987670787764224
+                    elif "daegu" in grps:
+                        accepted_server_id = 896619762354892821
+                    else:
+                        await message.channel.send("Sorry, the server name (kanzen, aura, or daegu) was not found in the embed.")
+                        await reply_msg.delete()
+                        return
 
-            # DM the user with the invite link
-            user = self.bot.get_user(int(user_id))
-            if user is not None:
-                invite = await self.bot.get_guild(accepted_server_id).create_invite(max_uses=1, unique=True)
-                await user.send(f"Here is your invite to the server: {invite}")
+                    # DM the user with the invite link
+                    await self.send_invite(int(user_id), accepted_server_id)
 
-                # Edit the original embed to show the accepted status
-                embed.add_field(name="Status", value="Accepted ✅")
-                await ctx.message.add_reaction("✅")
-                await msg.edit(embed=embed)
-            else:
-                await ctx.send("Unable to find the user. Please make sure the provided ID is correct.")
-        else:
-            await ctx.send("No embed found in the reply. Please make sure to reply with the embed information.")
-
-
+                    # Edit the original embed to show the accepted status
+                    embed.add_field(name="Status", value="Accepted ✅")
+                    await message.add_reaction("✅")
+                    await reply_msg.edit(embed=embed)
+                else:
+                    await message.channel.send("No embed found in the reply. Please make sure to reply with the embed information.")
+                    await reply_msg.delete()
 
 async def setup(bot):
     await bot.add_cog(applications(bot))
