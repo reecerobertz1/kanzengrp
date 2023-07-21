@@ -149,10 +149,11 @@ class applications(commands.Cog):
                     return
 
                 grps = group_field.value.lower()
-                user_id = user_id_field.value.strip()
 
-                # Split the group names by commas or spaces
-                groups = [group.strip().lower() for group in grps.split(",")]
+                # Split the group names by commas, spaces, or both
+                groups = [group.strip().lower() for group in re.split(r'[,\s]+', grps)]
+
+                user_id = user_id_field.value.strip()
 
                 accepted_server_id = None
 
