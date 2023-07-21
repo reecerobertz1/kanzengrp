@@ -173,8 +173,9 @@ class applications(commands.Cog):
                 embed.add_field(name="Status", value="Accepted ✅")
                 await ctx.message.add_reaction("✅")
                 await msg.edit(embed=embed)
-            except discord.errors.Forbidden():
                 await ctx.reply((user_id))
+            except discord.errors.Forbidden():
+                await ctx.reply(embed=embed)
         else:
             return await ctx.send("No message reference found.")
 
