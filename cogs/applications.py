@@ -165,19 +165,41 @@ class applications(commands.Cog):
 
     @commands.command()
     async def acceptt(self, ctx):
-        if ctx.message.reference is not None:
-            try:
-                msg = await ctx.channel.fetch_message(ctx.message.reference.message_id)
-                user_id = msg.embeds[6].fields[6].value
-                embed = msg.embeds[0]
-                embed.add_field(name="Status", value="Accepted ✅")
-                await ctx.message.add_reaction("✅")
-                await msg.edit(embed=embed)
-                await ctx.reply(f'{user_id}')
-            except discord.errors.Forbidden():
-                await ctx.reply(embed=embed)
+        def check_author(m):
+            return m.author == ctx.author
+
+        # Wait for the user to reply with the embed information
+        await ctx.send("Please provide the embed information.")
+        msg = await self.bot.wait_for('message', check=check_author)
+
+        # Check if the words 'kanzen', 'aura', or 'daegu' are in the embed
+        grps = msg.embeds[0].fields[0].value.lower()
+        user_id = msg.embeds[0].fields[1].value.strip()
+        accepted_server_id = None
+        if "kanzen" in grps:
+            accepted_server_id = 1121841073673736215
+        elif "aura" in grps:
+            accepted_server_id = 957987670787764224
+        elif "daegu" in grps:
+            accepted_server_id = 896619762354892821
         else:
-            return await ctx.send("No message reference found.")
+            await ctx.send("Sorry, the server name (kanzen, aura, or daegu) was not found in the embed.")
+            return
+
+        # DM the user with the invite link
+        user = self.bot.get_user(int(user_id))
+        if user is not None:
+            invite = await self.bot.get_guild(accepted_server_id).create_invite(max_uses=1, unique=True)
+            await user.send(f"Here is your invite to the server: {invite}")
+
+            # Edit the original embed to show the accepted status
+            embed = msg.embeds[0]
+            embed.add_field(name="Status", value="Accepted ✅")
+            await ctx.message.add_reaction("✅")
+            await msg.edit(embed=embed)
+        else:
+            await ctx.send("Unable to find the user. Please make sure the provided ID is correct.")
+
 
 async def setup(bot):
     await bot.add_cog(applications(bot))
