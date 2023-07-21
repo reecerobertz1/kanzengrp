@@ -59,7 +59,7 @@ class applications(commands.Cog):
                     if invite_link:
                         embed.add_field(name=group.capitalize(), value=f"[Join Here]({invite_link})", inline=True)
 
-                user = self.bot.get_user(user_id)
+                user = discord.utils.get(ctx.guild.members, id=user_id)
                 if user:
                     await user.send(embed=embed)
 
