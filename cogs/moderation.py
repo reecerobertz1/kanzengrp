@@ -8,48 +8,6 @@ class Moderation(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.start_time = datetime.now()
-
-
-    async def cog_check(self, ctx):
-        return ctx.author.guild_permissions.administrator
-
-#    @commands.command()
-#    async def uptime(self, ctx):
-#        current_time = datetime.now()
-#        uptime = current_time - self.start_time
-
-#        days = uptime.days
-#        hours, remainder = divmod(uptime.seconds, 3600)
-#        minutes, seconds = divmod(remainder, 60)
-
-#        uptime_str = f"{days} days, {hours} hours, {minutes} minutes, {seconds} seconds"
-
-#        await ctx.reply(f"Bot Uptime: {uptime_str}")
-
-#        self.deleted_messages = {}
-
-    @commands.Cog.listener()
-    async def on_message_delete(self, message):
-        self.deleted_messages[message.channel.id] = message
-
-    @commands.command()
-    async def snipe(self, ctx):
-        channel = ctx.channel
-        deleted_message = self.deleted_messages.get(channel.id)
-        if deleted_message is None:
-            await ctx.send("There are no recently deleted messages in this channel.")
-            return
-        author_mention = deleted_message.author.mention
-        content = deleted_message.content
-        embed = discord.Embed(title="Deleted Message", description=f'**Sent by:** {author_mention}\n\n**Content**: {content}', color=0x2b2d31)
-        await ctx.send(embed=embed)
-
-
-    @commands.command()
-    async def ping(self, ctx):
-        latency = round(self.bot.latency * 1000)  # Convert to milliseconds
-
-        await ctx.reply(f"Pong! :ping_pong: Latency: {latency}ms")
         
     @commands.command()
     @commands.has_permissions(administrator=True)
