@@ -121,20 +121,8 @@ class applications(commands.Cog):
         else:
             await ctx.reply(f"Failed to find the decline channel.")
 
-    async def create_invite(self, guild_id):
-        try:
-            guild = self.bot.get_guild(guild_id)
-            if guild is None:
-                raise ValueError("Invalid server ID")
-
-            invite = await guild.text_channels[0].create_invite(max_uses=1, unique=True)
-            return invite.url
-        except Exception as e:
-            print(f"Failed to create invite: {e}")
-            return None
-
     @commands.command()
-    async def acceptt(self, ctx):
+    async def acceptt(self, ctx, user: discord.User):
         if ctx.message.reference is not None:
             try:
                 msg = await ctx.channel.fetch_message(ctx.message.reference.message_id)
@@ -147,34 +135,26 @@ class applications(commands.Cog):
                     return
 
                 grps = group_field.value.lower()
-                groups = [group.strip() for group in re.split(r'[,\s]+', grps)]
+                user_id = user.id  # Use the provided user object's ID
 
-                user_id = user_id_field.value.strip()
-                accepted_server_ids = []
+                accepted_servers = []
 
-                for group in groups:
-                    if "kanzen" in group:
-                        accepted_server_ids.append((group, 1121841073673736215))
-                    elif "aura" in group:
-                        accepted_server_ids.append((group, 957987670787764224))
-                    elif "daegu" in group:
-                        accepted_server_ids.append((group, 896619762354892821))
+                if "kanzen" in grps:
+                    accepted_servers.append((1121841073673736215, "Kanzen Server"))
+                if "aura" in grps:
+                    accepted_servers.append((957987670787764224, "Aura Server"))
+                if "daegu" in grps:
+                    accepted_servers.append((896619762354892821, "Daegu Server"))
 
-                if not accepted_server_ids:
+                if not accepted_servers:
                     await ctx.send("Sorry, the server name (kanzen, aura, or daegu) was not found in the embed.")
                     return
 
                 # DM the user with the invite links
-                embed = discord.Embed(title="Congratulations! You have been accepted!", color=0x00ff00)
-                for group, server_id in accepted_server_ids:
-                    invite_link = await self.create_invite(server_id)
-                    if invite_link:
-                        embed.add_field(name=group.capitalize(), value=f"[Join Here]({invite_link})", inline=False)
-
-                await ctx.author.send(embed=embed)
+                for server_id, server_name in accepted_servers:
+                    await self.send_invite(user_id, server_id, server_name)
 
                 # Edit the original embed to show the accepted status
-                embed = msg.embeds[0]
                 embed.add_field(name="Status", value="Accepted ✅")
                 await ctx.message.add_reaction("✅")
                 await msg.edit(embed=embed)
@@ -182,6 +162,22 @@ class applications(commands.Cog):
                 print(f"Failed to process the command: {e}")
         else:
             await ctx.send("Please reply with the embed you want to process.")
+
+    async def send_invite(self, user_id, server_id, server_name):
+        try:
+            guild = self.bot.get_guild(server_id)
+            if guild is None:
+                raise ValueError("Invalid server ID")
+
+            user = guild.get_member(user_id)
+            if user is None:
+                raise ValueError("User not found in the server")
+
+            invite = await guild.text_channels[0].create_invite(max_uses=1, unique=True)
+            invite_message = f"Hey! You have been accepted into {server_name}. Here's your invite link: {invite.url}"
+            await user.send(embed=discord.Embed(description=invite_message))
+        except Exception as e:
+            print(f"Failed to send invite: {e}")
 
 
 async def setup(bot):
