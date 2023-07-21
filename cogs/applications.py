@@ -107,6 +107,39 @@ class applications(commands.Cog):
         else:
             await ctx.send("Please reply with the embed you want to process.")
 
+    @commands.command()
+    async def declinee(self, ctx):
+        if ctx.message.reference is not None:
+            try:
+                msg = await ctx.channel.fetch_message(ctx.message.reference.message_id)
+                embed = msg.embeds[0]
+                group_field = next((field for field in embed.fields if field.name == 'Group(s) they want to be in:'), None)
+                user_id_field = next((field for field in embed.fields if field.name == 'Discord ID:'), None)
+
+                if not group_field or not user_id_field:
+                    await ctx.send("Invalid embed format. Please make sure the embed contains fields 'Group(s) they want to be in:' and 'Discord ID'.")
+                    return
+
+                grps = group_field.value.lower()
+                groups = [group.strip() for group in re.split(r'[,\s]+', grps)]
+
+                user_id = user_id_field.value.strip()
+
+                # DM the user with the decline message
+                user = self.bot.get_user(int(user_id))
+                if user:
+                    decline_message = f"Hey! You have been declined from {', '.join(groups)}."
+                    await user.send(decline_message)
+
+                # Edit the original embed to show the declined status
+                embed = msg.embeds[0]
+                embed.add_field(name="Status", value="Declined ❌")
+                await ctx.message.add_reaction("❌")
+                await msg.edit(embed=embed)
+            except Exception as e:
+                print(f"Failed to process the command: {e}")
+        else:
+            await ctx.send("Please reply with the embed you want to process.")
 
 async def setup(bot):
     await bot.add_cog(applications(bot))
