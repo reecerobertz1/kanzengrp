@@ -68,6 +68,18 @@ class applications(commands.Cog):
                 embed.add_field(name="Status", value="Accepted ✅")
                 await ctx.message.add_reaction("✅")
                 await msg.edit(embed=embed)
+
+                # Add the role with ID 1131016215754715166
+                guild = ctx.guild
+                role_to_add = guild.get_role(1131016215754715166)
+                if role_to_add:
+                    await user.add_roles(role_to_add)
+
+                # Remove the role with ID 1131016147282710679
+                role_to_remove = guild.get_role(1131016147282710679)
+                if role_to_remove:
+                    await user.remove_roles(role_to_remove)
+
             except Exception as e:
                 print(f"Failed to process the command: {e}")
         else:
