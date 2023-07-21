@@ -173,7 +173,7 @@ class applications(commands.Cog):
                 embed.add_field(name="Status", value="Accepted ✅")
                 await ctx.message.add_reaction("✅")
                 await msg.edit(embed=embed)
-                await ctx.reply((user_id))
+                await ctx.reply(f'{user_id}')
             except discord.errors.Forbidden():
                 await ctx.reply(embed=embed)
         else:
