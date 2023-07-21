@@ -171,7 +171,6 @@ class applications(commands.Cog):
                 user_id = msg.embeds[0].fields[0].value
                 embed = msg.embeds[0]
                 embed.add_field(name="Status", value="Accepted ✅")
-                member = ctx.guild.get_member(int(user_id))
                 await ctx.message.add_reaction("✅")
                 await msg.edit(embed=embed)
             except discord.errors.Forbidden():
