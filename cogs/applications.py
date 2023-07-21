@@ -166,7 +166,7 @@ class applications(commands.Cog):
     @commands.command()
     async def acceptt(self, ctx):
         def check_author(m):
-            return m.author == ctx.author
+            return m.author == ctx.author and m.channel == ctx.channel
 
         # Wait for the user to reply with the embed
         await ctx.send("Please reply with the embed you want to process.")
@@ -203,6 +203,7 @@ class applications(commands.Cog):
             await msg.edit(embed=embed)
         else:
             await ctx.send("Unable to find the user. Please make sure the provided ID is correct.")
+
 
 
 async def setup(bot):
