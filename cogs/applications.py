@@ -148,10 +148,12 @@ class applications(commands.Cog):
                     await ctx.send("Invalid embed format. Please make sure the embed contains fields 'Group(s) they want to be in:' and 'Discord ID'.")
                     return
 
-                grps = group_field.value.lower()
                 user_id = user_id_field.value.strip()
+                grps = [group.strip().lower() for group in grps.split(",")]
+
                 accepted_server_id = None
 
+                # Check if any of the groups are present in the list
                 if "kanzen" in grps:
                     accepted_server_id = 1121841073673736215
                 elif "aura" in grps:
@@ -159,7 +161,7 @@ class applications(commands.Cog):
                 elif "daegu" in grps:
                     accepted_server_id = 896619762354892821
                 else:
-                    await ctx.send("Sorry, the server name (kanzen, aura, or daegu) was not found in the embed.")
+                    await ctx.send("Sorry, none of the specified server names (kanzen, aura, or daegu) were found in the embed.")
                     return
 
                 # DM the user with the invite link
