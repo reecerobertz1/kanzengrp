@@ -153,22 +153,23 @@ class applications(commands.Cog):
                 groups = [group.strip().lower() for group in re.split(r'[,\s]+', grps)]
 
                 user_id = user_id_field.value.strip()
-                accepted_server_id = None
+                accepted_server_ids = []
 
                 for group in groups:
                     if "kanzen" in group:
-                        accepted_server_id = 1121841073673736215
+                        accepted_server_ids.append(1121841073673736215)
                     elif "aura" in group:
-                        accepted_server_id = 957987670787764224
+                        accepted_server_ids.append(957987670787764224)
                     elif "daegu" in group:
-                        accepted_server_id = 896619762354892821
+                        accepted_server_ids.append(896619762354892821)
 
-                if accepted_server_id is None:
+                if not accepted_server_ids:
                     await ctx.send("Sorry, the server name (kanzen, aura, or daegu) was not found in the embed.")
                     return
 
-                # DM the user with the invite link
-                await self.send_invite(int(user_id), accepted_server_id)
+                # DM the user with the invite links
+                for server_id in accepted_server_ids:
+                    await self.send_invite(int(user_id), server_id)
 
                 # Edit the original embed to show the accepted status
                 embed.add_field(name="Status", value="Accepted ✅")
