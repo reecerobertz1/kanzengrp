@@ -2,6 +2,7 @@ import asyncio
 from datetime import datetime
 import discord
 from discord.ext import commands
+from discord import app_commands
 
 class Moderation(commands.Cog):
     def __init__(self, bot):
@@ -234,6 +235,18 @@ class Moderation(commands.Cog):
         embed.set_footer(text='here are the audios, just say 1 or 2 to vote!')
         await ctx.send('<@&1129221206764175450>', embed=embed)
         await ctx.send('**audio one** - https://streamable.com/087bcn \n**audio two** - https://soundcloud.com/elxniip7/my-familia?si=0c0e6035f36c40c68d60bc99139828a7&utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing')
+
+    @app_commands.command(name="kick", description="Kick a member from the server.")
+    @app_commands.has_permissions(administrator=True)
+    async def kick(self, ctx: commands.AppContext, member: discord.Member, reason: str = "No reason provided"):
+        await member.kick(reason=reason)
+        await ctx.send(f"{member.mention} has been kicked for: {reason}")
+
+    @app_commands.command(name="ban", description="Ban a member from the server.")
+    @app_commands.has_permissions(administrator=True)
+    async def ban(self, ctx: commands.AppContext, member: discord.Member, reason: str = "No reason provided"):
+        await member.ban(reason=reason)
+        await ctx.send(f"{member.mention} has been banned for: {reason}")
 
 async def setup(bot):
     await bot.add_cog(Moderation(bot))
