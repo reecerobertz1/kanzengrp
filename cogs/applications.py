@@ -126,22 +126,17 @@ class applications(commands.Cog):
             invite = await self.bot.get_guild(server_id).create_invite(max_uses=1, unique=True)
             await user.send(f"Here is your invite to the server: {invite}")
 
-    @commands.Cog.listener()
-    async def on_message(self, ctx, message):
-        if not message.author.bot and message.content:
-            if message.content.lower() == "+acceptt" and message.reference is not None:
+    @commands.command()
+    async def acceptt(self, ctx):
+        if ctx.message.reference is not None:
+            try:
                 msg = await ctx.channel.fetch_message(ctx.message.reference.message_id)
-
-                if not msg.embeds:
-                    await message.channel.send("The message you replied to doesn't contain an embed.")
-                    return
-
                 embed = msg.embeds[0]
                 group_field = next((field for field in embed.fields if field.name == 'Group(s) they want to be in:'), None)
                 user_id_field = next((field for field in embed.fields if field.name == 'Discord ID:'), None)
 
                 if not group_field or not user_id_field:
-                    await message.channel.send("Invalid embed format. Please make sure the embed contains fields 'Group(s) they want to be in:' and 'Discord ID'.")
+                    await ctx.send("Invalid embed format. Please make sure the embed contains fields 'Group(s) they want to be in:' and 'Discord ID'.")
                     return
 
                 grps = group_field.value.lower()
@@ -155,7 +150,7 @@ class applications(commands.Cog):
                 elif "daegu" in grps:
                     accepted_server_id = 896619762354892821
                 else:
-                    await message.channel.send("Sorry, the server name (kanzen, aura, or daegu) was not found in the embed.")
+                    await ctx.send("Sorry, the server name (kanzen, aura, or daegu) was not found in the embed.")
                     return
 
                 # DM the user with the invite link
@@ -163,8 +158,15 @@ class applications(commands.Cog):
 
                 # Edit the original embed to show the accepted status
                 embed.add_field(name="Status", value="Accepted ✅")
-                await message.add_reaction("✅")
+                await ctx.message.add_reaction("✅")
                 await msg.edit(embed=embed)
+            except discord.NotFound:
+                await ctx.send("Couldn't find the referenced message.")
+            except Exception as e:
+                await ctx.send(f"An error occurred: {e}")
+        else:
+            await ctx.send("Please reply to the embed message you want to process.")
+
 
 async def setup(bot):
     await bot.add_cog(applications(bot))
