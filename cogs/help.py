@@ -72,6 +72,7 @@ class Help(commands.Cog):
                 embed = discord.Embed(title="> Other commands", color=0x2b2d31)
                 embed.add_field(name="+ia", value="<:reply:1125269313432059904> Send us an inactivity message if you go inactive", inline=False)
                 embed.add_field(name="/ia", value="<:reply:1125269313432059904> Send us an inactivity message if you go inactive (kanzengrp only)", inline=False)
+                embed.add_field(name="+suggest", value="<:reply:1125269313432059904> Suggest what we can do in the group (+suggest [suggestion])", inline=False)
                 embed.set_thumbnail(url=ctx.guild.icon)
             elif selected_category == categories[3]:
                 embed = discord.Embed(title="> Kanzen only commands", color=0x2b2d31)
@@ -94,13 +95,11 @@ class Help(commands.Cog):
                 embed.set_thumbnail(url=ctx.guild.icon)
             elif selected_category == categories[5]:
                 embed = discord.Embed(title="> Moderation commands", color=0x2b2d31)
-                embed.add_field(name="+kick", value="<:reply:1125269313432059904> Kick a member from the server", inline=False)
-                embed.add_field(name="+ban", value="<:reply:1125269313432059904> Ban a member from the server", inline=False)
+                embed.add_field(name="/kick", value="<:reply:1125269313432059904> Kick a member from the server", inline=False)
+                embed.add_field(name="/ban", value="<:reply:1125269313432059904> Ban a member from the server", inline=False)
                 embed.add_field(name="+addrole", value="<:reply:1125269313432059904> Add a role to a member (+addrole @role @mention)", inline=False)
                 embed.add_field(name="+removerole", value="<:reply:1125269313432059904> Remove a role from a member (+removerole @role @mention)", inline=False)
                 embed.add_field(name="+buildembed", value="<:reply:1125269313432059904> Create an embed", inline=False)
-                embed.add_field(name="+suggest", value="<:reply:1125269313432059904> Suggest what we can do in the group (+suggest [suggestion])", inline=False)
-                embed.add_field(name="+uptime", value="<:reply:1125269313432059904> See how long the bot has been online for", inline=False)
                 embed.add_field(name="+ping", value="<:reply:1125269313432059904> See the bots ping", inline=False)
                 embed.set_thumbnail(url=ctx.guild.icon)
             elif selected_category == categories[6]:

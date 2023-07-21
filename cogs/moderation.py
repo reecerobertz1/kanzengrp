@@ -44,29 +44,6 @@ class Moderation(commands.Cog):
         embed = discord.Embed(title="Deleted Message", description=f'**Sent by:** {author_mention}\n\n**Content**: {content}', color=0x2b2d31)
         await ctx.send(embed=embed)
 
-    @commands.command()
-    @commands.has_permissions(manage_guild=True)
-    async def addrole(self, ctx, role: discord.Role, user: discord.Member):
-        await user.add_roles(role)
-        await ctx.reply(f'Successfully added {role.mention} to {user.mention}')
-
-    @commands.command()
-    @commands.has_permissions(manage_guild=True)
-    async def removerole(self, ctx, role: discord.Role, user: discord.Member):
-        await user.remove_roles(role)
-        await ctx.reply(f'Successfully removed {role.mention} from {user.mention}')
-
-    @commands.command()
-    @commands.has_permissions(administrator=True)
-    async def kick(self, ctx, member: discord.Member, *, reason=None):
-        await member.kick(reason=reason)
-        await ctx.send(f'Kicked {member.mention} for reason: {reason}')
-
-    @commands.command()
-    @commands.has_permissions(administrator=True)
-    async def ban(self, ctx, member: discord.Member, *, reason=None):
-        await member.ban(reason=reason)
-        await ctx.send(f'Banned {member.mention} for reason: {reason}')
 
     @commands.command()
     async def ping(self, ctx):
@@ -253,6 +230,28 @@ class Moderation(commands.Cog):
     async def ban(self, interaction: discord.Interaction ,member: discord.Member, reason: str = "No reason provided"):
         await member.ban(reason=reason)
         await interaction.response.send_message(f'{member.mention} has been banned for: {reason}', ephemeral=True)
+        if not interaction.user.guild_permissions.administrator:
+            return await interaction.response.send_message("You have no admin", ephemeral=True)
+        
+    @commands.app_command(name="addrole", description="Add a role to a member.")
+    @app_commands.checks.has_permissions(administrator=True)
+    async def _add_role(self, interaction: discord.Interaction, member: discord.Member, role: discord.Role):
+        if role in member.roles:
+            await interaction.response.send_message(f"{member.mention} already has the role {role.name}.")
+        else:
+            await member.add_roles(role)
+            await interaction.response.send_message(f"{member.mention} has been given the role {role.name}.")
+        if not interaction.user.guild_permissions.administrator:
+            return await interaction.response.send_message("You have no admin", ephemeral=True)
+
+    @commands.app_command(name="removerole", description="Remove a role from a member.")
+    @app_commands.checks.has_permissions(administrator=True)
+    async def _remove_role(self, interaction: discord.Interaction, member: discord.Member, role: discord.Role):
+        if role not in member.roles:
+            await interaction.response.send_message(f"{member.mention} doesn't have the role {role.name}.")
+        else:
+            await member.remove_roles(role)
+            await interaction.response.send_message(f"{member.mention} no longer has the role {role.name}.")
         if not interaction.user.guild_permissions.administrator:
             return await interaction.response.send_message("You have no admin", ephemeral=True)
 
