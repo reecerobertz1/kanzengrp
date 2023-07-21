@@ -248,10 +248,10 @@ class Moderation(commands.Cog):
     @app_commands.checks.has_permissions(administrator=True)
     async def _remove_role(self, interaction: discord.Interaction, member: discord.Member, role: discord.Role):
         if role not in member.roles:
-            await interaction.response.send_message(f"{member.mention} doesn't have the role {role.name}.", ephemeral=True)
+            await interaction.response.send_message(f"{member.mention} doesn't have the role {role.mention}.", ephemeral=True)
         else:
             await member.remove_roles(role)
-            await interaction.response.send_message(f"{member.mention} no longer has the role {role.name}.", ephemeral=True)
+            await interaction.response.send_message(f"{member.mention} no longer has the role {role.mention}.", ephemeral=True)
         if not interaction.user.guild_permissions.administrator:
             return await interaction.response.send_message("You have no admin", ephemeral=True)
 
