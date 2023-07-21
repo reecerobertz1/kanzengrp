@@ -150,28 +150,33 @@ class applications(commands.Cog):
                     return
 
                 grps = group_field.value.lower()
-                groups = [group.strip().lower() for group in re.split(r'[,\s]+', grps)]
+                groups = [group.strip() for group in re.split(r'[,\s]+', grps)]
 
                 user_id = user_id_field.value.strip()
                 accepted_server_ids = []
 
                 for group in groups:
                     if "kanzen" in group:
-                        accepted_server_ids.append(1121841073673736215)
+                        accepted_server_ids.append((group, 1121841073673736215))
                     elif "aura" in group:
-                        accepted_server_ids.append(957987670787764224)
+                        accepted_server_ids.append((group, 957987670787764224))
                     elif "daegu" in group:
-                        accepted_server_ids.append(896619762354892821)
+                        accepted_server_ids.append((group, 896619762354892821))
 
                 if not accepted_server_ids:
                     await ctx.send("Sorry, the server name (kanzen, aura, or daegu) was not found in the embed.")
                     return
 
                 # DM the user with the invite links
-                for server_id in accepted_server_ids:
-                    await self.send_invite(int(user_id), server_id)
+                embed = discord.Embed(title="Congratulations! You have been accepted!", color=0x00ff00)
+                for group, server_id in accepted_server_ids:
+                    invite_link = await self.send_invite(int(user_id), server_id)
+                    embed.add_field(name=group.capitalize(), value=f"[Join Here]({invite_link})", inline=False)
+
+                await ctx.author.send(embed=embed)
 
                 # Edit the original embed to show the accepted status
+                embed = msg.embeds[0]
                 embed.add_field(name="Status", value="Accepted ✅")
                 await ctx.message.add_reaction("✅")
                 await msg.edit(embed=embed)
