@@ -8,40 +8,6 @@ class applications(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command()
-    @commands.has_permissions(manage_guild=True)
-    async def decline(self, ctx, mention_or_id):
-        guild_id = ctx.guild.id
-        if guild_id == 1122181605591621692:
-            server_name = "Kanzen"
-            decline_channel_id = 1123588044180684800
-        elif guild_id == 1123347338841313331:
-            server_name = "Auragrp"
-            decline_channel_id = 1123588246614577213
-        elif guild_id == 901409710572466217:
-            server_name = "Daegutown"
-            decline_channel_id = 901410829218492456
-        else:
-            await ctx.reply("This command is not available in this server.")
-            return
-
-        decline_channel = self.bot.get_channel(decline_channel_id)
-        if decline_channel:
-            try:
-                member = await commands.MemberConverter().convert(ctx, mention_or_id)
-            except commands.MemberNotFound:
-                try:
-                    member = await self.bot.fetch_user(int(mention_or_id))
-                except (ValueError, discord.NotFound):
-                    await ctx.reply("Invalid mention or user ID.")
-                    return
-
-            await decline_channel.send(f"{member.mention} has been declined.")
-            await ctx.send(f"Decline message has been sent to {member.name}.")
-            await member.send(f"Hey, you have been declined in {server_name}. Please don't be upset or discouraged! We will have more recruitments in the future. <3")
-        else:
-            await ctx.reply(f"Failed to find the decline channel.")
-
     async def create_invite(self, guild_id):
         try:
             guild = self.bot.get_guild(guild_id)
@@ -108,7 +74,8 @@ class applications(commands.Cog):
             await ctx.send("Please reply with the embed you want to process.")
 
     @commands.command()
-    async def declinee(self, ctx):
+    @commands.has_permissions(manage_guild=True)
+    async def decline(self, ctx):
         if ctx.message.reference is not None:
             try:
                 msg = await ctx.channel.fetch_message(ctx.message.reference.message_id)
@@ -134,7 +101,7 @@ class applications(commands.Cog):
                 # Edit the original embed to show the declined status
                 embed = msg.embeds[0]
                 embed.add_field(name="Status", value="Declined ❌")
-                await ctx.message.add_reaction("❌")
+                await ctx.message.add_reaction("✅")
                 await msg.edit(embed=embed)
             except Exception as e:
                 print(f"Failed to process the command: {e}")
