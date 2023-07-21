@@ -7,7 +7,7 @@ class Battle(commands.Cog):
         self.bot = bot
         self.battle_in_progress = False
 
-    def get_damage(self, action):
+"""    def get_damage(self, action):
         # Implement the logic to determine the damage based on the action
         if action == "punch":
             return 5
@@ -99,9 +99,8 @@ class Battle(commands.Cog):
     @commands.command()
     @commands.has_permissions(manage_guild=True)
     async def endbattle(self, ctx):
-        """Ends the battle and resets the battle_in_progress flag."""
         self.battle_in_progress = False
-        await ctx.send("The battle has been ended.")
+        await ctx.send("The battle has been ended.")"""
 
 
 async def setup(bot):
