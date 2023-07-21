@@ -54,6 +54,9 @@ class Battle(commands.Cog):
             await ctx.send(f"{opponent.mention} declined the challenge. The battle has been canceled.")
             return
 
+        player_embed = get_battle_status_embed()
+        message = await ctx.send(embed=player_embed)
+
         await ctx.send(f"The battle has begun between {ctx.author.mention} and {opponent.mention}!")
 
         while player_hp > 0 and opponent_hp > 0:
@@ -75,10 +78,8 @@ class Battle(commands.Cog):
             player_hp -= opponent_damage_dealt
             opponent_hp -= damage_dealt
 
-            embed = get_battle_status_embed()
-            embed.add_field(name=f"{ctx.author.display_name} used {action}", value=f"Dealt {opponent_damage_dealt} damage", inline=False)
-            embed.add_field(name=f"{opponent.display_name} used {opponent_action}", value=f"Dealt {damage_dealt} damage", inline=False)
-            await ctx.send(embed=embed)
+            player_embed = get_battle_status_embed()
+            await message.edit(embed=player_embed)
 
         if player_hp <= 0 and opponent_hp <= 0:
             await ctx.send("It's a tie! Both players have run out of HP.")
@@ -86,6 +87,7 @@ class Battle(commands.Cog):
             await ctx.send(f"{opponent.mention} won the battle! Better luck next time, {ctx.author.mention}!")
         else:
             await ctx.send(f"{ctx.author.mention} won the battle! Congratulations!")
+
 
 async def setup(bot):
     await bot.add_cog(Battle(bot))
