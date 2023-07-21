@@ -31,11 +31,13 @@ class Slash(commands.Cog):
          await interaction.response.send_modal(ia())
 
     @app_commands.command(name='apply', description='Apply for kanzen!')
+    @app_commands.checks.has_permissions(administrator=True)
     @app_commands.guilds(discord.Object(id=1122181605591621692))
     async def apps(self, interaction: discord.Interaction):
          await interaction.response.send_modal(apps())
 
     @app_commands.command(name='app', description='Apply for aura!')
+    @app_commands.checks.has_permissions(administrator=True)
     @app_commands.guilds(discord.Object(id=1123347338841313331))
     async def auraapps(self, interaction: discord.Interaction):
          await interaction.response.send_modal(auraapps())
