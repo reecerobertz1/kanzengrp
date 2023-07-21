@@ -115,6 +115,10 @@ class applications(commands.Cog):
                     decline_message = f"Hey! You have been declined from {', '.join(groups)}."
                     await user.send(decline_message)
 
+                    channel = ctx.guild.get_channel(1131006361921130526)
+                    if channel:
+                        await channel.send(f"{user.mention} was declined")
+
                 # Edit the original embed to show the declined status
                 embed = msg.embeds[0]
                 embed.add_field(name="Status", value="Declined ❌")
