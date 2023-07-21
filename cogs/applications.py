@@ -176,10 +176,18 @@ class applications(commands.Cog):
             await ctx.send("No embed found in the reply. Please make sure to reply with the embed information.")
             return
 
-        # Check if the words 'kanzen', 'aura', or 'daegu' are in the embed
-        grps = msg.embeds[0].fields[0].value.lower()
-        user_id = msg.embeds[0].fields[1].value.strip()
+        embed = msg.embeds[0]
+        group_field = next((field for field in embed.fields if field.name == 'Group(s) they want to be in:'), None)
+        user_id_field = next((field for field in embed.fields if field.name == 'Discord ID:'), None)
+
+        if not group_field or not user_id_field:
+            await ctx.send("Invalid embed format. Please make sure the embed contains fields 'Group(s) they want to be in:' and 'Discord ID:'.")
+            return
+
+        grps = group_field.value.lower()
+        user_id = user_id_field.value.strip()
         accepted_server_id = None
+
         if "kanzen" in grps:
             accepted_server_id = 1121841073673736215
         elif "aura" in grps:
@@ -197,7 +205,6 @@ class applications(commands.Cog):
             await user.send(f"Here is your invite to the server: {invite}")
 
             # Edit the original embed to show the accepted status
-            embed = msg.embeds[0]
             embed.add_field(name="Status", value="Accepted ✅")
             await ctx.message.add_reaction("✅")
             await msg.edit(embed=embed)
