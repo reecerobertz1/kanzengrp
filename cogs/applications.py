@@ -120,11 +120,20 @@ class applications(commands.Cog):
         else:
             await ctx.reply(f"Failed to find the decline channel.")
 
-    async def send_invite(self, user_id, server_id):
-        user = self.bot.get_user(user_id)
-        if user is not None:
-            invite = await self.bot.get_guild(server_id).create_invite(max_uses=1, unique=True)
-            await user.send(f"Here is your invite to the server: {invite}")
+async def send_invite(self, user_id, server_id):
+    try:
+        guild = self.bot.get_guild(server_id)
+        if guild is None:
+            raise ValueError("Invalid server ID")
+
+        user = guild.get_member(user_id)
+        if user is None:
+            raise ValueError("User not found in the server")
+
+        invite = await guild.text_channels[0].create_invite(max_uses=1, unique=True)
+        await user.send(f"Here's your invite to the server: {invite.url}")
+    except Exception as e:
+        print(f"Failed to send invite: {e}")
 
     @commands.command()
     async def acceptt(self, ctx):
