@@ -162,5 +162,22 @@ class applications(commands.Cog):
         else:
             await ctx.send("You need to reply to a message with an embed to use this command.")
 
+
+    @commands.command()
+    async def acceptt(self, ctx):
+        if ctx.message.reference is not None:
+            try:
+                msg = await ctx.channel.fetch_message(ctx.message.reference.message_id)
+                user_id = msg.embeds[0].fields[0].value
+                embed = msg.embeds[0]
+                embed.add_field(name="Status", value="Accepted ✅")
+                member = ctx.guild.get_member(int(user_id))
+                await ctx.message.add_reaction("✅")
+                await msg.edit(embed=embed)
+            except discord.errors.Forbidden():
+                await ctx.reply((user_id))
+        else:
+            return await ctx.send("No message reference found.")
+
 async def setup(bot):
     await bot.add_cog(applications(bot))
