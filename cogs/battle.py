@@ -1,6 +1,5 @@
 import discord
 from discord.ext import commands
-import random
 import asyncio
 
 class Battle(commands.Cog):
@@ -8,17 +7,16 @@ class Battle(commands.Cog):
         self.bot = bot
         self.battle_in_progress = False
 
-    def is_battle_action(self, action):
-        actions = ["punch", "kick", "slap", "explode", "atomic bomb", "fortnite dance"]
-        return action in actions
-
     def get_damage(self, action):
+        # Implement the logic to determine the damage based on the action
         if action == "punch":
             return 5
         elif action == "kick":
             return 10
         elif action == "slap":
             return 3
+        elif action == "super kick":
+            return 20
         elif action == "explode":
             return 40
         elif action == "atomic bomb":
@@ -28,14 +26,10 @@ class Battle(commands.Cog):
         else:
             return 0
 
-    def get_battle_status_embed(self, ctx, opponent):
-        # Replace this with your own logic to create the embed with the health status
-        # You can use the ctx.author and opponent objects to get their names and health
-
-        # Example:
-        embed = discord.Embed(title="Battle Status")
-        embed.add_field(name=f"{ctx.author.display_name}'s Health", value="100", inline=False)
-        embed.add_field(name=f"{opponent.display_name}'s Health", value="100", inline=False)
+    def get_battle_status_embed(self, member):
+        # Implement the logic to get the battle status in an embed format
+        health = 100  # Replace with actual health value for the member
+        embed = discord.Embed(title="Battle Status", description=f"{member.mention}'s Health: {health}/100")
         return embed
 
     @commands.command()
@@ -68,8 +62,9 @@ class Battle(commands.Cog):
             return
 
         self.battle_in_progress = True
-        player_embed = self.get_battle_status_embed(ctx, opponent)
-        status_message = await ctx.send(embed=player_embed)
+        player_embed = self.get_battle_status_embed(ctx.author)
+        opponent_embed = self.get_battle_status_embed(opponent)
+        status_message = await ctx.send(f"{ctx.author.mention} vs {opponent.mention}", embed=player_embed)
 
         await ctx.send(f"The battle has begun between {ctx.author.mention} and {opponent.mention}!")
 
@@ -82,18 +77,31 @@ class Battle(commands.Cog):
                 break
 
             action = response.content.lower()
+            # Determine the damage based on the action
             damage = self.get_damage(action)
-            player_embed = self.get_battle_status_embed(ctx, opponent)
-            await status_message.edit(embed=player_embed)
 
+            # Update the health of the players
+            # ...
+
+            # Create new embeds with updated health
+            player_embed = self.get_battle_status_embed(ctx.author)
+            opponent_embed = self.get_battle_status_embed(opponent)
+
+            # Update the status message with the new embeds
+            await status_message.edit(content=f"{ctx.author.mention} vs {opponent.mention}", embed=player_embed)
+
+            # Check if the battle is over (e.g., someone's health reaches 0)
+            # ...
+
+        # Battle has ended, perform any cleanup or result announcement if needed
+        # ...
+        
     @commands.command()
+    @commands.has_permissions(manage_guild=True)
     async def endbattle(self, ctx):
-        if not self.battle_in_progress:
-            await ctx.send("No battle is currently in progress.")
-            return
-
-        await ctx.send("The battle has been ended.")
+        """Ends the battle and resets the battle_in_progress flag."""
         self.battle_in_progress = False
+        await ctx.send("The battle has been ended.")
 
 
 async def setup(bot):
