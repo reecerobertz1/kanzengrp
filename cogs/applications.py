@@ -150,23 +150,21 @@ class applications(commands.Cog):
                     return
 
                 grps = group_field.value.lower()
-
-                # Split the group names by commas, spaces, or both
                 groups = [group.strip().lower() for group in re.split(r'[,\s]+', grps)]
 
                 user_id = user_id_field.value.strip()
-
                 accepted_server_id = None
 
-                # Check if any of the groups are present in the list
-                if "kanzen" in groups:
-                    accepted_server_id = 1121841073673736215
-                elif "aura" in groups:
-                    accepted_server_id = 957987670787764224
-                elif "daegu" in groups:
-                    accepted_server_id = 896619762354892821
-                else:
-                    await ctx.send("Sorry, none of the specified server names (kanzen, aura, or daegu) were found in the embed.")
+                for group in groups:
+                    if "kanzen" in group:
+                        accepted_server_id = 1121841073673736215
+                    elif "aura" in group:
+                        accepted_server_id = 957987670787764224
+                    elif "daegu" in group:
+                        accepted_server_id = 896619762354892821
+
+                if accepted_server_id is None:
+                    await ctx.send("Sorry, the server name (kanzen, aura, or daegu) was not found in the embed.")
                     return
 
                 # DM the user with the invite link
@@ -176,12 +174,10 @@ class applications(commands.Cog):
                 embed.add_field(name="Status", value="Accepted ✅")
                 await ctx.message.add_reaction("✅")
                 await msg.edit(embed=embed)
-            except discord.NotFound:
-                await ctx.send("Couldn't find the referenced message.")
             except Exception as e:
-                await ctx.send(f"An error occurred: {e}")
+                print(f"Failed to process the command: {e}")
         else:
-            await ctx.send("Please reply to the embed message you want to process.")
+            await ctx.send("Please reply with the embed you want to process.")
 
 
 async def setup(bot):
