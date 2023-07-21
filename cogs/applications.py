@@ -121,27 +121,11 @@ class applications(commands.Cog):
         else:
             await ctx.reply(f"Failed to find the decline channel.")
 
-    async def send_invite(self, user_id, server_id, server_name):
-        try:
-            guild = self.bot.get_guild(server_id)
-            if guild is None:
-                raise ValueError("Invalid server ID")
-
-            user = guild.get_member(user_id)
-            if user is None:
-                raise ValueError("User not found in the server")
-
-            invite = await guild.text_channels[0].create_invite(max_uses=1, unique=True)
-            invite_message = f"Hey! You have been accepted into {server_name}. Here's your invite link: {invite.url}"
-            await user.send(embed=discord.Embed(description=invite_message))
-        except Exception as e:
-            print(f"Failed to send invite: {e}")
-
     @commands.command()
-    async def acceptt(self, ctx, user: discord.User):
+    async def acceptt(self, ctx, *, message: discord.Message):
         if ctx.message.reference is not None:
             try:
-                msg = await ctx.channel.fetch_message(ctx.message.reference.message_id)
+                msg = message
                 embed = msg.embeds[0]
                 group_field = next((field for field in embed.fields if field.name == 'Group(s) they want to be in:'), None)
                 user_id_field = next((field for field in embed.fields if field.name == 'Discord ID:'), None)
@@ -151,7 +135,7 @@ class applications(commands.Cog):
                     return
 
                 grps = group_field.value.lower()
-                user_id = user.id  # Use the provided user object's ID
+                user_id = int(re.search(r'\d+', user_id_field.value).group())  # Extract the user ID from the field value
 
                 accepted_servers = []
 
@@ -178,6 +162,22 @@ class applications(commands.Cog):
                 print(f"Failed to process the command: {e}")
         else:
             await ctx.send("Please reply with the embed you want to process.")
+
+    async def send_invite(self, user_id, server_id, server_name):
+        try:
+            guild = self.bot.get_guild(server_id)
+            if guild is None:
+                raise ValueError("Invalid server ID")
+
+            user = guild.get_member(user_id)
+            if user is None:
+                raise ValueError("User not found in the server")
+
+            invite = await guild.text_channels[0].create_invite(max_uses=1, unique=True)
+            invite_message = f"Hey! You have been accepted into {server_name}. Here's your invite link: {invite.url}"
+            await user.send(embed=discord.Embed(description=invite_message))
+        except Exception as e:
+            print(f"Failed to send invite: {e}")
 
 
 async def setup(bot):
