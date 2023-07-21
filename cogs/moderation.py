@@ -233,7 +233,7 @@ class Moderation(commands.Cog):
         if not interaction.user.guild_permissions.administrator:
             return await interaction.response.send_message("You have no admin", ephemeral=True)
         
-    @commands.app_command(name="addrole", description="Add a role to a member.")
+    @app_commands.command(name="addrole", description="Add a role to a member.")
     @app_commands.checks.has_permissions(administrator=True)
     async def _add_role(self, interaction: discord.Interaction, member: discord.Member, role: discord.Role):
         if role in member.roles:
@@ -244,7 +244,7 @@ class Moderation(commands.Cog):
         if not interaction.user.guild_permissions.administrator:
             return await interaction.response.send_message("You have no admin", ephemeral=True)
 
-    @commands.app_command(name="removerole", description="Remove a role from a member.")
+    @app_commands.command(name="removerole", description="Remove a role from a member.")
     @app_commands.checks.has_permissions(administrator=True)
     async def _remove_role(self, interaction: discord.Interaction, member: discord.Member, role: discord.Role):
         if role not in member.roles:
