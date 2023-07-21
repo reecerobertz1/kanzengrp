@@ -137,11 +137,11 @@ class applications(commands.Cog):
                     return
 
                 embed = msg.embeds[0]
-                group_field = next((field for field in embed.fields if field.name == 'Group'), None)
-                user_id_field = next((field for field in embed.fields if field.name == 'User ID'), None)
+                group_field = next((field for field in embed.fields if field.name == 'Group(s) they want to be in:'), None)
+                user_id_field = next((field for field in embed.fields if field.name == 'Discord ID:'), None)
 
                 if not group_field or not user_id_field:
-                    await message.channel.send("Invalid embed format. Please make sure the embed contains fields 'Group' and 'User ID'.")
+                    await message.channel.send("Invalid embed format. Please make sure the embed contains fields 'Group(s) they want to be in:' and 'Discord ID'.")
                     return
 
                 grps = group_field.value.lower()
