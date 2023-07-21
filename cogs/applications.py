@@ -168,9 +168,13 @@ class applications(commands.Cog):
         def check_author(m):
             return m.author == ctx.author
 
-        # Wait for the user to reply with the embed information
-        await ctx.send("Please provide the embed information.")
+        # Wait for the user to reply with the embed
+        await ctx.send("Please reply with the embed you want to process.")
         msg = await self.bot.wait_for('message', check=check_author)
+
+        if not msg.embeds:
+            await ctx.send("No embed found in the reply. Please make sure to reply with the embed information.")
+            return
 
         # Check if the words 'kanzen', 'aura', or 'daegu' are in the embed
         grps = msg.embeds[0].fields[0].value.lower()
