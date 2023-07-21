@@ -121,20 +121,17 @@ class applications(commands.Cog):
         else:
             await ctx.reply(f"Failed to find the decline channel.")
 
-    async def send_invite(self, user_id, server_id):
+    async def create_invite(self, guild_id):
         try:
-            guild = self.bot.get_guild(server_id)
+            guild = self.bot.get_guild(guild_id)
             if guild is None:
                 raise ValueError("Invalid server ID")
 
-            user = guild.get_member(user_id)
-            if user is None:
-                raise ValueError("User not found in the server")
-
             invite = await guild.text_channels[0].create_invite(max_uses=1, unique=True)
-            await user.send(f"Here's your invite to the server: {invite.url}")
+            return invite.url
         except Exception as e:
-            print(f"Failed to send invite: {e}")
+            print(f"Failed to create invite: {e}")
+            return None
 
     @commands.command()
     async def acceptt(self, ctx):
@@ -170,8 +167,9 @@ class applications(commands.Cog):
                 # DM the user with the invite links
                 embed = discord.Embed(title="Congratulations! You have been accepted!", color=0x00ff00)
                 for group, server_id in accepted_server_ids:
-                    invite_link = await self.send_invite(int(user_id), server_id)
-                    embed.add_field(name=group.capitalize(), value=f"[Join Here]({invite_link})", inline=False)
+                    invite_link = await self.create_invite(server_id)
+                    if invite_link:
+                        embed.add_field(name=group.capitalize(), value=f"[Join Here]({invite_link})", inline=False)
 
                 await ctx.author.send(embed=embed)
 
