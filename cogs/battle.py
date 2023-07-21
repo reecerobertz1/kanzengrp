@@ -61,7 +61,12 @@ class Battle(commands.Cog):
 
         while player_hp > 0 and opponent_hp > 0:
             await ctx.send(f"{ctx.author.mention}, choose your action: {', '.join(self.unlocked_actions)}")
-            action = await self.bot.wait_for('message', check=check_author)
+            try:
+                action = await self.bot.wait_for('message', timeout=30.0, check=check_author)
+            except asyncio.TimeoutError:
+                await ctx.send(f"{ctx.author.mention} did not respond in time. The battle has been canceled.")
+                return
+
             action = action.content.lower()
 
             if action not in self.unlocked_actions:
@@ -69,7 +74,12 @@ class Battle(commands.Cog):
                 continue
 
             await ctx.send(f"{opponent.mention}, choose your action: {', '.join(self.unlocked_actions)}")
-            response = await self.bot.wait_for('message', check=check_opponent)
+            try:
+                response = await self.bot.wait_for('message', timeout=30.0, check=check_opponent)
+            except asyncio.TimeoutError:
+                await ctx.send(f"{opponent.mention} did not respond in time. The battle has been canceled.")
+                return
+
             opponent_action = response.content.lower()
 
             damage_dealt = self.battle_actions[action]
@@ -87,7 +97,6 @@ class Battle(commands.Cog):
             await ctx.send(f"{opponent.mention} won the battle! Better luck next time, {ctx.author.mention}!")
         else:
             await ctx.send(f"{ctx.author.mention} won the battle! Congratulations!")
-
 
 async def setup(bot):
     await bot.add_cog(Battle(bot))
