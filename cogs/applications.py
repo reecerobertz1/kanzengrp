@@ -63,6 +63,11 @@ class applications(commands.Cog):
                 if user:
                     await user.send(embed=embed)
 
+                    # Send a message in the specified channel with ID 1131006361921130526
+                    channel = ctx.guild.get_channel(1131006361921130526)
+                    if channel:
+                        await channel.send(f"{user.mention} was accepted")
+
                 # Edit the original embed to show the accepted status
                 embed = msg.embeds[0]
                 embed.add_field(name="Status", value="Accepted ✅")
