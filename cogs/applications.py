@@ -112,7 +112,7 @@ class applications(commands.Cog):
                 # DM the user with the decline message
                 user = self.bot.get_user(int(user_id))
                 if user:
-                    decline_message = f"Hey! You have been declined from {', '.join(groups)}."
+                    decline_message = f"Hey! You have been declined from {', '.join(groups)}. Please don't be upset or discouraged! We will have more recruitments in the future. <3"
                     await user.send(decline_message)
 
                     channel = ctx.guild.get_channel(1131006361921130526)
