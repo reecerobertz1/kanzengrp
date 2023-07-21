@@ -169,7 +169,7 @@ class applications(commands.Cog):
             try:
                 msg = await ctx.channel.fetch_message(ctx.message.reference.message_id)
                 user_id = msg.embeds[6].fields[6].value
-                embed = msg.embeds[6]
+                embed = msg.embeds[0]
                 embed.add_field(name="Status", value="Accepted ✅")
                 await ctx.message.add_reaction("✅")
                 await msg.edit(embed=embed)
