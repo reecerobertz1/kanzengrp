@@ -57,7 +57,7 @@ class Battle(commands.Cog):
 
         self.battle_in_progress = True
         player_embed = self.get_battle_status_embed(ctx, opponent)
-        await ctx.send(embed=player_embed)
+        status_message = await ctx.send(embed=player_embed)
 
         await ctx.send(f"The battle has begun between {ctx.author.mention} and {opponent.mention}!")
 
@@ -87,7 +87,7 @@ class Battle(commands.Cog):
             await ctx.send(f"{opponent.mention} used {opponent_action} and dealt {damage_dealt} damage!")
 
             await asyncio.sleep(1)
-            await ctx.send(embed=player_embed)
+            await status_message.edit(embed=player_embed)
 
         if player_embed.fields[0].value == "0" and player_embed.fields[1].value == "0":
             await ctx.send("It's a tie! Both players have run out of HP.")
@@ -105,5 +105,7 @@ class Battle(commands.Cog):
             await ctx.send("The battle has been ended.")
         else:
             await ctx.send("There is no battle in progress.")
+
+
 async def setup(bot):
     await bot.add_cog(Battle(bot))
