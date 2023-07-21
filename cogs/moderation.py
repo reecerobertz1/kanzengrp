@@ -245,12 +245,16 @@ class Moderation(commands.Cog):
     async def kick(self, interaction: discord.Interaction ,member: discord.Member, reason: str = "No reason provided"):
         await member.kick(reason=reason)
         await interaction.response.send_message(f'{member.mention} has been banned for: {reason}', ephemeral=True)
+        if not interaction.user.guild_permissions.administrator:
+            return await interaction.response.send_message("You have no admin", ephemeral=True)
 
     @app_commands.command(name="ban", description="Ban a member from the server.")
     @app_commands.checks.has_permissions(administrator=True)
     async def ban(self, interaction: discord.Interaction ,member: discord.Member, reason: str = "No reason provided"):
         await member.ban(reason=reason)
         await interaction.response.send_message(f'{member.mention} has been banned for: {reason}', ephemeral=True)
+        if not interaction.user.guild_permissions.administrator:
+            return await interaction.response.send_message("You have no admin", ephemeral=True)
 
 async def setup(bot):
     await bot.add_cog(Moderation(bot))
