@@ -6,28 +6,37 @@ import asyncio
 class Battle(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.hp = 100
-        self.battle_actions = {
-            "punch": 5,
-            "kick": 10,
-            "slap": 3,
-            "explode": 40,
-            "atomic bomb": 60,
-            "fortnite dance": 100
-        }
-        self.unlocked_actions = ["punch", "kick", "slap"]  # Start with these unlocked actions
         self.battle_in_progress = False
 
-    def get_random_action(self):
-        return random.choice(list(self.battle_actions.keys()))
+    def is_battle_action(self, action):
+        actions = ["punch", "kick", "slap", "explode", "atomic bomb", "fortnite dance"]
+        return action in actions
+
+    def get_damage(self, action):
+        if action == "punch":
+            return 5
+        elif action == "kick":
+            return 10
+        elif action == "slap":
+            return 3
+        elif action == "explode":
+            return 40
+        elif action == "atomic bomb":
+            return 60
+        elif action == "fortnite dance":
+            return 100
+        else:
+            return 0
 
     def get_battle_status_embed(self, ctx, opponent):
-        return discord.Embed(title="Battle!", description=f"{ctx.author.mention} vs {opponent.mention}\n"
-                                                          f"{ctx.author.display_name} HP: {self.hp}\n"
-                                                          f"{opponent.display_name} HP: {self.hp}", color=0xFF5733)
+        # Replace this with your own logic to create the embed with the health status
+        # You can use the ctx.author and opponent objects to get their names and health
 
-    def is_battle_action(self, action):
-        return action.lower() in self.battle_actions
+        # Example:
+        embed = discord.Embed(title="Battle Status")
+        embed.add_field(name=f"{ctx.author.display_name}'s Health", value="100", inline=False)
+        embed.add_field(name=f"{opponent.display_name}'s Health", value="100", inline=False)
+        return embed
 
     @commands.command()
     async def battle(self, ctx, opponent: discord.Member):
@@ -64,50 +73,34 @@ class Battle(commands.Cog):
 
         await ctx.send(f"The battle has begun between {ctx.author.mention} and {opponent.mention}!")
 
-        while player_embed.fields[0].value != "0" and player_embed.fields[1].value != "0":
-            await ctx.send(f"{ctx.author.mention}, choose your action: {', '.join(self.unlocked_actions)}")
+        while self.battle_in_progress:
             try:
-                action = await self.bot.wait_for('message', timeout=30.0, check=check_author)
+                response = await self.bot.wait_for('message', timeout=30.0, check=check_author)
             except asyncio.TimeoutError:
-                await ctx.send(f"{ctx.author.mention} did not respond in time. The battle has been canceled.")
+                await ctx.send(f"{ctx.author.mention} took too long to respond. The battle has been canceled.")
                 self.battle_in_progress = False
-                return
+                break
 
-            action = action.content.lower()
+            if response.content.lower() == "end":
+                await ctx.send("The battle has ended.")
+                self.battle_in_progress = False
+                break
 
-            if action not in self.unlocked_actions:
-                await ctx.send("You can't use this action yet. Keep battling to unlock it!")
-                continue
-
-            opponent_action = self.get_random_action()
-            damage_dealt = self.battle_actions[action]
-            opponent_damage_dealt = self.battle_actions[opponent_action]
-
-            player_embed.fields[0].value = str(int(player_embed.fields[0].value) - opponent_damage_dealt)
-            player_embed.fields[1].value = str(int(player_embed.fields[1].value) - damage_dealt)
-
-            await ctx.send(f"{ctx.author.mention} used {action} and dealt {opponent_damage_dealt} damage!")
-            await ctx.send(f"{opponent.mention} used {opponent_action} and dealt {damage_dealt} damage!")
-
-            await asyncio.sleep(1)
+            action = response.content.lower()
+            damage = self.get_damage(action)
+            # Update the player's health and create a new embed with updated health
+            # ...
+            player_embed = self.get_battle_status_embed(ctx, opponent)  # Replace with your logic to update the health
             await status_message.edit(embed=player_embed)
-
-        if player_embed.fields[0].value == "0" and player_embed.fields[1].value == "0":
-            await ctx.send("It's a tie! Both players have run out of HP.")
-        elif player_embed.fields[0].value == "0":
-            await ctx.send(f"{opponent.mention} won the battle! Better luck next time, {ctx.author.mention}!")
-        else:
-            await ctx.send(f"{ctx.author.mention} won the battle! Congratulations!")
-
-        self.battle_in_progress = False
 
     @commands.command()
     async def endbattle(self, ctx):
-        if self.battle_in_progress:
-            self.battle_in_progress = False
-            await ctx.send("The battle has been ended.")
-        else:
-            await ctx.send("There is no battle in progress.")
+        if not self.battle_in_progress:
+            await ctx.send("No battle is currently in progress.")
+            return
+
+        await ctx.send("The battle has been ended.")
+        self.battle_in_progress = False
 
 
 async def setup(bot):
