@@ -241,14 +241,14 @@ class Moderation(commands.Cog):
         await ctx.send('**audio one** - https://streamable.com/087bcn \n**audio two** - https://soundcloud.com/elxniip7/my-familia?si=0c0e6035f36c40c68d60bc99139828a7&utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing')
 
     @app_commands.command(name="kick", description="Kick a member from the server.")
-    async def kick(self, ctx, member: discord.Member, reason: str = "No reason provided"):
+    async def kick(self, interaction: discord.Interaction ,member: discord.Member, reason: str = "No reason provided"):
         await member.kick(reason=reason)
-        await ctx.send(f"{member.mention} has been kicked for: {reason}")
+        await interaction.response.send_message(f'{member.mention} has been banned for: {reason}', ephemeral=True)
 
     @app_commands.command(name="ban", description="Ban a member from the server.")
-    async def ban(self, ctx, member: discord.Member, reason: str = "No reason provided"):
+    async def ban(self, interaction: discord.Interaction ,member: discord.Member, reason: str = "No reason provided"):
         await member.ban(reason=reason)
-        await ctx.send(f"{member.mention} has been banned for: {reason}")
+        await interaction.response.send_message(f'{member.mention} has been banned for: {reason}', ephemeral=True)
 
 async def setup(bot):
     await bot.add_cog(Moderation(bot))
