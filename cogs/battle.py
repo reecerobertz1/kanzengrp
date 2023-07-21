@@ -26,6 +26,9 @@ class Battle(commands.Cog):
                                                           f"{ctx.author.display_name} HP: {self.hp}\n"
                                                           f"{opponent.display_name} HP: {self.hp}", color=0xFF5733)
 
+    def is_battle_action(self, action):
+        return action.lower() in self.battle_actions
+
     @commands.command()
     async def battle(self, ctx, opponent: discord.Member):
         if self.battle_in_progress:
@@ -37,10 +40,10 @@ class Battle(commands.Cog):
             return
 
         def check_author(m):
-            return m.author == ctx.author and m.content.lower() in self.battle_actions
+            return m.author == ctx.author and self.is_battle_action(m.content)
 
         def check_opponent(m):
-            return m.author == opponent and m.content.lower() in self.battle_actions
+            return m.author == opponent and self.is_battle_action(m.content)
 
         await ctx.send(f"{ctx.author.mention} has challenged {opponent.mention} to a battle!")
         await ctx.send(f"{opponent.mention}, do you accept the challenge? Type `yes` or `no`.")
