@@ -40,16 +40,16 @@ class Battle(commands.Cog):
             return
 
         def check_author(m):
-            return m.author == ctx.author and self.is_battle_action(m.content)
+            return m.author == ctx.author and self.is_battle_action(m.content.lower())
 
         def check_opponent(m):
-            return m.author == opponent and self.is_battle_action(m.content)
+            return m.author == opponent and self.is_battle_action(m.content.lower())
 
         await ctx.send(f"{ctx.author.mention} has challenged {opponent.mention} to a battle!")
         await ctx.send(f"{opponent.mention}, do you accept the challenge? Type `yes` or `no`.")
 
         try:
-            response = await self.bot.wait_for('message', timeout=30.0, check=lambda m: m.author == opponent)
+            response = await self.bot.wait_for('message', timeout=30.0, check=check_opponent)
         except asyncio.TimeoutError:
             await ctx.send(f"{opponent.mention} did not respond. The battle has been canceled.")
             return
