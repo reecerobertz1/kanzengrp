@@ -30,7 +30,7 @@ class Slash(commands.Cog):
     async def ia(self, interaction: discord.Interaction):
          await interaction.response.send_modal(ia())
 
-    @app_commands.command(name='apply', description='Apply for kanzen!')
+    @app_commands.command(name='apps', description='Apply for kanzen!')
     @app_commands.checks.has_permissions(administrator=True)
     @app_commands.guilds(discord.Object(id=1122181605591621692))
     async def apps(self, interaction: discord.Interaction):
@@ -42,7 +42,7 @@ class Slash(commands.Cog):
     async def auraapps(self, interaction: discord.Interaction):
          await interaction.response.send_modal(auraapps())
 
-    @app_commands.command(name='apps', description='Apply for Kanzen, Aura or Daegu!')
+    @app_commands.command(name='apply', description='Apply for Kanzen, Aura or Daegu!')
     @app_commands.guilds(discord.Object(id=1131003330810871979))
     async def kdarct(self, interaction: discord.Interaction):
          await interaction.response.send_modal(grprctkda())
