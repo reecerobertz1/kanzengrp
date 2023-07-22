@@ -145,8 +145,8 @@ class logos(commands.Cog):
             color=0x2b2d31
         )
         embed.set_footer(text="Go and use these commands in Hoshi's channel!")
-        embed.add_field(name='New minigame', value='The new game is "Word Scramble" and there are 110 different words that have been added to this game!\nTo play you only need to do the command `+scramble` and you will have **20 seconds** to try and unscramble the word Hoshi has given you!\nThere is now a new category in the help command for more minigames, so if you do have anymore game ideas for Hoshi, you can do the command `+suggest (enter game name)` to suggest a new game to be added!.', inline=False)
-        await ctx.send('<@&1122999466438438962>', embed=embed)
+        embed.add_field(name='New minigame', value='The new game is "Word Scramble" and there are 110 different words that have been added to this game!\nTo play you only need to do the command `+scramble` and you will have **20 seconds** to try and unscramble the word Hoshi has given you!\nThere is now a new category in the help command for more minigames, so if you do have anymore game ideas for Hoshi, you can go to the channel <#1074980293737467924> to suggest a new game to be added!.', inline=False)
+        await ctx.send('<@&939923109413290005>', embed=embed)
 
 
 async def setup(bot):
