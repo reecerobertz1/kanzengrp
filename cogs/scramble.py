@@ -16,7 +16,7 @@ class scramble(commands.Cog):
         scrambled_word = ''.join(random.sample(word, len(word)))
 
         # Send the scrambled word as a message
-        await ctx.send(f"Unscramble the word: **{scrambled_word}**")
+        await ctx.reply(f"Unscramble the word: **{scrambled_word}**")
 
         def check(message):
             return message.author == ctx.author and message.channel == ctx.channel
@@ -26,11 +26,11 @@ class scramble(commands.Cog):
             response = await self.bot.wait_for('message', check=check, timeout=10.0)
 
             if response.content.lower() == word:
-                await ctx.send(f"Correct! The word is **{word}**.")
+                await ctx.reply(f"Correct! The word is **{word}**.")
             else:
-                await ctx.send(f"Sorry, that's incorrect. The correct word is **{word}**.")
+                await ctx.reply(f"Sorry, that's incorrect. The correct word is **{word}**.")
         except asyncio.TimeoutError:
-            await ctx.send("Time's up! The correct word is **{word}**.")
+            await ctx.reply("Time's up! The correct word is **{word}**.")
 
 async def setup(bot):
     await bot.add_cog(scramble(bot))
