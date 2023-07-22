@@ -27,7 +27,7 @@ class Giveaway(commands.Cog):
         if len(args) > 1:
             # Check if the last argument starts with "@" to determine if it's a host mention
             last_arg = args[-1]
-            if last_arg.startswith("@"):
+            if last_arg.startswith("<@") and last_arg.endswith(">"):
                 host_mention = last_arg
                 prize = " ".join(args[:-1])
         
