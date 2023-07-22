@@ -368,8 +368,27 @@ class funcmds(commands.Cog):
                 "question": 'What is the most cosumed manufactured drink in the world?',
                 "options": ["Ⓐ Coca cola", "Ⓑ Tea", "Ⓒ Coffee", "Ⓓ Alcohol"],
                 "answer": 1
+            },
+            {
+                "question": 'Which country is known as the "Land of the Rising Sun"?',
+                "options": ["Ⓐ Thailand", "Ⓑ Japan", "Ⓒ  France", "Ⓓ Canada"],
+                "answer": 1
+            },
+            {
+                "question": 'Which animal is known as the "King of the Jungle"?',
+                "options": ["Ⓐ Pigeon (lol idfk)", "Ⓑ Leopard", "Ⓒ  Tiger", "Ⓓ Lion"],
+                "answer": 3
+            },
+            {
+                "question": 'What is the largest mammal in the world?',
+                "options": ["Ⓐ Wahle", "Ⓑ Blue Whale", "Ⓒ  Elephant", "Ⓓ Shark"],
+                "answer": 1
+            },
+            {
+                "question": 'Who painted the Mona Lisa?',
+                "options": ["Ⓐ Pablo Picasso", "Ⓑ Vincent van Gogh", "Ⓒ  Shakespear", "Ⓓ  Leonardo da Vinci"],
+                "answer": 1
             }
-            
         ]
 
         # Choose a random question from the list
