@@ -59,7 +59,7 @@ class Giveaway(commands.Cog):
 
         if winner:
             prize = data["prize"]
-            await message.channel.send(f"Congratulations to {winner.mention} for winning the giveaway for **{prize}**!")
+            await message.channel.send(f"Congratulations to {winner.mention} for winning the giveaway for **{prize}**!\nPlease message a lead, staff/host for your prize")
         else:
             await message.channel.send("The giveaway winner could not be determined.")
 
