@@ -12,16 +12,30 @@ class Giveaway(commands.Cog):
 
     @commands.command()
     @commands.has_permissions(administrator=True)
-    async def giveaway(self, ctx, duration: int, *, prize: str):
+    async def giveaway(self, ctx, duration: int, *, args: commands.Greedy[str]):
         """Start a giveaway."""
         if duration <= 0:
             return await ctx.send("The duration must be greater than 0.")
         
         duration_hours = duration
         duration_seconds = duration_hours * 3600  # Convert hours to seconds
+
+        prize = " ".join(args)
+        host_mention = None
+
+        if len(args) > 1:
+            # Check if the last argument starts with "@" to determine if it's a host mention
+            last_arg = args[-1]
+            if last_arg.startswith("@"):
+                host_mention = last_arg
+                prize = " ".join(args[:-1])
         
         giveaway_message = f"React with 🎉 to enter the giveaway for **{prize}**!\nDuration: {duration_hours} hours"
         giveaway_embed = discord.Embed(title="Giveaway", description=giveaway_message, color=0x2b2d31)
+
+        if host_mention:
+            giveaway_embed.add_field(name="Host", value=host_mention, inline=False)
+
         giveaway_msg = await ctx.send('<@&1131127104226992208>', embed=giveaway_embed)
 
         await giveaway_msg.add_reaction("🎉")
@@ -44,12 +58,20 @@ class Giveaway(commands.Cog):
 
         if winner:
             prize = data["prize"]
-            await message.channel.send(f"Congratulations to {winner.mention} for winning the giveaway for **{prize}**!")
+            await message.channel.send(f"Congratulations to {winner.mention} for winning the giveaway for **{prize}**!\nPlease message a lead/host for your prize")
         else:
             await message.channel.send("The giveaway winner could not be determined.")
 
         del self.giveaway_data[message.id]
         await self.save_giveaway_data()
+
+    @commands.Cog.listener()
+    async def on_reaction_add(self, reaction, user):
+        if not user.bot and str(reaction.emoji) == "🎉":
+            data = self.giveaway_data.get(reaction.message.id)
+            if data:
+                data["entries"].append(user.id)
+                await self.save_giveaway_data()
 
     @commands.Cog.listener()
     async def on_reaction_add(self, reaction, user):
