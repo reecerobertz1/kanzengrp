@@ -138,7 +138,7 @@ class scramble(commands.Cog):
             else:
                 await ctx.reply(f"Sorry, that's incorrect. The correct word is **{word}**.")
         except asyncio.TimeoutError:
-            await ctx.reply("Time's up! The correct word is **{word}**.")
+            await ctx.reply(f"Time's up! The correct word is **{word}**.")
 
 async def setup(bot):
     await bot.add_cog(scramble(bot))
