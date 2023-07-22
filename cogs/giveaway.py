@@ -12,7 +12,7 @@ class Giveaway(commands.Cog):
 
     @commands.command()
     @commands.has_permissions(administrator=True)
-    async def giveaway(self, ctx, duration: int, *, args: commands.Greedy[str]):
+    async def giveaway(self, ctx, duration: int, *, args):
         """Start a giveaway."""
         if duration <= 0:
             return await ctx.send("The duration must be greater than 0.")
@@ -20,6 +20,7 @@ class Giveaway(commands.Cog):
         duration_hours = duration
         duration_seconds = duration_hours * 3600  # Convert hours to seconds
 
+        args = args.split()
         prize = " ".join(args)
         host_mention = None
 
@@ -58,20 +59,12 @@ class Giveaway(commands.Cog):
 
         if winner:
             prize = data["prize"]
-            await message.channel.send(f"Congratulations to {winner.mention} for winning the giveaway for **{prize}**!\nPlease message a lead/host for your prize")
+            await message.channel.send(f"Congratulations to {winner.mention} for winning the giveaway for **{prize}**!")
         else:
             await message.channel.send("The giveaway winner could not be determined.")
 
         del self.giveaway_data[message.id]
         await self.save_giveaway_data()
-
-    @commands.Cog.listener()
-    async def on_reaction_add(self, reaction, user):
-        if not user.bot and str(reaction.emoji) == "🎉":
-            data = self.giveaway_data.get(reaction.message.id)
-            if data:
-                data["entries"].append(user.id)
-                await self.save_giveaway_data()
 
     @commands.Cog.listener()
     async def on_reaction_add(self, reaction, user):
