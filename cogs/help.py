@@ -15,6 +15,7 @@ class Help(commands.Cog):
             "Fun commands",
             "Editing commands",
             "Other commands",
+            "Minigames",
             "Kanzen only commands",
             "Levels commands",
             "Moderation commands",
@@ -55,7 +56,6 @@ class Help(commands.Cog):
                 embed.add_field(name="+say", value="<:reply:1125269313432059904> Make Hoshi say exactly what you say", inline=False)
                 embed.add_field(name="+8ball", value="<:reply:1125269313432059904> Ask Hoshi a question and get an answer", inline=False)
                 embed.add_field(name="+ship", value="<:reply:1125269313432059904> Mention 2 members to see if Hoshi ships them (+ship @mention @mention)", inline=False)
-                embed.add_field(name="+trivia", value="<:reply:1125269313432059904> Hoshi will ask you a question, make sure to answer correctly (answer with numbers 1-4)", inline=False)
                 embed.add_field(name="+avatar", value="<:reply:1125269313432059904> Get a photo of your avatar or someone elses", inline=False)
                 embed.set_thumbnail(url=ctx.guild.icon)
             elif selected_category == categories[1]:
@@ -75,13 +75,18 @@ class Help(commands.Cog):
                 embed.add_field(name="+suggest", value="<:reply:1125269313432059904> Suggest what we can do in the group (+suggest [suggestion])", inline=False)
                 embed.set_thumbnail(url=ctx.guild.icon)
             elif selected_category == categories[3]:
+                embed = discord.Embed(title="> Minigames", color=0x2b2d31)
+                embed.add_field(name="+scramble", value="<:reply:1125269313432059904> Unscramble the word Hoshi gives you in 20 seconds", inline=False)
+                embed.add_field(name="+trivia", value="<:reply:1125269313432059904> Hoshi will ask you a question, make sure to answer correctly (answer with numbers 1-4)", inline=False)
+                embed.set_thumbnail(url=ctx.guild.icon)
+            elif selected_category == categories[4]:
                 embed = discord.Embed(title="> Kanzen only commands", color=0x2b2d31)
                 embed.add_field(name="+newcmd", value="<:reply:1125269313432059904> Make your own command! `+newcmd (command name) (hoshi's responce)`", inline=False)
                 embed.add_field(name="+listcmds", value="<:reply:1125269313432059904> See all the commands other zennies have added", inline=False)
                 embed.add_field(name="+removecmd", value="<:reply:1125269313432059904> Made a mistake in your command? do `+removecmd (+commandname)`", inline=False)
                 embed.add_field(name="+daily", value="<:reply:1125269313432059904> Get anywhere from 100xp - 300xp everyday! (server boosters only wait 12 hours)", inline=False)
                 embed.set_thumbnail(url=ctx.guild.icon)
-            elif selected_category == categories[4]:
+            elif selected_category == categories[5]:
                 embed = discord.Embed(title="> Levels commands", color=0x2b2d31)
                 embed.add_field(name="+rank", value="<:reply:1125269313432059904> See your rank, or someone elses", inline=False)
                 embed.add_field(name="+levels", value="<:reply:1125269313432059904> See the level leaderboard for the server", inline=False)
@@ -93,7 +98,7 @@ class Help(commands.Cog):
                 embed.add_field(name="+levelling off", value="<:reply:1125269313432059904> Disables the levelling system for the server (admin only)", inline=False)
                 embed.add_field(name="+levelling setrole", value="<:reply:1125269313432059904> Set the top 20 active role", inline=False)
                 embed.set_thumbnail(url=ctx.guild.icon)
-            elif selected_category == categories[5]:
+            elif selected_category == categories[6]:
                 embed = discord.Embed(title="> Moderation commands", color=0x2b2d31)
                 embed.add_field(name="/kick", value="<:reply:1125269313432059904> Kick a member from the server", inline=False)
                 embed.add_field(name="/ban", value="<:reply:1125269313432059904> Ban a member from the server", inline=False)
@@ -101,7 +106,7 @@ class Help(commands.Cog):
                 embed.add_field(name="/removerole", value="<:reply:1125269313432059904> Remove a role from a member (+removerole @role @mention)", inline=False)
                 embed.add_field(name="+buildembed", value="<:reply:1125269313432059904> Create an embed", inline=False)
                 embed.set_thumbnail(url=ctx.guild.icon)
-            elif selected_category == categories[6]:
+            elif selected_category == categories[7]:
                 embed = discord.Embed(title="> Application commands", color=0x2b2d31)
                 embed.add_field(name="/apply", value="<:reply:1125269313432059904> Apply for kanzengrp", inline=False)
                 embed.add_field(name="/app", value="<:reply:1125269313432059904> Apply for auragrp", inline=False)
@@ -110,7 +115,7 @@ class Help(commands.Cog):
                 embed.add_field(name="+qna", value="<:reply:1125269313432059904> Ask the lead a question", inline=False)
                 embed.add_field(name="+answer", value="<:reply:1125269313432059904> Answer a question sent", inline=False)
                 embed.set_thumbnail(url=ctx.guild.icon)
-            elif selected_category == categories[7]:
+            elif selected_category == categories[8]:
                 embed = discord.Embed(title="> Community commands", color=0x2b2d31)
                 embed.add_field(name="+giveaway", value="<:reply:1125269313432059904> Start a giveaway", inline=False)
                 embed.set_thumbnail(url=ctx.guild.icon)
