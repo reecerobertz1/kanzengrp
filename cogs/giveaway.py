@@ -17,15 +17,18 @@ class Giveaway(commands.Cog):
         if duration <= 0:
             return await ctx.send("The duration must be greater than 0.")
         
-        giveaway_message = f"React with 🎉 to enter the giveaway for **{prize}**!\nDuration: {duration} seconds"
+        duration_hours = duration
+        duration_seconds = duration_hours * 3600  # Convert hours to seconds
+        
+        giveaway_message = f"React with 🎉 to enter the giveaway for **{prize}**!\nDuration: {duration_hours} hours"
         giveaway_embed = discord.Embed(title="Giveaway", description=giveaway_message, color=0x2b2d31)
         giveaway_msg = await ctx.send('<@&1131127104226992208>', embed=giveaway_embed)
 
         await giveaway_msg.add_reaction("🎉")
-        self.giveaway_data[giveaway_msg.id] = {"prize": prize, "duration": duration, "entries": []}
+        self.giveaway_data[giveaway_msg.id] = {"prize": prize, "duration": duration_seconds, "entries": []}
         await self.save_giveaway_data()
 
-        await asyncio.sleep(duration)
+        await asyncio.sleep(duration_seconds)
         await self.pick_winner(giveaway_msg)
 
     async def pick_winner(self, message):
