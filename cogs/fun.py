@@ -442,6 +442,24 @@ class funcmds(commands.Cog):
 
             await ctx.reply(f"{member.name}'s status: `{activity_name}`")
 
+    @commands.command()
+    async def giphy(self, ctx, *, search):
+        api_key = "PF48beXJTbUkvh35ThoQ4t1qhyjleLwD&q"
+        base_url = "https://api.giphy.com/v1/gifs/search"
+        params = {
+            "q": search,
+            "api_key": api_key,
+            "limit": 1
+        }
+
+        try:
+            response = requests.get(base_url, params=params)
+            data = response.json()
+            gif_url = data["data"][0]["images"]["original"]["url"]
+            await ctx.send(gif_url)
+
+        except Exception as e:
+            await ctx.send(f"An error occurred: {e}")
 
 async def setup(bot):
     await bot.add_cog(funcmds(bot))
