@@ -444,11 +444,12 @@ class funcmds(commands.Cog):
 
     @commands.command()
     async def giphy(self, ctx, *, search):
-        api_key = "PF48beXJTbUkvh35ThoQ4t1qhyjleLwD"
+        api_key = "YOUR_GIPHY_API_KEY"
         url = f"https://api.giphy.com/v1/gifs/search"
         params = {
             "api_key": api_key,
             "q": search,
+            "limit": 10,  # Adjust the limit based on your preference
         }
 
         try:
@@ -460,9 +461,23 @@ class funcmds(commands.Cog):
                 await ctx.send("No GIFs found for the given search query.")
                 return
             
-            gif = discord.Embed()
-            gif.set_image(url=gifs[0]["images"]["original"]["url"])
-            await ctx.send(embed=gif)
+            # Filter out already shown GIFs from the cache
+            gifs = [gif for gif in gifs if gif["id"] not in self.gif_cache.get(ctx.author.id, [])]
+            
+            if not gifs:
+                # If all GIFs have been shown, reset the cache for the user
+                self.gif_cache[ctx.author.id] = []
+                gifs = data["data"]
+            
+            # Randomly choose a GIF from the filtered list
+            gif = random.choice(gifs)
+            
+            gif_embed = discord.Embed()
+            gif_embed.set_image(url=gif["images"]["original"]["url"])
+            await ctx.send(embed=gif_embed)
+            
+            # Add the chosen GIF to the cache for the user
+            self.gif_cache.setdefault(ctx.author.id, []).append(gif["id"])
         except Exception as e:
             await ctx.send(f"An error occurred: {e}")
 
