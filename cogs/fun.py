@@ -449,7 +449,7 @@ class funcmds(commands.Cog):
         params = {
             "api_key": api_key,
             "q": search,
-            "limit": 10,  # Adjust the limit based on your preference
+            "limit": 10,  
         }
 
         try:
