@@ -444,26 +444,25 @@ class funcmds(commands.Cog):
 
     @commands.command()
     async def giphy(self, ctx, *, search):
-        api_key = "PF48beXJTbUkvh35ThoQ4t1qhyjleLwD"
-        base_url = "https://api.giphy.com/v1/gifs/search"
+        api_key = "YOUR_GIPHY_API_KEY"
+        url = f"https://api.giphy.com/v1/gifs/search"
         params = {
-            "q": search,
             "api_key": api_key,
-            "limit": 25
+            "q": search,
         }
 
         try:
-            response = requests.get(base_url, params=params)
+            response = requests.get(url, params=params)
             data = response.json()
-
-            if "data" not in data or not data["data"]:
-                await ctx.send("No GIF found for the given search.")
+            gifs = data["data"]
+            
+            if not gifs:
+                await ctx.send("No GIFs found for the given search query.")
                 return
-
-            gif_list = data["data"]
-            gif_url = random.choice(gif_list)["images"]["original"]["url"]
-            await ctx.send(gif_url)
-
+            
+            gif = discord.Embed()
+            gif.set_image(url=gifs[0]["images"]["original"]["url"])
+            await ctx.send(embed=gif)
         except Exception as e:
             await ctx.send(f"An error occurred: {e}")
 
