@@ -449,7 +449,7 @@ class funcmds(commands.Cog):
         params = {
             "q": search,
             "api_key": api_key,
-            "limit": 1
+            "limit": 10
         }
 
         try:
@@ -460,7 +460,8 @@ class funcmds(commands.Cog):
                 await ctx.send("No GIF found for the given search.")
                 return
 
-            gif_url = data["data"][0]["images"]["original"]["url"]
+            gif_list = data["data"]
+            gif_url = random.choice(gif_list)["images"]["original"]["url"]
             await ctx.send(gif_url)
 
         except Exception as e:
