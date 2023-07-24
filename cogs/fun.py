@@ -13,6 +13,7 @@ from PIL import Image, ImageDraw, ImageFont
 class funcmds(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.gif_cache = {}
         self.server1_log_channel_id = 1122627075682078720
         self.server2_log_channel_id = 1122994947444973709
 
