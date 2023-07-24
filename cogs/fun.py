@@ -444,7 +444,7 @@ class funcmds(commands.Cog):
 
     @commands.command()
     async def giphy(self, ctx, *, search):
-        api_key = "PF48beXJTbUkvh35ThoQ4t1qhyjleLwD&q"
+        api_key = "PF48beXJTbUkvh35ThoQ4t1qhyjleLwD"
         base_url = "https://api.giphy.com/v1/gifs/search"
         params = {
             "q": search,
@@ -455,6 +455,11 @@ class funcmds(commands.Cog):
         try:
             response = requests.get(base_url, params=params)
             data = response.json()
+
+            if "data" not in data or not data["data"]:
+                await ctx.send("No GIF found for the given search.")
+                return
+
             gif_url = data["data"][0]["images"]["original"]["url"]
             await ctx.send(gif_url)
 
