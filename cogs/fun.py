@@ -444,7 +444,7 @@ class funcmds(commands.Cog):
 
     @commands.command()
     async def giphy(self, ctx, *, search):
-        api_key = "YOUR_GIPHY_API_KEY"
+        api_key = "PF48beXJTbUkvh35ThoQ4t1qhyjleLwD"
         url = f"https://api.giphy.com/v1/gifs/search"
         params = {
             "api_key": api_key,
