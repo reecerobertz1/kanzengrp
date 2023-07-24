@@ -473,7 +473,12 @@ class funcmds(commands.Cog):
             # Randomly choose a GIF from the filtered list
             gif = random.choice(gifs)
             
-            gif_embed = discord.Embed()
+            # Generate random RGB color values
+            r = random.randint(0, 255)
+            g = random.randint(0, 255)
+            b = random.randint(0, 255)
+            
+            gif_embed = discord.Embed(color=discord.Color.from_rgb(r, g, b))
             gif_embed.set_image(url=gif["images"]["original"]["url"])
             await ctx.send(embed=gif_embed)
             
