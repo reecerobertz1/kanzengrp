@@ -17,6 +17,13 @@ class funcmds(commands.Cog):
         self.server1_log_channel_id = 1122627075682078720
         self.server2_log_channel_id = 1122994947444973709
 
+    def get_random_color(self):
+        # Generate random RGB color values
+        r = random.randint(0, 255)
+        g = random.randint(0, 255)
+        b = random.randint(0, 255)
+        return r, g, b
+
     @commands.command()
     async def say(self, ctx, *, message):
         await ctx.message.delete()
@@ -103,39 +110,37 @@ class funcmds(commands.Cog):
         # Delete the temporary files
         os.remove("jail_avatar.png")
 
-    @commands.command(aliases=['gay', 'pridemonth'])
-    async def pride(self, ctx, member: Optional[discord.Member]):
-        # Get the user's avatar URL
-        member = member or ctx.author
-        avatar_url = member.avatar.url
+    @commands.command()
+    async def dog(self, ctx):
+        loading_msg = await ctx.reply("<a:loading:1122893578461520013> Searching for an image")
+        response = requests.get('https://dog.ceo/api/breeds/image/random')
+        data = response.json()
+        image_url = data['message']
 
-        # Open the avatar image
-        async with aiohttp.ClientSession() as session:
-            async with session.get(str(avatar_url)) as response:
-                avatar_image = await response.read()
+        embed = discord.Embed(color=discord.Color.from_rgb(*self.get_random_color()))
+        embed.set_image(url=image_url)
 
-        # Open the pride image
-        pride = Image.open("pride.png").convert("RGBA")
+        await asyncio.sleep(1)  # Wait for 1 second (you can adjust the duration)
+        await loading_msg.delete()  # Delete the loading message
+        await ctx.reply(embed=embed)
 
-        # Open the avatar image using PIL
-        avatar_pil = Image.open(io.BytesIO(avatar_image)).convert("RGBA")
-        avatar_pil = avatar_pil.resize((500, 500))
+    @commands.command()
+    async def cat(self, ctx):
+        try:
+            loading_msg = await ctx.reply("<a:loading:1122893578461520013> Searching for an image")
+            response = requests.get('https://api.thecatapi.com/v1/images/search')
+            response.raise_for_status()
+            data = response.json()
+            image_url = data[0]['url']
 
-        # Resize the pride image to match the avatar size
-        pride = pride.resize(avatar_pil.size)
+            embed = discord.Embed(color=discord.Color.from_rgb(*self.get_random_color()))
+            embed.set_image(url=image_url)
 
-        # Composite the images
-        final_image = Image.alpha_composite(avatar_pil, pride)
-
-        # Save the final image to a temporary file
-        temp_filename = f"pride_{ctx.message.id}.png"
-        final_image.save(temp_filename)
-
-        # Send the modified avatar image
-        await ctx.send(file=discord.File(temp_filename))
-
-        # Delete the temporary file
-        os.remove(temp_filename)
+            await asyncio.sleep(1)  # Wait for 1 second (you can adjust the duration)
+            await loading_msg.delete()  # Delete the loading message
+            await ctx.reply(embed=embed)
+        except (requests.exceptions.RequestException, KeyError):
+            await ctx.reply("Sorry, I couldn't fetch a cute cat at the moment. Please try again later.")
 
 
     @commands.command(aliases=['pp'])
