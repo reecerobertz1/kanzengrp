@@ -27,14 +27,11 @@ class afk(commands.Cog):
             reason = afk_info["reason"]
             timestamp = afk_info["timestamp"]
 
-            del self.afk_data[user_id]
-            self.save_afk_data()
-
             afk_time = datetime.datetime.strptime(timestamp, "%Y-%m-%d %H:%M:%S.%f")
             elapsed_time = datetime.datetime.utcnow() - afk_time
 
             await message.channel.send(
-                f"{message.author.mention} is no longer AFK. Welcome back!\n"
+                f"{message.author.mention} is currently AFK.\n"
                 f"AFK Reason: {reason}\n"
                 f"AFK Duration: {elapsed_time}"
             )
@@ -51,7 +48,7 @@ class afk(commands.Cog):
             self.save_afk_data()
 
             await ctx.send(
-                f"You are now AFK. Reason: {reason}."
+                f"{ctx.author.mention} is now AFK. Reason: {reason}."
             )
         else:
             await ctx.send("You are already AFK!")
