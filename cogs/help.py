@@ -28,7 +28,7 @@ class Help(commands.Cog):
         about_hoshi_embed = discord.Embed(title="> <a:kanzenflower:1128154723262943282> : About Hoshi", color=0x2b2d31)
         about_hoshi_embed.add_field(name="The coding", value="Hoshi is coded in Python 3.11.4\n[Download Python 3.11.4](https://www.python.org/downloads/)", inline=False)
         about_hoshi_embed.add_field(name="Owner", value="Hoshi is owned by Reeceroberts\nReece coded Hoshi in [Visual Studio Code](https://code.visualstudio.com/)", inline=False)
-        about_hoshi_embed.add_field(name="Extra Information", value="Hoshi's prefix is `+`\nHoshi was made for **__Kanzengrp__**", inline=False)
+        about_hoshi_embed.add_field(name="Extra Information", value="Hoshi's prefix is `+`\nHoshi was made for [**__Kanzengrp__**](https://instagram.com/kanzengrp)", inline=False)
         about_hoshi_embed.set_thumbnail(url=ctx.guild.icon)
 
         # Create a view to handle the interaction
