@@ -35,10 +35,11 @@ class afk(commands.Cog):
                 f"AFK Reason: {reason}\n"
                 f"AFK Duration: {elapsed_time}"
             )
+            return
 
-    @commands.Cog.listener()
-    async def on_message_edit(self, before, after):
-        await self.on_message(after)
+        # Check if the message mentions the user
+        if self.bot.user.mentioned_in(message):
+            await message.channel.send(f"{message.author.mention} is currently AFK. Reason: {reason}.")
 
     @commands.command()
     async def afk(self, ctx, *, reason: str = "AFK"):
@@ -54,8 +55,6 @@ class afk(commands.Cog):
             await ctx.send(
                 f"{ctx.author.mention} is now AFK. Reason: {reason}."
             )
-        else:
-            await ctx.send("You are already AFK!")
 
 async def setup(bot):
     await bot.add_cog(afk(bot))
