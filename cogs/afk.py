@@ -39,7 +39,8 @@ class afk(commands.Cog):
 
         # Check if the message mentions the user
         if self.bot.user.mentioned_in(message):
-            await message.channel.send(f"{message.author.mention} is currently AFK. Reason: {reason}.")
+            await message.channel.send(f"{message.author.mention} is currently AFK.")
+            return
 
     @commands.command()
     async def afk(self, ctx, *, reason: str = "AFK"):
