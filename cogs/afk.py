@@ -42,7 +42,7 @@ class afk(commands.Cog):
             await message.channel.send(f"{message.author.mention} is currently AFK.")
             return
 
-    @commands.command()
+"""    @commands.command()
     async def afk(self, ctx, *, reason: str = "AFK"):
         user_id = str(ctx.author.id)
 
@@ -55,7 +55,7 @@ class afk(commands.Cog):
 
             await ctx.send(
                 f"{ctx.author.mention} is now AFK. Reason: {reason}."
-            )
+            )"""
 
 async def setup(bot):
     await bot.add_cog(afk(bot))
