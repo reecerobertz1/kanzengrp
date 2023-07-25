@@ -85,10 +85,49 @@ class applications(commands.Cog):
                 if role_to_remove:
                     await user.remove_roles(role_to_remove)
 
+                # Create a dictionary to store the user information
+                user_info = {
+                    "user_id": user_id,
+                    "groups": groups,
+                    "instagram": "instagram_username",  # Replace "instagram_username" with the actual Instagram username
+                }
+
+                # Load the existing data from the JSON file
+                with open("accepted_users.json", "r") as file:
+                    data = json.load(file)
+
+                # Append the new user information to the data list
+                data.append(user_info)
+
+                # Save the updated data back to the JSON file
+                with open("accepted_users.json", "w") as file:
+                    json.dump(data, file)
+
             except Exception as e:
                 print(f"Failed to process the command: {e}")
         else:
             await ctx.send("Please reply with the embed you want to process.")
+
+    @commands.command()
+    async def accepted(self, ctx, user_id: int):
+        # Load the data from the JSON file
+        with open("accepted_users.json", "r") as file:
+            data = json.load(file)
+
+        # Search for the user information in the data
+        for user_info in data:
+            if user_info["user_id"] == user_id:
+                # Found the user, send the information as an embed
+                groups = ", ".join(user_info["groups"])
+                embed = discord.Embed(title="Accepted User Information", color=0x2b2d31)
+                embed.add_field(name="User ID", value=user_id)
+                embed.add_field(name="Groups", value=groups)
+                embed.add_field(name="Instagram", value=user_info["instagram"])
+                await ctx.send(embed=embed)
+                return
+
+        # If the user is not found, send an error message
+        await ctx.send("User not found or not accepted.")
 
     @commands.command()
     @commands.has_permissions(manage_guild=True)
