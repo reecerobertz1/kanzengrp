@@ -36,6 +36,10 @@ class afk(commands.Cog):
                 f"AFK Duration: {elapsed_time}"
             )
 
+            # Remove AFK status when the user sends a message
+            del self.afk_data[user_id]
+            self.save_afk_data()
+
     @commands.command()
     async def afk(self, ctx, *, reason: str = "AFK"):
         user_id = str(ctx.author.id)
