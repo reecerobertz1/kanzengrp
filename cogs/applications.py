@@ -91,27 +91,6 @@ class applications(commands.Cog):
             await ctx.send("Please reply with the embed you want to process.")
 
     @commands.command()
-    async def accepted(self, ctx, user_id: int):
-        # Load the data from the JSON file
-        with open("accepted_users.json", "r") as file:
-            data = json.load(file)
-
-        # Search for the user information in the data
-        for user_info in data:
-            if user_info["user_id"] == user_id:
-                # Found the user, send the information as an embed
-                groups = ", ".join(user_info["groups"])
-                embed = discord.Embed(title="Accepted User Information", color=0x2b2d31)
-                embed.add_field(name="User ID", value=user_id)
-                embed.add_field(name="Groups", value=groups)
-                embed.add_field(name="Instagram", value=user_info["instagram"])
-                await ctx.send(embed=embed)
-                return
-
-        # If the user is not found, send an error message
-        await ctx.send("User not found or not accepted.")
-
-    @commands.command()
     @commands.has_permissions(manage_guild=True)
     async def decline(self, ctx):
         if ctx.message.reference is not None:
