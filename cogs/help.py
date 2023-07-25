@@ -71,14 +71,14 @@ class Help(commands.Cog):
                 embed.set_thumbnail(url=ctx.guild.icon)
             elif selected_category == categories[2]:
                 embed = discord.Embed(title="> Other commands", color=0x2b2d31)
-                embed.add_field(name="+ia", value="<:reply:1125269313432059904> Send us an inactivity message if you go inactive", inline=False)
-                embed.add_field(name="/ia", value="<:reply:1125269313432059904> Send us an inactivity message if you go inactive (kanzengrp only)", inline=False)
-                embed.add_field(name="+suggest", value="<:reply:1125269313432059904> Suggest what we can do in the group (+suggest [suggestion])", inline=False)
+                embed.add_field(name="+ia", value="<:reply:1125269313432059904> Send us an inactivity message if you go inactive", inline=False)# ✅
+                embed.add_field(name="/ia", value="<:reply:1125269313432059904> Send us an inactivity message if you go inactive (kanzengrp only)", inline=False)# ✅
+                embed.add_field(name="+suggest", value="<:reply:1125269313432059904> Suggest what we can do in the group (+suggest [suggestion])", inline=False)# ✅
                 embed.set_thumbnail(url=ctx.guild.icon)
             elif selected_category == categories[3]:
                 embed = discord.Embed(title="> Minigames", color=0x2b2d31)
-                embed.add_field(name="+scramble", value="<:reply:1125269313432059904> Unscramble the word Hoshi gives you in 20 seconds", inline=False)
-                embed.add_field(name="+trivia", value="<:reply:1125269313432059904> Hoshi will ask you a question, make sure to answer correctly (answer with numbers 1-4)", inline=False)
+                embed.add_field(name="+scramble", value="<:reply:1125269313432059904> Unscramble the word Hoshi gives you in 20 seconds", inline=False)# ✅
+                embed.add_field(name="+trivia", value="<:reply:1125269313432059904> Hoshi will ask you a question, make sure to answer correctly (answer with numbers 1-4)", inline=False)# ✅
                 embed.set_thumbnail(url=ctx.guild.icon)
             elif selected_category == categories[4]:
                 embed = discord.Embed(title="> Kanzen only commands", color=0x2b2d31)
@@ -297,6 +297,38 @@ class Help(commands.Cog):
         embed.add_field(name='arguments', value='none', inline=False)
         embed.add_field(name='example', value='+colorscheme', inline=False)
         await ctx.reply(embed=embed)    
+
+    @commands.command()
+    async def helpia(self, ctx):
+        embed = discord.Embed(title='+ia / /ia <reason>', description='Send an inactivity message to the leads of the group(s)', color=0x2b2d31)
+        embed.add_field(name='aliases', value='none', inline=False)
+        embed.add_field(name='arguments', value='`reason`\n<:reply:1125269313432059904> the reason youre going inactive', inline=False)
+        embed.add_field(name='example', value='+ia school', inline=False)
+        await ctx.reply(embed=embed)   
+
+    @commands.command()
+    async def helpsuggest(self, ctx):
+        embed = discord.Embed(title='+suggest <suggestion>', description='Send a suggestion to the suggestions channel for others to vote on', color=0x2b2d31)
+        embed.add_field(name='aliases', value='none', inline=False)
+        embed.add_field(name='arguments', value='`suggestion`\n<:reply:1125269313432059904> the thing you would like to suggest', inline=False)
+        embed.add_field(name='example', value='+suggest group collab', inline=False)
+        await ctx.reply(embed=embed)  
+
+    @commands.command()
+    async def helptrivia(self, ctx):
+        embed = discord.Embed(title='+trivia', description='Play a game of trivia', color=0x2b2d31)
+        embed.add_field(name='aliases', value='none', inline=False)
+        embed.add_field(name='arguments', value='none', inline=False)
+        embed.add_field(name='example', value='+trivia', inline=False)
+        await ctx.reply(embed=embed)  
+
+    @commands.command()
+    async def helpscramble(self, ctx):
+        embed = discord.Embed(title='+scramble', description='Play a game of word scramble', color=0x2b2d31)
+        embed.add_field(name='aliases', value='none', inline=False)
+        embed.add_field(name='arguments', value='none', inline=False)
+        embed.add_field(name='example', value='+scramble', inline=False)
+        await ctx.reply(embed=embed)  
 
 async def setup(bot):
     await bot.add_cog(Help(bot))
