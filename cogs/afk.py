@@ -7,6 +7,7 @@ class afk(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.afk_data_file = "afk_data.json"
+        self.ignore_list = set()
 
         with open(self.afk_data_file, "r") as f:
             self.afk_data = json.load(f)
@@ -36,9 +37,8 @@ class afk(commands.Cog):
                 f"AFK Duration: {elapsed_time}"
             )
 
-            # Remove AFK status when the user sends a message
-            del self.afk_data[user_id]
-            self.save_afk_data()
+        # Remove the user from the ignore_list when they send a message
+        self.ignore_list.discard(user_id)
 
     @commands.command()
     async def afk(self, ctx, *, reason: str = "AFK"):
@@ -54,6 +54,9 @@ class afk(commands.Cog):
             await ctx.send(
                 f"{ctx.author.mention} is now AFK. Reason: {reason}."
             )
+
+            # Add the user to the ignore_list to prevent the AFK status message being sent to them
+            self.ignore_list.add(user_id)
         else:
             await ctx.send("You are already AFK!")
 
