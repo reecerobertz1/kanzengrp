@@ -36,12 +36,6 @@ class afk(commands.Cog):
                 f"AFK Duration: {elapsed_time}"
             )
 
-            # Don't unset AFK status if the user is using the +afk command
-            if not message.content.startswith("+afk"):
-                del self.afk_data[user_id]
-                self.save_afk_data()
-                await message.channel.send(f"{message.author.mention} is no longer AFK. Welcome back!")
-
     @commands.Cog.listener()
     async def on_message_edit(self, before, after):
         await self.on_message(after)
