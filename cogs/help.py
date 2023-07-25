@@ -331,7 +331,7 @@ class Help(commands.Cog):
         await ctx.reply(embed=embed)  
 
     @commands.command()
-    async def helpscramble(self, ctx):
+    async def helpgiveaway(self, ctx):
         embed = discord.Embed(title='+giveaway <time> <prize> <host|optional>', description='Create a giveaway', color=0x2b2d31)
         embed.add_field(name='aliases', value='none', inline=False)
         embed.add_field(name='arguments', value='`time`\n<:reply:1125269313432059904> the length of time the giveaway lasts for\n`prize`\n<:reply:1125269313432059904> the prize for the giveaway\n`host`\n<:reply:1125269313432059904> the host of the giveaway (optional)', inline=False)
