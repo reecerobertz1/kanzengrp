@@ -51,7 +51,7 @@ class afk(commands.Cog):
             self.save_afk_data()
 
             await ctx.send(
-                f"{ctx.author.mention} is now AFK. Reason: {reason}."
+                f"You are now AFK. Reason: {reason}."
             )
         else:
             await ctx.send("You are already AFK!")
