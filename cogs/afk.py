@@ -1,49 +1,60 @@
-import os
-import json
 import discord
 from discord.ext import commands
+import json
 import datetime
 
 class afk(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.afk_data = {}  # Dictionary to store AFK data
-        self.afk_file = "afk_data.json"  # JSON file to store AFK data
+        self.afk_data_file = "afk_data.json"
 
-        # Load existing AFK data from the JSON file, if it exists
-        if os.path.exists(self.afk_file):
-            with open(self.afk_file, "r") as file:
-                self.afk_data = json.load(file)
+        with open(self.afk_data_file, "r") as f:
+            self.afk_data = json.load(f)
 
     def save_afk_data(self):
-        # Save AFK data to the JSON file
-        with open(self.afk_file, "w") as file:
-            json.dump(self.afk_data, file)
-
-    @commands.command()
-    async def afk(self, ctx, *, reason: str):
-        # Store the AFK status and reason for the user in the afk_data dictionary
-        self.afk_data[str(ctx.author.id)] = {"reason": reason, "timestamp": datetime.datetime.now().isoformat()}
-        self.save_afk_data()
-
-        await ctx.send(f"{ctx.author.mention} is now AFK for {reason}.")
+        with open(self.afk_data_file, "w") as f:
+            json.dump(self.afk_data, f, indent=4)
 
     @commands.Cog.listener()
     async def on_message(self, message):
-        if not message.guild or message.author.bot:
+        if message.author.bot:
             return
 
-        author_id = str(message.author.id)
-        if author_id in self.afk_data:
-            # If the author is AFK, send the AFK message and remove them from the AFK list
-            afk_info = self.afk_data.pop(author_id)
+        user_id = str(message.author.id)
+
+        if user_id in self.afk_data:
+            afk_info = self.afk_data[user_id]
+            reason = afk_info["reason"]
+            timestamp = afk_info["timestamp"]
+
+            del self.afk_data[user_id]
             self.save_afk_data()
 
-            timestamp = datetime.datetime.fromisoformat(afk_info["timestamp"])
-            afk_duration = datetime.datetime.now() - timestamp
-            afk_duration_str = str(afk_duration).split(".")[0]
+            afk_time = datetime.datetime.strptime(timestamp, "%Y-%m-%d %H:%M:%S.%f")
+            elapsed_time = datetime.datetime.utcnow() - afk_time
 
-            await message.channel.send(f"{message.author.mention} is AFK for {afk_info['reason']} and has been AFK for {afk_duration_str}.")
+            await message.channel.send(
+                f"{message.author.mention} is no longer AFK. Welcome back!\n"
+                f"AFK Reason: {reason}\n"
+                f"AFK Duration: {elapsed_time}"
+            )
+
+    @commands.command()
+    async def afk(self, ctx, *, reason: str = "AFK"):
+        user_id = str(ctx.author.id)
+
+        if user_id not in self.afk_data:
+            self.afk_data[user_id] = {
+                "reason": reason,
+                "timestamp": str(datetime.datetime.utcnow()),
+            }
+            self.save_afk_data()
+
+            await ctx.send(
+                f"{ctx.author.mention} is now AFK. Reason: {reason}."
+            )
+        else:
+            await ctx.send("You are already AFK!")
 
 async def setup(bot):
     await bot.add_cog(afk(bot))
