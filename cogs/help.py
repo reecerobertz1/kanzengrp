@@ -118,7 +118,7 @@ class Help(commands.Cog):
                 embed.set_thumbnail(url=ctx.guild.icon)
             elif selected_category == categories[8]:
                 embed = discord.Embed(title="> Community commands", color=0x2b2d31)
-                embed.add_field(name="+giveaway", value="<:reply:1125269313432059904> Start a giveaway", inline=False)
+                embed.add_field(name="+giveaway", value="<:reply:1125269313432059904> Start a giveaway", inline=False)# ✅
                 embed.set_thumbnail(url=ctx.guild.icon)
             else:
                 embed = discord.Embed(title="Invalid category", description="Please select a valid category from the dropdown menu.")
@@ -328,6 +328,14 @@ class Help(commands.Cog):
         embed.add_field(name='aliases', value='none', inline=False)
         embed.add_field(name='arguments', value='none', inline=False)
         embed.add_field(name='example', value='+scramble', inline=False)
+        await ctx.reply(embed=embed)  
+
+    @commands.command()
+    async def helpscramble(self, ctx):
+        embed = discord.Embed(title='+giveaway <time> <prize> <host|optional>', description='Create a giveaway', color=0x2b2d31)
+        embed.add_field(name='aliases', value='none', inline=False)
+        embed.add_field(name='arguments', value='`time`\n<:reply:1125269313432059904> the length of time the giveaway lasts for\n`prize`\n<:reply:1125269313432059904> the prize for the giveaway\n`host`\n<:reply:1125269313432059904> the host of the giveaway (optional)', inline=False)
+        embed.add_field(name='example', value='+giveaway 12 overlays @remqsi', inline=False)
         await ctx.reply(embed=embed)  
 
 async def setup(bot):
