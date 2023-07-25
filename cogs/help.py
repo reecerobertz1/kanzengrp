@@ -43,30 +43,31 @@ class Help(commands.Cog):
             selected_category = interaction.data["values"][0]
             if selected_category == categories[0]:
                 embed = discord.Embed(title="> Fun commands", color=0x2b2d31)
-                embed.add_field(name="+dog", value="<:reply:1125269313432059904> Sends you a random photo of a dog", inline=False)
-                embed.add_field(name="+cat", value="<:reply:1125269313432059904> Sends you a random photo of a cat", inline=False)
-                embed.add_field(name="+jail", value="<:reply:1125269313432059904> Put someone or yourself in jail", inline=False)
-                embed.add_field(name="+pride", value="<:reply:1125269313432059904> Puts the pride flag on someones avatar", inline=False)
-                embed.add_field(name="+memberinfo", value="<:reply:1125269313432059904> View info for yourself or others", inline=False)
-                embed.add_field(name="+kiss", value="<:reply:1125269313432059904> Mention someone to kiss, or don't mention anyone for Hoshi to kiss you", inline=False)
-                embed.add_field(name="+hug", value="<:reply:1125269313432059904> Mention someone to hug, or don't mention anyone for Hoshi to hug you", inline=False)
-                embed.add_field(name="+slap", value="<:reply:1125269313432059904> Mention someone to slap, or don't mention anyone for Hoshi to slap you", inline=False)
-                embed.add_field(name="+roast", value="<:reply:1125269313432059904> Get a roast from Hoshi", inline=False)
-                embed.add_field(name="+compliment", value="<:reply:1125269313432059904> Get a compliment from Hoshi", inline=False)
-                embed.add_field(name="+say", value="<:reply:1125269313432059904> Make Hoshi say exactly what you say", inline=False)
-                embed.add_field(name="+8ball", value="<:reply:1125269313432059904> Ask Hoshi a question and get an answer", inline=False)
-                embed.add_field(name="+ship", value="<:reply:1125269313432059904> Mention 2 members to see if Hoshi ships them (+ship @mention @mention)", inline=False)
-                embed.add_field(name="+avatar", value="<:reply:1125269313432059904> Get a photo of your avatar or someone elses", inline=False)
+                embed.add_field(name="+dog", value="<:reply:1125269313432059904> Sends you a random photo of a dog", inline=False) # ✅
+                embed.add_field(name="+cat", value="<:reply:1125269313432059904> Sends you a random photo of a cat", inline=False) # ✅
+                embed.add_field(name="+jail", value="<:reply:1125269313432059904> Put someone or yourself in jail", inline=False) # ✅
+                embed.add_field(name="+pride", value="<:reply:1125269313432059904> Puts the pride flag on someones avatar", inline=False) # ✅
+                embed.add_field(name="+memberinfo", value="<:reply:1125269313432059904> View info for yourself or others", inline=False) # ✅
+                embed.add_field(name="+kiss", value="<:reply:1125269313432059904> Mention someone to kiss, or don't mention anyone for Hoshi to kiss you", inline=False)# ✅
+                embed.add_field(name="+hug", value="<:reply:1125269313432059904> Mention someone to hug, or don't mention anyone for Hoshi to hug you", inline=False)# ✅
+                embed.add_field(name="+slap", value="<:reply:1125269313432059904> Mention someone to slap, or don't mention anyone for Hoshi to slap you", inline=False)# ✅
+                embed.add_field(name="+roast", value="<:reply:1125269313432059904> Get a roast from Hoshi", inline=False)# ✅
+                embed.add_field(name="+compliment", value="<:reply:1125269313432059904> Get a compliment from Hoshi", inline=False)# ✅
+                embed.add_field(name="+say", value="<:reply:1125269313432059904> Make Hoshi say exactly what you say", inline=False)# ✅
+                embed.add_field(name="+8ball", value="<:reply:1125269313432059904> Ask Hoshi a question and get an answer", inline=False)# ✅
+                embed.add_field(name="+ship", value="<:reply:1125269313432059904> Mention 2 members to see if Hoshi ships them (+ship @mention @mention)", inline=False)# ✅
+                embed.add_field(name="+avatar", value="<:reply:1125269313432059904> Get a photo of your avatar or someone elses", inline=False)# ✅
+                embed.add_field(name="+giphy", value="<:reply:1125269313432059904> Search for a gif with giphy", inline=False)# ✅
                 embed.set_thumbnail(url=ctx.guild.icon)
             elif selected_category == categories[1]:
                 embed = discord.Embed(title="> Editing commands", color=0x2b2d31)
-                embed.add_field(name="+transition", value="<:reply:1125269313432059904> Get a random transition to use in your edit", inline=False)
-                embed.add_field(name="+audio", value="<:reply:1125269313432059904> Get an audio added by a member to use for your edit", inline=False)
-                embed.add_field(name="+addaudio", value="<:reply:1125269313432059904> Add an audio from SoundCloud for others to use", inline=False)
-                embed.add_field(name="+addedit", value="<:reply:1125269313432059904> Add your own edit to Hoshi (must be a streamable link)", inline=False)
-                embed.add_field(name="+edits", value="<:reply:1125269313432059904> Watch edits added from members of, Aura, Kanzen and Daegu", inline=False)
-                embed.add_field(name="+effects", value="<:reply:1125269313432059904> Get a random effect to use in your edit", inline=False)
-                embed.add_field(name="+colorscheme", value="<:reply:1125269313432059904> Get a random color scheme to use in your edit", inline=False)
+                embed.add_field(name="+transition", value="<:reply:1125269313432059904> Get a random transition to use in your edit", inline=False)# ✅
+                embed.add_field(name="+audio", value="<:reply:1125269313432059904> Get an audio added by a member to use for your edit", inline=False)# ✅
+                embed.add_field(name="+addaudio", value="<:reply:1125269313432059904> Add an audio from SoundCloud for others to use", inline=False)# ✅
+                embed.add_field(name="+addedit", value="<:reply:1125269313432059904> Add your own edit to Hoshi (must be a streamable link)", inline=False)# ✅
+                embed.add_field(name="+edits", value="<:reply:1125269313432059904> Watch edits added from members of, Aura, Kanzen and Daegu", inline=False)# ✅
+                embed.add_field(name="+effects", value="<:reply:1125269313432059904> Get a random effect to use in your edit", inline=False)# ✅
+                embed.add_field(name="+colorscheme", value="<:reply:1125269313432059904> Get a random color scheme to use in your edit", inline=False)# ✅
                 embed.set_thumbnail(url=ctx.guild.icon)
             elif selected_category == categories[2]:
                 embed = discord.Embed(title="> Other commands", color=0x2b2d31)
@@ -219,7 +220,7 @@ class Help(commands.Cog):
     async def helptrivia(self, ctx):
         embed = discord.Embed(title='+trivia', description='Play trivia with hoshi (answer questions with numbers : 1 - 4)', color=0x2b2d31)
         embed.add_field(name='aliases', value='none', inline=False)
-        embed.add_field(name='arguments', value='`none', inline=False)
+        embed.add_field(name='arguments', value='none', inline=False)
         embed.add_field(name='example', value='+trivia', inline=False)
         await ctx.reply(embed=embed)
 
@@ -230,6 +231,72 @@ class Help(commands.Cog):
         embed.add_field(name='arguments', value='`mention`\n<:reply:1125269313432059904> hoshi will get this persons avatar instead', inline=False)
         embed.add_field(name='example', value='+avatar <@609515684740988959>', inline=False)
         await ctx.reply(embed=embed)
+
+    @commands.command()
+    async def helpgiphy(self, ctx):
+        embed = discord.Embed(title='+giphy <search>', description='Hoshi will search for a gif of what you searched', color=0x2b2d31)
+        embed.add_field(name='aliases', value='none', inline=False)
+        embed.add_field(name='arguments', value='`search`\n<:reply:1125269313432059904> the subject you want to search', inline=False)
+        embed.add_field(name='example', value='+search blackpink', inline=False)
+        await ctx.reply(embed=embed)
+
+    # EDITING HELP COMMANDS
+
+    @commands.command()
+    async def helptransition(self, ctx):
+        embed = discord.Embed(title='+transition', description='Hoshi will give you a random transition', color=0x2b2d31)
+        embed.add_field(name='aliases', value='+transitions', inline=False)
+        embed.add_field(name='arguments', value='none', inline=False)
+        embed.add_field(name='example', value='+transition', inline=False)
+        await ctx.reply(embed=embed)
+
+    @commands.command()
+    async def helpeffects(self, ctx):
+        embed = discord.Embed(title='+transition', description='Hoshi will give you a random effect', color=0x2b2d31)
+        embed.add_field(name='aliases', value='+effect', inline=False)
+        embed.add_field(name='arguments', value='none', inline=False)
+        embed.add_field(name='example', value='+effect', inline=False)
+        await ctx.reply(embed=embed)
+
+    @commands.command()
+    async def helpaudio(self, ctx):
+        embed = discord.Embed(title='+audio', description='Hoshi will give you a random audio added by members', color=0x2b2d31)
+        embed.add_field(name='aliases', value='+audios', inline=False)
+        embed.add_field(name='arguments', value='none', inline=False)
+        embed.add_field(name='example', value='+audio', inline=False)
+        await ctx.reply(embed=embed)
+
+    @commands.command()
+    async def helpaddaudio(self, ctx):
+        embed = discord.Embed(title='+addaudio <soundcloud link>', description='You can add audios to the `+audio` command', color=0x2b2d31)
+        embed.add_field(name='aliases', value='+audios', inline=False)
+        embed.add_field(name='arguments', value='`soundcloud link`\n<:reply:1125269313432059904> the audios link (has to be from soundcloud)', inline=False)
+        embed.add_field(name='example', value='+addaudio https://soundcloud.com/remqsi', inline=False)
+        await ctx.reply(embed=embed)
+
+    @commands.command()
+    async def helpedits(self, ctx):
+        embed = discord.Embed(title='+edits', description='Hoshi sends a random edit added by a member', color=0x2b2d31)
+        embed.add_field(name='aliases', value='+edit', inline=False)
+        embed.add_field(name='arguments', value='none', inline=False)
+        embed.add_field(name='example', value='+edits', inline=False)
+        await ctx.reply(embed=embed)
+
+    @commands.command()
+    async def helpaddedit(self, ctx):
+        embed = discord.Embed(title='+addedit <streamable link>', description='You can add your edits to the `+edits` command', color=0x2b2d31)
+        embed.add_field(name='aliases', value='none', inline=False)
+        embed.add_field(name='arguments', value='`streamable link`\n<:reply:1125269313432059904> the audios link (has to be from streamable)', inline=False)
+        embed.add_field(name='example', value='+addedit https://streamable.com/6l2840', inline=False)
+        await ctx.reply(embed=embed)    
+
+    @commands.command()
+    async def helpcolorscheme(self, ctx):
+        embed = discord.Embed(title='+colorscheme', description='Hoshi sends a random color scheme', color=0x2b2d31)
+        embed.add_field(name='aliases', value='cs', inline=False)
+        embed.add_field(name='arguments', value='none', inline=False)
+        embed.add_field(name='example', value='+colorscheme', inline=False)
+        await ctx.reply(embed=embed)    
 
 async def setup(bot):
     await bot.add_cog(Help(bot))
