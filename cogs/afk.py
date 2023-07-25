@@ -15,7 +15,7 @@ class afk(commands.Cog):
         with open(self.afk_data_file, "w") as f:
             json.dump(self.afk_data, f, indent=4)
 
-    @commands.Cog.listener()
+"""    @commands.Cog.listener()
     async def on_message(self, message):
         if message.author.bot:
             return
@@ -42,7 +42,7 @@ class afk(commands.Cog):
             await message.channel.send(f"{message.author.mention} is currently AFK.")
             return
 
-"""    @commands.command()
+    @commands.command()
     async def afk(self, ctx, *, reason: str = "AFK"):
         user_id = str(ctx.author.id)
 
