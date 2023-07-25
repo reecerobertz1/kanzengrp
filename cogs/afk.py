@@ -22,7 +22,7 @@ class afk(commands.Cog):
 
         user_id = str(message.author.id)
 
-        if user_id in self.afk_data:
+        if user_id in self.afk_data and user_id not in self.ignore_list:
             afk_info = self.afk_data[user_id]
             reason = afk_info["reason"]
             timestamp = afk_info["timestamp"]
