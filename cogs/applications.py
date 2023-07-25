@@ -29,7 +29,6 @@ class applications(commands.Cog):
                 embed = msg.embeds[0]
                 group_field = next((field for field in embed.fields if field.name == 'Group(s) they want to be in:'), None)
                 user_id_field = next((field for field in embed.fields if field.name == 'Discord ID:'), None)
-                instagram_field = next((field for field in embed.fields if field.name == 'Instagram Name:'), None)
 
                 if not group_field or not user_id_field:
                     await ctx.send("Invalid embed format. Please make sure the embed contains fields 'Group(s) they want to be in:' and 'Discord ID'.")
@@ -39,8 +38,6 @@ class applications(commands.Cog):
                 groups = [group.strip() for group in re.split(r'[,\s]+', grps)]
 
                 user_id = int(re.search(r'\d+', user_id_field.value).group())  # Extract the user ID from the field value
-                instagram = instagram_field.value if instagram_field else None
-
                 accepted_server_ids = []
 
                 for group in groups:
@@ -70,19 +67,6 @@ class applications(commands.Cog):
                     channel = ctx.guild.get_channel(1131006361921130526)
                     if channel:
                         await channel.send(f"{user.mention} was accepted")
-
-                    # Add the user's data to the JSON file
-                    with open("accepted_users.json", "r") as file:
-                        data = json.load(file)
-
-                    data.append({
-                        "user_id": user_id,
-                        "groups": groups,
-                        "instagram": instagram
-                    })
-
-                    with open("accepted_users.json", "w") as file:
-                        json.dump(data, file)
 
                 # Edit the original embed to show the accepted status
                 embed = msg.embeds[0]
