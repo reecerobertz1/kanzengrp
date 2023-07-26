@@ -4,10 +4,6 @@ import discord
 from discord.ext import commands
 import random
 
-class Games(commands.Cog):
-    def __init__(self, bot):
-        self.bot = bot
-
 class TicTacToeButton(discord.ui.Button['TicTacToe']):
     def __init__(self, x, y):
         super().__init__(style=discord.ButtonStyle.secondary, label='\u200b')
@@ -110,6 +106,20 @@ class TicTacToe(commands.Cog):
 
             await message.edit(content=None)
             await self.display_board(ctx, board)
+
+class Games(commands.Cog):
+    def __init__(self, bot) -> None:
+        self.bot = bot
+
+    @commands.command(aliases=['ttt'])
+    async def tictactoe(self, ctx: commands.Context, player2: discord.Member):
+        if player2 == ctx.author:
+            return await ctx.reply("You can't play yourself.")
+
+        view = TicTacToe(player1=ctx.author, player2=player2)
+        content = f'**Tic Tac Toe**\n<:x_:1087132262400794644> {ctx.author.mention} vs <:o_:1087132605876555807> {player2.mention}\n\nIt\'s {ctx.author.mention}\'s turn'
+        view.message = await ctx.send(content, view=view)
+        await view.wait()
         
 async def setup(bot):
     await bot.add_cog(Games(bot))
