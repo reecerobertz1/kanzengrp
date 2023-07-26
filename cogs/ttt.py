@@ -37,7 +37,7 @@ class TicTacToeButton(discord.ui.Button['TicTacToe']):
             await view.message.edit(content=content, view=view)
 
 class TicTacToe(commands.Cog):
-    def __init__(self, bot) -> None:
+    def __init__(self, bot):
         self.bot = bot
 
     async def get_player_reaction(self, ctx, player, message):
@@ -70,9 +70,12 @@ class TicTacToe(commands.Cog):
 
         message = await self.display_board(ctx, board)
 
+        view = TicTacToe()
         for x in range(3):
             for y in range(3):
-                await TicTacToeButton(x, y).send(message)
+                view.add_item(TicTacToeButton(x, y))
+
+        await message.edit(content=None, view=view)
 
         while True:
             reaction = await self.get_player_reaction(ctx, current_player, message)
