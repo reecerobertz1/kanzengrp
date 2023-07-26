@@ -47,6 +47,9 @@ class TicTacToeButton(discord.ui.Button['TicTacToe']):
         self.x = x
         self.y = y
 
+    async def interaction_check(self, interaction: discord.Interaction):
+        return interaction.user == self.current_player
+
     async def callback(self, interaction: discord.Interaction):
         view: TicTacToe = self.view
         if view.current_player == view.player_1:
