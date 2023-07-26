@@ -1,6 +1,7 @@
 import asyncio
 import platform
 import time
+import humanize
 import discord
 from discord.ext import commands
 from datetime import datetime, timedelta, timezone
@@ -25,6 +26,14 @@ class MemberInfo(commands.Cog):
 
         return None
 
+    async def get_user_data(self, user_id):
+        # Function to get user data. Replace with your data retrieval logic.
+        # Example:
+        return {
+            "last_seen": None,
+            "online_since": None
+        }
+
     def get_badges(self, member: discord.Member, user: discord.User, flags: str, badgeslist: list) -> None:
         if "hypesquad_balance" in str(flags):
             badgeslist.append("<:balance:1122699998635753532> HypeSquad Balance")
@@ -45,55 +54,56 @@ class MemberInfo(commands.Cog):
         if member.premium_since is not None:
             badgeslist.append("<a:938021210984419338:1122702983277330512> Booster")
 
-
-    @commands.command()
-    async def memberinfo(self, ctx, member: discord.Member = None):
+    @commands.command(help="Sends info about a user", aliases=['ui'])
+    async def userinfo(self, ctx, member: discord.Member):
         if member is None:
             member = ctx.author
 
-        now = datetime.now(timezone.utc)
-        joined_at_utc = member.joined_at.replace(tzinfo=timezone.utc)
-
-        online_duration = now - joined_at_utc
-        online_days = online_duration.days
-        online_hours = online_duration.seconds // 3600
-
-        discord_join_date = member.created_at.strftime("%A, %B %d %Y")
-        server_join_date = member.joined_at.strftime("%A, %B %d")
-
-        nickname = member.nick
-        badges = member.public_flags.all()
-
-        user = member
-        avatar_url = user.avatar.url if user.avatar else None
-        banner_url = await self.get_banner_url(user)
-
+        createdat = member.created_at
+        joinedat = member.joined_at
+        created = time.mktime(createdat.timetuple())
+        joined = time.mktime(joinedat.timetuple())
+        flags = member.public_flags.all()
         badgeslist = []
-        self.get_badges(member, user, badges, badgeslist)
+        user = await self.bot.fetch_user(member.id)
+        self.get_badges(member, user, flags, badgeslist)
+        badges = ' \n'.join([str(elem) for elem in badgeslist])
 
-        # Extract Instagram account from the member nickname
-        instagram_account = nickname.split("|")[-1].strip()
+        embed = discord.Embed(title=member.name, color=discord.Color.gold())
+        if user.banner is not None:
+            embed.set_image(url=user.banner)
+        embed.set_thumbnail(url=member.avatar.url)
 
-        embed = discord.Embed(title=f"{member.name}", color=0x2b2d31)
-        embed.add_field(name="<:instagram:1128753024718872717> Instagram", value=f"[{instagram_account}](https://www.instagram.com/{instagram_account})", inline=False)
-        embed.add_field(name="<:concoursdiscordcartesvoeuxfortni:1122702096085549076> Joined Discord", value=discord_join_date, inline=False)
-        embed.add_field(name="<:dash:1123654552843993099> Joined", value=server_join_date, inline=False)
-        embed.add_field(name="<:1faaa:1122701643536937011> Nickname", value=nickname, inline=False)
-        embed.set_footer(text=f'Member ID {user.id}')
-        if badgeslist:
-            embed.add_field(name="<a:938023584142622791:1122700150641528873> Badges", value='\n'.join(badgeslist), inline=False)
-        else:
-            embed.add_field(name="<a:938023584142622791:1122700150641528873> Badges", value="None", inline=False)
+        data = await self.get_user_data(member.id)
+        try:
+            if data['last_seen'] is None:
+                embed.add_field(name="<:status_online:998595341450481714> Activity",
+                                value=f'Active for **{humanize.precisedelta(discord.utils.utcnow() - data["online_since"], minimum_unit="seconds", format="%0.0f")}**',
+                                inline=False)
+            else:
+                embed.add_field(name="<:status_offline:998595266062061653> Activity",
+                                value=f'Went offline {discord.utils.format_dt(data["last_seen"], "R")}',
+                                inline=False)
+        except Exception as error:
+            if str(error) == "'NoneType' object is not subscriptable":
+                return
+            else:
+                print(error)
 
-        if avatar_url:
-            embed.set_thumbnail(url=avatar_url)
+        embed.add_field(name="<:name:938019997656174622> Nickname", value=member.nick, inline=False)
+        embed.add_field(name="<:magicwand:938019572165009448> Created at", value=f"<t:{int(created)}:D> (<t:{int(created)}:R>)", inline=False)
+        embed.add_field(name="<:green_arrow:937770497557553222> Joined", value=f"<t:{int(joined)}:D> (<t:{int(joined)}:R>)", inline=False)
 
-        if banner_url:
-            embed.set_image(url=banner_url)
+        # Extract Instagram account from the nickname
+        if member.nick:
+            instagram_account = member.nick.split("|")[-1].strip()
+            embed.add_field(name="<:instagram:1128753024718872717> Instagram",
+                            value=f"[{instagram_account}](https://www.instagram.com/{instagram_account})", inline=False)
 
-        await ctx.reply(embed=embed)
+        if len(badgeslist) > 0:
+            embed.add_field(name="<a:badges:938023584142622791> Badges", value=f"{badges}", inline=False)
 
-        self.start_time = datetime.utcnow()
+        await ctx.send(embed=embed)
 
     @commands.command(aliases=["hoshiinfo", "about"])
     async def abouthoshi(self, ctx):
