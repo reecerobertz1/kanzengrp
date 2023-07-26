@@ -4,23 +4,37 @@ import discord
 from discord.ext import commands
 import random
 
-class InvitationButtons(discord.ui.View):
-    def __init__(self, player_invited: discord.Member, timeout: Optional[float] = 180.0):
-        super().__init__(timeout=timeout)
-        self.player_invited: discord.Member = player_invited
-        self.answer: bool = None
+class TicTacToeButton(discord.ui.Button['TicTacToe']):
+    def __init__(self, x, y):
+        super().__init__(style=discord.ButtonStyle.secondary, label='\u200b')
+        self.x = x
+        self.y = y
 
-    @discord.ui.button(label="Accept", style=discord.ButtonStyle.green)
-    async def on_accept(self, button: discord.ui.Button, interaction: discord.Interaction):
-        if interaction.user == self.player_invited:
-            self.answer = True
-            self.stop()
+    async def callback(self, interaction: discord.Interaction):
+        view: TicTacToe = self.view
+        if view.current_player == view.player_1:
+            self.style = discord.ButtonStyle.blurple
+            self.label = 'X'
+            view.board[self.y][self.x] = 'X'
+            view.current_player = view.player_2
+        else:
+            self.style = discord.ButtonStyle.red
+            self.label = 'O'
+            view.board[self.y][self.x] = 'O'
+            view.current_player = view.player_1
 
-    @discord.ui.button(label="Decline", style=discord.ButtonStyle.red)
-    async def on_decline(self, button: discord.ui.Button, interaction: discord.Interaction):
-        if interaction.user == self.player_invited:
-            self.answer = False
-            self.stop()
+        self.disabled = True
+        winner = view.check_board_winner()
+        if winner:
+            for child in view.children:
+                child.disabled = True
+
+            if winner == 'tie':
+                content = "It's a tie!"
+            else:
+                content = f"{view.current_player.mention} won!"
+
+            await view.message.edit(content=content, view=view)
 
 class TicTacToe(discord.ui.View):
     def __init__(self, player1, player2):
@@ -57,41 +71,8 @@ class TicTacToe(discord.ui.View):
 
         return None
 
-    async def interaction_check(self, interaction: discord.Interaction):
+    async def interaction_check(self, interaction: discord.Interaction) -> bool:
         return interaction.user == self.current_player
-
-class TicTacToeButton(discord.ui.Button['TicTacToe']):
-    def __init__(self, x, y):
-        super().__init__(style=discord.ButtonStyle.secondary, label='\u200b')
-        self.x = x
-        self.y = y
-
-    async def callback(self, interaction: discord.Interaction):
-        view: TicTacToe = self.view
-        if interaction.user == view.current_player:
-            if view.current_player == view.player_1:
-                self.style = discord.ButtonStyle.blurple
-                self.label = 'X'
-                view.board[self.y][self.x] = 'X'
-                view.current_player = view.player_2
-            else:
-                self.style = discord.ButtonStyle.red
-                self.label = 'O'
-                view.board[self.y][self.x] = 'O'
-                view.current_player = view.player_1
-
-            self.disabled = True
-            winner = view.check_board_winner()
-            if winner:
-                for child in view.children:
-                    child.disabled = True
-
-                if winner == 'tie':
-                    content = "It's a tie!"
-                else:
-                    content = f"{view.current_player.mention} won!"
-
-                await view.message.edit(content=content, view=view)
 
 class Games(commands.Cog):
     def __init__(self, bot) -> None:
