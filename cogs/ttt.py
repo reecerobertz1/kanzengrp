@@ -37,7 +37,7 @@ class TicTacToeButton(discord.ui.Button['TicTacToe']):
             await view.message.edit(content=content, view=view)
 
 class TicTacToe(commands.Cog):
-    def __init__(self, bot):
+    def __init__(self, bot) -> None:
         self.bot = bot
 
     async def get_player_reaction(self, ctx, player, message):
@@ -52,11 +52,14 @@ class TicTacToe(commands.Cog):
             return None
 
     async def display_board(self, ctx, board):
-        message = "**Tic Tac Toe**\n"
-        for row in board:
-            message += " ".join([str(cell) if cell is not None else "\u200b" for cell in row])
-            message += "\n"
-        return await ctx.send(message)
+        view = TicTacToe()
+        for x in range(3):
+            for y in range(3):
+                view.add_item(TicTacToeButton(x, y))
+
+        message = await ctx.send("**Tic Tac Toe**")
+        await message.edit(view=view)
+        return message
 
     @commands.command(aliases=['ttt'])
     async def tictactoe(self, ctx: commands.Context, player2: discord.Member):
@@ -69,13 +72,6 @@ class TicTacToe(commands.Cog):
         board = [[None, None, None], [None, None, None], [None, None, None]]
 
         message = await self.display_board(ctx, board)
-
-        view = TicTacToe()
-        for x in range(3):
-            for y in range(3):
-                view.add_item(TicTacToeButton(x, y))
-
-        await message.edit(content=None, view=view)
 
         while True:
             reaction = await self.get_player_reaction(ctx, current_player, message)
