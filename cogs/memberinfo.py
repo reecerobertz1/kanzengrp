@@ -102,7 +102,7 @@ class MemberInfo(commands.Cog):
                             value=f"[{instagram_account}](https://www.instagram.com/{instagram_account})", inline=False)
 
         if len(badgeslist) > 0:
-            embed.add_field(name="<a:badges:938023584142622791> Badges", value=f"{badges}", inline=False)
+            embed.add_field(name="<a:938023584142622791:1122700150641528873> Badges", value=f"{badges}", inline=False)
 
         await ctx.send(embed=embed)
 
