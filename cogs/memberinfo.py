@@ -1,6 +1,7 @@
 import asyncio
 import platform
 import time
+from typing import Optional
 import humanize
 import discord
 from discord.ext import commands
@@ -55,7 +56,7 @@ class MemberInfo(commands.Cog):
             badgeslist.append("<a:938021210984419338:1122702983277330512> Booster")
 
     @commands.command()
-    async def userinfo(self, ctx, member: discord.Member):
+    async def userinfo(self, ctx, member: Optional[discord.Member] = None):
         if member is None:
             member = ctx.author
 
