@@ -16,7 +16,7 @@ class welcandleave(commands.Cog):
         self.server5_id = 896619762354892821
         self.server5_channel = 896924663819694132
         self.server6_id = 1131003330810871979
-        self.server6_channel = 1131003331326787676
+        self.server6_channel = 1133767338588639323
 
     @commands.Cog.listener()
     async def on_member_join(self, member: discord.Member):
