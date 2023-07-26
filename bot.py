@@ -29,7 +29,7 @@ extensions = {
     "cogs.audios",
     "cogs.custom",
     "cogs.newapps",
-    "cogs.newhelp"
+    "cogs.ttt"
 }
 
 # bot subclass
