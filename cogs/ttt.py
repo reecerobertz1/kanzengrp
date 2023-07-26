@@ -9,13 +9,13 @@ class InvitationButtons(discord.ui.View):
         self.answer: bool = None
 
     @discord.ui.button(label="Accept", style=discord.ButtonStyle.green)
-    async def accept(self, interaction: discord.Interaction):
+    async def accept(self, button: discord.ui.Button, interaction: discord.Interaction):
         if interaction.user == self.player_invited:
             self.answer = True
             self.stop()
 
     @discord.ui.button(label="Decline", style=discord.ButtonStyle.red)
-    async def decline(self, interaction: discord.Interaction):
+    async def decline(self, button: discord.ui.Button, interaction: discord.Interaction):
         if interaction.user == self.player_invited:
             self.answer = False
             self.stop()
