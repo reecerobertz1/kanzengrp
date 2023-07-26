@@ -54,7 +54,7 @@ class MemberInfo(commands.Cog):
         if member.premium_since is not None:
             badgeslist.append("<a:938021210984419338:1122702983277330512> Booster")
 
-    @commands.command(help="Sends info about a user", aliases=['ui'])
+    @commands.command()
     async def userinfo(self, ctx, member: discord.Member):
         if member is None:
             member = ctx.author
