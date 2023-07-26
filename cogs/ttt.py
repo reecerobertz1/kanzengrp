@@ -4,56 +4,17 @@ import discord
 from discord.ext import commands
 import random
 
-class Games(commands.Cog):
-    def __init__(self, bot) -> None:
-        self.bot = bot
-
-class TicTacToeButton(discord.ui.Button['TicTacToe']):
-    def __init__(self, x: int, y: int):
-        super().__init__(style=discord.ButtonStyle.secondary, label='\u200b')
-        self.x = x
-        self.y = y
-
-    async def callback(self, interaction: discord.Interaction):
-        view: TicTacToe = self.view
-        if view.current_player == view.player_1:
-            self.style = discord.ButtonStyle.blurple
-            self.label = 'X'
-            view.board[self.y][self.x] = 'X'
-            view.current_player = view.player_2
-        else:
-            self.style = discord.ButtonStyle.red
-            self.label = 'O'
-            view.board[self.y][self.x] = 'O'
-            view.current_player = view.player_1
-
-        self.disabled = True
-        winner = view.check_board_winner()
-        if winner:
-            for child in view.children:
-                child.disabled = True
-
-            if winner == 'tie':
-                content = "It's a tie!"
-            else:
-                content = f"{view.current_player.mention} won!"
-
-            await view.message.edit(content=content, view=view)
-
-class TicTacToe(discord.ui.View):
-    def __init__(self, player1, player2):
-        super().__init__(timeout=30.0)
+class TicTacToe:
+    def __init__(self, ctx, player1, player2):
+        self.ctx = ctx
+        self.current_player = player1
         self.player_1 = player1
         self.player_2 = player2
-        self.current_player = player1
         self.board = [
             [None, None, None],
             [None, None, None],
             [None, None, None]
         ]
-        for x in range(3):
-            for y in range(3):
-                self.add_item(TicTacToeButton(x, y))
 
     def check_board_winner(self):
         for row in self.board:
@@ -75,6 +36,64 @@ class TicTacToe(discord.ui.View):
 
         return None
 
+    async def show_board(self):
+        content = f"**Tic Tac Toe**\n<:x_:1087132262400794644> {self.player_1.mention} vs <:o_:1087132605876555807> {self.player_2.mention}\n\n"
+        for y in range(3):
+            row = ""
+            for x in range(3):
+                state = self.board[y][x]
+                if state is None:
+                    row += "🟦"
+                elif state == 'X':
+                    row += "<:x_:1087132262400794644>"
+                elif state == 'O':
+                    row += "<:o_:1087132605876555807>"
+            content += f"{row}\n"
+
+        return await self.ctx.send(content)
+
+    async def play(self):
+        message = await self.show_board()
+        for y in range(3):
+            for x in range(3):
+                await message.add_reaction(f"{x+1}\u20e3")
+        await message.add_reaction("🔄")
+
+        def check(reaction, user):
+            return user == self.current_player and reaction.message == message
+
+        while True:
+            try:
+                reaction, user = await self.ctx.bot.wait_for('reaction_add', timeout=60.0, check=check)
+
+                if str(reaction.emoji) == '🔄':
+                    return await message.delete()
+                
+                x = int(reaction.emoji[0]) - 1
+                y = {
+                    '1️⃣': 0,
+                    '2️⃣': 1,
+                    '3️⃣': 2
+                }.get(reaction.emoji)
+                
+                if self.board[y][x] is None:
+                    self.board[y][x] = 'X' if self.current_player == self.player_1 else 'O'
+                    winner = self.check_board_winner()
+                    if winner:
+                        content = f"{self.current_player.mention} won!" if winner != "tie" else "It's a tie!"
+                        await self.show_board()
+                        await message.edit(content=content)
+                        for reaction in message.reactions:
+                            await reaction.clear()
+                        return
+
+                    self.current_player = self.player_1 if self.current_player == self.player_2 else self.player_2
+                    await message.remove_reaction(reaction, user)
+                    await self.show_board()
+            except asyncio.TimeoutError:
+                await message.delete()
+                return
+
 class Games(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -84,10 +103,8 @@ class Games(commands.Cog):
         if player2 == ctx.author:
             return await ctx.reply("You can't play yourself.")
 
-        view = TicTacToe(player1=ctx.author, player2=player2)
-        content = f'**Tic Tac Toe**\n<:x_:1087132262400794644> {ctx.author.mention} vs <:o_:1087132605876555807> {player2.mention}\n\nIt\'s {ctx.author.mention}\'s turn'
-        view.message = await ctx.send(content, view=view)
-        await view.wait()
+        ttt_game = TicTacToe(ctx, player1=ctx.author, player2=player2)
+        await ttt_game.play()
         
 async def setup(bot):
     await bot.add_cog(Games(bot))
