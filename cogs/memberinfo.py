@@ -70,7 +70,7 @@ class MemberInfo(commands.Cog):
         self.get_badges(member, user, flags, badgeslist)
         badges = ' \n'.join([str(elem) for elem in badgeslist])
 
-        embed = discord.Embed(title=member.name, color=discord.Color.gold())
+        embed = discord.Embed(title=member.name, color=0x2b2d31)
         if user.banner is not None:
             embed.set_image(url=user.banner)
         embed.set_thumbnail(url=member.avatar.url)
@@ -91,9 +91,9 @@ class MemberInfo(commands.Cog):
             else:
                 print(error)
 
-        embed.add_field(name="<:name:938019997656174622> Nickname", value=member.nick, inline=False)
-        embed.add_field(name="<:magicwand:938019572165009448> Created at", value=f"<t:{int(created)}:D> (<t:{int(created)}:R>)", inline=False)
-        embed.add_field(name="<:green_arrow:937770497557553222> Joined", value=f"<t:{int(joined)}:D> (<t:{int(joined)}:R>)", inline=False)
+        embed.add_field(name="<:1faaa:1122701643536937011> Nickname:", value=member.nick, inline=False)
+        embed.add_field(name="<:concoursdiscordcartesvoeuxfortni:1122702096085549076> Joined Discord:", value=f"<t:{int(created)}:D> (<t:{int(created)}:R>)", inline=False)
+        embed.add_field(name=f"<:dash:1123654552843993099> Joined {ctx.guild.name}", value=f"<t:{int(joined)}:D> (<t:{int(joined)}:R>)", inline=False)
 
         # Extract Instagram account from the nickname
         if member.nick:
