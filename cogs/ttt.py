@@ -1,54 +1,22 @@
+import asyncio
 import discord
 from discord.ext import commands
 import random
 
-class InvitationButtons(discord.ui.View):
-    def __init__(self, player_invited: discord.Member, timeout: float = 180.0):
-        super().__init__(timeout=timeout)
-        self.player_invited: discord.Member = player_invited
-        self.answer: bool = None
-
-    @discord.ui.button(label="Accept", style=discord.ButtonStyle.green)
-    async def accept(self, button: discord.ui.Button, interaction: discord.Interaction):
-        if interaction.user == self.player_invited:
-            self.answer = True
-            self.stop()
-
-    @discord.ui.button(label="Decline", style=discord.ButtonStyle.red)
-    async def decline(self, button: discord.ui.Button, interaction: discord.Interaction):
-        if interaction.user == self.player_invited:
-            self.answer = False
-            self.stop()
-
-class TicTacToe(discord.ui.View):
+class TicTacToe:
     X = -1
     O = 1
     Tie = 2
 
-    def __init__(self, player1, player2, starter, timeout: float = 30.0):
-        super().__init__(timeout=timeout)
-        if starter == player1:
-            self.current_player = starter
-            self.player_1 = player1
-            self.player_2 = player2
-        elif starter == player2:
-            self.current_player = starter
-            self.player_1 = player2
-            self.player_2 = player1
+    def __init__(self, player1, player2, starter):
+        self.current_player = starter
+        self.player_1 = player1
+        self.player_2 = player2
         self.board = [
             [0, 0, 0],
             [0, 0, 0],
             [0, 0, 0],
         ]
-
-        for x in range(3):
-            for y in range(3):
-                self.add_item(InvitationButtons(x, y))
-
-    async def on_timeout(self) -> None:
-        for item in self.children:
-            item.disabled = True
-        await self.message.edit(content=f"❗ {self.current_player.name} didn't make a move in time.\nGame has ended in a tie.", view=self)
 
     def check_board_winner(self):
         for across in self.board:
@@ -88,27 +56,70 @@ class Games(commands.Cog):
 
     @commands.command(aliases=['ttt'])
     async def tictactoe(self, ctx: commands.Context, player2: discord.Member):
+        """Play tic-tac-toe
+        
+        Parameters
+        -----------
+        player2: discord.Member
+            who you want to play against
+        """
         if player2 == ctx.author:
             return await ctx.reply("You can't play yourself.")
-        embed = discord.Embed(title="📥 Invitation", description=f"{ctx.author.mention} invited you to play tic-tac-toe!", color=0x2B2D31)
-        view = InvitationButtons(player2)
-        invite = await ctx.send(content=player2.mention, embed=embed, view=view)
-        await view.wait()
-        if view.answer:
-            await invite.delete()
-            starter = random.choice([ctx.author, player2])
-            view = TicTacToe(player1=ctx.author, player2=player2, starter=starter)
-            view.message = await ctx.send(f'**Tic Tac Toe**\n<:x_:1087132262400794644> {starter.name} goes first', view=view)
-        elif view.answer is None:
-            embed = invite.embeds[0]
-            original = invite.embeds[0].description
-            new = f"~~{original}~~\n\n❗ You didn't respond to the invite in time"
-            embed.description = new
-            for item in view.children:
-                item.disabled = True
-            await invite.edit(embed=embed, view=view)
+
+        starter = random.choice([ctx.author, player2])
+        game = TicTacToe(player1=ctx.author, player2=player2, starter=starter)
+        content = f'**Tic Tac Toe**\n<:x_:1087132262400794644> {starter.name} goes first'
+        message = await ctx.send(content)
+
+        def check_move(m):
+            return m.author == game.current_player and m.channel == ctx.channel
+
+        while not (winner := game.check_board_winner()):
+            try:
+                move = await self.bot.wait_for('message', check=check_move, timeout=30.0)
+            except asyncio.TimeoutError:
+                content = f'❗ {game.current_player.name} didnt make a move in time.\nGame has ended in a tie.'
+                return await message.edit(content=content)
+
+            move_content = move.content
+            if move_content.lower() == 'stop':
+                return await ctx.send(f'The game was ended by {game.current_player.mention}.')
+
+            if len(move_content) != 2 or not move_content[0].isdigit() or not move_content[1].isdigit():
+                await ctx.send('Invalid move! Please enter a move in the format "row column", e.g., "1 2".')
+                continue
+
+            row = int(move_content[0]) - 1
+            col = int(move_content[1]) - 1
+
+            if not (0 <= row < 3 and 0 <= col < 3):
+                await ctx.send('Invalid move! Row and column should be between 1 and 3.')
+                continue
+
+            if game.board[row][col] in (game.X, game.O):
+                await ctx.send('Invalid move! That cell is already taken.')
+                continue
+
+            game.board[row][col] = game.X if game.current_player == game.player_1 else game.O
+            content = f'**Tic Tac Toe**\n<:x_:1087132262400794644> {game.player_1.name} vs <:o_:1087132605876555807> {game.player_2.name}\n\n'
+            for y in range(3):
+                for x in range(3):
+                    if game.board[y][x] == game.X:
+                        content += "<:x_:1087132262400794644>"
+                    elif game.board[y][x] == game.O:
+                        content += "<:o_:1087132605876555807>"
+                    else:
+                        content += "<:empty:1234567890>"
+                content += '\n'
+            content += f"\n{game.current_player.name}'s turn"
+            await message.edit(content=content)
+            game.current_player = game.player_1 if game.current_player == game.player_2 else game.player_2
+
+        if winner == game.Tie:
+            content = "It's a tie!"
         else:
-            return await invite.edit(content=f'❌ {player2.name} declined the invite', embed=None, view=None)
+            content = f"{game.current_player.name} won!"
+        await ctx.send(content)
         
 async def setup(bot):
     await bot.add_cog(Games(bot))
