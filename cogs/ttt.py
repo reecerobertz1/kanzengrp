@@ -1,7 +1,26 @@
 import asyncio
+from typing import Optional
 import discord
 from discord.ext import commands
 import random
+
+class InvitationButtons(discord.ui.View):
+    def __init__(self, player_invited: discord.Member, timeout: Optional[float] = 180.0):
+        super().__init__(timeout=timeout)
+        self.player_invited: discord.Member = player_invited
+        self.answer: bool = None
+
+    @discord.ui.button(label="Accept", style=discord.ButtonStyle.green)
+    async def on_accept(self, button: discord.ui.Button, interaction: discord.Interaction):
+        if interaction.user == self.player_invited:
+            self.answer = True
+            self.stop()
+
+    @discord.ui.button(label="Decline", style=discord.ButtonStyle.red)
+    async def on_decline(self, button: discord.ui.Button, interaction: discord.Interaction):
+        if interaction.user == self.player_invited:
+            self.answer = False
+            self.stop()
 
 class TicTacToe(discord.ui.View):
     def __init__(self, player1, player2):
@@ -46,9 +65,6 @@ class TicTacToeButton(discord.ui.Button['TicTacToe']):
         super().__init__(style=discord.ButtonStyle.secondary, label='\u200b')
         self.x = x
         self.y = y
-
-    async def interaction_check(self, interaction: discord.Interaction):
-        return interaction.user == self.current_player
 
     async def callback(self, interaction: discord.Interaction):
         view: TicTacToe = self.view
