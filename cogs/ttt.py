@@ -34,7 +34,7 @@ class TicTacToe(commands.Cog):
             await message.edit(embed=embed)
         else:
             # If no game message exists, send a new one
-            embed = discord.Embed(title="Tic-Tac-Toe", description=self.print_board(board), color=0x2ECC71)
+            embed = discord.Embed(title="Tic-Tac-Toe", description=self.print_board(board), color=0x2b2d31)
             embed.add_field(name="Current Turn", value=current_player.mention, inline=False)
             message = await ctx.reply(embed=embed)
 
