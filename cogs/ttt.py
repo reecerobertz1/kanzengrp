@@ -133,7 +133,7 @@ class TicTacToeCog(commands.Cog):
                 return True
         return False
 
-    async def update_game(self, ctx: commands.Context, message, board):
+    async def update_game(self, ctx, message, board):
         embed = discord.Embed(title="Tic-Tac-Toe", description=self.print_board(board), color=0x2ECC71)
         await message.edit(embed=embed)
 
