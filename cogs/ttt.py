@@ -24,9 +24,10 @@ class TicTacToe(commands.Cog):
             board_str += f"\n{line}"
         return board_str
 
-    async def display_board(self, ctx, board):
-        message = "**Tic Tac Toe**\n" + self.print_board(board)
-        return await ctx.send(message)
+    async def display_board(self, ctx, board, current_player):
+        embed = discord.Embed(title="Tic-Tac-Toe", description=self.print_board(board), color=0x2ECC71)
+        embed.add_field(name="Current Turn", value=current_player.mention, inline=False)
+        await ctx.send(embed=embed)
 
     @commands.command(name='tictactoe', aliases=['ttt'])
     async def tictactoe(self, ctx: commands.Context, player2: discord.Member):
@@ -39,6 +40,7 @@ class TicTacToe(commands.Cog):
         board = ["⬜" for _ in range(9)]
 
         message = await self.display_board(ctx, board)
+        await self.display_board(ctx, board, current_player)
 
         for emoji in ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣"]:
             await message.add_reaction(emoji)
@@ -63,7 +65,6 @@ class TicTacToe(commands.Cog):
             if board[position] == "⬜":
                 board[position] = current_player.symbol
                 await reaction.remove(user)
-                await self.update_game(ctx, message, board)
 
                 if self.check_winner(board):
                     return await ctx.send(f"{current_player.mention} wins the game!")
@@ -71,6 +72,7 @@ class TicTacToe(commands.Cog):
                     return await ctx.send("It's a tie!")
 
                 current_player = player_1 if current_player == player_2 else player_2
+                await self.display_board(ctx, board, current_player)
 
     def check_winner(self, board):
         win_patterns = [
@@ -82,10 +84,6 @@ class TicTacToe(commands.Cog):
             if board[pattern[0]] == board[pattern[1]] == board[pattern[2]] != "⬜":
                 return True
         return False
-
-    async def update_game(self, ctx, message, board):
-        embed = discord.Embed(title="Tic-Tac-Toe", description=self.print_board(board), color=0x2ECC71)
-        await message.edit(embed=embed)
 
     @tictactoe.error
     async def tictactoe_command_error(self, ctx, error):
