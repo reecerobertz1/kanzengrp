@@ -64,45 +64,43 @@ class Player:
 class TicTacToeCog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.games = {}
 
-    async def display_board(self, ctx, board):
+    def print_board(self, board):
         line = "-------------"
         board_str = f"\n{line}"
         for i in range(0, 9, 3):
             board_str += f"\n| {' | '.join(board[i:i+3])} |"
             board_str += f"\n{line}"
-        return await ctx.send(board_str)
+        return board_str
 
-    @commands.command(name='tictactoe')
-    async def tictactoe(self, ctx, opponent: discord.Member):
-        if opponent == ctx.author:
-            await ctx.send("You cannot play against yourself!")
-            return
+    async def display_board(self, ctx, board):
+        message = "**Tic Tac Toe**\n" + self.print_board(board)
+        return await ctx.send(message)
 
-        if ctx.guild is None:
-            await ctx.send("This command can only be used in a server!")
-            return
+    @commands.command(name='tictactoe', aliases=['ttt'])
+    async def tictactoe(self, ctx: commands.Context, player2: discord.Member):
+        if player2 == ctx.author:
+            return await ctx.reply("You can't play against yourself.")
 
-        player_o = Player(ctx.author, "⭕")
-        player_x = Player(opponent, "❌")
+        player_1 = Player(ctx.author, "⭕")
+        player_2 = Player(player2, "❌")
+        current_player = player_1
+        board = ["⬜" for _ in range(9)]
 
-        # Initialize the TicTacToe game
-        game = TicTacToe(ctx, player_o, player_x)
-
-        embed = discord.Embed(title="Tic-Tac-Toe", description=f"{game.print_board()}", color=0x2ECC71)
-        message = await ctx.send(embed=embed)
+        message = await self.display_board(ctx, board)
 
         for emoji in ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣"]:
             await message.add_reaction(emoji)
 
         def check(reaction, user):
             return (
-                user == game.current_player.member
+                user == current_player.member
                 and str(reaction.emoji) in ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣"]
                 and reaction.message.id == message.id
             )
 
-        while not game.game_over:
+        while True:
             try:
                 reaction, user = await self.bot.wait_for('reaction_add', timeout=30.0, check=check)
             except asyncio.TimeoutError:
@@ -111,19 +109,33 @@ class TicTacToeCog(commands.Cog):
                 return
 
             position = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣"].index(str(reaction.emoji))
-            result = game.make_move(position)
 
-            await reaction.remove(user)
+            if board[position] == "⬜":
+                board[position] = current_player.symbol
+                await reaction.remove(user)
+                await self.update_game(ctx, message, board)
 
-            if result is not None:
-                embed = discord.Embed(title="Tic-Tac-Toe", description=f"{game.print_board()}\n{result}", color=0x2b2d31)
-                await ctx.send(embed=embed)
-                return
+                if self.check_winner(board):
+                    return await ctx.send(f"{current_player.mention} wins the game!")
+                elif "⬜" not in board:
+                    return await ctx.send("It's a tie!")
 
-            embed.description = game.print_board()
-            await message.edit(embed=embed)
+                current_player = player_1 if current_player == player_2 else player_2
 
-        await message.clear_reactions()
+    def check_winner(self, board):
+        win_patterns = [
+            [0, 1, 2], [3, 4, 5], [6, 7, 8],  # Rows
+            [0, 3, 6], [1, 4, 7], [2, 5, 8],  # Columns
+            [0, 4, 8], [2, 4, 6]              # Diagonals
+        ]
+        for pattern in win_patterns:
+            if board[pattern[0]] == board[pattern[1]] == board[pattern[2]] != "⬜":
+                return True
+        return False
+
+    async def update_game(self, ctx: commands.Context, message, board):
+        embed = discord.Embed(title="Tic-Tac-Toe", description=self.print_board(board), color=0x2ECC71)
+        await message.edit(embed=embed)
 
     @tictactoe.error
     async def tictactoe_command_error(self, ctx, error):
