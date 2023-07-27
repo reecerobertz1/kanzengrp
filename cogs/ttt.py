@@ -12,100 +12,91 @@ class TicTacToeButton(discord.ui.Button['TicTacToe']):
 
     async def callback(self, interaction: discord.Interaction):
         view: TicTacToe = self.view
-        if view.current_player == view.player_1:
-            self.style = discord.ButtonStyle.blurple
-            self.label = 'X'
-            view.board[self.y][self.x] = 'X'
-            view.current_player = view.player_2
-        else:
-            self.style = discord.ButtonStyle.red
-            self.label = 'O'
-            view.board[self.y][self.x] = 'O'
-            view.current_player = view.player_1
-
-        self.disabled = True
-        winner = view.check_board_winner()
-        if winner:
-            for child in view.children:
-                child.disabled = True
-
-            if winner == 'tie':
+        if not view.game_over and view.board[self.y * 3 + self.x] == "⬜":
+            view.board[self.y * 3 + self.x] = view.current_player.symbol
+            if view.check_winner():
+                view.game_over = True
+                content = f"{view.current_player.mention} wins the game!"
+            elif "⬜" not in view.board:
+                view.game_over = True
                 content = "It's a tie!"
             else:
-                content = f"{view.current_player.mention} won!"
+                view.current_player, view.opponent_player = view.opponent_player, view.current_player
+                content = f"It's {view.current_player.mention}'s turn"
+            
+            buttons = view.create_buttons()
+            for y, row in enumerate(buttons):
+                for x, button in enumerate(row):
+                    button.label = view.board[y * 3 + x]
 
-            await view.message.edit(content=content, view=view)
+            await interaction.message.edit(content=content, components=buttons)
 
 class TicTacToe(commands.Cog):
     def __init__(self, bot) -> None:
         self.bot = bot
 
-    async def get_player_reaction(self, ctx, player, message):
+    def create_buttons(self):
+        buttons = [
+            [TicTacToeButton(x, y) for x in range(3)] for y in range(3)
+        ]
+        return buttons
+
+    def print_board(self):
+        line = "-------------"
+        board_str = f"\n{line}"
+        for i in range(0, 9, 3):
+            board_str += f"\n| {' | '.join(self.board[i:i+3])} |"
+            board_str += f"\n{line}"
+        return board_str
+
+    def check_winner(self):
+        win_patterns = [
+            [0, 1, 2], [3, 4, 5], [6, 7, 8],  # Rows
+            [0, 3, 6], [1, 4, 7], [2, 5, 8],  # Columns
+            [0, 4, 8], [2, 4, 6]              # Diagonals
+        ]
+        for pattern in win_patterns:
+            if self.board[pattern[0]] == self.board[pattern[1]] == self.board[pattern[2]] != "⬜":
+                return True
+        return False
+
+    def make_move(self, position):
+        if not self.game_over and self.board[position] == "⬜":
+            self.board[position] = self.current_player.symbol
+            if self.check_winner():
+                self.game_over = True
+                return f"{self.current_player.mention} wins the game!"
+            elif "⬜" not in self.board:
+                self.game_over = True
+                return "It's a tie!"
+            self.current_player, self.opponent_player = self.opponent_player, self.current_player
+        return None
+
+    def initialize_game(self, ctx, player_o, player_x):
+        self.ctx = ctx
+        self.player_o = player_o
+        self.player_x = player_x
+        self.board = ["⬜" for _ in range(9)]
+        self.current_player = player_o
+        self.opponent_player = player_x
+        self.game_over = False
+
+    async def start_game(self):
+        embed = discord.Embed(title="Tic-Tac-Toe", description=f"{self.print_board()}", color=0x2ECC71)
+        message = await self.ctx.send(embed=embed, components=self.create_buttons())
+
         try:
-            reaction, user = await self.bot.wait_for(
-                "reaction_add",
-                check=lambda reaction, user: user == player and reaction.message == message and str(reaction.emoji) in ["↖️", "⬆️", "↗️", "⬅️", "⏺️", "➡️", "↙️", "⬇️", "↘️"],
-                timeout=30.0,
-            )
-            return str(reaction.emoji)
+            while not self.game_over:
+                interaction = await self.bot.wait_for("button_click", timeout=30.0)
+                await interaction.respond(type=6)  # Acknowledge the interaction to prevent timeout
+                
+                for row in self.create_buttons():
+                    for button in row:
+                        if interaction.custom_id == button.custom_id:
+                            await button.callback(interaction)
+                            break
         except asyncio.TimeoutError:
-            return None
-
-    async def display_board(self, ctx, board):
-        view = TicTacToe()
-        for x in range(3):
-            for y in range(3):
-                view.add_item(TicTacToeButton(x, y))
-
-        message = await ctx.send("**Tic Tac Toe**")
-        await message.edit(view=view)
-        return message
-
-    @commands.command(aliases=['ttt'])
-    async def tictactoe(self, ctx: commands.Context, player2: discord.Member):
-        if player2 == ctx.author:
-            return await ctx.reply("You can't play yourself.")
-
-        player_1 = ctx.author
-        player_2 = player2
-        current_player = player_1
-        board = [[None, None, None], [None, None, None], [None, None, None]]
-
-        message = await self.display_board(ctx, board)
-
-        while True:
-            reaction = await self.get_player_reaction(ctx, current_player, message)
-
-            if reaction is None:
-                return await ctx.send(f"{current_player.mention} didn't make a move in time. The game has ended.")
-
-            emoji_to_coords = {
-                "↖️": (0, 0),
-                "⬆️": (0, 1),
-                "↗️": (0, 2),
-                "⬅️": (1, 0),
-                "⏺️": (1, 1),
-                "➡️": (1, 2),
-                "↙️": (2, 0),
-                "⬇️": (2, 1),
-                "↘️": (2, 2),
-            }
-
-            x, y = emoji_to_coords[reaction]
-
-            if board[y][x] is not None:
-                await ctx.send("Invalid move! That cell is already taken.")
-                continue
-
-            if current_player == player_1:
-                board[y][x] = "X"
-                current_player = player_2
-            else:
-                board[y][x] = "O"
-                current_player = player_1
-
-            await message.edit(content=None)
-            await self.display_board(ctx, board)
+            await message.edit(content="The game has timed out!", components=None)
         
 async def setup(bot):
     await bot.add_cog(TicTacToe(bot))
