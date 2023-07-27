@@ -24,9 +24,20 @@ class TicTacToe(commands.Cog):
         return board_str
 
     async def display_board(self, ctx, board, current_player):
-        embed = discord.Embed(title="Tic-Tac-Toe", description=self.print_board(board), color=0x2ECC71)
-        embed.add_field(name="Current Turn", value=current_player.mention, inline=False)
-        message = await ctx.reply(embed=embed)
+        if ctx.channel.id in self.games:
+            # If a game message already exists, edit it
+            message = self.games[ctx.channel.id]
+            embed = message.embeds[0]
+            embed.description = self.print_board(board)
+            embed.set_field_at(0, name="Current Turn", value=current_player.mention, inline=False)
+            await message.edit(embed=embed)
+        else:
+            # If no game message exists, send a new one
+            embed = discord.Embed(title="Tic-Tac-Toe", description=self.print_board(board), color=0x2ECC71)
+            embed.add_field(name="Current Turn", value=current_player.mention, inline=False)
+            message = await ctx.reply(embed=embed)
+
+        self.games[ctx.channel.id] = message  # Save the message object for future reference
         return message
 
     @commands.command(name='tictactoe', aliases=['ttt'])
