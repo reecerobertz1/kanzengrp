@@ -84,11 +84,6 @@ class TicTacToe(commands.Cog):
             if board[pattern[0]] == board[pattern[1]] == board[pattern[2]] != "⬜":
                 return True
         return False
-
-    @tictactoe.error
-    async def tictactoe_command_error(self, ctx, error):
-        if isinstance(error, commands.BadArgument):
-            await ctx.send("Invalid opponent. Please mention a valid user.")
         
 async def setup(bot):
     await bot.add_cog(TicTacToe(bot))
