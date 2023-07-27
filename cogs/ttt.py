@@ -12,56 +12,6 @@ class Player:
         return self.member.mention
 
 class TicTacToe(commands.Cog):
-    def __init__(self, bot, player_o, player_x):
-        self.bot = bot
-        self.player_o = player_o
-        self.player_x = player_x
-        self.board = ["⬜" for _ in range(9)]
-        self.current_player = player_o
-        self.opponent_player = player_x
-        self.game_over = False
-
-    def print_board(self):
-        line = "-------------"
-        board_str = f"\n{line}"
-        for i in range(0, 9, 3):
-            board_str += f"\n| {' | '.join(self.board[i:i+3])} |"
-            board_str += f"\n{line}"
-        return board_str
-
-    def make_move(self, position):
-        if not self.game_over and self.board[position] == "⬜":
-            self.board[position] = self.current_player.symbol
-            if self.check_winner():
-                self.game_over = True
-                return f"{self.current_player.mention} wins the game!"
-            elif "⬜" not in self.board:
-                self.game_over = True
-                return "It's a tie!"
-            self.current_player, self.opponent_player = self.opponent_player, self.current_player
-        return None
-
-    def check_winner(self):
-        win_patterns = [
-            [0, 1, 2], [3, 4, 5], [6, 7, 8],  # Rows
-            [0, 3, 6], [1, 4, 7], [2, 5, 8],  # Columns
-            [0, 4, 8], [2, 4, 6]              # Diagonals
-        ]
-        for pattern in win_patterns:
-            if self.board[pattern[0]] == self.board[pattern[1]] == self.board[pattern[2]] != "⬜":
-                return True
-        return False
-
-class Player:
-    def __init__(self, member, symbol):
-        self.member = member
-        self.symbol = symbol
-
-    @property
-    def mention(self):
-        return self.member.mention
-
-class TicTacToeCog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.games = {}
