@@ -14,7 +14,6 @@ class Player:
 class TicTacToe(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.games = {}
 
     def print_board(self, board):
         line = "-------------"
@@ -38,9 +37,8 @@ class TicTacToe(commands.Cog):
         player_2 = Player(player2, "❌")
         current_player = player_1
         board = ["⬜" for _ in range(9)]
-        
-        message = await self.display_board(ctx, board)
-        await self.display_board(ctx, board, current_player)
+
+        message = await self.display_board(ctx, board, current_player)
 
         for emoji in ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣"]:
             await message.add_reaction(emoji)
