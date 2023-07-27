@@ -84,7 +84,7 @@ class TicTacToe(commands.Cog):
 
                 if self.check_winner(board, current_player.symbol):
                     await message.clear_reactions()
-                    embed = discord.Embed(title="Tic-Tac-Toe", description=f"{self.display_board(ctx, board)}\n{current_player.mention} wins the game!", color=0x2b2d31)
+                    embed = discord.Embed(title="Tic-Tac-Toe", description=f"{await self.display_board(ctx, board)}\n{current_player.mention} wins the game!", color=0x2b2d31)
                     return await ctx.send(embed=embed)
 
                 current_player = player_o if current_player == player_x else player_x
