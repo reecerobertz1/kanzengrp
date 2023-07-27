@@ -14,6 +14,7 @@ class Player:
 class TicTacToe(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.games = {}
 
     def print_board(self, board):
         line = "-------------"
