@@ -66,7 +66,10 @@ class TicTacToeCog(commands.Cog):
             await ctx.send("This command can only be used in a server!")
             return
 
-        game = TicTacToe(ctx, self.Player(ctx.author, "⭕"), self.Player(opponent, "❌"))
+        player_o = self.Player(ctx.author, "⭕")
+        player_x = self.Player(opponent, "❌")
+
+        game = TicTacToe(ctx, player_o, player_x)
 
         embed = discord.Embed(title="Tic-Tac-Toe", description=f"{game.print_board()}", color=0x2ECC71)
         message = await ctx.send(embed=embed)
