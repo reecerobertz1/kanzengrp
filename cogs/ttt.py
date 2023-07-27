@@ -26,7 +26,8 @@ class TicTacToe(commands.Cog):
     async def display_board(self, ctx, board, current_player):
         embed = discord.Embed(title="Tic-Tac-Toe", description=self.print_board(board), color=0x2ECC71)
         embed.add_field(name="Current Turn", value=current_player.mention, inline=False)
-        await ctx.send(embed=embed)
+        message = await ctx.reply(embed=embed)
+        return message
 
     @commands.command(name='tictactoe', aliases=['ttt'])
     async def tictactoe(self, ctx: commands.Context, player2: discord.Member):
