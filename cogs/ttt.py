@@ -1,7 +1,6 @@
 import asyncio
 import discord
 from discord.ext import commands
-from discord.ui import Button, ButtonStyle, View
 
 class TicTacToe:
     def __init__(self, ctx, player_o, player_x):
