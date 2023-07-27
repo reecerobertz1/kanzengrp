@@ -17,10 +17,10 @@ class TicTacToe(commands.Cog):
         self.games = {}
 
     def print_board(self, board):
-        line = "-------------"
+        line = "U+200B"
         board_str = f"\n{line}"
         for i in range(0, 9, 3):
-            board_str += f"\n| {' | '.join(board[i:i+3])} |"
+            board_str += f"\n| {'U+200B'.join(board[i:i+3])}U+200B"
             board_str += f"\n{line}"
         return board_str
 
