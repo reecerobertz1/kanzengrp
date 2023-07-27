@@ -1,8 +1,9 @@
+import asyncio
 import discord
 from discord.ext import commands
 from discord.ui import Button, ButtonStyle, View
 
-class TicTacToeGame:
+class TicTacToe:
     def __init__(self, ctx, player_o, player_x):
         self.ctx = ctx
         self.player_o = player_o
@@ -43,78 +44,21 @@ class TicTacToeGame:
                 return True
         return False
 
-class Player:
-    def __init__(self, member, symbol):
-        self.member = member
-        self.symbol = symbol
-
-    @property
-    def mention(self):
-        return self.member.mention
-
-class TicTacToeView(View):
-    def __init__(self, game):
-        super().__init__(timeout=None)
-        self.game = game
-
-    async def on_timeout(self):
-        self.stop()
-        await self.message.edit(content="The game has timed out!")
-
-    @Button(style=ButtonStyle.grey, label="1", custom_id="1")
-    async def button_1(self, button, interaction):
-        await self.on_button_click(0)
-
-    @Button(style=ButtonStyle.grey, label="2", custom_id="2")
-    async def button_2(self, button, interaction):
-        await self.on_button_click(1)
-
-    @Button(style=ButtonStyle.grey, label="3", custom_id="3")
-    async def button_3(self, button, interaction):
-        await self.on_button_click(2)
-
-    @Button(style=ButtonStyle.grey, label="4", custom_id="4")
-    async def button_4(self, button, interaction):
-        await self.on_button_click(3)
-
-    @Button(style=ButtonStyle.grey, label="5", custom_id="5")
-    async def button_5(self, button, interaction):
-        await self.on_button_click(4)
-
-    @Button(style=ButtonStyle.grey, label="6", custom_id="6")
-    async def button_6(self, button, interaction):
-        await self.on_button_click(5)
-
-    @Button(style=ButtonStyle.grey, label="7", custom_id="7")
-    async def button_7(self, button, interaction):
-        await self.on_button_click(6)
-
-    @Button(style=ButtonStyle.grey, label="8", custom_id="8")
-    async def button_8(self, button, interaction):
-        await self.on_button_click(7)
-
-    @Button(style=ButtonStyle.grey, label="9", custom_id="9")
-    async def button_9(self, button, interaction):
-        await self.on_button_click(8)
-
-    async def on_button_click(self, position):
-        result = self.game.make_move(position)
-
-        if result is not None:
-            self.stop()
-            embed = discord.Embed(title="Tic-Tac-Toe", description=f"{self.game.print_board()}\n{result}", color=0x2b2d31)
-            await self.message.edit(content=None, embed=embed, view=None)
-            return
-
-        embed = discord.Embed(title="Tic-Tac-Toe", description=f"{self.game.print_board()}", color=0x2ECC71)
-        await self.message.edit(content=None, embed=embed)
-
-class TicTacToe(commands.Cog):
+class TicTacToeCog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
+    class Player:
+        def __init__(self, member, symbol):
+            self.member = member
+            self.symbol = symbol
+
+        @property
+        def mention(self):
+            return self.member.mention
+
     @commands.command(name='tictactoe')
-    async def tictactoe(self, ctx, opponent: discord.Member):
+    async def tictactoe(self, ctx, opponent: commands.MemberConverter):
         if opponent == ctx.author:
             await ctx.send("You cannot play against yourself!")
             return
@@ -123,10 +67,46 @@ class TicTacToe(commands.Cog):
             await ctx.send("This command can only be used in a server!")
             return
 
-        game = TicTacToeGame(ctx, Player(ctx.author, "⭕"), Player(opponent, "❌"))
+        game = TicTacToe(ctx, self.Player(ctx.author, "⭕"), self.Player(opponent, "❌"))
 
         embed = discord.Embed(title="Tic-Tac-Toe", description=f"{game.print_board()}", color=0x2ECC71)
-        message = await ctx.send(embed=embed, view=TicTacToeView(game))
+        message = await ctx.send(embed=embed)
+
+        for emoji in ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣"]:
+            await message.add_reaction(emoji)
+
+        def check(reaction, user):
+            return (
+                user == game.current_player.member
+                and str(reaction.emoji) in ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣"]
+                and reaction.message.id == message.id
+            )
+
+        while not game.game_over:
+            try:
+                reaction, user = await self.bot.wait_for('reaction_add', timeout=30.0, check=check)
+            except asyncio.TimeoutError:
+                await message.clear_reactions()
+                await message.edit(content="The game has timed out!")
+                return
+
+            position = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣"].index(str(reaction.emoji))
+            result = game.make_move(position)
+
+            await reaction.remove(user)
+
+            if result is not None:
+                embed = discord.Embed(title="Tic-Tac-Toe", description=f"{game.print_board()}\n{result}", color=0x2b2d31)
+                await ctx.send(embed=embed)
+                return
+
+            embed.description = game.print_board()
+            await message.edit(embed=embed)
+
+    @tictactoe.error
+    async def tictactoe_command_error(self, ctx, error):
+        if isinstance(error, commands.BadArgument):
+            await ctx.send("Invalid opponent. Please mention a valid user.")
         
 async def setup(bot):
     await bot.add_cog(TicTacToe(bot))
