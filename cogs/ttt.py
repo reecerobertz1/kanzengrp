@@ -88,7 +88,7 @@ class TicTacToe(commands.Cog):
                     return await ctx.send(embed=embed)
 
                 current_player = player_o if current_player == player_x else player_x
-                await reaction.remove(user)
+                await reaction.remove(user)  # Add this line to remove the reaction
                 await message.edit(content=None)
                 await self.display_board(ctx, board)
 
