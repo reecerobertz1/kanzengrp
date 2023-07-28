@@ -90,7 +90,9 @@ class LalisaBot(commands.Bot):
 
     # i have to have this here for when the bot closes
     async def close(self):
-        await self.pool.close()
+        # Your other cleanup code...
+        if self.pool is not None:
+            await self.pool.close()
         await self.session.close()
         await super().close()
 

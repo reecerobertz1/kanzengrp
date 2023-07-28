@@ -1,3 +1,4 @@
+import aiohttp
 from bot import LalisaBot
 import asyncio
 import logging
@@ -22,7 +23,8 @@ async def main():
     logger.addHandler(handler)
 
     # starts the bot
-    async with LalisaBot() as bot:
-        await bot.start(token) # token is imported at the top
+    async with aiohttp.ClientSession() as session:
+        async with LalisaBot(session=session) as bot:
+            await bot.start(token)
 
 asyncio.run(main())
