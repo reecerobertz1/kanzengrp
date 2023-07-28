@@ -195,7 +195,7 @@ class Levels(commands.Cog):
 
         await self._level_handler(message, retry_after, xp_to_add)
 
-    def _make_progress_bar(self, progress: float, color: str) -> tuple[Image.Image, Image.Image]:
+    def _make_progress_bar(self, progress, color):
         """Makes a progress bar for a member's rank card.
         
         Parameters
