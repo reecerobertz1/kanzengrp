@@ -497,6 +497,15 @@ class funcmds(commands.Cog):
     @commands.command()
     async def instagram(self, ctx, username: str):
         L = instaloader.Instaloader()
+
+        try:
+            # Load the session using the bot's user ID to avoid conflicts with other users of the bot.
+            session_path = f"{ctx.author.id}.session"
+            L.load_session_from_file(session_path)
+        except FileNotFoundError:
+            # If the session file is not found, login using cookies.
+            L.interactive_login(ctx.author.name)
+
         try:
             profile = instaloader.Profile.from_username(L.context, username)
             # Process the profile information and create the embed
@@ -507,6 +516,10 @@ class funcmds(commands.Cog):
             embed.add_field(name="Following", value=str(profile.followees), inline=True)
             embed.description = profile.biography
             await ctx.send(embed=embed)
+        except instaloader.exceptions.ProfileNotExistsException:
+            await ctx.send(f"Sorry, the profile '{username}' does not exist.")
+        except instaloader.exceptions.PrivateProfileNotFollowedException:
+            await ctx.send(f"Sorry, the profile '{username}' is private and requires following it.")
         except instaloader.exceptions.LoginRequiredException:
             await ctx.send(f"Sorry, the profile '{username}' is private and requires authentication.")
 
