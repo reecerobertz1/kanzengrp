@@ -495,22 +495,20 @@ class funcmds(commands.Cog):
 
 
     @commands.command()
-    async def instagram(self, ctx, username):
+    async def instagram(self, ctx, username: str):
         L = instaloader.Instaloader()
-
         try:
             profile = instaloader.Profile.from_username(L.context, username)
-        except instaloader.exceptions.ProfileNotExistsException:
-            return await ctx.send("Instagram profile not found!")
-
-        embed = discord.Embed(title=f"{profile.username}'s Instagram", color=0xE4405F)
-        embed.set_thumbnail(url=profile.profile_pic_url)
-        embed.add_field(name="Posts", value=profile.mediacount, inline=True)
-        embed.add_field(name="Followers", value=profile.followers, inline=True)
-        embed.add_field(name="Following", value=profile.followees, inline=True)
-        embed.description = profile.biography
-
-        await ctx.send(embed=embed)
+            # Process the profile information and create the embed
+            embed = discord.Embed(title=f"Instagram Profile: {profile.username}", color=0xFF5733)
+            embed.set_thumbnail(url=profile.profile_pic_url)
+            embed.add_field(name="Posts", value=str(profile.mediacount), inline=True)
+            embed.add_field(name="Followers", value=str(profile.followers), inline=True)
+            embed.add_field(name="Following", value=str(profile.followees), inline=True)
+            embed.description = profile.biography
+            await ctx.send(embed=embed)
+        except instaloader.exceptions.LoginRequiredException:
+            await ctx.send(f"Sorry, the profile '{username}' is private and requires authentication.")
 
 async def setup(bot):
     await bot.add_cog(funcmds(bot))
