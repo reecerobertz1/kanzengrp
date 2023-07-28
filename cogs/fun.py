@@ -5,6 +5,7 @@ import random
 from typing import Optional
 import typing
 import aiohttp
+import httpx
 import discord
 from discord.ext import commands
 import requests
@@ -495,31 +496,37 @@ class funcmds(commands.Cog):
 
     @commands.command()
     async def instagram(self, ctx, username: str):
-        try:
-            url = f"https://www.instagram.com/{username}/?__a=1"
+        url = f"https://www.instagram.com/{username}/?__a=1"
 
-            async with aiohttp.ClientSession() as session:
-                async with session.get(url) as response:
-                    if response.status != 200:
+        async with httpx.AsyncClient() as client:
+            try:
+                response = await client.get(url)
+
+                if response.status_code == 200:
+                    data = response.json()
+                    user_data = data.get("graphql", {}).get("user", {})
+
+                    if user_data:
+                        username = user_data.get("username", "")
+                        followers = user_data.get("edge_followed_by", {}).get("count", 0)
+                        following = user_data.get("edge_follow", {}).get("count", 0)
+                        posts = user_data.get("edge_owner_to_timeline_media", {}).get("count", 0)
+                        biography = user_data.get("biography", "")
+
+                        embed = discord.Embed(title=f"Instagram Profile: {username}", color=0xFF5733)
+                        embed.set_thumbnail(url=user_data.get("profile_pic_url_hd", ""))
+                        embed.add_field(name="Posts", value=str(posts), inline=True)
+                        embed.add_field(name="Followers", value=str(followers), inline=True)
+                        embed.add_field(name="Following", value=str(following), inline=True)
+                        embed.description = biography
+
+                        await ctx.send(embed=embed)
+                    else:
                         await ctx.send(f"Sorry, the profile '{username}' does not exist.")
-                        return
-                    data = await response.json()
-
-            user = data.get("graphql", {}).get("user")
-
-            if not user:
-                await ctx.send(f"Sorry, the profile '{username}' does not exist.")
-                return
-
-            embed = discord.Embed(title=f"Instagram Profile: {user['username']}", color=0xFF5733)
-            embed.set_thumbnail(url=user["profile_pic_url_hd"])
-            embed.add_field(name="Posts", value=str(user["edge_owner_to_timeline_media"]["count"]), inline=True)
-            embed.add_field(name="Followers", value=str(user["edge_followed_by"]["count"]), inline=True)
-            embed.add_field(name="Following", value=str(user["edge_follow"]["count"]), inline=True)
-            embed.description = user["biography"]
-            await ctx.send(embed=embed)
-        except Exception as e:
-            await ctx.send(f"An error occurred: {e}")
+                else:
+                    await ctx.send(f"An error occurred: {response.status_code}, {response.text}")
+            except Exception as e:
+                await ctx.send(f"An error occurred: {e}")
 
 
 async def setup(bot):
