@@ -254,7 +254,7 @@ class Levels(commands.Cog):
             number /= 1000.0
         return '{}{}'.format('{:f}'.format(number).rstrip('0').rstrip('.'), ['', 'K', 'M', 'B', 'T'][magnitude])
 
-    def _xp_calculations(self, levels: LevelRow) -> tuple[float, Union[str, int], Union[str, int], int]:
+    def _xp_calculations(self, levels: LevelRow) -> Tuple[float, Union[str, int], Union[str, int], int]:
         """Calculates XP, level progress and current level.
         
         Parameters
