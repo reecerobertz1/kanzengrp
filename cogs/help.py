@@ -79,6 +79,7 @@ class Help(commands.Cog):
                 embed = discord.Embed(title="> Minigames", color=0x2b2d31)
                 embed.add_field(name="+scramble", value="<:reply:1125269313432059904> Unscramble the word Hoshi gives you in 20 seconds", inline=False)# ✅
                 embed.add_field(name="+trivia", value="<:reply:1125269313432059904> Hoshi will ask you a question, make sure to answer correctly (answer with numbers 1-4)", inline=False)# ✅
+                embed.add_field(name="+tictactoe", value="<:reply:1125269313432059904> Play a game of tictactoe with the person you mention", inline=False)# ✅
                 embed.set_thumbnail(url=ctx.guild.icon)
             elif selected_category == categories[4]:
                 embed = discord.Embed(title="> Kanzen only commands", color=0x2b2d31)
@@ -214,6 +215,14 @@ class Help(commands.Cog):
         embed.add_field(name='aliases', value='none', inline=False)
         embed.add_field(name='arguments', value='`mention`\n<:reply:1125269313432059904> mention yourself first\n`mention`\n<:reply:1125269313432059904> the person you want to be shipped with', inline=False)
         embed.add_field(name='example', value='+ship <@609515684740988959> <@718144988688679043>', inline=False)
+        await ctx.reply(embed=embed)
+
+    @commands.command()
+    async def helpship(self, ctx):
+        embed = discord.Embed(title='+tictactoe <mention> ', description='Play a game of tictactoe with the person you have mentioned', color=0x2b2d31)
+        embed.add_field(name='aliases', value='none', inline=False)
+        embed.add_field(name='arguments', value='`mention`\n<:reply:1125269313432059904> The person you want to play with', inline=False)
+        embed.add_field(name='example', value='+tictactoe <@718144988688679043>', inline=False)
         await ctx.reply(embed=embed)
 
     @commands.command()
