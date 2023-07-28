@@ -41,7 +41,7 @@ class LalisaBot(commands.Bot):
     launch_time: datetime
     pool: asqlite.Pool
 
-    # initializing the subclass
+    # initalising the subclass
     # clarifying the intents
     # and then in super().__init__() set a prefix and add the intents
     def __init__(self):
@@ -54,7 +54,6 @@ class LalisaBot(commands.Bot):
             message_content=True,
             presences=True
         )
-        self.session = aiohttp.ClientSession()  # Initialize the session here
         super().__init__(
             command_prefix='+',
             intents=intents,
