@@ -78,14 +78,16 @@ class LalisaBot(commands.Bot):
             await conn.execute('''CREATE TABLE IF NOT EXISTS setup (guild_id BIGINT PRIMARY KEY, activated BOOL, top_20_role_id BIGINT)''')
             await conn.commit()
 
+        # Check if the CommandTree instance already exists
+        if not hasattr(self, "tree"):
+            # Create a new CommandTree instance
+            self.tree = app_commands.CommandTree(self)
+            await self.tree.sync(guild=my_guild)
+            self.tree.copy_global_to(guild=my_guild)
+
         # loads cogs/extensions
         for ext in extensions:
             await self.load_extension(ext)
-
-        # Moved this part after the attributes are defined
-        self.tree = app_commands.CommandTree(self)
-        await self.tree.sync(guild=my_guild)
-        self.tree.copy_global_to(guild=my_guild)
 
     # i have to have this here for when the bot closes
     async def close(self):
