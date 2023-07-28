@@ -5,10 +5,8 @@ import random
 from typing import Optional
 import typing
 import aiohttp
-import httpx
 import discord
 from discord.ext import commands
-import instaloader
 import requests
 from PIL import Image, ImageDraw, ImageFont
 
@@ -19,7 +17,6 @@ class funcmds(commands.Cog):
         self.gif_cache = {}
         self.server1_log_channel_id = 1122627075682078720
         self.server2_log_channel_id = 1122994947444973709
-        self.instaloader = instaloader.Instaloader()
 
     def get_random_color(self):
         # Generate random RGB color values
