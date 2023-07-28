@@ -8,6 +8,7 @@ import aiohttp
 import httpx
 import discord
 from discord.ext import commands
+import instaloader
 import requests
 from PIL import Image, ImageDraw, ImageFont
 
@@ -18,6 +19,7 @@ class funcmds(commands.Cog):
         self.gif_cache = {}
         self.server1_log_channel_id = 1122627075682078720
         self.server2_log_channel_id = 1122994947444973709
+        self.instaloader = instaloader.Instaloader()
 
     def get_random_color(self):
         # Generate random RGB color values
@@ -495,38 +497,25 @@ class funcmds(commands.Cog):
 
 
     @commands.command()
-    async def instagram(self, ctx, username: str):
-        url = f"https://www.instagram.com/{username}/?__a=1"
+    async def profile(self, ctx, username: str):
+        # Log in with your Instagram account credentials
+        try:
+            username = username.strip('@')
+            self.instaloader.login("your_instagram_username", "your_instagram_password")
+            profile = instaloader.Profile.from_username(self.instaloader.context, username)
+            self.instaloader.logout()
+        except instaloader.exceptions.LoginRequiredException:
+            await ctx.send("Login failed. Please check your Instagram credentials.")
+            return
 
-        async with httpx.AsyncClient() as client:
-            try:
-                response = await client.get(url)
-
-                if response.status_code == 200:
-                    data = response.json()
-                    user_data = data.get("graphql", {}).get("user", {})
-
-                    if user_data:
-                        username = user_data.get("username", "")
-                        followers = user_data.get("edge_followed_by", {}).get("count", 0)
-                        following = user_data.get("edge_follow", {}).get("count", 0)
-                        posts = user_data.get("edge_owner_to_timeline_media", {}).get("count", 0)
-                        biography = user_data.get("biography", "")
-
-                        embed = discord.Embed(title=f"Instagram Profile: {username}", color=0xFF5733)
-                        embed.set_thumbnail(url=user_data.get("profile_pic_url_hd", ""))
-                        embed.add_field(name="Posts", value=str(posts), inline=True)
-                        embed.add_field(name="Followers", value=str(followers), inline=True)
-                        embed.add_field(name="Following", value=str(following), inline=True)
-                        embed.description = biography
-
-                        await ctx.send(embed=embed)
-                    else:
-                        await ctx.send(f"Sorry, the profile '{username}' does not exist.")
-                else:
-                    await ctx.send(f"An error occurred: {response.status_code}, {response.text}")
-            except Exception as e:
-                await ctx.send(f"An error occurred: {e}")
+        # Process the profile information and create the embed
+        embed = discord.Embed(title=f"Instagram Profile: {profile.username}", color=0xFF5733)
+        embed.set_thumbnail(url=profile.profile_pic_url)
+        embed.add_field(name="Posts", value=str(profile.mediacount), inline=True)
+        embed.add_field(name="Followers", value=str(profile.followers), inline=True)
+        embed.add_field(name="Following", value=str(profile.followees), inline=True)
+        embed.description = profile.biography
+        await ctx.send(embed=embed)
 
 
 async def setup(bot):
