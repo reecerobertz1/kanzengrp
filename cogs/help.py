@@ -218,7 +218,7 @@ class Help(commands.Cog):
         await ctx.reply(embed=embed)
 
     @commands.command()
-    async def helpship(self, ctx):
+    async def helptictactoe(self, ctx):
         embed = discord.Embed(title='+tictactoe <mention> ', description='Play a game of tictactoe with the person you have mentioned', color=0x2b2d31)
         embed.add_field(name='aliases', value='none', inline=False)
         embed.add_field(name='arguments', value='`mention`\n<:reply:1125269313432059904> The person you want to play with', inline=False)
