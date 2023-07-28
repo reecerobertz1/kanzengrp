@@ -53,10 +53,10 @@ class funcmds(commands.Cog):
         data = response.json()
         image_url = data['message']
 
-        embed = discord.Embed(color=0x2b2d31)
+        embed = discord.Embed(color=discord.Color.from_rgb(*self.get_random_color()))
         embed.set_image(url=image_url)
 
-        await asyncio.sleep(1)  # Wait for 3 seconds (you can adjust the duration)
+        await asyncio.sleep(1)  # Wait for 1 second (you can adjust the duration)
         await loading_msg.delete()  # Delete the loading message
         await ctx.reply(embed=embed)
 
@@ -69,15 +69,14 @@ class funcmds(commands.Cog):
             data = response.json()
             image_url = data[0]['url']
 
-            embed = discord.Embed(color=0x2b2d31)
+            embed = discord.Embed(color=discord.Color.from_rgb(*self.get_random_color()))
             embed.set_image(url=image_url)
 
-            await asyncio.sleep(1)  # Wait for 3 seconds (you can adjust the duration)
+            await asyncio.sleep(1)  # Wait for 1 second (you can adjust the duration)
             await loading_msg.delete()  # Delete the loading message
             await ctx.reply(embed=embed)
         except (requests.exceptions.RequestException, KeyError):
             await ctx.reply("Sorry, I couldn't fetch a cute cat at the moment. Please try again later.")
-
 
     @commands.command(aliases=['prison', 'lockup'])
     async def jail(self, ctx, member: Optional[discord.Member]):
