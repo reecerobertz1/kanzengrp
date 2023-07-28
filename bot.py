@@ -65,42 +65,34 @@ class LalisaBot(commands.Bot):
 
     # startup stuff
     async def setup_hook(self):
-
         print(f"Logged in as {self.user}")
 
-        # loads cogs/extensions
-        for ext in extensions:
-            await self.load_extension(ext) # -
-            
-        await self.tree.sync(guild=my_guild)
-        self.tree = app_commands.CommandTree(self)
-        self.tree.copy_global_to(guild=my_guild)
-
-        # defining the attributes i assigned above -
+        # defining the attributes
         self.launch_time = datetime.utcnow()
         self.session = aiohttp.ClientSession()
         self.pool = await asqlite.create_pool('databases/levels.db')
 
-        # sqlite database setup
-        # sqlite database setup
+        # sqlite database setup (moved after the attribute assignments)
         async with self.pool.acquire() as conn:
             await conn.execute('''CREATE TABLE IF NOT EXISTS levels (member_id BIGINT, guild_id BIGINT, xp INTEGER, messages INTEGER, bar_color TEXT, PRIMARY KEY(member_id, guild_id))''')
             await conn.execute('''CREATE TABLE IF NOT EXISTS setup (guild_id BIGINT PRIMARY KEY, activated BOOL, top_20_role_id BIGINT)''')
             await conn.commit()
 
+        # loads cogs/extensions
+        for ext in extensions:
+            await self.load_extension(ext)
+
+        # Moved this part after the attributes are defined
+        self.tree = app_commands.CommandTree(self)
+        await self.tree.sync(guild=my_guild)
+        self.tree.copy_global_to(guild=my_guild)
+
     # i have to have this here for when the bot closes
-        self.session = None
-
-    async def on_connect(self):
-        self.session = aiohttp.ClientSession()
-
-    async def on_disconnect(self):
-        if self.session:
-            await self.session.close()
-
     async def close(self):
-        if self.session:
-            await self.session.close()
+        # Your other cleanup code...
+        if self.pool is not None:
+            await self.pool.close()
+        await self.session.close()
         await super().close()
 
 # old stuff
