@@ -89,11 +89,18 @@ class LalisaBot(commands.Bot):
             await conn.commit()
 
     # i have to have this here for when the bot closes
+        self.session = None
+
+    async def on_connect(self):
+        self.session = aiohttp.ClientSession()
+
+    async def on_disconnect(self):
+        if self.session:
+            await self.session.close()
+
     async def close(self):
-        # Your other cleanup code...
-        if self.pool is not None:
-            await self.pool.close()
-        await self.session.close()
+        if self.session:
+            await self.session.close()
         await super().close()
 
 # old stuff

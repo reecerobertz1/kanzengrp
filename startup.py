@@ -1,13 +1,10 @@
-import aiohttp
-from bot import LalisaBot
 import asyncio
+from bot import LalisaBot
 import logging
 import logging.handlers
 from config import token
 
 async def main():
-    # this makes it so that whenever an error occurs  etc it sends
-    # error messages in a file called discord.log instead
     logger = logging.getLogger('discord')
     logger.setLevel(logging.INFO)
 
@@ -22,9 +19,7 @@ async def main():
     handler.setFormatter(formatter)
     logger.addHandler(handler)
 
-    # starts the bot
-    async with aiohttp.ClientSession() as session:
-        async with LalisaBot(session=session) as bot:
-            await bot.start(token)
+    async with LalisaBot() as bot:
+        await bot.start(token)
 
 asyncio.run(main())
