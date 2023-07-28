@@ -7,7 +7,6 @@ import typing
 import aiohttp
 import discord
 from discord.ext import commands
-import instaloader
 import requests
 from PIL import Image, ImageDraw, ImageFont
 
@@ -497,20 +496,29 @@ class funcmds(commands.Cog):
     @commands.command()
     async def instagram(self, ctx, username: str):
         try:
-            loader = instaloader.Instaloader()
-            profile = instaloader.Profile.from_username(loader.context, username)
-            posts = profile.get_posts()
+            url = f"https://www.instagram.com/{username}/?__a=1"
 
-            embed = discord.Embed(title=f"Instagram Profile: {profile.username}", color=0xFF5733)
-            embed.set_thumbnail(url=profile.profile_pic_url)
-            embed.add_field(name="Posts", value=str(profile.mediacount), inline=True)
-            embed.add_field(name="Followers", value=str(profile.followers), inline=True)
-            embed.add_field(name="Following", value=str(profile.followees), inline=True)
-            embed.description = profile.biography
+            async with aiohttp.ClientSession() as session:
+                async with session.get(url) as response:
+                    if response.status != 200:
+                        await ctx.send(f"Sorry, the profile '{username}' does not exist.")
+                        return
+                    data = await response.json()
+
+            user = data.get("graphql", {}).get("user")
+
+            if not user:
+                await ctx.send(f"Sorry, the profile '{username}' does not exist.")
+                return
+
+            embed = discord.Embed(title=f"Instagram Profile: {user['username']}", color=0xFF5733)
+            embed.set_thumbnail(url=user["profile_pic_url_hd"])
+            embed.add_field(name="Posts", value=str(user["edge_owner_to_timeline_media"]["count"]), inline=True)
+            embed.add_field(name="Followers", value=str(user["edge_followed_by"]["count"]), inline=True)
+            embed.add_field(name="Following", value=str(user["edge_follow"]["count"]), inline=True)
+            embed.description = user["biography"]
             await ctx.send(embed=embed)
-        except instaloader.exceptions.ProfileNotExistsException:
-            await ctx.send(f"Sorry, the profile '{username}' does not exist.")
-        except instaloader.exceptions.InstaloaderException as e:
+        except Exception as e:
             await ctx.send(f"An error occurred: {e}")
 
 
