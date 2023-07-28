@@ -496,27 +496,5 @@ class funcmds(commands.Cog):
             await ctx.send(f"An error occurred: {e}")
 
 
-    @commands.command()
-    async def profile(self, ctx, username: str):
-        # Log in with your Instagram account credentials
-        try:
-            username = username.strip('@')
-            self.instaloader.login("your_instagram_username", "your_instagram_password")
-            profile = instaloader.Profile.from_username(self.instaloader.context, username)
-            self.instaloader.logout()
-        except instaloader.exceptions.LoginRequiredException:
-            await ctx.send("Login failed. Please check your Instagram credentials.")
-            return
-
-        # Process the profile information and create the embed
-        embed = discord.Embed(title=f"Instagram Profile: {profile.username}", color=0xFF5733)
-        embed.set_thumbnail(url=profile.profile_pic_url)
-        embed.add_field(name="Posts", value=str(profile.mediacount), inline=True)
-        embed.add_field(name="Followers", value=str(profile.followers), inline=True)
-        embed.add_field(name="Following", value=str(profile.followees), inline=True)
-        embed.description = profile.biography
-        await ctx.send(embed=embed)
-
-
 async def setup(bot):
     await bot.add_cog(funcmds(bot))
