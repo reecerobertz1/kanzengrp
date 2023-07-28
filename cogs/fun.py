@@ -7,6 +7,7 @@ import typing
 import aiohttp
 import discord
 from discord.ext import commands
+import instaloader
 import requests
 from PIL import Image, ImageDraw, ImageFont
 from insta_api import Client
@@ -496,21 +497,23 @@ class funcmds(commands.Cog):
 
     @commands.command()
     async def instagram(self, ctx, username: str):
-        client = Client()
-        profile = client.get_profile(username)
+        try:
+            loader = instaloader.Instaloader()
+            profile = instaloader.Profile.from_username(loader.context, username)
+            posts = profile.get_posts()
 
-        if not profile:
+            embed = discord.Embed(title=f"Instagram Profile: {profile.username}", color=0xFF5733)
+            embed.set_thumbnail(url=profile.profile_pic_url)
+            embed.add_field(name="Posts", value=str(profile.mediacount), inline=True)
+            embed.add_field(name="Followers", value=str(profile.followers), inline=True)
+            embed.add_field(name="Following", value=str(profile.followees), inline=True)
+            embed.description = profile.biography
+            await ctx.send(embed=embed)
+        except instaloader.exceptions.ProfileNotExistsException:
             await ctx.send(f"Sorry, the profile '{username}' does not exist.")
-            return
+        except instaloader.exceptions.InstaloaderException as e:
+            await ctx.send(f"An error occurred: {e}")
 
-        # Process the profile information and create the embed
-        embed = discord.Embed(title=f"Instagram Profile: {profile.username}", color=0xFF5733)
-        embed.set_thumbnail(url=profile.profile_picture)
-        embed.add_field(name="Posts", value=str(profile.media_count), inline=True)
-        embed.add_field(name="Followers", value=str(profile.followers_count), inline=True)
-        embed.add_field(name="Following", value=str(profile.following_count), inline=True)
-        embed.description = profile.biography
-        await ctx.send(embed=embed)
 
 async def setup(bot):
     await bot.add_cog(funcmds(bot))
