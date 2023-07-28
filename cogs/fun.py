@@ -9,7 +9,8 @@ import discord
 from discord.ext import commands
 import requests
 from PIL import Image, ImageDraw, ImageFont
-import instaloader
+from insta_api import Client
+
 
 class funcmds(commands.Cog):
     def __init__(self, bot):
@@ -496,29 +497,21 @@ class funcmds(commands.Cog):
 
     @commands.command()
     async def instagram(self, ctx, username: str):
-        L = instaloader.Instaloader()
+        client = Client()
+        profile = client.get_profile(username)
 
-        try:
-            # Load the session using the bot's user ID to avoid conflicts with other users of the bot.
-            session_path = f"{ctx.author.id}.session"
-            L.load_session_from_file(session_path)
-        except FileNotFoundError:
-            pass  # Ignore the error if the session file is not found.
-
-        try:
-            profile = instaloader.Profile.from_username(L.context, username)
-            # Process the profile information and create the embed
-            embed = discord.Embed(title=f"Instagram Profile: {profile.username}", color=0xFF5733)
-            embed.set_thumbnail(url=profile.profile_pic_url)
-            embed.add_field(name="Posts", value=str(profile.mediacount), inline=True)
-            embed.add_field(name="Followers", value=str(profile.followers), inline=True)
-            embed.add_field(name="Following", value=str(profile.followees), inline=True)
-            embed.description = profile.biography
-            await ctx.send(embed=embed)
-        except instaloader.exceptions.ProfileNotExistsException:
+        if not profile:
             await ctx.send(f"Sorry, the profile '{username}' does not exist.")
-        except instaloader.exceptions.PrivateProfileNotFollowedException:
-            await ctx.send(f"Sorry, the profile '{username}' is private and requires following it.")
+            return
+
+        # Process the profile information and create the embed
+        embed = discord.Embed(title=f"Instagram Profile: {profile.username}", color=0xFF5733)
+        embed.set_thumbnail(url=profile.profile_picture)
+        embed.add_field(name="Posts", value=str(profile.media_count), inline=True)
+        embed.add_field(name="Followers", value=str(profile.followers_count), inline=True)
+        embed.add_field(name="Following", value=str(profile.following_count), inline=True)
+        embed.description = profile.biography
+        await ctx.send(embed=embed)
 
 async def setup(bot):
     await bot.add_cog(funcmds(bot))
