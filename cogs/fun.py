@@ -503,8 +503,7 @@ class funcmds(commands.Cog):
             session_path = f"{ctx.author.id}.session"
             L.load_session_from_file(session_path)
         except FileNotFoundError:
-            # If the session file is not found, login using cookies.
-            L.interactive_login(ctx.author.name)
+            pass  # Ignore the error if the session file is not found.
 
         try:
             profile = instaloader.Profile.from_username(L.context, username)
@@ -520,8 +519,6 @@ class funcmds(commands.Cog):
             await ctx.send(f"Sorry, the profile '{username}' does not exist.")
         except instaloader.exceptions.PrivateProfileNotFollowedException:
             await ctx.send(f"Sorry, the profile '{username}' is private and requires following it.")
-        except instaloader.exceptions.LoginRequiredException:
-            await ctx.send(f"Sorry, the profile '{username}' is private and requires authentication.")
 
 async def setup(bot):
     await bot.add_cog(funcmds(bot))
