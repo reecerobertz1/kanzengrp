@@ -9,6 +9,7 @@ import discord
 from discord.ext import commands
 import requests
 from PIL import Image, ImageDraw, ImageFont
+import instaloader
 
 class funcmds(commands.Cog):
     def __init__(self, bot):
@@ -491,6 +492,25 @@ class funcmds(commands.Cog):
             self.gif_cache.setdefault(ctx.author.id, []).append(gif["id"])
         except Exception as e:
             await ctx.send(f"An error occurred: {e}")
+
+
+    @commands.command()
+    async def instagram(self, ctx, username):
+        L = instaloader.Instaloader()
+
+        try:
+            profile = instaloader.Profile.from_username(L.context, username)
+        except instaloader.exceptions.ProfileNotExistsException:
+            return await ctx.send("Instagram profile not found!")
+
+        embed = discord.Embed(title=f"{profile.username}'s Instagram", color=0xE4405F)
+        embed.set_thumbnail(url=profile.profile_pic_url)
+        embed.add_field(name="Posts", value=profile.mediacount, inline=True)
+        embed.add_field(name="Followers", value=profile.followers, inline=True)
+        embed.add_field(name="Following", value=profile.followees, inline=True)
+        embed.description = profile.biography
+
+        await ctx.send(embed=embed)
 
 async def setup(bot):
     await bot.add_cog(funcmds(bot))
