@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 from bot import LalisaBot
 from random import randint
-from typing import Optional, TypedDict, List, Union, Literal
+from typing import Optional, TypedDict, List, Union, Literal, Tuple
 from PIL import ImageDraw, Image, ImageFont
 from io import BytesIO
 import functools
@@ -223,7 +223,7 @@ class Levels(commands.Cog):
 
         return progress_bar, mask
     
-    def _get_round_avatar(self, avatar: BytesIO) -> tuple[Image.Image, Image.Image]:
+    def _get_round_avatar(self, avatar: BytesIO) -> Tuple[Image.Image, Image.Image]:
         """Converts square avatar retrieved from Discord into a circle avatar
         
         avatar: BytesIO
