@@ -10,7 +10,6 @@ from discord.ext import commands
 import instaloader
 import requests
 from PIL import Image, ImageDraw, ImageFont
-from insta_api import Client
 
 
 class funcmds(commands.Cog):
