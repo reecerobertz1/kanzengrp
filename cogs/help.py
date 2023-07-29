@@ -39,7 +39,7 @@ class Help(commands.Cog):
         async def dropdown_callback(interaction: discord.Interaction):
             selected_category = interaction.data["values"][0]
             if selected_category == categories[0]:
-                embed = discord.Embed(title="> Fun commands", color=0x2b2d31)
+                embed = discord.Embed(title="fun commands", color=0x2b2d31)
                 embed.add_field(name="+dog", value="<:reply:1125269313432059904> Sends you a random photo of a dog", inline=False) # ✅
                 embed.add_field(name="+cat", value="<:reply:1125269313432059904> Sends you a random photo of a cat", inline=False) # ✅
                 embed.add_field(name="+jail", value="<:reply:1125269313432059904> Put someone or yourself in jail", inline=False) # ✅
@@ -57,7 +57,7 @@ class Help(commands.Cog):
                 embed.add_field(name="+giphy", value="<:reply:1125269313432059904> Search for a gif with giphy", inline=False)# ✅
                 embed.set_thumbnail(url=ctx.guild.icon)
             elif selected_category == categories[1]:
-                embed = discord.Embed(title="> Editing commands", color=0x2b2d31)
+                embed = discord.Embed(title="editing commands", color=0x2b2d31)
                 embed.add_field(name="+transition", value="<:reply:1125269313432059904> Get a random transition to use in your edit", inline=False)# ✅
                 embed.add_field(name="+audio", value="<:reply:1125269313432059904> Get an audio added by a member to use for your edit", inline=False)# ✅
                 embed.add_field(name="+addaudio", value="<:reply:1125269313432059904> Add an audio from SoundCloud for others to use", inline=False)# ✅
@@ -67,26 +67,26 @@ class Help(commands.Cog):
                 embed.add_field(name="+colorscheme", value="<:reply:1125269313432059904> Get a random color scheme to use in your edit", inline=False)# ✅
                 embed.set_thumbnail(url=ctx.guild.icon)
             elif selected_category == categories[2]:
-                embed = discord.Embed(title="> Other commands", color=0x2b2d31)
+                embed = discord.Embed(title="other commands", color=0x2b2d31)
                 embed.add_field(name="+ia", value="<:reply:1125269313432059904> Send us an inactivity message if you go inactive", inline=False)# ✅
                 embed.add_field(name="/ia", value="<:reply:1125269313432059904> Send us an inactivity message if you go inactive (kanzengrp only)", inline=False)# ✅
                 embed.add_field(name="+suggest", value="<:reply:1125269313432059904> Suggest what we can do in the group (+suggest [suggestion])", inline=False)# ✅
                 embed.set_thumbnail(url=ctx.guild.icon)
             elif selected_category == categories[3]:
-                embed = discord.Embed(title="> Minigames", color=0x2b2d31)
+                embed = discord.Embed(title="minigames", color=0x2b2d31)
                 embed.add_field(name="+scramble", value="<:reply:1125269313432059904> Unscramble the word Hoshi gives you in 20 seconds", inline=False)# ✅
                 embed.add_field(name="+trivia", value="<:reply:1125269313432059904> Hoshi will ask you a question, make sure to answer correctly (answer with numbers 1-4)", inline=False)# ✅
                 embed.add_field(name="+tictactoe", value="<:reply:1125269313432059904> Play a game of tictactoe with the person you mention", inline=False)# ✅
                 embed.set_thumbnail(url=ctx.guild.icon)
             elif selected_category == categories[4]:
-                embed = discord.Embed(title="> Kanzen only commands", color=0x2b2d31)
+                embed = discord.Embed(title="kanzen only commands", color=0x2b2d31)
                 embed.add_field(name="+newcmd", value="<:reply:1125269313432059904> Make your own command! `+newcmd (command name) (hoshi's responce)`", inline=False)
                 embed.add_field(name="+listcmds", value="<:reply:1125269313432059904> See all the commands other zennies have added", inline=False)
                 embed.add_field(name="+removecmd", value="<:reply:1125269313432059904> Made a mistake in your command? do `+removecmd (+commandname)`", inline=False)
                 embed.add_field(name="+daily", value="<:reply:1125269313432059904> Get anywhere from 100xp - 300xp everyday! (server boosters only wait 12 hours)", inline=False)
                 embed.set_thumbnail(url=ctx.guild.icon)
             elif selected_category == categories[5]:
-                embed = discord.Embed(title="> Levels commands", color=0x2b2d31)
+                embed = discord.Embed(title="levels commands", color=0x2b2d31)
                 embed.add_field(name="+rank", value="<:reply:1125269313432059904> See your rank, or someone elses", inline=False)
                 embed.add_field(name="+levels", value="<:reply:1125269313432059904> See the level leaderboard for the server", inline=False)
                 embed.add_field(name="+rankcolor", value="<:reply:1125269313432059904> Set your rank color with a hex code", inline=False)
@@ -98,7 +98,7 @@ class Help(commands.Cog):
                 embed.add_field(name="+levelling setrole", value="<:reply:1125269313432059904> Set the top 20 active role", inline=False)
                 embed.set_thumbnail(url=ctx.guild.icon)
             elif selected_category == categories[6]:
-                embed = discord.Embed(title="> Moderation commands", color=0x2b2d31)
+                embed = discord.Embed(title="moderation commands", color=0x2b2d31)
                 embed.add_field(name="/kick", value="<:reply:1125269313432059904> Kick a member from the server", inline=False)
                 embed.add_field(name="/ban", value="<:reply:1125269313432059904> Ban a member from the server", inline=False)
                 embed.add_field(name="/addrole", value="<:reply:1125269313432059904> Add a role to a member (+addrole @role @mention)", inline=False)
@@ -107,7 +107,7 @@ class Help(commands.Cog):
                 embed.add_field(name="+warm", value="<:reply:1125269313432059904> Give a warning to a member in the `[secret]` server", inline=False)
                 embed.set_thumbnail(url=ctx.guild.icon)
             elif selected_category == categories[7]:
-                embed = discord.Embed(title="> Application commands", color=0x2b2d31)
+                embed = discord.Embed(title="application commands", color=0x2b2d31)
                 embed.add_field(name="/apply", value="<:reply:1125269313432059904> Apply for kanzengrp", inline=False)
                 embed.add_field(name="/app", value="<:reply:1125269313432059904> Apply for auragrp", inline=False)
                 embed.add_field(name="+accept @mention", value="<:reply:1125269313432059904> Accepts member into kanzen", inline=False)
@@ -116,7 +116,7 @@ class Help(commands.Cog):
                 embed.add_field(name="+answer", value="<:reply:1125269313432059904> Answer a question sent", inline=False)
                 embed.set_thumbnail(url=ctx.guild.icon)
             elif selected_category == categories[8]:
-                embed = discord.Embed(title="> Community commands", color=0x2b2d31)
+                embed = discord.Embed(title="community commands", color=0x2b2d31)
                 embed.add_field(name="+giveaway", value="<:reply:1125269313432059904> Start a giveaway", inline=False)# ✅
                 embed.set_thumbnail(url=ctx.guild.icon)
             else:
