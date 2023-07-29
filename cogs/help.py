@@ -10,20 +10,19 @@ class Help(commands.Cog):
 
     @commands.command()
     async def help(self, ctx):
-        # Create the dropdown menu with different categories (with custom emojis)
+        # Create the dropdown menu with different categories
         categories = [
-            "<a:milk_love:1131118450538991636> fun",
-            "<a:milk_love:1131118450538991636> editing",
-            "<a:milk_love:1131118450538991636> other",
-            "<a:milk_love:1131118450538991636> minigames",
-            "<a:milk_love:1131118450538991636> kanzen only",
-            "<a:milk_love:1131118450538991636> levels",
-            "<a:milk_love:1131118450538991636> moderation",
-            "<a:milk_love:1131118450538991636> applications",
-            "<a:milk_love:1131118450538991636> community"
+            "fun",
+            "editing",
+            "other",
+            "minigames",
+            "kanzen only",
+            "levels",
+            "moderation",
+            "applications",
+            "community"
         ]
-
-        dropdown = discord.ui.Select(placeholder="Select a category", options=[discord.SelectOption(label=category, value=category.split(":")[-1][:-1]) for category in categories])
+        dropdown = discord.ui.Select(placeholder="Select a category", options=[discord.SelectOption(label=category) for category in categories])
 
         # Create the initial "About Hoshi" embed with fields
         about_hoshi_embed = discord.Embed(title="About Hoshi",description="owner info:\n<a:bounceyarrow:1128155233437106187> Hoshi is owned by [reece](https://instagram.com/remqsi)\n<a:bounceyarrow:1128155233437106187> Reece coded Hoshi in [Visual Studio Code](https://code.visualstudio.com/)\n\ncoding info:\n<a:bounceyarrow:1128155233437106187> Hoshi is coded in Python 3.11.4\n<a:bounceyarrow:1128155233437106187> [Download Python 3.11.4](https://www.python.org/downloads/)\n<a:bounceyarrow:1128155233437106187> Developed by [reece](https://instagram.com/remqsi) with help from [alex](https://instagram.com/rqinflow)\n\nextra info:\n<a:bounceyarrow:1128155233437106187> Hoshi's prefix is `+`\n<a:bounceyarrow:1128155233437106187> Hoshi was made for [**__Kanzengrp__**](https://instagram.com/kanzengrp)" ,color=0x2b2d31)
