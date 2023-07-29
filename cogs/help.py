@@ -12,20 +12,20 @@ class Help(commands.Cog):
     async def help(self, ctx):
         # Create the dropdown menu with different categories
         categories = [
-            "Fun commands",
-            "Editing commands",
-            "Other commands",
-            "Minigames",
-            "Kanzen only commands",
-            "Levels commands",
-            "Moderation commands",
-            "Application commands",
-            "Community commands"
+            "fun commands",
+            "editing commands",
+            "other commands",
+            "minigames",
+            "kanzen only commands",
+            "levels commands",
+            "moderation commands",
+            "application commands",
+            "community commands"
         ]
-        dropdown = discord.ui.Select(placeholder="Select a category...", options=[discord.SelectOption(label=category) for category in categories])
+        dropdown = discord.ui.Select(placeholder="Select a category", options=[discord.SelectOption(label=category) for category in categories])
 
         # Create the initial "About Hoshi" embed with fields
-        about_hoshi_embed = discord.Embed(title="> <a:kanzenflower:1128154723262943282> : About Hoshi",description="owner info:\n<a:bounceyarrow:1132507393050296331> Hoshi is owned by [reece](https://instagram.com/remqsi)\n<a:bounceyarrow:1132507393050296331> Reece coded Hoshi in [Visual Studio Code](https://code.visualstudio.com/)\n\ncoding info:\n<a:bounceyarrow:1132507393050296331> Hoshi is coded in Python 3.11.4\n<a:bounceyarrow:1132507393050296331> [Download Python 3.11.4](https://www.python.org/downloads/)\n<a:bounceyarrow:1132507393050296331> Developed by [reece](https://instagram.com/remqsi) with help from [alex](https://instagram.com/rqinflow)\n\nextra info:\n<a:bounceyarrow:1132507393050296331> Hoshi's prefix is `+`\n<a:bounceyarrow:1132507393050296331> Hoshi was made for [**__Kanzengrp__**](https://instagram.com/kanzengrp)" ,color=0x2b2d31)
+        about_hoshi_embed = discord.Embed(title="About Hoshi",description="owner info:\n<a:bounceyarrow:1132507393050296331> Hoshi is owned by [reece](https://instagram.com/remqsi)\n<a:bounceyarrow:1132507393050296331> Reece coded Hoshi in [Visual Studio Code](https://code.visualstudio.com/)\n\ncoding info:\n<a:bounceyarrow:1132507393050296331> Hoshi is coded in Python 3.11.4\n<a:bounceyarrow:1132507393050296331> [Download Python 3.11.4](https://www.python.org/downloads/)\n<a:bounceyarrow:1132507393050296331> Developed by [reece](https://instagram.com/remqsi) with help from [alex](https://instagram.com/rqinflow)\n\nextra info:\n<a:bounceyarrow:1132507393050296331> Hoshi's prefix is `+`\n<a:bounceyarrow:1132507393050296331> Hoshi was made for [**__Kanzengrp__**](https://instagram.com/kanzengrp)" ,color=0x2b2d31)
         about_hoshi_embed.set_thumbnail(url=ctx.guild.icon)
 
         # Create a view to handle the interaction
