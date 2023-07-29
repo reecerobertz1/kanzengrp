@@ -117,14 +117,14 @@ class Moderation(commands.Cog):
     async def roles(self, ctx):
 
         all_roles_embed = discord.Embed(title="Pronouns",description="<:1:1134874996955689020><@&1131127209952809031>\n<:2:1134874999342252194><@&1131127428668997737>\n<:3:1134875001045135360><@&1131127449753751663>\n<:4:1134875003746275429><@&1131127502396465213>\n<:5:1134875005243641956><@&1131127472142958622>\n<:6:1134875007567274055><@&1131127523456069723>", color=0x2b2d31)
-        all_roles_embed.footer = ("- Use the emojis below to select your role")
+        all_roles_embed.set_footer = ("- Use the emojis below to select your role")
 
         # Create the second embed showing roles categorized by color
         color_roles_embed = discord.Embed(title="Pings",description="<:1:1134874996955689020> <@&1133770119777099866>\n<:2:1134874999342252194> <@&1131127168102055996>\n<:3:1134875001045135360> <@&1131127104226992208>\n<:4:1134875003746275429> <@&1131005057417105418>\n<:5_:1134875005243641956> <@&1131127124187684894>" ,color=0x2b2d31)
-        color_roles_embed.footer = ("- Use the emojis below to select your role")
+        color_roles_embed.set_footer = ("- Use the emojis below to select your role")
 
         tits_embed = discord.Embed(title="Member Pings",description="<:1:1134874996955689020> <@&1131130157160206396>\n<:2:1134874999342252194> <@&1131127084379549757>\n<:3:1134875001045135360><@&1131130102328078336>\n<:4:1134875003746275429><@&1131127146186821685>\n<:5_:1134875005243641956><@&1134876934585712773>" ,color=0x2b2d31)
-        tits_embed.footer = ("- Use the emojis below to select your role")
+        tits_embed.set_footer = ("- Use the emojis below to select your role")
 
         # Send both embeds
         await ctx.send(embed=all_roles_embed)
