@@ -26,9 +26,9 @@ class Help(commands.Cog):
 
         # Create the initial "About Hoshi" embed with fields
         about_hoshi_embed = discord.Embed(title="> <a:kanzenflower:1128154723262943282> : About Hoshi", color=0x2b2d31)
-        about_hoshi_embed.add_field(name="The coding", value="Hoshi is coded in Python 3.11.4\n[Download Python 3.11.4](https://www.python.org/downloads/)", inline=False)
-        about_hoshi_embed.add_field(name="Owner", value="Hoshi is owned by Reeceroberts\nReece coded Hoshi in [Visual Studio Code](https://code.visualstudio.com/)", inline=False)
-        about_hoshi_embed.add_field(name="Extra Information", value="Hoshi's prefix is `+`\nHoshi was made for [**__Kanzengrp__**](https://instagram.com/kanzengrp)", inline=False)
+        about_hoshi_embed.add_field(name="** **", value="owner info:\n<a:bounceyarrow:1132507393050296331> Hoshi is owned by Reeceroberts\n<a:bounceyarrow:1132507393050296331> Reece coded Hoshi in [Visual Studio Code](https://code.visualstudio.com/)", inline=False)
+        about_hoshi_embed.add_field(name="** **", value="coding info:\n<a:bounceyarrow:1132507393050296331> Hoshi is coded in Python 3.11.4\n<a:bounceyarrow:1132507393050296331> [Download Python 3.11.4](https://www.python.org/downloads/)\n<a:bounceyarrow:1132507393050296331> Hoshi was developed by [reece](https://instagram.com/remqsi) with help from [alex](https://instagram.com/rqinflow)", inline=False)
+        about_hoshi_embed.add_field(name="** **", value="extra info:\n<a:bounceyarrow:1132507393050296331> Hoshi's prefix is `+`\n<a:bounceyarrow:1132507393050296331> Hoshi was made for [**__Kanzengrp__**](https://instagram.com/kanzengrp)", inline=False)
         about_hoshi_embed.set_thumbnail(url=ctx.guild.icon)
 
         # Create a view to handle the interaction
