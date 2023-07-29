@@ -94,6 +94,7 @@ class Moderation(commands.Cog):
             return await interaction.response.send_message("You have no admin", ephemeral=True)
 
     @commands.command()
+    @commands.has_permissions(manage_guild=True)
     async def warn(self, ctx, user: discord.User, *, reason: str):
         # Send DM to the user
         try:
