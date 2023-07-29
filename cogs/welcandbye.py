@@ -54,9 +54,9 @@ class welcandleave(commands.Cog):
             channel = self.bot.get_channel(self.server5_channel)
             embed.set_thumbnail(url=member.display_avatar.url)
             await channel.send(f'{member.mention}', embed=embed)
-            """AUA DAEGU KANZEN FORMS"""
+            """EDITORS BLOCK SERVER"""
         elif member.guild.id == self.server6_id:
-            embed = discord.Embed(title=f'<a:bearhugz:1131122693085868172> `Welcome {member.name}`', color=0x2b2d31, description=f"<a:daeguarrow:1132507283524431962> Read [infortmation](https://discord.com/channels/1131003330810871979/1131005271502753812)\n<a:greenarrow:1132507431717580830> get [roles](https://discord.com/channels/1131003330810871979/1133730290221715487)\n<a:bounceyarrow:1132507393050296331> apply [here](https://discord.com/channels/1131003330810871979/1133771634793250847)")
+            embed = discord.Embed(title=f'<a:bearhugz:1131122693085868172> `Welcome {member.name}`', color=0x2b2d31, description=f"<a:arrowpink:1134860720777990224> Read [infortmation](https://discord.com/channels/1131003330810871979/1131005271502753812)\n<a:arrowpink:1134860720777990224> get [roles](https://discord.com/channels/1131003330810871979/1133730290221715487)\n<a:arrowpink:1134860720777990224> apply [here](https://discord.com/channels/1131003330810871979/1133771634793250847)")
             embed.set_footer(text='Need help? ping @leads or @staff', icon_url=member.display_avatar.url)
             channel = self.bot.get_channel(self.server6_channel)
             embed.set_thumbnail(url=member.display_avatar.url)

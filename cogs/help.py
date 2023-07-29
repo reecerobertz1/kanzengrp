@@ -104,6 +104,7 @@ class Help(commands.Cog):
                 embed.add_field(name="/addrole", value="<:reply:1125269313432059904> Add a role to a member (+addrole @role @mention)", inline=False)
                 embed.add_field(name="/removerole", value="<:reply:1125269313432059904> Remove a role from a member (+removerole @role @mention)", inline=False)
                 embed.add_field(name="+buildembed", value="<:reply:1125269313432059904> Create an embed", inline=False)
+                embed.add_field(name="+warm", value="<:reply:1125269313432059904> Give a warning to a member in the `[secret]` server", inline=False)
                 embed.set_thumbnail(url=ctx.guild.icon)
             elif selected_category == categories[7]:
                 embed = discord.Embed(title="> Application commands", color=0x2b2d31)
