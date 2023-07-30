@@ -69,7 +69,7 @@ class Help(commands.Cog):
             elif selected_category == categories[2]:
                 embed = discord.Embed(title="other commands", color=0x2b2d31)
                 embed.add_field(name="+ia", value="<:reply:1125269313432059904> Send us an inactivity message if you go inactive", inline=False)# ✅
-                embed.add_field(name="/ia", value="<:reply:1125269313432059904> Send us an inactivity message if you go inactive (kanzengrp only)", inline=False)# ✅
+                embed.add_field(name="</ia:1130538786854539336>", value="<:reply:1125269313432059904> Send us an inactivity message if you go inactive (kanzengrp only)", inline=False)# ✅
                 embed.add_field(name="+suggest", value="<:reply:1125269313432059904> Suggest what we can do in the group (+suggest [suggestion])", inline=False)# ✅
                 embed.set_thumbnail(url=ctx.guild.icon)
             elif selected_category == categories[3]:
@@ -99,10 +99,10 @@ class Help(commands.Cog):
                 embed.set_thumbnail(url=ctx.guild.icon)
             elif selected_category == categories[6]:
                 embed = discord.Embed(title="moderation commands", color=0x2b2d31)
-                embed.add_field(name="/kick", value="<:reply:1125269313432059904> Kick a member from the server", inline=False)
-                embed.add_field(name="/ban", value="<:reply:1125269313432059904> Ban a member from the server", inline=False)
-                embed.add_field(name="/addrole", value="<:reply:1125269313432059904> Add a role to a member (+addrole @role @mention)", inline=False)
-                embed.add_field(name="/removerole", value="<:reply:1125269313432059904> Remove a role from a member (+removerole @role @mention)", inline=False)
+                embed.add_field(name="</kick:1131780353477054484>", value="<:reply:1125269313432059904> Kick a member from the server", inline=False)
+                embed.add_field(name="</ban:1131780353477054485>", value="<:reply:1125269313432059904> Ban a member from the server", inline=False)
+                embed.add_field(name="</addrole:1131784754698666035>", value="<:reply:1125269313432059904> Add a role to a member (+addrole @role @mention)", inline=False)
+                embed.add_field(name="</removerole:1131784754698666036>", value="<:reply:1125269313432059904> Remove a role from a member (+removerole @role @mention)", inline=False)
                 embed.add_field(name="+buildembed", value="<:reply:1125269313432059904> Create an embed", inline=False)
                 embed.add_field(name="+warm", value="<:reply:1125269313432059904> Give a warning to a member in the `[secret]` server", inline=False)
                 embed.set_thumbnail(url=ctx.guild.icon)
