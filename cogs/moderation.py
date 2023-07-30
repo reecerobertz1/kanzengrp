@@ -115,17 +115,16 @@ class Moderation(commands.Cog):
             await ctx.send("Logging channel not found. Please set the correct channel ID.")
 
     @commands.command()
-    async def steal(self, ctx, emoji_url: str, emoji_name: str):
-        async with aiohttp.ClientSession() as session:
-            async with session.get(emoji_url) as resp:
-                if resp.status != 200:
-                    return await ctx.send("Failed to download the emoji.")
-                emoji_data = await resp.read()
-                try:
-                    emoji = await ctx.guild.create_custom_emoji(name=emoji_name, image=emoji_data)
-                except discord.HTTPException as e:
-                    return await ctx.send(f"Failed to create the emoji. Error: {e}")
-                await ctx.send(f"Emoji {emoji} has been added!")
+    async def steal(self, ctx, emoji_name: str, *, emoji: discord.PartialEmoji):
+        if not isinstance(emoji, discord.PartialEmoji):
+            return await ctx.send("Please provide a valid emoji.")
+
+        try:
+            await ctx.guild.create_custom_emoji(name=emoji_name, image=await emoji.read())
+        except discord.HTTPException as e:
+            return await ctx.send(f"Failed to create the emoji. Error: {e}")
+        
+        await ctx.send(f"Emoji {emoji} has been added!")
 
 async def setup(bot):
     await bot.add_cog(Moderation(bot))
