@@ -114,27 +114,22 @@ class Moderation(commands.Cog):
             await ctx.send("Logging channel not found. Please set the correct channel ID.")
 
     @commands.command()
-    async def steal(self, ctx, emoji: discord.PartialEmoji):
-        # Check if the emoji is a custom emoji from another server
-        if not emoji.is_custom_emoji():
-            await ctx.send("This command only works with custom emojis from other servers.")
-            return
+    async def steal(self, ctx, emoji_url: str, emoji_name: str):
+        try:
+            # Download the emoji image from the provided URL
+            async with self.bot.session.get(emoji_url) as response:
+                if response.status != 200:
+                    await ctx.send("Failed to fetch the emoji image from the provided URL.")
+                    return
+                emoji_image = await response.read()
 
-        # Get the actual emoji object using its ID
-        emoji_obj = discord.utils.get(self.bot.emojis, id=emoji.id)
-
-        # Check if the emoji exists in the bot's cache
-        if not emoji_obj:
-            try:
-                # If not, fetch the emoji from the API
-                emoji_obj = await ctx.guild.fetch_emoji(emoji.id)
-            except discord.NotFound:
-                await ctx.send("Sorry, I couldn't find that emoji.")
+            # Check if the emoji name is valid
+            if not discord.utils.valid_emoji_name(emoji_name):
+                await ctx.send("Invalid emoji name. Please provide a valid name for the emoji.")
                 return
 
-        # Add the emoji to the server where the command is run
-        try:
-            new_emoji = await ctx.guild.create_custom_emoji(name=emoji_obj.name, image=await emoji_obj.url.read())
+            # Create the custom emoji in the server where the command is run
+            new_emoji = await ctx.guild.create_custom_emoji(name=emoji_name, image=emoji_image)
             await ctx.send(f"Emoji {new_emoji} has been added to the server!")
         except discord.HTTPException:
             await ctx.send("Failed to add the emoji to the server. Make sure the emoji is not too large.")
