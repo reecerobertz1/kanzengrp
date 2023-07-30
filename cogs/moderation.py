@@ -127,7 +127,7 @@ class Moderation(commands.Cog):
         if not emoji_obj:
             try:
                 # If not, fetch the emoji from the API
-                emoji_obj = await self.bot.fetch_emoji(emoji.id)
+                emoji_obj = await ctx.guild.fetch_emoji(emoji.id)
             except discord.NotFound:
                 await ctx.send("Sorry, I couldn't find that emoji.")
                 return
