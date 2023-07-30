@@ -17,8 +17,11 @@ class funcmds(commands.Cog):
         self.gif_cache = {}
         self.server1_log_channel_id = 1122627075682078720
         self.server2_log_channel_id = 1122994947444973709
-        self.current_object = None
-        self.questions_asked = 0
+        self.words = ["hangman", "python", "discord", "bot", "programming"]
+        self.max_attempts = 6
+        self.current_word = ""
+        self.guesses = set()
+        self.attempts = 0
 
     def get_random_color(self):
         # Generate random RGB color values
@@ -535,31 +538,44 @@ class funcmds(commands.Cog):
         except Exception as e:
             await ctx.send(f"An error occurred: {e}")
 
-    @commands.command()
-    async def twentyquestions(self, ctx):
-        # Start the game and think of an object
-        self.current_object = "elephant"
-        self.questions_asked = 0
-        await ctx.send("Let's play 20 Questions! Ask your first question.")
+    def get_hidden_word(self):
+        return "".join(letter if letter in self.guesses else "_" for letter in self.current_word)
 
     @commands.command()
-    async def ask(self, ctx, *, question):
-        if self.current_object is None:
-            await ctx.send("Start the game first with +twentyquestions.")
+    async def starthangman(self, ctx):
+        self.current_word = random.choice(self.words).lower()
+        self.guesses = set()
+        self.attempts = 0
+        await ctx.send(f"Let's play Hangman! The word has {len(self.current_word)} letters. Use +guess <letter> to make a guess.")
+
+    @commands.command()
+    async def guess(self, ctx, letter: str):
+        if not letter.isalpha() or len(letter) != 1:
+            await ctx.send("Please enter a valid single letter.")
             return
 
-        # Increment the number of questions asked
-        self.questions_asked += 1
+        letter = letter.lower()
 
-        # Logic to check if the user guessed correctly
-        if question.lower() == self.current_object:
-            await ctx.send("Yes! You guessed it right!")
-            self.current_object = None
-        elif self.questions_asked >= 20:
-            await ctx.send(f"Sorry, you ran out of questions. The object was: {self.current_object}.")
-            self.current_object = None
+        if letter in self.guesses:
+            await ctx.send("You already guessed that letter.")
+            return
+
+        self.guesses.add(letter)
+
+        if letter in self.current_word:
+            if all(letter in self.guesses for letter in self.current_word):
+                await ctx.send(f"Congratulations! You guessed the word: {self.current_word}.")
+                self.current_word = ""
+                return
+            else:
+                await ctx.send(f"Good guess! {self.get_hidden_word()}")
         else:
-            await ctx.send("No, keep asking questions.")
+            self.attempts += 1
+            if self.attempts >= self.max_attempts:
+                await ctx.send(f"Sorry, you've reached the maximum number of attempts. The word was: {self.current_word}.")
+                self.current_word = ""
+            else:
+                await ctx.send(f"Wrong letter! You have {self.max_attempts - self.attempts} attempts left. {self.get_hidden_word()}")
 
 
 async def setup(bot):
