@@ -76,6 +76,7 @@ class Help(commands.Cog):
                 embed.add_field(name="+scramble", value="<a:bounceyarrow:1128155233437106187> Unscramble the word Hoshi gives you in 20 seconds", inline=False)# ✅
                 embed.add_field(name="+trivia", value="<a:bounceyarrow:1128155233437106187> Hoshi will ask you a question, make sure to answer correctly (answer with numbers 1-4)", inline=False)# ✅
                 embed.add_field(name="+tictactoe", value="<a:bounceyarrow:1128155233437106187> Play a game of tictactoe with the person you mention", inline=False)# ✅
+                embed.add_field(name="+hangman", value="<a:bounceyarrow:1128155233437106187> Play a game of hangman with Hoshi!", inline=False)# ✅
                 embed.set_thumbnail(url=ctx.guild.icon)
             elif selected_category == categories[4]:
                 embed = discord.Embed(title="kanzen only commands", color=0x2b2d31)
@@ -335,6 +336,14 @@ class Help(commands.Cog):
         embed.add_field(name='aliases', value='none', inline=False)
         embed.add_field(name='arguments', value='none', inline=False)
         embed.add_field(name='example', value='+scramble', inline=False)
+        await ctx.reply(embed=embed)  
+
+    @commands.command()
+    async def helphangman(self, ctx):
+        embed = discord.Embed(title='+hangman | +guess <letter>', description='Play a game of word hangman', color=0x2b2d31)
+        embed.add_field(name='aliases', value='none', inline=False)
+        embed.add_field(name='arguments', value='`letter`\n<a:bounceyarrow:1128155233437106187> the letter you are guessing', inline=False)
+        embed.add_field(name='example', value='+hangman + +guess a', inline=False)
         await ctx.reply(embed=embed)  
 
     @commands.command()

@@ -163,7 +163,7 @@ class logos(commands.Cog):
             color=0x2b2d31
         )
         embed.set_footer(text="Go and use these commands in Hoshi's channel!")
-        embed.add_field(name='New minigame', value='The new game is "TicTacToe"\nThis is a multiplayer game so you do need to mention another player to be able to play. `(+tictactoe @mention)`\nTo play you need to press on the reactions that show up (1 - 9) this will place your marker (⭕ ❌) and the first player to get 3 in a row wins the game!\nThe embed does get editied and at the bottom it will show whos turn it is too!\nIf you need help feel free to ping <@609515684740988959>', inline=False)
+        embed.add_field(name='New minigame', value='The new game is "Hangman"\nTo play this game, all you need to do is use the command +hangman to start it and +guess to guess a letter (+guess a)\nThere are over 100 words for you to guess from! You only have 6 guesses so guess wisley', inline=False)
 
         for server_data in servers:
             server = self.bot.get_guild(server_data['server_id'])
