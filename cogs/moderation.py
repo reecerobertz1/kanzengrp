@@ -114,7 +114,7 @@ class Moderation(commands.Cog):
             await ctx.send("Logging channel not found. Please set the correct channel ID.")
 
     @commands.command()
-    async def emoji(self, ctx, emoji: discord.PartialEmoji):
+    async def steal(self, ctx, emoji: discord.PartialEmoji):
         # Check if the emoji is a custom emoji from another server
         if not emoji.is_custom_emoji():
             await ctx.send("This command only works with custom emojis from other servers.")
@@ -132,8 +132,12 @@ class Moderation(commands.Cog):
                 await ctx.send("Sorry, I couldn't find that emoji.")
                 return
 
-        # Use the emoji in the message
-        await ctx.send(str(emoji_obj))
+        # Add the emoji to the server where the command is run
+        try:
+            new_emoji = await ctx.guild.create_custom_emoji(name=emoji_obj.name, image=await emoji_obj.url.read())
+            await ctx.send(f"Emoji {new_emoji} has been added to the server!")
+        except discord.HTTPException:
+            await ctx.send("Failed to add the emoji to the server. Make sure the emoji is not too large.")
 
 async def setup(bot):
     await bot.add_cog(Moderation(bot))
