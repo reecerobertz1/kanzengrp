@@ -110,6 +110,39 @@ class funcmds(commands.Cog):
         # Delete the temporary files
         os.remove("jail_avatar.png")
 
+    @commands.command(aliases=['gay'])
+    async def pride(self, ctx, member: Optional[discord.Member]):
+        # Get the user's avatar URL
+        member = member or ctx.author
+        avatar_url = member.avatar.url
+
+        # Open the avatar image
+        async with aiohttp.ClientSession() as session:
+            async with session.get(str(avatar_url)) as response:
+                avatar_image = await response.read()
+
+        # Open the jail cell door image
+        jail_image = Image.open("pride.png").convert("RGBA")
+
+        # Open the avatar image using PIL
+        avatar_pil = Image.open(io.BytesIO(avatar_image)).convert("RGBA")
+        avatar_pil = avatar_pil.resize((550, 550))
+
+        # Resize the jail cell door image to match the avatar size
+        jail_image = jail_image.resize(avatar_pil.size)
+
+        # Composite the images
+        final_image = Image.alpha_composite(avatar_pil, jail_image)
+
+        # Save the final image
+        final_image.save("pride.png")
+
+        # Send the modified avatar image
+        await ctx.send(file=discord.File("pride.png"))
+
+        # Delete the temporary files
+        os.remove("pride.png")
+
     @commands.command()
     async def dog(self, ctx):
         loading_msg = await ctx.reply("<a:loading:1122893578461520013> Searching for an image")
