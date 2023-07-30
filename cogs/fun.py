@@ -546,7 +546,12 @@ class funcmds(commands.Cog):
         self.current_word = random.choice(self.words).lower()
         self.guesses = set()
         self.attempts = 0
-        await ctx.send(f"Let's play Hangman! The word has {len(self.current_word)} letters. Use +guess <letter> to make a guess.")
+
+        embed = discord.Embed(title="Hangman Game", description=f"Let's play Hangman! The word has {len(self.current_word)} letters.", color=discord.Color.blue())
+        embed.add_field(name="Hidden Word", value=self.get_hidden_word(), inline=False)
+        embed.add_field(name="Attempts Left", value=self.max_attempts - self.attempts, inline=False)
+
+        await ctx.send(embed=embed)
 
     @commands.command()
     async def guess(self, ctx, letter: str):
@@ -568,14 +573,22 @@ class funcmds(commands.Cog):
                 self.current_word = ""
                 return
             else:
-                await ctx.send(f"Good guess! {self.get_hidden_word()}")
+                embed = discord.Embed(title="Hangman Game", color=discord.Color.blue())
+                embed.add_field(name="Hidden Word", value=self.get_hidden_word(), inline=False)
+                embed.add_field(name="Good guess!", value=f"Letter '{letter}' is in the word.", inline=False)
+                embed.add_field(name="Attempts Left", value=self.max_attempts - self.attempts, inline=False)
+                await ctx.send(embed=embed)
         else:
             self.attempts += 1
             if self.attempts >= self.max_attempts:
                 await ctx.send(f"Sorry, you've reached the maximum number of attempts. The word was: {self.current_word}.")
                 self.current_word = ""
             else:
-                await ctx.send(f"Wrong letter! You have {self.max_attempts - self.attempts} attempts left. {self.get_hidden_word()}")
+                embed = discord.Embed(title="Hangman Game", color=discord.Color.blue())
+                embed.add_field(name="Hidden Word", value=self.get_hidden_word(), inline=False)
+                embed.add_field(name="Wrong letter!", value=f"Letter '{letter}' is not in the word.", inline=False)
+                embed.add_field(name="Attempts Left", value=self.max_attempts - self.attempts, inline=False)
+                await ctx.send(embed=embed)
 
 
 async def setup(bot):
