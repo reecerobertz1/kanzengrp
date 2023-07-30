@@ -113,5 +113,27 @@ class Moderation(commands.Cog):
         else:
             await ctx.send("Logging channel not found. Please set the correct channel ID.")
 
+    @commands.command()
+    async def emoji(self, ctx, emoji: discord.PartialEmoji):
+        # Check if the emoji is a custom emoji from another server
+        if not emoji.is_custom_emoji():
+            await ctx.send("This command only works with custom emojis from other servers.")
+            return
+
+        # Get the actual emoji object using its ID
+        emoji_obj = discord.utils.get(self.bot.emojis, id=emoji.id)
+
+        # Check if the emoji exists in the bot's cache
+        if not emoji_obj:
+            try:
+                # If not, fetch the emoji from the API
+                emoji_obj = await self.bot.fetch_emoji(emoji.id)
+            except discord.NotFound:
+                await ctx.send("Sorry, I couldn't find that emoji.")
+                return
+
+        # Use the emoji in the message
+        await ctx.send(str(emoji_obj))
+
 async def setup(bot):
     await bot.add_cog(Moderation(bot))
