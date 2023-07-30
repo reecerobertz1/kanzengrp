@@ -153,6 +153,11 @@ class applications(commands.Cog):
                     decline_message = f"Hey this is a text"
                     await user.send(decline_message)
 
+                guild = ctx.guild
+                role_to_add = guild.get_role(1135244903165722695)
+                if role_to_add:
+                    await user.add_roles(role_to_add)
+
                 # Edit the original embed to show the declined status
                 embed = msg.embeds[0]
                 embed.add_field(name="Status", value="Accepted ✅")
