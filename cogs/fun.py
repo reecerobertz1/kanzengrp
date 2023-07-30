@@ -546,53 +546,49 @@ class funcmds(commands.Cog):
         self.current_word = random.choice(self.words).lower()
         self.guesses = set()
         self.attempts = 0
-
-        hidden_word = " ".join("_" if letter.isalpha() else letter for letter in self.current_word)
-
         embed = discord.Embed(title="Hangman Game", description=f"Let's play Hangman! The word has {len(self.current_word)} letters.", color=discord.Color.blue())
-        embed.add_field(name="Hidden Word", value=hidden_word, inline=False)
         embed.add_field(name="Attempts Left", value=self.max_attempts - self.attempts, inline=False)
 
-        await ctx.send(embed=embed)
+        await ctx.reply(embed=embed)
 
     @commands.command()
     async def guess(self, ctx, letter: str):
         if not letter.isalpha() or len(letter) != 1:
-            await ctx.send("Please enter a valid single letter.")
+            await ctx.reply("Please enter a valid single letter.")
             return
 
         letter = letter.lower()
 
         if letter in self.guesses:
-            await ctx.send("You already guessed that letter.")
+            await ctx.reply("You already guessed that letter.")
             return
 
         self.guesses.add(letter)
 
         if letter in self.current_word:
             if all(letter in self.guesses for letter in self.current_word):
-                await ctx.send(f"Congratulations! You guessed the word: {self.current_word}.")
+                await ctx.reply(f"Congratulations! You guessed the word: {self.current_word}.")
                 self.current_word = ""
                 return
             else:
-                hidden_word = " ".join(letter if letter in self.guesses else "◯" for letter in self.current_word)
+                hidden_word = " ".join(letter if letter in self.guesses else "_" for letter in self.current_word)
                 embed = discord.Embed(title="Hangman Game", color=discord.Color.blue())
                 embed.add_field(name="Hidden Word", value=hidden_word, inline=False)
                 embed.add_field(name="Good guess!", value=f"Letter '{letter}' is in the word.", inline=False)
                 embed.add_field(name="Attempts Left", value=self.max_attempts - self.attempts, inline=False)
-                await ctx.send(embed=embed)
+                await ctx.reply(embed=embed)
         else:
             self.attempts += 1
             if self.attempts >= self.max_attempts:
-                await ctx.send(f"Sorry, you've reached the maximum number of attempts. The word was: {self.current_word}.")
+                await ctx.reply(f"Sorry, you've reached the maximum number of attempts. The word was: {self.current_word}.")
                 self.current_word = ""
             else:
-                hidden_word = " ".join(letter if letter in self.guesses else "◯" for letter in self.current_word)
+                hidden_word = " ".join(letter if letter in self.guesses else "_" for letter in self.current_word)
                 embed = discord.Embed(title="Hangman Game", color=discord.Color.blue())
                 embed.add_field(name="Hidden Word", value=hidden_word, inline=False)
                 embed.add_field(name="Wrong letter!", value=f"Letter '{letter}' is not in the word.", inline=False)
                 embed.add_field(name="Attempts Left", value=self.max_attempts - self.attempts, inline=False)
-                await ctx.send(embed=embed)
+                await ctx.reply(embed=embed)
 
 
 async def setup(bot):
