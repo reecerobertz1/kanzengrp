@@ -551,8 +551,8 @@ class funcmds(commands.Cog):
         # Increment the number of questions asked
         self.questions_asked += 1
 
-        # Logic to check the question against the correct object
-        if question == "Is it an elephant?":
+        # Logic to check if the user guessed correctly
+        if question.lower() == self.current_object:
             await ctx.send("Yes! You guessed it right!")
             self.current_object = None
         elif self.questions_asked >= 20:
