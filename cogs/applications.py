@@ -28,7 +28,7 @@ class applications(commands.Cog):
             return None
 
     @commands.command()
-    @is_judge
+    @is_judge()
     async def accept(self, ctx):
         if ctx.message.reference is not None:
             try:
@@ -98,7 +98,7 @@ class applications(commands.Cog):
             await ctx.send("Please reply with the embed you want to process.")
 
     @commands.command()
-    @is_judge
+    @is_judge()
     async def decline(self, ctx):
         if ctx.message.reference is not None:
             try:
