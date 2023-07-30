@@ -136,5 +136,32 @@ class applications(commands.Cog):
         else:
             await ctx.send("Please reply with the embed you want to process.")
 
+    @commands.command(aliases=['sa'])
+    @commands.has_permissions(manage_guild=True)
+    async def staffaccept(self, ctx):
+        if ctx.message.reference is not None:
+            try:
+                msg = await ctx.channel.fetch_message(ctx.message.reference.message_id)
+                embed = msg.embeds[0]
+                user_id_field = next((field for field in embed.fields if field.name == 'Discord ID:'), None)
+
+                user_id = user_id_field.value.strip()
+
+                # DM the user with the decline message
+                user = self.bot.get_user(int(user_id))
+                if user:
+                    decline_message = f"Hey this is a text"
+                    await user.send(decline_message)
+
+                # Edit the original embed to show the declined status
+                embed = msg.embeds[0]
+                embed.add_field(name="Status", value="Accepted ✅")
+                await ctx.message.add_reaction("✅")
+                await msg.edit(embed=embed)
+            except Exception as e:
+                print(f"Failed to process the command: {e}")
+        else:
+            await ctx.send("Please reply with the embed you want to process.")
+
 async def setup(bot):
     await bot.add_cog(applications(bot))
