@@ -8,6 +8,13 @@ class applications(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
+    def is_judge():
+        async def predicate(ctx):
+            role_id = 1135216335652143104
+            role = ctx.guild.get_role(role_id)
+            return role in ctx.author.roles
+        return commands.check(predicate)
+
     async def create_invite(self, guild_id):
         try:
             guild = self.bot.get_guild(guild_id)
@@ -21,7 +28,7 @@ class applications(commands.Cog):
             return None
 
     @commands.command()
-    @commands.has_permissions(manage_guild=True)
+    @is_judge
     async def accept(self, ctx):
         if ctx.message.reference is not None:
             try:
@@ -91,7 +98,7 @@ class applications(commands.Cog):
             await ctx.send("Please reply with the embed you want to process.")
 
     @commands.command()
-    @commands.has_permissions(manage_guild=True)
+    @is_judge
     async def decline(self, ctx):
         if ctx.message.reference is not None:
             try:
