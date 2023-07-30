@@ -17,6 +17,8 @@ class funcmds(commands.Cog):
         self.gif_cache = {}
         self.server1_log_channel_id = 1122627075682078720
         self.server2_log_channel_id = 1122994947444973709
+        self.current_object = None
+        self.questions_asked = 0
 
     def get_random_color(self):
         # Generate random RGB color values
@@ -532,6 +534,32 @@ class funcmds(commands.Cog):
             self.gif_cache.setdefault(ctx.author.id, []).append(gif["id"])
         except Exception as e:
             await ctx.send(f"An error occurred: {e}")
+
+    @commands.command()
+    async def twentyquestions(self, ctx):
+        # Start the game and think of an object
+        self.current_object = "elephant"
+        self.questions_asked = 0
+        await ctx.send("Let's play 20 Questions! Ask your first question.")
+
+    @commands.command()
+    async def ask(self, ctx, *, question):
+        if self.current_object is None:
+            await ctx.send("Start the game first with +twentyquestions.")
+            return
+
+        # Increment the number of questions asked
+        self.questions_asked += 1
+
+        # Logic to check the question against the correct object
+        if question == "Is it an elephant?":
+            await ctx.send("Yes! You guessed it right!")
+            self.current_object = None
+        elif self.questions_asked >= 20:
+            await ctx.send(f"Sorry, you ran out of questions. The object was: {self.current_object}.")
+            self.current_object = None
+        else:
+            await ctx.send("No, keep asking questions.")
 
 
 async def setup(bot):
