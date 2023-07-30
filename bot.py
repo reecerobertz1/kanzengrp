@@ -29,6 +29,7 @@ extensions = {
     "cogs.audios",
     "cogs.custom",
     "cogs.newapps",
+    "cogs.scramble",
     "cogs.ttt"
 }
 
