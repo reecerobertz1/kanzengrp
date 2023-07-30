@@ -55,7 +55,7 @@ class Slash(commands.Cog):
     @app_commands.command(name='staff', description='Apply for Kanzen staff!')
     @app_commands.guilds(discord.Object(id=1121841073673736215))
     async def staff(self, interaction: discord.Interaction):
-         await interaction.response.send_modal(staffapps())
+         await interaction.response.send_modal(staff())
 
 # modals
 
@@ -75,7 +75,7 @@ class ia(ui.Modal, title='Inactivity Message'):
 
 # kanzen staff
 
-class ia(ui.Modal, title='Kanzen Staff Apps'):
+class staff(ui.Modal, title='Kanzen Staff Apps'):
      instagram = ui.TextInput(label='Instagram username', placeholder="Enter your Instagram username here...", style=discord.TextStyle.short)
      reason = ui.TextInput(label='why should you be chosen?', placeholder="Put your reason here...", style=discord.TextStyle.long)
      exp = ui.TextInput(label='what kind of expirience do you have?', placeholder="Expirience list here..", style=discord.TextStyle.long)
@@ -91,7 +91,7 @@ class ia(ui.Modal, title='Kanzen Staff Apps'):
           embed.add_field(name='what will you contribute with?:', value=f'{self.contribute.value}', inline=False)
           embed.add_field(name='anything else you would like to say?', value=f'{self.extra.value}')
           embed.add_field(name="Discord ID:", value=interaction.user.id, inline=False)
-          channel = interaction.client.get_channel(1135238365902553158)
+          channel = interaction.client.get_channel(1121913672822968330)
           await channel.send(embed=embed)
           await interaction.followup.send(f'You have sent your staff app successfully', ephemeral=True)
 
