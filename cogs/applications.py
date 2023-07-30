@@ -151,7 +151,7 @@ class applications(commands.Cog):
                     # DM the user with the decline message
                     user = await ctx.guild.fetch_member(int(user_id))
                     if user:
-                        decline_message = f"Hey! you have been accepted as a new staff member for Kanzengrp\nPlease go into this channel for more information"
+                        decline_message = f"Hey! you have been accepted as a new staff member for Kanzengrp\nPlease go into <#1135247559431032833> for more information"
                         await user.send(decline_message)
 
                         # Edit the original embed to show the declined status
