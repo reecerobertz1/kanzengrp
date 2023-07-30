@@ -17,7 +17,7 @@ class funcmds(commands.Cog):
         self.gif_cache = {}
         self.server1_log_channel_id = 1122627075682078720
         self.server2_log_channel_id = 1122994947444973709
-        self.words = ["hangman", "python", "discord", "bot", "programming"]
+        self.words = ["banana", "noodle", "giraffe", "chicken", "penguin","hamburger", "koala", "panda", "pizza", "unicorn","elephant", "kangaroo", "hippopotamus", "dolphin", "flamingo","chameleon", "jellyfish", "butterfly", "octopus", "toucan","giraffe", "hedgehog", "narwhal", "sloth", "lemur","raccoon", "zebra", "otter", "meerkat", "lemur","tortoise", "koala", "armadillo", "penguin", "seahorse","giraffe", "panda", "kangaroo", "elephant", "chameleon","flamingo", "hippopotamus", "jellyfish", "butterfly", "dolphin","koala", "otter", "toucan", "raccoon", "sloth","penguin", "tortoise", "meerkat", "narwhal", "armadillo","lemur", "chicken", "butterfly", "unicorn", "panda","pizza", "koala", "hamburger", "elephant", "toucan","giraffe", "chameleon", "dolphin", "seahorse", "otter","raccoon", "tortoise", "meerkat", "penguin", "sloth","koala", "unicorn", "narwhal", "jellyfish", "flamingo","lemur", "panda", "koala", "penguin", "unicorn","chicken", "hamburger", "pizza", "toucan", "sloth","giraffe", "dolphin", "armadillo", "seahorse", "butterfly","raccoon", "elephant", "meerkat", "flamingo", "jellyfish","paris", "london", "tokyo", "newyork", "sydney","berlin", "amsterdam", "moscow", "rome", "madrid","bts", "blackpink", "twice", "exo", "redvelvet","nct", "got7", "seventeen", "itzy", "straykids","usa", "canada", "australia", "japan", "france","germany", "italy", "spain", "china", "brazil","india", "russia", "mexico", "southkorea", "uk","thailand", "egypt", "greece", "argentina", "turkey","norway", "sweden", "finland", "denmark", "netherlands"]
         self.max_attempts = 6
         self.current_word = ""
         self.guesses = set()
@@ -542,7 +542,7 @@ class funcmds(commands.Cog):
         return "".join(letter if letter in self.guesses else "_" for letter in self.current_word)
 
     @commands.command()
-    async def starthangman(self, ctx):
+    async def hangman(self, ctx):
         self.current_word = random.choice(self.words).lower()
         self.guesses = set()
         self.attempts = 0
@@ -550,7 +550,7 @@ class funcmds(commands.Cog):
         embed = discord.Embed(title="Hangman Game", description=f"Let's play Hangman! The word has {len(self.current_word)} letters.", color=0x2b2d31)
         embed.add_field(name="Hidden Word", value=hidden_word, inline=False)
         embed.add_field(name="Attempts Left", value=self.max_attempts - self.attempts, inline=False)
-
+        embed.set_footer(text='do +guess <letter> to guess the letters')
         await ctx.reply(embed=embed)
 
     @commands.command()
@@ -569,27 +569,29 @@ class funcmds(commands.Cog):
 
         if letter in self.current_word:
             if all(letter in self.guesses for letter in self.current_word):
-                await ctx.reply(f"Congratulations! You guessed the word: {self.current_word}.")
+                await ctx.reply(f"Congratulations! You guessed the word: `{self.current_word}`.")
                 self.current_word = ""
                 return
             else:
                 hidden_word = " ".join(letter if letter in self.guesses else "◯" for letter in self.current_word)
                 embed = discord.Embed(title="Hangman Game", color=0x2b2d31)
                 embed.add_field(name="Hidden Word", value=hidden_word, inline=False)
-                embed.add_field(name="Good guess!", value=f"Letter '{letter}' is in the word.", inline=False)
+                embed.add_field(name="Good guess!", value=f"Letter `{letter}` is in the word.", inline=False)
                 embed.add_field(name="Attempts Left", value=self.max_attempts - self.attempts, inline=False)
+                embed.set_footer(text='do +guess <letter> to guess the letters')
                 await ctx.reply(embed=embed)
         else:
             self.attempts += 1
             if self.attempts >= self.max_attempts:
-                await ctx.reply(f"Sorry, you've reached the maximum number of attempts. The word was: {self.current_word}.")
+                await ctx.reply(f"Sorry, you've reached the maximum number of attempts. The word was: `{self.current_word}`.")
                 self.current_word = ""
             else:
                 hidden_word = " ".join(letter if letter in self.guesses else "◯" for letter in self.current_word)
                 embed = discord.Embed(title="Hangman Game", color=0x2b2d31)
                 embed.add_field(name="Hidden Word", value=hidden_word, inline=False)
-                embed.add_field(name="Wrong letter!", value=f"Letter '{letter}' is not in the word.", inline=False)
+                embed.add_field(name="Wrong letter!", value=f"Letter `{letter}` is not in the word.", inline=False)
                 embed.add_field(name="Attempts Left", value=self.max_attempts - self.attempts, inline=False)
+                embed.set_footer(text='do +guess <letter> to guess the letters')
                 await ctx.reply(embed=embed)
 
 
