@@ -291,6 +291,14 @@ class funcmds(commands.Cog):
         await ctx.send(ship_message)
 
     @commands.command()
+    async def howgay(self, ctx, member: discord.Member = None):
+        if member is None:
+            member = ctx.author
+
+        percentage = random.randint(0, 100)
+        await ctx.send(f"{member.mention} is {percentage}% gay. 🏳️‍🌈")
+
+    @commands.command()
     async def trivia(self, ctx):
         """Starts a trivia game with multiple-choice questions."""
         # Define a list of trivia questions and their corresponding answers
