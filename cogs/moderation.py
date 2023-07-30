@@ -1,5 +1,6 @@
 import asyncio
 from datetime import datetime
+import aiohttp
 import discord
 from discord.ext import commands
 from discord import app_commands
@@ -115,24 +116,16 @@ class Moderation(commands.Cog):
 
     @commands.command()
     async def steal(self, ctx, emoji_url: str, emoji_name: str):
-        try:
-            # Download the emoji image from the provided URL
-            async with self.bot.session.get(emoji_url) as response:
-                if response.status != 200:
-                    await ctx.send("Failed to fetch the emoji image from the provided URL.")
-                    return
-                emoji_image = await response.read()
-
-            # Check if the emoji name is valid
-            if not discord.utils.valid_emoji_name(emoji_name):
-                await ctx.send("Invalid emoji name. Please provide a valid name for the emoji.")
-                return
-
-            # Create the custom emoji in the server where the command is run
-            new_emoji = await ctx.guild.create_custom_emoji(name=emoji_name, image=emoji_image)
-            await ctx.send(f"Emoji {new_emoji} has been added to the server!")
-        except discord.HTTPException:
-            await ctx.send("Failed to add the emoji to the server. Make sure the emoji is not too large.")
+        async with aiohttp.ClientSession() as session:
+            async with session.get(emoji_url) as resp:
+                if resp.status != 200:
+                    return await ctx.send("Failed to download the emoji.")
+                emoji_data = await resp.read()
+                try:
+                    emoji = await ctx.guild.create_custom_emoji(name=emoji_name, image=emoji_data)
+                except discord.HTTPException as e:
+                    return await ctx.send(f"Failed to create the emoji. Error: {e}")
+                await ctx.send(f"Emoji {emoji} has been added!")
 
 async def setup(bot):
     await bot.add_cog(Moderation(bot))
