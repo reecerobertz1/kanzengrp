@@ -91,7 +91,7 @@ class staff(ui.Modal, title='Kanzen Staff Apps'):
           embed.add_field(name='what will you contribute with?:', value=f'{self.contribute.value}', inline=False)
           embed.add_field(name='anything else you would like to say?', value=f'{self.extra.value}')
           embed.add_field(name="Discord ID:", value=interaction.user.id, inline=False)
-          channel = interaction.client.get_channel(1121913672822968330)
+          channel = interaction.client.get_channel(1135238365902553158)
           await channel.send(embed=embed)
           await interaction.followup.send(f'You have sent your staff app successfully', ephemeral=True)
 
