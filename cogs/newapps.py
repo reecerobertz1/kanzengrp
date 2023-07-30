@@ -80,10 +80,10 @@ class staff(ui.Modal, title='Kanzen Staff Apps'):
      reason = ui.TextInput(label='why should you be chosen?', placeholder="Put your reason here...", style=discord.TextStyle.long)
      exp = ui.TextInput(label='what kind of expirience do you have?', placeholder="Expirience list here..", style=discord.TextStyle.long)
      contribute = ui.TextInput(label='what will you contribute with?', placeholder="E.g. Events you would like to host, To help improve Kanzen etc...", style=discord.TextStyle.long)
-     extra = ui.TextInput(label='anything else you would like to add?', placeholder="Expirience list here..", style=discord.TextStyle.long)
+     extra = ui.TextInput(label='anything else you would like to add?', placeholder="Expirience list here..", style=discord.TextStyle.long, required=False)
      async def on_submit(self, interaction: discord.Interaction):
           await interaction.response.defer()
-          embed = discord.Embed(title='Inactivity Message', color=0x2b2d31)
+          embed = discord.Embed(title='Kanzen Staff Apps', color=0x2b2d31)
           embed.add_field(name='Instagram Name:', value=f'{self.instagram.value}', inline=False)
           embed.add_field(name='Instagram Account Link:', value=f'https://instagram.com/{self.instagram.value}', inline=False)
           embed.add_field(name='why should you be chosen?:', value=f'{self.reason.value}', inline=False)
