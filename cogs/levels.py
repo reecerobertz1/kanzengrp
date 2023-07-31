@@ -806,7 +806,7 @@ class Levels(commands.Cog):
 
             msg = "messages" if row['messages'] != 1 else "message"
 
-            description += f"**{i}.** <@!{row['member_id']}>\n{row['levels']} | {row['xp']} xp | {row['messages']} {msg}\n\n"
+            description += f"**{i}.** <@!{row['member_id']}>\n{row['xp']} xp | {row['messages']} {msg}\n\n"
 
             if i % per_page == 0 or i == len(rows):
                 embed = discord.Embed(title="leaderboard", description=description, color=0x2B2D31)
