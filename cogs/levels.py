@@ -805,14 +805,6 @@ class Levels(commands.Cog):
         for i, row in enumerate(rows, start=1):
 
             msg = "messages" if row['messages'] != 1 else "message"
-            # gets member's current level as lvl
-            xp = lvl["xp"]
-            lvl = 0
-
-            while True:
-                if xp < ((50*(lvl**2))+(50*(lvl-1))):
-                    break
-                lvl += 1
 
             description += f"**{i}.** <@!{row['member_id']}>\n{row['xp']} xp | {row['messages']} {msg}\n\n"
 
