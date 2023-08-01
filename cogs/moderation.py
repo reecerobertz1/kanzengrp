@@ -127,7 +127,6 @@ class Moderation(commands.Cog):
         await ctx.send(f"Emoji {emoji} has been added!")
 
     @commands.command()
-    @commands.has_permissions(manage_guild=True)
     async def iakick(self, ctx, member: discord.Member):
         """Kicks a member for inactivity"""
         # Send the DM to the member
