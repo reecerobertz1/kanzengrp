@@ -126,22 +126,5 @@ class Moderation(commands.Cog):
         
         await ctx.send(f"Emoji {emoji} has been added!")
 
-    @commands.command()
-    async def iakick(self, ctx, member: discord.Member):
-        """Kicks a member for inactivity"""
-        # Send the DM to the member
-        dm_message = f"You have been kicked from {ctx.guild.name} for inactivity!"
-        try:
-            await member.send(dm_message)
-        except discord.Forbidden:
-            # If the member has DMs disabled or has blocked the bot
-            print(f"Failed to send DM to {member.name}")
-
-        # Kick the member
-        await member.kick(reason="Inactive - Didn't meet level requirement")
-
-        # Send a confirmation message in the current channel
-        await ctx.send(f"{member.mention} has been kicked for inactivity.")
-
 async def setup(bot):
     await bot.add_cog(Moderation(bot))
