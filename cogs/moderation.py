@@ -126,5 +126,37 @@ class Moderation(commands.Cog):
         
         await ctx.send(f"Emoji {emoji} has been added!")
 
+    @commands.command()
+    @commands.has_permissions(kick_members=True)
+    async def iakick(self, ctx, member: discord.Member):
+        """Kicks a member for inactivity"""
+        # Replace this with your desired level requirement
+        required_level = 10
+
+        # Get the member's level from your database or wherever you store it
+        # For example, you can use the get_level function here
+        member_level = self.get_level(member)
+
+        if member_level < required_level:
+            # Send the DM to the member
+            dm_message = f"You have been kicked from {ctx.guild.name} for inactivity! You didn't meet the level requirement."
+            try:
+                await member.send(dm_message)
+            except discord.Forbidden:
+                # If the member has DMs disabled or has blocked the bot
+                print(f"Failed to send DM to {member.name}")
+
+            # Kick the member
+            await member.kick(reason="Inactive - Didn't meet level requirement")
+
+            # Send a confirmation message in the current channel
+            await ctx.send(f"{member.mention} has been kicked for inactivity.")
+
+    # Replace this with your own method to get the member's level
+    def get_level(self, member):
+        # For example, you might get the level from a database or API
+        # Here, I'm just returning a random level for demonstration purposes
+        return 5
+
 async def setup(bot):
     await bot.add_cog(Moderation(bot))
