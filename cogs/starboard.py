@@ -24,7 +24,7 @@ class Starboard(commands.Cog):
                 if reaction.message.content:
                     embed.description = reaction.message.content
 
-                embed.set_author(name=reaction.message.author.display_name, icon_url=reaction.message.author.avatar_url)
+                embed.set_author(name=reaction.message.author.display_name, icon_url=reaction.author.display_avatar.url)
                 embed.add_field(name="Original Message", value=f"[Jump!](https://discordapp.com/channels/{reaction.message.guild.id}/{reaction.message.channel.id}/{reaction.message.id})")
 
                 if reaction.message.attachments:
