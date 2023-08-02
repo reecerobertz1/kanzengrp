@@ -12,7 +12,7 @@ class Starboard(commands.Cog):
     @commands.Cog.listener()
     async def on_reaction_add(self, reaction, user):
         # Check if the reaction is a star (⭐) emoji
-        if str(reaction.emoji) == "⭐" and reaction.message.guild.id == 1121841073673736215:
+        if str(reaction.emoji) == "⭐" and reaction.message.guild.id == 1121841073673736215 and reaction.count >= min_stars:
             # Set the minimum number of stars required for a message to be starred
             min_stars = 3
 
@@ -22,7 +22,7 @@ class Starboard(commands.Cog):
                 starboard_channel = self.bot.get_channel(1136384691671416932)
 
                 # Create the embed
-                embed = discord.Embed(title="Starboard", description=reaction.message.content, color=0xFFAC33)
+                embed = discord.Embed(title="Starboard", description=reaction.message.content, color=0x2b2d31)
                 embed.set_author(name=reaction.message.author.display_name, icon_url=reaction.message.author.avatar_url)
 
                 # Add a field for the original message link
