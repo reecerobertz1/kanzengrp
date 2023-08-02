@@ -5,7 +5,7 @@ class Starboard(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.error_channel_id = 1136384691671416932
-        self.starboarded_messages = set()
+        self.starboarded_messages = set(3)
 
     @commands.Cog.listener()
     async def on_reaction_add(self, reaction, user):
