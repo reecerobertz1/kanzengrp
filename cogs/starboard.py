@@ -19,7 +19,7 @@ class Starboard(commands.Cog):
                     await error_channel.send(f"Starboard channel (ID: {starboard_channel_id}) not found.")
                     return
 
-                embed = discord.Embed(title="Starboard Message")
+                embed = discord.Embed(color=0x2b2d31)
 
                 if reaction.message.content:
                     embed.description = reaction.message.content
