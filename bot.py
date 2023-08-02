@@ -31,7 +31,8 @@ extensions = {
     "cogs.newapps",
     "cogs.scramble",
     "cogs.ttt",
-    "cogs.giveaway"
+    "cogs.giveaway",
+    "cogs.starboard"
 }
 
 # bot subclass
