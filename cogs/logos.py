@@ -163,7 +163,7 @@ class logos(commands.Cog):
             color=0x2b2d31
         )
         embed.set_footer(text="Go and use these commands in Hoshi's channel!")
-        embed.add_field(name='New minigame', value='The new game is "Hangman"\nTo play this game, all you need to do is use the command +hangman to start it and +guess to guess a letter (+guess a)\nThere are over 100 words for you to guess from! You only have 6 guesses so guess wisley', inline=False)
+        embed.add_field(name='Change to audio command', value='instead of doing the usual `+addaudio` to add an audio and `+audio` to get an audio, you can now do `+addsoft` `+softaudio` to add and get soft audios and `+addhot` `+hotaudios` to add and get hot audios!\nthe old commands have been removed and do not work anymore!\nif you have any other ideas for commands and games to add to hoshi, you can do `+suggest (type suggestion here)` to suggest or go to the suggestions channel if youre in daegu!', inline=False)
 
         for server_data in servers:
             server = self.bot.get_guild(server_data['server_id'])
