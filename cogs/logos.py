@@ -177,8 +177,14 @@ class logos(commands.Cog):
 
         await ctx.send(embed=embed2, view=view2)
 
-        interaction = await self.bot.wait_for('button_click', check=lambda i: i.user == ctx.author)
-        
+        def check(interaction):
+            return interaction.user == ctx.author and interaction.message.embeds[0].title == "Owner Info"
+
+        try:
+            interaction = await self.bot.wait_for('button_click', check=check)
+        except Exception:
+            return
+
         if interaction.custom_id == "server_rules":
             embed_rules = discord.Embed(title="Server Rules", description="Here are the server rules:\n1. No spamming.\n2. Be respectful to others.\n3. No NSFW content.\n4. No advertising.\n5. Follow Discord's Terms of Service and Community Guidelines.")
             await interaction.send(embed=embed_rules)
