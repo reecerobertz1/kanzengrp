@@ -23,7 +23,7 @@ class infobuttons(discord.ui.View):
         embed.add_field(name="Bots", value="<#1133772583813263422> - Use our custom bot <@849682093575372841> here! `+help` for commands\n<#1133772598979866774> - Count as high as you can (can't count twice in a row)\n<#1133772609222361270> - Use other bots here other than hoshi\n<#1133772621666844813> - Another spam channel for you to use other bots\n<#1133772650695626882> - Use music commands here\n<#1133772672631836754> - Listen to music here", inline=False)
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
-    @discord.ui.button(label="Role Info", emoji="<:roles_00000:1136752067277504633>", timeout=180)
+    @discord.ui.button(label="Role Info", emoji="<:roles_00000:1136752067277504633>", timeout=None)
     async def roles(self, interaction: discord.Interaction, button: discord.ui.Button):
         embed = discord.Embed(title="<:roles_00000:1136752067277504633> Role Info",description="some shit" ,color=0x2b2d31)
         await interaction.response.send_message(embed=embed, ephemeral=True)   
