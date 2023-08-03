@@ -29,7 +29,7 @@ class Starboard(commands.Cog):
                 if message_id not in self.starboarded_messages:
                     # Send a new message to the starboard
                     stars = reaction.count
-                    channel_name = reaction.message.channel.name
+                    channel_name = reaction.message.channel.id
                     embed = discord.Embed(color=0x2b2d31)
 
                     if reaction.message.content:
