@@ -58,7 +58,7 @@ class ebmessages(commands.Cog):
 
     @commands.command()
     async def applylol(self, ctx):
-        view = appbuttons
+        view = appbuttons()
         embed = discord.Embed(title="Apply Here *!*", description="some shit about applying n whatever", color=0x2b2d31)
         embed.set_footer(text="If you have any issues with applying, please contact staff or owners!")
         await ctx.send(embed=embed, view=view)
