@@ -80,7 +80,7 @@ class ebmessages(commands.Cog):
         button2 = discord.ui.Button(label="Aura", url="https://www.instagram.com/auragrps/", emoji="<:aura:1136701593018978415>")
         button3 = discord.ui.Button(label="Daegu", url="https://www.instagram.com/daegutowngrp/", emoji="<:daegu:1136701608026185879>")
 
-        view = discord.ui.View(timeout=None)
+        view = discord.ui.View()
         view.add_item(button)
         view.add_item(button2)
         view.add_item(button3)
