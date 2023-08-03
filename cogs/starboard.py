@@ -10,7 +10,7 @@ class Starboard(commands.Cog):
     @commands.Cog.listener()
     async def on_reaction_add(self, reaction, user):
         try:
-            min_stars = 3  # Adjust this as needed
+            min_stars = 1
             if (
                 str(reaction.emoji) == "⭐"
                 and reaction.message.guild.id == 1121841073673736215
