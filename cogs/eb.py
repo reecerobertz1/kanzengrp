@@ -63,10 +63,12 @@ class ebmessages(commands.Cog):
 
     @commands.command()
     async def applylol(self, ctx):
+        application_channel_id = 1133771634793250847
+        application_channel = self.bot.get_channel(application_channel_id)
         view = appbuttons()
         embed = discord.Embed(title="Apply Here *!*", description="some shit about applying n whatever", color=0x2b2d31)
         embed.set_footer(text="If you have any issues with applying, please contact staff or owners!")
-        await ctx.send(embed=embed, view=view)
+        application_channel = await application_channel.send(embed=embed, view=view)
 
     @commands.command()
     async def lol(self, ctx):
