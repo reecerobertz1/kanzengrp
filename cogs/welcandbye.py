@@ -98,6 +98,8 @@ class welcandleave(commands.Cog):
             channel_id = 1123752056772104252  # aura forms channel
         elif server_id == 1122181605591621692:  # kanzengrp forms
             channel_id = 1123755909089337364  # kanzen forms channel
+        elif server_id == 1131003330810871979:  # editors block
+            channel_id = 1133772140915732511  # boost editors block
 
         if channel_id:
             channel = self.bot.get_channel(channel_id)
