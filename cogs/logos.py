@@ -153,48 +153,53 @@ class logos(commands.Cog):
         embed = discord.Embed(title="Welcome to Editors Block!", description="Thank you for joining Editors Block! This is a community server made for all types of editors.\nFeel free to ping @owners or @staff if you need any help.\n\nAlso, we will do group recruits for the groups Kanzen, Aura, and Daegu!", color=0x2b2d31)
         embed.set_footer(text="Follow the groups below!", icon_url='https://cdn.discordapp.com/icons/1131003330810871979/128ca9e19d2f0aa0e41c99310673dfac.png?size=1024')
 
+        button = discord.ui.Button(label="Kanzen", url="https://www.instagram.com/kanzengrp/", emoji="<:kanzen:1136701626799886366>")
+        button2 = discord.ui.Button(label="Aura", url="https://www.instagram.com/auragrps/", emoji="<:aura:1136701593018978415>")
+        button3 = discord.ui.Button(label="Daegu", url="https://www.instagram.com/daegutowngrp/", emoji="<:daegu:1136701608026185879>")
+
         view = discord.ui.View()
-        button_row = discord.ui.MessageActionRow()
-        
-        kanzen_button = discord.ui.Button(label="Kanzen", url="https://www.instagram.com/kanzengrp/", emoji="<:kanzen:1136701626799886366>")
-        aura_button = discord.ui.Button(label="Aura", url="https://www.instagram.com/auragrps/", emoji="<:aura:1136701593018978415>")
-        daegu_button = discord.ui.Button(label="Daegu", url="https://www.instagram.com/daegutowngrp/", emoji="<:daegu:1136701608026185879>")
+        view.add_item(button)
+        view.add_item(button2)
+        view.add_item(button3)
 
-        button_row.add_item(kanzen_button)
-        button_row.add_item(aura_button)
-        button_row.add_item(daegu_button)
-
-        view.add_item(button_row)
-
-        await ctx.send(embed=embed, view=view)
+        message = await ctx.send(embed=embed, view=view)
 
         embed2 = discord.Embed(title="Owner Info", description="Editors Block is owned by @remqsi, @yoongiaeps, and @taedxck", color=0x2b2d31)
         embed2.set_author(name="Hoshi#3105", icon_url='https://cdn.discordapp.com/avatars/849682093575372841/f04c5815341216fdafe736a2564a4d09.png?size=1024')
-        
+
+        button_rules = discord.ui.Button(label="Server Rules", style=discord.ButtonStyle.primary, custom_id="server_rules")
+        button_roles = discord.ui.Button(label="Role Info", style=discord.ButtonStyle.primary, custom_id="role_info")
+
         view2 = discord.ui.View()
-        button_row2 = discord.ui.MessageActionRow()
+        view2.add_item(button_rules)
+        view2.add_item(button_roles)
 
-        rules_button = discord.ui.Button(label="Server Rules", style=discord.ButtonStyle.primary, custom_id="server_rules")
-        roles_button = discord.ui.Button(label="Role Info", style=discord.ButtonStyle.primary, custom_id="role_info")
+        message2 = await ctx.send(embed=embed2, view=view2)
 
-        button_row2.add_item(rules_button)
-        button_row2.add_item(roles_button)
+        def check(interaction):
+            return interaction.message.id in (message.id, message2.id) and interaction.user.id == ctx.author.id
 
-        view2.add_item(button_row2)
+        try:
+            interaction = await self.bot.wait_for('button_click', check=check, timeout=30.0)
+        except asyncio.TimeoutError:
+            return
 
-        await ctx.send(embed=embed2, view=view2)
-
-    @commands.Cog.listener()
-    async def on_button_click(self, interaction):
-        if interaction.message.author.id == self.bot.user.id and interaction.custom_id in ["server_rules", "role_info"]:
-            member = interaction.guild.get_member(interaction.user.id)
-            if member is not None and not member.bot:
-                if interaction.custom_id == "server_rules":
-                    embed_rules = discord.Embed(title="Server Rules", description="Here are the server rules:\n1. No spamming.\n2. Be respectful to others.\n3. No NSFW content.\n4. No advertising.\n5. Follow Discord's Terms of Service and Community Guidelines.")
-                    await interaction.send(embed=embed_rules, ephemeral=False)
-                elif interaction.custom_id == "role_info":
-                    embed_roles = discord.Embed(title="Role Info", description="Here's some information about the roles in the server:\n- Owner: The owners of the server.\n- Staff: The staff members who help moderate the server.\n- Members: Regular members of the server.")
-                    await interaction.send(embed=embed_roles, ephemeral=False)
+        if interaction.message.id == message.id:
+            # The buttons in the first message were clicked
+            if interaction.custom_id == "kanzen":
+                await interaction.respond(content="You clicked Kanzen button!", ephemeral=False)
+            elif interaction.custom_id == "aura":
+                await interaction.respond(content="You clicked Aura button!", ephemeral=False)
+            elif interaction.custom_id == "daegu":
+                await interaction.respond(content="You clicked Daegu button!", ephemeral=False)
+        elif interaction.message.id == message2.id:
+            # The buttons in the second message were clicked
+            if interaction.custom_id == "server_rules":
+                embed_rules = discord.Embed(title="Server Rules", description="Here are the server rules:\n1. No spamming.\n2. Be respectful to others.\n3. No NSFW content.\n4. No advertising.\n5. Follow Discord's Terms of Service and Community Guidelines.")
+                await interaction.respond(embed=embed_rules, ephemeral=False)
+            elif interaction.custom_id == "role_info":
+                embed_roles = discord.Embed(title="Role Info", description="Here's some information about the roles in the server:\n- Owner: The owners of the server.\n- Staff: The staff members who help moderate the server.\n- Members: Regular members of the server.")
+                await interaction.respond(embed=embed_roles, ephemeral=False)
         
 
 async def setup(bot):
