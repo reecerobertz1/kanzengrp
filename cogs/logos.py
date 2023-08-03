@@ -177,10 +177,10 @@ class infobuttons(discord.ui.View):
         self.bot = bot
 
     @discord.ui.button(label="Server Info")
-    async def Serverinfo(self, interaction: discord.Interaction, button: discord.ui.Button):
-        rulesembed = discord.Embed(title="Rules", color=0x2b2d31)
-        rulesembed.add_field(name="Chat Rules", value="GFHDJSKHGSDFGFDGJKFGKJJKGFKGHJKG")
-        await interaction.send(embed=rulesembed, ephermal=True)      
+    async def callback(self, interaction: discord.Interaction, button: discord.ui.Button):
+        embed = discord.Embed(title="Rules", color=0x2b2d31)
+        embed.add_field(name="Chat Rules", value="GFHDJSKHGSDFGFDGJKFGKJJKGFKGHJKG")
+        await interaction.response.send_message(embed=embed, ephermal=True)      
 
 async def setup(bot):
     await bot.add_cog(logos(bot))
