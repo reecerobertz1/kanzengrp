@@ -128,8 +128,8 @@ class Moderation(commands.Cog):
 
     @commands.command()
     async def memberlist(self, ctx):
-        members = ctx.guild.members
-        member_count = ctx.guild.member_count
+        members = [member for member in ctx.guild.members if not member.bot]
+        member_count = len(members)
 
         # If there are many members, the list might exceed the Discord message limit
         # In such cases, you can split the list into smaller chunks
