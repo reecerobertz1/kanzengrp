@@ -129,16 +129,18 @@ class Moderation(commands.Cog):
     @commands.command()
     async def memberlist(self, ctx):
         members = ctx.guild.members
-        member_names = [member.name for member in members]
+        member_count = ctx.guild.member_count
 
         # If there are many members, the list might exceed the Discord message limit
         # In such cases, you can split the list into smaller chunks
         chunk_size = 1000
-        chunks = [member_names[i:i+chunk_size] for i in range(0, len(member_names), chunk_size)]
+        chunks = [members[i:i+chunk_size] for i in range(0, len(members), chunk_size)]
 
-        for chunk in chunks:
-            member_list_text = "\n".join(chunk)
-            await ctx.send(f"```{member_list_text}```")
+        for i, chunk in enumerate(chunks, start=1):
+            member_list_text = "\n".join([member.mention for member in chunk])
+            await ctx.send(f"**Member List - Part {i}**\n{member_list_text}")
+
+        await ctx.send(f"Total Members in the Server: {member_count}")
 
 async def setup(bot):
     await bot.add_cog(Moderation(bot))
