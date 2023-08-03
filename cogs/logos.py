@@ -168,8 +168,8 @@ class logos(commands.Cog):
         embed2 = discord.Embed(title="Owner Info", description="Editors Block is owned by @remqsi, @yoongiaeps, and @taedxck", color=0x2b2d31)
         embed2.set_author(name="Hoshi#3105", icon_url='https://cdn.discordapp.com/avatars/849682093575372841/f04c5815341216fdafe736a2564a4d09.png?size=1024')
 
-        button_rules = discord.ui.Button(label="Server Rules", style=discord.ButtonStyle.primary)
-        button_roles = discord.ui.Button(label="Role Info", style=discord.ButtonStyle.primary)
+        button_rules = discord.ui.Button(label="Server Rules", style=discord.ButtonStyle.primary, custom_id="0")
+        button_roles = discord.ui.Button(label="Role Info", style=discord.ButtonStyle.primary, custom_id="1")
 
         view2 = discord.ui.View()
         view2.add_item(button_rules)
@@ -177,8 +177,8 @@ class logos(commands.Cog):
 
         await ctx.send(embed=embed2, view=view2)
 
-        interaction = await self.bot.wait_for('button_click', check=lambda i: i.user == ctx.author, timeout=30.0)
-
+        interaction = await self.bot.wait_for('button_click', check=lambda i: i.user == ctx.author)
+        
         if interaction.custom_id == "0":
             embed_rules = discord.Embed(title="Server Rules", description="Here are the server rules:\n1. No spamming.\n2. Be respectful to others.\n3. No NSFW content.\n4. No advertising.\n5. Follow Discord's Terms of Service and Community Guidelines.")
             await interaction.send(embed=embed_rules)
