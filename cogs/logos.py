@@ -163,7 +163,7 @@ class logos(commands.Cog):
         view.add_item(button2)
         view.add_item(button3)
 
-        message = await ctx.send(embed=embed, view=view)
+        await ctx.send(embed=embed, view=view)
 
         embed2 = discord.Embed(title="Owner Info", description="Editors Block is owned by @remqsi, @yoongiaeps, and @taedxck", color=0x2b2d31)
         embed2.set_author(name="Hoshi#3105", icon_url='https://cdn.discordapp.com/avatars/849682093575372841/f04c5815341216fdafe736a2564a4d09.png?size=1024')
@@ -175,32 +175,20 @@ class logos(commands.Cog):
         view2.add_item(button_rules)
         view2.add_item(button_roles)
 
-        message2 = await ctx.send(embed=embed2, view=view2)
-
-        def check(interaction):
-            return interaction.message.id in (message.id, message2.id) and interaction.user.id == ctx.author.id
+        await ctx.send(embed=embed2, view=view2)
 
         try:
-            interaction = await self.bot.wait_for('button_click', check=check, timeout=30.0)
+            interaction = await self.bot.wait_for('button_click', check=lambda inter: inter.user == ctx.author, timeout=30.0)
         except asyncio.TimeoutError:
+            await ctx.send("You took too long to click a button.")
             return
 
-        if interaction.message.id == message.id:
-            # The buttons in the first message were clicked
-            if interaction.custom_id == "kanzen":
-                await interaction.respond(content="You clicked Kanzen button!", ephemeral=False)
-            elif interaction.custom_id == "aura":
-                await interaction.respond(content="You clicked Aura button!", ephemeral=False)
-            elif interaction.custom_id == "daegu":
-                await interaction.respond(content="You clicked Daegu button!", ephemeral=False)
-        elif interaction.message.id == message2.id:
-            # The buttons in the second message were clicked
-            if interaction.custom_id == "server_rules":
-                embed_rules = discord.Embed(title="Server Rules", description="Here are the server rules:\n1. No spamming.\n2. Be respectful to others.\n3. No NSFW content.\n4. No advertising.\n5. Follow Discord's Terms of Service and Community Guidelines.")
-                await interaction.respond(embed=embed_rules, ephemeral=False)
-            elif interaction.custom_id == "role_info":
-                embed_roles = discord.Embed(title="Role Info", description="Here's some information about the roles in the server:\n- Owner: The owners of the server.\n- Staff: The staff members who help moderate the server.\n- Members: Regular members of the server.")
-                await interaction.respond(embed=embed_roles, ephemeral=False)
+        if interaction.custom_id == "server_rules":
+            embed_rules = discord.Embed(title="Server Rules", description="Here are the server rules:\n1. No spamming.\n2. Be respectful to others.\n3. No NSFW content.\n4. No advertising.\n5. Follow Discord's Terms of Service and Community Guidelines.")
+            await interaction.send(embed=embed_rules)
+        elif interaction.custom_id == "role_info":
+            embed_roles = discord.Embed(title="Role Info", description="Here's some information about the roles in the server:\n- Owner: The owners of the server.\n- Staff: The staff members who help moderate the server.\n- Members: Regular members of the server.")
+            await interaction.send(embed=embed_roles)
         
 
 async def setup(bot):
