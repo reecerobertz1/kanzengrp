@@ -16,6 +16,12 @@ class infobuttons(discord.ui.View):
         embed.add_field(name="Chat Rules", value="GFHDJSKHGSDFGFDGJKFGKJJKGFKGHJKG")
         await interaction.response.send_message(embed=embed, ephemeral=True)    
 
+    @discord.ui.button(label="Role Info")
+    async def roles(self, interaction: discord.Interaction, button: discord.ui.Button):
+        embed = discord.Embed(title="Rules", color=0x2b2d31)
+        embed.add_field(name="Chat Rules", value="GFHDJSKHGSDFGFDGJKFGKJJKGFKGHJKG")
+        await interaction.response.send_message(embed=embed, ephemeral=True)  
+
 class ebmessages(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
