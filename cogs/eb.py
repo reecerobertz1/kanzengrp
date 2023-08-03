@@ -13,7 +13,7 @@ class infobuttons(discord.ui.View):
 
     @discord.ui.button(label="Role Info", emoji="<:roles_00000:1136752067277504633>")
     async def roles(self, interaction: discord.Interaction, button: discord.ui.Button):
-        embed = discord.Embed(title="Rules",description="" ,color=0x2b2d31)
+        embed = discord.Embed(title="<:roles_00000:1136752067277504633> Role Info",description="some shit" ,color=0x2b2d31)
         await interaction.response.send_message(embed=embed, ephemeral=True)  
 
     @discord.ui.button(label="Server Guide", emoji="<:guide:1136757467943022685>")
@@ -86,7 +86,7 @@ class ebmessages(commands.Cog):
     @commands.command()
     async def lol2(self, ctx):
         view = infobuttons()
-        embed = discord.Embed(title="Server Rules", description="<a:arrowpink:1134860720777990224> Follow Discord's [tos](https://discord.com/terms) and [guidelines](https://discord.com/guidelines)\n<a:arrowpink:1134860720777990224> Be nice and respectful to everyone in the server!\n<a:arrowpink:1134860720777990224> No impersonation of other editors (you will be banned)\n<a:arrowpink:1134860720777990224> Use channels for their intended purpose\n<a:arrowpink:1134860720777990224> No spamming pings, you will be warned and then kicked\n<a:arrowpink:1134860720777990224>  No trash talk of other people", color=0x2b2d31)
+        embed = discord.Embed(title="<:rules:1136761913972359178> Server Rules", description="<a:arrowpink:1134860720777990224> Follow Discord's [tos](https://discord.com/terms) and [guidelines](https://discord.com/guidelines)\n<a:arrowpink:1134860720777990224> Be nice and respectful to everyone in the server!\n<a:arrowpink:1134860720777990224> No impersonation of other editors (you will be banned)\n<a:arrowpink:1134860720777990224> Use channels for their intended purpose\n<a:arrowpink:1134860720777990224> No spamming pings, you will be warned and then kicked\n<a:arrowpink:1134860720777990224>  No trash talk of other people", color=0x2b2d31)
         await ctx.send(embed=embed, view=view)
 
 async def setup(bot):
