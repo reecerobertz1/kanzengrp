@@ -20,10 +20,11 @@ class Slash(commands.Cog):
         self.bot = bot
 
     @commands.command()
-    async def embed(self, ctx):
+    async def applylol(self, ctx):
          view = buttons
          embed = discord.Embed(title="Apply Here *!*", description="some shit about applying n whatever", color=0x2b2d31)
          embed.set_footer(text="If you have any issues with applying, please contact staff or owners!")
+         await ctx.send(embed=embed, view=view)
 
 # slash commands
 
