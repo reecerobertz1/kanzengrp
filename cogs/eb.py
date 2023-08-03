@@ -38,3 +38,6 @@ class infobuttons(discord.ui.View):
         embed.set_author(name="Hoshi#3105", icon_url=f'https://cdn.discordapp.com/avatars/849682093575372841/f04c5815341216fdafe736a2564a4d09.png?size=1024')
         view = infobuttons
         await ctx.send(embed=embed, view=view)
+
+async def setup(bot):
+    await bot.add_cog(infobuttons(bot))
