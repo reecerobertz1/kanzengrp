@@ -27,30 +27,33 @@ class Starboard(commands.Cog):
                 message_id = reaction.message.id
 
                 if message_id not in self.starboarded_messages:
-                    self.starboarded_messages[message_id] = reaction.count
+                    # Send a new message to the starboard
+                    stars = reaction.count
+                    channel_name = reaction.message.channel.name
+                    embed = discord.Embed(color=0x2b2d31)
+
+                    if reaction.message.content:
+                        embed.description = reaction.message.content
+
+                    embed.set_author(name=reaction.message.author.display_name, icon_url=reaction.message.author.avatar.url)
+                    embed.add_field(name="Original Message", value=f"[Jump!](https://discordapp.com/channels/{reaction.message.guild.id}/{reaction.message.channel.id}/{reaction.message.id})")
+
+                    if reaction.message.attachments:
+                        image_url = reaction.message.attachments[0].url
+                        embed.set_image(url=image_url)
+
+                    sent_message = await starboard_channel.send(f"⭐ {stars} <#{channel_name}>", embed=embed)
+                    self.starboarded_messages[message_id] = sent_message
                 else:
-                    self.starboarded_messages[message_id] = reaction.count
+                    # Edit the existing message on the starboard
+                    stars = reaction.count
+                    message = self.starboarded_messages[message_id]
+                    channel_name = reaction.message.channel.id
 
-                stars = self.starboarded_messages[message_id]
-                channel_id = reaction.message.channel.id
-                embed = discord.Embed(color=0x2b2d31)
-
-                if reaction.message.content:
-                    embed.description = reaction.message.content
-
-                embed.set_author(name=reaction.message.author.display_name, icon_url=reaction.message.author.avatar.url)
-                embed.add_field(name="Original Message", value=f"[Jump!](https://discordapp.com/channels/{reaction.message.guild.id}/{reaction.message.channel.id}/{reaction.message.id})")
-
-                if reaction.message.attachments:
-                    image_url = reaction.message.attachments[0].url
-                    embed.set_image(url=image_url)
-
-                try:
-                    message = await starboard_channel.fetch_message(self.starboarded_messages[message_id])
-                    await message.edit(content=f"⭐ {stars} <#{channel_id}>", embed=embed)
-                except discord.NotFound:
-                    sent_message = await starboard_channel.send(f"⭐ {stars} <#{channel_id}>", embed=embed)
-                    self.starboarded_messages[message_id] = sent_message.id
+                    embed = message.embeds[0]
+                    embed.set_author(name=reaction.message.author.display_name, icon_url=reaction.message.author.avatar.url)
+                    embed.add_field(name="Original Message", value=f"[Jump!](https://discordapp.com/channels/{reaction.message.guild.id}/{reaction.message.channel.id}/{reaction.message.id})")
+                    await message.edit(content=f"⭐ {stars} <#{channel_name}>", embed=embed)
 
         except Exception as e:
             error_channel = self.bot.get_channel(self.error_channel_id)
