@@ -149,17 +149,6 @@ class logos(commands.Cog):
             channel = server.get_channel(server_data['channel_id'])
             await channel.send(server_data['ping_role'], embed=embed)
 
-class infobuttons(discord.ui.View):
-    def __init__ (self, timeout:None, bot):
-        super().__init__(timeout=timeout)
-        self.bot = bot
-
-    @discord.ui.button(label="Server Info")
-    async def Serverinfo(self, interaction: discord.Interaction, button: discord.ui.Button):
-        rulesembed = discord.Embed(title="Rules", color=0x2b2d31)
-        rulesembed.add_field(name="Chat Rules", value="GFHDJSKHGSDFGFDGJKFGKJJKGFKGHJKG")
-        await interaction.send(embed=rulesembed, ephermal=True)
-
     @commands.command()
     async def lol(self, ctx):
         embed = discord.Embed(title="Welcome *!*", description="> Thank you for joining Editors Block! This is a community server made for all types of editors.\n> Feel free to ping @owners or @staff if you need any help.\n\nAlso, we will do group recruits for the groups Kanzen, Aura, and Daegu!", color=0x2b2d31)
@@ -180,7 +169,18 @@ class infobuttons(discord.ui.View):
         embed2 = discord.Embed(title="Owner Info", description="Editors Block is owned by @remqsi, @yoongiaeps, and @taedxck", color=0x2b2d31)
         embed2.set_author(name="Hoshi#3105", icon_url=f'https://cdn.discordapp.com/avatars/849682093575372841/f04c5815341216fdafe736a2564a4d09.png?size=1024')
         view = infobuttons
-        await ctx.send(embed=embed2, view=view)        
+        await ctx.send(embed=embed2, view=view)  
+
+class infobuttons(discord.ui.View):
+    def __init__ (self, timeout:None, bot):
+        super().__init__(timeout=timeout)
+        self.bot = bot
+
+    @discord.ui.button(label="Server Info")
+    async def Serverinfo(self, interaction: discord.Interaction, button: discord.ui.Button):
+        rulesembed = discord.Embed(title="Rules", color=0x2b2d31)
+        rulesembed.add_field(name="Chat Rules", value="GFHDJSKHGSDFGFDGJKFGKJJKGFKGHJKG")
+        await interaction.send(embed=rulesembed, ephermal=True)      
 
 async def setup(bot):
     await bot.add_cog(logos(bot))
