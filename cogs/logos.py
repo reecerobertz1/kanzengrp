@@ -161,7 +161,7 @@ class logos(commands.Cog):
         view.add_item(button2)
         view.add_item(button3)
 
-        await ctx.send(embed=embed, view=view, embed=embed2)
+        await ctx.send(embed=embed, embed=embed2, view=view)
         
 
 async def setup(bot):
