@@ -153,26 +153,34 @@ class logos(commands.Cog):
         embed = discord.Embed(title="Welcome to Editors Block!", description="Thank you for joining Editors Block! This is a community server made for all types of editors.\nFeel free to ping @owners or @staff if you need any help.\n\nAlso, we will do group recruits for the groups Kanzen, Aura, and Daegu!", color=0x2b2d31)
         embed.set_footer(text="Follow the groups below!", icon_url='https://cdn.discordapp.com/icons/1131003330810871979/128ca9e19d2f0aa0e41c99310673dfac.png?size=1024')
 
-        button = discord.ui.Button(label="Kanzen", url="https://www.instagram.com/kanzengrp/", emoji="<:kanzen:1136701626799886366>", custom_id="kanzen")
-        button2 = discord.ui.Button(label="Aura", url="https://www.instagram.com/auragrps/", emoji="<:aura:1136701593018978415>", custom_id="aura")
-        button3 = discord.ui.Button(label="Daegu", url="https://www.instagram.com/daegutowngrp/", emoji="<:daegu:1136701608026185879>", custom_id="daegu")
-
         view = discord.ui.View()
-        view.add_item(button)
-        view.add_item(button2)
-        view.add_item(button3)
+        button_row = discord.ui.MessageActionRow()
+        
+        kanzen_button = discord.ui.Button(label="Kanzen", url="https://www.instagram.com/kanzengrp/", emoji="<:kanzen:1136701626799886366>")
+        aura_button = discord.ui.Button(label="Aura", url="https://www.instagram.com/auragrps/", emoji="<:aura:1136701593018978415>")
+        daegu_button = discord.ui.Button(label="Daegu", url="https://www.instagram.com/daegutowngrp/", emoji="<:daegu:1136701608026185879>")
+
+        button_row.add_item(kanzen_button)
+        button_row.add_item(aura_button)
+        button_row.add_item(daegu_button)
+
+        view.add_item(button_row)
 
         await ctx.send(embed=embed, view=view)
 
         embed2 = discord.Embed(title="Owner Info", description="Editors Block is owned by @remqsi, @yoongiaeps, and @taedxck", color=0x2b2d31)
         embed2.set_author(name="Hoshi#3105", icon_url='https://cdn.discordapp.com/avatars/849682093575372841/f04c5815341216fdafe736a2564a4d09.png?size=1024')
-
-        button_rules = discord.ui.Button(label="Server Rules", style=discord.ButtonStyle.primary, custom_id="server_rules")
-        button_roles = discord.ui.Button(label="Role Info", style=discord.ButtonStyle.primary, custom_id="role_info")
-
+        
         view2 = discord.ui.View()
-        view2.add_item(button_rules)
-        view2.add_item(button_roles)
+        button_row2 = discord.ui.MessageActionRow()
+
+        rules_button = discord.ui.Button(label="Server Rules", style=discord.ButtonStyle.primary, custom_id="server_rules")
+        roles_button = discord.ui.Button(label="Role Info", style=discord.ButtonStyle.primary, custom_id="role_info")
+
+        button_row2.add_item(rules_button)
+        button_row2.add_item(roles_button)
+
+        view2.add_item(button_row2)
 
         await ctx.send(embed=embed2, view=view2)
 
