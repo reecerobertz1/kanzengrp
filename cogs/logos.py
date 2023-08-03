@@ -176,9 +176,6 @@ class logos(commands.Cog):
 
         await ctx.send(embed=embed2, view=view2)
 
-        def check(interaction):
-            return interaction.user == ctx.author and interaction.message == ctx.message
-
         if interaction.custom_id == "server_rules":
             embed_rules = discord.Embed(title="Server Rules", description="Here are the server rules:\n1. No spamming.\n2. Be respectful to others.\n3. No NSFW content.\n4. No advertising.\n5. Follow Discord's Terms of Service and Community Guidelines.")
             await ctx.send(embed=embed_rules, ephemeral=False)
