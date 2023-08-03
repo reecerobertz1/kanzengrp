@@ -5,7 +5,7 @@ class Starboard(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.error_channel_id = 1136384691671416932
-        self.starboarded_messages = set("3")
+        self.starboarded_messages = {}
 
     @commands.Cog.listener()
     async def on_reaction_add(self, reaction, user):
@@ -15,10 +15,7 @@ class Starboard(commands.Cog):
                 str(reaction.emoji) == "⭐"
                 and reaction.message.guild.id == 1121841073673736215
                 and reaction.count >= min_stars
-                and reaction.message.id not in self.starboarded_messages
             ):
-                self.starboarded_messages.add(reaction.message.id)
-
                 starboard_channel_id = 1136384691671416932
                 starboard_channel = self.bot.get_channel(starboard_channel_id)
 
@@ -27,6 +24,15 @@ class Starboard(commands.Cog):
                     await error_channel.send(f"Starboard channel (ID: {starboard_channel_id}) not found.")
                     return
 
+                message_id = reaction.message.id
+
+                if message_id not in self.starboarded_messages:
+                    self.starboarded_messages[message_id] = reaction.count
+                else:
+                    self.starboarded_messages[message_id] = reaction.count
+
+                stars = self.starboarded_messages[message_id]
+                channel_name = reaction.message.channel.name
                 embed = discord.Embed(color=0x2b2d31)
 
                 if reaction.message.content:
@@ -39,7 +45,7 @@ class Starboard(commands.Cog):
                     image_url = reaction.message.attachments[0].url
                     embed.set_image(url=image_url)
 
-                await starboard_channel.send(embed=embed)
+                await starboard_channel.send(f"⭐{stars} #{channel_name}", embed=embed)
 
         except Exception as e:
             error_channel = self.bot.get_channel(self.error_channel_id)
