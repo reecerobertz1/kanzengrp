@@ -43,12 +43,12 @@ class Starboard(commands.Cog):
                         embed.set_image(url=image_url)
 
                     sent_message = await starboard_channel.send(f"⭐ {stars} <#{channel_name}>", embed=embed)
-                    self.starboarded_messages[message_id] = sent_message
+                    self.starboarded_messages[message_id] = (sent_message, channel_name)
                 else:
                     # Edit the existing message on the starboard
                     stars = reaction.count
-                    message = self.starboarded_messages[message_id]
-                    await message.edit(content=f"⭐ {stars} {message.jump_url}")
+                    message, channel_name = self.starboarded_messages[message_id]
+                    await message.edit(content=f"⭐ {stars} <#{channel_name}>", embed=message.embeds[0])
 
         except Exception as e:
             error_channel = self.bot.get_channel(self.error_channel_id)
