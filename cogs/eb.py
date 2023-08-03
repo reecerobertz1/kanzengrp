@@ -11,7 +11,7 @@ class infobuttons(discord.ui.View):
         super().__init__()
         self.value = None 
 
-    @discord.ui.button(label="Server Guide", emoji="<:guide:1136757467943022685>")
+    @discord.ui.button(label="Server Guide", emoji="<:guide:1136757467943022685>", timeout=None)
     async def guide(self, interaction: discord.Interaction, button: discord.ui.Button):
         embed = discord.Embed(title="<:guide:1136757467943022685> Server Guide", color=0x2b2d31)
         embed.add_field(name="Get Started", value="<#1131007362895970414> - Server announcements are made here!\n<#1131005271502753812> - Server information\n<#1133730290221715487> - Get your roles here", inline=False)
@@ -23,7 +23,7 @@ class infobuttons(discord.ui.View):
         embed.add_field(name="Bots", value="<#1133772583813263422> - Use our custom bot <@849682093575372841> here! `+help` for commands\n<#1133772598979866774> - Count as high as you can (can't count twice in a row)\n<#1133772609222361270> - Use other bots here other than hoshi\n<#1133772621666844813> - Another spam channel for you to use other bots\n<#1133772650695626882> - Use music commands here\n<#1133772672631836754> - Listen to music here", inline=False)
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
-    @discord.ui.button(label="Role Info", emoji="<:roles_00000:1136752067277504633>")
+    @discord.ui.button(label="Role Info", emoji="<:roles_00000:1136752067277504633>", timeout=None)
     async def roles(self, interaction: discord.Interaction, button: discord.ui.Button):
         timeout = None
         embed = discord.Embed(title="<:roles_00000:1136752067277504633> Role Info",description="some shit" ,color=0x2b2d31)
@@ -34,7 +34,7 @@ class appbuttons(discord.ui.View):
         super().__init__()
         self.value = None
         
-    @discord.ui.button(label="Apply!")
+    @discord.ui.button(label="Apply!", timeout=None)
     async def roles(self, interaction: discord.Interaction, button: discord.ui.Button):
          await interaction.response.send_modal(grprctkda())
 
@@ -64,7 +64,7 @@ class ebmessages(commands.Cog):
 
     @commands.command()
     async def applylol(self, ctx):
-        view = appbuttons(timeout=None)
+        view = appbuttons()
         embed = discord.Embed(title="Apply Here *!*", description="some shit about applying n whatever", color=0x2b2d31)
         embed.set_footer(text="If you have any issues with applying, please contact staff or owners!")
         await ctx.send(embed=embed, view=view)
@@ -89,7 +89,7 @@ class ebmessages(commands.Cog):
 
     @commands.command()
     async def lol2(self, ctx):
-        view = infobuttons(timeout=None)
+        view = infobuttons()
         embed = discord.Embed(title="<:rules:1136761913972359178> Server Rules", 
                                 description="<a:arrowpink:1134860720777990224> Follow Discord's [tos](https://discord.com/terms) and [guidelines](https://discord.com/guidelines)\n<a:arrowpink:1134860720777990224> Be nice and respectful to everyone in the server!\n<a:arrowpink:1134860720777990224> No impersonation of other editors (you will be banned)\n<a:arrowpink:1134860720777990224> Use channels for their intended purpose\n<a:arrowpink:1134860720777990224> No spamming pings, you will be warned and then kicked\n<a:arrowpink:1134860720777990224>  No trash talk of other people", 
                                 color=0xee518f)
