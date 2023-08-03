@@ -11,13 +11,13 @@ class infobuttons(discord.ui.View):
         super().__init__()
         self.value = None
 
-    @discord.ui.button(label="Server Rules")
+    @discord.ui.button(label="Server Rules", emoji="<:rules:1136751716822417550>")
     async def rules(self, interaction: discord.Interaction, button: discord.ui.Button):
         embed = discord.Embed(title="Rules", color=0x2b2d31)
         embed.add_field(name="Chat Rules", value="GFHDJSKHGSDFGFDGJKFGKJJKGFKGHJKG")
         await interaction.response.send_message(embed=embed, ephemeral=True)    
 
-    @discord.ui.button(label="Role Info")
+    @discord.ui.button(label="Role Info", emoji="<:roles_00000:1136752067277504633>")
     async def roles(self, interaction: discord.Interaction, button: discord.ui.Button):
         embed = discord.Embed(title="Rules", color=0x2b2d31)
         embed.add_field(name="Chat Rules", value="GFHDJSKHGSDFGFDGJKFGKJJKGFKGHJKG")
@@ -68,9 +68,9 @@ class ebmessages(commands.Cog):
         embed = discord.Embed(title="Welcome *!*", description="> Thank you for joining Editors Block! This is a community server made for all types of editors.\n> Feel free to ping @owners or @staff if you need any help.\n\nAlso, we will do group recruits for the groups Kanzen, Aura, and Daegu!", color=0x2b2d31)
         embed.set_footer(text="Follow the groups below!", icon_url="https://images-ext-2.discordapp.net/external/eVpj5e3hkU4cFDmIU8KnoGkfnfyDbbJPVs1xJWmUNQg/%3Fsize%3D1024/https/cdn.discordapp.com/icons/1131003330810871979/128ca9e19d2f0aa0e41c99310673dfac.png")
 
-        button = discord.ui.Button(label="Kanzen", url="https://www.instagram.com/kanzengrp/")
-        button2 = discord.ui.Button(label="Aura", url="https://www.instagram.com/auragrps/")
-        button3 = discord.ui.Button(label="Daegu", url="https://www.instagram.com/daegutowngrp/")
+        button = discord.ui.Button(label="Kanzen", url="https://www.instagram.com/kanzengrp/", emoji="<:kanzen:1136701626799886366>")
+        button2 = discord.ui.Button(label="Aura", url="https://www.instagram.com/auragrps/", emoji="<:aura:1136701593018978415>")
+        button3 = discord.ui.Button(label="Daegu", url="https://www.instagram.com/daegutowngrp/", emoji="<:daegu:1136701608026185879>")
 
         view = discord.ui.View()
         view.add_item(button)
