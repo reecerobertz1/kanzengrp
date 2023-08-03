@@ -166,10 +166,10 @@ class logos(commands.Cog):
 
     @commands.command()
     async def lol2(self, ctx):
-        embed2 = discord.Embed(title="Owner Info", description="Editors Block is owned by @remqsi, @yoongiaeps, and @taedxck", color=0x2b2d31)
-        embed2.set_author(name="Hoshi#3105", icon_url=f'https://cdn.discordapp.com/avatars/849682093575372841/f04c5815341216fdafe736a2564a4d09.png?size=1024')
+        embed = discord.Embed(title="Owner Info", description="Editors Block is owned by @remqsi, @yoongiaeps, and @taedxck", color=0x2b2d31)
+        embed.set_author(name="Hoshi#3105", icon_url=f'https://cdn.discordapp.com/avatars/849682093575372841/f04c5815341216fdafe736a2564a4d09.png?size=1024')
         view = infobuttons
-        await ctx.send(embed=embed2, view=view)  
+        await ctx.send(embed=embed, view=infobuttons)  
 
 class infobuttons(discord.ui.View):
     def __init__ (self, timeout:None, bot):
