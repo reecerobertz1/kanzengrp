@@ -11,7 +11,7 @@ class infobuttons(discord.ui.View):
         super().__init__()
         self.value = None 
 
-    @discord.ui.button(label="Server Guide", emoji="<:guide:1136757467943022685>", timeout=1)
+    @discord.ui.button(label="Server Guide", emoji="<:guide:1136757467943022685>", timeout=None)
     async def guide(self, interaction: discord.Interaction, button: discord.ui.Button):
         embed = discord.Embed(title="<:guide:1136757467943022685> Server Guide", color=0x2b2d31)
         embed.add_field(name="Get Started", value="<#1131007362895970414> - Server announcements are made here!\n<#1131005271502753812> - Server information\n<#1133730290221715487> - Get your roles here", inline=False)
@@ -23,9 +23,8 @@ class infobuttons(discord.ui.View):
         embed.add_field(name="Bots", value="<#1133772583813263422> - Use our custom bot <@849682093575372841> here! `+help` for commands\n<#1133772598979866774> - Count as high as you can (can't count twice in a row)\n<#1133772609222361270> - Use other bots here other than hoshi\n<#1133772621666844813> - Another spam channel for you to use other bots\n<#1133772650695626882> - Use music commands here\n<#1133772672631836754> - Listen to music here", inline=False)
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
-    @discord.ui.button(label="Role Info", emoji="<:roles_00000:1136752067277504633>", timeout=1)
+    @discord.ui.button(label="Role Info", emoji="<:roles_00000:1136752067277504633>", timeout=180)
     async def roles(self, interaction: discord.Interaction, button: discord.ui.Button):
-        timeout = None
         embed = discord.Embed(title="<:roles_00000:1136752067277504633> Role Info",description="some shit" ,color=0x2b2d31)
         await interaction.response.send_message(embed=embed, ephemeral=True)   
 
@@ -34,7 +33,7 @@ class appbuttons(discord.ui.View):
         super().__init__()
         self.value = None
         
-    @discord.ui.button(label="Apply!", timeout=1)
+    @discord.ui.button(label="Apply!", timeout=None)
     async def roles(self, interaction: discord.Interaction, button: discord.ui.Button):
          await interaction.response.send_modal(grprctkda())
 
