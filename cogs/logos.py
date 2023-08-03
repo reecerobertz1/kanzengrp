@@ -154,7 +154,7 @@ class infobuttons(discord.ui.View):
         super().__init__(timeout=timeout)
         self.bot = bot
 
-    @discord.ui.Button(label="Server Info")
+    @discord.ui.button(label="Server Info")
     async def Serverinfo(self, interaction: discord.Interaction, button: discord.ui.Button):
         rulesembed = discord.Embed(title="Rules", color=0x2b2d31)
         rulesembed.add_field(name="Chat Rules", value="GFHDJSKHGSDFGFDGJKFGKJJKGFKGHJKG")
