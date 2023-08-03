@@ -38,8 +38,17 @@ class Starboard(commands.Cog):
                     embed.set_author(name=reaction.message.author.display_name, icon_url=reaction.message.author.avatar.url)
                     embed.add_field(name="Original Message", value=f"[Jump!](https://discordapp.com/channels/{reaction.message.guild.id}/{reaction.message.channel.id}/{reaction.message.id})")
 
+                    image_url = None
+
                     if reaction.message.attachments:
                         image_url = reaction.message.attachments[0].url
+                    elif reaction.message.content:
+                        for word in reaction.message.content.split():
+                            if word.lower().endswith((".jpg", ".png", ".gif")):
+                                image_url = word
+                                break
+
+                    if image_url:
                         embed.set_image(url=image_url)
 
                     sent_message = await starboard_channel.send(f"⭐ {stars} <#{channel_name}>", embed=embed)
