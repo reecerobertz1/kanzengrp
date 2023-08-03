@@ -8,7 +8,7 @@ class Starboard(commands.Cog):
         self.starboarded_messages = {}
 
     @commands.Cog.listener()
-    async def on_reaction_add(self, reaction, user):
+    async def on_reaction_add(self, reaction, member):
         try:
             min_stars = 1
             if (
@@ -32,7 +32,7 @@ class Starboard(commands.Cog):
                     self.starboarded_messages[message_id] = reaction.count
 
                 stars = self.starboarded_messages[message_id]
-                channel_name = reaction.message.channel.name
+                channel_id = reaction.message.channel.id
                 embed = discord.Embed(color=0x2b2d31)
 
                 if reaction.message.content:
@@ -47,9 +47,9 @@ class Starboard(commands.Cog):
 
                 try:
                     message = await starboard_channel.fetch_message(self.starboarded_messages[message_id])
-                    await message.edit(content=f"⭐ {stars} <#{channel_name}>", embed=embed)
+                    await message.edit(content=f"⭐ {stars} <#{channel_id}>", embed=embed)
                 except discord.NotFound:
-                    sent_message = await starboard_channel.send(f"⭐ {stars} <#{channel_name}>", embed=embed)
+                    sent_message = await starboard_channel.send(f"⭐ {stars} <#{channel_id}>", embed=embed)
                     self.starboarded_messages[message_id] = sent_message.id
 
         except Exception as e:
