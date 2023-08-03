@@ -1,5 +1,8 @@
+from typing import Any
 import discord
 from discord.ext import commands
+from discord.interactions import Interaction
+from discord.ui import View, Select
 
 class logos(commands.Cog):
     def __init__(self, bot):
