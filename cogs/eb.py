@@ -16,6 +16,9 @@ class infobuttons(discord.ui.View):
         embed.add_field(name="Chat Rules", value="GFHDJSKHGSDFGFDGJKFGKJJKGFKGHJKG")
         await interaction.response.send_message(embed=embed, ephermal=True)    
 
+class ebmessages(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
 
     @commands.command()
     async def lol(self, ctx):
@@ -40,4 +43,4 @@ class infobuttons(discord.ui.View):
         await ctx.send(embed=embed, view=view)
 
 async def setup(bot):
-    await bot.add_cog(infobuttons(bot))
+    await bot.add_cog(ebmessages(bot))
