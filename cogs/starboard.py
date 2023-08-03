@@ -48,10 +48,8 @@ class Starboard(commands.Cog):
                                 image_url = word
                                 break
 
-                    # Check if the URL is a gif
-                    if image_url and image_url.lower().endswith(".gif"):
+                    if image_url:
                         embed.set_image(url=image_url)
-                        embed.description = None  # Remove description if there is an image/gif
 
                     sent_message = await starboard_channel.send(f"⭐ {stars} <#{channel_name}>", embed=embed)
                     self.starboarded_messages[message_id] = (sent_message, channel_name)
