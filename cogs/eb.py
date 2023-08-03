@@ -8,7 +8,7 @@ from discord import ui
 
 class infobuttons(discord.ui.View):
     def __init__ (self):
-        super().__init__()
+        super().__init__(timeout=None)
         self.value = None
 
     @discord.ui.button(label="Server Guide", emoji="<:guide:1136757467943022685>", timeout=None)
@@ -30,7 +30,7 @@ class infobuttons(discord.ui.View):
 
 class appbuttons(discord.ui.View):
     def __init__ (self):
-        super().__init__()
+        super().__init__(timeout=None)
         self.value = None
         
     @discord.ui.button(label="Apply!", timeout=None)
