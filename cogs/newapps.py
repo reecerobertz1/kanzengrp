@@ -4,25 +4,9 @@ from discord.ext import commands
 from discord import app_commands
 from discord import ui
 
-class buttons(discord.ui.View):
-    def __init__ (self):
-        super().__init__()
-        self.value = None
-
-    @discord.ui.button(label="Apply!")
-    async def roles(self, interaction: discord.Interaction, button: discord.ui.Button):
-        await interaction.response.send_modal(grprctkda())
-
 class Slash(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-
-    @commands.command()
-    async def applylol(self, ctx):
-         view = buttons
-         embed = discord.Embed(title="Apply Here *!*", description="some shit about applying n whatever", color=0x2b2d31)
-         embed.set_footer(text="If you have any issues with applying, please contact staff or owners!")
-         await ctx.send(embed=embed, view=view)
 
 # slash commands
 
@@ -57,11 +41,6 @@ class Slash(commands.Cog):
     @app_commands.guilds(discord.Object(id=1123347338841313331))
     async def auraapps(self, interaction: discord.Interaction):
          await interaction.response.send_modal(auraapps())
-
-    @app_commands.command(name='apply', description='Apply for Kanzen, Aura or Daegu!')
-    @app_commands.guilds(discord.Object(id=1131003330810871979))
-    async def kdarct(self, interaction: discord.Interaction):
-         await interaction.response.send_modal(grprctkda())
 
     @app_commands.command(name='staff', description='Apply for Kanzen staff!')
     @app_commands.guilds(discord.Object(id=1121841073673736215))
@@ -147,28 +126,6 @@ class auraapps(ui.Modal, title='Auragrp Applications'):
           embed.add_field(name='Anything else:', value=f'{self.extra.value}', inline=False)
           embed.add_field(name="Discord ID:", value=interaction.user.id, inline=False)
           channel = interaction.client.get_channel(1123353889228468305)
-          await channel.send(embed=embed)
-          await interaction.followup.send(f'Your application has been sent successfully', ephemeral=True)
-
-     # KDA APPS
-
-class grprctkda(ui.Modal, title='Applications'):
-     instagram = ui.TextInput(label='Instagram username', placeholder="Enter your Instagram username here...", style=discord.TextStyle.short)
-     edit = ui.TextInput(label='Edit link (Instagran or Streamable)', placeholder="Paste link here...", style=discord.TextStyle.short)
-     grps = ui.TextInput(label='What group(s) do you want to join?', placeholder="Kanzen, Aura, Daegu...", style=discord.TextStyle.short)
-     app = ui.TextInput(label='What app do you use for editing', placeholder="Editing app name...", style=discord.TextStyle.short)
-     extra = ui.TextInput(label='Anything else you would like us to know?', placeholder="Extra info here...", style=discord.TextStyle.paragraph, required=False)
-     async def on_submit(self, interaction: discord.Interaction):
-          await interaction.response.defer()
-          embed = discord.Embed(title='Forms', color=0x2b2d31)
-          embed.add_field(name='Instagram Name:', value=f'{self.instagram.value}', inline=False)
-          embed.add_field(name='Instagram Account Link:', value=f'https://instagram.com/{self.instagram.value}', inline=False)
-          embed.add_field(name='Edit:', value=f'{self.edit.value}', inline=False)
-          embed.add_field(name='Editing app:', value=f'{self.app.value}', inline=False)
-          embed.add_field(name='Group(s) they want to be in:', value=f'{self.grps.value}', inline=False)
-          embed.add_field(name='Anything else:', value=f'{self.extra.value}', inline=False)
-          embed.add_field(name="Discord ID:", value=interaction.user.id, inline=False)
-          channel = interaction.client.get_channel(1131006328207327294)
           await channel.send(embed=embed)
           await interaction.followup.send(f'Your application has been sent successfully', ephemeral=True)
 
