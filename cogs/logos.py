@@ -149,13 +149,13 @@ class logos(commands.Cog):
             await channel.send(server_data['ping_role'], embed=embed)
 
     @commands.command()
-    async def lol(self, ctx, interaction: discord.Interaction):
+    async def lol(self, ctx):
         embed = discord.Embed(title="Welcome to Editors Block!", description="Thank you for joining Editors Block! This is a community server made for all types of editors.\nFeel free to ping @owners or @staff if you need any help.\n\nAlso, we will do group recruits for the groups Kanzen, Aura, and Daegu!", color=0x2b2d31)
         embed.set_footer(text="Follow the groups below!", icon_url='https://cdn.discordapp.com/icons/1131003330810871979/128ca9e19d2f0aa0e41c99310673dfac.png?size=1024')
 
-        button = discord.ui.Button(label="Kanzen", url="https://www.instagram.com/kanzengrp/", emoji="<:kanzen:1136701626799886366>")
-        button2 = discord.ui.Button(label="Aura", url="https://www.instagram.com/auragrps/", emoji="<:aura:1136701593018978415>")
-        button3 = discord.ui.Button(label="Daegu", url="https://www.instagram.com/daegutowngrp/", emoji="<:daegu:1136701608026185879>")
+        button = discord.ui.Button(label="Kanzen", url="https://www.instagram.com/kanzengrp/", emoji="<:kanzen:1136701626799886366>", custom_id="kanzen")
+        button2 = discord.ui.Button(label="Aura", url="https://www.instagram.com/auragrps/", emoji="<:aura:1136701593018978415>", custom_id="aura")
+        button3 = discord.ui.Button(label="Daegu", url="https://www.instagram.com/daegutowngrp/", emoji="<:daegu:1136701608026185879>", custom_id="daegu")
 
         view = discord.ui.View()
         view.add_item(button)
@@ -167,8 +167,8 @@ class logos(commands.Cog):
         embed2 = discord.Embed(title="Owner Info", description="Editors Block is owned by @remqsi, @yoongiaeps, and @taedxck", color=0x2b2d31)
         embed2.set_author(name="Hoshi#3105", icon_url='https://cdn.discordapp.com/avatars/849682093575372841/f04c5815341216fdafe736a2564a4d09.png?size=1024')
 
-        button_rules = discord.ui.Button(label="Server Rules", style=discord.ButtonStyle.primary)
-        button_roles = discord.ui.Button(label="Role Info", style=discord.ButtonStyle.primary)
+        button_rules = discord.ui.Button(label="Server Rules", style=discord.ButtonStyle.primary, custom_id="server_rules")
+        button_roles = discord.ui.Button(label="Role Info", style=discord.ButtonStyle.primary, custom_id="role_info")
 
         view2 = discord.ui.View()
         view2.add_item(button_rules)
@@ -176,12 +176,17 @@ class logos(commands.Cog):
 
         await ctx.send(embed=embed2, view=view2)
 
-        if interaction.custom_id == "server_rules":
-            embed_rules = discord.Embed(title="Server Rules", description="Here are the server rules:\n1. No spamming.\n2. Be respectful to others.\n3. No NSFW content.\n4. No advertising.\n5. Follow Discord's Terms of Service and Community Guidelines.")
-            await ctx.send(embed=embed_rules, ephemeral=False)
-        elif interaction.custom_id == "role_info":
-            embed_roles = discord.Embed(title="Role Info", description="Here's some information about the roles in the server:\n- Owner: The owners of the server.\n- Staff: The staff members who help moderate the server.\n- Members: Regular members of the server.")
-            await ctx.send(embed=embed_roles, ephemeral=False)
+    @commands.Cog.listener()
+    async def on_button_click(self, interaction):
+        if interaction.message.author.id == self.bot.user.id and interaction.custom_id in ["server_rules", "role_info"]:
+            member = interaction.guild.get_member(interaction.user.id)
+            if member is not None and not member.bot:
+                if interaction.custom_id == "server_rules":
+                    embed_rules = discord.Embed(title="Server Rules", description="Here are the server rules:\n1. No spamming.\n2. Be respectful to others.\n3. No NSFW content.\n4. No advertising.\n5. Follow Discord's Terms of Service and Community Guidelines.")
+                    await interaction.send(embed=embed_rules, ephemeral=False)
+                elif interaction.custom_id == "role_info":
+                    embed_roles = discord.Embed(title="Role Info", description="Here's some information about the roles in the server:\n- Owner: The owners of the server.\n- Staff: The staff members who help moderate the server.\n- Members: Regular members of the server.")
+                    await interaction.send(embed=embed_roles, ephemeral=False)
         
 
 async def setup(bot):
