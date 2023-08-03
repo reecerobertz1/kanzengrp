@@ -45,10 +45,10 @@ class Starboard(commands.Cog):
                     image_url = reaction.message.attachments[0].url
                     embed.set_image(url=image_url)
 
-                message = await starboard_channel.fetch_message(self.starboarded_messages[message_id])
-                if message:
+                try:
+                    message = await starboard_channel.fetch_message(self.starboarded_messages[message_id])
                     await message.edit(content=f"⭐ {stars} <#{channel_name}>", embed=embed)
-                else:
+                except discord.NotFound:
                     sent_message = await starboard_channel.send(f"⭐ {stars} <#{channel_name}>", embed=embed)
                     self.starboarded_messages[message_id] = sent_message.id
 
