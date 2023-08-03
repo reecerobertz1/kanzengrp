@@ -25,6 +25,7 @@ class infobuttons(discord.ui.View):
 
     @discord.ui.button(label="Role Info", emoji="<:roles_00000:1136752067277504633>")
     async def roles(self, interaction: discord.Interaction, button: discord.ui.Button):
+        timeout = None
         embed = discord.Embed(title="<:roles_00000:1136752067277504633> Role Info",description="some shit" ,color=0x2b2d31)
         await interaction.response.send_message(embed=embed, ephemeral=True)   
 
@@ -63,7 +64,7 @@ class ebmessages(commands.Cog):
 
     @commands.command()
     async def applylol(self, ctx):
-        view = appbuttons()
+        view = appbuttons(timeout=None)
         embed = discord.Embed(title="Apply Here *!*", description="some shit about applying n whatever", color=0x2b2d31)
         embed.set_footer(text="If you have any issues with applying, please contact staff or owners!")
         await ctx.send(embed=embed, view=view)
@@ -80,7 +81,7 @@ class ebmessages(commands.Cog):
         button2 = discord.ui.Button(label="Aura", url="https://www.instagram.com/auragrps/", emoji="<:aura:1136701593018978415>")
         button3 = discord.ui.Button(label="Daegu", url="https://www.instagram.com/daegutowngrp/", emoji="<:daegu:1136701608026185879>")
 
-        view = discord.ui.View()
+        view = discord.ui.View(timeout=None)
         view.add_item(button)
         view.add_item(button2)
         view.add_item(button3)
@@ -88,7 +89,7 @@ class ebmessages(commands.Cog):
 
     @commands.command()
     async def lol2(self, ctx):
-        view = infobuttons()
+        view = infobuttons(timeout=None)
         embed = discord.Embed(title="<:rules:1136761913972359178> Server Rules", 
                                 description="<a:arrowpink:1134860720777990224> Follow Discord's [tos](https://discord.com/terms) and [guidelines](https://discord.com/guidelines)\n<a:arrowpink:1134860720777990224> Be nice and respectful to everyone in the server!\n<a:arrowpink:1134860720777990224> No impersonation of other editors (you will be banned)\n<a:arrowpink:1134860720777990224> Use channels for their intended purpose\n<a:arrowpink:1134860720777990224> No spamming pings, you will be warned and then kicked\n<a:arrowpink:1134860720777990224>  No trash talk of other people", 
                                 color=0xee518f)
