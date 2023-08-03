@@ -32,7 +32,7 @@ class Starboard(commands.Cog):
                     self.starboarded_messages[message_id] = reaction.count
 
                 stars = self.starboarded_messages[message_id]
-                channel_name = reaction.message.channel.name
+                channel_name = reaction.message.channel.id
                 embed = discord.Embed(color=0x2b2d31)
 
                 if reaction.message.content:
@@ -45,7 +45,7 @@ class Starboard(commands.Cog):
                     image_url = reaction.message.attachments[0].url
                     embed.set_image(url=image_url)
 
-                await starboard_channel.send(f"⭐{stars} #{channel_name}", embed=embed)
+                await starboard_channel.send(f"⭐{stars} <#{channel_name}>", embed=embed)
 
         except Exception as e:
             error_channel = self.bot.get_channel(self.error_channel_id)
