@@ -117,18 +117,9 @@ class logos(commands.Cog):
         embed.set_image(url='https://cdn.discordapp.com/attachments/1131006428631539773/1131124927685214268/blackpink-jisoo-jennie-rose-lisa-k-pop-singers-red-2048x1536-4679.jpg')
         embed.set_footer(text='Thank you for joining!')
         embed.add_field(name='Group Leads', value="<a:bounceyarrow:1126865547255091343> **kanzengrp** - <@609515684740988959>\n<a:bounceyarrow:1126865547255091343> **daegutowngrp** - <@609515684740988959> + <@541538705106534423>\n<a:bounceyarrow:1126865547255091343> **auragrps** - <@609515684740988959> + <@718144988688679043> + <@603077306956644353>", inline=False)
-        button = discord.ui.Button(
-            label='Follow kanzengrp',
-            url='https://www.instagram.com/kanzengrp/'
-        )
-        button2 = discord.ui.Button(
-            label='Follow daegutowngrp',
-            url='https://www.instagram.com/daegutowngrp/'
-        )
-        button3 = discord.ui.Button(
-            label='Follow auragrps',
-            url='https://www.instagram.com/auragrps/'
-        )
+        button = discord.ui.Button(label='Follow kanzengrp', url='https://www.instagram.com/kanzengrp/')
+        button2 = discord.ui.Button(label='Follow daegutowngrp',url='https://www.instagram.com/daegutowngrp/')
+        button3 = discord.ui.Button(label='Follow auragrps',url='https://www.instagram.com/auragrps/')
 
         view = discord.ui.View()
         view.add_item(button)
@@ -140,23 +131,7 @@ class logos(commands.Cog):
     @commands.command()
     @commands.has_permissions(manage_guild=True)
     async def newupdatehoshiupdates(self, ctx):
-        servers = [
-            {
-                'server_id': 1121841073673736215,
-                'channel_id': 1122655402899800234,
-                'ping_role': '<@&1122655473368314017>'
-            },
-            {
-                'server_id': 957987670787764224,
-                'channel_id': 1122242141037547531,
-                'ping_role': '<@&1122999466438438962>'
-            },
-            {
-                'server_id': 896619762354892821,
-                'channel_id': 1063639288178286663,
-                'ping_role': '<@&939923109413290005>'
-            }
-        ]
+        servers = [{'server_id': 1121841073673736215,'channel_id': 1122655402899800234,'ping_role': '<@&1122655473368314017>'},{    'server_id': 957987670787764224,    'channel_id': 1122242141037547531,    'ping_role': '<@&1122999466438438962>'},{    'server_id': 896619762354892821,    'channel_id': 1063639288178286663,    'ping_role': '<@&939923109413290005>'}]
 
         embed = discord.Embed(
             title='New update!',
