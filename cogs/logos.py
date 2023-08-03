@@ -3,6 +3,7 @@ import discord
 from discord.ext import commands
 from discord.interactions import Interaction
 from discord.ui import View, Select
+import asyncio
 
 class logos(commands.Cog):
     def __init__(self, bot):
