@@ -180,7 +180,7 @@ class infobuttons(discord.ui.View):
     async def callback(self, interaction: discord.Interaction, button: discord.ui.Button):
         embed = discord.Embed(title="Rules", color=0x2b2d31)
         embed.add_field(name="Chat Rules", value="GFHDJSKHGSDFGFDGJKFGKJJKGFKGHJKG")
-        await interaction.response.send_message(embed=embed, ephermal=True)      
+        await interaction.response.send_message(content=embed, view=infobuttons, ephermal=True)      
 
 async def setup(bot):
     await bot.add_cog(logos(bot))
