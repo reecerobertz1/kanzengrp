@@ -168,8 +168,8 @@ class logos(commands.Cog):
         embed2 = discord.Embed(title="Owner Info", description="Editors Block is owned by @remqsi, @yoongiaeps, and @taedxck", color=0x2b2d31)
         embed2.set_author(name="Hoshi#3105", icon_url='https://cdn.discordapp.com/avatars/849682093575372841/f04c5815341216fdafe736a2564a4d09.png?size=1024')
 
-        button_rules = discord.ui.Button(label="Server Rules", style=discord.ButtonStyle.primary, custom_id="server_rules")
-        button_roles = discord.ui.Button(label="Role Info", style=discord.ButtonStyle.primary, custom_id="role_info")
+        button_rules = discord.ui.Button(label="Server Rules", style=discord.ButtonStyle.primary)
+        button_roles = discord.ui.Button(label="Role Info", style=discord.ButtonStyle.primary)
 
         view2 = discord.ui.View()
         view2.add_item(button_rules)
@@ -177,16 +177,12 @@ class logos(commands.Cog):
 
         await ctx.send(embed=embed2, view=view2)
 
-        try:
-            interaction = await self.bot.wait_for('button_click', check=lambda inter: inter.user == ctx.author, timeout=30.0)
-        except asyncio.TimeoutError:
-            await ctx.send("You took too long to click a button.")
-            return
+        interaction = await self.bot.wait_for('button_click', check=lambda i: i.user == ctx.author, timeout=30.0)
 
-        if interaction.custom_id == "server_rules":
+        if interaction.custom_id == "0":
             embed_rules = discord.Embed(title="Server Rules", description="Here are the server rules:\n1. No spamming.\n2. Be respectful to others.\n3. No NSFW content.\n4. No advertising.\n5. Follow Discord's Terms of Service and Community Guidelines.")
             await interaction.send(embed=embed_rules)
-        elif interaction.custom_id == "role_info":
+        elif interaction.custom_id == "1":
             embed_roles = discord.Embed(title="Role Info", description="Here's some information about the roles in the server:\n- Owner: The owners of the server.\n- Staff: The staff members who help moderate the server.\n- Members: Regular members of the server.")
             await interaction.send(embed=embed_roles)
         
