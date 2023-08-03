@@ -11,8 +11,6 @@ class buttons(discord.ui.View):
 
     @discord.ui.button(label="Apply!")
     async def roles(self, interaction: discord.Interaction, button: discord.ui.Button):
-        embed = discord.Embed(title="Rules", color=0x2b2d31)
-        embed.add_field(name="Chat Rules", value="GFHDJSKHGSDFGFDGJKFGKJJKGFKGHJKG")
         await interaction.response.send_modal(grprctkda())
 
 class Slash(commands.Cog):
