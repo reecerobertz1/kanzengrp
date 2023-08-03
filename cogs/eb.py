@@ -39,7 +39,7 @@ class ebmessages(commands.Cog):
         view.add_item(button)
         view.add_item(button2)
         view.add_item(button3)
-        await ctx.send(embed=embed)
+        await ctx.send(embed=embed, view=view)
 
     @commands.command()
     async def lol2(self, ctx):
