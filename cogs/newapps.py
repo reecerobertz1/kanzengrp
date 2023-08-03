@@ -4,9 +4,26 @@ from discord.ext import commands
 from discord import app_commands
 from discord import ui
 
+class buttons(discord.ui.View):
+     def __init__ (self):
+        super().__init__()
+        self.value = None
+
+     @discord.ui.button(label="Apply!")
+     async def roles(self, interaction: discord.Interaction, button: discord.ui.Button):
+        embed = discord.Embed(title="Rules", color=0x2b2d31)
+        embed.add_field(name="Chat Rules", value="GFHDJSKHGSDFGFDGJKFGKJJKGFKGHJKG")
+        await interaction.response.send_modal(grprctkda())
+
 class Slash(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+
+    @commands.command()
+    async def embed(self, ctx):
+         view = buttons
+         embed = discord.Embed(title="Apply Here *!*", description="some shit about applying n whatever", color=0x2b2d31)
+         embed.set_footer(text="If you have any issues with applying, please contact staff or owners!")
 
 # slash commands
 
