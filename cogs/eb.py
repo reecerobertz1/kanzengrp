@@ -33,7 +33,7 @@ class appbuttons(discord.ui.View):
         super().__init__(timeout=None)
         self.value = None
         
-    @discord.ui.button(label="Apply!")
+    @discord.ui.button(label="Click to apply!")
     async def roles(self, interaction: discord.Interaction, button: discord.ui.Button):
          await interaction.response.send_modal(grprctkda())
 
@@ -66,7 +66,7 @@ class ebmessages(commands.Cog):
         application_channel_id = 1133771634793250847
         application_channel = self.bot.get_channel(application_channel_id)
         view = appbuttons()
-        embed = discord.Embed(title="Apply Here *!*", description="some shit about applying n whatever", color=0x2b2d31)
+        embed = discord.Embed(title="Apply Here *!*", description="information:\n<a:arroworange:1134860722757713980> This reacruit is for the groups Kanzengrp, Auragrps and Daegutowngrp\n<a:arroworange:1134860722757713980> You will receive a dm from our bot Hoshi with your application results\n<a:arroworange:1134860722757713980>  You do not need to use a certain editing app to apply\n<a:arroworange:1134860722757713980> All fandoms and styles are accepted here!\n<a:arroworange:1134860722757713980> We mostly look for unique edits with smooth transitions\n<a:arroworange:1134860722757713980> Velocity edits ARE NOT accepted\n<a:arroworange:1134860722757713980> You can apply for any group, just be specific in your application what groups\n\napplication rules:\n<a:arroworange:1134860722757713980> Follow the rules on the recruit posts posted by the group you want to join\n<a:arroworange:1134860722757713980> Be patient with apps! staff are not active 24/7\n<a:arroworange:1134860722757713980> Only apply once, unless we decide to reapps", color=0x2b2d31)
         embed.set_footer(text="If you have any issues with applying, please contact staff or owners!")
         application_channel = await application_channel.send(embed=embed, view=view)
 
