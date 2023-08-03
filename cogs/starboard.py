@@ -29,7 +29,7 @@ class Starboard(commands.Cog):
                 if message_id not in self.starboarded_messages:
                     # Send a new message to the starboard
                     stars = reaction.count
-                    channel_name = reaction.message.channel.id
+                    channel_name = reaction.message.channel.name
                     embed = discord.Embed(color=0x2b2d31)
 
                     if reaction.message.content:
@@ -48,12 +48,7 @@ class Starboard(commands.Cog):
                     # Edit the existing message on the starboard
                     stars = reaction.count
                     message = self.starboarded_messages[message_id]
-                    channel_name = reaction.message.channel.id
-
-                    embed = message.embeds[0]
-                    embed.set_author(name=reaction.message.author.display_name, icon_url=reaction.message.author.avatar.url)
-                    embed.add_field(name="Original Message", value=f"[Jump!](https://discordapp.com/channels/{reaction.message.guild.id}/{reaction.message.channel.id}/{reaction.message.id})")
-                    await message.edit(content=f"⭐ {stars} <#{channel_name}>", embed=embed)
+                    await message.edit(content=f"⭐ {stars} {message.jump_url}")
 
         except Exception as e:
             error_channel = self.bot.get_channel(self.error_channel_id)
