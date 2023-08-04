@@ -30,7 +30,7 @@ class verify2(discord.ui.View):
 class verify(ui.Modal, title='Verification'):
      code = ui.TextInput(label='What was the code?', placeholder="Enter code here...", style=discord.TextStyle.short)
      async def on_submit(self, interaction: discord.Interaction, role: 1131016147282710679, member: discord.Member):
-          await interaction.response.defer()
+          await interaction.response.send_message("Thank you! You're all verified, enjoy your time here in Editors Block", ephemeral=True)
           await member.add_roles(role)
 
 class infobuttons(discord.ui.View):
