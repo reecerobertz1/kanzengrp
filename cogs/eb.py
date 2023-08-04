@@ -67,7 +67,7 @@ class qnabutton(discord.ui.View):
          await interaction.response.send_modal(qnamodal())
 
 class qnamodal(ui.Modal, title="Editor's Block Q&A"):
-     dmyesno = ui.TextInput(label='Do you want your question asnwered in private?', placeholder="Enter your answer here...", style=discord.TextStyle.short)
+     dmyesno = ui.TextInput(label='Do you want us to answer privately?', placeholder="Enter your answer here...", style=discord.TextStyle.short)
      question = ui.TextInput(label='What is your question?', placeholder="Ask question here...", style=discord.TextStyle.short)
      async def on_submit(self, interaction: discord.Interaction):
           await interaction.response.defer()
