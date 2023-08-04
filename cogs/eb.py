@@ -185,8 +185,8 @@ class ebmessages(commands.Cog):
                 question = question.value.lower()
                 question = [question.strip() for question in re.split(r'[,\s]+', question)]
 
-                if ctx.guild.id == 1122181605591621692:  # Server 1
-                    answer_channel = self.bot.get_channel(self.server1_answer_channel_id)
+                if ctx.guild.id == 1131003330810871979:  # Server 1
+                    answer_channel = self.bot.get_channel(1133771757816393839)
 
                     user = await ctx.guild.fetch_member(int(user_id))
                     if user:
