@@ -14,8 +14,10 @@ class verifycode(discord.ui.View):
 
     @discord.ui.button(label="Verify", style=discord.ButtonStyle.green)
     async def verifycode(self, interaction: discord.Interaction, button: discord.ui.Button):
-        view = verify2
-        embed = discord.Embed(title="Hello! Are you human? Let's find out!", description="`Please type the code below to be able to access this server!`", color=-0x2b2d31)
+        view = verify2()
+        embed = discord.Embed(title="Hello! Are you human? Let's find out!", 
+                              description="`Please type the code below to be able to access this server!`", 
+                              color=-0x2b2d31)
         embed.add_field(name="Code:", value="FBGKDHS")
         await interaction.response.send_message(embed=embed, view=view ,ephemeral=True)
 
@@ -116,7 +118,9 @@ class ebmessages(commands.Cog):
         application_channel_id = 1133771634793250847
         application_channel = self.bot.get_channel(application_channel_id)
         view = appbuttons()
-        embed = discord.Embed(title="Apply Here *!*", description="information:\n<a:arroworange:1134860722757713980> This reacruit is for the groups Kanzengrp, Auragrps and Daegutowngrp\n<a:arroworange:1134860722757713980> You will receive a dm from our bot Hoshi with your application results\n<a:arroworange:1134860722757713980>  You do not need to use a certain editing app to apply\n<a:arroworange:1134860722757713980> All fandoms and styles are accepted here!\n<a:arroworange:1134860722757713980> We mostly look for unique edits with smooth transitions\n<a:arroworange:1134860722757713980> Velocity edits ARE NOT accepted\n<a:arroworange:1134860722757713980> You can apply for any group, just be specific in your application what groups\n\napplication rules:\n<a:arroworange:1134860722757713980> Follow the rules on the recruit posts posted by the group you want to join\n<a:arroworange:1134860722757713980> Be patient with apps! staff are not active 24/7\n<a:arroworange:1134860722757713980> Only apply once, unless we decide to reapps", color=0x2b2d31)
+        embed = discord.Embed(title="Apply Here *!*", 
+                              description="information:\n<a:arroworange:1134860722757713980> This reacruit is for the groups Kanzengrp, Auragrps and Daegutowngrp\n<a:arroworange:1134860722757713980> You will receive a dm from our bot Hoshi with your application results\n<a:arroworange:1134860722757713980>  You do not need to use a certain editing app to apply\n<a:arroworange:1134860722757713980> All fandoms and styles are accepted here!\n<a:arroworange:1134860722757713980> We mostly look for unique edits with smooth transitions\n<a:arroworange:1134860722757713980> Velocity edits ARE NOT accepted\n<a:arroworange:1134860722757713980> You can apply for any group, just be specific in your application what groups\n\napplication rules:\n<a:arroworange:1134860722757713980> Follow the rules on the recruit posts posted by the group you want to join\n<a:arroworange:1134860722757713980> Be patient with apps! staff are not active 24/7\n<a:arroworange:1134860722757713980> Only apply once, unless we decide to reapps", 
+                              color=0x2b2d31)
         application_channel = await application_channel.send(embed=embed, view=view)
 
     @commands.command()
@@ -148,7 +152,17 @@ class ebmessages(commands.Cog):
     @commands.command()
     async def qnapfft(self, ctx):
         view = qnabutton()
-        embed = discord.Embed(title="Editor's Block Q&A",description="information:\n<a:arrowpink:1134860720777990224> You can ask us anything about the server, groups and recruits\n<a:arrowpink:1134860720777990224> We can DM you privately, or send the answer to <#1133771757816393839>\n<a:arrowpink:1134860720777990224> A form will pop up on your screen for you to enter in your question\n<a:arrowpink:1134860720777990224> No question is a dumb question so feel free to ask us anything (appropriate)\n\nother stuff:\n<a:arrowpink:1134860720777990224> Please be patient with us, staff are not online 24/7\n<a:arrowpink:1134860720777990224> If you spam the same question we will not answer it!\n<a:arrowpink:1134860720777990224> Do not abuse this feature or harass staff" ,color=0x2b2d31)
+        embed = discord.Embed(title="Editor's Block Q&A",
+                              description="information:\n<a:arrowpink:1134860720777990224> You can ask us anything about the server, groups and recruits\n<a:arrowpink:1134860720777990224> We can DM you privately, or send the answer to <#1133771757816393839>\n<a:arrowpink:1134860720777990224> A form will pop up on your screen for you to enter in your question\n<a:arrowpink:1134860720777990224> No question is a dumb question so feel free to ask us anything (appropriate)\n\nother stuff:\n<a:arrowpink:1134860720777990224> Please be patient with us, staff are not online 24/7\n<a:arrowpink:1134860720777990224> If you spam the same question we will not answer it!\n<a:arrowpink:1134860720777990224> Do not abuse this feature or harass staff" ,
+                              color=0x2b2d31)
+        await ctx.send(embed=embed, view=view)
+
+    @commands.command()
+    async def verify(self, ctx):
+        view = verifycode()
+        embed = discord.Embed(title="Verification Required!", 
+                              color=0x2b2d31 ,
+                              description=f"To access the server `{ctx.guild.name}` you need to verify first!\nClick the button `Verify` to begin the verify process")
         await ctx.send(embed=embed, view=view)
 
     @commands.command(aliases=['ap'])
@@ -223,12 +237,6 @@ class ebmessages(commands.Cog):
                 print(f"Failed to process the command: {e}")
         else:
             await ctx.send("Please reply to the question you want to answer.")
-
-    @commands.command()
-    async def verify(self, ctx):
-        view = verifycode()
-        embed = discord.Embed(title="Verification Required!", color=0x2b2d31 ,description=f"To access the server `{ctx.guild.name}` you need to verify first!\nClick the button `Verify` to begin the verify process")
-        await ctx.send(embed=embed, view=view)
 
 async def setup(bot):
     await bot.add_cog(ebmessages(bot))
