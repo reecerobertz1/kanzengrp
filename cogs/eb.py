@@ -7,12 +7,12 @@ from discord.ui import View, Select
 from typing import List, Optional
 from discord import ui
 
-class verify1(discord.ui.View):
+class verifycode(discord.ui.View):
     def __init__ (self):
         super().__init__(timeout=None)
         self.value = None
 
-    @discord.ui.button(label="Verify", style=discord.ButtonStyle.red)
+    @discord.ui.button(label="Verify", style=discord.ButtonStyle.green)
     async def verifycode(self, interaction: discord.Interaction, button: discord.ui.Button):
         view = verify2
         embed = discord.Embed(title="Hello! Are you human? Let's find out!", description="`Please type the code below to be able to access this server!`", color=-0x2b2d31)
@@ -24,15 +24,15 @@ class verify2(discord.ui.View):
         super().__init__(timeout=None)
         self.value = None
 
-    @discord.ui.button(label="Answer", style=discord.ButtonStyle.red)
+    @discord.ui.button(label="Answer", style=discord.ButtonStyle.green)
     async def vmo(self, interaction: discord.Interaction, button: discord.ui.Button):
         await interaction.response.send_modal(verifymodal())
 
 class verifymodal(ui.Modal, title='Verification'):
      code = ui.TextInput(label='What was the code?', placeholder="Enter code here...", style=discord.TextStyle.short)
      async def on_submit(self, interaction: discord.Interaction, role: 1131016147282710679, member: discord.Member):
-          await interaction.response.send_message("Thank you! You're all verified, enjoy your time here in Editors Block", ephemeral=True)
-          await member.add_roles(role)
+        await interaction.response.send_message("Thank you! You're all verified, enjoy your time here in Editors Block", ephemeral=True)
+        await member.add_roles(role)
 
 class infobuttons(discord.ui.View):
     def __init__ (self):
@@ -226,8 +226,8 @@ class ebmessages(commands.Cog):
 
     @commands.command()
     async def verify(self, ctx):
-        view = verify1()
-        embed = discord.Embed(title="Verification Required!", description=f"To access the server `{ctx.guild.name}` you need to verify first!\nClick the button `Verify` to begin the verify process")
+        view = verifycode()
+        embed = discord.Embed(title="Verification Required!", color=0x2b2d31 ,description=f"To access the server `{ctx.guild.name}` you need to verify first!\nClick the button `Verify` to begin the verify process")
         await ctx.send(embed=embed, view=view)
 
 async def setup(bot):
