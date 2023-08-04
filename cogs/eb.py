@@ -179,7 +179,7 @@ class ebmessages(commands.Cog):
 
                     user = await ctx.guild.fetch_member(int(user_id))
                     if user:
-                        answer_message = embed = discord.Embed(title="Q&A", description=f"**question:** {question}\n**answer:** {answer}", color=0x2b2d31)
+                        answer_message = embed = discord.Embed(title="Q&A", color=0x2b2d31, description=f"**question:** {question}**\nanswer:** {answer}")
                         embed.set_footer(text=f"asked by {user.display_name} | answered by {ctx.author.display_name}")
                         await answer_channel.send(f"<@{user_id}>", answer_message)
 
