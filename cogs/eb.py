@@ -145,8 +145,9 @@ class ebmessages(commands.Cog):
 
                     user = await ctx.guild.fetch_member(int(user_id))
                     if user:
-                        answer_message = f"**You asked a question in editor's block**\n{', '.join(question)}\n\n**Our answer:**\n{answer}"
-                        await user.send(answer_message)
+                        embed = discord.Embed(title="Q&A", color=0x2b2d31, description=f"**You asked a question in editor's block** {', '.join(question)}\n**Our answer:** {answer}")
+                        embed.set_footer(text=f"answered by {ctx.author.display_name}")
+                        await user.send(embed=embed)
 
                         embed = msg.embeds[0]
                         embed.add_field(name="Status", value="Answered ✅")
