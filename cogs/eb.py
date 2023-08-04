@@ -190,9 +190,9 @@ class ebmessages(commands.Cog):
 
                     user = await ctx.guild.fetch_member(int(user_id))
                     if user:
-                        embed = discord.Embed(title="Q&A", description=f"**question:** {question}\n**answer:** {answer}")
+                        answer_message = embed = discord.Embed(title="Q&A", description=f"**question:** {question}\n**answer:** {answer}")
                         embed.set_footer(text=f"asked by {user.display_name} | answered by {ctx.author.display_name}")
-                        await answer_channel.send(f"<@{user_id}>", embed=embed)
+                        await answer_channel.send(f"<@{user_id}>", answer_message)
 
                         embed = msg.embeds[0]
                         embed.add_field(name="Status", value="Answered ✅")
