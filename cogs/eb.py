@@ -57,6 +57,28 @@ class grprctkda(ui.Modal, title='Applications'):
           await channel.send(embed=embed)
           await interaction.followup.send(f'Your application has been sent successfully', ephemeral=True)
 
+class qnabutton(discord.ui.View):
+    def __init__ (self):
+        super().__init__(timeout=None)
+        self.value = None
+
+    @discord.ui.button(label="Click to ask a question")
+    async def qnabutton(self, interaction: discord.Interaction, button: discord.ui.Button):
+        await interaction.response.send_modal(qnamodal())
+
+class qnamodal(ui.Modal, title="Editor's Block Q&A"):
+     priv = ui.TextInput(label='Would you like your question asnwered in private?', placeholder="Enter your answer here...", style=discord.TextStyle.short)
+     qna = ui.TextInput(label='What is your question?', placeholder="Ask question here...", style=discord.TextStyle.short)
+     async def on_submit(self, interaction: discord.Interaction):
+          await interaction.response.defer()
+          embed = discord.Embed(title='Forms', color=0x2b2d31)
+          embed.add_field(name='Answer in dm (yes or no)', value=f'{self.priv.value}', inline=False)
+          embed.add_field(name='Question', value=f'{self.qna.value}', inline=False)
+          embed.add_field(name="Discord ID:", value=interaction.user.id, inline=False)
+          channel = interaction.client.get_channel(1133771810714951732)
+          await channel.send(embed=embed)
+          await interaction.followup.send(f'Your question was sent successfully', ephemeral=True)
+
 class ebmessages(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -93,6 +115,12 @@ class ebmessages(commands.Cog):
         embed = discord.Embed(title="<:rules:1136761913972359178> Server Rules ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏͏͏ ͏͏͏ ", 
                                 description="<a:arrowpink:1134860720777990224> Follow Discord's [tos](https://discord.com/terms) and [guidelines](https://discord.com/guidelines)\n<a:arrowpink:1134860720777990224> Be nice and respectful to everyone in the server!\n<a:arrowpink:1134860720777990224> No impersonation of other editors (you will be banned)\n<a:arrowpink:1134860720777990224> Use channels for their intended purpose\n<a:arrowpink:1134860720777990224> No spamming pings, you will be warned and then kicked\n<a:arrowpink:1134860720777990224>  No trash talk of other people", 
                                 color=0xee518f)
+        await ctx.send(embed=embed, view=view)
+
+    @commands.command()
+    async def qnapfft(self, ctx):
+        view = qnabutton()
+        embed = discord.Embed(title="Editor's Block Q&A",description="information:\n<a:arrowpink:1134860720777990224> You can ask us anything about the server, groups and recruits\n<a:arrowpink:1134860720777990224> You can put if you want us to DM you privately or not, if it's not private the answer will be sent into the channel <#1133771757816393839> \n<a:arrowpink:1134860720777990224> A form will pop up on your screen for you to enter in your question\n<a:arrowpink:1134860720777990224> No question is a dumb question so feel free to ask us anything (appropriate)\n\nother stuff:\n<a:arrowpink:1134860720777990224> Please be patient with us, staff are not online 24/7\n<a:arrowpink:1134860720777990224> If you spam the same question we will not answer it!\n<a:arrowpink:1134860720777990224> Do not abuse this feature or harass staff" ,color=0x2b2d31)
         await ctx.send(embed=embed, view=view)
 
 async def setup(bot):
