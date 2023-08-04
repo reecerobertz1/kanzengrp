@@ -167,7 +167,7 @@ class ebmessages(commands.Cog):
                 embed = msg.embeds[0]
                 user_id_field = next((field for field in embed.fields if field.name == 'Discord ID:'), None)
                 question = next((field for field in embed.fields if field.name == 'Question'), None)
-                answer_channel = 1133771757816393839
+                answer_channel = self.bot.get_channel(1133771757816393839)
 
                 if not question or not user_id_field:
                     await ctx.send("Invalid embed format. Please make sure the embed contains fields 'Group(s) they want to be in:' and 'Discord ID'.")
