@@ -7,6 +7,32 @@ from discord.ui import View, Select
 from typing import List, Optional
 from discord import ui
 
+class verify1(discord.ui.View):
+    def __init__ (self):
+        super().__init__(timeout=None)
+        self.value = None
+
+    @discord.ui.button(label="Verify", style=discord.ButtonStyle.red)
+    async def verify1(self, interation: discord.Interaction, button: discord.Button):
+        embed = discord.Embed(title="Hello! Are you human? Let's find out!", description="`Please type the captcha below to be able to access this server!`", color=-0x2b2d31)
+        embed.add_field(name="Code:", value="fhgsn3s")
+        await interation.response.send_modal(embed=embed, ephemeral=True)
+
+class verify2(discord.ui.View):
+    def __init__ (self):
+        super().__init__(timeout=None)
+        self.value = None
+
+    @discord.ui.button(label="Answer", style=discord.ButtonStyle.red)
+    async def verify2(self, interation: discord.Interaction, button: discord.Button):
+        await interation.response.send_modal(verify())
+
+class verify(ui.Modal, title='Verification'):
+     code = ui.TextInput(label='What was the code?', placeholder="Enter code here...", style=discord.TextStyle.short)
+     async def on_submit(self, interaction: discord.Interaction, role: 1131016147282710679, member: discord.Member):
+          await interaction.response.defer()
+          await member.add_roles(role)
+
 class infobuttons(discord.ui.View):
     def __init__ (self):
         super().__init__(timeout=None)
@@ -196,6 +222,12 @@ class ebmessages(commands.Cog):
                 print(f"Failed to process the command: {e}")
         else:
             await ctx.send("Please reply to the question you want to answer.")
+
+    @commands.command()
+    async def verify(self, ctx):
+        view = verify1()
+        embed = discord.Embed(title="Verification Required!", description=f"To access the server `{ctx.guild.name}` you need to verify first!\nClick the button `Verify` to begin the verify process")
+        await ctx.send(embed=embed, view=view)
 
 async def setup(bot):
     await bot.add_cog(ebmessages(bot))
