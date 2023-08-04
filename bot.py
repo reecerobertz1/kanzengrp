@@ -30,7 +30,6 @@ extensions = {
     "cogs.custom",
     "cogs.scramble",
     "cogs.ttt",
-    "cogs.giveaway",
     "cogs.starboard"
 }
 
