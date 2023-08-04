@@ -17,8 +17,7 @@ class verifycode(discord.ui.View):
 
     @discord.ui.button(label="Verify", style=discord.ButtonStyle.green)
     async def verifycode(self, interaction: discord.Interaction, button: discord.ui.Button):
-        embed = discord.Embed(title="Hello! Are you human? Let's find out!", description="`Please type the code below to be able to access this server!`", color=-0x2b2d31)
-        embed.add_field(name="Code:", value="FBGKDHS")
+        embed = discord.Embed(title="Hello! Are you human? Let's find out!", description="`Please type the code below to be able to access this server!`\n**Code:** FBGKDHS", color=-0x2b2d31)
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
 class verify2(discord.ui.View):
