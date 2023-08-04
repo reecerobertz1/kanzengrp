@@ -132,12 +132,12 @@ class ebmessages(commands.Cog):
                 embed = msg.embeds[0]
                 user_id_field = next((field for field in embed.fields if field.name == 'Discord ID:'), None)
                 question = next((field for field in embed.fields if field.name == 'Question'), None)
+                answer_channel = 1133771757816393839
 
                 if not question or not user_id_field:
                     await ctx.send("Invalid embed format. Please make sure the embed contains fields 'Group(s) they want to be in:' and 'Discord ID'.")
                     return
 
-                question = question.value.lower()
                 question = [question.strip() for question in re.split(r'[,\s]+', question)]
 
                 if user_id_field:
@@ -159,8 +159,6 @@ class ebmessages(commands.Cog):
         else:
             await ctx.send("Please reply to the question you want to answer.")
 
-    @commands.command(aliases=['a'])
-    async def answer2(self, ctx, answer: str):
         if ctx.message.reference is not None:
             try:
                 msg = await ctx.channel.fetch_message(ctx.message.reference.message_id)
@@ -172,25 +170,14 @@ class ebmessages(commands.Cog):
                     await ctx.send("Invalid embed format. Please make sure the embed contains fields 'Group(s) they want to be in:' and 'Discord ID'.")
                     return
 
-                question = question.value.lower()
                 question = [question.strip() for question in re.split(r'[,\s]+', question)]
 
                 if user_id_field:
                     user_id = user_id_field.value.strip()
 
-                if not question:
-                    await ctx.send("Invalid embed format. Please make sure the embed contains fields 'Group(s) they want to be in:' and 'Discord ID'.")
-                    return
-
-                question = question.value.lower()
-                question = [question.strip() for question in re.split(r'[,\s]+', question)]
-
-                if ctx.guild.id == 1131003330810871979:  # Server 1
-                    answer_channel = self.bot.get_channel(1133771757816393839)
-
                     user = await ctx.guild.fetch_member(int(user_id))
                     if user:
-                        answer_message = embed = discord.Embed(title="Q&A", description=f"**question:** {question}\n**answer:** {answer}")
+                        answer_message = embed = discord.Embed(title="Q&A", description=f"**question:** {question}\n**answer:** {answer}", color=0x2b2d31)
                         embed.set_footer(text=f"asked by {user.display_name} | answered by {ctx.author.display_name}")
                         await answer_channel.send(f"<@{user_id}>", answer_message)
 
