@@ -160,7 +160,7 @@ class ebmessages(commands.Cog):
             await ctx.send("Please reply to the question you want to answer.")
 
     @commands.command(aliases=['ap'])
-    async def answer(self, ctx, answer: str):
+    async def answer2(self, ctx, answer: str):
         if ctx.message.reference is not None:
             try:
                 msg = await ctx.channel.fetch_message(ctx.message.reference.message_id)
