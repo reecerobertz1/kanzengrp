@@ -125,7 +125,7 @@ class ebmessages(commands.Cog):
         await ctx.send(embed=embed, view=view)
 
     @commands.command(aliases=['ap'])
-    async def answernew(self, ctx, answer: str):
+    async def answerpriv(self, ctx, answer: str):
         if ctx.message.reference is not None:
             try:
                 msg = await ctx.channel.fetch_message(ctx.message.reference.message_id)
@@ -147,6 +147,52 @@ class ebmessages(commands.Cog):
                     if user:
                         answer_message = f"**You asked a question in editor's block**\n{', '.join(question)}\n\n**Our answer:**\n{answer}"
                         await user.send(answer_message)
+
+                        embed = msg.embeds[0]
+                        embed.add_field(name="Status", value="Answered ✅")
+                        await ctx.message.add_reaction("✅")
+                        await msg.edit(embed=embed)
+                else:
+                    await ctx.send("Failed to find the Discord ID field in the embed.")
+            except Exception as e:
+                print(f"Failed to process the command: {e}")
+        else:
+            await ctx.send("Please reply to the question you want to answer.")
+
+    @commands.command(aliases=['ap'])
+    async def answer(self, ctx, answer: str):
+        if ctx.message.reference is not None:
+            try:
+                msg = await ctx.channel.fetch_message(ctx.message.reference.message_id)
+                embed = msg.embeds[0]
+                user_id_field = next((field for field in embed.fields if field.name == 'Discord ID:'), None)
+                question = next((field for field in embed.fields if field.name == 'Question'), None)
+
+                if not question or not user_id_field:
+                    await ctx.send("Invalid embed format. Please make sure the embed contains fields 'Group(s) they want to be in:' and 'Discord ID'.")
+                    return
+
+                question = question.value.lower()
+                question = [question.strip() for question in re.split(r'[,\s]+', question)]
+
+                if user_id_field:
+                    user_id = user_id_field.value.strip()
+
+                if not question:
+                    await ctx.send("Invalid embed format. Please make sure the embed contains fields 'Group(s) they want to be in:' and 'Discord ID'.")
+                    return
+
+                question = question.value.lower()
+                question = [question.strip() for question in re.split(r'[,\s]+', question)]
+
+                if ctx.guild.id == 1122181605591621692:  # Server 1
+                    answer_channel = self.bot.get_channel(self.server1_answer_channel_id)
+
+                    user = await ctx.guild.fetch_member(int(user_id))
+                    if user:
+                        embed = discord.Embed(title="Q&A", description=f"**question:** {question}\n**answer:** {answer}")
+                        embed.set_footer(text=f"asked by {user.display_name} | answered by {ctx.author.display_name}")
+                        await answer_channel.send(f"<@{user_id}>", embed=embed)
 
                         embed = msg.embeds[0]
                         embed.add_field(name="Status", value="Answered ✅")
