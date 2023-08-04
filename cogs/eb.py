@@ -132,7 +132,6 @@ class ebmessages(commands.Cog):
                 embed = msg.embeds[0]
                 user_id_field = next((field for field in embed.fields if field.name == 'Discord ID:'), None)
                 question = next((field for field in embed.fields if field.name == 'Question'), None)
-                answer_channel = 1133771757816393839
 
                 if not question or not user_id_field:
                     await ctx.send("Invalid embed format. Please make sure the embed contains fields 'Group(s) they want to be in:' and 'Discord ID'.")
@@ -159,12 +158,15 @@ class ebmessages(commands.Cog):
         else:
             await ctx.send("Please reply to the question you want to answer.")
 
+    @commands.command(aliases=['a'])
+    async def answer2(self, ctx, answer: str):
         if ctx.message.reference is not None:
             try:
                 msg = await ctx.channel.fetch_message(ctx.message.reference.message_id)
                 embed = msg.embeds[0]
                 user_id_field = next((field for field in embed.fields if field.name == 'Discord ID:'), None)
                 question = next((field for field in embed.fields if field.name == 'Question'), None)
+                answer_channel = 1133771757816393839
 
                 if not question or not user_id_field:
                     await ctx.send("Invalid embed format. Please make sure the embed contains fields 'Group(s) they want to be in:' and 'Discord ID'.")
