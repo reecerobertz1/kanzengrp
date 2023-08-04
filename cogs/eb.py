@@ -182,7 +182,8 @@ class ebmessages(commands.Cog):
                     user = await ctx.guild.fetch_member(int(user_id))
                     if user:
                         embed = discord.Embed(title="Q&A", color=0x2b2d31, description=f"**Question:** {', '.join(question)}\n**Answer:** {answer}")
-                        await answer_channel.send(embed=embed)
+                        embed.set_footer(text=f"asked by {user.display_name} | answered by {ctx.author.display_name}")
+                        await answer_channel.send(f"<@{user_id}>", embed=embed)
 
                         embed = msg.embeds[0]
                         embed.add_field(name="Status", value="Answered ✅")
