@@ -41,7 +41,7 @@ class TicTacToe(commands.Cog):
         self.games[ctx.channel.id] = message  # Save the message object for future reference
         return message
 
-    @commands.command(name='tictactoe', aliases=['ttt'])
+    @commands.command(aliases=['ttt'])
     async def tictactoe(self, ctx: commands.Context, player2: discord.Member):
         if player2 == ctx.author:
             return await ctx.reply("You can't play against yourself.")
