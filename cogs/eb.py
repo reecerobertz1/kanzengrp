@@ -72,7 +72,7 @@ class code(discord.ui.View):
         embed = discord.Embed(title="Hello! Are you human? Let's find out!", 
                               description="`Please type the code below to be able to access this server!`\n**Code:** FBGKDHS", 
                               color=-0x2b2d31)
-        await interaction.response.send_message(embed=embed, view=view)
+        await interaction.response.send_message(embed=embed, view=view ,ephemeral=True) 
 
 class answer(discord.ui.View):
     def __init__ (self):
