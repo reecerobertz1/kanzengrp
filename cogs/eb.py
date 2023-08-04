@@ -32,9 +32,8 @@ class verify2(discord.ui.View):
 
 class verifymodal(ui.Modal, title='Verification'):
      code = ui.TextInput(label='What was the code?', placeholder="Enter code here...", style=discord.TextStyle.short)
-     async def on_submit(self, interaction: discord.Interaction, role: 1131016147282710679, member: discord.Member):
+     async def on_submit(self, interaction: discord.Interaction):
         await interaction.response.send_message("Thank you! You're all verified, enjoy your time here in Editors Block", ephemeral=True)
-        await member.add_roles(role)
 
 class infobuttons(discord.ui.View):
     def __init__ (self):
@@ -161,7 +160,7 @@ class ebmessages(commands.Cog):
     async def verify(self, ctx):
         view = verifycode()
         embed = discord.Embed(title="Verification Required!", 
-                              color=0x2b2d31 ,
+                              color=0x2b2d31,
                               description=f"To access the server `{ctx.guild.name}` you need to verify first!\nClick the button `Verify` to begin the verify process")
         await ctx.send(embed=embed, view=view)
 
