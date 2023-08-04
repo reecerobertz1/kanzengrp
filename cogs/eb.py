@@ -159,7 +159,7 @@ class ebmessages(commands.Cog):
         else:
             await ctx.send("Please reply to the question you want to answer.")
 
-    @commands.command(aliases=['ap'])
+    @commands.command(aliases=['a'])
     async def answer2(self, ctx, answer: str):
         if ctx.message.reference is not None:
             try:
