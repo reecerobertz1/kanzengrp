@@ -123,7 +123,7 @@ class ebmessages(commands.Cog):
         embed = discord.Embed(title="Editor's Block Q&A",description="information:\n<a:arrowpink:1134860720777990224> You can ask us anything about the server, groups and recruits\n<a:arrowpink:1134860720777990224> You can put if you want us to DM you privately or not, if it's not private the answer will be sent into the channel <#1133771757816393839> \n<a:arrowpink:1134860720777990224> A form will pop up on your screen for you to enter in your question\n<a:arrowpink:1134860720777990224> No question is a dumb question so feel free to ask us anything (appropriate)\n\nother stuff:\n<a:arrowpink:1134860720777990224> Please be patient with us, staff are not online 24/7\n<a:arrowpink:1134860720777990224> If you spam the same question we will not answer it!\n<a:arrowpink:1134860720777990224> Do not abuse this feature or harass staff" ,color=0x2b2d31)
         await ctx.send(embed=embed, view=view)
 
-    @commands.command(aliases=['sa'])
+    @commands.command(aliases=['ap'])
     async def answernew(self, ctx, answer: str):
         if ctx.message.reference is not None:
             try:
