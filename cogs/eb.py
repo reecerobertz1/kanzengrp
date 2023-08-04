@@ -137,7 +137,7 @@ class ebmessages(commands.Cog):
 
                     user = await ctx.guild.fetch_member(int(user_id))
                     if user:
-                        answer_message = embed = discord.Embed(description=f"**You asked a question in editor's block**\n{question}\n\n**Our answer:**\n{answer}")
+                        answer_message = f"**You asked a question in editor's block**\n{question}\n\n**Our answer:**\n{answer}"
                         await user.send(answer_message)
 
                         embed = msg.embeds[0]
