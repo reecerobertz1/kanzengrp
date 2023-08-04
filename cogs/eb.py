@@ -123,5 +123,56 @@ class ebmessages(commands.Cog):
         embed = discord.Embed(title="Editor's Block Q&A",description="information:\n<a:arrowpink:1134860720777990224> You can ask us anything about the server, groups and recruits\n<a:arrowpink:1134860720777990224> You can put if you want us to DM you privately or not, if it's not private the answer will be sent into the channel <#1133771757816393839> \n<a:arrowpink:1134860720777990224> A form will pop up on your screen for you to enter in your question\n<a:arrowpink:1134860720777990224> No question is a dumb question so feel free to ask us anything (appropriate)\n\nother stuff:\n<a:arrowpink:1134860720777990224> Please be patient with us, staff are not online 24/7\n<a:arrowpink:1134860720777990224> If you spam the same question we will not answer it!\n<a:arrowpink:1134860720777990224> Do not abuse this feature or harass staff" ,color=0x2b2d31)
         await ctx.send(embed=embed, view=view)
 
+    @commands.command(aliases=['sa'])
+    async def answer(self, ctx, answer: str):
+        if ctx.message.reference is not None:
+            try:
+                msg = await ctx.channel.fetch_message(ctx.message.reference.message_id)
+                embed = msg.embeds[0]
+                user_id_field = next((field for field in embed.fields if field.name == 'Discord ID:'), None)
+                question = next((field for field in embed.fields if field.name == 'Question'), None)
+
+                if user_id_field:
+                    user_id = user_id_field.value.strip()
+
+                    user = await ctx.guild.fetch_member(int(user_id))
+                    if user:
+                        answer_message = embed = discord.Embed(description=f"**You asked a question in editor's block**\n{question}\n\n**Our answer:**\n{answer}")
+                        await user.send(answer_message)
+
+                        embed = msg.embeds[0]
+                        embed.add_field(name="Status", value="Answered ✅")
+                        await ctx.message.add_reaction("✅")
+                        await msg.edit(embed=embed)
+                else:
+                    await ctx.send("Failed to find the Discord ID field in the embed.")
+            except Exception as e:
+                print(f"Failed to process the command: {e}")
+        else:
+            await ctx.send("Please reply with the question you want to answer.")
+
+    @commands.command(hidden=True)
+    async def answer(self, ctx, *, response: str):
+        reference = ctx.message.reference
+        if reference and reference.message_id:
+            msg = await ctx.channel.fetch_message(reference.message_id)
+            if "|" in msg.content:
+                question, asker = msg.content.split("| ")
+                user = await self.bot.fetch_user(int(asker))
+                if ctx.guild.id == 1122181605591621692:  # Server 1
+                    answer_channel = self.bot.get_channel(self.server1_answer_channel_id)
+                elif ctx.guild.id == 1123347338841313331:  # Server 2
+                    answer_channel = self.bot.get_channel(self.server2_answer_channel_id)
+                else:
+                    return
+
+                embed = discord.Embed(title="Q&A", color=0x2b2d31, description=f"**question:** {question}**\nanswer:** {response}")
+                embed.set_footer(text=f"asked by {user.display_name} | answered by {ctx.author.display_name}")
+
+                await answer_channel.send(user.mention, embed=embed)
+                return
+
+        await ctx.send("Failed to retrieve the question or the question format is incorrect.")
+
 async def setup(bot):
     await bot.add_cog(ebmessages(bot))
