@@ -14,9 +14,10 @@ class verify1(discord.ui.View):
 
     @discord.ui.button(label="Verify", style=discord.ButtonStyle.red)
     async def verifycode(self, interaction: discord.Interaction, button: discord.ui.Button):
+        view = verify2
         embed = discord.Embed(title="Hello! Are you human? Let's find out!", description="`Please type the code below to be able to access this server!`", color=-0x2b2d31)
-        embed.add_field(name="Code:", value="fhgsn3s")
-        await interaction.response.send_message(embed=embed, ephemeral=True)
+        embed.add_field(name="Code:", value="FBGKDHS")
+        await interaction.response.send_message(embed=embed, view=view ,ephemeral=True)
 
 class verify2(discord.ui.View):
     def __init__ (self):
@@ -24,10 +25,10 @@ class verify2(discord.ui.View):
         self.value = None
 
     @discord.ui.button(label="Answer", style=discord.ButtonStyle.red)
-    async def verify2(self, interaction: discord.Interaction, button: discord.ui.Button):
-        await interaction.response.send_modal(verify())
+    async def vmo(self, interaction: discord.Interaction, button: discord.ui.Button):
+        await interaction.response.send_modal(verifymodal())
 
-class verify(ui.Modal, title='Verification'):
+class verifymodal(ui.Modal, title='Verification'):
      code = ui.TextInput(label='What was the code?', placeholder="Enter code here...", style=discord.TextStyle.short)
      async def on_submit(self, interaction: discord.Interaction, role: 1131016147282710679, member: discord.Member):
           await interaction.response.send_message("Thank you! You're all verified, enjoy your time here in Editors Block", ephemeral=True)
