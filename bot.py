@@ -28,7 +28,6 @@ extensions = {
     "cogs.other",
     "cogs.audios",
     "cogs.custom",
-    "cogs.newapps",
     "cogs.scramble",
     "cogs.ttt",
     "cogs.giveaway",

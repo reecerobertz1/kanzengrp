@@ -7,13 +7,12 @@ import random
 class Giveaway(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.giveaway_data = {}
+"""        self.giveaway_data = {}
         self.load_giveaway_data()
 
     @commands.command()
     @commands.has_permissions(administrator=True)
     async def giveaway(self, ctx, duration: int, *, args):
-        """Start a giveaway."""
         if duration <= 0:
             return await ctx.send("The duration must be greater than 0.")
         
@@ -77,14 +76,11 @@ class Giveaway(commands.Cog):
     @commands.command()
     @commands.has_permissions(administrator=True)
     async def gapick(self, ctx, message_id: int):
-        """Pick a winner for a specific giveaway."""
         message = await ctx.fetch_message(message_id)
         await self.pick_winner(message)
 
     @commands.command()
     @commands.has_permissions(administrator=True)
-    async def gaclear(self, ctx):
-        """Clear the giveaway data."""
         self.giveaway_data.clear()
         await self.save_giveaway_data()
         await ctx.send("Giveaway data has been cleared.")
@@ -98,7 +94,7 @@ class Giveaway(commands.Cog):
             with open("giveaway_data.json", "r") as f:
                 self.giveaway_data = json.load(f)
         except FileNotFoundError:
-            self.giveaway_data = {}
+            self.giveaway_data = {}"""
 
 async def setup(bot):
     await bot.add_cog(Giveaway(bot))
