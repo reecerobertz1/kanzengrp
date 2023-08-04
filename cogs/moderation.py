@@ -4,6 +4,7 @@ import aiohttp
 import discord
 from discord.ext import commands
 from discord import app_commands
+from discord import ui
 
 class Moderation(commands.Cog):
     def __init__(self, bot):
@@ -93,6 +94,26 @@ class Moderation(commands.Cog):
             await interaction.response.send_message(f"{member.mention} no longer has the role {role.mention}.", ephemeral=True)
         if not interaction.user.guild_permissions.administrator:
             return await interaction.response.send_message("You have no admin", ephemeral=True)
+        
+    @app_commands.command(name='kanzen', description='Get Kanzen logos')
+    @app_commands.guilds(discord.Object(id=1121841073673736215))
+    async def kanzenlogos(self, interaction: discord.Interaction):
+        await interaction.response.send_message('https://mega.nz/folder/J40zCTYY#L73pTeQKWpCh15wpuQaIFA', ephemeral=True)
+
+    @app_commands.command(name='aura', description='Get Aura logos')
+    @app_commands.guilds(discord.Object(id=957987670787764224))
+    async def auralogos(self, interaction: discord.Interaction):
+        await interaction.response.send_message('https://mega.nz/folder/SNkySBBb#kNViVZOVnHzEFmFsuhtLOQ', ephemeral=True)
+
+    @app_commands.command(name='ia', description='Send an inactivity message!')
+    @app_commands.guilds(discord.Object(id=1121841073673736215))
+    async def ia(self, interaction: discord.Interaction):
+         await interaction.response.send_modal(ia())
+
+    @app_commands.command(name='staff', description='Apply for Kanzen staff!')
+    @app_commands.guilds(discord.Object(id=1121841073673736215))
+    async def staff(self, interaction: discord.Interaction):
+         await interaction.response.send_modal(staff())
 
     @commands.command()
     @commands.has_permissions(manage_guild=True)
@@ -141,6 +162,40 @@ class Moderation(commands.Cog):
             await ctx.send(f"**Member List - Part {i}**\n{member_list_text}")
 
         await ctx.send(f"Total Members in the Server: {member_count}")
+
+class ia(ui.Modal, title='Inactivity Message'):
+     instagram = ui.TextInput(label='Instagram username', placeholder="Enter your Instagram username here...", style=discord.TextStyle.short)
+     reason = ui.TextInput(label='Inactivity Reason', placeholder="", style=discord.TextStyle.long)
+     async def on_submit(self, interaction: discord.Interaction):
+          await interaction.response.defer()
+          embed = discord.Embed(title='Inactivity Message', color=0x2b2d31)
+          embed.add_field(name='Instagram Name:', value=f'{self.instagram.value}', inline=False)
+          embed.add_field(name='Instagram Account Link:', value=f'https://instagram.com/{self.instagram.value}', inline=False)
+          embed.add_field(name='Inactivity Reason:', value=f'{self.reason.value}', inline=False)
+          embed.add_field(name="Discord ID:", value=interaction.user.id, inline=False)
+          channel = interaction.client.get_channel(1121913672822968330)
+          await channel.send(embed=embed)
+          await interaction.followup.send(f'Your inactive message has been sent successfully', ephemeral=True)
+
+class staff(ui.Modal, title='Kanzen Staff Apps'):
+     instagram = ui.TextInput(label='Instagram username', placeholder="Enter your Instagram username here...", style=discord.TextStyle.short)
+     reason = ui.TextInput(label='why should you be chosen?', placeholder="Put your reason here...", style=discord.TextStyle.long)
+     exp = ui.TextInput(label='what kind of expirience do you have?', placeholder="Expirience list here..", style=discord.TextStyle.long)
+     contribute = ui.TextInput(label='what will you contribute with?', placeholder="E.g. Events you would like to host, To help improve Kanzen etc...", style=discord.TextStyle.long)
+     extra = ui.TextInput(label='anything else you would like to add?', placeholder="Expirience list here..", style=discord.TextStyle.long, required=False)
+     async def on_submit(self, interaction: discord.Interaction):
+          await interaction.response.defer()
+          embed = discord.Embed(title='Kanzen Staff Apps', color=0x2b2d31)
+          embed.add_field(name='Instagram Name:', value=f'{self.instagram.value}', inline=False)
+          embed.add_field(name='Instagram Account Link:', value=f'https://instagram.com/{self.instagram.value}', inline=False)
+          embed.add_field(name='why should you be chosen?:', value=f'{self.reason.value}', inline=False)
+          embed.add_field(name='what kind of expirience do you have?:', value=f'{self.exp.value}', inline=False)
+          embed.add_field(name='what will you contribute with?:', value=f'{self.contribute.value}', inline=False)
+          embed.add_field(name='anything else you would like to say?', value=f'{self.extra.value}')
+          embed.add_field(name="Discord ID:", value=interaction.user.id, inline=False)
+          channel = interaction.client.get_channel(1135238365902553158)
+          await channel.send(embed=embed)
+          await interaction.followup.send(f'You have sent your staff app successfully', ephemeral=True)
 
 async def setup(bot):
     await bot.add_cog(Moderation(bot))
