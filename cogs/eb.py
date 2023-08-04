@@ -14,7 +14,7 @@ class verify1(discord.ui.View):
 
     @discord.ui.button(label="Verify", style=discord.ButtonStyle.red)
     async def verify1(self, interation: discord.Interaction, button: discord.Button):
-        embed = discord.Embed(title="Hello! Are you human? Let's find out!", description="`Please type the captcha below to be able to access this server!`", color=-0x2b2d31)
+        embed = discord.Embed(title="Hello! Are you human? Let's find out!", description="`Please type the code below to be able to access this server!`", color=-0x2b2d31)
         embed.add_field(name="Code:", value="fhgsn3s")
         await interation.response.send_modal(embed=embed, ephemeral=True)
 
@@ -24,8 +24,8 @@ class verify2(discord.ui.View):
         self.value = None
 
     @discord.ui.button(label="Answer", style=discord.ButtonStyle.red)
-    async def verify2(self, interation: discord.Interaction, button: discord.Button):
-        await interation.response.send_modal(verify())
+    async def verify2(self, interaction: discord.Interaction, button: discord.ui.Button):
+        await interaction.response.send_modal(verify())
 
 class verify(ui.Modal, title='Verification'):
      code = ui.TextInput(label='What was the code?', placeholder="Enter code here...", style=discord.TextStyle.short)
