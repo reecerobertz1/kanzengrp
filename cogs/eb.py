@@ -1,3 +1,4 @@
+import re
 from typing import Any
 import discord
 from discord.ext import commands
@@ -131,6 +132,13 @@ class ebmessages(commands.Cog):
                 embed = msg.embeds[0]
                 user_id_field = next((field for field in embed.fields if field.name == 'Discord ID:'), None)
                 question = next((field for field in embed.fields if field.name == 'Question'), None)
+
+                if not question or not user_id_field:
+                    await ctx.send("Invalid embed format. Please make sure the embed contains fields 'Group(s) they want to be in:' and 'Discord ID'.")
+                    return
+
+                question = question.value.lower()
+                question = [question.strip() for question in re.split(r'[,\s]+', question)]
 
                 if user_id_field:
                     user_id = user_id_field.value.strip()
