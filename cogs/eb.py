@@ -62,18 +62,18 @@ class qnabutton(discord.ui.View):
         super().__init__(timeout=None)
         self.value = None
 
-    @discord.ui.button(label="Click to ask a question")
+    @discord.ui.button(label="Click to ask a question!")
     async def qnabutton(self, interaction: discord.Interaction, button: discord.ui.Button):
          await interaction.response.send_modal(qnamodal())
 
 class qnamodal(ui.Modal, title="Editor's Block Q&A"):
-     priv = ui.TextInput(label='Would you like your question asnwered in private?', placeholder="Enter your answer here...", style=discord.TextStyle.short)
-     qna = ui.TextInput(label='What is your question?', placeholder="Ask question here...", style=discord.TextStyle.short)
+     dmyesno = ui.TextInput(label='Do you want your question asnwered in private?', placeholder="Enter your answer here...", style=discord.TextStyle.short)
+     question = ui.TextInput(label='What is your question?', placeholder="Ask question here...", style=discord.TextStyle.short)
      async def on_submit(self, interaction: discord.Interaction):
           await interaction.response.defer()
-          embed = discord.Embed(title='Forms', color=0x2b2d31)
-          embed.add_field(name='Answer in dm (yes or no)', value=f'{self.priv.value}', inline=False)
-          embed.add_field(name='Question', value=f'{self.qna.value}', inline=False)
+          embed = discord.Embed(title="Editor's Block Q&A", color=0x2b2d31)
+          embed.add_field(name='Answer in dm (yes or no)', value=f'{self.dmyesno.value}', inline=False)
+          embed.add_field(name='Question', value=f'{self.question.value}', inline=False)
           embed.add_field(name="Discord ID:", value=interaction.user.id, inline=False)
           channel = interaction.client.get_channel(1133771810714951732)
           await channel.send(embed=embed)
