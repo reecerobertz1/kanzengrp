@@ -10,30 +10,6 @@ from discord.ui import View, Select
 from typing import List, Optional
 from discord import ui
 
-class verifycode(discord.ui.View):
-    def __init__ (self):
-        super().__init__(timeout=None)
-        self.value = None
-
-    @discord.ui.button(label="Verify", style=discord.ButtonStyle.green)
-    async def verifycode(self, interaction: discord.Interaction, button: discord.ui.Button):
-        embed = discord.Embed(title="Hello! Are you human? Let's find out!", description="`Please type the code below to be able to access this server!`\n**Code:** FBGKDHS", color=-0x2b2d31)
-        await interaction.response.send_message(embed=embed, ephemeral=True)
-
-class verify2(discord.ui.View):
-    def __init__ (self):
-        super().__init__(timeout=None)
-        self.value = None
-
-    @discord.ui.button(label="Answer", style=discord.ButtonStyle.green)
-    async def vmo(self, interaction: discord.Interaction, button: discord.ui.Button):
-        await interaction.response.send_modal(verifymodal())
-
-class verifymodal(ui.Modal, title='Verification'):
-     code = ui.TextInput(label='What was the code?', placeholder="Enter code here...", style=discord.TextStyle.short)
-     async def on_submit(self, interaction: discord.Interaction):
-        await interaction.response.send_message("Thank you! You're all verified, enjoy your time here in Editors Block", ephemeral=True)
-
 class infobuttons(discord.ui.View):
     def __init__ (self):
         super().__init__(timeout=None)
@@ -84,6 +60,30 @@ class grprctkda(ui.Modal, title='Applications'):
           channel = interaction.client.get_channel(1131006328207327294)
           await channel.send(embed=embed)
           await interaction.followup.send(f'Your application has been sent successfully', ephemeral=True)
+
+class verifycode(discord.ui.View):
+    def __init__ (self):
+        super().__init__(timeout=None)
+        self.value = None
+
+    @discord.ui.button(label="Verify", style=discord.ButtonStyle.green)
+    async def verifycode(self, interaction: discord.Interaction, button: discord.ui.Button):
+        embed = discord.Embed(title="Hello! Are you human? Let's find out!", description="`Please type the code below to be able to access this server!`\n**Code:** FBGKDHS", color=-0x2b2d31)
+        await interaction.response.send_message(embed=embed, ephemeral=True)
+
+class verify2(discord.ui.View):
+    def __init__ (self):
+        super().__init__(timeout=None)
+        self.value = None
+
+    @discord.ui.button(label="Answer", style=discord.ButtonStyle.green)
+    async def vmo(self, interaction: discord.Interaction, button: discord.ui.Button):
+        await interaction.response.send_modal(verifymodal())
+
+class verifymodal(ui.Modal, title='Verification'):
+     code = ui.TextInput(label='What was the code?', placeholder="Enter code here...", style=discord.TextStyle.short)
+     async def on_submit(self, interaction: discord.Interaction):
+        await interaction.response.send_message("Thank you! You're all verified, enjoy your time here in Editors Block", ephemeral=True)
 
 class qnabutton(discord.ui.View):
     def __init__ (self):
