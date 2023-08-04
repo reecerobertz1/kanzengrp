@@ -124,7 +124,7 @@ class ebmessages(commands.Cog):
         await ctx.send(embed=embed, view=view)
 
     @commands.command(aliases=['sa'])
-    async def answer(self, ctx, answer: str):
+    async def answernew(self, ctx, answer: str):
         if ctx.message.reference is not None:
             try:
                 msg = await ctx.channel.fetch_message(ctx.message.reference.message_id)
