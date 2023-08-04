@@ -13,10 +13,10 @@ class verify1(discord.ui.View):
         self.value = None
 
     @discord.ui.button(label="Verify", style=discord.ButtonStyle.red)
-    async def verify1(self, interation: discord.Interaction, button: discord.Button):
+    async def verify1(self, interaction: discord.Interaction, button: discord.ui.Button):
         embed = discord.Embed(title="Hello! Are you human? Let's find out!", description="`Please type the code below to be able to access this server!`", color=-0x2b2d31)
         embed.add_field(name="Code:", value="fhgsn3s")
-        await interation.response.send_modal(embed=embed, ephemeral=True)
+        await interaction.response.send_modal(embed=embed, ephemeral=True)
 
 class verify2(discord.ui.View):
     def __init__ (self):
