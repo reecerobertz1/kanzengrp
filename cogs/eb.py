@@ -151,28 +151,5 @@ class ebmessages(commands.Cog):
         else:
             await ctx.send("Please reply with the question you want to answer.")
 
-    @commands.command(hidden=True)
-    async def answer(self, ctx, *, response: str):
-        reference = ctx.message.reference
-        if reference and reference.message_id:
-            msg = await ctx.channel.fetch_message(reference.message_id)
-            if "|" in msg.content:
-                question, asker = msg.content.split("| ")
-                user = await self.bot.fetch_user(int(asker))
-                if ctx.guild.id == 1122181605591621692:  # Server 1
-                    answer_channel = self.bot.get_channel(self.server1_answer_channel_id)
-                elif ctx.guild.id == 1123347338841313331:  # Server 2
-                    answer_channel = self.bot.get_channel(self.server2_answer_channel_id)
-                else:
-                    return
-
-                embed = discord.Embed(title="Q&A", color=0x2b2d31, description=f"**question:** {question}**\nanswer:** {response}")
-                embed.set_footer(text=f"asked by {user.display_name} | answered by {ctx.author.display_name}")
-
-                await answer_channel.send(user.mention, embed=embed)
-                return
-
-        await ctx.send("Failed to retrieve the question or the question format is incorrect.")
-
 async def setup(bot):
     await bot.add_cog(ebmessages(bot))
