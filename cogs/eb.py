@@ -35,8 +35,8 @@ class infobuttons(discord.ui.View):
     @discord.ui.button(label="Affiliate Info", emoji="<:partners:1137446533994909766>")
     async def affinfo(self, interaction: discord.Interaction, button: discord.Button):
         embed = discord.Embed(title="<:partners:1137446533994909766> Affiliate Information", color=0x2b2d31)
-        embed.add_field(name="Advert with ping", value="gsjdfkghdkj")
-        embed.add_field(name="Advert without ping", value="ghsjghkjdfg")
+        embed.add_field(name="Advert with ping", value="<a:arrowpink:1134860720777990224> Follow Discord's [tos](https://discord.com/terms) and [guidelines](https://discord.com/guidelines)\n<a:arrowpink:1134860720777990224> Must have 100+ members\nIf you meet our requirements, please message one of our owners", inline=False)
+        embed.add_field(name="Advert without ping", value="<a:arrowpink:1134860720777990224> Follow Discord's [tos](https://discord.com/terms) and [guidelines](https://discord.com/guidelines)\n<a:arrowpink:1134860720777990224> Must have 75+ members\nIf you meet our requirements, please message one of our owners", inline=False)
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
 class appbuttons(discord.ui.View):
