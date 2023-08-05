@@ -78,7 +78,7 @@ class applications(commands.Cog):
                         await channel.send(f"{user.mention} was accepted")
                     instachannel = ctx.guild.get_channel(1137423800623960116)
                     if channel:
-                        await instachannel.send(f"You need to follow {insta}")
+                        await instachannel.send(f"You need to follow {insta_field}")
 
                 embed = msg.embeds[0]
                 embed.add_field(name="Status", value="Accepted ✅")
