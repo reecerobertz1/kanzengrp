@@ -69,7 +69,7 @@ class verifymodal(ui.Modal, title='Verification'):
         member = interaction.user
 
         # Check if the code matches the verification code
-        if self.code.value == "your_verification_code_here":
+        if self.code.value == "FBGKDHS":
             # Get the role with the ID 1131016147282710679
             role_id = 1131016147282710679
             role = interaction.guild.get_role(role_id)
