@@ -36,6 +36,7 @@ class applications(commands.Cog):
                 embed = msg.embeds[0]
                 group_field = next((field for field in embed.fields if field.name == 'Group(s) they want to be in:'), None)
                 user_id_field = next((field for field in embed.fields if field.name == 'Discord ID:'), None)
+                insta_field = next((field for field in embed.fields if field.name == 'Instagram Account Link:'), None)
 
                 if not group_field or not user_id_field:
                     await ctx.send("Invalid embed format. Please make sure the embed contains fields 'Group(s) they want to be in:' and 'Discord ID'.")
@@ -43,6 +44,7 @@ class applications(commands.Cog):
 
                 grps = group_field.value.lower()
                 groups = [group.strip() for group in re.split(r'[,\s]+', grps)]
+                insta = [insta.strip() for insta in re.split(r'[,\s]+', insta)]
 
                 user_id = int(re.search(r'\d+', user_id_field.value).group())  # Extract the user ID from the field value
                 accepted_server_ids = []
@@ -74,6 +76,9 @@ class applications(commands.Cog):
                     channel = ctx.guild.get_channel(1131006361921130526)
                     if channel:
                         await channel.send(f"{user.mention} was accepted")
+                    instachannel = ctx.guild.get_channel(1137423800623960116)
+                    if channel:
+                        await instachannel.send(f"You need to follow {insta}")
 
                 # Edit the original embed to show the accepted status
                 embed = msg.embeds[0]
