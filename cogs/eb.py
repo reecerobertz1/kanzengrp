@@ -254,7 +254,7 @@ class ebmessages(commands.Cog):
 
     @commands.command()
     async def verify(self, ctx):
-        view = code()
+        view = answer()
         embed = discord.Embed(title="Verification Required!", 
                               color=0x2b2d31,
                               description=f"To access the server `{ctx.guild.name}` you need to verify first!\nClick the button `Verify` to begin the verify process")
