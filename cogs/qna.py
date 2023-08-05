@@ -10,7 +10,7 @@ class qna(commands.Cog):
         self.server2_deleted_messages_channel_id = 1123719751479341107
         self.server2_answer_channel_id = 1123719714594639922
 
-    @commands.command(hidden=True)
+"""    @commands.command(hidden=True)
     async def answer(self, ctx, *, response: str):
         reference = ctx.message.reference
         if reference and reference.message_id:
@@ -49,7 +49,7 @@ class qna(commands.Cog):
 
         await asyncio.sleep(3)
         await ctx.message.delete()
-        await q.delete()
+        await q.delete()"""
 
 
 
