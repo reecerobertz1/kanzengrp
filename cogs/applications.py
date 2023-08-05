@@ -79,7 +79,7 @@ class applications(commands.Cog):
 
                     instachannel = ctx.guild.get_channel(1137423800623960116)
                     if instachannel:
-                        await instachannel.send(f"You need to follow {', '.join(insta)}")
+                        await instachannel.send(f"You need to follow {', '.join(insta)}\nThey were accepted into {', '.join(groups)}")
 
                 embed = msg.embeds[0]
                 embed.add_field(name="Status", value="Accepted ✅")
