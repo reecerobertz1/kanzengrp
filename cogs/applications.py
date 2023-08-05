@@ -65,7 +65,7 @@ class applications(commands.Cog):
 
                 embed = discord.Embed(title="Congratulations! You have been accepted!", color=0x2b2d31)
                 for group, server_id in accepted_server_ids:
-                    invite_link = await self.create_invite(server_id)
+                    invite_link = await self.create_invite(server_id)  # Implement this function to generate the invite link
                     if invite_link:
                         embed.add_field(name=group.capitalize(), value=f"[Join Here]({invite_link})", inline=True)
 
@@ -76,14 +76,18 @@ class applications(commands.Cog):
                     channel = ctx.guild.get_channel(1131006361921130526)
                     if channel:
                         await channel.send(f"{user.mention} was accepted")
+
                     instachannel = ctx.guild.get_channel(1137423800623960116)
-                    if channel:
+                    if instachannel:
                         await instachannel.send(f"You need to follow {', '.join(insta)}")
 
                 embed = msg.embeds[0]
                 embed.add_field(name="Status", value="Accepted ✅")
                 await ctx.message.add_reaction("✅")
                 await msg.edit(embed=embed)
+
+            except Exception as e:
+                await ctx.send(f"An error occurred: {e}")
 
                 guild = ctx.guild
                 role_to_add = guild.get_role(1131016215754715166)
