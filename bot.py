@@ -23,7 +23,6 @@ extensions = {
     "cogs.applications",
     "cogs.logos",
     "cogs.status",
-    "cogs.qna",
     "cogs.levels",
     "cogs.other",
     "cogs.audios",
