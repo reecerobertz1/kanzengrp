@@ -207,7 +207,8 @@ class ebmessages(commands.Cog):
             self.giveaway_data = {}
 
     @commands.command()
-    async def applylol(self, ctx):
+    @commands.has_permissions(manage_guild=True)
+    async def openapps(self, ctx):
         application_channel_id = 1133771634793250847
         application_channel = self.bot.get_channel(application_channel_id)
         view = appbuttons()
@@ -217,6 +218,7 @@ class ebmessages(commands.Cog):
         application_channel = await application_channel.send(embed=embed, view=view)
 
     @commands.command()
+    @commands.has_permissions(manage_guild=True)
     async def lol(self, ctx):
         embed = discord.Embed(title="Welcome *!*", 
                               description="> Thank you for joining Editors Block!\n> This is a community server made for all types of editors.\n> Feel free to ping @owners or @staff if you need any help.\n\nWe will do group recruits for the groups Kanzen, Aura, and Daegu! ͏͏͏  ͏͏͏ ͏͏͏͏͏͏͏͏͏ ͏ ͏", 
@@ -235,6 +237,7 @@ class ebmessages(commands.Cog):
         await ctx.send(embed=embed, view=view)
 
     @commands.command()
+    @commands.has_permissions(manage_guild=True)
     async def lol2(self, ctx):
         view = infobuttons()
         embed = discord.Embed(title="<:rules:1136761913972359178> Server Rules ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏͏͏ ͏͏͏ ", 
@@ -243,6 +246,7 @@ class ebmessages(commands.Cog):
         await ctx.send(embed=embed, view=view)
 
     @commands.command()
+    @commands.has_permissions(manage_guild=True)
     async def qnapfft(self, ctx):
         view = qnabutton()
         embed = discord.Embed(title="Editor's Block Q&A",
@@ -252,13 +256,14 @@ class ebmessages(commands.Cog):
 
     @commands.command()
     async def verify(self, ctx):
-        view = code()
+        view = infobuttons()
         embed = discord.Embed(title="Verification Required!", 
                               color=0x2b2d31,
                               description=f"To access the server `{ctx.guild.name}` you need to verify first!\nClick the button `Verify` to begin the verify process")
         await ctx.send(embed=embed, view=view)
 
     @commands.command(aliases=['ap'])
+    @commands.has_permissions(manage_guild=True)
     async def answerpriv(self, ctx, answer: str):
         if ctx.message.reference is not None:
             try:
@@ -295,7 +300,8 @@ class ebmessages(commands.Cog):
             await ctx.send("Please reply to the question you want to answer.")
 
     @commands.command(aliases=['a'])
-    async def answer2(self, ctx, answer: str):
+    @commands.has_permissions(manage_guild=True)
+    async def answer(self, ctx, answer: str):
         if ctx.message.reference is not None:
             try:
                 msg = await ctx.channel.fetch_message(ctx.message.reference.message_id)
