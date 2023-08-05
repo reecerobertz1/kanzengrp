@@ -67,7 +67,7 @@ class code(discord.ui.View):
         self.value = None
 
     @discord.ui.button(label="Verify", style=discord.ButtonStyle.green)
-    async def code(self, interaction: discord.Interaction, button: discord.ui.Button):
+    async def roles(self, interaction: discord.Interaction, button: discord.ui.Button):
         view = answer
         embed = discord.Embed(title="Hello! Are you human? Let's find out!", description="`Please type the code below to be able to access this server!`\n**Code:** FBGKDHS", color=-0x2b2d31)
         await interaction.response.send_message(embed=embed, view=view ,ephemeral=True) 
