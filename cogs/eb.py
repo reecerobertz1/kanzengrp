@@ -59,16 +59,17 @@ class answer(discord.ui.View):
 
     @discord.ui.button(label="Answer", style=discord.ButtonStyle.green)
     async def vmo(self, interaction: discord.Interaction, button: discord.ui.Button):
-        if (role) is not discord.Role:
-            role = interaction.guild.get_role(1131016147282710679)
-        if role not in interaction.user.roles:
-            await interaction.user.add_roles(role)
         await interaction.response.send_modal(verifymodal())
 
 class verifymodal(ui.Modal, title='Verification'):
-     code = ui.TextInput(label='What was the code?', placeholder="Enter code here...", style=discord.TextStyle.short)
-     async def on_submit(self, interaction: discord.Interaction):
-        await interaction.response.send_message(f"Thank you {interaction.user.name}! You're all verified, enjoy your time here in Editors Block", ephemeral=True)
+    code = ui.TextInput(label='What was the code?', placeholder="Enter code here...", style=discord.TextStyle.short)
+    async def on_submit(self, interaction: discord.Interaction):
+        member = interaction.user
+        if self.code.value == "your_verification_code_here":
+            role_id = 1131016147282710679
+            role = interaction.guild.get_role(role_id)
+            await member.add_roles(role)
+            await interaction.response.send_message(f"Thank you {member.name}! You're all verified, enjoy your time here in Editors Block.", ephemeral=True)
 
 class qnabutton(discord.ui.View):
     def __init__ (self):
