@@ -547,6 +547,13 @@ class ebmessages(commands.Cog):
         await ctx.send("https://cdn.discordapp.com/attachments/1131006428631539773/1137457394939600916/pronouns_00000.png")
         await ctx.send(embed=embed)
 
+    @commands.command()
+    async def role2(self, ctx):
+        embed = discord.Embed(title="<:leaf:1137454366886993950> What server pings would you like?",
+                              description="The staff will ping these roles whenever there's something related to these roles happeening in the server.\n\n<:1:1137455321028251708> - <@&1133770119777099866> \n<:2:1137455517577531565> - <@&1131127168102055996> \n<:3:1137455658258673704> - <@&1131127104226992208> \n<:4:1137455776877781107> - <@&1131005057417105418> \n<:5:1137455941609078824> - <@&1131127124187684894>",
+                              color=0x2b2d31)
+        await ctx.send("https://cdn.discordapp.com/attachments/1131006428631539773/1137458153248784505/pings_00000.png")
+        await ctx.send(embed=embed)
 
 async def setup(bot):
     await bot.add_cog(ebmessages(bot))
