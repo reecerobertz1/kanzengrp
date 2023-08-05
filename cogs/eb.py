@@ -63,7 +63,8 @@ class answer(discord.ui.View):
 
 class verifymodal(ui.Modal, title='Verification'):
      code = ui.TextInput(label='What was the code?', placeholder="Enter code here...", style=discord.TextStyle.short)
-     async def on_submit(self, interaction: discord.Interaction, role: 1131016147282710679):
+     async def on_submit(self, interaction: discord.Interaction):
+        role = 1131016147282710679
         await interaction.user.add_roles(role)
         await interaction.response.send_message(f"Thank you {interaction.user.name}! You're all verified, enjoy your time here in Editors Block", ephemeral=True)
 
