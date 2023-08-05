@@ -69,9 +69,7 @@ class code(discord.ui.View):
     @discord.ui.button(label="Verify", style=discord.ButtonStyle.green)
     async def code(self, interaction: discord.Interaction, button: discord.ui.Button):
         view = answer
-        embed = discord.Embed(title="Hello! Are you human? Let's find out!", 
-                              description="`Please type the code below to be able to access this server!`\n**Code:** FBGKDHS", 
-                              color=-0x2b2d31)
+        embed = discord.Embed(title="Hello! Are you human? Let's find out!", description="`Please type the code below to be able to access this server!`\n**Code:** FBGKDHS", color=-0x2b2d31)
         await interaction.response.send_message(embed=embed, view=view ,ephemeral=True) 
 
 class answer(discord.ui.View):
@@ -256,7 +254,7 @@ class ebmessages(commands.Cog):
 
     @commands.command()
     async def verify(self, ctx):
-        view = infobuttons()
+        view = code()
         embed = discord.Embed(title="Verification Required!", 
                               color=0x2b2d31,
                               description=f"To access the server `{ctx.guild.name}` you need to verify first!\nClick the button `Verify` to begin the verify process")
