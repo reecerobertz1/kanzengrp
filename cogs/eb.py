@@ -49,7 +49,7 @@ class verifycode(discord.ui.View):
     @discord.ui.button(label="Verify", style=discord.ButtonStyle.green)
     async def verify(self, interaction: discord.Interaction, button: discord.Button):
         view = answer()
-        embed = discord.Embed(title="Hello! Are you human? Let's find out!", description="`Please type the code below to be able to access this server!`\nClick **Answer** to type the code\n\nCode:** FBGKDHS", color=0x2b2d31)
+        embed = discord.Embed(title="Hello! Are you human? Let's find out!", description="`Please type the code below to be able to access this server!`\nClick **Answer** to type the code\n\n**Code:** FBGKDHS", color=0x2b2d31)
         await interaction.response.send_message(embed=embed, view=view , ephemeral=True)
 
     @discord.ui.button(label="Help")
