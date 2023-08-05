@@ -61,7 +61,7 @@ class grprctkda(ui.Modal, title='Applications'):
           await channel.send(embed=embed)
           await interaction.followup.send(f'Your application has been sent successfully', ephemeral=True)
 
-class code(discord.ui.View):
+class verifycode(discord.ui.View):
     def __init__ (self):
         super().__init__(timeout=None)
         self.value = None
@@ -70,7 +70,6 @@ class code(discord.ui.View):
     async def codev(self, interaction: discord.Interaction, button: discord.Button):
         embed = discord.Embed(title="Hello! Are you human? Let's find out!", description="`Please type the code below to be able to access this server!`\n**Code:** FBGKDHS", color=-0x2b2d31)
         await interaction.response.send_message(embed=embed)
-
 
 class answer(discord.ui.View):
     def __init__ (self):
@@ -254,7 +253,7 @@ class ebmessages(commands.Cog):
 
     @commands.command()
     async def verify(self, ctx):
-        view = answer()
+        view = verifycode()
         embed = discord.Embed(title="Verification Required!", 
                               color=0x2b2d31,
                               description=f"To access the server `{ctx.guild.name}` you need to verify first!\nClick the button `Verify` to begin the verify process")
