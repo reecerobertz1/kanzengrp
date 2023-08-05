@@ -20,7 +20,6 @@ extensions = {
     "cogs.memberinfo",
     "cogs.moderation",
     "cogs.welcandbye",
-    "cogs.applications",
     "cogs.logos",
     "cogs.status",
     "cogs.levels",
