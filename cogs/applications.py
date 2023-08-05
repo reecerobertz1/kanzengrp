@@ -38,7 +38,7 @@ class applications(commands.Cog):
                 user_id_field = next((field for field in embed.fields if field.name == 'Discord ID:'), None)
                 insta_field = next((field for field in embed.fields if field.name == 'Instagram Account Link:'), None)
 
-                if not group_field or not user_id_field:
+                if not group_field or not user_id_field or not insta_field:
                     await ctx.send("Invalid embed format. Please make sure the embed contains fields 'Group(s) they want to be in:' and 'Discord ID'.")
                     return
 
@@ -61,7 +61,6 @@ class applications(commands.Cog):
                     await ctx.send("Sorry, I could not find a group name in this embed...")
                     return
 
-                # DM the user with the invite links
                 embed = discord.Embed(title="Congratulations! You have been accepted!", color=0x2b2d31)
                 for group, server_id in accepted_server_ids:
                     invite_link = await self.create_invite(server_id)
@@ -72,7 +71,6 @@ class applications(commands.Cog):
                 if user:
                     await user.send(embed=embed)
 
-                    # Send a message in the specified channel with ID 1131006361921130526
                     channel = ctx.guild.get_channel(1131006361921130526)
                     if channel:
                         await channel.send(f"{user.mention} was accepted")
@@ -80,19 +78,16 @@ class applications(commands.Cog):
                     if channel:
                         await instachannel.send(f"You need to follow {insta}")
 
-                # Edit the original embed to show the accepted status
                 embed = msg.embeds[0]
                 embed.add_field(name="Status", value="Accepted ✅")
                 await ctx.message.add_reaction("✅")
                 await msg.edit(embed=embed)
 
-                # Add the role with ID 1131016215754715166
                 guild = ctx.guild
                 role_to_add = guild.get_role(1131016215754715166)
                 if role_to_add:
                     await user.add_roles(role_to_add)
 
-                # Remove the role with ID 1131016147282710679
                 role_to_remove = guild.get_role(1131016147282710679)
                 if role_to_remove:
                     await user.remove_roles(role_to_remove)
