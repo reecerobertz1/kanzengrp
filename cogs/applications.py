@@ -8,7 +8,7 @@ class applications(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    def is_judge():
+"""    def is_judge():
         async def predicate(ctx):
             role_id = 1135216335652143104
             role = ctx.guild.get_role(role_id)
@@ -176,7 +176,7 @@ class applications(commands.Cog):
             except Exception as e:
                 print(f"Failed to process the command: {e}")
         else:
-            await ctx.send("Please reply with the embed you want to process.")
+            await ctx.send("Please reply with the embed you want to process.")"""
 
 async def setup(bot):
     await bot.add_cog(applications(bot))
