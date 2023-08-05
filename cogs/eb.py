@@ -55,6 +55,7 @@ class verifycode(discord.ui.View):
     @discord.ui.button(label="Help")
     async def verifyhelp(self, interaction: discord.Interaction, button: discord.Button):
         embed = discord.Embed(title="\🔔 `Verification Steps`", description="<a:arrowpink:1134860720777990224> `1` Click **Verify**\n<a:arrowpink:1134860720777990224> `2`  You'll be given the code as a reply, click on **Answer** and put the code in the form that pops up\n<a:arrowpink:1134860720777990224> `3` After passing verfication, you'll be given this role: <@&1131016147282710679>")
+        await interaction.response.send_message(embed=embed, ephemeral=True)
 
 class answer(discord.ui.View):
     def __init__ (self):
