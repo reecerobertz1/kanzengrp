@@ -44,6 +44,8 @@ class applications(commands.Cog):
 
                 grps = group_field.value.lower()
                 groups = [group.strip() for group in re.split(r'[,\s]+', grps)]
+
+                insta = insta_field.value.lower()
                 insta = [insta.strip() for insta in re.split(r'[,\s]+', insta)]
 
                 user_id = int(re.search(r'\d+', user_id_field.value).group())  # Extract the user ID from the field value
