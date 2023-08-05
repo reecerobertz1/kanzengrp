@@ -63,7 +63,7 @@ class answer(discord.ui.View):
 
 class verifymodal(ui.Modal, title='Verification'):
      code = ui.TextInput(label='What was the code?', placeholder="Enter code here...", style=discord.TextStyle.short)
-     async def on_submit(self, interaction: discord.Interaction, member: discord.Member, role: 1131016147282710679):
+     async def on_submit(self, interaction: discord.Interaction):
         if (interaction.role) is not discord.Role:
             interaction.role = interaction.guild.get_role(1131016147282710679)
         if interaction.role not in interaction.user.roles:
