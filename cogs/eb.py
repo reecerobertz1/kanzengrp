@@ -63,13 +63,30 @@ class answer(discord.ui.View):
 
 class verifymodal(ui.Modal, title='Verification'):
     code = ui.TextInput(label='What was the code?', placeholder="Enter code here...", style=discord.TextStyle.short)
+
     async def on_submit(self, interaction: discord.Interaction):
+        # Get the member from the interaction
         member = interaction.user
+
+        # Check if the code matches the verification code
         if self.code.value == "your_verification_code_here":
+            # Get the role with the ID 1131016147282710679
             role_id = 1131016147282710679
             role = interaction.guild.get_role(role_id)
-            await member.add_roles(role)
-            await interaction.response.send_message(f"Thank you {member.name}! You're all verified, enjoy your time here in Editors Block.", ephemeral=True)
+
+            if role is None:
+                print("Role not found. Make sure the role ID is correct.")
+                return
+
+            try:
+                # Add the role to the member
+                await member.add_roles(role)
+                await interaction.response.send_message(f"Thank you {member.name}! You're all verified, enjoy your time here in Editors Block.", ephemeral=True)
+            except Exception as e:
+                print(f"An error occurred while adding role: {e}")
+                await interaction.response.send_message("An error occurred while adding the role. Please try again later.", ephemeral=True)
+        else:
+            await interaction.response.send_message("Invalid verification code. Please try again.", ephemeral=True)
 
 class qnabutton(discord.ui.View):
     def __init__ (self):
