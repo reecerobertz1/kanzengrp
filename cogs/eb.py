@@ -66,11 +66,11 @@ class code(discord.ui.View):
         super().__init__(timeout=None)
         self.value = None
 
-    @discord.ui.button(label="Verify", style=discord.ButtonStyle.green)
-    async def roles(self, interaction: discord.Interaction, button: discord.ui.Button):
-        view = answer
+    @discord.ui.button(label="Verify")
+    async def codev(self, interaction: discord.Interaction, button: discord.Button):
         embed = discord.Embed(title="Hello! Are you human? Let's find out!", description="`Please type the code below to be able to access this server!`\n**Code:** FBGKDHS", color=-0x2b2d31)
-        await interaction.response.send_message(embed=embed, view=view ,ephemeral=True) 
+        await interaction.response.send_message(embed=embed)
+
 
 class answer(discord.ui.View):
     def __init__ (self):
