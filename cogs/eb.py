@@ -32,6 +32,13 @@ class infobuttons(discord.ui.View):
         embed = discord.Embed(title="<:roles_00000:1136752067277504633> Role Info",description="<@&1131006052209541212> - Editors block owners\n<@&1131006067564875806> - Editors block staff\n<@&1136803676854431745> - our amazing supporters\n<@&1131016215754715166> - Accepted members from recruit\n<@&1131016147282710679> - Default Role from verification " ,color=0x2b2d31)
         await interaction.response.send_message(embed=embed, ephemeral=True)   
 
+    @discord.ui.button(label="Affiliate Info", emoji="<:partners:1137446533994909766>")
+    async def affinfo(self, interaction: discord.Interaction, button: discord.Button):
+        embed = discord.Embed(title="<:partners:1137446533994909766> Affiliate Information", color=0x2b2d31)
+        embed.add_field(name="Advert with ping", value="gsjdfkghdkj")
+        embed.add_field(name="Advert without ping", value="ghsjghkjdfg")
+        await interaction.response.send_message(embed=embed, ephemeral=True)
+
 class appbuttons(discord.ui.View):
     def __init__ (self):
         super().__init__(timeout=None)
