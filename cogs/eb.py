@@ -39,8 +39,7 @@ class staffinfo(discord.ui.View):
         embed = discord.Embed(title="Applications", color=0x2b2d31)
         embed.add_field(name="Viewing Forms", value="Forms are sent into <#1131006328207327294>", inline=False)
         embed.add_field(name="Majority rule", value="Majority rule is where all of us vote on a form, if you do like the edit and think they should be accepted, react with ✅, if you dont think they should be accepted react with a ❌", inline=False)
-        embed.add_field(name="Duplicated forms/spam", value="If you see a duplicated form just delete one of them.\nIf someone is spamming the forms delete them all and kick the person spamming (the form will have their user id on and you can do", inline=False)
-        embed.add_field(name="Accept link expiring", value="If someone has recently been accepted but they didnt see their accept message straight away, their invite link to one of the groups could expire! Just have them contact one of the leads of the group, or have them ping <@1131016327709069353>, <@1131016346642161734> or <@1131016307807109200> depending on what grp they apped for\nor if your staff in those groups, you can create an invite link to that server or try and find their form and just accept again!")
+        embed.add_field(name="Duplicated forms/spam", value="If you see a duplicated form just delete one of them.\nIf someone is spamming the forms delete them all and kick the person spamming (the form will have their discord name on, click that and kick)", inline=False)
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
 class infobuttons(discord.ui.View):
