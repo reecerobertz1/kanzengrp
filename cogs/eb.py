@@ -503,42 +503,6 @@ class ebmessages(commands.Cog):
         else:
             await ctx.send("Please reply with the embed you want to process.")
 
-    @commands.command(aliases=['sa'])
-    @commands.has_permissions(manage_guild=True)
-    async def staffaccept(self, ctx):
-        if ctx.message.reference is not None:
-            try:
-                msg = await ctx.channel.fetch_message(ctx.message.reference.message_id)
-                embed = msg.embeds[0]
-                user_id_field = next((field for field in embed.fields if field.name == 'Discord ID:'), None)
-
-                if user_id_field:
-                    user_id = user_id_field.value.strip()
-
-                    # DM the user with the decline message
-                    user = await ctx.guild.fetch_member(int(user_id))
-                    if user:
-                        decline_message = f"Hey! you have been accepted as a new staff member for Kanzengrp\nPlease go into <#1135247559431032833> for more information"
-                        await user.send(decline_message)
-
-                        # Edit the original embed to show the declined status
-                        embed = msg.embeds[0]
-                        embed.add_field(name="Status", value="Accepted ✅")
-                        await ctx.message.add_reaction("✅")
-                        await msg.edit(embed=embed)
-
-                        role_to_add = ctx.guild.get_role(1135244903165722695)
-                        if role_to_add:
-                            await user.add_roles(role_to_add)
-                    else:
-                        await ctx.send("Failed to find the user.")
-                else:
-                    await ctx.send("Failed to find the Discord ID field in the embed.")
-            except Exception as e:
-                print(f"Failed to process the command: {e}")
-        else:
-            await ctx.send("Please reply with the embed you want to process.")
-
     @commands.command()
     async def role1(self, ctx):
         embed = discord.Embed(title="<:leaf:1137454366886993950> What are your pronouns?",
