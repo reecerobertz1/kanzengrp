@@ -515,7 +515,7 @@ class ebmessages(commands.Cog):
     @commands.command()
     async def role2(self, ctx):
         embed = discord.Embed(title="<:leaf:1137454366886993950> What server pings would you like?",
-                              description="The staff will ping these roles whenever there's something related to these roles happeening in the server.\n\n<:1:1137455321028251708> - <@&1133770119777099866> \n<:2:1137455517577531565> - <@&1131127168102055996> \n<:3:1137455658258673704> - <@&1131127104226992208> \n<:4:1137455776877781107> - <@&1131005057417105418> \n<:5:1137455941609078824> - <@&1131127124187684894>",
+                              description="The staff will ping these roles whenever there's something related to these roles happening in the server.\n\n<:1:1137455321028251708> - <@&1133770119777099866> \n<:2:1137455517577531565> - <@&1131127168102055996> \n<:3:1137455658258673704> - <@&1131127104226992208> \n<:4:1137455776877781107> - <@&1131005057417105418> \n<:5:1137455941609078824> - <@&1131127124187684894>",
                               color=0x2b2d31)
         await ctx.send("https://cdn.discordapp.com/attachments/1131006428631539773/1137458153248784505/pings_00000.png")
         await ctx.send(embed=embed)
@@ -524,10 +524,14 @@ class ebmessages(commands.Cog):
     @commands.command()
     async def role3(self, ctx):
         embed = discord.Embed(title="<:leaf:1137454366886993950> What member pings would you like?",
-                              description="These roles can be used by anyone in this server to ping other members! Please do not abuse these roles!\n<:1:1137455321028251708> - <@&1131130157160206396>\n<:2:1137455517577531565> - <@&1131127084379549757>\n<:3:1137455658258673704> - <@&1131130102328078336>\n<:4:1137455776877781107> - <@&1131127146186821685>\n<:5:1137455941609078824> - <@&1134876934585712773>",
+                              description="These roles can be used by anyone in this server to ping other members! Please do not abuse these roles!\n\n<:1:1137455321028251708> - <@&1131130157160206396>\n<:2:1137455517577531565> - <@&1131127084379549757>\n<:3:1137455658258673704> - <@&1131130102328078336>\n<:4:1137455776877781107> - <@&1131127146186821685>\n<:5:1137455941609078824> - <@&1134876934585712773>",
                               color=0x2b2d31)
         await ctx.send("https://cdn.discordapp.com/attachments/1131006428631539773/1137461733611556944/member_pings_00000.png")
         await ctx.send(embed=embed)
+
+    @commands.command()
+    async def space1(self, ctx):
+        await ctx.send("<:Empty:1137842301188702239>")
 
 async def setup(bot):
     await bot.add_cog(ebmessages(bot))
