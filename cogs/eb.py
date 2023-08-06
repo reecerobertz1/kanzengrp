@@ -90,8 +90,7 @@ class verifymodal(ui.Modal, title='Verification'):
                 channel = interaction.client.get_channel(1134857444250632343)
                 embed = discord.Embed(title="Verification Logs", description=f"{member.name} has passed the verification process!", color=0x2b2d31)
                 timestamp = datetime.datetime.utcnow()
-                embed.timestamp = timestamp
-                embed.set_footer(text=f"user id : {interaction.user.id}")
+                embed.set_footer(text=f"user id : {interaction.user.id}", timestamp = timestamp)
                 await channel.send(embed=embed)
                 await member.add_roles(role)
                 await interaction.followup.send(f"Thank you {member.name}! You're all verified, enjoy your time here in Editors Block.", ephemeral=True)
