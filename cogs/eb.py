@@ -31,6 +31,16 @@ class staffinfo(discord.ui.View):
         embed.add_field(name="With applications", value="Our way of applications isn't the usual way of doing applications since we do it with Hoshi\nYou may get these questions (pretty obvious answers since you all did them to get into my grps but here are some answers)\n\n**How do i apply?**\nTo apply you need to click the button in <#1133771634793250847> that says **Click here to apply** and fill out the form that shows up on screen and press submit!\n\n**How do i know if im accepted or not?**\nOur bot Hoshi will send you a DM once you have been reviewed! If your accepted there will be links for the members servers of the groups you applied for. If you was declined it'll just be a decline message.\n\n**Can i reapp?**\nNo not yet, we usually wait until the end of the recruit to allow everyone to re-apply!\n\nIf you do get a question that you're unsure of you can just ping Reece, Nani or Tae!", inline=False)
         embed.add_field(name="New Discord users", value="There will be some new discord user's here or just people who never use the app! you can just help them with stuff and help them navigate the server", inline=False)
         embed.add_field(name="Accept link expiring", value="If someone has recently been accepted but they didnt see their accept message straight away, their invite link to one of the groups could expire! Just have them contact one of the leads of the group, or have them ping <@1131016327709069353>, <@1131016346642161734> or <@1131016307807109200> depending on what grp they apped for\nor if your staff in those groups, you can create an invite link to that server or try and find their form and just accept again!")
+        embed.add_field(name="Answering Q&A", value="The qna feature is here so people can ask a question without channel becoming messy.\nIn question messages that are sent into <#1133771810714951732> it will say if they want their question answered in DMs or not.\nIf they want their question answered in DMs you need to reply to the question with the command `+answerpriv`, you need to also include you answer in this message like `+answerprive (answer)`\nIts the same for people who don't want a question answered privately except the command is just `+answer`")
+        await interaction.response.send_message(embed=embed, ephemeral=True)
+
+    @discord.ui.button(label="applications")
+    async def applications(self, interaction: discord.Interaction, button: discord.Button):
+        embed = discord.Embed(title="Applications", color=0x2b2d31)
+        embed.add_field(name="Viewing Forms", value="Forms are sent into <#1131006328207327294>", inline=False)
+        embed.add_field(name="Majority rule", value="Majority rule is where all of us vote on a form, if you do like the edit and think they should be accepted, react with ✅, if you dont think they should be accepted react with a ❌", inline=False)
+        embed.add_field(name="Duplicated forms/spam", value="If you see a duplicated form just delete one of them.\nIf someone is spamming the forms delete them all and kick the person spamming (the form will have their user id on and you can do", inline=False)
+        embed.add_field(name="Accept link expiring", value="If someone has recently been accepted but they didnt see their accept message straight away, their invite link to one of the groups could expire! Just have them contact one of the leads of the group, or have them ping <@1131016327709069353>, <@1131016346642161734> or <@1131016307807109200> depending on what grp they apped for\nor if your staff in those groups, you can create an invite link to that server or try and find their form and just accept again!")
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
 class infobuttons(discord.ui.View):
@@ -154,6 +164,7 @@ class grprctkda(ui.Modal, title='Applications'):
      async def on_submit(self, interaction: discord.Interaction):
           await interaction.response.defer()
           embed = discord.Embed(title='Forms', color=0x2b2d31)
+          embed.add_field(name="Discord Name", value=interaction.user.mention)
           embed.add_field(name='Instagram Name:', value=f'{self.instagram.value}', inline=False)
           embed.add_field(name='Instagram Account Link:', value=f'https://instagram.com/{self.instagram.value}', inline=False)
           embed.add_field(name='Edit:', value=f'{self.edit.value}', inline=False)
