@@ -26,7 +26,7 @@ class staffinfo(discord.ui.View):
 
     @discord.ui.button(label="helping members")
     async def helpingmembers(self, interaction: discord.Interaction, button: discord.Button):
-        embed = discord.Embed(title="Editors Block events", description="Some help/rules for events", color=0x2b2d31)
+        embed = discord.Embed(title="Helping members in the server", color=0x2b2d31)
         embed.add_field(name="Answering forums", value="One thing you can help out with is by answering people in <#1133770895593324664>\nYou don't need to answer these but since people may use them they would like an answer!", inline=False)
         embed.add_field(name="With applications", value="Our way of applications isn't the usual way of doing applications since we do it with Hoshi\nYou may get these questions (pretty obvious answers since you all did them to get into my grps but here are some answers)\n\n**How do i apply?**\nTo apply you need to click the button in <#1133771634793250847> that says **Click here to apply** and fill out the form that shows up on screen and press submit!\n\n**How do i know if im accepted or not?**\nOur bot Hoshi will send you a DM once you have been reviewed! If your accepted there will be links for the members servers of the groups you applied for. If you was declined it'll just be a decline message.\n\n**Can i reapp?**\nNo not yet, we usually wait until the end of the recruit to allow everyone to re-apply!\n\nIf you do get a question that you're unsure of you can just ping Reece, Nani or Tae!", inline=False)
         embed.add_field(name="New Discord users", value="There will be some new discord user's here or just people who never use the app! you can just help them with stuff and help them navigate the server", inline=False)
