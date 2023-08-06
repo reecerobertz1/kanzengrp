@@ -26,11 +26,10 @@ class Moderation(commands.Cog):
         suggestion_channel = self.bot.get_channel(suggestion_channel_id)
         if suggestion_channel:
             embed = discord.Embed(title="New Suggestion", description=suggestion, color=0x2b2d31)
-            embed.set_footer(text='React with ✅ for yes and ❌ for no')
 
             suggestion_message = await suggestion_channel.send(f"Suggestion made by {ctx.author.mention}", embed=embed)
-            await suggestion_message.add_reaction("✅")
-            await suggestion_message.add_reaction("❌")
+            await suggestion_message.add_reaction("<:YES:1137798542640025640>")
+            await suggestion_message.add_reaction("<:NO:1137798539238445127>")
 
             confirmation_message = await ctx.reply(f"Suggestion has been sent to {suggestion_channel.mention}.")
             await asyncio.sleep(5)
