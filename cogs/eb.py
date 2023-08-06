@@ -571,7 +571,7 @@ class ebmessages(commands.Cog):
         view = staffinfo()
         embed = discord.Embed(title="<:leaf:1137454366886993950> Staff Handbook", description="<a:arrowpink:1134860720777990224> Please do not abuse your staff power!\n<a:arrowpink:1134860720777990224> Help people when they ping you (if you're free)\n<a:arrowpink:1134860720777990224> Not helping in the server will get you removed as staff, unless you have a reason\n<a:arrowpink:1134860720777990224> Set a good example in the server\n<a:arrowpink:1134860720777990224> If you see anyone with inappropriate name, you can change their nicknames\n<a:arrowpink:1134860720777990224> See any scam messages and accounts delete them and ban the account\n<a:arrowpink:1134860720777990224> If there is any inappropriate content sent into the server, delete and ban\n<a:arrowpink:1134860720777990224> If there is any rude and disrespectful messages sent, delete and tell an owner!", color=0x2b2d31)
         embed.set_footer(text="Click the buttons below to show more!")
-        embed.set_thumbnail(url=f"{ctx.guild.icon_url}")
+        embed.set_thumbnail(url=ctx.guild.icon)
         await ctx.send("<@1131006067564875806>", embed=embed, view=view)
 
 async def setup(bot):
