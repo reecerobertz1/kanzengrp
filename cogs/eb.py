@@ -267,6 +267,7 @@ class ebmessages(commands.Cog):
         view.add_item(button)
         view.add_item(button2)
         view.add_item(button3)
+        await ctx.send("https://cdn.discordapp.com/attachments/1131006428631539773/1137846855313674320/WELCOME_00000.png")
         await ctx.send(embed=embed, view=view)
 
     @commands.command()
