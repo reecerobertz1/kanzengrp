@@ -86,7 +86,7 @@ class verifymodal(ui.Modal, title='Verification'):
                 print("Role not found. Make sure the role ID is correct.")
                 return
             try:
-                channel = interaction.client.get_channel(1121913672822968330)
+                channel = interaction.client.get_channel(1134857444250632343)
                 await channel.send(f"{member.mention} has verified!")
                 await member.add_roles(role)
                 await interaction.response.send_message(f"Thank you {member.name}! You're all verified, enjoy your time here in Editors Block.", ephemeral=True)
