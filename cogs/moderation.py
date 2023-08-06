@@ -125,8 +125,7 @@ class Moderation(commands.Cog):
         # Send the log to the logging channel
         if log_channel:
             embed = discord.Embed(title="User Warned",description=f"user:\n<a:arrowpink:1134860720777990224> {user.mention}\n\nreason:\n<a:arrowpink:1134860720777990224> {reason}\n\nmoderator:\n<a:arrowpink:1134860720777990224>{ctx.author.mention}" ,color=0x2b2d31)
-            timestamp = datetime()
-            embed.set_footer(text=f"user id : {user.id}", timestamp = timestamp)
+            embed.set_footer(text=f"user id : {user.id}")
             await log_channel.send(embed=embed)
         else:
             await ctx.send("Logging channel not found. Please set the correct channel ID.")
