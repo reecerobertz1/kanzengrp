@@ -509,7 +509,7 @@ class ebmessages(commands.Cog):
         embed = discord.Embed(title="<:leaf:1137454366886993950> What are your pronouns?",
                               description="Which of the following pronouns do you use? These roles can help other members of the server use the correct pronouns.\n\n<:1:1137455321028251708> - <@&1131127428668997737> \n<:2:1137455517577531565> - <@&1131127209952809031> \n<:3:1137455658258673704> - <@&1131127449753751663> \n<:4:1137455776877781107> - <@&1131127472142958622> \n<:5:1137455941609078824> - <@&1131127502396465213> \n<:6:1137456046978383892> - <@&1131127523456069723>",
                               color=0x2b2d31)
-        await ctx.send("https://cdn.discordapp.com/attachments/1131006428631539773/1137457394939600916/pronouns_00000.png")
+        await ctx.send("https://cdn.discordapp.com/attachments/1131006428631539773/1137844016692609074/pronouns_00000.png")
         await ctx.send(embed=embed)
 
     @commands.command()
@@ -517,7 +517,7 @@ class ebmessages(commands.Cog):
         embed = discord.Embed(title="<:leaf:1137454366886993950> What server pings would you like?",
                               description="The staff will ping these roles whenever there's something related to these roles happening in the server.\n\n<:1:1137455321028251708> - <@&1133770119777099866> \n<:2:1137455517577531565> - <@&1131127168102055996> \n<:3:1137455658258673704> - <@&1131127104226992208> \n<:4:1137455776877781107> - <@&1131005057417105418> \n<:5:1137455941609078824> - <@&1131127124187684894>",
                               color=0x2b2d31)
-        await ctx.send("https://cdn.discordapp.com/attachments/1131006428631539773/1137458153248784505/pings_00000.png")
+        await ctx.send("https://cdn.discordapp.com/attachments/1131006428631539773/1137843838153666610/pings_00000.png")
         await ctx.send(embed=embed)
 
 
@@ -526,7 +526,7 @@ class ebmessages(commands.Cog):
         embed = discord.Embed(title="<:leaf:1137454366886993950> What member pings would you like?",
                               description="These roles can be used by anyone in this server to ping other members! Please do not abuse these roles!\n\n<:1:1137455321028251708> - <@&1131130157160206396>\n<:2:1137455517577531565> - <@&1131127084379549757>\n<:3:1137455658258673704> - <@&1131130102328078336>\n<:4:1137455776877781107> - <@&1131127146186821685>\n<:5:1137455941609078824> - <@&1134876934585712773>",
                               color=0x2b2d31)
-        await ctx.send("https://cdn.discordapp.com/attachments/1131006428631539773/1137461733611556944/member_pings_00000.png")
+        await ctx.send("https://cdn.discordapp.com/attachments/1131006428631539773/1137843866800754858/member_pings_00000.png")
         await ctx.send(embed=embed)
 
     @commands.command()
