@@ -550,7 +550,7 @@ class ebmessages(commands.Cog):
     @commands.command()
     async def staffinfo(self, ctx):
         view = staffinfo
-        embed = discord.Embed(title="<:leaf:1137454366886993950> Staff Handbook", description="", color=0x2b2d31)
+        embed = discord.Embed(title="<:leaf:1137454366886993950> Staff Handbook", description="Some helpful shit here...", color=0x2b2d31)
         embed.set_footer(text="Click the buttons below to show more!")
         await ctx.send("<@1131006067564875806>", embed=embed, view=view)
 
