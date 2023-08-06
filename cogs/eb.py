@@ -22,6 +22,7 @@ class staffinfo(discord.ui.View):
         embed.add_field(name="Main events", value="Main events are just general events that everyone can join, this can be anything from game nights - movie nights or anything you can think of\nPlease make sure you ping @staff before you host an event just to make sure everyone isn't wanting to host an event that day / host a similar one")
         embed.add_field(name="Question of the day", value="Please make sure you ping @staff before sending a question of the day into <#1137845041784692807> just incase someone else has a question they want to ask that day/if someone has the same question\nTry and make the questions as fun as possible (nothing inappropriate)")
         embed.add_field(name="Giveaways", value="You can give anything away like, discord nitro or editing resources. Please do make sure if you're giving away editing resources that they are yours!\nTo host a give away you need to do the command `+giveaway`\n**example:**\n`+giveaway 12 discord nitro @remqsi`\nThe number is how many hours until someone is chosen\nthe discord nitro part is your prize (doesnt need to be nitro)\n@remqsi is for you to ping yourself as the host!\nMake sure you delete your message with the command after!")
+        await interaction.response.send_message(embed=embed, ephemeral=True)
 
 class infobuttons(discord.ui.View):
     def __init__ (self):
