@@ -1,5 +1,5 @@
 import asyncio
-import datetime
+from datetime import datetime
 import json
 import random
 import re
@@ -89,7 +89,7 @@ class verifymodal(ui.Modal, title='Verification'):
             try:
                 channel = interaction.client.get_channel(1134857444250632343)
                 embed = discord.Embed(title="Verification Logs", description=f"{member.name} has passed the verification process!", color=0x2b2d31)
-                timestamp = datetime.datetime.utcnow()
+                timestamp = datetime.now()
                 embed.set_footer(text=interaction.user.id, timestamp = timestamp)
                 await channel.send(embed=embed)
                 await member.add_roles(role)
