@@ -77,21 +77,17 @@ class verifymodal(ui.Modal, title='Verification'):
     code = ui.TextInput(label='What was the code?', placeholder="Enter code here...", style=discord.TextStyle.short)
 
     async def on_submit(self, interaction: discord.Interaction):
-        # Get the member from the interaction
         member = interaction.user
-
-        # Check if the code matches the verification code
         if self.code.value == "FBGKDHS":
             # Get the role with the ID 1131016147282710679
             role_id = 1131016147282710679
             role = interaction.guild.get_role(role_id)
-
             if role is None:
                 print("Role not found. Make sure the role ID is correct.")
                 return
-
             try:
-                # Add the role to the member
+                channel = interaction.client.get_channel(1121913672822968330)
+                await channel.send(f"{member.mention} has verified!")
                 await member.add_roles(role)
                 await interaction.response.send_message(f"Thank you {member.name}! You're all verified, enjoy your time here in Editors Block.", ephemeral=True)
             except Exception as e:
