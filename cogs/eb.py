@@ -81,10 +81,6 @@ class verifymodal(ui.Modal, title='Verification'):
         member = interaction.user
         if self.code.value == "FBGKDHS":
             await interaction.response.defer()
-            embed = discord.Embed(title="Verification Logs", description=f"{member.name} has passed the verification process!", color=0x2b2d31)
-            embed.add_field(name="Discord ID:", value=interaction.user.id, inline=False)
-            timestamp = datetime.datetime.utcnow()
-            embed.timestamp = timestamp
             role_id = 1131016147282710679
             role = interaction.guild.get_role(role_id)
             if role is None:
@@ -92,6 +88,10 @@ class verifymodal(ui.Modal, title='Verification'):
                 return
             try:
                 channel = interaction.client.get_channel(1134857444250632343)
+                embed = discord.Embed(title="Verification Logs", description=f"{member.name} has passed the verification process!", color=0x2b2d31)
+                embed.add_field(name="Discord ID:", value=interaction.user.id, inline=False)
+                timestamp = datetime.datetime.utcnow()
+                embed.timestamp = timestamp
                 await channel.send(embed=embed)
                 await member.add_roles(role)
                 await interaction.followup.send(f"Thank you {member.name}! You're all verified, enjoy your time here in Editors Block.", ephemeral=True)
