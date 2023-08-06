@@ -83,8 +83,8 @@ class verifymodal(ui.Modal, title='Verification'):
             await interaction.response.defer()
             embed = discord.Embed(title="Verification Logs", description=f"{member.name} has passed the verification process!", color=0x2b2d31)
             embed.add_field(name="Discord ID:", value=interaction.user.id, inline=False)
-            embed.timestamp = datetime.datetime.utcnow()
-            embed.set_footer(text="\u200b")
+            timestamp = datetime.datetime.utcnow()
+            embed.timestamp = timestamp
             role_id = 1131016147282710679
             role = interaction.guild.get_role(role_id)
             if role is None:
