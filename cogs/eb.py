@@ -1,4 +1,5 @@
 import asyncio
+import datetime
 import json
 import random
 import re
@@ -79,7 +80,11 @@ class verifymodal(ui.Modal, title='Verification'):
     async def on_submit(self, interaction: discord.Interaction):
         member = interaction.user
         if self.code.value == "FBGKDHS":
-            # Get the role with the ID 1131016147282710679
+            await interaction.response.defer()
+            embed = discord.Embed(title="Verification Logs", description=f"{member.name} has passed the verification process!", color=0x2b2d31)
+            embed.add_field(name="Discord ID:", value=interaction.user.id, inline=False)
+            embed.timestamp = datetime.datetime.utcnow()
+            embed.set_footer(text="\u200b")
             role_id = 1131016147282710679
             role = interaction.guild.get_role(role_id)
             if role is None:
@@ -87,9 +92,9 @@ class verifymodal(ui.Modal, title='Verification'):
                 return
             try:
                 channel = interaction.client.get_channel(1134857444250632343)
-                await channel.send(f"{member.mention} has verified!")
+                await channel.send(embed=embed)
                 await member.add_roles(role)
-                await interaction.response.send_message(f"Thank you {member.name}! You're all verified, enjoy your time here in Editors Block.", ephemeral=True)
+                await interaction.followup.send(f"Thank you {member.name}! You're all verified, enjoy your time here in Editors Block.", ephemeral=True)
             except Exception as e:
                 print(f"An error occurred while adding role: {e}")
                 await interaction.response.send_message("An error occurred while adding the role. Please try again later.", ephemeral=True)
