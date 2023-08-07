@@ -11,9 +11,9 @@ class Dropdown(discord.ui.Select):
     def __init__(self):
         options = [
 
-            discord.SelectOption(label="he/hom", value=str(1121852424353755137) ,description="Крутая роль", emoji=""),
-            discord.SelectOption(label="she/her", value=str(1122635691487137884), description="Богатая роль", emoji="🤳"),
-            discord.SelectOption(label="they/them", value=str(1122635724559241317), description="Игровая роль", emoji="🎮"),
+            discord.SelectOption(label="he/hom", value=str(1121852424353755137) ,description="Крутая роль"),
+            discord.SelectOption(label="she/her", value=str(1122635691487137884), description="Богатая роль"),
+            discord.SelectOption(label="they/them", value=str(1122635724559241317), description="Игровая роль"),
         ]
 
         super().__init__(placeholder="Меню",options=options)
