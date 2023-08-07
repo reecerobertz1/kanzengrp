@@ -6,75 +6,45 @@ from discord.ui import View, Select
 import discord
 from discord.ext import commands
 
-class RoleView(discord.ui.View):
-    def __init__(self):
-        super().__init__()
-
-    async def on_select(self, interaction: discord.Interaction, role_type: str, role_name: str):
-        role_id = {
-            "pronoun_He/Him": 1122635691487137881,
-            "pronoun_She/Her": 1122635691487137884,
-            "pronoun_They/Them": 1122635691487137886,
-            "pronoun_He/They": 1122635691487137882,
-            "pronoun_She/They": 1122635691487137885,
-            "pronoun_Any": 1122635691487137880,
-            "server_ping_Announcements": 1122635691487137880,
-            "server_ping_Events": 1122635691487137880,
-            # Add the role IDs for other server ping options
-            "member_ping_Game Nights": 1122635691487137880,
-            "member_ping_Movie Nights": 1122635691487137880,
-            # Add the role IDs for other member ping options
-        }
-
-        role = discord.utils.get(interaction.guild.roles, id=role_id.get(role_name))
-        if role:
-            await interaction.user.add_roles(role)
-            await interaction.response.send_message(f"You selected the role: {role_name}", ephemeral=True)
-        else:
-            await interaction.response.send_message("Oops, something went wrong. Please try again later.", ephemeral=True)
-
 class Roles(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
     @commands.command()
-    async def pronouns(self, ctx):
-        pronouns = ["He/Him", "She/Her", "They/Them", "He/They", "She/They", "Any"]
-        pronouns_menu = discord.ui.Select(custom_id="pronouns_select", placeholder="Please select your pronouns:")
+    async def roles(self, ctx):
+        pronouns_menu = discord.ui.Select(placeholder="Please select your pronouns:", min_values=1, max_values=1)
+        pronouns_menu.add_option(label="She/Her", value="she_her")
+        pronouns_menu.add_option(label="He/Him", value="he_him")
+        pronouns_menu.add_option(label="They/Them", value="they_them")
 
-        for pronoun in pronouns:
-            pronouns_menu.add_option(label=pronoun, value=f"pronoun_{pronoun}")
+        server_pings_menu = discord.ui.Select(placeholder="Please select your server pings:", min_values=1, max_values=1)
+        server_pings_menu.add_option(label="Announcements", value="announcements")
+        server_pings_menu.add_option(label="Events", value="events")
+        server_pings_menu.add_option(label="Giveaways", value="giveaways")
 
-        view = RoleView()
-        view.add_item(pronouns_menu)
+        member_pings_menu = discord.ui.Select(placeholder="Please select your member pings:", min_values=1, max_values=1)
+        member_pings_menu.add_option(label="Group Updates", value="group_updates")
+        member_pings_menu.add_option(label="Group Auditions", value="group_auditions")
+        member_pings_menu.add_option(label="Collab Requests", value="collab_requests")
 
-        await ctx.send("Please select your pronouns:", view=view)
+        await ctx.send("Please select your pronouns:", view=pronouns_menu)
+        await ctx.send("Please select your server pings:", view=server_pings_menu)
+        await ctx.send("Please select your member pings:", view=member_pings_menu)
 
-    @commands.command()
-    async def serverpings(self, ctx):
-        server_pings = ["Announcements", "Events", "Updates", "Giveaways", "Polls", "None"]
-        server_pings_menu = discord.ui.Select(custom_id="server_pings_select", placeholder="Please select your server ping:")
-
-        for server_ping in server_pings:
-            server_pings_menu.add_option(label=server_ping, value=f"server_ping_{server_ping}")
-
-        view = RoleView()
-        view.add_item(server_pings_menu)
-
-        await ctx.send("Please select your server ping:", view=view)
-
-    @commands.command()
-    async def memberpings(self, ctx):
-        member_pings = ["Game Nights", "Movie Nights", "Study Group", "Meme Chat", "Art Chat", "None"]
-        member_pings_menu = discord.ui.Select(custom_id="member_pings_select", placeholder="Please select your member ping:")
-
-        for member_ping in member_pings:
-            member_pings_menu.add_option(label=member_ping, value=f"member_ping_{member_ping}")
-
-        view = RoleView()
-        view.add_item(member_pings_menu)
-
-        await ctx.send("Please select your member ping:", view=view)
+    @commands.Cog.listener()
+    async def on_select_option(self, interaction: discord.Interaction):
+        if interaction.custom_id == "pronouns_menu":
+            pronouns = interaction.values[0]
+            role_id = 1122635691487137884  # Replace with the role ID for the selected pronoun
+            role = discord.utils.get(interaction.guild.roles, id=role_id)
+            if role:
+                await interaction.user.add_roles(role)
+        elif interaction.custom_id == "server_pings_menu":
+            # Handle server pings role assignment here
+            pass
+        elif interaction.custom_id == "member_pings_menu":
+            # Handle member pings role assignment here
+            pass
 
 async def setup(bot):
     await bot.add_cog(Roles(bot))
