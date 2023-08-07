@@ -63,6 +63,7 @@ class Roles(commands.Cog):
         view.add_item(select)
 
         embed = discord.Embed(title="<:leaf:1137454366886993950> What are your pronouns?", description="These roles can be used by anyone in this server to ping other members! Please do not abuse these roles!\n\n<:1:1137455321028251708> - <@&1131130157160206396>\n<:2:1137455517577531565> - <@&1131127084379549757>\n<:3:1137455658258673704> - <@&1131130102328078336>\n<:4:1137455776877781107> - <@&1131127146186821685>\n<:5:1137455941609078824> - <@&1134876934585712773>", color=0x2b2d31)
+        await ctx.send("https://cdn.discordapp.com/attachments/1131006428631539773/1138222545187909713/pronouns_new_00000_2.png")
         await ctx.send(embed=embed, view=view)
 
 async def setup(bot):
