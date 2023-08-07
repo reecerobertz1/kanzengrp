@@ -17,13 +17,16 @@ class Roles(commands.Cog):
         select = Select(
             placeholder="Select a role",
             options=[
-                discord.SelectOption(label="he/hom", value=str(1121852424353755137)),
+                discord.SelectOption(label="he/him", value=str(1121852424353755137)),
                 discord.SelectOption(label="she/her", value=str(1122635691487137884)),
                 discord.SelectOption(label="they/them", value=str(1122635724559241317))
             ]
         )
         async def add_role(interaction: discord.Interaction):
             await interaction.response.send_message(f"You selected {select.values[0]}")
+            if select.value[0] == "he/him":
+                member = interaction.user
+                await member.add_roles({self.values[0]})
         select.callback = add_role
         view = View()
         view.add_item(select)
