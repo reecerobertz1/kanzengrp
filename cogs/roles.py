@@ -7,10 +7,11 @@ import discord
 from discord.ext import commands
 
 class RoleView(discord.ui.View):
-    def __init__(self):
+    def __init__(self, category):
         super().__init__()
+        self.category = category
 
-    async def on_select(self, interaction: discord.Interaction, role_type: str, role_name: str):
+    async def on_select(self, interaction: discord.Interaction, role_name: str):
         role = discord.utils.get(interaction.guild.roles, name=role_name)
         if role:
             await interaction.user.add_roles(role)
@@ -23,30 +24,37 @@ class Roles(commands.Cog):
         self.bot = bot
 
     @commands.command()
-    async def roles(self, ctx):
+    async def pronouns(self, ctx):
         pronouns = ["He/Him", "She/Her", "They/Them", "He/They", "She/They", "Any"]
+
+        embed = discord.Embed(title="Pronouns", description="Please select your pronouns:")
+        for pronoun in pronouns:
+            embed.add_field(name=pronoun, value=f"React with ✅ to choose {pronoun}", inline=False)
+
+        view = RoleView("pronouns")
+        await ctx.send(embed=embed, view=view)
+
+    @commands.command()
+    async def serverpings(self, ctx):
         server_pings = ["Announcements", "Events", "Updates", "Giveaways", "Polls", "None"]
+
+        embed = discord.Embed(title="Server Pings", description="Please select your server ping:")
+        for ping in server_pings:
+            embed.add_field(name=ping, value=f"React with ✅ to choose {ping}", inline=False)
+
+        view = RoleView("server_pings")
+        await ctx.send(embed=embed, view=view)
+
+    @commands.command()
+    async def memberpings(self, ctx):
         member_pings = ["Game Nights", "Movie Nights", "Study Group", "Meme Chat", "Art Chat", "None"]
 
-        pronouns_menu = discord.ui.Select(custom_id="pronouns_select", placeholder="Please select your pronouns:")
-        server_pings_menu = discord.ui.Select(custom_id="server_pings_select", placeholder="Please select your server ping:")
-        member_pings_menu = discord.ui.Select(custom_id="member_pings_select", placeholder="Please select your member ping:")
+        embed = discord.Embed(title="Member Pings", description="Please select your member ping:")
+        for ping in member_pings:
+            embed.add_field(name=ping, value=f"React with ✅ to choose {ping}", inline=False)
 
-        for pronoun in pronouns:
-            pronouns_menu.add_option(label=pronoun, value=f"pronoun_{pronoun}")
-
-        for server_ping in server_pings:
-            server_pings_menu.add_option(label=server_ping, value=f"server_ping_{server_ping}")
-
-        for member_ping in member_pings:
-            member_pings_menu.add_option(label=member_ping, value=f"member_ping_{member_ping}")
-
-        view = RoleView()
-        view.add_item(pronouns_menu)
-        view.add_item(server_pings_menu)
-        view.add_item(member_pings_menu)
-
-        await ctx.send("Please select your roles:", view=view)
+        view = RoleView("member_pings")
+        await ctx.send(embed=embed, view=view)
 
 async def setup(bot):
     await bot.add_cog(Roles(bot))
