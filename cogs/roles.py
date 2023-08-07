@@ -84,8 +84,6 @@ class Roles(commands.Cog):
         async def add_role(interaction: discord.Interaction):
             await interaction.response.defer()
             selected_values = interaction.data["values"]
-            roles_to_add = []
-            roles_to_remove = []
 
             role_mapping = {
                 "qotd": 1133770119777099866,
@@ -97,10 +95,14 @@ class Roles(commands.Cog):
 
             member = interaction.guild.get_member(interaction.user.id)
 
-            for selected_value in selected_values:
-                role_id = role_mapping.get(selected_value)
-                if role_id:
-                    role = interaction.guild.get_role(role_id)
+            roles_to_add = []
+            roles_to_remove = []
+
+            for selected_value in role_mapping:
+                role_id = role_mapping[selected_value]
+                role = interaction.guild.get_role(role_id)
+
+                if selected_value in selected_values:
                     if role:
                         if role in member.roles:
                             roles_to_remove.append(role)
