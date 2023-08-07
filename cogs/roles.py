@@ -21,8 +21,8 @@ class Roles(commands.Cog):
             "He/Him": 1121852424353755137,
             "They/Them": 1122635724559241317
         }
-        for label, role_id in pronouns_options.items():
-            pronouns_menu.add_option(label=label, value=label, description="Select this option.", emoji="👍", id=role_id)
+        for label in pronouns_options.items():
+            pronouns_menu.add_option(label=label, value=label, description="Select this option.", emoji="👍")
         return pronouns_menu
 
     @commands.Cog.listener()
