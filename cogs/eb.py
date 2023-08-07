@@ -160,7 +160,7 @@ class grprctkda(ui.Modal, title='Applications'):
      grps = ui.TextInput(label='What group(s) do you want to join?', placeholder="Kanzen, Aura, Daegu...", style=discord.TextStyle.short)
      app = ui.TextInput(label='What app do you use for editing', placeholder="Editing app name...", style=discord.TextStyle.short)
      extra = ui.TextInput(label='Anything else you would like us to know?', placeholder="Extra info here...", style=discord.TextStyle.paragraph, required=False)
-     async def on_submit(self, ctx ,interaction: discord.Interaction):
+     async def on_submit(self, interaction: discord.Interaction):
           await interaction.response.defer()
           embed = discord.Embed(title='Forms', color=0x2b2d31)
           embed.add_field(name="Discord Name", value=interaction.user.mention)
@@ -172,8 +172,9 @@ class grprctkda(ui.Modal, title='Applications'):
           embed.add_field(name='Anything else:', value=f'{self.extra.value}', inline=False)
           embed.add_field(name="Discord ID:", value=interaction.user.id, inline=False)
           channel = interaction.client.get_channel(1131006328207327294)
+          message = interaction.client.get_channel(1131006328207327294)
           await channel.send(embed=embed)
-          await interaction.message.add_reaction("✅")
+          await message.add_reaction("✅")
           await interaction.followup.send(f'Your application has been sent successfully', ephemeral=True)
 
 class ebmessages(commands.Cog):
