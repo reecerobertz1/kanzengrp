@@ -11,7 +11,22 @@ class RoleView(discord.ui.View):
         super().__init__()
 
     async def on_select(self, interaction: discord.Interaction, role_type: str, role_name: str):
-        role = discord.utils.get(interaction.guild.roles, name=role_name)
+        role_id = {
+            "pronoun_He/Him": 1122635691487137881,
+            "pronoun_She/Her": 1122635691487137884,
+            "pronoun_They/Them": 1122635691487137886,
+            "pronoun_He/They": 1122635691487137882,
+            "pronoun_She/They": 1122635691487137885,
+            "pronoun_Any": 1122635691487137880,
+            "server_ping_Announcements": YOUR_SERVER_PING_ROLE_ID,
+            "server_ping_Events": YOUR_SERVER_PING_ROLE_ID,
+            # Add the role IDs for other server ping options
+            "member_ping_Game Nights": YOUR_MEMBER_PING_ROLE_ID,
+            "member_ping_Movie Nights": YOUR_MEMBER_PING_ROLE_ID,
+            # Add the role IDs for other member ping options
+        }
+
+        role = discord.utils.get(interaction.guild.roles, id=role_id.get(role_name))
         if role:
             await interaction.user.add_roles(role)
             await interaction.response.send_message(f"You selected the role: {role_name}", ephemeral=True)
