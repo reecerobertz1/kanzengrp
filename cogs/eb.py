@@ -210,7 +210,7 @@ class ebmessages(commands.Cog):
             options=select_options
         )
 
-        await ctx.send(embed=embed, components=[action_row])
+        await ctx.send(embed=embed, view=[action_row])
 
     @commands.Cog.listener()
     async def on_dropdown(self, interaction):
