@@ -83,32 +83,46 @@ class Roles(commands.Cog):
         )
         async def add_role(interaction: discord.Interaction):
             await interaction.response.defer()
-            selected_value = interaction.data["values"]
-            role_id = None
+            selected_values = interaction.data["values"]
+            roles_to_add = []
+            roles_to_remove = []
 
-            if selected_value == "qotd":
-                role_id = 1133770119777099866
-            elif selected_value == "events":
-                role_id = 1131127168102055996
-            elif selected_value == "giveaways":
-                role_id = 1131127104226992208
-            elif selected_value == "welc":
-                role_id = 1131005057417105418
-            elif selected_value == "apps":
-                role_id = 1131127124187684894
+            role_mapping = {
+                "qotd": 1133770119777099866,
+                "events": 1131127168102055996,
+                "giveaways": 1131127104226992208,
+                "welc": 1131005057417105418,
+                "apps": 1131127124187684894
+            }
 
-            if role_id:
-                role = interaction.guild.get_role(role_id)
-                member = interaction.user
+            member = interaction.guild.get_member(interaction.user.id)
 
-                if role in member.roles:
-                    await member.remove_roles(role)
-                    await interaction.followup.send(f"You have removed the {selected_value} role.", ephemeral=True)
+            for selected_value in selected_values:
+                role_id = role_mapping.get(selected_value)
+                if role_id:
+                    role = interaction.guild.get_role(role_id)
+                    if role:
+                        if role in member.roles:
+                            roles_to_remove.append(role)
+                        else:
+                            roles_to_add.append(role)
+
+            if roles_to_add:
+                await member.add_roles(*roles_to_add)
+            if roles_to_remove:
+                await member.remove_roles(*roles_to_remove)
+
+            if roles_to_add or roles_to_remove:
+                if roles_to_add and roles_to_remove:
+                    operation_msg = f"You have updated roles: added {', '.join(role.name for role in roles_to_add)} and removed {', '.join(role.name for role in roles_to_remove)}."
+                elif roles_to_add:
+                    operation_msg = f"You have updated roles: added {', '.join(role.name for role in roles_to_add)}."
                 else:
-                    await member.add_roles(role)
-                    await interaction.followup.send(f"You have added the {selected_value} role.", ephemeral=True)
+                    operation_msg = f"You have updated roles: removed {', '.join(role.name for role in roles_to_remove)}."
+
+                await interaction.followup.send(operation_msg, ephemeral=True)
             else:
-                await interaction.followup.send("Invalid role selection.", ephemeral=True)
+                await interaction.followup.send("No changes were made to your roles.", ephemeral=True)
 
         select.callback = add_role
         view = View()
