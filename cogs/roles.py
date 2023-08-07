@@ -17,23 +17,26 @@ class Roles(commands.Cog):
         select = Select(
             placeholder="Select a role",
             options=[
-                discord.SelectOption(label="he/him", value=str(1121852424353755137)),
-                discord.SelectOption(label="she/her", value=str(1122635691487137884)),
-                discord.SelectOption(label="they/them", value=str(1122635724559241317))
+                discord.SelectOption(label="he/him", value="he/him"),
+                discord.SelectOption(label="she/her", value="she/her"),
+                discord.SelectOption(label="they/them", value="they/them")
             ]
         )
         async def add_role(interaction: discord.Interaction):
             await interaction.response.send_message(f"You selected {select.values[0]}")
             if select.label[0] == "he/him":
                 member = interaction.user
-                role = 1121852424353755137
+                role_id = 1121852424353755137
+                role = interaction.guild.get_role(role_id)
                 await member.add_roles(role)
             elif select.label[0] == "she/her":
                 member = interaction.user
-                role = 1122635691487137884
+                role_id = 1122635691487137884
+                role = interaction.guild.get_role(role_id)
                 await member.add_roles(role)
             elif select.label[0] == "they/them":
-                role = 1122635724559241317
+                role_id = 1122635724559241317
+                role = interaction.guild.get_role(role_id)
                 member = interaction.user
                 await member.add_roles(role)
         select.callback = add_role
