@@ -26,13 +26,16 @@ class Roles(commands.Cog):
             await interaction.response.send_message(f"You selected {select.values[0]}")
             if select.label[0] == "he/him":
                 member = interaction.user
-                await member.add_roles(1121852424353755137)
+                role = 1121852424353755137
+                await member.add_roles(role)
             elif select.label[0] == "she/her":
                 member = interaction.user
-                await member.add_roles(1122635691487137884)
+                role = 1122635691487137884
+                await member.add_roles(role)
             elif select.label[0] == "they/them":
+                role = 1122635724559241317
                 member = interaction.user
-                await member.add_roles(1122635724559241317)
+                await member.add_roles(role)
         select.callback = add_role
         view = View()
         view.add_item(select)
