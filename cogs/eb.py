@@ -176,55 +176,11 @@ class grprctkda(ui.Modal, title='Applications'):
           await channel.send(embed=embed)
           await interaction.followup.send(f'Your application has been sent successfully', ephemeral=True)
 
-roles = {
-    'He/Him': 1131127428668997737,
-    'He/They': 1131127472142958622,
-    
-}
-
 class ebmessages(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.giveaway_data = {}
         self.load_giveaway_data()
-
-    @commands.command()
-    async def role(self, ctx):
-        select_options = []
-
-        for role_name in roles:
-            select_options.append(
-                {
-                    'label': role_name,
-                    'value': str(roles[role_name])
-                }
-            )
-
-        embed = discord.Embed(title="Choose a Role", description="Select a role from the dropdown menu.", color=discord.Color.blue())
-
-        action_row = discord.ui.Select(
-            custom_id='role_select',
-            placeholder='Select a role...',
-            min_values=1,
-            max_values=1,
-            options=select_options
-        )
-
-        await ctx.send(embed=embed, view=[action_row])
-
-    @commands.Cog.listener()
-    async def on_dropdown(self, interaction):
-        if interaction.custom_id == 'role_select':
-            role_id = int(interaction.values[0])
-            role = discord.utils.get(interaction.guild.roles, id=role_id)
-
-            if role is not None:
-                if interaction.user in role.members:
-                    await interaction.user.remove_roles(role)
-                    await interaction.response.send_message(f"You have been removed from the {role.name} role.", ephemeral=True)
-                else:
-                    await interaction.user.add_roles(role)
-                    await interaction.response.send_message(f"You have been added to the {role.name} role.", ephemeral=True)
 
     @commands.command()
     @commands.has_permissions(administrator=True)
