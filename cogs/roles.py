@@ -16,59 +16,35 @@ class Roles(commands.Cog):
         server_pings = ["Announcements", "Events", "Updates", "Giveaways", "Polls", "None"]
         member_pings = ["Game Nights", "Movie Nights", "Study Group", "Meme Chat", "Art Chat", "None"]
 
-        # Send the first message with pronouns
-        pronouns_embed = discord.Embed(title="Pronouns", description="Please select your pronouns:")
-        pronouns_menu = RolesMenu()
-        for pronoun in pronouns:
-            pronouns_menu.add_item(RolesButton(label=pronoun, custom_id=f"pronoun_{pronoun}"))
+        # Create a select menu for pronouns
+        pronouns_menu = discord.ui.Select(placeholder="Please select your pronouns:", options=[
+            discord.SelectOption(label=pronoun, value=f"pronoun_{pronoun}") for pronoun in pronouns
+        ])
 
-        pronouns_message = await ctx.send(embed=pronouns_embed, view=pronouns_menu)
+        # Create a select menu for server pings
+        server_pings_menu = discord.ui.Select(placeholder="Please select your server ping:", options=[
+            discord.SelectOption(label=server_ping, value=f"server_ping_{server_ping}") for server_ping in server_pings
+        ])
 
-        # Send the second message with server pings
-        server_pings_embed = discord.Embed(title="Server Pings", description="Please select your server ping:")
-        server_pings_menu = RolesMenu()
-        for server_ping in server_pings:
-            server_pings_menu.add_item(RolesButton(label=server_ping, custom_id=f"server_ping_{server_ping}"))
+        # Create a select menu for member pings
+        member_pings_menu = discord.ui.Select(placeholder="Please select your member ping:", options=[
+            discord.SelectOption(label=member_ping, value=f"member_ping_{member_ping}") for member_ping in member_pings
+        ])
 
-        server_pings_message = await ctx.send(embed=server_pings_embed, view=server_pings_menu)
+        await ctx.send("Please select your roles:", view=pronouns_menu)
 
-        # Send the third message with member pings
-        member_pings_embed = discord.Embed(title="Member Pings", description="Please select your member ping:")
-        member_pings_menu = RolesMenu()
-        for member_ping in member_pings:
-            member_pings_menu.add_item(RolesButton(label=member_ping, custom_id=f"member_ping_{member_ping}"))
+        # Wait for the user to make a selection
+        interaction = await self.bot.wait_for('select_option', check=lambda i: i.user == ctx.author)
 
-        member_pings_message = await ctx.send(embed=member_pings_embed, view=member_pings_menu)
+        role_type, role_name = interaction.values[0].split("_")
 
-    @commands.Cog.listener()
-    async def on_button_click(self, interaction):
-        if isinstance(interaction.data, discord.MessageComponent):
-            if interaction.custom_id.startswith("pronoun_"):
-                pronoun = interaction.custom_id[8:]
-                member = interaction.author
-                role = discord.utils.get(member.guild.roles, name=pronoun)
-
-                if role:
-                    await member.add_roles(role)
-                    await interaction.response.send_message(f"You selected the pronoun: {pronoun}", ephemeral=True)
-                else:
-                    await interaction.response.send_message("Oops, something went wrong. Please try again later.", ephemeral=True)
-
-class RolesButton(discord.ui.Button):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-
-    async def callback(self, interaction: discord.Interaction):
-        view = self.view
-        view.clear_items()
-        await interaction.message.edit(view=view)
-
-class RolesMenu(discord.ui.View):
-    def __init__(self):
-        super().__init__(timeout=None)
-
-    async def on_timeout(self):
-        self.clear_items()
+        # Add the corresponding role to the member
+        role = discord.utils.get(ctx.guild.roles, name=role_name)
+        if role:
+            await ctx.author.add_roles(role)
+            await ctx.send(f"You selected the role: {role_name}")
+        else:
+            await ctx.send("Oops, something went wrong. Please try again later.")
 
 async def setup(bot):
     await bot.add_cog(Roles(bot))
