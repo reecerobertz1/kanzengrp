@@ -6,6 +6,18 @@ from discord.ui import View, Select
 import discord
 from discord.ext import commands
 
+class RoleView(discord.ui.View):
+    def __init__(self):
+        super().__init__()
+
+    async def on_select(self, interaction: discord.Interaction, role_type: str, role_name: str):
+        role = discord.utils.get(interaction.guild.roles, name=role_name)
+        if role:
+            await interaction.user.add_roles(role)
+            await interaction.response.send_message(f"You selected the role: {role_name}", ephemeral=True)
+        else:
+            await interaction.response.send_message("Oops, something went wrong. Please try again later.", ephemeral=True)
+
 class Roles(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -16,35 +28,25 @@ class Roles(commands.Cog):
         server_pings = ["Announcements", "Events", "Updates", "Giveaways", "Polls", "None"]
         member_pings = ["Game Nights", "Movie Nights", "Study Group", "Meme Chat", "Art Chat", "None"]
 
-        # Create a select menu for pronouns
-        pronouns_menu = discord.ui.Select(placeholder="Please select your pronouns:", options=[
-            discord.SelectOption(label=pronoun, value=f"pronoun_{pronoun}") for pronoun in pronouns
-        ])
+        pronouns_menu = discord.ui.Select(custom_id="pronouns_select", placeholder="Please select your pronouns:")
+        server_pings_menu = discord.ui.Select(custom_id="server_pings_select", placeholder="Please select your server ping:")
+        member_pings_menu = discord.ui.Select(custom_id="member_pings_select", placeholder="Please select your member ping:")
 
-        # Create a select menu for server pings
-        server_pings_menu = discord.ui.Select(placeholder="Please select your server ping:", options=[
-            discord.SelectOption(label=server_ping, value=f"server_ping_{server_ping}") for server_ping in server_pings
-        ])
+        for pronoun in pronouns:
+            pronouns_menu.add_option(label=pronoun, value=f"pronoun_{pronoun}")
 
-        # Create a select menu for member pings
-        member_pings_menu = discord.ui.Select(placeholder="Please select your member ping:", options=[
-            discord.SelectOption(label=member_ping, value=f"member_ping_{member_ping}") for member_ping in member_pings
-        ])
+        for server_ping in server_pings:
+            server_pings_menu.add_option(label=server_ping, value=f"server_ping_{server_ping}")
 
-        await ctx.send("Please select your roles:", view=pronouns_menu)
+        for member_ping in member_pings:
+            member_pings_menu.add_option(label=member_ping, value=f"member_ping_{member_ping}")
 
-        # Wait for the user to make a selection
-        interaction = await self.bot.wait_for('select_option', check=lambda i: i.user == ctx.author)
+        view = RoleView()
+        view.add_item(pronouns_menu)
+        view.add_item(server_pings_menu)
+        view.add_item(member_pings_menu)
 
-        role_type, role_name = interaction.values[0].split("_")
-
-        # Add the corresponding role to the member
-        role = discord.utils.get(ctx.guild.roles, name=role_name)
-        if role:
-            await ctx.author.add_roles(role)
-            await ctx.send(f"You selected the role: {role_name}")
-        else:
-            await ctx.send("Oops, something went wrong. Please try again later.")
+        await ctx.send("Please select your roles:", view=view)
 
 async def setup(bot):
     await bot.add_cog(Roles(bot))
