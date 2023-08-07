@@ -12,7 +12,7 @@ class Roles(commands.Cog):
 
     @commands.command()
     async def roles(self, ctx):
-        await ctx.send("Please select your pronouns:", View=self.get_pronouns_menu())
+        await ctx.send("Please select your pronouns:", view=self.get_pronouns_menu())
 
     def get_pronouns_menu(self):
         pronouns_menu = discord.ui.Select(placeholder="Please select your pronouns:")
