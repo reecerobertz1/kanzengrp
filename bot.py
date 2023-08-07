@@ -28,7 +28,8 @@ extensions = {
     "cogs.custom",
     "cogs.scramble",
     "cogs.ttt",
-    "cogs.starboard"
+    "cogs.starboard",
+    "cogs.roles"
 }
 
 # bot subclass
