@@ -32,10 +32,9 @@ class Roles(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-
     @commands.command()
     async def roles(self, ctx):
-        await ctx.send(view=Dropdown)
+        await ctx.send(view=Dropdown())
 
 async def setup(bot):
     await bot.add_cog(Roles(bot))
