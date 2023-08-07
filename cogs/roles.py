@@ -34,7 +34,7 @@ class Roles(commands.Cog):
 
     @commands.command()
     async def roles(self, ctx):
-        view = Dropdown()
+        view = DropdownView()
         await ctx.send(view=view)
 
 async def setup(bot):
