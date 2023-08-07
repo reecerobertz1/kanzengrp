@@ -15,8 +15,6 @@ class Roles(commands.Cog):
     @commands.command()
     async def roles(self, ctx):
         select = Select(
-            min_values=1,
-            max_values=1,
             placeholder="Select a role",
             options=[
                 discord.SelectOption(label="he/hom", value=str(1121852424353755137)),
