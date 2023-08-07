@@ -24,13 +24,13 @@ class Roles(commands.Cog):
         )
         async def add_role(interaction: discord.Interaction):
             await interaction.response.send_message(f"You selected {select.values[0]}")
-            if select.value[0] == "he/him":
+            if select.label[0] == "he/him":
                 member = interaction.user
                 await member.add_roles(1121852424353755137)
-            elif select.value[0] == "she/her":
+            elif select.label[0] == "she/her":
                 member = interaction.user
                 await member.add_roles(1122635691487137884)
-            elif select.value[0] == "they/them":
+            elif select.label[0] == "they/them":
                 member = interaction.user
                 await member.add_roles(1122635724559241317)
         select.callback = add_role
