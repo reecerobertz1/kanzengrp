@@ -171,9 +171,9 @@ class grprctkda(ui.Modal, title='Applications'):
           embed.add_field(name='Group(s) they want to be in:', value=f'{self.grps.value}', inline=False)
           embed.add_field(name='Anything else:', value=f'{self.extra.value}', inline=False)
           embed.add_field(name="Discord ID:", value=interaction.user.id, inline=False)
-          message = interaction.client.get_channel(1131006328207327294)
-          await message.send(embed=embed)
-          await message.add_reaction("✅")
+          channel = interaction.client.get_channel(1131006328207327294)
+          await channel.send(embed=embed)
+          await interaction.response.message.add_reaction("✅")
           await interaction.followup.send(f'Your application has been sent successfully', ephemeral=True)
 
 class ebmessages(commands.Cog):
