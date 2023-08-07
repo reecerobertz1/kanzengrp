@@ -71,6 +71,7 @@ class Roles(commands.Cog):
     async def roles1(self, ctx):
         select = Select(
             max_values=5,
+            min_values=0,
             placeholder="Select a role",
             options=[
                 discord.SelectOption(label="qotd", value="qotd", emoji="<:1:1137455321028251708>"),
