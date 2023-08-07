@@ -24,7 +24,6 @@ class Roles(commands.Cog):
         )
         async def add_role(interaction: discord.Interaction):
             await interaction.response.defer()
-            await interaction.response.send_message(f"You selected {select.values[0]}")
             if select.values[0] == "he/him":
                 member = interaction.user
                 role_id = 1121852424353755137
@@ -40,6 +39,7 @@ class Roles(commands.Cog):
                 role = interaction.guild.get_role(role_id)
                 member = interaction.user
                 await member.add_roles(role)
+            await interaction.response.send_message(f"You selected {select.values[0]}")
         select.callback = add_role
         view = View()
         view.add_item(select)
