@@ -83,7 +83,7 @@ class Roles(commands.Cog):
         )
         async def add_role(interaction: discord.Interaction):
             await interaction.response.defer()
-            selected_value = interaction.data["values"][0]
+            selected_value = interaction.data["values"]
             role_id = None
 
             if selected_value == "qotd":
