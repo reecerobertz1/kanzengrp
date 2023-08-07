@@ -31,7 +31,7 @@ class Roles(commands.Cog):
         view.add_item(select)
 
         embed = discord.Embed(title="Roles", description="Roles", color=0x2b2d31)
-        await ctx.send(view=view)
+        await ctx.send(embed=embed, view=view)
 
 async def setup(bot):
     await bot.add_cog(Roles(bot))
