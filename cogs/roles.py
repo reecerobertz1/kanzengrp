@@ -10,6 +10,10 @@ class Roles(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
+class Roles(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+
     @commands.command()
     async def roles(self, ctx):
         pronouns_menu = discord.ui.Select(placeholder="Please select your pronouns:", min_values=1, max_values=1)
@@ -27,9 +31,12 @@ class Roles(commands.Cog):
         member_pings_menu.add_option(label="Group Auditions", value="group_auditions")
         member_pings_menu.add_option(label="Collab Requests", value="collab_requests")
 
-        await ctx.send("Please select your pronouns:", view=pronouns_menu)
-        await ctx.send("Please select your server pings:", view=server_pings_menu)
-        await ctx.send("Please select your member pings:", view=member_pings_menu)
+        view = discord.ui.View()
+        view.add_item(pronouns_menu)
+        view.add_item(server_pings_menu)
+        view.add_item(member_pings_menu)
+
+        await ctx.send("Please select your roles:", view=view)
 
     @commands.Cog.listener()
     async def on_select_option(self, interaction: discord.Interaction):
