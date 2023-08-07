@@ -18,11 +18,11 @@ class RoleView(discord.ui.View):
             "pronoun_He/They": 1122635691487137882,
             "pronoun_She/They": 1122635691487137885,
             "pronoun_Any": 1122635691487137880,
-            "server_ping_Announcements": YOUR_SERVER_PING_ROLE_ID,
-            "server_ping_Events": YOUR_SERVER_PING_ROLE_ID,
+            "server_ping_Announcements": 1122635691487137880,
+            "server_ping_Events": 1122635691487137880,
             # Add the role IDs for other server ping options
-            "member_ping_Game Nights": YOUR_MEMBER_PING_ROLE_ID,
-            "member_ping_Movie Nights": YOUR_MEMBER_PING_ROLE_ID,
+            "member_ping_Game Nights": 1122635691487137880,
+            "member_ping_Movie Nights": 1122635691487137880,
             # Add the role IDs for other member ping options
         }
 
