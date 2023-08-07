@@ -65,7 +65,7 @@ class Roles(commands.Cog):
         embed = discord.Embed(title="<:leaf:1137454366886993950> What are your pronouns?", description="Which of the following pronouns do you use? These roles can help other members of the server use the correct pronouns.\n\n<:1:1137455321028251708> - <@&1131127428668997737> \n<:2:1137455517577531565> - <@&1131127209952809031> \n<:3:1137455658258673704> - <@&1131127449753751663> \n<:4:1137455776877781107> - <@&1131127472142958622> \n<:5:1137455941609078824> - <@&1131127502396465213> \n<:6:1137456046978383892> - <@&1131127523456069723>", color=0x2b2d31)
         await ctx.send("https://cdn.discordapp.com/attachments/1131006428631539773/1138222545187909713/pronouns_new_00000_2.png")
         await ctx.send(embed=embed, view=view)
-        await ctx.send("<a:space:862938652694151169>")
+        await ctx.send("<:Empty:1137842301188702239>")
 
 async def setup(bot):
     await bot.add_cog(Roles(bot))
