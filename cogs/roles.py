@@ -5,37 +5,32 @@ from typing import List
 from discord.ui import View, Select
 import discord
 from discord.ext import commands
+from discord.utils import get
+
+class Dropdown(discord.ui.Select):
+    def __init__(self):
+        options = [
+
+            discord.SelectOption(label="he/hom", value=str(1121852424353755137) ,description="Крутая роль", emoji=""),
+            discord.SelectOption(label="she/her", value=str(1122635691487137884), description="Богатая роль", emoji="🤳"),
+            discord.SelectOption(label="they/them", value=str(1122635724559241317), description="Игровая роль", emoji="🎮"),
+        ]
+
+        super().__init__(placeholder="Меню",options=options)
+    
+    async def callback(self, inter: discord.Interaction):
+        await inter.user.add_roles(get(inter.guild.roles, id=int(self.values[0])))
+        await inter.response.send_message(f"Вы выбрали роль <@&{self.values[0]}>")
+
+
+class DropdownView(discord.ui.View):
+    def __init__(self):
+        super().__init__()
+        self.add_item(Dropdown())
 
 class Roles(commands.Cog):
-    def __init__(self, bot):
-        self.bot = bot
-
-    @commands.command()
     async def roles(self, ctx):
-        await ctx.send("Please select your pronouns:", view=self.get_pronouns_menu())
-
-    def get_pronouns_menu(self):
-        pronouns_menu = discord.ui.Select(placeholder="Please select your pronouns:")
-        pronouns_options = {
-            "She/Her": 1122635691487137884,
-            "He/Him": 1121852424353755137,
-            "They/Them": 1122635724559241317
-        }
-        for label in pronouns_options.items():
-            pronouns_menu.add_option(label=label, value=label, description="Select this option.", emoji="👍")
-        return pronouns_menu
-
-    @commands.Cog.listener()
-    async def on_select_option(self, interaction: discord.Interaction):
-        role_id = None
-        if interaction.custom_id == "pronouns_menu":
-            selected_option = interaction.data["values"][0]
-            role_id = selected_option.get("role_id")
-
-        if role_id:
-            role = discord.utils.get(interaction.guild.roles, id=role_id)
-            if role:
-                await interaction.user.add_roles(role)
+        await ctx.send(view=Dropdown)
 
 async def setup(bot):
     await bot.add_cog(Roles(bot))
