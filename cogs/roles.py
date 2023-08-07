@@ -11,16 +11,16 @@ class Dropdown(discord.ui.Select):
     def __init__(self):
         options = [
 
-            discord.SelectOption(label="he/hom", value=str(1121852424353755137) ,description="Крутая роль"),
-            discord.SelectOption(label="she/her", value=str(1122635691487137884), description="Богатая роль"),
-            discord.SelectOption(label="they/them", value=str(1122635724559241317), description="Игровая роль"),
+            discord.SelectOption(label="he/hom", value=str(1121852424353755137)),
+            discord.SelectOption(label="she/her", value=str(1122635691487137884)),
+            discord.SelectOption(label="they/them", value=str(1122635724559241317)),
         ]
 
-        super().__init__(placeholder="Меню",options=options)
+        super().__init__(placeholder="Select your pronouns",options=options)
     
     async def callback(self, inter: discord.Interaction):
         await inter.user.add_roles(get(inter.guild.roles, id=int(self.values[0])))
-        await inter.response.send_message(f"Вы выбрали роль <@&{self.values[0]}>")
+        await inter.response.send_message(f"You selected the role: <@&{self.values[0]}>", ephemeral=True)
 
 
 class DropdownView(discord.ui.View):
