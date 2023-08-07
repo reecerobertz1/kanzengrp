@@ -11,7 +11,6 @@ from discord.ui import View, Select
 from typing import List, Optional
 from discord import ui
 
-
 class staffinfo(discord.ui.View):
     def __init__ (self):
         super().__init__(timeout=None)
@@ -300,7 +299,7 @@ class ebmessages(commands.Cog):
         view.add_item(button)
         view.add_item(button2)
         view.add_item(button3)
-        await ctx.send("https://cdn.discordapp.com/attachments/1131006428631539773/1137846855313674320/WELCOME_00000.png")
+        await ctx.send("https://cdn.discordapp.com/attachments/849724031723634688/1138177832456044644/WELCOME_00000.png")
         await ctx.send(embed=embed, view=view)
 
     @commands.command()
