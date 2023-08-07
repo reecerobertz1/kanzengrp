@@ -15,14 +15,14 @@ class Roles(commands.Cog):
         await ctx.send("Please select your pronouns:", view=self.get_pronouns_menu())
 
     def get_pronouns_menu(self):
-        pronouns_menu = discord.ui.Select(placeholder="Please select your pronouns:", min_values=1, max_values=1)
+        pronouns_menu = discord.ui.Select(placeholder="Please select your pronouns:")
         pronouns_options = {
             "She/Her": 1122635691487137884,
             "He/Him": 1121852424353755137,
             "They/Them": 1122635724559241317
         }
         for label, role_id in pronouns_options.items():
-            pronouns_menu.add_option(label=label, value=label, description="Select this option.", emoji="👍", role_id=role_id)
+            pronouns_menu.add_option(label=label, value=label, description="Select this option.", emoji="👍", id=role_id)
         return pronouns_menu
 
     @commands.Cog.listener()
