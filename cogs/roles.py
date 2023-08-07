@@ -7,26 +7,6 @@ import discord
 from discord.ext import commands
 from discord.utils import get
 
-class Dropdown(discord.ui.Select):
-    def __init__(self):
-        options = [
-
-            discord.SelectOption(label="he/hom", value=str(1121852424353755137)),
-            discord.SelectOption(label="she/her", value=str(1122635691487137884)),
-            discord.SelectOption(label="they/them", value=str(1122635724559241317)),
-        ]
-
-        super().__init__(placeholder="Select your pronouns",options=options)
-    
-    async def callback(self, inter: discord.Interaction):
-        await inter.user.add_roles(get(inter.guild.roles, id=int(self.values[0])))
-        await inter.response.send_message(f"You selected the role: <@&{self.values[0]}>", ephemeral=True)
-
-
-class DropdownView(discord.ui.View):
-    def __init__(self):
-        super().__init__()
-        self.add_item(Dropdown())
 
 class Roles(commands.Cog):
     def __init__(self, bot):
@@ -34,7 +14,18 @@ class Roles(commands.Cog):
 
     @commands.command()
     async def roles(self, ctx):
-        view = DropdownView()
+        select = Select(
+            placeholder="Select a role",
+            options=[
+                discord.SelectOption(label="he/hom", value=str(1121852424353755137)),
+                discord.SelectOption(label="she/her", value=str(1122635691487137884)),
+                discord.SelectOption(label="they/them", value=str(1122635724559241317))
+            ]
+        )
+        view = View()
+        view.add_item(select)
+
+        embed = discord.Embed(title="Roles", description="Roles", color=0x2b2d31)
         await ctx.send(view=view)
 
 async def setup(bot):
