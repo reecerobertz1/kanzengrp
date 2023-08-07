@@ -25,7 +25,7 @@ class Roles(commands.Cog):
             ]
         )
         async def add_role(interaction: discord.Interaction):
-            await interaction.response.send_message(f"You selected {self.values[0]}")
+            await interaction.response.send_message(f"You selected {select.values[0]}")
         select.callback = add_role
         view = View()
         view.add_item(select)
