@@ -39,7 +39,7 @@ class Roles(commands.Cog):
                 role = interaction.guild.get_role(role_id)
                 member = interaction.user
                 await member.add_roles(role)
-            await interaction.response.send_message(f"You selected {select.values[0]}")
+            await interaction.followup.send(f"You selected {select.values[0]}")
         select.callback = add_role
         view = View()
         view.add_item(select)
