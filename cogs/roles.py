@@ -29,6 +29,11 @@ class DropdownView(discord.ui.View):
         self.add_item(Dropdown())
 
 class Roles(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+
+
+    @commands.command()
     async def roles(self, ctx):
         await ctx.send(view=Dropdown)
 
