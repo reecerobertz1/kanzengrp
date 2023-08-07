@@ -15,6 +15,8 @@ class Roles(commands.Cog):
     @commands.command()
     async def roles(self, ctx):
         select = Select(
+            min_values=1,
+            max_values=1,
             placeholder="Select a role",
             options=[
                 discord.SelectOption(label="he/hom", value=str(1121852424353755137)),
@@ -22,6 +24,9 @@ class Roles(commands.Cog):
                 discord.SelectOption(label="they/them", value=str(1122635724559241317))
             ]
         )
+        async def add_role(interaction: discord.Interaction):
+            await interaction.response.send_message(f"You selected {self.values[0]}")
+        select.callback = add_role
         view = View()
         view.add_item(select)
 
