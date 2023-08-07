@@ -23,18 +23,19 @@ class Roles(commands.Cog):
             ]
         )
         async def add_role(interaction: discord.Interaction):
+            await interaction.response.defer()
             await interaction.response.send_message(f"You selected {select.values[0]}")
-            if select.label[0] == "he/him":
+            if select.values[0] == "he/him":
                 member = interaction.user
                 role_id = 1121852424353755137
                 role = interaction.guild.get_role(role_id)
                 await member.add_roles(role)
-            elif select.label[0] == "she/her":
+            elif select.values[0] == "she/her":
                 member = interaction.user
                 role_id = 1122635691487137884
                 role = interaction.guild.get_role(role_id)
                 await member.add_roles(role)
-            elif select.label[0] == "they/them":
+            elif select.values[0] == "they/them":
                 role_id = 1122635724559241317
                 role = interaction.guild.get_role(role_id)
                 member = interaction.user
