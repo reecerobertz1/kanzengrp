@@ -133,7 +133,77 @@ class Roles(commands.Cog):
         embed = discord.Embed(title="<:leaf:1137454366886993950> What server pings would you like?", description="The staff will ping these roles whenever there's something related to these roles happening in the server.\n\n<:1:1137455321028251708> - <@&1133770119777099866> \n<:2:1137455517577531565> - <@&1131127168102055996> \n<:3:1137455658258673704> - <@&1131127104226992208> \n<:4:1137455776877781107> - <@&1131005057417105418> \n<:5:1137455941609078824> - <@&1131127124187684894>", color=0x2b2d31)
         await ctx.send("https://cdn.discordapp.com/attachments/1131006428631539773/1138225991446179930/pings_new_00000.png")
         await ctx.send(embed=embed, view=view)
-        await ctx.send("<a:space:862938652694151169>")
+        await ctx.send("<:Empty:1137842301188702239>")
+
+    @commands.command()
+    async def roles2(self, ctx):
+        select = Select(
+            max_values=5,
+            min_values=0,
+            placeholder="Select a role",
+            options=[
+                discord.SelectOption(label="collab", value="collab", emoji="<:1:1137455321028251708>"),
+                discord.SelectOption(label="edit help", value="edit help", emoji="<:2:1137455517577531565>"),
+                discord.SelectOption(label="dts", value="dts", emoji="<:3:1137455658258673704>"),
+                discord.SelectOption(label="ops", value="ops", emoji="<:4:1137455776877781107>"),
+                discord.SelectOption(label="chat revive", value="chat revive", emoji="<:5:1137455941609078824>"),
+            ]
+        )
+        async def add_role(interaction: discord.Interaction):
+            await interaction.response.defer()
+            selected_values = interaction.data["values"]
+
+            role_mapping = {
+                "collab": 1131130157160206396,
+                "edit help": 1131127084379549757,
+                "dts": 1131130102328078336,
+                "ops": 1131127146186821685,
+                "chat revive": 1134876934585712773
+            }
+
+            member = interaction.guild.get_member(interaction.user.id)
+
+            roles_to_add = []
+            roles_to_remove = []
+
+            for selected_value in role_mapping:
+                role_id = role_mapping[selected_value]
+                role = interaction.guild.get_role(role_id)
+
+                if selected_value in selected_values:
+                    if role:
+                        if role in member.roles:
+                            roles_to_remove.append(role)
+                        else:
+                            roles_to_add.append(role)
+
+            if roles_to_add:
+                await member.add_roles(*roles_to_add)
+            if roles_to_remove:
+                await member.remove_roles(*roles_to_remove)
+
+            if roles_to_add or roles_to_remove:
+                if roles_to_add and roles_to_remove:
+                    operation_msg = f"You have updated roles: added {', '.join(role.name for role in roles_to_add)} and removed {', '.join(role.name for role in roles_to_remove)}."
+                elif roles_to_add:
+                    operation_msg = f"You have updated roles: added {', '.join(role.name for role in roles_to_add)}."
+                else:
+                    operation_msg = f"You have updated roles: removed {', '.join(role.name for role in roles_to_remove)}."
+
+                await interaction.followup.send(operation_msg, ephemeral=True)
+            else:
+                await interaction.followup.send("No changes were made to your roles.", ephemeral=True)
+
+        select.callback = add_role
+        view = View()
+        view.add_item(select)
+
+        embed = discord.Embed(title="<:leaf:1137454366886993950> What member pings would you like?",
+                              description="These roles can be used by anyone in this server to ping other members! Please do not abuse these roles!\n\n<:1:1137455321028251708> - <@&1131130157160206396>\n<:2:1137455517577531565> - <@&1131127084379549757>\n<:3:1137455658258673704> - <@&1131130102328078336>\n<:4:1137455776877781107> - <@&1131127146186821685>\n<:5:1137455941609078824> - <@&1134876934585712773>",
+                              color=0x2b2d31)
+        await ctx.send("https://cdn.discordapp.com/attachments/1131006428631539773/1138232205261422682/member_pings_new_00000.png")
+        await ctx.send(embed=embed, view=view)
+        await ctx.send("<:Empty:1137842301188702239>")
 
 async def setup(bot):
     await bot.add_cog(Roles(bot))
