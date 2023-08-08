@@ -173,8 +173,9 @@ class grprctkda(ui.Modal, title='Applications'):
           embed.add_field(name="Discord ID:", value=interaction.user.id, inline=False)
           channel = interaction.client.get_channel(1131006328207327294)
           form = await channel.send(embed=embed)
-          await interaction.followup.send(f'Your application has been sent successfully')
+          await interaction.followup.send(f'Your application has been sent successfully', ephemeral=True)
           await form.add_reaction("✅")
+          await form.add_reaction("❌")
 
 class ebmessages(commands.Cog):
     def __init__(self, bot):
