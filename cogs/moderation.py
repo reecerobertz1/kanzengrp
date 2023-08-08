@@ -8,6 +8,15 @@ from discord import ui
 from discord.utils import get
 from discord.ui import View, Select
 
+class inactive(discord.ui.View):
+    def __init__ (self):
+        super().__init__(timeout=None)
+        self.value=None
+
+    @discord.ui.button(label="send ia message")
+    async def inactive(self, interaction: discord.Interaction, button: discord.Button):
+        await interaction.response.send_modal(ia())
+
 class Moderation(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -163,11 +172,12 @@ class Moderation(commands.Cog):
 
     @commands.command()
     async def rules(self, ctx):
+
         async def ia(interaction: discord.Interaction):
             await interaction.response.send_modal(ia())
-        view = View()
-        view.add_item(ia)
-        embed = discord.Embed(title="Kanzen rules")
+
+        view = inactive()
+        embed = discord.Embed(title="Kanzen rules", description="✦ Group Rules :\n<a:bounceyarrow:1128155233437106187> always watermark the logos\n<a:bounceyarrow:1128155233437106187> do not share the logos link outside the server!\n<a:bounceyarrow:1128155233437106187> make sure you are following @remqsi + @kanzengrp!\n<a:bounceyarrow:1128155233437106187> if you do ever decide to leave the grp, or move accounts. please let lead or staff know!\n✦ Chat Rules :\n<a:bounceyarrow:1128155233437106187> please be as active as possible!\n<a:bounceyarrow:1128155233437106187> no using any slurs / words that can be offensive!\n<a:bounceyarrow:1128155233437106187> please set your nickname as 'your name | username'\n<a:bounceyarrow:1128155233437106187> no impersonation as other editors\n<a:bounceyarrow:1128155233437106187> no trash talking other editors and groups!", color=0x2b2d31)
         await ctx.send("https://cdn.discordapp.com/attachments/1121841074512605186/1138272212948881498/kanzen_rules_00000.png")
         await ctx.send(embed=embed, view=view)
 
