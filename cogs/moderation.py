@@ -5,6 +5,8 @@ import discord
 from discord.ext import commands
 from discord import app_commands
 from discord import ui
+from discord.utils import get
+from discord.ui import View, Select
 
 class Moderation(commands.Cog):
     def __init__(self, bot):
@@ -163,7 +165,7 @@ class Moderation(commands.Cog):
     async def rules(self, ctx):
         async def ia(interaction: discord.Interaction):
             await interaction.response.send_modal(ia())
-        view = ia()
+        view = View()
         view.add_item(ia)
         embed = discord.Embed(title="Kanzen rules")
         await ctx.send("https://cdn.discordapp.com/attachments/1121841074512605186/1138272212948881498/kanzen_rules_00000.png")
