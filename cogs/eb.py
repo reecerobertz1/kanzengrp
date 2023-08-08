@@ -174,8 +174,8 @@ class grprctkda(ui.Modal, title='Applications'):
           channel = interaction.client.get_channel(1131006328207327294)
           response_message = await interaction.followup.send(f'Your application has been sent successfully', ephemeral=True)
           await channel.send(embed=embed)
-          await response_message.add_reaction("✅")
           await interaction.followup.send(f'Your application has been sent successfully', ephemeral=True)
+          await response_message.add_reaction("✅")
 
 class ebmessages(commands.Cog):
     def __init__(self, bot):
