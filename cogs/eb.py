@@ -276,7 +276,7 @@ class ebmessages(commands.Cog):
     @commands.command()
     @commands.has_permissions(manage_guild=True)
     async def openapps(self, ctx):
-        message = await ctx.reply("lol")
+        message = await ctx.reply("are you sure you want to open the applications?")
         await message.add_reaction('👍')
         
         def check(reaction, user):
@@ -288,10 +288,10 @@ class ebmessages(commands.Cog):
             application_channel_id = 1133771634793250847
             application_channel = self.bot.get_channel(application_channel_id)
             view = appbuttons()
-            embed = discord.Embed(title="lol", description="lol", color=0x2b2d31)
+            embed = discord.Embed(title="Apply Here *!*", description="information:\n<a:arroworange:1134860722757713980> This recruit is for the groups Kanzengrp, Auragrps and Daegutowngrp\n<a:arroworange:1134860722757713980> You will receive a dm from our bot Hoshi with your application results\n<a:arroworange:1134860722757713980>  You do not need to use a certain editing app to apply\n<a:arroworange:1134860722757713980> All fandoms and styles are accepted here!\n<a:arroworange:1134860722757713980> We mostly look for unique edits with smooth transitions\n<a:arroworange:1134860722757713980> Velocity edits ARE NOT accepted\n<a:arroworange:1134860722757713980> You can apply for any group, just be specific in your application what groups\n\napplication rules:\n<a:arroworange:1134860722757713980> Follow the rules on the recruit posts posted by the group you want to join\n<a:arroworange:1134860722757713980> Be patient with apps! staff are not active 24/7\n<a:arroworange:1134860722757713980> Only apply once, unless we decide to reapps", color=0x2b2d31)
             return await message.edit(content=None)
         except asyncio.TimeoutError:
-            await message.edit(content="~~lol~~\nbye")
+            await message.edit(content="~~are you sure you want to open the applications?~~\nthe recruit has been cancelled!")
 
     @commands.command()
     @commands.has_permissions(manage_guild=True)
