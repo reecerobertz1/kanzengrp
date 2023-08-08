@@ -159,6 +159,16 @@ class Moderation(commands.Cog):
 
         await ctx.send(f"Total Members in the Server: {member_count}")
 
+    @commands.command()
+    async def rules(self, ctx):
+        async def ia(interaction: discord.Interaction):
+            await interaction.response.send_modal(ia())
+        view = ia()
+        view.add_item(ia)
+        embed = discord.Embed(title="Kanzen rules")
+        await ctx.send("https://cdn.discordapp.com/attachments/1121841074512605186/1138272212948881498/kanzen_rules_00000.png")
+        await ctx.send(embed=embed, view=view)
+
 class ia(ui.Modal, title='Inactivity Message'):
      instagram = ui.TextInput(label='Instagram username', placeholder="Enter your Instagram username here...", style=discord.TextStyle.short)
      reason = ui.TextInput(label='Inactivity Reason', placeholder="", style=discord.TextStyle.long)
