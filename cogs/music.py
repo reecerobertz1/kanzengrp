@@ -71,7 +71,6 @@ class music(commands.Cog):
     @commands.command(name="play", aliases=["p","playing"], help="Plays a selected song from youtube")
     async def play(self, ctx, *args):
         query = " ".join(args)
-        guild_ids=guild_ids
         
         voice_channel = ctx.author.voice
         if voice_channel is None:
