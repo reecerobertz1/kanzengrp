@@ -21,7 +21,7 @@ class welcandleave(commands.Cog):
     @commands.Cog.listener()
     async def on_member_join(self, member: discord.Member):
         if member.guild.id == self.server1_id:
-            embed = discord.Embed(title='Welcome to Kanzen!', color=0x2b2d31, description=f"<a:bounceyarrow:1128155233437106187> Read the [rules](https://discord.com/channels/1121841073673736215/1121913361169391666)\n<a:bounceyarrow:1128155233437106187> Go and get your [roles](https://discord.com/channels/1121841073673736215/1121922077071507476)\n<a:bounceyarrow:1128155233437106187> Need help? Ping <@&1121842279351590973>!")
+            embed = discord.Embed(title='Welcome to Kanzen!', color=0x2b2d31, description=f"<a:bounceyarrow:1128155233437106187> Read the our [information](https://discord.com/channels/1121841073673736215/1121913361169391666)\n<a:bounceyarrow:1128155233437106187> Go and get your [roles](https://discord.com/channels/1121841073673736215/1121922077071507476)\n<a:bounceyarrow:1128155233437106187> Need help? Ping <@&1121842279351590973>!")
             embed.set_footer(text='Hope you enjoy your stay!', icon_url=member.display_avatar.url)
             channel = self.bot.get_channel(self.server1_welcome_channel_id)
             embed.set_thumbnail(url=member.display_avatar.url)
@@ -33,20 +33,6 @@ class welcandleave(commands.Cog):
             channel = self.bot.get_channel(self.server2_welcome_channel_id)
             embed.set_thumbnail(url=member.display_avatar.url)
             await channel.send(f'{member.mention}', embed=embed)
-            """AURA FORMS"""
-        elif member.guild.id == self.server3_id:
-            embed = discord.Embed(title=f'<:brazy_milksip:958479364184490075> : {member.name} has joined the server!', color=0x64a875, description=f"<a:greenarrow:1123286634629169203> Make sure you read our [rules](https://discord.com/channels/1123347338841313331/1123351779158016060)\n<a:greenarrow:1123286634629169203> Go and get your [roles](https://discord.com/channels/1123347338841313331/1123351943549562950)\n<a:greenarrow:1123286634629169203> apply [here!](https://discord.com/channels/1123347338841313331/1123352172143329331)\n<a:greenarrow:1123286634629169203> need help? ping <@&1123347897715527802> or <@&1123347913964269718>")
-            embed.set_footer(text='Have fun! Thank you for joining', icon_url=member.display_avatar.url)
-            channel = self.bot.get_channel(self.server3_channel)
-            embed.set_thumbnail(url=member.display_avatar.url)
-            await channel.send(f'{member.mention} <@&1123361940895445032>', embed=embed)
-            """KANZEN FORMS"""
-        elif member.guild.id == self.server4_id:
-            embed = discord.Embed(title=f'<:brazy_milksip:958479364184490075> : {member.name} has joined the server!', color=0x2b2d31, description=f"• Make sure you read our [rules](https://discord.com/channels/1122181605591621692/1122195332516810873)\n• Go and get your [roles](https://discord.com/channels/1122181605591621692/1123334720969789521)\n• apply [here!](https://discord.com/channels/1122181605591621692/1122195260735500348)\n• need help? ping <@609515684740988959>")
-            embed.set_footer(text='Have fun! Thank you for joining', icon_url=member.display_avatar.url)
-            channel = self.bot.get_channel(self.server4_channel)
-            embed.set_thumbnail(url=member.display_avatar.url)
-            await channel.send(f'<a:kanzenflower:1128154723262943282> {member.mention} <@&1123374988808962099>', embed=embed)
             """DAEGU"""
         elif member.guild.id == self.server5_id:
             embed = discord.Embed(title=f'<:members:1119069738493026364> : {member.name} has joined the server!', color=0x2b2d31, description=f"• Make sure you read our [server info](https://discord.com/channels/896619762354892821/896924214311911476)\n• Go and get your [roles](https://discord.com/channels/896619762354892821/1062169874748686386) + [biases](https://discord.com/channels/896619762354892821/1044478054258458685)\n• need help? ping <@&896881532671754260>, <@&1119948686550630410> or <@&903955975000698922>")
