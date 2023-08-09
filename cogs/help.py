@@ -82,9 +82,9 @@ class Help(commands.Cog):
                 embed.set_thumbnail(url=ctx.guild.icon)
             elif selected_category == categories[4]:
                 embed = discord.Embed(title="kanzen only commands", color=0x2b2d31)
-                embed.add_field(name="+cmd new", value="<a:bounceyarrow:1128155233437106187> Make your own command! `+newcmd (command name) (hoshi's responce)`", inline=False)
+                embed.add_field(name="+cmd new", value="<a:bounceyarrow:1128155233437106187> Make your own command! `+cmd new (command name) (hoshi's responce)`", inline=False)
                 embed.add_field(name="+cmd list", value="<a:bounceyarrow:1128155233437106187> See all the commands other zennies have added", inline=False)
-                embed.add_field(name="+cmd remove", value="<a:bounceyarrow:1128155233437106187> Made a mistake in your command? do `+removecmd (+commandname)`", inline=False)
+                embed.add_field(name="+cmd remove", value="<a:bounceyarrow:1128155233437106187> Made a mistake in your command? do `+cmd remove (+commandname)`", inline=False)
                 embed.add_field(name="+daily", value="<a:bounceyarrow:1128155233437106187> Get anywhere from 100xp - 300xp everyday! (server boosters only wait 12 hours)", inline=False)
                 embed.set_thumbnail(url=ctx.guild.icon)
             elif selected_category == categories[5]:
