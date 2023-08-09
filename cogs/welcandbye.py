@@ -98,7 +98,7 @@ class welcandleave(commands.Cog):
 
         if server_id in [957987670787764224, 1123347338841313331]:
             channel_ids = [1122994947444973709, 1123991454788894820]  
-            message = discord.Embed(title="Perks command has been used!", description=f"`{ctx.author.display_name}` has used the perks command!")
+            message = discord.Embed(title="Perks command has been used!", description=f"`{ctx.author.display_name}` has used the perks command!", color=0x2b2d31)
             message.set_footer(text=f"id: {ctx.author.id}", icon_url=ctx.author.display_avatar)
             for channel_id in channel_ids:
                 channel = self.bot.get_channel(channel_id)
@@ -116,7 +116,7 @@ class welcandleave(commands.Cog):
 
         elif server_id in [1121841073673736215, 1122181605591621692]:
             channel_ids = [1122627075682078720, 1123991325763711096]  
-            message = discord.Embed(title="Perks command has been used!", description=f"`{ctx.author.display_name}` has used the perks command!")
+            message = discord.Embed(title="Perks command has been used!", description=f"`{ctx.author.display_name}` has used the perks command!", color=0x2b2d31)
             message.set_footer(text=f"id: {ctx.author.id}", icon_url=ctx.author.display_avatar)
             for channel_id in channel_ids:
                 channel = self.bot.get_channel(channel_id)
