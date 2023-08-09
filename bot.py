@@ -30,7 +30,8 @@ extensions = {
     "cogs.ttt",
     "cogs.starboard",
     "cogs.roles",
-    "cogs.kgrp"
+    "cogs.kgrp",
+    "cogs.music"
 }
 
 # bot subclass
