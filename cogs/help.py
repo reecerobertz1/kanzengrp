@@ -59,9 +59,9 @@ class Help(commands.Cog):
                 embed = discord.Embed(title="editing commands", color=0x2b2d31)
                 embed.add_field(name="+transition", value="<a:bounceyarrow:1128155233437106187> Get a random transition to use in your edit", inline=False)# ✅
                 embed.add_field(name="+audio soft", value="<a:bounceyarrow:1128155233437106187> Get a soft audio added by a member to use for your edit", inline=False)# ✅
-                embed.add_field(name="+add soft", value="<a:bounceyarrow:1128155233437106187> Add a soft audio from SoundCloud for others to use", inline=False)# ✅
+                embed.add_field(name="+addsoft", value="<a:bounceyarrow:1128155233437106187> Add a soft audio from SoundCloud for others to use", inline=False)# ✅
                 embed.add_field(name="+audio hot", value="<a:bounceyarrow:1128155233437106187> Get a hot audio added by a member to use for your edit", inline=False)# ✅
-                embed.add_field(name="+add hot", value="<a:bounceyarrow:1128155233437106187> Add a hot audio from SoundCloud for others to use", inline=False)# ✅
+                embed.add_field(name="+addhot", value="<a:bounceyarrow:1128155233437106187> Add a hot audio from SoundCloud for others to use", inline=False)# ✅
                 embed.add_field(name="+addedit", value="<a:bounceyarrow:1128155233437106187> Add your own edit to Hoshi (must be a streamable link)", inline=False)# ✅
                 embed.add_field(name="+edits", value="<a:bounceyarrow:1128155233437106187> Watch edits added from members of, Aura, Kanzen and Daegu", inline=False)# ✅
                 embed.add_field(name="+effects", value="<a:bounceyarrow:1128155233437106187> Get a random effect to use in your edit", inline=False)# ✅
