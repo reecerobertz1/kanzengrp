@@ -14,7 +14,7 @@ class music(commands.Cog):
         else:
             await ctx.send("You are currently not in a voice channel!")
 
-    @commands.command()
+    @commands.command(pass_context = True)
     async def disconnect(self, ctx):
         await ctx.voice_client.disconnect()
         await ctx.reply("Okay, i have disconnected!")
