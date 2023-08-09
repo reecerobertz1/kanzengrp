@@ -25,21 +25,29 @@ class audios(commands.Cog):
     @commands.command()
     async def addsoft(self, ctx, link):
         """Adds a streamable link to softaudios.json"""
+        button = discord.ui.Button(label="Click to hear audio", url=f"{link}")
+
+        view = discord.ui.View()
+        view.add_item(button)
         log = self.bot.get_channel(1122627075682078720)
         embed = discord.Embed(title="Added soft audio", description=f"`{ctx.author.display_name}` has added a soft audio!\n{link}", color=0x2b2d31)
         embed.set_footer(text=f"id: {ctx.author.id}", icon_url=ctx.author.display_avatar)
         await self._add_audio(ctx, "softaudios.json", link)
-        await log.send(embed=embed)
+        await log.send(embed=embed, view=view)
 
 
     @commands.command()
     async def addhot(self, ctx, link):
         """Adds a streamable link to hotaudios.json"""
+        button = discord.ui.Button(label="Click to hear audio", url=f"{link}")
+
+        view = discord.ui.View()
+        view.add_item(button)
         log = self.bot.get_channel(1122627075682078720)
         embed = discord.Embed(title="Added hot audio", description=f"`{ctx.author.display_name}` has added a hot audio!\n{link}", color=0x2b2d31)
         embed.set_footer(text=f"id: {ctx.author.id}", icon_url=ctx.author.display_avatar)
         await self._add_audio(ctx, "hotaudios.json", link)
-        await log.send(embed=embed)
+        await log.send(embed=embed, view=view)
 
     @commands.group(invoke_without_command=True)
     async def audio(self, ctx: commands.Context):
