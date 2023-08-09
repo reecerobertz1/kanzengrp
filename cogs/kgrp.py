@@ -30,6 +30,7 @@ class infobuttons(discord.ui.View):
         await channel.send(embed=log)
         
         try:
+            await asyncio.sleep(2)  # Add a delay of 2 seconds
             await interaction.followup.send(f'I have sent you the logos! Check your DMs', ephemeral=True)
         except Exception as e:
             print(f"An error occurred while sending the follow-up message: {e}")
