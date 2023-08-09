@@ -28,7 +28,7 @@ class infobuttons(discord.ui.View):
         log = discord.Embed(title="Logo button has been used!", description=f"`{interaction.user.display_name}` has used the logos button")
         log.set_footer(text=f"id: {interaction.user.id}", icon_url=interaction.user.display_avatar)
         await channel.send(embed=log)
-        await interaction.followup.send("I have sent you the logos! Check your DMs", ephemeral=True)
+        await interaction.followup.send(f'I have sent you the logos! Check your DMs', ephemeral=True)
 
     @discord.ui.button(label="Inactive", emoji="<a:kanzenflower:1128154723262943282>")
     async def inactive(self, interaction: discord.Interaction, button: discord.Button):
