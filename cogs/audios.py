@@ -34,7 +34,7 @@ class audios(commands.Cog):
     async def soft(self, ctx, link):
         """Adds a streamable link to softaudios.json"""
         log = self.bot.get_channel(1122627075682078720)
-        embed = discord.Embed(title="Added soft audio", description=f"`{ctx.author.display_name} added a soft audio\n{link}")
+        embed = discord.Embed(title="Added soft audio", description=f"`{ctx.author.display_name}` added a soft audio\n{link}")
         embed.set_footer(text=f"id: {ctx.author.id}", icon_url=ctx.author.display_avatar)
         await self._add_audio(ctx, "softaudios.json", link)
         await log.send(embed=embed)
@@ -44,7 +44,7 @@ class audios(commands.Cog):
     async def hot(self, ctx, link):
         """Adds a streamable link to hotaudios.json"""
         log = self.bot.get_channel(1122627075682078720)
-        embed = discord.Embed(title="Added hot audio", description=f"`{ctx.author.display_name} added a hot audio\n{link}")
+        embed = discord.Embed(title="Added hot audio", description=f"`{ctx.author.display_name}` added a hot audio\n{link}")
         embed.set_footer(text=f"id: {ctx.author.id}", icon_url=ctx.author.display_avatar)
         await self._add_audio(ctx, "hotaudios.json", link)
         await log.send(embed=embed)
