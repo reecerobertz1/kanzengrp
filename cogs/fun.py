@@ -36,12 +36,14 @@ class funcmds(commands.Cog):
     async def say(self, ctx, *, message):
         await ctx.message.delete()
         await ctx.send(message)
+        embed = discord.Embed(title="Say command log", description=f"{ctx.author.name} has used the say command\n{message}")
+        embed.set_footer(text=f"id: {ctx.author.id}", icon_url=ctx.author.avatar)
 
         log_channel_id = self.get_log_channel_id(ctx.guild.id)
         if log_channel_id is not None:
             log_channel = self.bot.get_channel(log_channel_id)
             if log_channel:
-                await log_channel.send(f"{ctx.author.mention} used the say command, and they said: {message}")
+                await log_channel.send(embed=embed)
 
     def get_log_channel_id(self, guild_id):
         if guild_id == 1121841073673736215:
