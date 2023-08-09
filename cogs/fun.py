@@ -36,7 +36,7 @@ class funcmds(commands.Cog):
     async def say(self, ctx, *, message):
         await ctx.message.delete()
         await ctx.send(message)
-        embed = discord.Embed(title="Say command log", description=f"{ctx.author.name} has used the say command\n{message}")
+        embed = discord.Embed(title="Say command log", description=f"{ctx.author.name} has used the say command\n{message}", color=0x2b2d31)
         embed.set_footer(text=f"id: {ctx.author.id}", icon_url=ctx.author.avatar)
 
         log_channel_id = self.get_log_channel_id(ctx.guild.id)
