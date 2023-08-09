@@ -296,6 +296,7 @@ class ebmessages(commands.Cog):
             application_channel = self.bot.get_channel(application_channel_id)
             view = appbuttons()
             embed = discord.Embed(title="Apply Here *!*", description="information:\n<a:arroworange:1134860722757713980> This recruit is for the groups Kanzengrp, Auragrps and Daegutowngrp\n<a:arroworange:1134860722757713980> You will receive a dm from our bot Hoshi with your application results\n<a:arroworange:1134860722757713980>  You do not need to use a certain editing app to apply\n<a:arroworange:1134860722757713980> All fandoms and styles are accepted here!\n<a:arroworange:1134860722757713980> We mostly look for unique edits with smooth transitions\n<a:arroworange:1134860722757713980> Velocity edits ARE NOT accepted\n<a:arroworange:1134860722757713980> You can apply for any group, just be specific in your application what groups\n\napplication rules:\n<a:arroworange:1134860722757713980> Follow the rules on the recruit posts posted by the group you want to join\n<a:arroworange:1134860722757713980> Be patient with apps! staff are not active 24/7\n<a:arroworange:1134860722757713980> Only apply once, unless we decide to reapps", color=0x2b2d31)
+            await application_channel.purge()
             application_channel = await application_channel.send("<@&1131127124187684894>", embed=embed, view=view)
             await ctx.send("great! applications are now open")
             return await message.edit(content=None)
@@ -316,6 +317,7 @@ class ebmessages(commands.Cog):
             application_channel_id = 1133771634793250847
             application_channel = self.bot.get_channel(application_channel_id)
             await application_channel.purge()
+            await application_channel.send("Applications are currently closed!")
             await ctx.send("great! applications are now closed")
             return await message.edit(content=None)
         except asyncio.TimeoutError:
