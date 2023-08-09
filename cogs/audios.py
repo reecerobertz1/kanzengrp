@@ -25,7 +25,7 @@ class audios(commands.Cog):
     @commands.group(invoke_without_command=True)
     async def add(self, ctx: commands.Context):
         """group of commands to manage apps"""
-        embed = discord.Embed(title="Giveaway Commands", color=0x2B2D31)
+        embed = discord.Embed(title="Audio Commands", color=0x2B2D31)
         embed.add_field(name="add soft", value="Adds a soft audio", inline=False)
         embed.add_field(name="add hot", value="Adds a hot audio", inline=False)
         await ctx.reply(embed=embed)
