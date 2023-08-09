@@ -24,9 +24,10 @@ class infobuttons(discord.ui.View):
         logos.set_footer(text="Made us some logos? send them to Reece!")
         logos.set_image(url="https://cdn.discordapp.com/attachments/1121841074512605186/1128394231115948072/theme_3_00000.png")
         channel = interaction.client.get_channel(1122627075682078720)
+        user = interaction.user
         await channel.send(embed=embed)
         await interaction.message.author(embed=logos)
-        await interaction.client.send_user(embed=embed, view=view)
+        await user.send(embed=embed, view=view)
 
     @discord.ui.button(label="Role Info", emoji="<:roles_00000:1136752067277504633>")
     async def roles(self, interaction: discord.Interaction, button: discord.ui.Button):
