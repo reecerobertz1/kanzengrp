@@ -27,7 +27,7 @@ class infobuttons(discord.ui.View):
         user = interaction.user
         await channel.send(embed=embed)
         await interaction.message.author(embed=logos)
-        await user.send(embed=embed, view=view)
+        await user.send(embed=logos, view=view)
 
     @discord.ui.button(label="Role Info", emoji="<:roles_00000:1136752067277504633>")
     async def roles(self, interaction: discord.Interaction, button: discord.ui.Button):
