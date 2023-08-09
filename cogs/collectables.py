@@ -6,7 +6,7 @@ import datetime
 import random
 import sqlite3
 
-"""class Unlock(commands.Cog):
+class Unlock(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.conn = sqlite3.connect('bot.db')
@@ -14,7 +14,7 @@ import sqlite3
         self.cursor.execute('CREATE TABLE IF NOT EXISTS user_data (user_id INTEGER PRIMARY KEY, coins INTEGER)')
         self.conn.commit()
 
-    @commands.command()
+    """@commands.command()
     async def daily(self, ctx):
         coins = random.randint(1, 1000)
         xp = random.randint(1, 500)
