@@ -8,8 +8,13 @@ class music(commands.Cog):
 
     @commands.command()
     async def join(self, ctx):
-        channel = ctx.message.author.voice.voice_channel
-        await ctx.join_voice_channel(channel)
+        if ctx.author.voice is None:
+            await ctx.send("You are not in a voice channel!")
+            voice_channel = ctx.author.voice.channel
+            if ctx.voice_channel is None:
+                await voice_channel.connect()
+            else:
+                await ctx.voice_client.move_to(voice_channel)
 
     @commands.command()
     async def disconnect(self, ctx):
