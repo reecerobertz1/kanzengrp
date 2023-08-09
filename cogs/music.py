@@ -72,7 +72,7 @@ class music(commands.Cog):
     async def play(self, ctx, *args):
         query = " ".join(args)
         
-        voice_channel = ctx.author.voice.channel
+        voice_channel = ctx.author.voice
         if voice_channel is None:
             #you need to be connected so that the bot knows where to go
             await ctx.send("Connect to a voice channel!")
@@ -103,9 +103,9 @@ class music(commands.Cog):
     @commands.command(name = "resume", aliases=["r"], help="Resumes playing with the discord bot")
     async def resume(self, ctx, *args):
         if self.is_paused:
-            self.is_paused = False
-            self.is_playing = True
             self.vc.resume()
+            self.is_playing = True
+            self.is_paused = False
 
     @commands.command(name="skip", aliases=["s"], help="Skips the current song being played")
     async def skip(self, ctx):
