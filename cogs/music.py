@@ -6,7 +6,7 @@ class music(commands.Cog):
     def __init__(self, bot):
         self.bot = bot 
 
-    @commands.command()
+    @commands.command(pass_context = True)
     async def join(self, ctx):
         if (ctx.author.voice):
             channel = ctx.author.voice.channel
