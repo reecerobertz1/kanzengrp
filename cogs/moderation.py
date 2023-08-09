@@ -8,15 +8,6 @@ from discord import ui
 from discord.utils import get
 from discord.ui import View, Select
 
-class inactive(discord.ui.View):
-    def __init__ (self):
-        super().__init__(timeout=None)
-        self.value=None
-
-    @discord.ui.button(label="send ia message")
-    async def inactive(self, interaction: discord.Interaction, button: discord.Button):
-        await interaction.response.send_modal(ia())
-
 class Moderation(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -115,11 +106,6 @@ class Moderation(commands.Cog):
     async def auralogos(self, interaction: discord.Interaction):
         await interaction.response.send_message('https://mega.nz/folder/SNkySBBb#kNViVZOVnHzEFmFsuhtLOQ', ephemeral=True)
 
-    @app_commands.command(name='ia', description='Send an inactivity message!')
-    @app_commands.guilds(discord.Object(id=1121841073673736215))
-    async def ia(self, interaction: discord.Interaction):
-         await interaction.response.send_modal(ia())
-
     @commands.command()
     @commands.has_permissions(manage_guild=True)
     async def warn(self, ctx, user: discord.User, *, reason: str):
@@ -169,29 +155,6 @@ class Moderation(commands.Cog):
             await ctx.send(f"**Member List - Part {i}**\n{member_list_text}")
 
         await ctx.send(f"Total Members in the Server: {member_count}")
-
-    @commands.command()
-    async def rules(self, ctx):
-        view = inactive()
-        embed = discord.Embed(title="<a:kanzenflower:1128154723262943282> Kanzen rules", description="✿ Group Rules :\n<a:bounceyarrow:1128155233437106187> always watermark the logos\n<a:bounceyarrow:1128155233437106187> do not share the logos link outside the server!\n<a:bounceyarrow:1128155233437106187> make sure you are following [@remqsi](https://www.instagram.com/remqsi/) + [@kanzengrp!](https://www.instagram.com/kanzengrp/)\n<a:bounceyarrow:1128155233437106187> if you do ever decide to leave the grp, or move accounts. please let lead or staff know!\n\n✿ Chat Rules :\n<a:bounceyarrow:1128155233437106187> please be as active as possible!\n<a:bounceyarrow:1128155233437106187> no using any slurs / words that can be offensive!\n<a:bounceyarrow:1128155233437106187> please set your nickname as 'your name | username'\n<a:bounceyarrow:1128155233437106187> no impersonation as other editors\n<a:bounceyarrow:1128155233437106187> no trash talking other editors and groups!", color=0x2b2d31)
-        embed.set_image(url=f"https://cdn.discordapp.com/attachments/1121841074512605186/1128422069336543232/Comp_1_00000.png")
-        embed.set_footer(text="If you need to go inactive, use the button below!", icon_url=ctx.guild.icon)
-        await ctx.send("https://cdn.discordapp.com/attachments/1121841074512605186/1138275997851058186/kanzen_rules_00000.png")
-        await ctx.send(embed=embed, view=view)
-
-class ia(ui.Modal, title='Inactivity Message'):
-     instagram = ui.TextInput(label='Instagram username', placeholder="Enter your Instagram username here...", style=discord.TextStyle.short)
-     reason = ui.TextInput(label='Inactivity Reason', placeholder="", style=discord.TextStyle.long)
-     async def on_submit(self, interaction: discord.Interaction):
-          await interaction.response.defer()
-          embed = discord.Embed(title='Inactivity Message', color=0x2b2d31)
-          embed.add_field(name='Instagram Name:', value=f'{self.instagram.value}', inline=False)
-          embed.add_field(name='Instagram Account Link:', value=f'https://instagram.com/{self.instagram.value}', inline=False)
-          embed.add_field(name='Inactivity Reason:', value=f'{self.reason.value}', inline=False)
-          embed.add_field(name="Discord ID:", value=interaction.user.id, inline=False)
-          channel = interaction.client.get_channel(1121913672822968330)
-          await channel.send(embed=embed)
-          await interaction.followup.send(f'Your inactive message has been sent successfully', ephemeral=True)
 
 async def setup(bot):
     await bot.add_cog(Moderation(bot))
