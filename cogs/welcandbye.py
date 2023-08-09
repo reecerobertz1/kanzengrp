@@ -24,7 +24,9 @@ class welcandleave(commands.Cog):
             embed = discord.Embed(title='Welcome to Kanzen!', color=0x2b2d31, description=f"<a:bounceyarrow:1128155233437106187> Read the our [information](https://discord.com/channels/1121841073673736215/1121913361169391666)\n<a:bounceyarrow:1128155233437106187> Go and get your [roles](https://discord.com/channels/1121841073673736215/1121922077071507476)\n<a:bounceyarrow:1128155233437106187> Need help? Ping <@&1121842279351590973>!")
             embed.set_footer(text='Hope you enjoy your stay!', icon_url=member.display_avatar.url)
             channel = self.bot.get_channel(self.server1_welcome_channel_id)
+            channel2 = self.bot.get_channel(1125053619893440653)
             embed.set_thumbnail(url=member.display_avatar.url)
+            await channel2.send(f"<a:kanzenflower:1128154723262943282> {member.mention} Welcome to **Kanzengrp!**\nTalk to other zennies here")
             await channel.send(f'<a:kanzenflower:1128154723262943282> {member.mention} welcome to kanzen!', embed=embed)
             """AURA GRP WELCOME"""
         elif member.guild.id == self.server2_id:
@@ -130,8 +132,6 @@ class welcandleave(commands.Cog):
                 await ctx.author.send(embed=embed)
             else:
                 await ctx.send("Sorry, this command is only available for server boosters")
-
-
 
 async def setup(bot):
     await bot.add_cog(welcandleave(bot))
