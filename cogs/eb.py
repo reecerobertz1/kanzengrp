@@ -247,16 +247,24 @@ class ebmessages(commands.Cog):
                 data["entries"].append(user.id)
                 await self.save_giveaway_data()
 
-    @commands.command()
+    @commands.group(invoke_without_command=True)
+    async def ga(self, ctx: commands.Context):
+        """group of commands to manage apps"""
+        embed = discord.Embed(title="Giveaway Commands", color=0x2B2D31)
+        embed.add_field(name="ga piick", value="Picks a random winner for a giveaway early", inline=False)
+        embed.add_field(name="ga clear", value="Clears giveaway data", inline=False)
+        await ctx.reply(embed=embed)
+
+    @ga.command()
     @commands.has_permissions(administrator=True)
-    async def gapick(self, ctx, message_id: int):
+    async def ga(self, ctx, message_id: int):
         """Pick a winner for a specific giveaway."""
         message = await ctx.fetch_message(message_id)
         await self.pick_winner(message)
 
-    @commands.command()
+    @ga.command()
     @commands.has_permissions(administrator=True)
-    async def gaclear(self, ctx):
+    async def clear(self, ctx):
         """Clear the giveaway data."""
         self.giveaway_data.clear()
         await self.save_giveaway_data()
