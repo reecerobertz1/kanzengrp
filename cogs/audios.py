@@ -33,7 +33,7 @@ class audios(commands.Cog):
     @add.command()
     async def soft(self, ctx, link):
         """Adds a streamable link to softaudios.json"""
-        log = 1122627075682078720
+        log = self.bot.get_channel(1122627075682078720)
         embed = discord.Embed(title="Added soft audio", description=f"`{ctx.author.display_name} added a soft audio\n{link}")
         embed.set_footer(text=f"id: {ctx.author.id}", icon_url=ctx.author.avatar)
         await log.send(embed=embed)
@@ -42,7 +42,7 @@ class audios(commands.Cog):
     @add.command()
     async def hot(self, ctx, link):
         """Adds a streamable link to hotaudios.json"""
-        log = 1122627075682078720
+        log = self.bot.get_channel(1122627075682078720)
         embed = discord.Embed(title="Added hot audio", description=f"`{ctx.author.display_name} added a hot audio\n{link}")
         embed.set_footer(text=f"id: {ctx.author.id}", icon_url=ctx.author.avatar)
         await log.send(embed=embed)
