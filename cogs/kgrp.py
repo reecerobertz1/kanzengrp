@@ -27,6 +27,7 @@ class infobuttons(discord.ui.View):
         await interaction.user.send(embed=logos, view=view)
         await channel.send(embed=embed)
         await interaction.message.author(embed=logos)
+        await interaction.followup.send("I have sent you the logos! check DMs", ephemeral=True)
 
     @discord.ui.button(label="Role Info", emoji="<:roles_00000:1136752067277504633>")
     async def roles(self, interaction: discord.Interaction, button: discord.ui.Button):
@@ -41,7 +42,7 @@ class getlogos(discord.ui.View):
     @discord.ui.button(label="Get logos!")
     async def logos(self, interaction: discord.Interaction, button: discord.Button):
         await interaction.response.send_message("Here are the logos!\n(link)")
-        await interaction.response.send_message("#𝗞𝗮𝗻𝘇𝗲𝗻𝗴𝗿𝗽")
+        await interaction.followup.send("#𝗞𝗮𝗻𝘇𝗲𝗻𝗴𝗿𝗽")
 
 class kgrp(commands.Cog):
     def __init__(self, bot):
