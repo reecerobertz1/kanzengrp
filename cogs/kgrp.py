@@ -54,7 +54,7 @@ class kgrp(commands.Cog):
     async def info1(self, ctx):
         embed = discord.Embed(description="## Welcome *!*\nThank you for joining Kanzengrp! We hope you have a good time!  ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏\nIf you ever need any help feel free to ping @lead or @staff\n\nTo get the logos press the `logos` button below! And if you need\nto send an inactivity message, you can click the `inactive` button!", color=0x2b2d31)
         view = infobuttons()
-        await ctx.send("https://cdn.discordapp.com/attachments/1121841074512605186/1138673275665399818/kanzen_rules_00000.png")
+        await ctx.send("https://cdn.discordapp.com/attachments/1121841074512605186/1138841489863102484/kanzen_rules_00000.png")
         await ctx.send(embed=embed, view=view)
 
     @commands.command()
