@@ -23,11 +23,11 @@ class infobuttons(discord.ui.View):
         logos = discord.Embed(title="<a:kanzenflower:1128154723262943282>  Kanzen Logos!", description="<a:bounceyarrow:1128155233437106187> Please make sure you watermark the logos!\n<a:bounceyarrow:1128155233437106187> Use the watermark on every edit\n<a:bounceyarrow:1128155233437106187> Do not share this link with anyone outside the group!", color=0x2b2d31)
         logos.set_footer(text="Made us some logos? send them to Reece!")
         logos.set_image(url="https://cdn.discordapp.com/attachments/1121841074512605186/1128394231115948072/theme_3_00000.png")
-        channel = interaction.client.get_channel(1122627075682078720)
         await interaction.user.send(embed=logos, view=view)
+        await interaction.followup.send("I have sent you the logos! check DMs", ephemeral=True)
+        channel = interaction.client.get_channel(1122627075682078720)
         await channel.send(embed=embed)
         await interaction.message.author(embed=logos)
-        await interaction.followup.send("I have sent you the logos! check DMs", ephemeral=True)
 
     @discord.ui.button(label="Role Info", emoji="<:roles_00000:1136752067277504633>")
     async def roles(self, interaction: discord.Interaction, button: discord.ui.Button):
