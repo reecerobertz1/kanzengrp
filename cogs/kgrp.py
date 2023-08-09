@@ -44,8 +44,6 @@ class infobuttons(discord.ui.View):
 class kgrp(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.giveaway_data = {}
-        self.load_giveaway_data()
 
     @commands.command()
     @commands.has_permissions(manage_guild=True)
