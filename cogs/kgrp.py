@@ -6,6 +6,7 @@ import re
 from typing import Any
 import discord
 from discord.ext import commands
+from discord import app_commands
 from discord.interactions import Interaction
 from discord.ui import View, Select
 from typing import List, Optional
@@ -62,6 +63,11 @@ class kgrp(commands.Cog):
         embed = discord.Embed(title="<a:kanzenflower:1128154723262943282> Kanzen rules ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏ ͏ ͏ ͏ ͏", description='✦ Group Rules :\n<a:bounceyarrow:1128155233437106187> always watermark the logos\n<a:bounceyarrow:1128155233437106187> do not share the logos link outside the server!\n<a:bounceyarrow:1128155233437106187> make sure you are following [@remqsi](https://www.instagram.com/remqsi/) + [@kanzengrp!](https://www.instagram.com/kanzengrp/)\n<a:bounceyarrow:1128155233437106187> if you do ever decide to leave the grp, or move accounts. please let lead or staff know!\n\n✦ Chat Rules :\n<a:bounceyarrow:1128155233437106187> please be as active as possible!\n<a:bounceyarrow:1128155233437106187> no using any slurs / words that can be offensive!\n<a:bounceyarrow:1128155233437106187> please set your nickname as "your name | username"\n<a:bounceyarrow:1128155233437106187> no impersonation as other editors\n<a:bounceyarrow:1128155233437106187> no trash talking other editors and groups!', color=0x2b2d31)
         embed.set_image(url="https://cdn.discordapp.com/attachments/1121841074512605186/1138674299033624786/kgrp_00000.png")
         await ctx.send(embed=embed)
+
+    @app_commands.command(name='ia', description='Send an inactive message!')
+    @app_commands.guilds(discord.Object(id=1121841073673736215))
+    async def auralogos(self, interaction: discord.Interaction):
+        await interaction.response.send_modal(ia())
 
 class ia(ui.Modal, title='Inactivity Message'):
      instagram = ui.TextInput(label='Instagram username', placeholder="Enter your Instagram username here...", style=discord.TextStyle.short)
