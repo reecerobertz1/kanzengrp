@@ -33,12 +33,12 @@ class audios(commands.Cog):
     @add.command()
     async def soft(self, ctx, link):
         """Adds a streamable link to softaudios.json"""
-        await self._add_audio(ctx, "softaudios.json", link)
+        await self._add_audio(ctx, "./jsonfiles/softaudios.json", link)
 
     @add.command()
     async def hot(self, ctx, link):
         """Adds a streamable link to hotaudios.json"""
-        await self._add_audio(ctx, "hotaudios.json", link)
+        await self._add_audio(ctx, "./jsonfiles/hotaudios.json", link)
 
     @commands.group(invoke_without_command=True)
     async def audio(self, ctx: commands.Context):
@@ -51,7 +51,7 @@ class audios(commands.Cog):
     @audio.command()
     async def soft(self, ctx):
         """Sends a random link from softaudios.json"""
-        with open("softaudios.json", "r") as f:
+        with open("./jsonfiles/softaudios.json", "r") as f:
             audios = json.load(f)
             choice = random.choice(audios)
             await ctx.reply(f"Add a soft audio with `+addsoft`\n{choice}")
@@ -59,7 +59,7 @@ class audios(commands.Cog):
     @audio.command()
     async def hot(self, ctx):
         """Sends a random link from hotaudios.json"""
-        with open("hotaudios.json", "r") as f:
+        with open("./jsonfiles/hotaudios.json", "r") as f:
             audios = json.load(f)
             choice = random.choice(audios)
             await ctx.reply(f"Add a hot audio with `+addhot`\n{choice}")
