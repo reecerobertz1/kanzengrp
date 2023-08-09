@@ -26,7 +26,7 @@ class welcandleave(commands.Cog):
             channel = self.bot.get_channel(self.server1_welcome_channel_id)
             channel2 = self.bot.get_channel(1125053619893440653)
             embed.set_thumbnail(url=member.display_avatar.url)
-            await channel2.send(f"<a:kanzenflower:1128154723262943282> {member.mention} Welcome to **Kanzengrp!**\nTalk to other zennies here")
+            await channel2.send(f"<a:kanzenflower:1128154723262943282> {member.mention} Welcome to **Kanzengrp!**\nTalk to other zennies in this channel\nNeed help? ping Lead or Staff")
             await channel.send(f'<a:kanzenflower:1128154723262943282> {member.mention} welcome to kanzen!', embed=embed)
             """AURA GRP WELCOME"""
         elif member.guild.id == self.server2_id:
