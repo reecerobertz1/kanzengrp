@@ -72,7 +72,7 @@ class music(commands.Cog):
     async def play(self, ctx, *args):
         query = " ".join(args)
         
-        voice_channel = ctx.author.voice
+        voice_channel = ctx.author.voice_client
         if voice_channel is None:
             #you need to be connected so that the bot knows where to go
             await ctx.send("Connect to a voice channel!")
