@@ -94,7 +94,7 @@ class Help(commands.Cog):
                 embed.add_field(name="+rankcolor", value="<a:bounceyarrow:1128155233437106187> Set your rank color with a hex code", inline=False)
                 embed.add_field(name="+xp add", value="<a:bounceyarrow:1128155233437106187> Add xp to a member (admin only command)", inline=False)
                 embed.add_field(name="+xp remove", value="<a:bounceyarrow:1128155233437106187> Remove xp from a member (admin only command)", inline=False)
-                embed.add_field(name="+reset add", value="<a:bounceyarrow:1128155233437106187> Resets xp for everyone (admin only)", inline=False)
+                embed.add_field(name="+xp reset", value="<a:bounceyarrow:1128155233437106187> Resets xp for everyone (admin only)", inline=False)
                 embed.add_field(name="+levelling on", value="<a:bounceyarrow:1128155233437106187> Enables the levelling system for the server (admin only)", inline=False)
                 embed.add_field(name="+levelling off", value="<a:bounceyarrow:1128155233437106187> Disables the levelling system for the server (admin only)", inline=False)
                 embed.add_field(name="+levelling setrole", value="<a:bounceyarrow:1128155233437106187> Set the top 20 active role", inline=False)
