@@ -273,7 +273,7 @@ class ebmessages(commands.Cog):
         except FileNotFoundError:
             self.giveaway_data = {}
 
-    @commands.group()
+    @commands.group(invoke_without_command=True)
     async def apps(self, ctx: commands.Context):
         """group of commands to manage apps"""
         embed = discord.Embed(title="app manager", color=0x2B2D31)
