@@ -273,9 +273,17 @@ class ebmessages(commands.Cog):
         except FileNotFoundError:
             self.giveaway_data = {}
 
-    @commands.command()
+    @commands.group()
+    async def apps(self, ctx: commands.Context):
+        """group of commands to manage apps"""
+        embed = discord.Embed(title="app manager", color=0x2B2D31)
+        embed.add_field(name="apps open", value="opens applications", inline=False)
+        embed.add_field(name="apps close", value="close application", inline=False)
+        await ctx.reply(embed=embed)
+
+    @apps.command()
     @commands.has_permissions(manage_guild=True)
-    async def openapps(self, ctx):
+    async def open(self, ctx):
         message = await ctx.reply("are you sure you want to open the applications?")
         await message.add_reaction('👍')
         
@@ -293,6 +301,26 @@ class ebmessages(commands.Cog):
             return await message.edit(content=None)
         except asyncio.TimeoutError:
             await message.edit(content="~~are you sure you want to open the applications?~~\nthe recruit has been cancelled!")
+
+    @apps.command()
+    @commands.has_permissions(manage_guild=True)
+    async def close(self, ctx):
+        message = await ctx.reply("are you sure you want to close the applications?")
+        await message.add_reaction('👍')
+
+        def check(reaction, user):
+            return user == ctx.author and str(reaction) == '👍'
+        
+        try:
+            reaction, user = await self.bot.wait_for('reaction_add', timeout=15.0, check=check)
+            application_channel_id = 1133771634793250847
+            application_channel = self.bot.get_channel(application_channel_id)
+            await application_channel.purge()
+            await ctx.send("great! applications are now closed")
+            return await message.edit(content=None)
+        except asyncio.TimeoutError:
+            await message.edit(content="~~are you sure you want to open the applications?~~\nthe recruit has been cancelled!")
+
 
     @commands.command()
     @commands.has_permissions(manage_guild=True)
