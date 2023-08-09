@@ -16,17 +16,16 @@ class infobuttons(discord.ui.View):
         super().__init__(timeout=None)
         self.value = None
 
-    @discord.ui.button(label="Server Guide", emoji="<:guide:1136757467943022685>")
+    @discord.ui.button(label="Logos", emoji="<a:kanzenflower:1128154723262943282>")
     async def guide(self, interaction: discord.Interaction, button: discord.ui.Button):
-        embed = discord.Embed(title="<:guide:1136757467943022685> Server Guide", color=0x2b2d31)
-        embed.add_field(name="Get Started", value="<#1131007362895970414> - Server announcements are made here!\n<#1131005271502753812> - Server information\n<#1133730290221715487> - Get your roles here", inline=False)
-        embed.add_field(name="Boost", value="<#1133772140915732511> - Boost messages are sent here\n<#1133772155499327538> - Claim the booster perks here", inline=False)
-        embed.add_field(name="Events", value="<#1135594840739041380> - Server events and information is sent here\n<#1135594856106959032> - Giveaways are hosted here", inline=False)
-        embed.add_field(name="Applications", value="<#1133771634793250847> - You can apply for the groups here\n<#1133771722659741877> - Ask questions about the applications\n<#1133771757816393839> - Answers from the qna", inline=False)
-        embed.add_field(name="Main", value="<#1133767338588639323> - Start a converstion here with other members!\n<#1133767363339223110> - Speak other languages here!\n<#1133771941619191913> - Send self promotion here\n<#1134559895480442951> - Support the server with `/bump`", inline=False)
-        embed.add_field(name="Editing", value="<#1133770895593324664> - Get opinions on your edits! \n<#1133770809366814890> - Get edit help with <@&1131127084379549757>\n<#1133770828882903141> - Ping <@&1131130102328078336> to get dts for your next post!\n<#1133770844817080360> - Ping <@&1131130157160206396> to collab with other server members\n<#1136756099710730331> - Talk in vc while editing", inline=False)
-        embed.add_field(name="Bots", value="<#1133772583813263422> - Use our custom bot <@849682093575372841> here! `+help` for commands\n<#1133772598979866774> - Count as high as you can (can't count twice in a row)\n<#1133772609222361270> - Use other bots here other than hoshi\n<#1133772621666844813> - Another spam channel for you to use other bots\n<#1133772650695626882> - Use music commands here\n<#1133772672631836754> - Listen to music here", inline=False)
-        await interaction.response.send_message(embed=embed, ephemeral=True)
+        embed = discord.Embed(title=f"{interaction.user.name} has got the logos!", color=0x2b2d31)
+        logos = discord.Embed(title="<a:kanzenflower:1128154723262943282>  Kanzen Logos!", description="<a:bounceyarrow:1128155233437106187> Please make sure you watermark the logos!\n<a:bounceyarrow:1128155233437106187> Use the watermark on every edit\n<a:bounceyarrow:1128155233437106187> Do not share this link with anyone outside the group!", color=0x2b2d31)
+        logos.set_footer(text="Made us some logos? send them to Reece!")
+        logos.set_image(url="https://cdn.discordapp.com/attachments/1121841074512605186/1128394231115948072/theme_3_00000.png")
+        channel = interaction.client.get_channel(1122627075682078720)
+        await channel.send(embed=embed)
+        await interaction.message.author(embed=logos)
+        await interaction.client.send_user(embed=embed, ephemeral=True)
 
     @discord.ui.button(label="Role Info", emoji="<:roles_00000:1136752067277504633>")
     async def roles(self, interaction: discord.Interaction, button: discord.ui.Button):
@@ -40,6 +39,15 @@ class infobuttons(discord.ui.View):
         embed.add_field(name="Advert without ping", value="<a:arrowpink:1134860720777990224> Follow Discord's [tos](https://discord.com/terms) and [guidelines](https://discord.com/guidelines)\n<a:arrowpink:1134860720777990224> Must have 75+ members\nIf you meet our requirements, please message one of our owners", inline=False)
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
+class infobuttons(discord.ui.View):
+    def __init__ (self):
+        super().__init__(timeout=None)
+        self.value = None
+
+    @discord.ui.button(label="Get logos!")
+    async def logos(self, interaction: discord.Interaction, button: discord.Button):
+        await interaction.response.send_message("Here are the logos!\n(link)")
+        await interaction.response.send_message("#𝗞𝗮𝗻𝘇𝗲𝗻𝗴𝗿𝗽")
 
 class kgrp(commands.Cog):
     def __init__(self, bot):
