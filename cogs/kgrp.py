@@ -24,15 +24,11 @@ class infobuttons(discord.ui.View):
         logos.set_image(url="https://cdn.discordapp.com/attachments/1121841074512605186/1128394231115948072/theme_3_00000.png")
         await interaction.user.send(embed=logos, view=view)
 
-        try:
-            channel = interaction.client.get_channel(1122627075682078720)
-            log = discord.Embed(title="Logo button has been used!", description=f"`{interaction.user.display_name}` has used the logos button")
-            log.set_footer(text=f"id: {interaction.user.id}", icon_url=interaction.user.display_avatar)
-            await channel.send(embed=log)
-        except Exception as e:
-            print(f"An error occurred while sending the follow-up message: {e}")
-            followup = await interaction.followup.send(f'I have sent you the logos! Check your DMs', ephemeral=True)
-
+        channel = interaction.client.get_channel(1122627075682078720)
+        log = discord.Embed(title="Logo button has been used!", description=f"`{interaction.user.display_name}` has used the logos button")
+        log.set_footer(text=f"id: {interaction.user.id}", icon_url=interaction.user.display_avatar)
+        await channel.send(embed=log)
+        await interaction.response.send_message(f'I have sent you the logos! Check your DMs', ephemeral=True)
 
     @discord.ui.button(label="Inactive", emoji="<a:kanzenflower:1128154723262943282>")
     async def inactive(self, interaction: discord.Interaction, button: discord.Button):
