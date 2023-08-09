@@ -14,7 +14,7 @@ class custom(commands.Cog):
             pass
 
     def save_custom_commands(self):
-        with open("./jsonfiles/custom.json", "w") as file:
+        with open("custom.json", "w") as file:
             json.dump(self.custom_commands, file, indent=4)
 
     @commands.group(invoke_without_command=True)
