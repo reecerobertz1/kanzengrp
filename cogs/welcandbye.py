@@ -98,10 +98,11 @@ class welcandleave(commands.Cog):
 
         if server_id in [957987670787764224, 1123347338841313331]:
             channel_ids = [1122994947444973709, 1123991454788894820]  
-            message = f"{ctx.author.mention} has used the perks command!"
+            message = discord.Embed(title="Perks command has been used!", description=f"`{ctx.author.display_name}` has used the perks command!")
+            message.set_footer(text=f"id: {ctx.author.id}", icon_url=ctx.author.display_avatar)
             for channel_id in channel_ids:
                 channel = self.bot.get_channel(channel_id)
-                await channel.send(message)
+                await channel.send(embed=message)
 
             embed = discord.Embed(title="Aura Perks", description="Thank you for boosting aura!\n[Click here for the booster pack!](https://mega.nz/folder/QpkzFIRB#FHWAnwOGU6-0vZQ_AjDn8g)", color=0x2b2d31)
             embed.add_field(name="Remqsi's pack", value="<a:greenarrow:1123286634629169203> Remqsi's colouring packs 1 & 2\n<a:greenarrow:1123286634629169203> BTS Photos\n<a:greenarrow:1123286634629169203> Enhypen Photos\n<a:greenarrow:1123286634629169203> Blackpink Photos", inline=False)
@@ -115,10 +116,11 @@ class welcandleave(commands.Cog):
 
         elif server_id in [1121841073673736215, 1122181605591621692]:
             channel_ids = [1122627075682078720, 1123991325763711096]  
-            message = f"{ctx.author.mention} has used the perks command!"
+            message = discord.Embed(title="Perks command has been used!", description=f"`{ctx.author.display_name}` has used the perks command!")
+            message.set_footer(text=f"id: {ctx.author.id}", icon_url=ctx.author.display_avatar)
             for channel_id in channel_ids:
                 channel = self.bot.get_channel(channel_id)
-                await channel.send(message)
+                await channel.send(embed=message)
 
             embed = discord.Embed(title="Kanzen Perks", description="Thank you for boosting kanzengrp!\n[Click here for the booster pack!](https://mega.nz/folder/N1tgSLqD#DZ73U23GXk1LqyZKUpdNww)", color=0x2b2d31)
             embed.add_field(name="Remqsi's pack", value="<a:bounceyarrow:1126865547255091343> Remqsi's colouring packs 1 & 2\n<a:bounceyarrow:1126865547255091343> BTS Photos\n<a:bounceyarrow:1126865547255091343> Enhypen Photos\n<a:bounceyarrow:1126865547255091343> Blackpink Photos\n<a:bounceyarrow:1126865547255091343> Break your heart project file\n<a:bounceyarrow:1126865547255091343> Lisa candy project file", inline=False)
