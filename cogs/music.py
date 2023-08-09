@@ -1,19 +1,17 @@
 import discord
 from discord.ext import commands
-from youtube_dl import YoutubeDL
 
 class music(commands.Cog):
     def __init__(self, bot):
         self.bot = bot 
 
     @commands.command()
-    async def join(self, ctx, *, channel: discord.VoiceChannel):
-        """Joins a voice channel"""
-
-        if ctx.voice_client is not None:
-            return await ctx.voice_client.move_to(channel)
-
-        await channel.connect()
+    async def join(self, ctx):
+        voice_channel = discord.utils.get(ctx.guild.voice_channels, id=1055799905978957854)
+        if voice_channel:
+            await voice_channel.connect()
+        else:
+            await ctx.send("Voice channel not found!")
 
 
     @commands.command(pass_context = True)
