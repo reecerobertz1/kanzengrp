@@ -160,5 +160,22 @@ class Moderation(commands.Cog):
 
         await ctx.send(f"Total Members in the Server: {member_count}")
 
+    @commands.command()
+    @commands.has_permissions(manage_guild=True)
+    async def hoshiupdate(self, ctx):
+        servers = [{'server_id': 1121841073673736215,'channel_id': 1122655402899800234,'ping_role': '<@&1122655473368314017>'},{    'server_id': 957987670787764224,    'channel_id': 1122242141037547531,    'ping_role': '<@&1122999466438438962>'},{    'server_id': 896619762354892821,    'channel_id': 1063639288178286663,    'ping_role': '<@&939923109413290005>'}]
+
+        embed = discord.Embed(
+            title='New update!',
+            color=0x2b2d31
+        )
+        embed.set_footer(text="Go and use these commands in Hoshi's channel!")
+        embed.add_field(name='Change to audio command', value='instead of doing the usual `+addaudio` to add an audio and `+audio` to get an audio, you can now do `+addsoft` `+softaudio` to add and get soft audios and `+addhot` `+hotaudios` to add and get hot audios!\nthe old commands have been removed and do not work anymore!\nif you have any other ideas for commands and games to add to hoshi, you can do `+suggest (type suggestion here)` to suggest or go to the suggestions channel if youre in daegu!', inline=False)
+
+        for server_data in servers:
+            server = self.bot.get_guild(server_data['server_id'])
+            channel = server.get_channel(server_data['channel_id'])
+            await channel.send(server_data['ping_role'], embed=embed)  
+
 async def setup(bot):
     await bot.add_cog(Moderation(bot))
