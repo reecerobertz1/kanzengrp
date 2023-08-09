@@ -99,6 +99,10 @@ class Moderation(commands.Cog):
     @app_commands.command(name='kanzen', description='Get Kanzen logos')
     @app_commands.guilds(discord.Object(id=1121841073673736215))
     async def kanzenlogos(self, interaction: discord.Interaction):
+        channel = interaction.client.get_channel(1122627075682078720)
+        log = discord.Embed(title="Logo button has been used!", description=f"`{interaction.user.display_name}` has used the logos button", color=0x2b2d31)
+        log.set_footer(text=f"id: {interaction.user.id}", icon_url=interaction.user.display_avatar)
+        await channel.send(embed=log)
         await interaction.response.send_message('https://mega.nz/folder/J40zCTYY#L73pTeQKWpCh15wpuQaIFA', ephemeral=True)
 
     @app_commands.command(name='aura', description='Get Aura logos')
