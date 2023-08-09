@@ -257,7 +257,7 @@ class ebmessages(commands.Cog):
 
     @ga.command()
     @commands.has_permissions(administrator=True)
-    async def ga(self, ctx, message_id: int):
+    async def pick(self, ctx, message_id: int):
         """Pick a winner for a specific giveaway."""
         message = await ctx.fetch_message(message_id)
         await self.pick_winner(message)
