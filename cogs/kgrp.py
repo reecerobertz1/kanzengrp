@@ -18,6 +18,7 @@ class infobuttons(discord.ui.View):
 
     @discord.ui.button(label="Logos", emoji="<a:kanzenflower:1128154723262943282>")
     async def guide(self, interaction: discord.Interaction, button: discord.ui.Button):
+        view = getlogos()
         embed = discord.Embed(title=f"{interaction.user.name} has got the logos!", color=0x2b2d31)
         logos = discord.Embed(title="<a:kanzenflower:1128154723262943282>  Kanzen Logos!", description="<a:bounceyarrow:1128155233437106187> Please make sure you watermark the logos!\n<a:bounceyarrow:1128155233437106187> Use the watermark on every edit\n<a:bounceyarrow:1128155233437106187> Do not share this link with anyone outside the group!", color=0x2b2d31)
         logos.set_footer(text="Made us some logos? send them to Reece!")
@@ -25,14 +26,14 @@ class infobuttons(discord.ui.View):
         channel = interaction.client.get_channel(1122627075682078720)
         await channel.send(embed=embed)
         await interaction.message.author(embed=logos)
-        await interaction.client.send_user(embed=embed, ephemeral=True)
+        await interaction.client.send_user(embed=embed, view=view)
 
     @discord.ui.button(label="Role Info", emoji="<:roles_00000:1136752067277504633>")
     async def roles(self, interaction: discord.Interaction, button: discord.ui.Button):
         embed = discord.Embed(title="<:roles_00000:1136752067277504633> Role Info",description="<@&1131006052209541212> - Editors block owners\n<@&1131006067564875806> - Editors block staff\n<@&1136803676854431745> - our amazing supporters\n<@&1131016215754715166> - Accepted members from recruit\n<@&1131016147282710679> - Default Role from verification " ,color=0x2b2d31)
         await interaction.response.send_message(embed=embed, ephemeral=True)   
 
-class infobuttons(discord.ui.View):
+class getlogos(discord.ui.View):
     def __init__ (self):
         super().__init__(timeout=None)
         self.value = None
