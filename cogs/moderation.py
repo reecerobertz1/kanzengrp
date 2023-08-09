@@ -60,18 +60,18 @@ class Moderation(commands.Cog):
 
     @app_commands.command(name="kick", description="Kick a member from the server.")
     @app_commands.checks.has_permissions(administrator=True)
-    async def kick(self, ctx ,interaction: discord.Interaction ,member: discord.Member, reason: str = "No reason provided"):
+    async def kick(self ,interaction: discord.Interaction ,member: discord.Member, reason: str = "No reason provided"):
         await member.kick(reason=reason)
-        await member.send(f"You have been kicked from {ctx.guild.name} for {reason}")
+        await member.send(f"You have been kicked from {member.guild.name} for {reason}")
         await interaction.response.send_message(f'{member.mention} has been banned for: {reason}', ephemeral=True)
         if not interaction.user.guild_permissions.administrator:
             return await interaction.response.send_message("You have no admin", ephemeral=True)
 
     @app_commands.command(name="ban", description="Ban a member from the server.")
     @app_commands.checks.has_permissions(administrator=True)
-    async def ban(self, ctx ,interaction: discord.Interaction ,member: discord.Member, reason: str = "No reason provided"):
+    async def ban(self ,interaction: discord.Interaction ,member: discord.Member, reason: str = "No reason provided"):
         await member.ban(reason=reason)
-        await member.send(f"You have been banned from {ctx.guild.name} for {reason}")
+        await member.send(f"You have been banned from {member.guild.name} for {reason}")
         await interaction.response.send_message(f'{member.mention} has been banned for: {reason}', ephemeral=True)
         if not interaction.user.guild_permissions.administrator:
             return await interaction.response.send_message("You have no admin", ephemeral=True)
