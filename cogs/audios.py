@@ -25,7 +25,7 @@ class audios(commands.Cog):
     @commands.group(invoke_without_command=True)
     async def add(self, ctx: commands.Context):
         """group of commands to manage apps"""
-        embed = discord.Embed(title="Audio Commands", color=0x2B2D31)
+        embed = discord.Embed(title="Add audio Commands", color=0x2B2D31)
         embed.add_field(name="add soft", value="Adds a soft audio", inline=False)
         embed.add_field(name="add hot", value="Adds a hot audio", inline=False)
         await ctx.reply(embed=embed)
@@ -33,17 +33,25 @@ class audios(commands.Cog):
     @add.command()
     async def soft(self, ctx, link):
         """Adds a streamable link to softaudios.json"""
+        log = 1122627075682078720
+        embed = discord.Embed(title="Added soft audio", description=f"`{ctx.author.display_name} added a soft audio\n{link}")
+        embed.footer(text=f"id: {ctx.author.id}", icon_url=ctx.author.display_icon)
+        await log.send(embed=embed)
         await self._add_audio(ctx, "softaudios.json", link)
 
     @add.command()
     async def hot(self, ctx, link):
         """Adds a streamable link to hotaudios.json"""
+        log = 1122627075682078720
+        embed = discord.Embed(title="Added hot audio", description=f"`{ctx.author.display_name} added a hot audio\n{link}")
+        embed.footer(text=f"id: {ctx.author.id}", icon_url=ctx.author.display_icon)
+        await log.send(embed=embed)
         await self._add_audio(ctx, "hotaudios.json", link)
 
     @commands.group(invoke_without_command=True)
     async def audio(self, ctx: commands.Context):
         """group of commands to manage apps"""
-        embed = discord.Embed(title="Giveaway Commands", color=0x2B2D31)
+        embed = discord.Embed(title="Audio Commands", color=0x2B2D31)
         embed.add_field(name="audio soft", value="Sends a soft audio", inline=False)
         embed.add_field(name="audio hot", value="Sends a hot audio", inline=False)
         await ctx.reply(embed=embed)
