@@ -251,7 +251,7 @@ class ebmessages(commands.Cog):
     async def ga(self, ctx: commands.Context):
         """group of commands to manage apps"""
         embed = discord.Embed(title="Giveaway Commands", color=0x2B2D31)
-        embed.add_field(name="ga piick", value="Picks a random winner for a giveaway early", inline=False)
+        embed.add_field(name="ga pick", value="Picks a random winner for a giveaway early", inline=False)
         embed.add_field(name="ga clear", value="Clears giveaway data", inline=False)
         await ctx.reply(embed=embed)
 

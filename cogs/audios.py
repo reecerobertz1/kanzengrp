@@ -22,17 +22,33 @@ class audios(commands.Cog):
 
         await ctx.reply("Audio added successfully.")
 
-    @commands.command()
-    async def addsoft(self, ctx, link):
+    @commands.group(invoke_without_command=True)
+    async def add(self, ctx: commands.Context):
+        """group of commands to manage apps"""
+        embed = discord.Embed(title="Giveaway Commands", color=0x2B2D31)
+        embed.add_field(name="add soft", value="Adds a soft audio", inline=False)
+        embed.add_field(name="add hot", value="Adds a hot audio", inline=False)
+        await ctx.reply(embed=embed)
+
+    @add.command()
+    async def soft(self, ctx, link):
         """Adds a streamable link to softaudios.json"""
         await self._add_audio(ctx, "softaudios.json", link)
 
-    @commands.command()
-    async def addhot(self, ctx, link):
+    @add.command()
+    async def hot(self, ctx, link):
         """Adds a streamable link to hotaudios.json"""
         await self._add_audio(ctx, "hotaudios.json", link)
 
-    @commands.command(aliases=['softaudio'])
+    @commands.group(invoke_without_command=True)
+    async def audio(self, ctx: commands.Context):
+        """group of commands to manage apps"""
+        embed = discord.Embed(title="Giveaway Commands", color=0x2B2D31)
+        embed.add_field(name="audio soft", value="Sends a soft audio", inline=False)
+        embed.add_field(name="audio hot", value="Sends a hot audio", inline=False)
+        await ctx.reply(embed=embed)
+
+    @audio.command()
     async def soft(self, ctx):
         """Sends a random link from softaudios.json"""
         with open("softaudios.json", "r") as f:
@@ -40,7 +56,7 @@ class audios(commands.Cog):
             choice = random.choice(audios)
             await ctx.reply(f"Add a soft audio with `+addsoft`\n{choice}")
 
-    @commands.command(aliases=['hotaudio'])
+    @audio.command()
     async def hot(self, ctx):
         """Sends a random link from hotaudios.json"""
         with open("hotaudios.json", "r") as f:
