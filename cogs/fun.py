@@ -221,25 +221,22 @@ class funcmds(commands.Cog):
         except (FileNotFoundError, json.JSONDecodeError):
             pet_data = {}
 
-        all_pets = [pet for pets in pet_data.values() for pet in pets]
+        embed = discord.Embed(color=0x2b2d31)
 
-        if all_pets:
-            pet = random.choice(all_pets)
-            pet_name = pet["name"]
-            pet_owner_id = pet.get("owner_id", None)
-            pet_image = pet["image"]
-
-            owner_name = "Unknown User"
-            if pet_owner_id:
-                owner = ctx.guild.get_member(int(pet_owner_id))
-                if owner:
-                    owner_name = owner.display_name
-
-            embed = discord.Embed(title=f"{owner_name}'s Pet: {pet_name}", description=f"This is {pet_name}! Owned by {owner_name}", color=0x2b2d31)
-            embed.set_image(url=pet_image)
-            await ctx.send(embed=embed)
-        else:
-            await ctx.send("No pets have been added yet.")
+        for user_id, pets in pet_data.items():
+            try:
+                user = await self.bot.fetch_user(int(user_id))
+            except discord.NotFound:
+                continue  # Skip if the user is not found
+            
+            for pet in pets:
+                pet_name = pet["name"]
+                pet_image = pet["image"]
+                
+                embed.add_field(name=f"{user.display_name}'s Pet: {pet_name}", value=f"This is {pet_name}! <@{user.id}>'s pet", inline=False)
+                embed.set_image(url=pet_image)
+                await ctx.send(embed=embed)
+                embed.clear_fields()
 
 
     @commands.command(aliases=['pp'])
