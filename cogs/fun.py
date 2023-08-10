@@ -189,8 +189,16 @@ class funcmds(commands.Cog):
         except (requests.exceptions.RequestException, KeyError):
             await ctx.reply("Sorry, I couldn't fetch a cute cat at the moment. Please try again later.")
 
+    def kanzen_only():
+        def predicate(ctx: commands.Context):
+            if ctx.guild.id == 1121841073673736215:
+                return True
+            else:
+                return False
+        return commands.check(predicate)
 
     @commands.command()
+    @kanzen_only()
     async def addpet(self, ctx, pet_name):
         """Adds a pet to the pet data"""
         if not ctx.message.attachments:
@@ -216,6 +224,7 @@ class funcmds(commands.Cog):
         await ctx.send("Pet added successfully!")
 
     @commands.command()
+    @kanzen_only()
     async def pets(self, ctx):
         try:
             with open("pets.json", "r") as file:
