@@ -228,7 +228,7 @@ class funcmds(commands.Cog):
                 pet_name = pet["name"]
                 pet_image = pet["image"]
                 embed.set_image(url=f"{pet_image}")
-                embed.set_author(text="Add your own pet with the +addpet command!")
+                embed.set_footer(text="Add your own pet with the +addpet command!")
 
             await ctx.send(embed=embed)
         else:
