@@ -221,8 +221,6 @@ class funcmds(commands.Cog):
         except (FileNotFoundError, json.JSONDecodeError):
             pet_data = {}
 
-        embed = discord.Embed(color=0x2b2d31)
-
         for user_id, pets in pet_data.items():
             try:
                 user = await self.bot.fetch_user(int(user_id))
@@ -233,10 +231,10 @@ class funcmds(commands.Cog):
                 pet_name = pet["name"]
                 pet_image = pet["image"]
                 
-                embed.add_field(name=f"{user.display_name}'s Pet: {pet_name}", value=f"This is {pet_name}! <@{user.id}>'s pet", inline=False)
+                embed = discord.Embed(title=f"{user.display_name}'s Pet: {pet_name}", description=f"This is {pet_name}! <@{user.id}>'s pet", color=0x2b2d31)
                 embed.set_image(url=pet_image)
                 await ctx.send(embed=embed)
-                embed.clear_fields()
+                await asyncio.sleep(5)
 
 
     @commands.command(aliases=['pp'])
