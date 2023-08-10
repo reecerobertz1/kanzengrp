@@ -223,34 +223,20 @@ class funcmds(commands.Cog):
         except (FileNotFoundError, json.JSONDecodeError):
             pet_data = {}
 
-        try:
-            with open("pet_index.json", "r") as file:
-                pet_index_data = json.load(file)
-        except (FileNotFoundError, json.JSONDecodeError):
-            pet_index_data = {}
-
         user_id = str(ctx.author.id)
         if user_id in pet_data:
-            if user_id not in pet_index_data:
-                pet_index_data[user_id] = 0
-
             pets = pet_data[user_id]
-            pet_index = pet_index_data[user_id]
 
-            if pet_index < len(pets):
-                pet = pets[pet_index]
+            if pets:
+                pet = random.choice(pets)
                 pet_name = pet["name"]
                 pet_image = pet["image"]
 
                 embed = discord.Embed(title=f"{ctx.author.display_name}'s Pet: {pet_name}", description=f"This is {pet_name}! <@{ctx.author.id}>'s pet", color=0x2b2d31)
                 embed.set_image(url=pet_image)
                 await ctx.send(embed=embed)
-
-                pet_index_data[user_id] += 1
-                with open("pet_index.json", "w") as file:
-                    json.dump(pet_index_data, file, indent=4)
             else:
-                await ctx.send("You have no more pets to show.")
+                await ctx.send("You don't have any pets.")
         else:
             await ctx.send("You don't have any pets.")
 
