@@ -224,7 +224,7 @@ class funcmds(commands.Cog):
             pet_data = {}
 
         if pet_data:
-            user_id, pets = ctx.guild.get_member(int(user_id))
+            user_id, pets = next(iter(pet_data.items()))
             user = ctx.guild.get_member(int(user_id))
             
             if user:
