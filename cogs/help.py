@@ -119,8 +119,8 @@ class Help(commands.Cog):
                 embed.add_field(name="+kanzen appsclose", value="<a:bounceyarrow:1128155233437106187> Closes applications for kanzengrp", inline=False)
                 embed.add_field(name="+accept", value="<a:bounceyarrow:1128155233437106187> Accepts member into kanzen", inline=False)
                 embed.add_field(name="+decline", value="<a:bounceyarrow:1128155233437106187> Declines a member from kanzen", inline=False)
-                embed.add_field(name="+qna", value="<a:bounceyarrow:1128155233437106187> Ask the lead a question", inline=False)
                 embed.add_field(name="+answer", value="<a:bounceyarrow:1128155233437106187> Answer a question sent", inline=False)
+                embed.add_field(name="+answerpriv", value="<a:bounceyarrow:1128155233437106187> Answer a question sent in DMs", inline=False)
                 embed.set_thumbnail(url=ctx.guild.icon)
             elif selected_category == categories[8]:
                 embed = discord.Embed(title="community commands", color=0x2b2d31)
