@@ -1,5 +1,6 @@
 import asyncio
 import io
+import json
 import os
 import random
 from typing import Optional
@@ -189,10 +190,47 @@ class funcmds(commands.Cog):
             await ctx.reply("Sorry, I couldn't fetch a cute cat at the moment. Please try again later.")
 
     @commands.command()
-    async def addpet(self, ctx, image: str):
-        if image is None:
-            await ctx.reply("You need to send an image of your pet!")
-            
+    async def addpet(self, ctx, pet_name, *, pet_image: str):
+        """Adds a pet to the pet data"""
+        pet_data = {}
+        
+        try:
+            with open("pets.json", "r") as file:
+                pet_data = json.load(file)
+        except FileNotFoundError:
+            pass
+        
+        if ctx.author.id not in pet_data:
+            pet_data[ctx.author.id] = []
+
+        pet_data[ctx.author.id].append({"name": pet_name, "image": pet_image})
+        
+        with open("pets.json", "w") as file:
+            json.dump(pet_data, file, indent=4)
+
+        await ctx.reply(f"{pet_name} added successfully!")
+
+    @commands.command()
+    async def pets(self, ctx):
+        """Shows your pets"""
+        try:
+            with open("pets.json", "r") as file:
+                pet_data = json.load(file)
+        except FileNotFoundError:
+            pet_data = {}
+
+        user_pets = pet_data.get(str(ctx.author.id), [])
+        
+        embed = discord.Embed(title=f"{ctx.author}'s Pets", color=0x2b2d31)
+        
+        for pet in user_pets:
+            embed.add_field(name=pet["name"], value=f"[View Image]({pet['image']})", inline=False)
+        
+        if not user_pets:
+            embed.description = "You don't have any pets yet."
+        
+        await ctx.send(embed=embed)
+
 
     @commands.command(aliases=['pp'])
     async def ppsize(self, ctx, member: discord.Member = None):
