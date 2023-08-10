@@ -223,7 +223,7 @@ class funcmds(commands.Cog):
             pet_data = {}
 
         if str(ctx.author.id) in pet_data:
-            embed = discord.Embed(title=f"{ctx.author.display_name}'s Pet",description=f"This is {pet_name}!" ,color=0x2b2d31)
+            embed = discord.Embed(title=f"{ctx.author.display_name}'s Pet",description=f"This is |pet name|! <@[str{ctx.author.id}]>'s pet" ,color=0x2b2d31)
             for pet in pet_data[str(ctx.author.id)]:
                 pet_name = pet["name"]
                 pet_image = pet["image"]
