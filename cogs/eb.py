@@ -496,8 +496,8 @@ class ebmessages(commands.Cog):
     async def daegu(self, ctx: commands.Context):
         """group of commands to manage apps"""
         embed = discord.Embed(title="app manager", color=0x2B2D31)
-        embed.add_field(name="daegu open", value="opens daegu applications", inline=False)
-        embed.add_field(name="daegu close", value="close daegu application", inline=False)
+        embed.add_field(name="daegu openapps", value="opens daegu applications", inline=False)
+        embed.add_field(name="daegu closeapps", value="close daegu application", inline=False)
         await ctx.reply(embed=embed)
 
     @daegu.command()
@@ -565,7 +565,7 @@ class ebmessages(commands.Cog):
     @aura_leads()
     @commands.has_permissions(manage_guild=True)
     async def openapp(self, ctx):
-        message = await ctx.reply("are you sure you want to open the applications for daegutowngrp?")
+        message = await ctx.reply("are you sure you want to open the applications for auragrps?")
         await message.add_reaction('👍')
         
         def check(reaction, user):
@@ -576,13 +576,13 @@ class ebmessages(commands.Cog):
             application_channel_id = 1133771634793250847
             application_channel = self.bot.get_channel(application_channel_id)
             view = auraapps()
-            embed = discord.Embed(title="Daegu Applications *!*", description="information:\n<a:greenarrow:1123286634629169203> You will receive a dm from our bot Hoshi with your application results\n<a:greenarrow:1123286634629169203>  You do not need to use a certain editing app to apply\n<a:greenarrow:1123286634629169203> All fandoms and styles are accepted here!\n<a:greenarrow:1123286634629169203> We mostly look for unique edits with smooth transitions\n<a:greenarrow:1123286634629169203> Velocity edits ARE NOT accepted\n<a:greenarrow:1123286634629169203> You can apply for any group, just be specific in your application what groups\n\napplication rules:\n<a:greenarrow:1123286634629169203> Follow the rules on the recruit posts posted by the group you want to join\n<a:greenarrow:1123286634629169203> Be patient with apps! staff are not active 24/7\n<a:greenarrow:1123286634629169203> Only apply once, unless we decide to reapps", color=0x2b2d31)
+            embed = discord.Embed(title="Aura Applications *!*", description="information:\n<a:greenarrow:1123286634629169203> You will receive a dm from our bot Hoshi with your application results\n<a:greenarrow:1123286634629169203>  You do not need to use a certain editing app to apply\n<a:greenarrow:1123286634629169203> All fandoms and styles are accepted here!\n<a:greenarrow:1123286634629169203> We mostly look for unique edits with smooth transitions\n<a:greenarrow:1123286634629169203> Velocity edits ARE NOT accepted\n<a:greenarrow:1123286634629169203> You can apply for any group, just be specific in your application what groups\n\napplication rules:\n<a:greenarrow:1123286634629169203> Follow the rules on the recruit posts posted by the group you want to join\n<a:greenarrow:1123286634629169203> Be patient with apps! staff are not active 24/7\n<a:greenarrow:1123286634629169203> Only apply once, unless we decide to reapps", color=0x2b2d31)
             await application_channel.purge()
-            application_channel = await application_channel.send("<@&1131127124187684894> Daegu Recruit!", embed=embed, view=view)
+            application_channel = await application_channel.send("<@&1131127124187684894> Aura Recruit!", embed=embed, view=view)
             await ctx.send("great! applications are now open")
             return await message.edit(content=None)
         except asyncio.TimeoutError:
-            await message.edit(content="~~are you sure you want to open the applications for daegutowngrp?~~\nthe recruit has been cancelled!")
+            await message.edit(content="~~are you sure you want to open the applications for auragrps?~~\nthe recruit has been cancelled!")
 
     @aura.command()
     @aura_leads()
