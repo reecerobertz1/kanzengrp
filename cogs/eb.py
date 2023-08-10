@@ -303,7 +303,7 @@ class ebmessages(commands.Cog):
             application_channel_id = 1133771634793250847
             application_channel = self.bot.get_channel(application_channel_id)
             view = appbuttons()
-            embed = discord.Embed(title="Apply Here *!*", description="information:\n<a:arroworange:1134860722757713980> This recruit is for the groups Kanzengrp, Auragrps and Daegutowngrp\n<a:arroworange:1134860722757713980> You will receive a dm from our bot Hoshi with your application results\n<a:arroworange:1134860722757713980>  You do not need to use a certain editing app to apply\n<a:arroworange:1134860722757713980> All fandoms and styles are accepted here!\n<a:arroworange:1134860722757713980> We mostly look for unique edits with smooth transitions\n<a:arroworange:1134860722757713980> Velocity edits ARE NOT accepted\n<a:arroworange:1134860722757713980> You can apply for any group, just be specific in your application what groups\n\napplication rules:\n<a:arroworange:1134860722757713980> Follow the rules on the recruit posts posted by the group you want to join\n<a:arroworange:1134860722757713980> Be patient with apps! staff are not active 24/7\n<a:arroworange:1134860722757713980> Only apply once, unless we decide to reapps", color=0x2b2d31)
+            embed = discord.Embed(title="Apply Here *!*", description="information:\n<a:bounceyarrow:1128155233437106187> This recruit is for the groups Kanzengrp, Auragrps and Daegutowngrp\n<a:bounceyarrow:1128155233437106187> You will receive a dm from our bot Hoshi with your application results\n<a:bounceyarrow:1128155233437106187>  You do not need to use a certain editing app to apply\n<a:bounceyarrow:1128155233437106187> All fandoms and styles are accepted here!\n<a:bounceyarrow:1128155233437106187> We mostly look for unique edits with smooth transitions\n<a:bounceyarrow:1128155233437106187> Velocity edits ARE NOT accepted\n<a:bounceyarrow:1128155233437106187> You can apply for any group, just be specific in your application what groups\n\napplication rules:\n<a:bounceyarrow:1128155233437106187> Follow the rules on the recruit posts posted by the group you want to join\n<a:bounceyarrow:1128155233437106187> Be patient with apps! staff are not active 24/7\n<a:bounceyarrow:1128155233437106187> Only apply once, unless we decide to reapps", color=0x2b2d31)
             await application_channel.purge()
             application_channel = await application_channel.send("<@&1131127124187684894>", embed=embed, view=view)
             await ctx.send("great! applications are now open")
@@ -312,6 +312,66 @@ class ebmessages(commands.Cog):
             await message.edit(content="~~are you sure you want to open the applications?~~\nthe recruit has been cancelled!")
 
     @apps.command()
+    @commands.has_permissions(manage_guild=True)
+    async def close(self, ctx):
+        message = await ctx.reply("are you sure you want to close the applications?")
+        await message.add_reaction('👍')
+
+        def check(reaction, user):
+            return user == ctx.author and str(reaction) == '👍'
+        
+        try:
+            reaction, user = await self.bot.wait_for('reaction_add', timeout=15.0, check=check)
+            application_channel_id = 1133771634793250847
+            application_channel = self.bot.get_channel(application_channel_id)
+            await application_channel.purge()
+            await application_channel.send("Applications are currently closed!")
+            await ctx.send("great! applications are now closed")
+            return await message.edit(content=None)
+        except asyncio.TimeoutError:
+            await message.edit(content="~~are you sure you want to open the applications?~~\nthe recruit has been cancelled!")
+
+    def kanzen_lead():
+        async def predicate(ctx):
+            role_id = 1131016327709069353
+            role = ctx.guild.get_role(role_id)
+            return role in ctx.author.roles
+        return commands.check(predicate)
+
+    @commands.group(invoke_without_command=True)
+    @kanzen_lead()
+    async def kanzen(self, ctx: commands.Context):
+        """group of commands to manage apps"""
+        embed = discord.Embed(title="app manager", color=0x2B2D31)
+        embed.add_field(name="kanzen open", value="opens kanzen applications", inline=False)
+        embed.add_field(name="kanzen close", value="close kanzen application", inline=False)
+        await ctx.reply(embed=embed)
+
+    @apps.command()
+    @kanzen_lead()
+    @commands.has_permissions(manage_guild=True)
+    async def open(self, ctx):
+        message = await ctx.reply("are you sure you want to open the applications for kanzengrp?")
+        await message.add_reaction('👍')
+        
+        def check(reaction, user):
+            return user == ctx.author and str(reaction) == '👍'
+        
+        try:
+            reaction, user = await self.bot.wait_for('reaction_add', timeout=15.0, check=check)
+            application_channel_id = 1133771634793250847
+            application_channel = self.bot.get_channel(application_channel_id)
+            view = appbuttons()
+            embed = discord.Embed(title="Kanzen Applications *!*", description="information:\n<a:bounceyarrow:1128155233437106187> This recruit is for the groups Kanzengrp, Auragrps and Daegutowngrp\n<a:bounceyarrow:1128155233437106187> You will receive a dm from our bot Hoshi with your application results\n<a:bounceyarrow:1128155233437106187>  You do not need to use a certain editing app to apply\n<a:bounceyarrow:1128155233437106187> All fandoms and styles are accepted here!\n<a:bounceyarrow:1128155233437106187> We mostly look for unique edits with smooth transitions\n<a:bounceyarrow:1128155233437106187> Velocity edits ARE NOT accepted\n<a:bounceyarrow:1128155233437106187> You can apply for any group, just be specific in your application what groups\n\napplication rules:\n<a:bounceyarrow:1128155233437106187> Follow the rules on the recruit posts posted by the group you want to join\n<a:bounceyarrow:1128155233437106187> Be patient with apps! staff are not active 24/7\n<a:bounceyarrow:1128155233437106187> Only apply once, unless we decide to reapps", color=0x2b2d31)
+            await application_channel.purge()
+            application_channel = await application_channel.send("<@&1131127124187684894> Kanzen Recruit!", embed=embed, view=view)
+            await ctx.send("great! applications are now open")
+            return await message.edit(content=None)
+        except asyncio.TimeoutError:
+            await message.edit(content="~~are you sure you want to open the applications for kanzengrp?~~\nthe recruit has been cancelled!")
+
+    @apps.command()
+    @kanzen_lead()
     @commands.has_permissions(manage_guild=True)
     async def close(self, ctx):
         message = await ctx.reply("are you sure you want to close the applications?")
