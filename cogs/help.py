@@ -86,8 +86,8 @@ class Help(commands.Cog):
                 embed.add_field(name="+cmd list", value="<a:bounceyarrow:1128155233437106187> See all the commands other zennies have added", inline=False)
                 embed.add_field(name="+cmd remove", value="<a:bounceyarrow:1128155233437106187> Made a mistake in your command? do `+cmd remove (+commandname)`", inline=False)
                 embed.add_field(name="+daily", value="<a:bounceyarrow:1128155233437106187> Get anywhere from 100xp - 300xp everyday! (server boosters only wait 12 hours)", inline=False)
-                embed.add_field(name="+pets", value="<a:bounceyarrow:1128155233437106187> See other zennies pets!")
-                embed.add_field(name="+addpet", value="<a:bounceyarrow:1128155233437106187> Attach an image of your pet and add a name when doing this command")
+                embed.add_field(name="+pets", value="<a:bounceyarrow:1128155233437106187> See other zennies pets!", inline=False)
+                embed.add_field(name="+addpet", value="<a:bounceyarrow:1128155233437106187> Attach an image of your pet and add a name when doing this command", inline=False)
                 embed.set_thumbnail(url=ctx.guild.icon)
             elif selected_category == categories[5]:
                 embed = discord.Embed(title="levels commands", color=0x2b2d31)
