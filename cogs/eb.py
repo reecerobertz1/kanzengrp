@@ -350,7 +350,7 @@ class ebmessages(commands.Cog):
     @apps.command()
     @kanzen_lead()
     @commands.has_permissions(manage_guild=True)
-    async def open(self, ctx):
+    async def appsopen(self, ctx):
         message = await ctx.reply("are you sure you want to open the applications for kanzengrp?")
         await message.add_reaction('👍')
         
@@ -373,7 +373,7 @@ class ebmessages(commands.Cog):
     @apps.command()
     @kanzen_lead()
     @commands.has_permissions(manage_guild=True)
-    async def close(self, ctx):
+    async def appsclose(self, ctx):
         message = await ctx.reply("are you sure you want to close the applications?")
         await message.add_reaction('👍')
 
