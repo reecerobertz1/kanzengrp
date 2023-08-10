@@ -216,26 +216,29 @@ class funcmds(commands.Cog):
         await ctx.send("Pet added successfully!")
 
     @commands.command()
-    async def pets(self, ctx):
+    async def addpet(self, ctx, pet_name):
+        """Adds a pet to the pet data"""
+        if not ctx.message.attachments:
+            await ctx.send("Please attach an image to add your pet.")
+            return
+
+        pet_image = ctx.message.attachments[0].url
+
         try:
             with open("pets.json", "r") as file:
                 pet_data = json.load(file)
-        except (FileNotFoundError, json.JSONDecodeError):
+        except FileNotFoundError:
             pet_data = {}
 
-        if pet_data:
-            embed = discord.Embed(color=0x2b2d31)
-            for user_id, pets in pet_data.items():
-                user = ctx.guild.get_member(int(user_id))
-                if user:
-                    for pet in pets:
-                        pet_name = pet["name"]
-                        pet_image = pet["image"]
-                        embed.add_field(name=f"{user.display_name}'s Pet: {pet_name}", value=f"This is {pet_name}! <@{user.id}>'s pet", inline=False)
-                        embed.set_image(url=pet_image)
-            await ctx.send(embed=embed)
-        else:
-            await ctx.send("No pets have been added yet.")
+        if str(ctx.author.id) not in pet_data:
+            pet_data[str(ctx.author.id)] = []
+
+        pet_data[str(ctx.author.id)].append({"name": pet_name, "image": pet_image})
+
+        with open("pets.json", "w") as file:
+            json.dump(pet_data, file, indent=4)
+
+        await ctx.send("Pet added successfully!")
 
 
     @commands.command(aliases=['pp'])
