@@ -188,6 +188,11 @@ class funcmds(commands.Cog):
         except (requests.exceptions.RequestException, KeyError):
             await ctx.reply("Sorry, I couldn't fetch a cute cat at the moment. Please try again later.")
 
+    @commands.command()
+    async def addpet(self, ctx, image: str):
+        if image is None:
+            await ctx.reply("You need to send an image of your pet!")
+            
 
     @commands.command(aliases=['pp'])
     async def ppsize(self, ctx, member: discord.Member = None):
