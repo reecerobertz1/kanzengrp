@@ -347,7 +347,7 @@ class ebmessages(commands.Cog):
         embed.add_field(name="kanzen close", value="close kanzen application", inline=False)
         await ctx.reply(embed=embed)
 
-    @apps.command()
+    @kanzen.command()
     @kanzen_lead()
     @commands.has_permissions(manage_guild=True)
     async def appsopen(self, ctx):
