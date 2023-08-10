@@ -224,21 +224,17 @@ class funcmds(commands.Cog):
             pet_data = {}
 
         if pet_data:
-            user_pet_pairs = []
-            for user_id, pets in pet_data.items():
-                user = ctx.guild.get_member(int(user_id))
-                if user:
-                    for pet in pets:
-                        user_pet_pairs.append((user, pet))
-
-            for user, pet in user_pet_pairs:
+            user_id, pets = next(iter(pet_data.items()))  # Get the first user and their pets
+            user = ctx.guild.get_member(int(user_id))
+            
+            if user:
+                pet = pets[0]
                 pet_name = pet["name"]
                 pet_image = pet["image"]
+                
                 embed = discord.Embed(title=f"{user.display_name}'s Pet: {pet_name}", description=f"This is {pet_name}! <@{user.id}>'s pet", color=0x2b2d31)
                 embed.set_image(url=pet_image)
                 await ctx.send(embed=embed)
-                await ctx.send("Type `+pets` again to see the next pet, or stop here.")
-
         else:
             await ctx.send("No pets have been added yet.")
 
