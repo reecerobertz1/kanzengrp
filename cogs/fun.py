@@ -215,8 +215,6 @@ class funcmds(commands.Cog):
 
     @commands.command()
     async def pets(self, ctx):
-        pet_name = pet["name"]
-        pet_image = pet["image"]
         try:
             with open("pets.json", "r") as file:
                 pet_data = json.load(file)
@@ -224,11 +222,13 @@ class funcmds(commands.Cog):
             pet_data = {}
 
         if str(ctx.author.id) in pet_data:
-            embed = discord.Embed(title=f"{ctx.author.display_name}'s Pet",description=f'This is {pet["name"] }! <@[str{ctx.author.id}]>`s pet' ,color=0x2b2d31)
+            embed = discord.Embed(title=f"{ctx.author.display_name}'s Pets", color=0x2b2d31)
             for pet in pet_data[str(ctx.author.id)]:
-                embed.set_image(url=pet["image"])
-                embed.set_footer(text="Add your own pet with the +addpet command!")
-
+                pet_name = pet["name"]
+                pet_image = pet["image"]
+                embed.add_field(name=pet_name, value=f"This is {pet_name}! <@{ctx.author.id}>'s pet", inline=False)
+                embed.set_image(url=pet_image)
+            embed.set_footer(text="Add your own pet with the +addpet command!")
             await ctx.send(embed=embed)
         else:
             await ctx.send("You don't have any pets.")
