@@ -653,7 +653,6 @@ class ebmessages(commands.Cog):
         await ctx.send(embed=embed, view=view)
 
     @commands.command(aliases=['ap'])
-    @commands.has_permissions(manage_guild=True)
     async def answerpriv(self, ctx, answer: str):
         if ctx.message.reference is not None:
             try:
@@ -690,7 +689,6 @@ class ebmessages(commands.Cog):
             await ctx.send("Please reply to the question you want to answer.")
 
     @commands.command(aliases=['a'])
-    @commands.has_permissions(manage_guild=True)
     async def answer(self, ctx, answer: str):
         if ctx.message.reference is not None:
             try:
