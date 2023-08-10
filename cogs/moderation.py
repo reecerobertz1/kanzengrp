@@ -165,9 +165,9 @@ class Moderation(commands.Cog):
     @commands.command()
     @commands.has_permissions(manage_guild=True)
     async def hoshiupdate(self, ctx):
-        embed = discord.Embed(title='New update!',color=0x2b2d31)
+        embed = discord.Embed(title='New pet commands!',description="'`+pets`:\nSee pets added by other zennies!\n\n`+addpet`\nAdd your photos of your pets! make sure you add your pets name while doing the command, and also attach an image of your pet too!\n<:reply:1125269313432059904> example: `+addpet Joe`\n\nthese commands do only work for kanzen! and if you do  have any other command ideas for just kanzen or in general, do the `+suggest` command'", color=0x2b2d31)
         embed.set_footer(text="Go and use these commands in Hoshi's channel!")
-        embed.add_field(name='test', value='instead of doing the usual `+addaudio` to add an audio and `+audio` to get an audio, you can now do `+addsoft` `+softaudio` to add and get soft audios and `+addhot` `+hotaudios` to add and get hot audios!\nthe old commands have been removed and do not work anymore!\nif you have any other ideas for commands and games to add to hoshi, you can do `+suggest (type suggestion here)` to suggest or go to the suggestions channel if youre in daegu!', inline=False)
+        embed.set_author(name="Hoshi#3105", icon_url="https://cdn.discordapp.com/avatars/849682093575372841/f04c5815341216fdafe736a2564a4d09.png?size=1024")
         message = await ctx.reply("are you sure you want to send this update message?", embed=embed)
         await message.add_reaction('👍')
         
