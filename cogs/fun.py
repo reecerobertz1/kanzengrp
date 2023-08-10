@@ -221,20 +221,25 @@ class funcmds(commands.Cog):
         except (FileNotFoundError, json.JSONDecodeError):
             pet_data = {}
 
-        for user_id, pets in pet_data.items():
+        if pet_data:
+            random_user_id = random.choice(list(pet_data.keys()))
+            pets = pet_data[random_user_id]
+            random_pet = random.choice(pets)
+
             try:
-                user = await self.bot.fetch_user(int(user_id))
+                user = await self.bot.fetch_user(int(random_user_id))
             except discord.NotFound:
-                continue  # Skip if the user is not found
+                await ctx.send("Oops! An error occurred while fetching user information.")
+                return
             
-            for pet in pets:
-                pet_name = pet["name"]
-                pet_image = pet["image"]
-                
-                embed = discord.Embed(title=f"{user.display_name}'s Pet: {pet_name}", description=f"This is {pet_name}! <@{user.id}>'s pet", color=0x2b2d31)
-                embed.set_image(url=pet_image)
-                await ctx.send(embed=embed)
-                await asyncio.sleep(5)
+            pet_name = random_pet["name"]
+            pet_image = random_pet["image"]
+
+            embed = discord.Embed(title=f"{user.display_name}'s Pet: {pet_name}", description=f"This is {pet_name}! <@{user.id}>'s pet", color=0x2b2d31)
+            embed.set_image(url=pet_image)
+            await ctx.send(embed=embed)
+        else:
+            await ctx.send("No pets have been added yet.")
 
 
     @commands.command(aliases=['pp'])
