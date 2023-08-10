@@ -223,11 +223,12 @@ class funcmds(commands.Cog):
             pet_data = {}
 
         if str(ctx.author.id) in pet_data:
-            embed = discord.Embed(title=f"{ctx.author.display_name}'s Pets", color=0x2b2d31)
+            embed = discord.Embed(title=f"{ctx.author.display_name}'s Pet",description=f"This is {pet_name}!" ,color=0x2b2d31)
             for pet in pet_data[str(ctx.author.id)]:
                 pet_name = pet["name"]
                 pet_image = pet["image"]
-                embed.add_field(name=pet_name, value=pet_image, inline=False)
+                embed.set_image(url=f"{pet_image}")
+                embed.set_author(text="Add your own pet with the +addpet command!")
 
             await ctx.send(embed=embed)
         else:
