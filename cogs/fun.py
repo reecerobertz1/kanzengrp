@@ -190,8 +190,12 @@ class funcmds(commands.Cog):
             await ctx.reply("Sorry, I couldn't fetch a cute cat at the moment. Please try again later.")
 
     @commands.command()
-    async def addpet(self, ctx, pet_name, *, pet_image: str):
+    async def addpet(self, ctx, pet_name, *, pet_image: str = None):
         """Adds a pet to the pet data"""
+        if pet_image is None:
+            await ctx.send("Please provide an image link for your pet.")
+            return
+
         pet_data = {}
         
         try:
@@ -200,15 +204,15 @@ class funcmds(commands.Cog):
         except FileNotFoundError:
             pass
         
-        if ctx.author.id not in pet_data:
-            pet_data[ctx.author.id] = []
+        if str(ctx.author.id) not in pet_data:
+            pet_data[str(ctx.author.id)] = []
 
-        pet_data[ctx.author.id].append({"name": pet_name, "image": pet_image})
+        pet_data[str(ctx.author.id)].append({"name": pet_name, "image": pet_image})
         
         with open("pets.json", "w") as file:
             json.dump(pet_data, file, indent=4)
 
-        await ctx.reply(f"{pet_name} added successfully!")
+        await ctx.send("Pet added successfully!")
 
     @commands.command()
     async def pets(self, ctx):
