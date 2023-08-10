@@ -221,16 +221,19 @@ class funcmds(commands.Cog):
         except (FileNotFoundError, json.JSONDecodeError):
             pet_data = {}
 
-        if str(ctx.author.id) in pet_data:
-            for pet in pet_data[str(ctx.author.id)]:
-                pet_name = pet["name"]
-                pet_image = pet["image"]
-                
-                embed = discord.Embed(title=f"{ctx.author.display_name}'s Pet: {pet_name}", description=f"This is {pet_name}! <@{ctx.author.id}>'s pet", color=0x2b2d31)
-                embed.set_image(url=pet_image)
-                await ctx.send(embed=embed)
+        if pet_data:
+            embed = discord.Embed(title="Pets", color=0x2b2d31)
+            for user_id, pets in pet_data.items():
+                user = ctx.guild.get_member(int(user_id))
+                if user:
+                    for pet in pets:
+                        pet_name = pet["name"]
+                        pet_image = pet["image"]
+                        embed.add_field(name=f"{user.display_name}'s Pet: {pet_name}", value=f"This is {pet_name}! <@{user.id}>'s pet", inline=False)
+                        embed.set_image(url=pet_image)
+            await ctx.send(embed=embed)
         else:
-            await ctx.send("You don't have any pets.")
+            await ctx.send("No pets have been added yet.")
 
 
     @commands.command(aliases=['pp'])
