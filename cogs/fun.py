@@ -191,12 +191,14 @@ class funcmds(commands.Cog):
 
 
     @commands.command()
-    async def addpet(self, ctx, pet_name, *, pet_image: str = None):
+    async def addpet(self, ctx, pet_name):
         """Adds a pet to the pet data"""
-        if pet_image is None:
-            await ctx.send("Please provide an image link for your pet.")
+        if not ctx.message.attachments:
+            await ctx.send("Please attach an image of your pet.")
             return
-
+        
+        pet_image = ctx.message.attachments[0].url
+        
         try:
             with open("pets.json", "r") as file:
                 pet_data = json.load(file)
