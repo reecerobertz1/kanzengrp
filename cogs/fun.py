@@ -223,22 +223,22 @@ class funcmds(commands.Cog):
         except (FileNotFoundError, json.JSONDecodeError):
             pet_data = {}
 
-        user_id = str(ctx.author.id)
-        if user_id in pet_data:
-            pets = pet_data[user_id]
+        all_pets = [pet for pets in pet_data.values() for pet in pets]
 
-            if pets:
-                pet = random.choice(pets)
-                pet_name = pet["name"]
-                pet_image = pet["image"]
+        if all_pets:
+            pet = random.choice(all_pets)
+            pet_name = pet["name"]
+            pet_owner_id = pet.get("owner_id", "Unknown")
+            pet_image = pet["image"]
 
-                embed = discord.Embed(title=f"{ctx.author.display_name}'s Pet: {pet_name}", description=f"This is {pet_name}! <@{ctx.author.id}>'s pet", color=0x2b2d31)
-                embed.set_image(url=pet_image)
-                await ctx.send(embed=embed)
-            else:
-                await ctx.send("You don't have any pets.")
+            owner = ctx.guild.get_member(int(pet_owner_id))
+            owner_name = owner.display_name if owner else "Unknown User"
+
+            embed = discord.Embed(title=f"{owner_name}'s Pet: {pet_name}", description=f"This is {pet_name}! Owned by <@{pet_owner_id}>", color=0x2b2d31)
+            embed.set_image(url=pet_image)
+            await ctx.send(embed=embed)
         else:
-            await ctx.send("You don't have any pets.")
+            await ctx.send("No pets have been added yet.")
 
 
     @commands.command(aliases=['pp'])
