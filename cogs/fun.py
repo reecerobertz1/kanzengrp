@@ -222,7 +222,7 @@ class funcmds(commands.Cog):
             pet_data = {}
 
         if pet_data:
-            embed = discord.Embed(title="Pets", color=0x2b2d31)
+            embed = discord.Embed(color=0x2b2d31)
             for user_id, pets in pet_data.items():
                 user = ctx.guild.get_member(int(user_id))
                 if user:
