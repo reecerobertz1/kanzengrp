@@ -228,13 +228,16 @@ class funcmds(commands.Cog):
         if all_pets:
             pet = random.choice(all_pets)
             pet_name = pet["name"]
-            pet_owner_id = pet.get("owner_id", "Unknown")
+            pet_owner_id = pet.get("owner_id", None)
             pet_image = pet["image"]
 
-            owner = ctx.guild.get_member(int(pet_owner_id))
-            owner_name = owner.display_name if owner else "Unknown User"
+            owner_name = "Unknown User"
+            if pet_owner_id:
+                owner = ctx.guild.get_member(int(pet_owner_id))
+                if owner:
+                    owner_name = owner.display_name
 
-            embed = discord.Embed(title=f"{owner_name}'s Pet: {pet_name}", description=f"This is {pet_name}! Owned by <@{pet_owner_id}>", color=0x2b2d31)
+            embed = discord.Embed(title=f"{owner_name}'s Pet: {pet_name}", description=f"This is {pet_name}! Owned by {owner_name}", color=0x2b2d31)
             embed.set_image(url=pet_image)
             await ctx.send(embed=embed)
         else:
