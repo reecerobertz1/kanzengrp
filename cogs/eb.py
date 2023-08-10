@@ -80,6 +80,33 @@ class appbuttons(discord.ui.View):
     async def roles(self, interaction: discord.Interaction, button: discord.ui.Button):
          await interaction.response.send_modal(grprctkda())
 
+class kanzenapps(discord.ui.View):
+    def __init__ (self):
+        super().__init__(timeout=None)
+        self.value = None
+        
+    @discord.ui.button(label="Click to apply!")
+    async def roles(self, interaction: discord.Interaction, button: discord.ui.Button):
+         await interaction.response.send_modal(kapps())
+
+class daeguapps(discord.ui.View):
+    def __init__ (self):
+        super().__init__(timeout=None)
+        self.value = None
+        
+    @discord.ui.button(label="Click to apply!")
+    async def roles(self, interaction: discord.Interaction, button: discord.ui.Button):
+         await interaction.response.send_modal(dapps())
+
+class auraapps(discord.ui.View):
+    def __init__ (self):
+        super().__init__(timeout=None)
+        self.value = None
+        
+    @discord.ui.button(label="Click to apply!")
+    async def roles(self, interaction: discord.Interaction, button: discord.ui.Button):
+         await interaction.response.send_modal(aapps())
+
 class verifycode(discord.ui.View):
     def __init__ (self):
         super().__init__(timeout=None)
@@ -169,6 +196,72 @@ class grprctkda(ui.Modal, title='Applications'):
           embed.add_field(name='Edit:', value=f'{self.edit.value}', inline=False)
           embed.add_field(name='Editing app:', value=f'{self.app.value}', inline=False)
           embed.add_field(name='Group(s) they want to be in:', value=f'{self.grps.value}', inline=False)
+          embed.add_field(name='Anything else:', value=f'{self.extra.value}', inline=False)
+          embed.add_field(name="Discord ID:", value=interaction.user.id, inline=False)
+          channel = interaction.client.get_channel(1131006328207327294)
+          form = await channel.send(embed=embed)
+          await interaction.followup.send(f'Your application has been sent successfully', ephemeral=True)
+          await form.add_reaction("✅")
+          await form.add_reaction("❌")
+
+class kapps(ui.Modal, title='Applications'):
+     instagram = ui.TextInput(label='Instagram username', placeholder="Enter your Instagram username here...", style=discord.TextStyle.short)
+     edit = ui.TextInput(label='Edit link (Instagran or Streamable)', placeholder="Paste link here...", style=discord.TextStyle.short)
+     app = ui.TextInput(label='What app do you use for editing', placeholder="Editing app name...", style=discord.TextStyle.short)
+     extra = ui.TextInput(label='Anything else you would like us to know?', placeholder="Extra info here...", style=discord.TextStyle.paragraph, required=False)
+     async def on_submit(self, interaction: discord.Interaction):
+          await interaction.response.defer()
+          embed = discord.Embed(title='Forms', color=0x2b2d31)
+          embed.add_field(name="Discord Name", value=interaction.user.mention)
+          embed.add_field(name='Instagram Name:', value=f'{self.instagram.value}', inline=False)
+          embed.add_field(name='Instagram Account Link:', value=f'https://instagram.com/{self.instagram.value}', inline=False)
+          embed.add_field(name='Edit:', value=f'{self.edit.value}', inline=False)
+          embed.add_field(name='Editing app:', value=f'{self.app.value}', inline=False)
+          embed.add_field(name='Group(s) they want to be in:', value=f'kanzen', inline=False)
+          embed.add_field(name='Anything else:', value=f'{self.extra.value}', inline=False)
+          embed.add_field(name="Discord ID:", value=interaction.user.id, inline=False)
+          channel = interaction.client.get_channel(1131006328207327294)
+          form = await channel.send(embed=embed)
+          await interaction.followup.send(f'Your application has been sent successfully', ephemeral=True)
+          await form.add_reaction("✅")
+          await form.add_reaction("❌")
+
+class dapps(ui.Modal, title='Applications'):
+     instagram = ui.TextInput(label='Instagram username', placeholder="Enter your Instagram username here...", style=discord.TextStyle.short)
+     edit = ui.TextInput(label='Edit link (Instagran or Streamable)', placeholder="Paste link here...", style=discord.TextStyle.short)
+     app = ui.TextInput(label='What app do you use for editing', placeholder="Editing app name...", style=discord.TextStyle.short)
+     extra = ui.TextInput(label='Anything else you would like us to know?', placeholder="Extra info here...", style=discord.TextStyle.paragraph, required=False)
+     async def on_submit(self, interaction: discord.Interaction):
+          await interaction.response.defer()
+          embed = discord.Embed(title='Forms', color=0x2b2d31)
+          embed.add_field(name="Discord Name", value=interaction.user.mention)
+          embed.add_field(name='Instagram Name:', value=f'{self.instagram.value}', inline=False)
+          embed.add_field(name='Instagram Account Link:', value=f'https://instagram.com/{self.instagram.value}', inline=False)
+          embed.add_field(name='Edit:', value=f'{self.edit.value}', inline=False)
+          embed.add_field(name='Editing app:', value=f'{self.app.value}', inline=False)
+          embed.add_field(name='Group(s) they want to be in:', value=f'daegu', inline=False)
+          embed.add_field(name='Anything else:', value=f'{self.extra.value}', inline=False)
+          embed.add_field(name="Discord ID:", value=interaction.user.id, inline=False)
+          channel = interaction.client.get_channel(1131006328207327294)
+          form = await channel.send(embed=embed)
+          await interaction.followup.send(f'Your application has been sent successfully', ephemeral=True)
+          await form.add_reaction("✅")
+          await form.add_reaction("❌")
+
+class aapps(ui.Modal, title='Applications'):
+     instagram = ui.TextInput(label='Instagram username', placeholder="Enter your Instagram username here...", style=discord.TextStyle.short)
+     edit = ui.TextInput(label='Edit link (Instagran or Streamable)', placeholder="Paste link here...", style=discord.TextStyle.short)
+     app = ui.TextInput(label='What app do you use for editing', placeholder="Editing app name...", style=discord.TextStyle.short)
+     extra = ui.TextInput(label='Anything else you would like us to know?', placeholder="Extra info here...", style=discord.TextStyle.paragraph, required=False)
+     async def on_submit(self, interaction: discord.Interaction):
+          await interaction.response.defer()
+          embed = discord.Embed(title='Forms', color=0x2b2d31)
+          embed.add_field(name="Discord Name", value=interaction.user.mention)
+          embed.add_field(name='Instagram Name:', value=f'{self.instagram.value}', inline=False)
+          embed.add_field(name='Instagram Account Link:', value=f'https://instagram.com/{self.instagram.value}', inline=False)
+          embed.add_field(name='Edit:', value=f'{self.edit.value}', inline=False)
+          embed.add_field(name='Editing app:', value=f'{self.app.value}', inline=False)
+          embed.add_field(name='Group(s) they want to be in:', value=f'aura', inline=False)
           embed.add_field(name='Anything else:', value=f'{self.extra.value}', inline=False)
           embed.add_field(name="Discord ID:", value=interaction.user.id, inline=False)
           channel = interaction.client.get_channel(1131006328207327294)
@@ -361,7 +454,7 @@ class ebmessages(commands.Cog):
             reaction, user = await self.bot.wait_for('reaction_add', timeout=15.0, check=check)
             application_channel_id = 1133771634793250847
             application_channel = self.bot.get_channel(application_channel_id)
-            view = appbuttons()
+            view = kanzenapps()
             embed = discord.Embed(title="Kanzen Applications *!*", description="information:\n<a:bounceyarrow:1128155233437106187> You will receive a dm from our bot Hoshi with your application results\n<a:bounceyarrow:1128155233437106187>  You do not need to use a certain editing app to apply\n<a:bounceyarrow:1128155233437106187> All fandoms and styles are accepted here!\n<a:bounceyarrow:1128155233437106187> We mostly look for unique edits with smooth transitions\n<a:bounceyarrow:1128155233437106187> Velocity edits ARE NOT accepted\n<a:bounceyarrow:1128155233437106187> You can apply for any group, just be specific in your application what groups\n\napplication rules:\n<a:bounceyarrow:1128155233437106187> Follow the rules on the recruit posts posted by the group you want to join\n<a:bounceyarrow:1128155233437106187> Be patient with apps! staff are not active 24/7\n<a:bounceyarrow:1128155233437106187> Only apply once, unless we decide to reapps", color=0x2b2d31)
             await application_channel.purge()
             application_channel = await application_channel.send("<@&1131127124187684894> Kanzen Recruit!", embed=embed, view=view)
@@ -421,7 +514,7 @@ class ebmessages(commands.Cog):
             reaction, user = await self.bot.wait_for('reaction_add', timeout=15.0, check=check)
             application_channel_id = 1133771634793250847
             application_channel = self.bot.get_channel(application_channel_id)
-            view = appbuttons()
+            view = daeguapps()
             embed = discord.Embed(title="Daegu Applications *!*", description="information:\n<a:redarrow:1123372633182982155> You will receive a dm from our bot Hoshi with your application results\n<a:redarrow:1123372633182982155>  You do not need to use a certain editing app to apply\n<a:redarrow:1123372633182982155> All fandoms and styles are accepted here!\n<a:redarrow:1123372633182982155> We mostly look for unique edits with smooth transitions\n<a:redarrow:1123372633182982155> Velocity edits ARE NOT accepted\n<a:redarrow:1123372633182982155> You can apply for any group, just be specific in your application what groups\n\napplication rules:\n<a:redarrow:1123372633182982155> Follow the rules on the recruit posts posted by the group you want to join\n<a:redarrow:1123372633182982155> Be patient with apps! staff are not active 24/7\n<a:redarrow:1123372633182982155> Only apply once, unless we decide to reapps", color=0x2b2d31)
             await application_channel.purge()
             application_channel = await application_channel.send("<@&1131127124187684894> Daegu Recruit!", embed=embed, view=view)
@@ -434,6 +527,67 @@ class ebmessages(commands.Cog):
     @daegu_leads()
     @commands.has_permissions(manage_guild=True)
     async def closeapps(self, ctx):
+        message = await ctx.reply("are you sure you want to close the applications?")
+        await message.add_reaction('👍')
+
+        def check(reaction, user):
+            return user == ctx.author and str(reaction) == '👍'
+        
+        try:
+            reaction, user = await self.bot.wait_for('reaction_add', timeout=15.0, check=check)
+            application_channel_id = 1133771634793250847
+            application_channel = self.bot.get_channel(application_channel_id)
+            await application_channel.purge()
+            await application_channel.send("Applications are currently closed!")
+            await ctx.send("great! applications are now closed")
+            return await message.edit(content=None)
+        except asyncio.TimeoutError:
+            await message.edit(content="~~are you sure you want to open the applications?~~\nthe recruit has been cancelled!")
+
+
+    def aura_leads():
+        async def predicate(ctx):
+            role_id = 1131016346642161734
+            role = ctx.guild.get_role(role_id)
+            return role in ctx.author.roles
+        return commands.check(predicate)
+
+    @commands.group(invoke_without_command=True)
+    @aura_leads()
+    async def aura(self, ctx: commands.Context):
+        """group of commands to manage apps"""
+        embed = discord.Embed(title="app manager", color=0x2B2D31)
+        embed.add_field(name="aura openapp", value="opens aura applications", inline=False)
+        embed.add_field(name="aura closeap", value="close aura application", inline=False)
+        await ctx.reply(embed=embed)
+
+    @aura.command()
+    @aura_leads()
+    @commands.has_permissions(manage_guild=True)
+    async def openapp(self, ctx):
+        message = await ctx.reply("are you sure you want to open the applications for daegutowngrp?")
+        await message.add_reaction('👍')
+        
+        def check(reaction, user):
+            return user == ctx.author and str(reaction) == '👍'
+        
+        try:
+            reaction, user = await self.bot.wait_for('reaction_add', timeout=15.0, check=check)
+            application_channel_id = 1133771634793250847
+            application_channel = self.bot.get_channel(application_channel_id)
+            view = auraapps()
+            embed = discord.Embed(title="Daegu Applications *!*", description="information:\n<a:greenarrow:1123286634629169203> You will receive a dm from our bot Hoshi with your application results\n<a:greenarrow:1123286634629169203>  You do not need to use a certain editing app to apply\n<a:greenarrow:1123286634629169203> All fandoms and styles are accepted here!\n<a:greenarrow:1123286634629169203> We mostly look for unique edits with smooth transitions\n<a:greenarrow:1123286634629169203> Velocity edits ARE NOT accepted\n<a:greenarrow:1123286634629169203> You can apply for any group, just be specific in your application what groups\n\napplication rules:\n<a:greenarrow:1123286634629169203> Follow the rules on the recruit posts posted by the group you want to join\n<a:greenarrow:1123286634629169203> Be patient with apps! staff are not active 24/7\n<a:greenarrow:1123286634629169203> Only apply once, unless we decide to reapps", color=0x2b2d31)
+            await application_channel.purge()
+            application_channel = await application_channel.send("<@&1131127124187684894> Daegu Recruit!", embed=embed, view=view)
+            await ctx.send("great! applications are now open")
+            return await message.edit(content=None)
+        except asyncio.TimeoutError:
+            await message.edit(content="~~are you sure you want to open the applications for daegutowngrp?~~\nthe recruit has been cancelled!")
+
+    @aura.command()
+    @aura_leads()
+    @commands.has_permissions(manage_guild=True)
+    async def closeapp(self, ctx):
         message = await ctx.reply("are you sure you want to close the applications?")
         await message.add_reaction('👍')
 
