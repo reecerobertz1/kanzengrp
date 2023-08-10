@@ -191,13 +191,11 @@ class funcmds(commands.Cog):
 
 
     @commands.command()
-    async def addpet(self, ctx, pet_name):
+    async def addpet(self, ctx, pet_name, *, pet_image: str = None):
         """Adds a pet to the pet data"""
-        if not ctx.message.attachments:
-            await ctx.send("Please attach an image to add your pet.")
+        if pet_image is None:
+            await ctx.send("Please provide an image link for your pet.")
             return
-
-        pet_image = ctx.message.attachments[0].url
 
         try:
             with open("pets.json", "r") as file:
@@ -208,7 +206,7 @@ class funcmds(commands.Cog):
         if str(ctx.author.id) not in pet_data:
             pet_data[str(ctx.author.id)] = []
 
-        pet_data[str(ctx.author.id)].append({"name": pet_name, "image": pet_image})
+        pet_data[str(ctx.author.id)].append({"name": pet_name, "image": pet_image, "owner_id": str(ctx.author.id)})
 
         with open("pets.json", "w") as file:
             json.dump(pet_data, file, indent=4)
