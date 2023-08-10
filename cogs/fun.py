@@ -197,13 +197,11 @@ class funcmds(commands.Cog):
             await ctx.send("Please provide an image link for your pet.")
             return
 
-        pet_data = {}
-
         try:
             with open("pets.json", "r") as file:
                 pet_data = json.load(file)
         except FileNotFoundError:
-            pass
+            pet_data = {}
 
         if str(ctx.author.id) not in pet_data:
             pet_data[str(ctx.author.id)] = []
