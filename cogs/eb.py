@@ -29,7 +29,7 @@ class ebperks(discord.ui.View):
     @discord.ui.button(label="Click to claim perks!")
     async def ebperks(self, interaction: discord.Interaction, button: discord.Button):
         view = perksbutton()
-        perks = discord.Embed(title="Editors Block's perks", color=0x2b2d31)
+        perks = discord.Embed(title="Editors Block's perks",description="dqrkwrld perks:\n<a:arrowpink:1134860720777990224> plugins for after effects\n\nremqsi perks:\n<a:arrowpink:1134860720777990224> Remqsi's colouring packs 1 & 2\n<a:arrowpink:1134860720777990224> BTS Photos\n<a:arrowpink:1134860720777990224> Enhypen Photos\n<a:arrowpink:1134860720777990224> Blackpink Photos\n<a:arrowpink:1134860720777990224> Break your heart project file\n<a:arrowpink:1134860720777990224> Lisa candy project file\n\nprobshyunjin perks:\n<a:arrowpink:1134860720777990224> after effects colorings\n<a:arrowpink:1134860720777990224> turbulence displace settings for after effects\n\nhrts4h0bi perks:\n<a:arrowpink:1134860720777990224> alight motion project files\n<a:arrowpink:1134860720777990224> overlays from youtube" ,color=0x2b2d31)
         logs = discord.Embed(title="Perks have been claimed!", description=f"`{interaction.user.display_name}` has claimed the booster perks", color=0x2b2d31)
         logs.set_footer(text=f"id: {interaction.user.id}", icon_url=interaction.user.display_avatar)
         log = interaction.client.get_channel(1134857444250632343)
@@ -925,9 +925,13 @@ class ebmessages(commands.Cog):
     @commands.command()
     async def ebperks(self, ctx):
         view = ebperks()
-        embed = discord.Embed(title="Editor's Block perks", color=0x2b2d31)
+        embed = discord.Embed(title="Editor's Block perks",description="dqrkwrld perks:\n<a:arrowpink:1134860720777990224> plugins for after effects\n\nremqsi perks:\n<a:arrowpink:1134860720777990224> Remqsi's colouring packs 1 & 2\n<a:arrowpink:1134860720777990224> BTS Photos\n<a:arrowpink:1134860720777990224> Enhypen Photos\n<a:arrowpink:1134860720777990224> Blackpink Photos\n<a:arrowpink:1134860720777990224> Break your heart project file\n<a:arrowpink:1134860720777990224> Lisa candy project file\n\nprobshyunjin perks:\n<a:arrowpink:1134860720777990224> after effects colorings\n<a:arrowpink:1134860720777990224> turbulence displace settings for after effects\n\nhrts4h0bi perks:\n<a:arrowpink:1134860720777990224> alight motion project files\n<a:arrowpink:1134860720777990224> overlays from youtube" ,color=0x2b2d31)
         perks = ctx.guild.get_channel(1133772155499327538)
         await perks.send(embed=embed, view=view)
+
+    @commands.command()
+    async def perkpreview(self, ctx):
+        embed = discord.Embed(title="Editors block perks", description="dqrkwrld perks:\n<a:arrowpink:1134860720777990224> plugins for after effects\n\nremqsi perks:\n<a:arrowpink:1134860720777990224> Remqsi's colouring packs 1 & 2\n<a:arrowpink:1134860720777990224> BTS Photos\n<a:arrowpink:1134860720777990224> Enhypen Photos\n<a:arrowpink:1134860720777990224> Blackpink Photos\n<a:arrowpink:1134860720777990224> Break your heart project file\n<a:arrowpink:1134860720777990224> Lisa candy project file\n\nprobshyunjin perks:\n<a:arrowpink:1134860720777990224> after effects colorings\n<a:arrowpink:1134860720777990224> turbulence displace settings for after effects\n\nhrts4h0bi perks:\n<a:arrowpink:1134860720777990224> alight motion project files\n<a:arrowpink:1134860720777990224> overlays from youtube\n\nYou can also get a custom role in the server, it can have a name and color of your choice! And you can have a custom role icon when the server reaches level 2!", color=0x2b2d31)
 
 
 async def setup(bot):
