@@ -165,7 +165,7 @@ class Moderation(commands.Cog):
     @commands.command()
     @commands.has_permissions(manage_guild=True)
     async def hoshiupdate(self, ctx):
-        embed = discord.Embed(title='New battle command!',description="Battle with other members of kanzen and see who is the better zennie!\nUse the command `+battle` or `+fight` and mention your opponent\n<:reply:1125269313432059904> example: +battle <@609515684740988959> | +fight <@609515684740988959>\n\nYou both start of with 100 HP and you can either `attack` to deal damage, `defend` to heal or `escape` to escape\nMake sure you answer within 30 seconds otherwise your opponent will deal 999 damage and 1 shot you\n\nHave fun! and have fun killing each other", color=0x2b2d31)
+        embed = discord.Embed(title='New battle game!',description="Battle with other members of kanzen and see who is the better zennie!\nUse the command `+battle` or `+fight` and mention your opponent\n<:reply:1125269313432059904> example: +battle <@609515684740988959> | +fight <@609515684740988959>\n\nYou both start of with 100 HP and you can either `attack` to deal damage, `defend` to heal or `escape` to escape\nMake sure you answer within 30 seconds otherwise your opponent will deal 999 damage and 1 shot you\n\nHave fun! and have fun killing each other\n**This game only works in kanzengrp**", color=0x2b2d31)
         embed.set_footer(text="Go and use these commands in Hoshi's channel!")
         embed.set_author(name="Hoshi#3105", icon_url="https://cdn.discordapp.com/avatars/849682093575372841/f04c5815341216fdafe736a2564a4d09.png?size=1024")
         message = await ctx.reply("are you sure you want to send this update message?", embed=embed)
