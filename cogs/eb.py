@@ -19,9 +19,10 @@ class ebperks(discord.ui.View):
     @discord.ui.button(label="Click to claim perks!")
     async def ebperks(self, interaction: discord.Interaction, button: discord.Button):
         perks = discord.Embed(title="Editors Block's perks", color=0x2b2d31)
-        logs = discord.Embed(title="Perks have been claimed!", description="")
+        logs = discord.Embed(title="Perks have been claimed!", description=f"`{interaction.user.display_name}` has claimed the booster perks", color=0x2b2d31)
         log = interaction.client.get_channel(1134857444250632343)
         await interaction.user.send(embed=perks)
+        await interaction.response.send_message("I have sent you our perks! check DMs", ephemeral=True)
         await log.send(embed=logs)
 
 class staffinfo(discord.ui.View):
