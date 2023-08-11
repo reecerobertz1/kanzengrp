@@ -125,7 +125,7 @@ class Battle(commands.Cog):
         else:
             winner = p2
             loser = p1
-        case = random.randrange(0, 4)
+        case = random.randrange(0, 6)
         if case == 0:
             await ctx.send(f"{winner.member.mention} is having human meat for dinner tonight.")
         if case == 1:
@@ -134,6 +134,12 @@ class Battle(commands.Cog):
             await ctx.send(f"{winner.member.mention} did some good stabbing.")
         if case == 3:
             await ctx.send(f"{winner.member.mention} Is victorious!")
+        if case == 4:
+            await ctx.send(f'{winner.member.mention} really just did a fortnite dance after winning... embarrassing <a:fortnitekid12:1132210068847329322>')
+        if case == 5:
+            await ctx.send(f'{loser.member.mention} will get their revenge on {winner.member.mention} soon...\n{winner.member.mention} better sleep with one eye open')
+        if case == 6:
+            await ctx.send(f'RIP {loser.member.mention} you will not be missed....  because {winner.member.mention} has won the battle')
 
 async def setup(bot):
     await bot.add_cog(Battle(bot))
