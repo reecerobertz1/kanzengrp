@@ -177,7 +177,7 @@ class Moderation(commands.Cog):
         try:
             reaction, user = await self.bot.wait_for('reaction_add', timeout=15.0, check=check)
             
-            kanzen_channel_id = 1133772155499327538
+            kanzen_channel_id = 1122655402899800234
             aura_channel_id = 1122242141037547531
             
             for guild in self.bot.guilds:
