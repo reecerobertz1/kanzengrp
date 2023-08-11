@@ -165,7 +165,7 @@ class Moderation(commands.Cog):
     @commands.command()
     @commands.has_permissions(manage_guild=True)
     async def hoshiupdate(self, ctx):
-        embed = discord.Embed(title='test',description="", color=0x2b2d31)
+        embed = discord.Embed(title='test', description="", color=0x2b2d31)
         embed.set_footer(text="Go and use these commands in Hoshi's channel!")
         embed.set_author(name="Hoshi#3105", icon_url="https://cdn.discordapp.com/avatars/849682093575372841/f04c5815341216fdafe736a2564a4d09.png?size=1024")
         message = await ctx.reply("are you sure you want to send this update message?", embed=embed)
@@ -176,9 +176,9 @@ class Moderation(commands.Cog):
         try:
             reaction, user = await self.bot.wait_for('reaction_add', timeout=15.0, check=check)
             kanzen = ctx.guild.get_channel(1133772155499327538)
-            await kanzen.send("test", embed=embed)
+            await kanzen.send(embed=embed)
             aura = ctx.guild.get_channel(1122242141037547531)
-            await aura.send("test", embed=embed)
+            await aura.send(embed=embed)
             await ctx.send("great! i have sent out the update message!")
             return await message.edit(content=None)
         except asyncio.TimeoutError:
