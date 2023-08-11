@@ -195,5 +195,33 @@ class Moderation(commands.Cog):
         except asyncio.TimeoutError:
             await message.edit(content="~~Are you sure you want to send this update message?~~\nThe update has been cancelled")
 
+    @commands.command()
+    @commands.has_permissions(manage_guild=True)
+    async def khoshiupdate(self, ctx):
+        embed = discord.Embed(title='test', description="", color=0x2b2d31)
+        embed.set_footer(text="Go and use these commands in Hoshi's channel!")
+        embed.set_author(name="Hoshi#3105", icon_url="https://cdn.discordapp.com/avatars/849682093575372841/f04c5815341216fdafe736a2564a4d09.png?size=1024")
+        message = await ctx.reply("Are you sure you want to send this update message?", embed=embed)
+        await message.add_reaction('👍')
+        
+        def check(reaction, user):
+            return user == ctx.author and str(reaction) == '👍'
+        
+        try:
+            reaction, user = await self.bot.wait_for('reaction_add', timeout=15.0, check=check)
+            
+            kanzen_channel_id = 1122655402899800234
+            
+            for guild in self.bot.guilds:
+                kanzen = guild.get_channel(kanzen_channel_id)
+                
+                if kanzen:
+                    await kanzen.send("<@&1122655473368314017>", embed=embed)
+            
+            await ctx.send("Great! I have sent out the update message!")
+            await message.edit(content=None)
+        except asyncio.TimeoutError:
+            await message.edit(content="~~Are you sure you want to send this update message?~~\nThe update has been cancelled")
+
 async def setup(bot):
     await bot.add_cog(Moderation(bot))
