@@ -11,6 +11,16 @@ from discord.ui import View, Select
 from typing import List, Optional
 from discord import ui
 
+class perksbutton(discord.ui.View):
+    def __init__(self):
+        super().__init__(timeout=None)
+        self.value = None
+
+    @discord.ui.button(label="Get perks here!")
+    async def perksbutton(self, interaction: discord.Interaction, button: discord.Button):
+        await interaction.response.send_message("[dqrkwrld perks](https://mega.nz/folder/dJtFlQYR#Wf7w-o4QWK6kzHlqVHEOuQ)\n[remqsi perks](https://mega.nz/folder/N1tgSLqD#DZ73U23GXk1LqyZKUpdNww)\n[hrts4h0bi perks](https://mega.nz/folder/dot3xagS#PG6CmVUW8XT1h1mUMQxlXg)\n[probshyunjin  perks](https://mega.nz/folder/3dZDET4T#6uFIPQSlqrHnihXcXvGjuA)")
+        await interaction.response.send_message("If some links do not work, feel free to contact an owner or a staff member!")
+
 class ebperks(discord.ui.View):
     def __init__(self):
         super().__init__(timeout=None)
@@ -18,10 +28,12 @@ class ebperks(discord.ui.View):
 
     @discord.ui.button(label="Click to claim perks!")
     async def ebperks(self, interaction: discord.Interaction, button: discord.Button):
+        view = perksbutton()
         perks = discord.Embed(title="Editors Block's perks", color=0x2b2d31)
         logs = discord.Embed(title="Perks have been claimed!", description=f"`{interaction.user.display_name}` has claimed the booster perks", color=0x2b2d31)
+        logs.set_footer(text=f"id: {interaction.user.id}", icon_url=interaction.user.display_avatar)
         log = interaction.client.get_channel(1134857444250632343)
-        await interaction.user.send(embed=perks)
+        await interaction.user.send(embed=perks, view=view)
         await interaction.response.send_message("I have sent you our perks! check DMs", ephemeral=True)
         await log.send(embed=logs)
 
