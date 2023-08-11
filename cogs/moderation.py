@@ -177,13 +177,18 @@ class Moderation(commands.Cog):
         try:
             reaction, user = await self.bot.wait_for('reaction_add', timeout=15.0, check=check)
             
-            kanzen_channel_id = 1122655402899800234
-            kanzen = ctx.guild.get_channel(kanzen_channel_id)
-            await kanzen.send(embed=embed)
-            
+            kanzen_channel_id = 1133772155499327538
             aura_channel_id = 1122242141037547531
-            aura = ctx.guild.get_channel(aura_channel_id)
-            await aura.send(embed=embed)
+            
+            for guild in self.bot.guilds:
+                kanzen = guild.get_channel(kanzen_channel_id)
+                aura = guild.get_channel(aura_channel_id)
+                
+                if kanzen:
+                    await kanzen.send(embed=embed)
+                
+                if aura:
+                    await aura.send(embed=embed)
             
             await ctx.send("Great! I have sent out the update message!")
             await message.edit(content=None)
