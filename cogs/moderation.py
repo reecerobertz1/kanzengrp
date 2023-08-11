@@ -185,10 +185,10 @@ class Moderation(commands.Cog):
                 aura = guild.get_channel(aura_channel_id)
                 
                 if kanzen:
-                    await kanzen.send(embed=embed)
+                    await kanzen.send("<@&1122655473368314017>", embed=embed)
                 
                 if aura:
-                    await aura.send(embed=embed)
+                    await aura.send("<@&1122999466438438962>", embed=embed)
             
             await ctx.send("Great! I have sent out the update message!")
             await message.edit(content=None)
