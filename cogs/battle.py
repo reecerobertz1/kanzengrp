@@ -90,14 +90,14 @@ class Battle(commands.Cog):
         else:
             self.occupied.append(ctx.channel.id)
         if opponent == ctx.message.author:
-            await ctx.send(f"{ctx.author.mention} hurt itself in its confusion.")
+            await ctx.send(f"{ctx.author.mention} hurt itself in its confusion")
             self.occupied.remove(ctx.channel.id)
             return
         if opponent.bot:
             await ctx.reply(f"You try fighting the robot.\n\n*pieces of you can be found cut up on the battlefield*")
             self.occupied.remove(ctx.channel.id)
             return
-        if opponent == None:
+        if opponent is None:
             await ctx.reply("You need to mention someone else to battle!")
             return
         if (random.randrange(0, 2)) == 0:
