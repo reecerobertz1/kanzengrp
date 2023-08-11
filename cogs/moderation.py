@@ -177,7 +177,7 @@ class Moderation(commands.Cog):
         try:
             reaction, user = await self.bot.wait_for('reaction_add', timeout=15.0, check=check)
             
-            kanzen_channel_id = 1133772155499327538
+            kanzen_channel_id = 1122655402899800234
             kanzen = ctx.guild.get_channel(kanzen_channel_id)
             if kanzen:
                 await kanzen.send(embed=embed)
