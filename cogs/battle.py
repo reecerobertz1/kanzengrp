@@ -54,12 +54,12 @@ class Battle(commands.Cog):
             if choice.content.lower() == "defend":
                 healAmount, defenseMaxed = await self.defend(p1)
                 if defenseMaxed:
-                    await ctx.send(f"You healed for `{healAmount}`, but your defense is maxed out")
+                    await ctx.reply(f"You healed for `{healAmount}`, but your defense is maxed out")
                 else:
-                    await ctx.send(f"You healed for `{healAmount}`, and your defense rose by `5`")
+                    await ctx.reply(f"You healed for `{healAmount}`, and your defense rose by `5`")
             elif choice.content.lower() == "attack":
                 damage = await self.attack(p2)
-                await ctx.send(f"You attacked dealing **{damage}** damage")
+                await ctx.reply(f"You attacked dealing **{damage}** damage")
             elif choice.content.lower() == "escape":
                 await ctx.send(f"{p1.member.name} tried escaping. **tried**")
                 await ctx.send(embed=discord.Embed(title="CRITICAL HIT", description="9999 Damage!",
@@ -71,13 +71,12 @@ class Battle(commands.Cog):
             await ctx.send(embed=discord.Embed(title="CRITICAL HIT", description="9999 Damage!",
                                                colour=0x2b2d31))
             p1.hp = -9999
-        await ctx.send(
-            f" \n {p1.member.mention} STATS:  **HP:** `{p1.hp}` |  **Defense**: `{p1.defense}`\n \n {p2.member.mention} STATS: **HP**: `{p2.hp}` |  **Defense**: `{p2.defense}` \n")
+        await ctx.send(embed = discord.Embed(title="Stats"f" {p1.member.mention}\n**HP:** `{p1.hp}`\n**Defense**: `{p1.defense}`\n \n {p2.member.mention}\n**HP**: `{p2.hp}`\n**Defense**: `{p2.defense}`", color=0x2b2d31))
 
     @commands.command(aliases=["battle"])
     async def fight(self, ctx, opponent: discord.Member):
         if ctx.channel.id in self.occupied:
-            await ctx.send("This battlefield is occupied")
+            await ctx.reply("This battlefield is occupied")
             return
         else:
             self.occupied.append(ctx.channel.id)
@@ -86,7 +85,7 @@ class Battle(commands.Cog):
             self.occupied.remove(ctx.channel.id)
             return
         if opponent.bot:
-            await ctx.send(f"You try fighting the robot.\n\n*pieces of you can be found cut up on the battlefield*")
+            await ctx.reply(f"You try fighting the robot.\n\n*pieces of you can be found cut up on the battlefield*")
             self.occupied.remove(ctx.channel.id)
             return
         if (random.randrange(0, 2)) == 0:
