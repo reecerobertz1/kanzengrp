@@ -30,6 +30,14 @@ class Battle(commands.Cog):
                      * 1 - player.defense / 100)
         player.hp -= damage
         return damage
+    
+    def kanzen_only():
+        def predicate(ctx: commands.Context):
+            if ctx.guild.id == 1121841073673736215:
+                return True
+            else:
+                return False
+        return commands.check(predicate)
 
     async def defend(self, player):
         player.defense += 5
@@ -74,6 +82,7 @@ class Battle(commands.Cog):
         await ctx.send(embed = discord.Embed(title="Stats", description=f" {p1.member.mention}\n**HP:** `{p1.hp}`\n**Defense**: `{p1.defense}`\n \n {p2.member.mention}\n**HP**: `{p2.hp}`\n**Defense**: `{p2.defense}`", color=0x2b2d31))
 
     @commands.command(aliases=["battle"])
+    @kanzen_only()
     async def fight(self, ctx, opponent: discord.Member):
         if ctx.channel.id in self.occupied:
             await ctx.reply("This battlefield is occupied")
