@@ -71,7 +71,7 @@ class Battle(commands.Cog):
             await ctx.send(embed=discord.Embed(title="CRITICAL HIT", description="9999 Damage!",
                                                colour=0x2b2d31))
             p1.hp = -9999
-        await ctx.send(embed = discord.Embed(title="Stats"f" {p1.member.mention}\n**HP:** `{p1.hp}`\n**Defense**: `{p1.defense}`\n \n {p2.member.mention}\n**HP**: `{p2.hp}`\n**Defense**: `{p2.defense}`", color=0x2b2d31))
+        await ctx.send(embed = discord.Embed(title="Stats", description=f" {p1.member.mention}\n**HP:** `{p1.hp}`\n**Defense**: `{p1.defense}`\n \n {p2.member.mention}\n**HP**: `{p2.hp}`\n**Defense**: `{p2.defense}`", color=0x2b2d31))
 
     @commands.command(aliases=["battle"])
     async def fight(self, ctx, opponent: discord.Member):
