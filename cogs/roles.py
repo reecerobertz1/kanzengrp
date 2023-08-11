@@ -59,7 +59,7 @@ class Roles(commands.Cog):
                 await interaction.followup.send("Invalid role selection. Please try again.", ephemeral=True)
 
         select.callback = add_role
-        view = View()
+        view = View(timeout=None)
         view.add_item(select)
 
         embed = discord.Embed(title="<:leaf:1137454366886993950> What are your pronouns?", description="Which of the following pronouns do you use? These roles can help other members of the server use the correct pronouns.\n\n<:1:1137455321028251708> - <@&1131127428668997737> \n<:2:1137455517577531565> - <@&1131127209952809031> \n<:3:1137455658258673704> - <@&1131127449753751663> \n<:4:1137455776877781107> - <@&1131127472142958622> \n<:5:1137455941609078824> - <@&1131127502396465213> \n<:6:1137456046978383892> - <@&1131127523456069723>", color=0x2b2d31)
@@ -127,7 +127,7 @@ class Roles(commands.Cog):
                 await interaction.followup.send("No changes were made to your roles.", ephemeral=True)
 
         select.callback = add_role
-        view = View()
+        view = View(timeout=None)
         view.add_item(select)
 
         embed = discord.Embed(title="<:leaf:1137454366886993950> What server pings would you like?", description="The staff will ping these roles whenever there's something related to these roles happening in the server.\n\n<:1:1137455321028251708> - <@&1133770119777099866> \n<:2:1137455517577531565> - <@&1131127168102055996> \n<:3:1137455658258673704> - <@&1131127104226992208> \n<:4:1137455776877781107> - <@&1131005057417105418> \n<:5:1137455941609078824> - <@&1131127124187684894>", color=0x2b2d31)
@@ -195,7 +195,7 @@ class Roles(commands.Cog):
                 await interaction.followup.send("No changes were made to your roles.", ephemeral=True)
 
         select.callback = add_role
-        view = View()
+        view = View(timeout=None)
         view.add_item(select)
 
         embed = discord.Embed(title="<:leaf:1137454366886993950> What member pings would you like?",
