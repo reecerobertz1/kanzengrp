@@ -20,9 +20,8 @@ class ebperks(discord.ui.View):
     async def ebperks(self, interaction: discord.Interaction, button: discord.Button):
         perks = discord.Embed(title="Editors Block's perks", color=0x2b2d31)
         logs = discord.Embed(title="Perks have been claimed!", description="")
-        perks = interaction.client.get_channel(1133772155499327538)
         log = interaction.client.get_channel(1134857444250632343)
-        await perks.send(embed=perks)
+        await interaction.user.send(embed=perks)
         await log.send(embed=logs)
 
 class staffinfo(discord.ui.View):
