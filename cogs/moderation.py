@@ -176,9 +176,9 @@ class Moderation(commands.Cog):
         try:
             reaction, user = await self.bot.wait_for('reaction_add', timeout=15.0, check=check)
             kanzen = ctx.guild.get_channel(1133772155499327538)
-            await kanzen.send("<@1122655473368314017>", embed=embed)
+            await kanzen.send("test", embed=embed)
             aura = ctx.guild.get_channel(1122242141037547531)
-            await aura.send("<@1122999466438438962>", embed=embed)
+            await aura.send("test", embed=embed)
             await ctx.send("great! i have sent out the update message!")
             return await message.edit(content=None)
         except asyncio.TimeoutError:
