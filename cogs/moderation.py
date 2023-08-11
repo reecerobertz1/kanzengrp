@@ -175,7 +175,7 @@ class Moderation(commands.Cog):
             return user == ctx.author and str(reaction) == '👍'
         try:
             reaction, user = await self.bot.wait_for('reaction_add', timeout=15.0, check=check)
-            kanzen = ctx.guild.get_channel(1133772155499327538)
+            kanzen = ctx.guild.get_channel(1122655402899800234)
             await kanzen.send(embed=embed)
             aura = ctx.guild.get_channel(1122242141037547531)
             await aura.send(embed=embed)
