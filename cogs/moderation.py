@@ -165,7 +165,7 @@ class Moderation(commands.Cog):
     @commands.command()
     @commands.has_permissions(manage_guild=True)
     async def hoshiupdate(self, ctx):
-        embed = discord.Embed(title='New battle game!',description="Battle with other members of kanzen and see who is the better zennie!\nUse the command `+battle` or `+fight` and mention your opponent\n<:reply:1125269313432059904> example: +battle <@609515684740988959> | +fight <@609515684740988959>\n\nYou both start of with 100 HP and you can either `attack` to deal damage, `defend` to heal or `escape` to escape\nMake sure you answer within 30 seconds otherwise your opponent will deal 999 damage and 1 shot you\n\nHave fun! and have fun killing each other\n**This game only works in kanzengrp**", color=0x2b2d31)
+        embed = discord.Embed(title='test',description="", color=0x2b2d31)
         embed.set_footer(text="Go and use these commands in Hoshi's channel!")
         embed.set_author(name="Hoshi#3105", icon_url="https://cdn.discordapp.com/avatars/849682093575372841/f04c5815341216fdafe736a2564a4d09.png?size=1024")
         message = await ctx.reply("are you sure you want to send this update message?", embed=embed)
@@ -175,14 +175,12 @@ class Moderation(commands.Cog):
             return user == ctx.author and str(reaction) == '👍'
         try:
             reaction, user = await self.bot.wait_for('reaction_add', timeout=15.0, check=check)
-            servers = [{'server_id': 1121841073673736215,'channel_id': 1122655402899800234,'ping_role': '<@&1122655473368314017>'},{    'server_id': 957987670787764224,    'channel_id': 1122242141037547531,    'ping_role': '<@&1122999466438438962>'},{    'server_id': 896619762354892821,    'channel_id': 1063639288178286663,    'ping_role': '<@&939923109413290005>'}]
-
-            for server_data in servers:
-                server = self.bot.get_guild(server_data['server_id'])
-                channel = server.get_channel(server_data['channel_id'])
-                await channel.send(server_data['ping_role'], embed=embed)
-                await ctx.send("great! i have sent out the update message!")
-                return await message.edit(content=None)
+            kanzen = ctx.guild.get_channel(1133772155499327538)
+            await kanzen.send("<@1122655473368314017>", embed=embed)
+            aura = ctx.guild.get_channel(1122242141037547531)
+            await aura.send("<@1122999466438438962>", embed=embed)
+            await ctx.send("great! i have sent out the update message!")
+            return await message.edit(content=None)
         except asyncio.TimeoutError:
             await message.edit(content="~~are you sure you want to send this update message?~~\nthe update has been cancelled")
 
