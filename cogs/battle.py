@@ -97,7 +97,7 @@ class Battle(commands.Cog):
             await ctx.reply(f"You try fighting the robot.\n\n*pieces of you can be found cut up on the battlefield*")
             self.occupied.remove(ctx.channel.id)
             return
-        if opponent is not None:
+        if opponent is None:
             await ctx.reply("You need to mention someone else to battle!")
             return
         if (random.randrange(0, 2)) == 0:
