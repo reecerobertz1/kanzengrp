@@ -19,7 +19,7 @@ class perksbutton(discord.ui.View):
     @discord.ui.button(label="Get perks here!")
     async def perksbutton(self, interaction: discord.Interaction, button: discord.Button):
         await interaction.response.send_message("[dqrkwrld perks](https://mega.nz/folder/dJtFlQYR#Wf7w-o4QWK6kzHlqVHEOuQ)\n[remqsi perks](https://mega.nz/folder/N1tgSLqD#DZ73U23GXk1LqyZKUpdNww)\n[hrts4h0bi perks](https://mega.nz/folder/dot3xagS#PG6CmVUW8XT1h1mUMQxlXg)\n[probshyunjin  perks](https://mega.nz/folder/3dZDET4T#6uFIPQSlqrHnihXcXvGjuA)")
-        await interaction.response.send_message("If some links do not work, feel free to contact an owner or a staff member!")
+        await interaction.followup.send("If some links do not work, feel free to contact an owner or a staff member!")
 
 class ebperks(discord.ui.View):
     def __init__(self):
