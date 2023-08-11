@@ -63,13 +63,13 @@ class Battle(commands.Cog):
             elif choice.content.lower() == "escape":
                 await ctx.send(f"{p1.member.name} tried escaping. **tried**")
                 await ctx.send(embed=discord.Embed(title="CRITICAL HIT", description="9999 Damage!",
-                                                   colour=discord.Color.red()))
+                                                   colour=0x2b2d31))
                 p1.hp = -9999
 
         except asyncio.TimeoutError:
             await ctx.send(f"`{p2.member.name}` got tired of waiting and bonked `{p1.member.name}` on the head.")
             await ctx.send(embed=discord.Embed(title="CRITICAL HIT", description="9999 Damage!",
-                                               colour=discord.Color.red()))
+                                               colour=0x2b2d31))
             p1.hp = -9999
         await ctx.send(
             f" \n {p1.member.mention} STATS:  **HP:** `{p1.hp}` |  **Defense**: `{p1.defense}`\n \n {p2.member.mention} STATS: **HP**: `{p2.hp}` |  **Defense**: `{p2.defense}` \n")
@@ -97,8 +97,7 @@ class Battle(commands.Cog):
             p2 = Player(ctx.message.author)
         await ctx.send(embed=discord.Embed(title="Battle",
                                            description=f"""{ctx.author.mention} is challenging {opponent.mention}!
-        let the games begin."""))
-        await ctx.send(f"{p1.member.mention} got the jump on {p2.member.mention}!")
+        let the games begin.""", color=0x2b2d31))
         toggle = True
         while p1.hp >= 0 and p2.hp >= 0:
             if toggle:
