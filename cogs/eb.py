@@ -11,6 +11,20 @@ from discord.ui import View, Select
 from typing import List, Optional
 from discord import ui
 
+class ebperks(discord.ui.View):
+    def __init__(self):
+        super().__init__(timeout=None)
+        self.value = None
+
+    @discord.ui.button(label="Click to claim perks!")
+    async def ebperks(self, interaction: discord.Interaction, button: discord.Button):
+        perks = discord.Embed(title="Editors Block's perks", color=0x2b2d31)
+        logs = discord.Embed(title="Perks have been claimed!", description="")
+        perks = interaction.client.get_channel(1133772155499327538)
+        log = interaction.client.get_channel(1134857444250632343)
+        await perks.send(embed=perks)
+        await log.send(embed=logs)
+
 class staffinfo(discord.ui.View):
     def __init__ (self):
         super().__init__(timeout=None)
@@ -895,6 +909,14 @@ class ebmessages(commands.Cog):
         embed.set_footer(text="Click the buttons below to show more!")
         embed.set_thumbnail(url=ctx.guild.icon)
         await ctx.send("<@&1131006067564875806>", embed=embed, view=view)
+
+    @commands.command()
+    async def ebperks(self, ctx):
+        view = ebperks()
+        embed = discord.Embed(title="Editor's Block perks", color=0x2b2d31)
+        perks = ctx.guild.get_channel(1133772155499327538)
+        await perks.send(embed=embed, view=view)
+
 
 async def setup(bot):
     await bot.add_cog(ebmessages(bot))
