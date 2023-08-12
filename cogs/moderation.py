@@ -223,5 +223,13 @@ class Moderation(commands.Cog):
         except asyncio.TimeoutError:
             await message.edit(content="~~Are you sure you want to send this update message?~~\nThe update has been cancelled")
 
+    @commands.command()
+    async def newwelc(self, ctx):
+        embed = discord.Embed(title='Welcome to Kanzen!',
+                              color=0x2b2d31, 
+                              description=f"Welcome to kanzen {ctx.author.name}!\n<a:bounceyarrow:1128155233437106187> Read our [information](https://discord.com/channels/1121841073673736215/1121913361169391666)\n<a:bounceyarrow:1128155233437106187> Get your roles [here](https://discord.com/channels/1121841073673736215/1139958872279359518)\n<a:bounceyarrow:1128155233437106187> Logos and hashtag are [here](https://discord.com/channels/1121841073673736215/1121913361169391666)")
+        embed.set_footer(text='Need help? ping @lead or @staff', icon_url=ctx.author.display_avatar.url)
+        await ctx.send(f'<a:kanzenflower:1128154723262943282> {ctx.author.mention} Welcome to Kanzengrp!', embed=embed)
+
 async def setup(bot):
     await bot.add_cog(Moderation(bot))

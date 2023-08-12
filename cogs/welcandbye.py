@@ -21,13 +21,15 @@ class welcandleave(commands.Cog):
     @commands.Cog.listener()
     async def on_member_join(self, member: discord.Member):
         if member.guild.id == self.server1_id:
-            embed = discord.Embed(title='Welcome to Kanzen!', color=0x2b2d31, description=f"<a:bounceyarrow:1128155233437106187> Read the our [information](https://discord.com/channels/1121841073673736215/1121913361169391666)\n<a:bounceyarrow:1128155233437106187> Go and get your [roles](https://discord.com/channels/1121841073673736215/1139958872279359518)\n<a:bounceyarrow:1128155233437106187> Need help? Ping <@&1121842279351590973>!")
-            embed.set_footer(text='Hope you enjoy your stay!', icon_url=member.display_avatar.url)
+            embed = discord.Embed(title='Welcome to Kanzen!', 
+                                  color=0x2b2d31, 
+                                  description=f"Welcome to kanzen {member.name}!\n<a:bounceyarrow:1128155233437106187> Read our [information](https://discord.com/channels/1121841073673736215/1121913361169391666)\n<a:bounceyarrow:1128155233437106187> Get your roles [here](https://discord.com/channels/1121841073673736215/1139958872279359518)\n<a:bounceyarrow:1128155233437106187> Logos and hashtag are [here](https://discord.com/channels/1121841073673736215/1121913361169391666)")
+            embed.set_footer(text='Need help? ping @lead or @staff', icon_url=member.display_avatar.url)
             channel = self.bot.get_channel(self.server1_welcome_channel_id)
             channel2 = self.bot.get_channel(1125053619893440653)
             embed.set_thumbnail(url=member.display_avatar.url)
             await channel2.send(f"<a:kanzenflower:1128154723262943282> {member.mention} Welcome to **Kanzengrp!**\nTalk to other zennies in this channel\nNeed help? ping Lead or Staff")
-            await channel.send(f'<a:kanzenflower:1128154723262943282> {member.mention} welcome to kanzen!', embed=embed)
+            await channel.send(f'<a:kanzenflower:1128154723262943282> {member.mention} Welcome to Kanzengrp!', embed=embed)
             """AURA GRP WELCOME"""
         elif member.guild.id == self.server2_id:
             embed = discord.Embed(title=f'<:brazy_milksip:958479364184490075> : {member.name} has joined aura!', color=0x64a875, description=f"<a:greenarrow:1123286634629169203> Make sure you read our [rules](https://discord.com/channels/957987670787764224/958026887379173396)\n<a:greenarrow:1123286634629169203> Go and get your [roles](https://discord.com/channels/957987670787764224/1122304274408423566)\n<a:greenarrow:1123286634629169203> need help? ping <@&957993316794917024> or <@&965970726597296148>")
