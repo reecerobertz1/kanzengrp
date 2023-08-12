@@ -229,6 +229,7 @@ class Moderation(commands.Cog):
                               color=0x2b2d31, 
                               description=f"Welcome to kanzen {ctx.author.name}!\n<a:bounceyarrow:1128155233437106187> Read our [information](https://discord.com/channels/1121841073673736215/1121913361169391666)\n<a:bounceyarrow:1128155233437106187> Get your roles [here](https://discord.com/channels/1121841073673736215/1139958872279359518)\n<a:bounceyarrow:1128155233437106187> Logos and hashtag are [here](https://discord.com/channels/1121841073673736215/1121913361169391666)")
         embed.set_footer(text='Need help? ping @lead or @staff', icon_url=ctx.author.display_avatar.url)
+        embed.set_thumbnail(url=ctx.author.display_avatar)
         await ctx.send(f'<a:kanzenflower:1128154723262943282> {ctx.author.mention} Welcome to Kanzengrp!', embed=embed)
 
 async def setup(bot):
