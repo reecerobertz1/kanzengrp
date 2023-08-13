@@ -16,6 +16,7 @@ class confessbutton(discord.ui.View):
     async def __init__(self):
         super().__init__(timeout=30)
         self.value = None
+        self.start_time = datetime.datetime.utcnow()
 
     @discord.ui.button(label="Click to confess", style=discord.ButtonStyle.red)
     async def confess(self, interaction: discord.Interaction, button: discord.Button):
