@@ -657,7 +657,7 @@ class ebmessages(commands.Cog):
         await ctx.send("https://cdn.discordapp.com/attachments/849724031723634688/1138177832456044644/WELCOME_00000.png")
         await ctx.send(embed=embed, view=view)
         await ctx.send(embed=embed2, view=view2)
-        await ctx.delete(ctx.author.message)
+        await ctx.delete()
 
     @commands.command()
     @commands.has_permissions(manage_guild=True)
