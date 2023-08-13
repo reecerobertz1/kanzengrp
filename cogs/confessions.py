@@ -27,6 +27,11 @@ class confessmodal(ui.Modal, title='Kanzen Confessions'):
         timestamp = datetime.datetime.utcnow()
         embed.timestamp = timestamp
         embed.set_footer(text=f"Use /confess to send a confession!")
+        await embed.add_reaction("<:breaths:1128463455993741352>")
+        await embed.add_reaction("<:pause:1132212249621184634>")
+        await embed.add_reaction("<:__:1132210032822456411>")
+        await embed.add_reaction("<a:crysad:1132210059233988678>")
+        await embed.add__reaction("<a:wAHhh:1128463952423174164>")
         await channel.send(embed=embed)
         await interaction.followup.send(f"Your confession has been sent to <#1140186620121841735>", ephemeral=True)
 
