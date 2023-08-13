@@ -8,7 +8,7 @@ from discord import ui
 import datetime
 
 class confessbutton(discord.ui.View):
-    async def __init__(self):
+    def __init__(self):
         super().__init__(timeout=30)
         self.value = None
         self.start_time = datetime.datetime.utcnow()
