@@ -42,7 +42,7 @@ class confessions(commands.Cog):
     @app_commands.guilds(discord.Object(id=1121841073673736215))
     async def confess(self, interaction: discord.Interaction):
         view = confessbutton()
-        await interaction.response.send_message('Your confessions are sent anonymously! Do not be scared to tell us anything', view=view, ephemeral=True)
+        await interaction.response.send_message('Your confessions are sent anonymously! Do not be scared to tell us anything', ephemeral=True)
 
 async def setup(bot):
     await bot.add_cog(confessions(bot))
