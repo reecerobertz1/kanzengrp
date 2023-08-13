@@ -1,9 +1,3 @@
-import asyncio
-import datetime
-import json
-import random
-import re
-from typing import Any
 import discord
 from discord.ext import commands
 from discord import app_commands
@@ -11,6 +5,7 @@ from discord.interactions import Interaction
 from discord.ui import View, Select
 from typing import List, Optional
 from discord import ui
+import datetime
 
 class confessbutton(discord.ui.View):
     async def __init__(self):
