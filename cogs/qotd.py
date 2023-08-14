@@ -15,9 +15,7 @@ class QOTD(commands.Cog):
         for author, data in self.qotd_schedule.items():
             date = data['date']
             question = data['question']
-            embed.add_field(name='Author', value=author, inline=True)
-            embed.add_field(name='Date', value=date, inline=True)
-            embed.add_field(name='Question', value=question, inline=False)
+            embed.add_field(name=f'{author}', value=f"{date}\n\n**question**:\n{question}", inline=True)
         await ctx.send(embed=embed)
 
     @commands.command(name='qotd')
