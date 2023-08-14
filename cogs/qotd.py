@@ -27,10 +27,10 @@ class QOTD(commands.Cog):
             await ctx.send("Invalid format. Please use: +qotd question | date (e.g., +qotd What is your favorite movie? | Tuesday August 15th)")
             return
 
-        if ctx.author.id not in self.qotd_schedule:
-            self.qotd_schedule[ctx.author.id] = []
+        if str(ctx.author.id) not in self.qotd_schedule:
+            self.qotd_schedule[str(ctx.author.id)] = []
 
-        self.qotd_schedule[ctx.author.id].append({
+        self.qotd_schedule[str(ctx.author.id)].append({
             'author': ctx.author.display_name,
             'date': date,
             'question': question
