@@ -28,7 +28,7 @@ class QOTD(commands.Cog):
         try:
             author, date, question = map(str.strip, qotd_info.split('|'))
         except ValueError:
-            await ctx.send("Invalid format. Please use: +qotd question | date (e.g., +qotd What is your favorite movie? | Tuesday August 15th)")
+            await ctx.send("Invalid format. Please use: +qotd question | date | @mention (e.g., +qotd What is your favorite movie? | Tuesday August 15th)")
             return
 
         if str(ctx.author.id) not in self.qotd_schedule:
