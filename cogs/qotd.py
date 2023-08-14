@@ -1,4 +1,5 @@
 import datetime
+import json
 import discord
 from discord.ext import tasks
 from discord.ext import commands
@@ -20,13 +21,25 @@ class QOTD(commands.Cog):
 
     @commands.command(name='qotd')
     async def add_qotd(self, ctx, *, qotd_info):
-        qotd_parts = qotd_info.split('|')
-        if len(qotd_parts) == 3:
-            question, date, author = map(str.strip, qotd_parts)
-            self.qotd_schedule[author] = {'date': date, 'question': question}
-            await ctx.send(f"Added QOTD for {author} on {date}: {question}")
-        else:
-            await ctx.send("Invalid input format. Use: +qotd question | date | author")
+        try:
+            author, date, question = map(str.strip, qotd_info.split('|'))
+        except ValueError:
+            await ctx.send("Invalid format. Please use: +qotd question | date (e.g., +qotd What is your favorite movie? | Tuesday August 15th)")
+            return
+
+        if ctx.author.id not in self.qotd_schedule:
+            self.qotd_schedule[ctx.author.id] = []
+
+        self.qotd_schedule[ctx.author.id].append({
+            'author': ctx.author.display_name,
+            'date': date,
+            'question': question
+        })
+
+        with open("qotd_schedule.json", "w") as file:
+            json.dump(self.qotd_schedule, file, indent=4)
+
+        await ctx.send("Question added to the QOTD schedule!")
 
     # Add a task to check the schedule daily and send reminders
     @tasks.loop(hours=24)
