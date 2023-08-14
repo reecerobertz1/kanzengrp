@@ -4,7 +4,7 @@ from discord.ext import commands
 class QOTD(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.qotd_schedule_channel_id = 1131018131813441696  # Replace with your channel ID
+        self.qotd_schedule_channel_id = 1131018131813441696 
 
     @commands.command(name='qotdschedule')
     async def qotd_schedule(self, ctx):
@@ -17,15 +17,18 @@ class QOTD(commands.Cog):
 
     @commands.command(name='qotd')
     async def add_qotd(self, ctx, *, qotd_info):
-        # Parse the input: +qotd question | date | author
-        question, date, author = map(str.strip, qotd_info.split('|'))
-        
-        # Update the qotd_schedule_channel on the specified date
-        channel = self.bot.get_channel(self.qotd_schedule_channel_id)
-        if channel is not None:
-            await channel.send(f"{author}, today is your day to post the Question of the Day!\nYour question: {question}")
+        qotd_parts = qotd_info.split('|')
+        if len(qotd_parts) == 3:
+            question, date, author = map(str.strip, qotd_parts)
+            
+            # Update the qotd_schedule_channel on the specified date
+            channel = self.bot.get_channel(self.qotd_schedule_channel_id)
+            if channel is not None:
+                await channel.send(f"{author}, today is your day to post the Question of the Day!\nYour question: {question}")
+            else:
+                await ctx.send("QOTD schedule channel not found. Please set the correct channel ID.")
         else:
-            await ctx.send("QOTD schedule channel not found. Please set the correct channel ID.")
+            await ctx.send("Invalid input format. Use: +qotd question | date | author")
 
 async def setup(bot):
     await bot.add_cog(QOTD(bot))
