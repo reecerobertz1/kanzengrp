@@ -13,10 +13,14 @@ class QOTD(commands.Cog):
     @commands.command(name='qotdschedule')
     async def qotd_schedule(self, ctx):
         embed = discord.Embed(title='QOTD Schedule', color=0x2b2d31)
-        for author, data in self.qotd_schedule.items():
-            date = data['date']
-            question = data['question']
-            embed.add_field(name="", value=f"{author}\n{date}\n\n**question**:\n{question}", inline=True)
+        
+        for author_id, data_list in self.qotd_schedule.items():
+            for data in data_list:
+                author = data['author']
+                date = data['date']
+                question = data['question']
+                embed.add_field(name="Scheduled Question", value=f"Author: {author}\nDate: {date}\nQuestion: {question}", inline=False)
+        
         await ctx.send(embed=embed)
 
     @commands.command(name='qotd')
