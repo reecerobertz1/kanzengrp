@@ -32,8 +32,7 @@ extensions = {
     "cogs.roles",
     "cogs.kgrp",
     "cogs.music",
-    "cogs.confessions",
-    "cogs.insta"
+    "cogs.confessions"
 }
 
 # bot subclass
