@@ -800,15 +800,15 @@ class ebmessages(commands.Cog):
                     if "kanzen" in group:
                         accepted_server_ids.append((group, 1121841073673736215))
                     elif "aura" in group:
-                        accepted_server_ids.append((group, 1121841073673736215))
+                        accepted_server_ids.append((group, 896619762354892821))
                     elif "daegu" in group:
-                        accepted_server_ids.append((group, 1121841073673736215))
+                        accepted_server_ids.append((group, 896619762354892821))
                     elif "daegutown" in group:
-                        accepted_server_ids.append((group, 1121841073673736215))
+                        accepted_server_ids.append((group, 896619762354892821))
                     elif "daegutowngrp" in group:
-                        accepted_server_ids.append((group, 1121841073673736215))
+                        accepted_server_ids.append((group, 896619762354892821))
                     elif "auragrp" in group:
-                        accepted_server_ids.append((group, 1121841073673736215))
+                        accepted_server_ids.append((group, 896619762354892821))
                     elif "kanzengrp" in group:
                         accepted_server_ids.append((group, 1121841073673736215))
 
