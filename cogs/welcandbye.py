@@ -37,13 +37,6 @@ class welcandleave(commands.Cog):
             channel = self.bot.get_channel(self.server2_welcome_channel_id)
             embed.set_thumbnail(url=member.display_avatar.url)
             await channel.send(f'{member.mention}', embed=embed)
-            """DAEGU"""
-        elif member.guild.id == self.server5_id:
-            embed = discord.Embed(title=f'<:members:1119069738493026364> : {member.name} has joined the server!', color=0x2b2d31, description=f"• Make sure you read our [server info](https://discord.com/channels/896619762354892821/896924214311911476)\n• Go and get your [roles](https://discord.com/channels/896619762354892821/1062169874748686386) + [biases](https://discord.com/channels/896619762354892821/1044478054258458685)\n• need help? ping <@&896881532671754260>, <@&1119948686550630410> or <@&903955975000698922>")
-            embed.set_footer(text='Have fun! Thank you for joining', icon_url=member.display_avatar.url)
-            channel = self.bot.get_channel(self.server5_channel)
-            embed.set_thumbnail(url=member.display_avatar.url)
-            await channel.send(f'{member.mention}', embed=embed)
             """EDITORS BLOCK SERVER"""
         elif member.guild.id == self.server6_id:
             embed = discord.Embed(title=f'<a:bearhugz:1131122693085868172> `Welcome {member.name}`', color=0x2b2d31, description=f"<a:arrowpink:1134860720777990224> Read [infortmation](https://discord.com/channels/1131003330810871979/1131005271502753812)\n<a:arrowpink:1134860720777990224> get [roles](https://discord.com/channels/1131003330810871979/1133730290221715487)\n<a:arrowpink:1134860720777990224> apply [here](https://discord.com/channels/1131003330810871979/1133771634793250847)")
@@ -66,13 +59,6 @@ class welcandleave(commands.Cog):
             embed.set_thumbnail(url=member.display_avatar.url)
             embed.set_footer(text='Hope to see you again soon !!')
             channel = self.bot.get_channel(self.server2_welcome_channel_id)
-            await channel.send(f'{member.mention}', embed=embed)
-            """DAEGU LEAVE"""
-        elif member.guild.id == self.server5_id:
-            embed = discord.Embed(title=f"{member.display_name} has left Daegu!", color=0x2b2d31, description="We will miss you !")
-            embed.set_thumbnail(url=member.display_avatar.url)
-            embed.set_footer(text='Hope to see you again soon !!')
-            channel = self.bot.get_channel(self.server5_channel)
             await channel.send(f'{member.mention}', embed=embed)
 
     @commands.Cog.listener()
