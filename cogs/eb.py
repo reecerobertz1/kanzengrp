@@ -800,9 +800,17 @@ class ebmessages(commands.Cog):
                     if "kanzen" in group:
                         accepted_server_ids.append((group, 1121841073673736215))
                     elif "aura" in group:
-                        accepted_server_ids.append((group, 957987670787764224))
+                        accepted_server_ids.append((group, 1121841073673736215))
                     elif "daegu" in group:
-                        accepted_server_ids.append((group, 896619762354892821))
+                        accepted_server_ids.append((group, 1121841073673736215))
+                    elif "daegutown" in group:
+                        accepted_server_ids.append((group, 1121841073673736215))
+                    elif "daegutowngrp" in group:
+                        accepted_server_ids.append((group, 1121841073673736215))
+                    elif "auragrp" in group:
+                        accepted_server_ids.append((group, 1121841073673736215))
+                    elif "kanzengrp" in group:
+                        accepted_server_ids.append((group, 1121841073673736215))
 
                 if not accepted_server_ids:
                     await ctx.send("Sorry, I could not find a group name in this embed...")
