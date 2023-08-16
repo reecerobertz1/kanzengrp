@@ -43,7 +43,7 @@ class welcandleave(commands.Cog):
             channel = self.bot.get_channel(self.server6_channel)
             embed.set_thumbnail(url=member.display_avatar.url)
             await channel.send(f'{member.mention} <@&1131005057417105418>', embed=embed)
-            await self.bot.add_roles(member, role)
+            await self.bot.add_roles(role)
 
     @commands.Cog.listener()
     async def on_member_remove(self, member: discord.Member):
