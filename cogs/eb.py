@@ -779,7 +779,6 @@ class ebmessages(commands.Cog):
             return None
 
     @commands.command()
-    @is_judge
     async def accept(self, ctx):
         if ctx.message.reference is not None:
             try:
