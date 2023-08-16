@@ -25,16 +25,20 @@ class welcandleave(commands.Cog):
             embed.set_footer(text='Need help? ping @lead or @staff', icon_url=member.display_avatar.url)
             channel = self.bot.get_channel(self.server1_welcome_channel_id)
             channel2 = self.bot.get_channel(1125053619893440653)
+            role = discord.utils.get(member.guild.roles, id=1121842393994494082)
             embed.set_thumbnail(url=member.display_avatar.url)
             await channel2.send(f"<a:kanzenflower:1128154723262943282> {member.mention} Welcome to **Kanzengrp!**\nTalk to other zennies in this channel\nNeed help? ping Lead or Staff")
             await channel.send(f'{member.mention} Welcome to Kanzengrp!', embed=embed)
+            await member.add_roles(role)
             """AURA GRP WELCOME"""
         elif member.guild.id == self.server2_id:
             embed = discord.Embed(title=f'<:brazy_milksip:958479364184490075> : {member.name} has joined aura!', color=0x64a875, description=f"<a:greenarrow:1123286634629169203> Make sure you read our [rules](https://discord.com/channels/957987670787764224/958026887379173396)\n<a:greenarrow:1123286634629169203> Go and get your [roles](https://discord.com/channels/957987670787764224/1122304274408423566)\n<a:greenarrow:1123286634629169203> need help? ping <@&957993316794917024> or <@&965970726597296148>")
             embed.set_footer(text='Have fun! Thank you for joining', icon_url=member.display_avatar.url)
             channel = self.bot.get_channel(self.server2_welcome_channel_id)
+            role = discord.utils.get(member.guild.roles, id=1122253152192831549)
             embed.set_thumbnail(url=member.display_avatar.url)
             await channel.send(f'{member.mention}', embed=embed)
+            await member.add_roles(role)
             """EDITORS BLOCK SERVER"""
         elif member.guild.id == self.server6_id:
             embed = discord.Embed(title=f'<a:bearhugz:1131122693085868172> `Welcome {member.name}`', color=0x2b2d31, description=f"<a:arrowpink:1134860720777990224> Read [infortmation](https://discord.com/channels/1131003330810871979/1131005271502753812)\n<a:arrowpink:1134860720777990224> get [roles](https://discord.com/channels/1131003330810871979/1133730290221715487)\n<a:arrowpink:1134860720777990224> apply [here](https://discord.com/channels/1131003330810871979/1133771634793250847)")
