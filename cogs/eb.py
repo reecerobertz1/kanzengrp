@@ -168,8 +168,13 @@ class verifymodal(ui.Modal, title='Verification'):
         if self.code.value == "FBGKDHS":
             await interaction.response.defer()
             role_id = 1131016147282710679
+            unverified = 1141442504881864765
             role = interaction.guild.get_role(role_id)
+            unverifiedrole = interaction.guild.get_role(unverified)
             if role is None:
+                print("Role not found. Make sure the role ID is correct.")
+                return
+            elif unverifiedrole is None:
                 print("Role not found. Make sure the role ID is correct.")
                 return
             try:
@@ -180,6 +185,7 @@ class verifymodal(ui.Modal, title='Verification'):
                 embed.set_footer(text=f"user id : {interaction.user.id}")
                 await channel.send(embed=embed)
                 await member.add_roles(role)
+                await member.remove_roles(unverifiedrole)
                 await interaction.followup.send(f"Thank you {member.name}! You're all verified, enjoy your time here in Editors Block.", ephemeral=True)
             except Exception as e:
                 print(f"An error occurred while adding role: {e}")
