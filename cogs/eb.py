@@ -850,11 +850,11 @@ class ebmessages(commands.Cog):
                 if user:
                     await user.send(embed=embed)
 
-                    channel = ctx.guild.get_channel(1141499023639978077)
+                    channel = ctx.guild.get_channel(1131006361921130526)
                     if channel:
                         await channel.send(f"{user.mention} was accepted")
 
-                    instachannel = ctx.guild.get_channel(1141499023639978077)
+                    instachannel = ctx.guild.get_channel(1137423800623960116)
                     if instachannel:
                         await instachannel.send(f"You need to follow {', '.join(insta)}\nThey were accepted into {', '.join(groups)}")
 
@@ -862,18 +862,6 @@ class ebmessages(commands.Cog):
                 embed.add_field(name="Status", value="Accepted ✅")
                 await ctx.message.add_reaction("✅")
                 await msg.edit(embed=embed)
-
-            except Exception as e:
-                await ctx.send(f"An error occurred: {e}")
-
-                guild = ctx.guild
-                role_to_add = guild.get_role(1140792720793813022)
-                if role_to_add:
-                    await user.add_roles(role_to_add)
-
-                role_to_remove = guild.get_role(1140792720793813022)
-                if role_to_remove:
-                    await user.remove_roles(role_to_remove)
 
             except Exception as e:
                 print(f"Failed to process the command: {e}")
