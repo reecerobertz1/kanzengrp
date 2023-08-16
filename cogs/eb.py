@@ -707,7 +707,7 @@ class ebmessages(commands.Cog):
 
                     user = await ctx.guild.fetch_member(int(user_id))
                     if user:
-                        embed = discord.Embed(title="Q&A", color=0x2b2d31, description=f"**You asked a question in editor's block**\n{', '.join(question)}\n**Our answer:**\n{answer}")
+                        embed = discord.Embed(title="Q&A", color=0x2b2d31, description=f"**You asked a question in editor's block**\n{' '.join(question)}\n**Our answer:**\n{answer}")
                         embed.set_footer(text=f"answered by {ctx.author.display_name}")
                         await user.send(embed=embed)
 
@@ -744,7 +744,7 @@ class ebmessages(commands.Cog):
 
                     user = await ctx.guild.fetch_member(int(user_id))
                     if user:
-                        embed = discord.Embed(title="Q&A", color=0x2b2d31, description=f"**Question:**\n{', '.join(question)}\n**Answer:**\n{answer}")
+                        embed = discord.Embed(title="Q&A", color=0x2b2d31, description=f"**Question:**\n{' '.join(question)}\n**Answer:**\n{answer}")
                         embed.set_footer(text=f"asked by {user.display_name} | answered by {ctx.author.display_name}")
                         await answer_channel.send(f"<@{user_id}>", embed=embed)
 
