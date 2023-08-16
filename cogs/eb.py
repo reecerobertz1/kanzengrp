@@ -779,7 +779,7 @@ class ebmessages(commands.Cog):
             return None
 
     @commands.command()
-    @is_judge()
+    @is_judge
     async def accept(self, ctx):
         if ctx.message.reference is not None:
             try:
@@ -793,50 +793,69 @@ class ebmessages(commands.Cog):
                     await ctx.send("Invalid embed format. Please make sure the embed contains fields 'Group(s) they want to be in:' and 'Discord ID'.")
                     return
 
-                grps = group_field.value.lower()
-                groups = [group.strip() for group in re.split(r'[,\s]+', grps)]
-
                 insta = insta_field.value.lower()
                 insta = [insta.strip() for insta in re.split(r'[,\s]+', insta)]
 
                 user_id = int(re.search(r'\d+', user_id_field.value).group())  # Extract the user ID from the field value
                 accepted_server_ids = []
 
-                for group in groups:
-                    if "kanzen" in group:
-                        accepted_server_ids.append((group, 1121841073673736215))
-                    elif "aura" in group:
-                        accepted_server_ids.append((group, 896619762354892821))
-                    elif "daegu" in group:
-                        accepted_server_ids.append((group, 896619762354892821))
-                    elif "daegutown" in group:
-                        accepted_server_ids.append((group, 896619762354892821))
-                    elif "daegutowngrp" in group:
-                        accepted_server_ids.append((group, 896619762354892821))
-                    elif "auragrp" in group:
-                        accepted_server_ids.append((group, 896619762354892821))
-                    elif "kanzengrp" in group:
-                        accepted_server_ids.append((group, 1121841073673736215))
+                grps = group_field.value.lower()
+                groups = [group.strip() for group in re.split(r'[,\s]+', grps)]
+
+                if "all" in groups:
+                    accepted_server_ids = [
+                        ("kanzen", 1121841073673736215),
+                        ("aura", 957987670787764224),
+                        ("daegu", 896619762354892821),
+                    ]
+                else:
+                    accepted_server_ids = []
+                    for group in groups:
+                        if "kanzen" in group:
+                            accepted_server_ids.append((group, 1121841073673736215))
+                        elif "aura" in group:
+                            accepted_server_ids.append((group, 957987670787764224))
+                        elif "daegu" in group:
+                            accepted_server_ids.append((group, 896619762354892821))
+                        elif "daegutown" in group:
+                            accepted_server_ids.append((group, 896619762354892821))
+                        elif "daegutowngrp" in group:
+                            accepted_server_ids.append((group, 896619762354892821))
+                        elif "auragrp" in group:
+                            accepted_server_ids.append((group, 957987670787764224))
+                        elif "kanzengrp" in group:
+                            accepted_server_ids.append((group, 1121841073673736215))
 
                 if not accepted_server_ids:
                     await ctx.send("Sorry, I could not find a group name in this embed...")
                     return
 
                 embed = discord.Embed(title="Congratulations! You have been accepted!", color=0x2b2d31)
-                for group, server_id in accepted_server_ids:
-                    invite_link = await self.create_invite(server_id)  # Implement this function to generate the invite link
-                    if invite_link:
-                        embed.add_field(name=group.capitalize(), value=f"[Join Here]({invite_link})", inline=True)
+
+                if "all" in groups:  # Check if "all" is in the group list
+                    invite_links = {
+                        "kanzen": await self.create_invite(1121841073673736215),
+                        "aura": await self.create_invite(957987670787764224),
+                        "daegu": await self.create_invite(896619762354892821),
+                    }
+                    for group, invite_link in invite_links.items():
+                        if invite_link:
+                            embed.add_field(name=group.capitalize(), value=f"[Join Here]({invite_link})", inline=True)
+                else:
+                    for group, server_id in accepted_server_ids:
+                        invite_link = await self.create_invite(server_id)  # Implement this function to generate the invite link
+                        if invite_link:
+                            embed.add_field(name=group.capitalize(), value=f"[Join Here]({invite_link})", inline=True)
 
                 user = discord.utils.get(ctx.guild.members, id=user_id)
                 if user:
                     await user.send(embed=embed)
 
-                    channel = ctx.guild.get_channel(1131006361921130526)
+                    channel = ctx.guild.get_channel(1141499023639978077)
                     if channel:
                         await channel.send(f"{user.mention} was accepted")
 
-                    instachannel = ctx.guild.get_channel(1137423800623960116)
+                    instachannel = ctx.guild.get_channel(1141499023639978077)
                     if instachannel:
                         await instachannel.send(f"You need to follow {', '.join(insta)}\nThey were accepted into {', '.join(groups)}")
 
@@ -849,11 +868,11 @@ class ebmessages(commands.Cog):
                 await ctx.send(f"An error occurred: {e}")
 
                 guild = ctx.guild
-                role_to_add = guild.get_role(1131016215754715166)
+                role_to_add = guild.get_role(1140792720793813022)
                 if role_to_add:
                     await user.add_roles(role_to_add)
 
-                role_to_remove = guild.get_role(1131016147282710679)
+                role_to_remove = guild.get_role(1140792720793813022)
                 if role_to_remove:
                     await user.remove_roles(role_to_remove)
 
@@ -861,6 +880,7 @@ class ebmessages(commands.Cog):
                 print(f"Failed to process the command: {e}")
         else:
             await ctx.send("Please reply with the embed you want to process.")
+
 
     @commands.command()
     @is_judge()
