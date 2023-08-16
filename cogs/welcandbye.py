@@ -39,11 +39,11 @@ class welcandleave(commands.Cog):
         elif member.guild.id == self.server6_id:
             embed = discord.Embed(title=f'<a:bearhugz:1131122693085868172> `Welcome {member.name}`', color=0x2b2d31, description=f"<a:arrowpink:1134860720777990224> Read [infortmation](https://discord.com/channels/1131003330810871979/1131005271502753812)\n<a:arrowpink:1134860720777990224> get [roles](https://discord.com/channels/1131003330810871979/1133730290221715487)\n<a:arrowpink:1134860720777990224> apply [here](https://discord.com/channels/1131003330810871979/1133771634793250847)")
             embed.set_footer(text='Need help? ping @leads or @staff', icon_url=member.display_avatar.url)
-            role = discord.utils.get(member.server.roles, id="1141442504881864765")
+            role = discord.utils.get(member.guild.roles, id=1141442504881864765)
             channel = self.bot.get_channel(self.server6_channel)
             embed.set_thumbnail(url=member.display_avatar.url)
             await channel.send(f'{member.mention} <@&1131005057417105418>', embed=embed)
-            await self.bot.add_roles(role)
+            await member.add_roles(role)
 
     @commands.Cog.listener()
     async def on_member_remove(self, member: discord.Member):
