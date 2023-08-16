@@ -693,13 +693,14 @@ class ebmessages(commands.Cog):
                 msg = await ctx.channel.fetch_message(ctx.message.reference.message_id)
                 embed = msg.embeds[0]
                 user_id_field = next((field for field in embed.fields if field.name == 'Discord ID:'), None)
-                question_field = next((field for field in embed.fields if field.name == 'Question'), None)
+                question = next((field for field in embed.fields if field.name == 'Question'), None)
 
-                if not question_field or not user_id_field:
+                if not question or not user_id_field:
                     await ctx.send("Invalid embed format. Please make sure the embed contains fields 'Group(s) they want to be in:' and 'Discord ID'.")
                     return
 
-                question, _ = question_field.value.split('|')
+                question = question.value.lower()
+                question = [question.strip() for question in re.split(r'[,\s]+', question)]
 
                 if user_id_field:
                     user_id = user_id_field.value.strip()
@@ -728,14 +729,15 @@ class ebmessages(commands.Cog):
                 msg = await ctx.channel.fetch_message(ctx.message.reference.message_id)
                 embed = msg.embeds[0]
                 user_id_field = next((field for field in embed.fields if field.name == 'Discord ID:'), None)
-                question_field = next((field for field in embed.fields if field.name == 'Question'), None)
+                question = next((field for field in embed.fields if field.name == 'Question'), None)
                 answer_channel = self.bot.get_channel(1133771757816393839)
 
-                if not question_field or not user_id_field:
+                if not question or not user_id_field:
                     await ctx.send("Invalid embed format. Please make sure the embed contains fields 'Group(s) they want to be in:' and 'Discord ID'.")
                     return
-                    
-                question, _ = question_field.value.split('|')
+                
+                question = question.value.lower()
+                question = [question.strip() for question in re.split(r'[,\s]+', question)]
 
                 if user_id_field:
                     user_id = user_id_field.value.strip()
