@@ -693,21 +693,20 @@ class ebmessages(commands.Cog):
                 msg = await ctx.channel.fetch_message(ctx.message.reference.message_id)
                 embed = msg.embeds[0]
                 user_id_field = next((field for field in embed.fields if field.name == 'Discord ID:'), None)
-                question = next((field for field in embed.fields if field.name == 'Question'), None)
+                question_field = next((field for field in embed.fields if field.name == 'Question'), None)
 
-                if not question or not user_id_field:
+                if not question_field or not user_id_field:
                     await ctx.send("Invalid embed format. Please make sure the embed contains fields 'Group(s) they want to be in:' and 'Discord ID'.")
                     return
 
-                question = question.value.lower()
-                question = [question.strip() for question in re.split(r'[,\s]+', question)]
+                question, _ = question_field.value.split('|')
 
                 if user_id_field:
                     user_id = user_id_field.value.strip()
 
                     user = await ctx.guild.fetch_member(int(user_id))
                     if user:
-                        embed = discord.Embed(title="Q&A", color=0x2b2d31, description=f"**You asked a question in editor's block**\n{' '.join(question)}\n**Our answer:**\n{answer}")
+                        embed = discord.Embed(title="Q&A", color=0x2b2d31, description=f"**You asked a question in editor's block**\n{question}\n**Our answer:**\n{answer}")
                         embed.set_footer(text=f"answered by {ctx.author.display_name}")
                         await user.send(embed=embed)
 
@@ -729,22 +728,21 @@ class ebmessages(commands.Cog):
                 msg = await ctx.channel.fetch_message(ctx.message.reference.message_id)
                 embed = msg.embeds[0]
                 user_id_field = next((field for field in embed.fields if field.name == 'Discord ID:'), None)
-                question = next((field for field in embed.fields if field.name == 'Question'), None)
+                question_field = next((field for field in embed.fields if field.name == 'Question'), None)
                 answer_channel = self.bot.get_channel(1133771757816393839)
 
-                if not question or not user_id_field:
+                if not question_field or not user_id_field:
                     await ctx.send("Invalid embed format. Please make sure the embed contains fields 'Group(s) they want to be in:' and 'Discord ID'.")
                     return
-                
-                question = question.value.lower()
-                question = [question.strip() for question in re.split(r'[,\s]+', question)]
+                    
+                question, _ = question_field.value.split('|')
 
                 if user_id_field:
                     user_id = user_id_field.value.strip()
 
                     user = await ctx.guild.fetch_member(int(user_id))
                     if user:
-                        embed = discord.Embed(title="Q&A", color=0x2b2d31, description=f"**Question:**\n{' '.join(question)}\n**Answer:**\n{answer}")
+                        embed = discord.Embed(title="Q&A", color=0x2b2d31, description=f"**Question:**\n{question}\n**Answer:**\n{answer}")
                         embed.set_footer(text=f"asked by {user.display_name} | answered by {ctx.author.display_name}")
                         await answer_channel.send(f"<@{user_id}>", embed=embed)
 
