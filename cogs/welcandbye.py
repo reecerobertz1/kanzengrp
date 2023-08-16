@@ -21,9 +21,7 @@ class welcandleave(commands.Cog):
     @commands.Cog.listener()
     async def on_member_join(self, member: discord.Member):
         if member.guild.id == self.server1_id:
-            embed = discord.Embed(title='<a:kanzenflower:1128154723262943282> Welcome to Kanzen!', 
-                                  color=0x2b2d31, 
-                                  description=f"Welcome to kanzen {member.name}!\n<a:bounceyarrow:1128155233437106187> Read our [information](https://discord.com/channels/1121841073673736215/1121913361169391666)\n<a:bounceyarrow:1128155233437106187> Get your roles [here](https://discord.com/channels/1121841073673736215/1139958872279359518)\n<a:bounceyarrow:1128155233437106187> Logos and hashtag are [here](https://discord.com/channels/1121841073673736215/1121913361169391666)")
+            embed = discord.Embed(title='<a:kanzenflower:1128154723262943282> Welcome to Kanzen!', color=0x2b2d31, description=f"Welcome to kanzen {member.name}!\n<a:bounceyarrow:1128155233437106187> Read our [information](https://discord.com/channels/1121841073673736215/1121913361169391666)\n<a:bounceyarrow:1128155233437106187> Get your roles [here](https://discord.com/channels/1121841073673736215/1139958872279359518)\n<a:bounceyarrow:1128155233437106187> Logos and hashtag are [here](https://discord.com/channels/1121841073673736215/1121913361169391666)")
             embed.set_footer(text='Need help? ping @lead or @staff', icon_url=member.display_avatar.url)
             channel = self.bot.get_channel(self.server1_welcome_channel_id)
             channel2 = self.bot.get_channel(1125053619893440653)
@@ -41,9 +39,11 @@ class welcandleave(commands.Cog):
         elif member.guild.id == self.server6_id:
             embed = discord.Embed(title=f'<a:bearhugz:1131122693085868172> `Welcome {member.name}`', color=0x2b2d31, description=f"<a:arrowpink:1134860720777990224> Read [infortmation](https://discord.com/channels/1131003330810871979/1131005271502753812)\n<a:arrowpink:1134860720777990224> get [roles](https://discord.com/channels/1131003330810871979/1133730290221715487)\n<a:arrowpink:1134860720777990224> apply [here](https://discord.com/channels/1131003330810871979/1133771634793250847)")
             embed.set_footer(text='Need help? ping @leads or @staff', icon_url=member.display_avatar.url)
+            role = discord.utils.get(member.server.roles, id="1141442504881864765")
             channel = self.bot.get_channel(self.server6_channel)
             embed.set_thumbnail(url=member.display_avatar.url)
             await channel.send(f'{member.mention} <@&1131005057417105418>', embed=embed)
+            await self.bot.add_roles(member, role)
 
     @commands.Cog.listener()
     async def on_member_remove(self, member: discord.Member):
