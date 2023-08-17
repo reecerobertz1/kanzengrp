@@ -226,7 +226,7 @@ class Moderation(commands.Cog):
 
     @commands.command()
     async def newwelc(self, ctx):
-        members = [member for member in ctx.guild.members if not member.bot]
+        members = [ctx.guild.members]
         member_count = len(members)
         embed = discord.Embed(color=0x2b2d31, description=f"<a:arrowlightpink:1141452054716489789> [read infortmation](https://discord.com/channels/1131003330810871979/1131005271502753812)\n<a:arrowlightpink:1141452054716489789> [get roles](https://discord.com/channels/1131003330810871979/1133730290221715487)\n<a:arrowlightpink:1141452054716489789> [apply here](https://discord.com/channels/1131003330810871979/1133771634793250847)")
         embed.set_author(name=ctx.author.name, icon_url=ctx.author.display_avatar.url)
