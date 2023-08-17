@@ -43,18 +43,18 @@ class welcandleave(commands.Cog):
             await member.add_roles(role)
             """EDITORS BLOCK SERVER"""
         elif member.guild.id == self.server6_id:
-            member_count = len(member.guild.members)  # Get the total member count
+            member_count = len(member.guild.members) 
             embed = discord.Embed(color=0x2b2d31, description=f"<a:arrowlightpink:1141452054716489789> [read infortmation](https://discord.com/channels/1131003330810871979/1131005271502753812)\n<a:arrowlightpink:1141452054716489789> [get roles](https://discord.com/channels/1131003330810871979/1133730290221715487)\n<a:arrowlightpink:1141452054716489789> [apply here](https://discord.com/channels/1131003330810871979/1133771634793250847)")
-            role = member.guild.get_role(1141442504881864765)  # Use get_role to fetch the role by ID
+            role = member.guild.get_role(1141442504881864765)  
             channel = self.bot.get_channel(self.server6_channel)
             timestamp = datetime.datetime.utcnow()
             embed.timestamp = timestamp
-            embed.set_footer(text=f"Member Count: {member_count}")  # Set the footer with member count
+            embed.set_footer(text=f"Member Count: {member_count}")  
             embed.set_author(name=member.display_name, icon_url=member.display_avatar.url)
             embed.set_thumbnail(url=member.display_avatar.url)
             await channel.send(f'<:bubbles:1141532181206929438> Welcome {member.mention}! <@&1131005057417105418>', embed=embed)
             await member.add_roles(role)
-            
+
     @commands.Cog.listener()
     async def on_member_remove(self, member: discord.Member):
         if member.guild.id == self.server1_id:
