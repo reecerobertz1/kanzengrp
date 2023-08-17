@@ -37,7 +37,7 @@ class CreatorMethods:
         modal.add_item(
             TextInput(
                 label="Author Icon Url",
-                default=self.embed.author.icon_url,
+                default="https://cdn.discordapp.com/avatars/849682093575372841/f04c5815341216fdafe736a2564a4d09.png?size=1024",
                 placeholder="Author icon to display in the embed",
                 required=False,
             )
@@ -45,7 +45,7 @@ class CreatorMethods:
         modal.add_item(
             TextInput(
                 label="Author Url",
-                default=self.embed.author.url,
+                default="https://cdn.discordapp.com/avatars/849682093575372841/f04c5815341216fdafe736a2564a4d09.png?size=1024",
                 placeholder="URL to set as the embed's author link",
                 required=False,
             )
@@ -97,7 +97,7 @@ class CreatorMethods:
         modal.add_item(
             TextInput(
                 label="Thumbnail Url",
-                default=self.embed.thumbnail.url,
+                default="https://cdn.discordapp.com/avatars/849682093575372841/f04c5815341216fdafe736a2564a4d09.png?size=1024",
                 placeholder="Thumbnail you want to display in the embed",
                 required=False,
             )
@@ -112,7 +112,7 @@ class CreatorMethods:
         modal.add_item(
             TextInput(
                 label="Image Url",
-                default=self.embed.image.url,
+                default="https://cdn.discordapp.com/avatars/849682093575372841/f04c5815341216fdafe736a2564a4d09.png?size=1024",
                 placeholder="Image you want to display in the embed",
                 required=False,
             )
@@ -137,7 +137,7 @@ class CreatorMethods:
             TextInput(
                 label="Footer Icon",
                 required=False,
-                default=self.embed.footer.icon_url,
+                default="https://cdn.discordapp.com/avatars/849682093575372841/f04c5815341216fdafe736a2564a4d09.png?size=1024",
                 placeholder="Icon you want to display on embed footer",
             )
         )
