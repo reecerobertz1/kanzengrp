@@ -160,7 +160,7 @@ class CreatorMethods:
         modal.add_item(
             TextInput(
                 label="Embed Colour",
-                placeholder="The colour you want to display on embed (e.g: #303236)",
+                placeholder="The colour you want to display on embed (e.g: #2b2d31)",
                 max_length=20
             )
         )

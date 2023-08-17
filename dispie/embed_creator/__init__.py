@@ -46,7 +46,6 @@ class EmbedCreator(View):
                 "description": kwargs.get(
                     "author_description", "Edits the embed author name, icon."
                 ),
-                "emoji": kwargs.get("author_emoji", "🔸"),
                 "value": "author",
             },
             {
@@ -56,7 +55,6 @@ class EmbedCreator(View):
                 "description": kwargs.get(
                     "message_description", "Edits the embed title, description."
                 ),
-                "emoji": kwargs.get("message_emoji", "🔸"),
                 "value": "message",
             },
             {
@@ -64,7 +62,6 @@ class EmbedCreator(View):
                 "description": kwargs.get(
                     "thumbnail_description", "Edits the embed thumbnail url."
                 ),
-                "emoji": kwargs.get("thumbnail_emoji", "🔸"),
                 "value": "thumbnail",
             },
             {
@@ -72,7 +69,6 @@ class EmbedCreator(View):
                 "description": kwargs.get(
                     "image_description", "Edits the embed image url."
                 ),
-                "emoji": kwargs.get("image_emoji", "🔸"),
                 "value": "image",
             },
             {
@@ -80,7 +76,6 @@ class EmbedCreator(View):
                 "description": kwargs.get(
                     "footer_description", "Edits the embed footer text, icon url."
                 ),
-                "emoji": kwargs.get("footer_emoji", "🔸"),
                 "value": "footer",
             },
             {
@@ -88,7 +83,6 @@ class EmbedCreator(View):
                 "description": kwargs.get(
                     "color_description", "Edits the embed colour."
                 ),
-                "emoji": kwargs.get("color_emoji", "🔸"),
                 "value": "color",
             },
             {
@@ -96,7 +90,6 @@ class EmbedCreator(View):
                 "description": kwargs.get(
                     "addfield_description", "Adds a field to the embed."
                 ),
-                "emoji": kwargs.get("addfield_emoji", "🔸"),
                 "value": "addfield",
             },
             {
@@ -104,7 +97,6 @@ class EmbedCreator(View):
                 "description": kwargs.get(
                     "removefield_description", "Removes a field from the embed."
                 ),
-                "emoji": kwargs.get("removefield_emoji", "🔸"),
                 "value": "removefield",
             },
         ]
@@ -138,15 +130,15 @@ class EmbedCreator(View):
             embed (discord.Embed)
         """
         embed = Embed(title='This is title',
-                      description="Use the dropdown menu to edit my sections!", colour=Colour.blurple())
+                      description="Use the dropdown menu to edit my sections!", colour=0x927faf)
         embed.set_author(name='Welcome to embed builder.',
-                         icon_url="https://cdn.iconscout.com/icon/premium/png-512-thumb/panel-6983404-5721235.png?")
+                         icon_url="https://cdn.discordapp.com/avatars/849682093575372841/f04c5815341216fdafe736a2564a4d09.png?size=1024")
         embed.set_thumbnail(
-            url="https://cdn.iconscout.com/icon/premium/png-512-thumb/panel-6983404-5721235.png?")
+            url="https://cdn.discordapp.com/avatars/849682093575372841/f04c5815341216fdafe736a2564a4d09.png?size=1024")
         embed.set_image(
             url="https://imageup.me/images/e44472bd-d742-4d39-8e25-b8ae762160ae.png")
         embed.set_footer(
-            text='Footer', icon_url="https://cdn.iconscout.com/icon/premium/png-512-thumb/panel-6983404-5721235.png?")
+            text='Footer', icon_url="https://cdn.discordapp.com/avatars/849682093575372841/f04c5815341216fdafe736a2564a4d09.png?size=1024")
         return embed
 
     @select(placeholder="Edit a section")
