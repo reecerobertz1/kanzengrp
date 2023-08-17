@@ -108,7 +108,7 @@ class Help(commands.Cog):
                 embed.add_field(name="</addrole:1131784754698666035>", value="<a:bounceyarrow:1128155233437106187> Add a role to a member (+addrole @role @mention)", inline=False)
                 embed.add_field(name="</removerole:1131784754698666036>", value="<a:bounceyarrow:1128155233437106187> Remove a role from a member (+removerole @role @mention)", inline=False)
                 embed.add_field(name="+buildembed", value="<a:bounceyarrow:1128155233437106187> Create an embed", inline=False)
-                embed.add_field(name="+warn", value="<a:bounceyarrow:1128155233437106187> Give a warning to a member in the `[secret]` server", inline=False)
+                embed.add_field(name="+warn", value="<a:bounceyarrow:1128155233437106187> Give a warning to a member in [editors block](https://discord.gg/yuqXebz8vr)", inline=False)
                 embed.add_field(name="+steal", value="<a:bounceyarrow:1128155233437106187> Steal an emoji from any server", inline=False)
                 embed.set_thumbnail(url=ctx.guild.icon)
             elif selected_category == categories[7]:
