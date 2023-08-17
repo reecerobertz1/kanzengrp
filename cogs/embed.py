@@ -8,7 +8,7 @@ class Embed(commands.Cog):
         self.bot = bot
 
     @commands.command()
-    async def embed(self, ctx: commands.Context):
+    async def embednew(self, ctx: commands.Context):
         """Embed Generator With Default Embed"""
         view = EmbedCreator(bot=self.bot)
         embed = view.get_default_embed  # Remove parentheses here
