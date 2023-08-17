@@ -224,13 +224,14 @@ class Moderation(commands.Cog):
             await message.edit(content="~~Are you sure you want to send this update message?~~\nThe update has been cancelled")
 
     @commands.command()
-    async def newwelc(self, ctx):
-        embed = discord.Embed(title='Welcome to Kanzen!',
-                              color=0x2b2d31, 
-                              description=f"Welcome to kanzen {ctx.author.name}!\n<a:bounceyarrow:1128155233437106187> Read our [information](https://discord.com/channels/1121841073673736215/1121913361169391666)\n<a:bounceyarrow:1128155233437106187> Get your roles [here](https://discord.com/channels/1121841073673736215/1139958872279359518)\n<a:bounceyarrow:1128155233437106187> Logos and hashtag are [here](https://discord.com/channels/1121841073673736215/1121913361169391666)")
-        embed.set_footer(text='Need help? ping @lead or @staff', icon_url=ctx.author.display_avatar.url)
-        embed.set_thumbnail(url=ctx.author.display_avatar)
-        await ctx.send(f'<a:kanzenflower:1128154723262943282> {ctx.author.mention} Welcome to Kanzengrp!', embed=embed)
+    async def newwelc(self, ctx, member: discord.Member):
+        embed = discord.Embed(color=0x2b2d31, description=f"<a:arrowlightpink:1141452054716489789> [read infortmation](https://discord.com/channels/1131003330810871979/1131005271502753812)\n<a:arrowlightpink:1141452054716489789> [get roles](https://discord.com/channels/1131003330810871979/1133730290221715487)\n<a:arrowlightpink:1141452054716489789> [apply here](https://discord.com/channels/1131003330810871979/1133771634793250847)")
+        embed.set_author(name=member.name, icon_url=member.display_avatar.url)
+        embed.set_thumbnail(url=member.display_avatar.url)
+        embed.set_footer(f"{ctx.guild.member_count}")
+        timestamp = datetime.datetime.utcnow()
+        embed.timestamp = timestamp
+        await ctx.send(f'<:bubbles:1141532181206929438> Welcome {member.mention}! <@&1131005057417105418>', embed=embed)
 
 async def setup(bot):
     await bot.add_cog(Moderation(bot))
