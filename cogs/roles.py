@@ -132,7 +132,7 @@ class Roles(commands.Cog):
         view = View(timeout=None)
         view.add_item(select)
 
-        embed = discord.Embed(title="<:leaf:1137454366886993950> What server pings would you like?", description="The staff will ping these roles whenever there's something related to these roles happening in the server.\n\n<:1:1137455321028251708> - <@&1133770119777099866> \n<:2:1137455517577531565> - <@&1131127168102055996> \n<:3:1137455658258673704> - <@&1131127104226992208> \n<:4:1137455776877781107> - <@&1131005057417105418> \n<:5:1137455941609078824> - <@&1131127124187684894>", color=0x2b2d31)
+        embed = discord.Embed(title="<:leaf:1137454366886993950> What server pings would you like?", description="The staff will ping these roles whenever there's something related to these roles happening in the server.\n\n<:1:1137455321028251708> - <@&1133770119777099866> \n<:2:1137455517577531565> - <@&1131127168102055996> \n<:3:1137455658258673704> - <@&1131127104226992208> \n<:4:1137455776877781107> - <@&1131005057417105418> \n<:5:1137455941609078824> - <@&1131127124187684894>\n<:6_:1137456046978383892> - <@&1141771622785753138>", color=0x2b2d31)
         await ctx.send("https://cdn.discordapp.com/attachments/1131006428631539773/1138225991446179930/pings_new_00000.png")
         await ctx.send(embed=embed, view=view)
         await ctx.send("<:Empty:1137842301188702239>")
@@ -203,7 +203,7 @@ class Roles(commands.Cog):
         view.add_item(select)
 
         embed = discord.Embed(title="<:leaf:1137454366886993950> What member pings would you like?",
-                              description="These roles can be used by anyone in this server to ping other members! Please do not abuse these roles!\n\n<:1:1137455321028251708> - <@&1131130157160206396>\n<:2:1137455517577531565> - <@&1131127084379549757>\n<:3:1137455658258673704> - <@&1131130102328078336>\n<:4:1137455776877781107> - <@&1131127146186821685>\n<:5:1137455941609078824> - <@&1134876934585712773>",
+                              description="These roles can be used by anyone in this server to ping other members! Please do not abuse these roles!\n\n<:1:1137455321028251708> - <@&1131130157160206396>\n<:2:1137455517577531565> - <@&1131127084379549757>\n<:3:1137455658258673704> - <@&1131130102328078336>\n<:4:1137455776877781107> - <@&1131127146186821685>\n<:5:1137455941609078824> - <@&1134876934585712773>\n<:6_:1137456046978383892> - <@&1141771607501713519>",
                               color=0x2b2d31)
         await ctx.send("https://cdn.discordapp.com/attachments/1131006428631539773/1138232205261422682/member_pings_new_00000.png")
         await ctx.send(embed=embed, view=view)
