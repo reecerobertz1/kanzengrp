@@ -7,13 +7,6 @@ from discord.ui import TextInput
 
 
 class CreatorMethods:
-    """
-    This class contains all the methods for editing an embed. It is intended to be inherited by the main `EmbedCreator` class.
-
-    Attributes:
-        embed (discord.Embed): The embed object being edited.
-
-    """
 
     def __init__(self, embed: Embed) -> None:
         self.embed = embed

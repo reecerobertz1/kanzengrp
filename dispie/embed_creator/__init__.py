@@ -121,14 +121,6 @@ class EmbedCreator(View):
 
     @property
     def get_default_embed(self) -> Embed:
-        """
-        This class method `get_default_embed` returns a pre-configured `discord.Embed` object with
-        title, description, color, author, thumbnail, image and footer set to specific values.
-        It can be used as a default template for creating the embed builder.
-
-        Returns:
-            embed (discord.Embed)
-        """
         embed = Embed(title='This is title',
                       description="Use the dropdown menu to edit my sections!", colour=0x927faf)
         embed.set_author(name='Welcome to embed builder.',
@@ -145,30 +137,11 @@ class EmbedCreator(View):
     async def edit_select_callback(
         self, interaction: Interaction, select: Select
     ) -> None:
-        """
-        This method is a callback function for the `select` interaction.
-        It is triggered when a user selects an option from the select menu. 
-        The method uses the `callbacks` attribute of the `CreatorMethods` class to call the appropriate callback function based on the user's selection.
-
-        Parameters:
-            interaction (discord.Interaction): The interaction object representing the current interaction.
-            select (discord.Select): The select object representing the select menu.
-
-        """
         await self._creator_methods.callbacks[select.values[0]](interaction)
         await self.update_embed(interaction)
 
     @button()
     async def send_callback(self, interaction: Interaction, button: Button) -> None:
-        """
-        This method is a callback function for the `button` interaction. It is triggered when a user clicks on the "send" button. 
-        The method creates a `ChannelSelectPrompt` object and sends it as an ephemeral message to the user. It then waits for the user to select a channel.
-        If a channel is selected, the method sends the embed to the selected channel and deletes the original interaction message.
-
-        Parameters:
-            interaction (discord.Interaction): The interaction object representing the current interaction.
-            button (discord.Button): The button object representing the "send" button.
-        """
         prompt = ChannelSelectPrompt(
             "Select a channel to send this embed...", True, 1)
         await interaction.response.send_message(view=prompt, ephemeral=True)
@@ -180,13 +153,5 @@ class EmbedCreator(View):
 
     @button()
     async def cancel_callback(self, interaction: Interaction, button: Button) -> None:
-        """
-        This method is a callback function for the `button` interaction. It is triggered when a user clicks on the "cancel" button. 
-        The method deletes the original interaction message and stops the current interaction.
-
-        Parameters:
-            interaction (Interaction): The interaction object representing the current interaction.
-            button (Button): The button object representing the "cancel" button.
-        """
         await interaction.message.delete()  # type: ignore
         self.stop()
