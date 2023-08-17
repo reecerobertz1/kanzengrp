@@ -230,7 +230,7 @@ class Moderation(commands.Cog):
         embed.set_thumbnail(url=ctx.author.display_avatar.url)
         timestamp = datetime.datetime.utcnow()
         embed.timestamp = timestamp
-        embed.set_footer(len(ctx.member_count))
+        embed.set_footer(len(ctx.members))
         await ctx.send(f'<:bubbles:1141532181206929438> Welcome {ctx.author.mention}! <@&1131005057417105418>', embed=embed)
 
 async def setup(bot):
