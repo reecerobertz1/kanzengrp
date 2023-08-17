@@ -44,7 +44,7 @@ class Starboard(commands.Cog):
                         image_url = reaction.message.attachments[0].url
                     elif reaction.message.content:
                         for word in reaction.message.content.split():
-                            if word.lower().endswith((".jpg", ".png", ".gif")):
+                            if word.lower().endswith((".jpg", ".png", ".gif", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0")):
                                 image_url = word
                                 break
 
