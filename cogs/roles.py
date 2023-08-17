@@ -79,6 +79,7 @@ class Roles(commands.Cog):
                 discord.SelectOption(label="giveaways", value="giveaways", emoji="<:3:1137455658258673704>"),
                 discord.SelectOption(label="welc", value="welc", emoji="<:4:1137455776877781107>"),
                 discord.SelectOption(label="apps", value="apps", emoji="<:5:1137455941609078824>"),
+                discord.SelectOption(label="hoshi updates", emoji="<:6_:1137456046978383892>")
             ]
         )
         async def add_role(interaction: discord.Interaction):
@@ -90,7 +91,8 @@ class Roles(commands.Cog):
                 "events": 1131127168102055996,
                 "giveaways": 1131127104226992208,
                 "welc": 1131005057417105418,
-                "apps": 1131127124187684894
+                "apps": 1131127124187684894,
+                "hoshi updates": 1141771622785753138
             }
 
             member = interaction.guild.get_member(interaction.user.id)
@@ -147,6 +149,7 @@ class Roles(commands.Cog):
                 discord.SelectOption(label="dts", value="dts", emoji="<:3:1137455658258673704>"),
                 discord.SelectOption(label="ops", value="ops", emoji="<:4:1137455776877781107>"),
                 discord.SelectOption(label="chat revive", value="chat revive", emoji="<:5:1137455941609078824>"),
+                discord.SelectOption(label="games", emoji="<:6_:1137456046978383892>")
             ]
         )
         async def add_role(interaction: discord.Interaction):
@@ -158,7 +161,8 @@ class Roles(commands.Cog):
                 "edit help": 1131127084379549757,
                 "dts": 1131130102328078336,
                 "ops": 1131127146186821685,
-                "chat revive": 1134876934585712773
+                "chat revive": 1134876934585712773,
+                "games": 1141771607501713519,
             }
 
             member = interaction.guild.get_member(interaction.user.id)
