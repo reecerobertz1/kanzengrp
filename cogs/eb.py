@@ -653,7 +653,7 @@ class ebmessages(commands.Cog):
                                 description="<a:arrowpink:1134860720777990224> Follow Discord's [tos](https://discord.com/terms) and [guidelines](https://discord.com/guidelines)\n<a:arrowpink:1134860720777990224> No NSFW talk is allowed in this server!!\n<a:arrowpink:1134860720777990224> Be nice and respectful to everyone in the server!\n<a:arrowpink:1134860720777990224> No impersonation of other editors (you will be banned)\n<a:arrowpink:1134860720777990224> Use channels for their intended purpose\n<a:arrowpink:1134860720777990224> No spamming pings, you will be warned and then kicked\n<a:arrowpink:1134860720777990224>  No trash talk of other people", 
                                 color=0xee518f)
         embed.set_footer(text="Follow the groups below!", 
-                         icon_url="https://cdn.discordapp.com/attachments/1131006428631539773/1140099813753503844/editors_block_icon_00000.png")
+                         icon_url="https://cdn.discordapp.com/icons/1131003330810871979/7594d6a33ba74fffd8373ef2f4bb71df.webp?size=4096")
         
 
         button = discord.ui.Button(label="Kanzen", url="https://www.instagram.com/kanzengrp/", emoji="<:kanzen:1136701626799886366>")
