@@ -52,7 +52,7 @@ class welcandleave(commands.Cog):
             embed.set_footer(text=f"Member Count: {member_count}")  
             embed.set_author(name=f"{member.display_name}", icon_url=member.display_avatar.url)
             embed.set_thumbnail(url=member.display_avatar.url)
-            await channel.send(f'Welcome {member.mention}! <@&1131005057417105418>', embed=embed)
+            await channel.send(f'Welcome {member.mention} <@&1131005057417105418>', embed=embed)
             await member.add_roles(role)
 
     @commands.Cog.listener()
