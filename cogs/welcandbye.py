@@ -50,7 +50,7 @@ class welcandleave(commands.Cog):
             timestamp = datetime.datetime.utcnow()
             embed.timestamp = timestamp
             embed.set_footer(text=f"Member Count: {member_count}")  
-            embed.set_author(name=f"{member.display_name} <:bubbles:1141532181206929438>", icon_url=member.display_avatar.url)
+            embed.set_author(name=f"{member.display_name}", icon_url=member.display_avatar.url)
             embed.set_thumbnail(url=member.display_avatar.url)
             await channel.send(f'Welcome {member.mention}! <@&1131005057417105418>', embed=embed)
             await member.add_roles(role)
