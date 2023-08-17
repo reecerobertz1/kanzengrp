@@ -12,6 +12,7 @@ class Moderation(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.start_time = datetime.datetime.utcnow()
+        self.guilds =[1121841073673736215]
 
     @commands.command()
     async def suggest(self, ctx, *, suggestion):
@@ -225,13 +226,12 @@ class Moderation(commands.Cog):
 
     @commands.command()
     async def newwelc(self, ctx):
-        member =  discord.Member
         embed = discord.Embed(color=0x2b2d31, description=f"<a:arrowlightpink:1141452054716489789> [read infortmation](https://discord.com/channels/1131003330810871979/1131005271502753812)\n<a:arrowlightpink:1141452054716489789> [get roles](https://discord.com/channels/1131003330810871979/1133730290221715487)\n<a:arrowlightpink:1141452054716489789> [apply here](https://discord.com/channels/1131003330810871979/1133771634793250847)")
         embed.set_author(name=ctx.author.name, icon_url=ctx.author.display_avatar.url)
         embed.set_thumbnail(url=ctx.author.display_avatar.url)
         timestamp = datetime.datetime.utcnow()
         embed.timestamp = timestamp
-        embed.set_footer(text=member.guild.member_count)
+        embed.set_footer(text=f"{sum(g.member_count for g in self.bot.guilds)}")
         await ctx.send(f'<:bubbles:1141532181206929438> Welcome {ctx.author.mention}! <@&1131005057417105418>', embed=embed)
 
 async def setup(bot):
