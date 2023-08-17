@@ -249,7 +249,7 @@ class Roles(commands.Cog):
         view = View(timeout=None)
         view.add_item(select)
 
-        embed = discord.Embed(title="<:leaf:1137454366886993950> What extra roles do you want?", description="Which of the following roles do you want? These roles are for other access to extra channels in the  server!\n\n<:1:1137455321028251708> - <@&1131127428668997737> \n<:2:1137455517577531565> - <@&1131127209952809031> \n<:3:1137455658258673704> - <@&1131127449753751663> \n<:4:1137455776877781107> - <@&1131127472142958622> \n<:5:1137455941609078824> - <@&1131127502396465213> \n<:6:1137456046978383892> - <@&1131127523456069723>", color=0x2b2d31)
+        embed = discord.Embed(title="<:leaf:1137454366886993950> What extra roles do you want?", description="Which of the following roles do you want? These roles are for other access to extra channels in the  server!\n\n<:1:1137455321028251708> - <@&1141780367808925717>", color=0x2b2d31)
         await ctx.send("https://cdn.discordapp.com/attachments/1131006428631539773/1141779053272121485/extra_00000.png")
         await ctx.send(embed=embed, view=view)
 
