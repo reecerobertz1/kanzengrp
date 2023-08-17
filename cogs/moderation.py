@@ -224,7 +224,8 @@ class Moderation(commands.Cog):
             await message.edit(content="~~Are you sure you want to send this update message?~~\nThe update has been cancelled")
 
     @commands.command()
-    async def newwelc(self, ctx, member: discord.Member):
+    async def newwelc(self, ctx):
+        member =  discord.Member
         embed = discord.Embed(color=0x2b2d31, description=f"<a:arrowlightpink:1141452054716489789> [read infortmation](https://discord.com/channels/1131003330810871979/1131005271502753812)\n<a:arrowlightpink:1141452054716489789> [get roles](https://discord.com/channels/1131003330810871979/1133730290221715487)\n<a:arrowlightpink:1141452054716489789> [apply here](https://discord.com/channels/1131003330810871979/1133771634793250847)")
         embed.set_author(name=ctx.author.name, icon_url=ctx.author.display_avatar.url)
         embed.set_thumbnail(url=ctx.author.display_avatar.url)
