@@ -5,13 +5,19 @@ class music(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(pass_context = True)
+    @commands.hybrid_command(name="join", description="joins voice channel", pass_context=True)
     async def join(self, ctx):
         if (ctx.author.voice):
             channel = ctx.message.author.voice.channel
             await channel.connect()
+            em = discord.Embed(
+            title="Voice Channel Join",
+            description="Successfully joined a voice channel",
+            color=discord.Color.green()
+            )
+            await ctx.send(embed=em)
         else:
-            await ctx.send("You must be in a voice channel to run this command!")
+            await ctx.send("you ain't in a voice channel")
 
     @commands.command(pass_context = True)
     async def leave(self, ctx):
