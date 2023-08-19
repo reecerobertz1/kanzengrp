@@ -8,7 +8,7 @@ class music(commands.Cog):
     @commands.hybrid_command(name="join", description="joins voice channel", pass_context=True)
     async def join(self, ctx):
         if (ctx.author.voice):
-            channel = ctx.message.author.voice.channel
+            channel = ctx.author.voice.channel
             await channel.connect()
             em = discord.Embed(
             title="Voice Channel Join",
