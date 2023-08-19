@@ -19,7 +19,7 @@ class music(commands.Cog):
         else:
             await ctx.send("you ain't in a voice channel")
 
-    @commands.command(pass_context = True)
+    @commands.hybrid_command(name="leave", description="leaves a voice channel", pass_context=True)
     async def leave(self, ctx):
         if (ctx.voice_client):
             await ctx.guild.voice_client.disconnect()
