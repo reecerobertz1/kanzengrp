@@ -97,6 +97,8 @@ class other(commands.Cog):
 
         if message.content.lower() == "kira":
             await message.channel.send("OMG JIMIN<:chimmy:1128727915664785409>:heartpulse::face_with_peeking_eye::heart_eyes::face_holding_back_tears::pleading_face::sob::weary::tired_face::heartpulse::heartpulse::heartpulse::heartpulse::heartpulse::heartpulse::heartpulse::heartpulse::heartpulse::pray_tone1::pinching_hand:<:chimmy:1128727915664785409> <:chimmy:1128727915664785409> <:chimmy:1128727915664785409> <:chimmy:1128727915664785409> <:chimmy:1128727915664785409> <:chimmy:1128727915664785409> :face_holding_back_tears::face_holding_back_tears::face_holding_back_tears:")
+        if message.content.lower() == "kelly":
+            await message.channel.send("Jungkook is so jungkook and no one will ever jungkook like jungkook")
 
 async def setup(bot):
     await bot.add_cog(other(bot))
