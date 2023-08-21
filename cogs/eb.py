@@ -27,7 +27,7 @@ class suggestions(ui.Modal, title='make a suggestion'):
         await interaction.response.defer()
         embed = discord.Embed(title="Editor's Block suggestions", color=0x2b2d31)
         embed.add_field(name='What is your suggestion', value=f'{self.suggestion.value}', inline=False)
-        embed.add_field(name="Discord ID:", value=interaction.user.id, inline=False)
+        embed.set_footer(text=interaction.user.name, icon_url=interaction.user.display_icon)
         timestamp = datetime.datetime.utcnow()
         embed.timestamp = timestamp
         channel = interaction.client.get_channel(1142984843010002996)
