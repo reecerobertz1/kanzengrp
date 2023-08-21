@@ -17,7 +17,7 @@ class suggest(discord.ui.View):
         super().__init__(timeout=None)
         self.value = None
 
-    @discord.ui.button(label="Get perks here!")
+    @discord.ui.button(label="Make a suggestion")
     async def suggest(self, interaction: discord.Interaction, button: discord.Button):
         await interaction.response.send_modal(suggestions())
 
