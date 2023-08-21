@@ -960,7 +960,7 @@ class ebmessages(commands.Cog):
 
     @app_commands.command(name="suggest", description="Make a suggestion")
     async def suggest(self, interaction: discord.Interaction):
-        embed = discord.Embed(title="make a suggestion", description="Make a suggestion for Editors Block!\nYou can suggestion:\n -anything for the server\n -activities/events\n -hoshi commands anything really!\nPlease do try explain in detail what you're suggestion so we can do it the way you said!\n\nAny inappropriate suggestions won't be added and will be deleted", color=0x2b2d31)
+        embed = discord.Embed(title="make a suggestion", description="Make a suggestion for Editors Block!\nYou can suggestion:\n -anything for the server\n -activities/events\n -hoshi commands anything really!\nPlease do try to explain in details what you're suggesting so we can do it the way you want!\n\nAny inappropriate suggestions won't be added and will be deleted", color=0x2b2d31)
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
 
