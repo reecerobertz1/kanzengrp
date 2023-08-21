@@ -957,6 +957,10 @@ class ebmessages(commands.Cog):
         embed = discord.Embed(title="Editors block perks", description="dqrkwrld perks:\n<a:arrowpink:1134860720777990224> plugins for after effects\n\nremqsi perks:\n<a:arrowpink:1134860720777990224> Remqsi's colouring packs 1 & 2\n<a:arrowpink:1134860720777990224> BTS Photos\n<a:arrowpink:1134860720777990224> Enhypen Photos\n<a:arrowpink:1134860720777990224> Blackpink Photos\n<a:arrowpink:1134860720777990224> Break your heart project file\n<a:arrowpink:1134860720777990224> Lisa candy project file\n\nprobshyunjin perks:\n<a:arrowpink:1134860720777990224> after effects colorings\n<a:arrowpink:1134860720777990224> turbulence displace settings for after effects\n\nhrts4h0bi perks:\n<a:arrowpink:1134860720777990224> alight motion project files\n<a:arrowpink:1134860720777990224> overlays from youtube\n\nvoidsquake perks\n<a:arrowpink:1134860720777990224> lisa blackpink photopack\n<a:arrowpink:1134860720777990224> yunjin lesserafim photopack\n<a:arrowpink:1134860720777990224> after effects presets\n<a:arrowpink:1134860720777990224> voidsquake audios\n<a:arrowpink:1134860720777990224> after effects plugins\n\nlqvenx perks\n<a:arrowpink:1134860720777990224> all of ariana grande's instagram\n<a:arrowpink:1134860720777990224> bea photospack\n<a:arrowpink:1134860720777990224> lisa photospack\n<a:arrowpink:1134860720777990224> rosé photospack\n<a:arrowpink:1134860720777990224> videostar qrcodes\n\nYou can also get a custom role in the server, it can have a name and color of your choice! And you can have a custom role icon when the server reaches level 2!", color=0x2b2d31)
         await ctx.send(embed=embed)
 
+    @commands.hybrid_command(name="suggest", description="Make a suggestion", pass_context=True)
+    async def join(self, ctx, interaction: discord.Interaction):
+        await interaction.response.send_message("hihi", ephemeral=True)
+
 
 async def setup(bot):
     await bot.add_cog(ebmessages(bot))
