@@ -983,7 +983,7 @@ class ebmessages(commands.Cog):
     @app_commands.command(name="suggest", description="Make a suggestion")
     async def suggest(self, interaction: discord.Interaction):
         view = suggest()
-        embed = discord.Embed(title="<:bubbles:1141532181206929438> Make a suggestion", description="You can suggestion:\n<a:arrowpink:1134860720777990224> anything for the server\n<a:arrowpink:1134860720777990224> activities/events\n<a:arrowpink:1134860720777990224> hoshi commands anything really!\n\nPlease do try to explain in details what you're suggesting so we can do it the way you want!\nAny inappropriate suggestions won't be added and will be deleted", color=0x2b2d31)
+        embed = discord.Embed(title="<:bubbles:1141532181206929438> Make a suggestion", description="You can suggest:\n<a:arrowpink:1134860720777990224> anything for the server\n<a:arrowpink:1134860720777990224> activities/events\n<a:arrowpink:1134860720777990224> hoshi commands anything really!\n\nPlease do try to explain in details what you're suggesting so we can do it the way you want!\nAny inappropriate suggestions won't be added and will be deleted", color=0x2b2d31)
         embed.set_thumbnail(url=interaction.guild.icon)
         await interaction.response.send_message(embed=embed, view=view, ephemeral=True)
 
