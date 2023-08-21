@@ -99,6 +99,12 @@ class other(commands.Cog):
             await message.channel.send("OMG JIMIN<:chimmy:1128727915664785409>:heartpulse::face_with_peeking_eye::heart_eyes::face_holding_back_tears::pleading_face::sob::weary::tired_face::heartpulse::heartpulse::heartpulse::heartpulse::heartpulse::heartpulse::heartpulse::heartpulse::heartpulse::pray_tone1::pinching_hand:<:chimmy:1128727915664785409> <:chimmy:1128727915664785409> <:chimmy:1128727915664785409> <:chimmy:1128727915664785409> <:chimmy:1128727915664785409> <:chimmy:1128727915664785409> :face_holding_back_tears::face_holding_back_tears::face_holding_back_tears:")
         if message.content.lower() == "kelly":
             await message.channel.send("Jungkook is so jungkook and no one will ever jungkook like jungkook <:boobs:1142888878999613520>")
+        if message.content.lower() == "why is it so dead":
+            await message.channel.send("<@&1134876934585712773> where are you")
+        if message.content.lower() == "where is everyone":
+            await message.channel.send("<@&1134876934585712773> where are you")
+        if message.content.lower() == "anyone there?":
+            await message.channel.send("<@&1134876934585712773> where are you")
 
 async def setup(bot):
     await bot.add_cog(other(bot))
