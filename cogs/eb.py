@@ -959,7 +959,7 @@ class ebmessages(commands.Cog):
         await ctx.send(embed=embed)
 
     @app_commands.command(name="suggest", description="Make a suggestion")
-    async def join(self, ctx, interaction: discord.Interaction):
+    async def suggest(self, ctx, interaction: discord.Interaction):
         await interaction.response.send_message("hihi", ephemeral=True)
 
 
