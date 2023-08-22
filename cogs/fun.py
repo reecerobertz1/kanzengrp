@@ -309,7 +309,7 @@ class funcmds(commands.Cog):
             await ctx.reply(f"Hoshi wish {author} a happy birthday!")
         else:
             embed = discord.Embed(description=f"{author} wished {member.mention} a happy birthday!", color=0x2b2d31)
-            hugs = ['https://media.tenor.com/M-34lT1ySIIAAAAd/hb.gif',
+            bday = ['https://media.tenor.com/M-34lT1ySIIAAAAd/hb.gif',
                     'https://media.tenor.com/CA8wXuq5Ec8AAAAd/happy40th-birthday.gif',
                     'https://media.tenor.com/ekHNpcO0QPEAAAAC/happy-birthday.gif',
                     'https://media.tenor.com/4DZR7mxre0IAAAAC/birthday-happy-birthday.gif',
@@ -317,7 +317,7 @@ class funcmds(commands.Cog):
                     'https://media.tenor.com/9WoGmoTqej4AAAAC/happy-birthday-hbd.gif',
                     'https://media.tenor.com/BHTQmBYipVEAAAAC/anyon-birthday.gif',
                     'https://media.tenor.com/eCGKnoBDOAQAAAAC/happy-birthday.gif']
-            embed.set_image(url=(random.choice(hugs)))
+            embed.set_image(url=(random.choice(bday)))
             await ctx.reply(embed=embed)
 
     @commands.command(name='roast')
