@@ -987,6 +987,52 @@ class ebmessages(commands.Cog):
         embed.set_thumbnail(url=interaction.guild.icon)
         await interaction.response.send_message(embed=embed, view=view, ephemeral=True)
 
+    @commands.group(invoke_without_command=True)
+    async def enter(self, ctx: commands.Context):
+        """group of commands to manage apps"""
+        embed = discord.Embed(title="Editors blocks server icon + banner contest", color=0x2B2D31)
+        embed.add_field(name="enter banner", value="Send your banner submission", inline=False)
+        embed.add_field(name="enter icon", value="Send your server icon submission", inline=False)
+        await ctx.reply(embed=embed)
+
+    @enter.command()
+    async def banner(self, ctx):
+        if ctx.message.attachments:
+            image_url = ctx.message.attachments[0].url
+            username = ctx.author.name
+
+            embed = discord.Embed(title="Banner Submission", description=f"Banner created by {username}", color=0x2b2d31)
+            embed.set_image(url=image_url)
+            embed.set_footer(text="Vote for this banner with the emojis below!", icon_url=image_url)
+
+            channel = self.bot.get_channel(1143334118168469514)
+            msg = await channel.send(embed=embed)
+            await msg.add_reaction("✅")
+            await msg.add_reaction("❌")
+
+            await ctx.send("Thank you for entering! I have successfully sent your server banner.")
+        else:
+            await ctx.send("You need to attach an image with the command.")
+
+    @enter.command()
+    async def icon(self, ctx):
+        if ctx.message.attachments:
+            image_url = ctx.message.attachments[0].url
+            username = ctx.author.name
+
+            embed = discord.Embed(title="Icon Submission", description=f"Icon created by {username}", color=0x2b2d31)
+            embed.set_image(url=image_url)
+            embed.set_footer(text="Vote for this server icon with the emojis below!", icon_url=image_url)
+
+            channel = self.bot.get_channel(1143334118168469514)
+            msg = await channel.send(embed=embed)
+            await msg.add_reaction("✅")
+            await msg.add_reaction("❌")
+
+            await ctx.send("Thank you for entering! I have successfully sent your server icon.")
+        else:
+            await ctx.send("You need to attach an image with the command.")
+
 
 async def setup(bot):
     await bot.add_cog(ebmessages(bot))
