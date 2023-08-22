@@ -148,20 +148,11 @@ class Moderation(commands.Cog):
         await ctx.send(f"Emoji {emoji} has been added!")
 
     @commands.command()
-    async def memberlist(self, ctx):
+    async def membercount(self, ctx):
         members = [member for member in ctx.guild.members if not member.bot]
         member_count = len(members)
-
-        # If there are many members, the list might exceed the Discord message limit
-        # In such cases, you can split the list into smaller chunks
-        chunk_size = 1000
-        chunks = [members[i:i+chunk_size] for i in range(0, len(members), chunk_size)]
-
-        for i, chunk in enumerate(chunks, start=1):
-            member_list_text = "\n".join([member.mention for member in chunk])
-            await ctx.send(f"**Member List - Part {i}**\n{member_list_text}")
-
-        await ctx.send(f"Total Members in the Server: {member_count}")
+        embed = discord.Embed(title=f"Total members in {ctx.guild.name}", description=member_count, color=0x2b2d31)
+        await ctx.send(embed=embed)
 
     @commands.command()
     @commands.has_permissions(manage_guild=True)
