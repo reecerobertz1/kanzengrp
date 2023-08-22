@@ -89,7 +89,30 @@ class editing(commands.Cog):
                    "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-44.png",
                    "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-45.png",
                    "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-46.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-47.png",]
+                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-47.png",
+                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654004233089194/dfgsg.png",
+                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654004564426762/dfgsgf.png",
+                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654004782542919/dfgsdgd_1.png",
+                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654005046779975/dfgsdgf.png",
+                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654005340385310/dfsgsdfg.png",
+                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654005566873672/dsfgdfgd.png",
+                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654005772406915/dfgsdgdf.png",
+                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654006045024266/fdgsdfgd.png",
+                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654006284112042/dfsgdfgdf.png",
+                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654006565122109/sdgsdf.png",
+                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654067684507803/dsfgdgf.png",
+                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654067961335870/sdfgsfd.png",
+                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654068313653418/fsdgdg.png",
+                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654068724711474/dsfgsdfg.png",
+                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654069148323920/dfgsdgd.png",
+                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654069404188682/sdfg.png",
+                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654069647446166/gsdfgdf.png",
+                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654069911683102/dfasf.png",
+                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654070347907262/cs2.png",
+                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654070624718968/cs1.png",
+                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654081974513684/cs5.png",
+                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654082280702113/cs4.png",
+                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654082570113134/cs3.png"]
         rancolor = random.choice(choices)
         await ctx.reply(rancolor)
 
