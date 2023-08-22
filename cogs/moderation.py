@@ -155,8 +155,8 @@ class Moderation(commands.Cog):
         
         embed = discord.Embed(title=f"Total members in {ctx.guild.name}", color=0x2b2d31)
         embed.add_field(name="Total Members", value=total_members, inline=False)
-        embed.add_field(name="Humans", value=human_count, inline=True)
-        embed.add_field(name="Bots", value=bot_count, inline=True)
+        embed.add_field(name="Humans", value=human_count, inline=False)
+        embed.add_field(name="Bots", value=bot_count, inline=False)
         
         await ctx.send(embed=embed)
 
