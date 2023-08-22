@@ -35,7 +35,7 @@ class editing(commands.Cog):
             "Seventeen - Wonwoo", "Seventeen - Junhui", "Seventeen - The8", "Seventeen - Scoups", "Seventeen - Joshua", "Seventeen - Vernon", "Seventeen - Jeonghan", "Aespa - Karina",
             "Aespa - Ninging", "Aespa - Winter", "Aespa - Giselle", "Aespa - Karina", "TXT - Kai", "TXT - Soobin", "TXT - Yeonjun", "TXT - Beomgyu", "TXT - Taehyun", "Stray Kids - Bang Chan",
             "Stray Kids - Lee Know", "Stray Kids - Changbin", "Stray Kids - Han", "Stray Kids - Felix", "Stray Kids - Seungmin", "Stray Kids - I.N", "Stray Kids - Hyunjin", "Itzy - Yeji",
-            "Itzy - Ryujin", "Itzy - Lia", "Itzy - Chaeryeong", "Itzy - Yuna"
+            "Itzy - Ryujin", "Itzy - Lia", "Itzy - Chaeryeong", "Itzy - Yuna", "Stayc - Sumin", "Stayc - Sieun", "Stayc - Isa", "Stayc - Seeun", "Stayc - Yoon", "Stayc - J", "Viviz - Umji", "Viviz - SinB", "Viviz - Eunha"
         ]
 
         person = random.choice(choices)
