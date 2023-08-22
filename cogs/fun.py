@@ -302,6 +302,24 @@ class funcmds(commands.Cog):
             embed.set_image(url=(random.choice(hugs)))
             await ctx.reply(embed=embed)
 
+    @commands.command(aliases="birthday")
+    async def happybirthday(self, ctx, member: typing.Optional[discord.Member]):
+        author = ctx.message.author.mention
+        if member is None:
+            await ctx.reply(f"Hoshi wish {author} a happy birthday!")
+        else:
+            embed = discord.Embed(description=f"{author} wished {member.mention} a happy birthday!", color=0x2b2d31)
+            hugs = ['https://media.tenor.com/M-34lT1ySIIAAAAd/hb.gif',
+                    'https://media.tenor.com/CA8wXuq5Ec8AAAAd/happy40th-birthday.gif',
+                    'https://media.tenor.com/ekHNpcO0QPEAAAAC/happy-birthday.gif',
+                    'https://media.tenor.com/4DZR7mxre0IAAAAC/birthday-happy-birthday.gif',
+                    'https://media.tenor.com/21kzclFhTg8AAAAC/happy-birthday-birthday.gif',
+                    'https://media.tenor.com/9WoGmoTqej4AAAAC/happy-birthday-hbd.gif',
+                    'https://media.tenor.com/BHTQmBYipVEAAAAC/anyon-birthday.gif',
+                    'https://media.tenor.com/eCGKnoBDOAQAAAAC/happy-birthday.gif']
+            embed.set_image(url=(random.choice(hugs)))
+            await ctx.reply(embed=embed)
+
     @commands.command(name='roast')
     async def roast_command(self, ctx, *, member: discord.Member = None):
         # If no member is mentioned, default to the author of the command
