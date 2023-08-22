@@ -149,9 +149,15 @@ class Moderation(commands.Cog):
 
     @commands.command()
     async def membercount(self, ctx):
-        members = [member for member in ctx.guild.members if not member.bot]
-        member_count = len(members)
-        embed = discord.Embed(title=f"Total members in {ctx.guild.name}", description=member_count, color=0x2b2d31)
+        total_members = len(ctx.guild.members)
+        bot_count = sum(1 for member in ctx.guild.members if member.bot)
+        human_count = total_members - bot_count
+        
+        embed = discord.Embed(title=f"Total members in {ctx.guild.name}", color=0x2b2d31)
+        embed.add_field(name="Total Members", value=total_members, inline=False)
+        embed.add_field(name="Humans", value=human_count, inline=True)
+        embed.add_field(name="Bots", value=bot_count, inline=True)
+        
         await ctx.send(embed=embed)
 
     @commands.command()
