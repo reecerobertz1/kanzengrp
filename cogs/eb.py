@@ -936,6 +936,7 @@ class ebmessages(commands.Cog):
             await ctx.send("Please reply with the embed you want to process.")
 
     @commands.command()
+    @is_judge()
     async def role1(self, ctx):
         embed = discord.Embed(title="<:leaf:1137454366886993950> What are your pronouns?",
                               description="Which of the following pronouns do you use? These roles can help other members of the server use the correct pronouns.\n\n<:1:1137455321028251708> - <@&1131127428668997737> \n<:2:1137455517577531565> - <@&1131127209952809031> \n<:3:1137455658258673704> - <@&1131127449753751663> \n<:4:1137455776877781107> - <@&1131127472142958622> \n<:5:1137455941609078824> - <@&1131127502396465213> \n<:6:1137456046978383892> - <@&1131127523456069723>",
@@ -944,6 +945,7 @@ class ebmessages(commands.Cog):
         await ctx.send(embed=embed)
 
     @commands.command()
+    @is_judge()
     async def role2(self, ctx):
         embed = discord.Embed(title="<:leaf:1137454366886993950> What server pings would you like?",
                               description="The staff will ping these roles whenever there's something related to these roles happening in the server.\n\n<:1:1137455321028251708> - <@&1133770119777099866> \n<:2:1137455517577531565> - <@&1131127168102055996> \n<:3:1137455658258673704> - <@&1131127104226992208> \n<:4:1137455776877781107> - <@&1131005057417105418> \n<:5:1137455941609078824> - <@&1131127124187684894>",
@@ -953,6 +955,7 @@ class ebmessages(commands.Cog):
 
 
     @commands.command()
+    @is_judge()
     async def role3(self, ctx):
         embed = discord.Embed(title="<:leaf:1137454366886993950> What member pings would you like?",
                               description="These roles can be used by anyone in this server to ping other members! Please do not abuse these roles!\n\n<:1:1137455321028251708> - <@&1131130157160206396>\n<:2:1137455517577531565> - <@&1131127084379549757>\n<:3:1137455658258673704> - <@&1131130102328078336>\n<:4:1137455776877781107> - <@&1131127146186821685>\n<:5:1137455941609078824> - <@&1134876934585712773>",
@@ -961,10 +964,12 @@ class ebmessages(commands.Cog):
         await ctx.send(embed=embed)
 
     @commands.command()
+    @is_judge()
     async def space1(self, ctx):
         await ctx.send("<:Empty:1137842301188702239>")
 
     @commands.command()
+    @is_judge()
     async def staffinfo(self, ctx):
         view = staffinfo()
         embed = discord.Embed(title="<:leaf:1137454366886993950> Staff Handbook", description="<a:arrowpink:1134860720777990224> Please do not abuse your staff power!\n<a:arrowpink:1134860720777990224> Help people when they ping you (if you're free)\n<a:arrowpink:1134860720777990224> Not helping in the server will get you removed as staff, unless you have a reason\n<a:arrowpink:1134860720777990224> Set a good example in the server\n<a:arrowpink:1134860720777990224> If you see anyone with inappropriate name, you can change their nicknames\n<a:arrowpink:1134860720777990224> See any scam messages and accounts delete them and ban the account\n<a:arrowpink:1134860720777990224> If there is any inappropriate content sent into the server, delete and ban\n<a:arrowpink:1134860720777990224> If there is any rude and disrespectful messages sent, delete and tell an owner!", color=0x2b2d31)
@@ -973,6 +978,7 @@ class ebmessages(commands.Cog):
         await ctx.send(embed=embed, view=view)
 
     @commands.command()
+    @is_judge()
     async def ebperks(self, ctx):
         view = ebperks()
         embed = discord.Embed(title="Editor's Block perks",description="dqrkwrld perks:\n<a:arrowpink:1134860720777990224> plugins for after effects\n\nremqsi perks:\n<a:arrowpink:1134860720777990224> Remqsi's colouring packs 1 & 2\n<a:arrowpink:1134860720777990224> BTS Photos\n<a:arrowpink:1134860720777990224> Enhypen Photos\n<a:arrowpink:1134860720777990224> Blackpink Photos\n<a:arrowpink:1134860720777990224> Break your heart project file\n<a:arrowpink:1134860720777990224> Lisa candy project file\n\nprobshyunjin perks:\n<a:arrowpink:1134860720777990224> after effects colorings\n<a:arrowpink:1134860720777990224> turbulence displace settings for after effects\n\nhrts4h0bi perks:\n<a:arrowpink:1134860720777990224> alight motion project files\n<a:arrowpink:1134860720777990224> overlays from youtube\n\nvoidsquake perks\n<a:arrowpink:1134860720777990224> lisa blackpink photopack\n<a:arrowpink:1134860720777990224> yunjin lesserafim photopack\n<a:arrowpink:1134860720777990224> after effects presets\n<a:arrowpink:1134860720777990224> voidsquake audios\n<a:arrowpink:1134860720777990224> after effects plugins\n\nlqvenx perks\n<a:arrowpink:1134860720777990224> all of ariana grande's instagram\n<a:arrowpink:1134860720777990224> bea photospack\n<a:arrowpink:1134860720777990224> lisa photospack\n<a:arrowpink:1134860720777990224> rosé photospack\n<a:arrowpink:1134860720777990224> videostar qrcodes" ,color=0x2b2d31)
@@ -980,6 +986,7 @@ class ebmessages(commands.Cog):
         await perks.send(embed=embed, view=view)
 
     @commands.command()
+    @is_judge()
     async def perkpreview(self, ctx):
         embed = discord.Embed(title="Editors block perks", description="dqrkwrld perks:\n<a:arrowpink:1134860720777990224> plugins for after effects\n\nremqsi perks:\n<a:arrowpink:1134860720777990224> Remqsi's colouring packs 1 & 2\n<a:arrowpink:1134860720777990224> BTS Photos\n<a:arrowpink:1134860720777990224> Enhypen Photos\n<a:arrowpink:1134860720777990224> Blackpink Photos\n<a:arrowpink:1134860720777990224> Break your heart project file\n<a:arrowpink:1134860720777990224> Lisa candy project file\n\nprobshyunjin perks:\n<a:arrowpink:1134860720777990224> after effects colorings\n<a:arrowpink:1134860720777990224> turbulence displace settings for after effects\n\nhrts4h0bi perks:\n<a:arrowpink:1134860720777990224> alight motion project files\n<a:arrowpink:1134860720777990224> overlays from youtube\n\nvoidsquake perks\n<a:arrowpink:1134860720777990224> lisa blackpink photopack\n<a:arrowpink:1134860720777990224> yunjin lesserafim photopack\n<a:arrowpink:1134860720777990224> after effects presets\n<a:arrowpink:1134860720777990224> voidsquake audios\n<a:arrowpink:1134860720777990224> after effects plugins\n\nlqvenx perks\n<a:arrowpink:1134860720777990224> all of ariana grande's instagram\n<a:arrowpink:1134860720777990224> bea photospack\n<a:arrowpink:1134860720777990224> lisa photospack\n<a:arrowpink:1134860720777990224> rosé photospack\n<a:arrowpink:1134860720777990224> videostar qrcodes\n\nYou can also get a custom role in the server, it can have a name and color of your choice! And you can have a custom role icon when the server reaches level 2!", color=0x2b2d31)
         await ctx.send(embed=embed)
@@ -1048,6 +1055,7 @@ class ebmessages(commands.Cog):
             await ctx.send("The contest is currently closed.")
 
     @commands.group(invoke_without_command=True)
+    @is_judge()
     async def contest(self, ctx: commands.Context):
         """Group of commands to manage apps"""
         embed = discord.Embed(title="Editors blocks server icon + banner contest", color=0x2B2D31)
@@ -1056,12 +1064,14 @@ class ebmessages(commands.Cog):
         await ctx.reply(embed=embed)
 
     @contest.command()
+    @is_judge()
     async def close(self, ctx):
         """Close the contest for entries"""
         self.contest_closed = True
         await ctx.send("The contest is now closed. Entries are no longer accepted.")
 
     @contest.command()
+    @is_judge()
     async def open(self, ctx):
         """Open the contest for entries"""
         self.contest_closed = False
