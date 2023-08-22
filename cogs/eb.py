@@ -1040,7 +1040,7 @@ class ebmessages(commands.Cog):
                 msg = await channel.send(embed=embed)
                 await msg.add_reaction("✅")
                 await msg.add_reaction("❌")
-
+                await ctx.message.delete()
                 await ctx.send("Thank you for entering! I have successfully sent your server icon.")
             else:
                 await ctx.send("You need to attach an image with the command.")
