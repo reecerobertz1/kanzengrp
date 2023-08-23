@@ -1077,6 +1077,20 @@ class ebmessages(commands.Cog):
         self.contest_closed = False
         await ctx.send("The contest is now open. You can start submitting entries again.")
 
+    @commands.command()
+    @commands.has_permissions(manage_guild=True)
+    async def hsg(self, ctx):
+        embed = discord.Embed(title="**__HEARTSTOPPERGRP__ 🍂**", description="— led by [vintcgetapes](https://instagram.com/vintcgetapes/)\n[forestriies](https://instagram.com/forestriies/) & [charliesflms](https://instagram.com/charliesflms/)", color=0x2b2d31)
+        embed.set_footer(text="est. 2021 | multifandom accepted", icon_url="https://cdn.discordapp.com/icons/1051246701970735184/d6ad24b663c2fa6cc51e696ac8b2f40c.webp?size=4096")
+        embed.set_image(url="https://cdn.discordapp.com/attachments/982712797282570383/1143342421866979339/26A272CE-CE43-4D56-8AC1-900F07AD2A9C.jpg")
+        button = discord.ui.Button(label="grp account", url="https://instagram.com/heartstoppergrp?igshid=MzRlODBiNWFlZA==", emoji="<:kanzen:1136701626799886366>")
+        button2 = discord.ui.Button(label="disc server", url="https://discord.gg/XVpKTcJhf8", emoji="<:aura:1136701593018978415>")
+        view = discord.ui.View()
+        view.add_item(button)
+        view.add_item(button2)
+        await ctx.message.delete()
+        await ctx.send("@everyone", embed=embed, view=view)
+
 
 async def setup(bot):
     await bot.add_cog(ebmessages(bot))
