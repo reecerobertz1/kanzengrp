@@ -347,14 +347,13 @@ class ebmessages(commands.Cog):
             return await ctx.send("The duration must be greater than 0.")
         
         duration_hours = duration
-        duration_seconds = duration_hours * 3600  # Convert hours to seconds
+        duration_seconds = duration_hours * 3600
 
         args = args.split()
         prize = " ".join(args)
         host_mention = None
 
         if len(args) > 1:
-            # Check if the last argument starts with "@" to determine if it's a host mention
             last_arg = args[-1]
             if last_arg.startswith("<@") and last_arg.endswith(">"):
                 host_mention = last_arg
@@ -467,7 +466,7 @@ class ebmessages(commands.Cog):
         except asyncio.TimeoutError:
             await message.edit(content="~~are you sure you want to open the applications?~~\nthe recruit has been cancelled!")
 
-    @apps.command()
+    @commands.command()
     @commands.has_permissions(manage_guild=True)
     async def close(self, ctx: commands.Context):
         message = await ctx.reply("are you sure you want to close the applications?")
