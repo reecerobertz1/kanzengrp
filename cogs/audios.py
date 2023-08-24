@@ -14,17 +14,14 @@ class audios(commands.Cog):
                 data = json.load(file)
         except FileNotFoundError:
             data = []
-
         data.append(audio_data)
 
         with open(filename, "w") as file:
             json.dump(data, file, indent=4)
-
         await ctx.reply("Audio added successfully.")
 
     @commands.command()
     async def addsoft(self, ctx, link):
-        """Adds a streamable link to softaudios.json"""
         button = discord.ui.Button(label="Click to hear audio", url=f"{link}")
 
         view = discord.ui.View()
@@ -38,7 +35,6 @@ class audios(commands.Cog):
 
     @commands.command()
     async def addhot(self, ctx, link):
-        """Adds a streamable link to hotaudios.json"""
         button = discord.ui.Button(label="Click to hear audio", url=f"{link}")
 
         view = discord.ui.View()
@@ -51,7 +47,6 @@ class audios(commands.Cog):
 
     @commands.group(invoke_without_command=True)
     async def audio(self, ctx: commands.Context):
-        """group of commands to manage apps"""
         embed = discord.Embed(title="Audio Commands", color=0x2B2D31)
         embed.add_field(name="audio soft", value="Sends a soft audio", inline=False)
         embed.add_field(name="audio hot", value="Sends a hot audio", inline=False)
@@ -59,7 +54,6 @@ class audios(commands.Cog):
 
     @audio.command()
     async def soft(self, ctx):
-        """Sends a random link from softaudios.json"""
         with open("softaudios.json", "r") as f:
             audios = json.load(f)
             choice = random.choice(audios)
@@ -67,7 +61,6 @@ class audios(commands.Cog):
 
     @audio.command()
     async def hot(self, ctx):
-        """Sends a random link from hotaudios.json"""
         with open("hotaudios.json", "r") as f:
             audios = json.load(f)
             choice = random.choice(audios)

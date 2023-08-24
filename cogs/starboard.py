@@ -10,7 +10,7 @@ class Starboard(commands.Cog):
     @commands.Cog.listener()
     async def on_reaction_add(self, reaction, member):
         try:
-            min_stars = 3
+            min_stars = 1
             if (
                 str(reaction.emoji) == "⭐"
                 and reaction.message.guild.id == 1121841073673736215
@@ -27,7 +27,6 @@ class Starboard(commands.Cog):
                 message_id = reaction.message.id
 
                 if message_id not in self.starboarded_messages:
-                    # Send a new message to the starboard
                     stars = reaction.count
                     channel_name = reaction.message.channel.id
                     embed = discord.Embed(color=0x2b2d31)
@@ -36,8 +35,10 @@ class Starboard(commands.Cog):
                         embed.description = reaction.message.content
 
                     embed.set_author(name=reaction.message.author.display_name, icon_url=reaction.message.author.avatar.url)
-                    embed.add_field(name="Original Message", value=f"[Jump!](https://discordapp.com/channels/{reaction.message.guild.id}/{reaction.message.channel.id}/{reaction.message.id})")
+                    button = discord.ui.Button(label="Original Message", url=f"https://discordapp.com/channels/{reaction.message.guild.id}/{reaction.message.channel.id}/{reaction.message.id}", emoji="⭐")
 
+                    view = discord.ui.View()
+                    view.add_item(button)
                     image_url = None
 
                     if reaction.message.attachments:
@@ -51,13 +52,12 @@ class Starboard(commands.Cog):
                     if image_url:
                         embed.set_image(url=image_url)
 
-                    sent_message = await starboard_channel.send(f"⭐ {stars} <#{channel_name}>", embed=embed)
+                    sent_message = await starboard_channel.send(f"⭐ {stars} <#{channel_name}>", embed=embed, view=view)
                     self.starboarded_messages[message_id] = (sent_message, channel_name)
                 else:
-                    # Edit the existing message on the starboard
                     stars = reaction.count
                     message, channel_name = self.starboarded_messages[message_id]
-                    await message.edit(content=f"⭐ {stars} <#{channel_name}>", embed=message.embeds[0])
+                    await message.edit(content=f"⭐ {stars} <#{channel_name}>", embed=message.embeds[0], view=view[0])
 
         except Exception as e:
             error_channel = self.bot.get_channel(self.error_channel_id)

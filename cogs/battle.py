@@ -1,15 +1,9 @@
 import asyncio
-import io
-import json
 import math
-import os
 import random
 from typing import Optional
-import typing
-import aiohttp
 import discord
 from discord.ext import commands
-import requests
 from PIL import Image, ImageDraw, ImageFont
 
 

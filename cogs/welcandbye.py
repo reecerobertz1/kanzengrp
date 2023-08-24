@@ -6,17 +6,10 @@ class welcandleave(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.start_time = datetime.datetime.utcnow()
-
         self.server1_id = 1121841073673736215
         self.server1_welcome_channel_id = 1121921106706710567
         self.server2_id = 957987670787764224
         self.server2_welcome_channel_id = 1123274964406120479
-        self.server3_id = 1123347338841313331
-        self.server3_channel = 1123347339797594144
-        self.server4_id = 1122181605591621692
-        self.server4_channel = 1123334440727367730
-        self.server5_id = 896619762354892821
-        self.server5_channel = 896924663819694132
         self.server6_id = 1131003330810871979
         self.server6_channel = 1133767338588639323
 
@@ -71,31 +64,9 @@ class welcandleave(commands.Cog):
             channel = self.bot.get_channel(self.server2_welcome_channel_id)
             await channel.send(f'{member.mention}', embed=embed)
 
-    @commands.Cog.listener()
-    async def on_member_boost(self, member):
-        server_id = member.guild.id
-        channel_id = None
-
-        if server_id == 957987670787764224:  # auragrp
-            channel_id = 1123752383101542441  # aura channel
-        elif server_id == 1121841073673736215:  # kanzengrp
-            channel_id = 1123649005147127818  # kanzen channel
-        elif server_id == 1123347338841313331:  # aura forms
-            channel_id = 1123752056772104252  # aura forms channel
-        elif server_id == 1122181605591621692:  # kanzengrp forms
-            channel_id = 1123755909089337364  # kanzen forms channel
-        elif server_id == 1131003330810871979:  # editors block
-            channel_id = 1133772140915732511  # boost editors block
-
-        if channel_id:
-            channel = self.bot.get_channel(channel_id)
-            embed = discord.Embed(title=f"{member.name} thank you for boosting!", description='<a:greenarrow:1123286634629169203> do `+perks` to get the booster perks!\n<a:greenarrow:1123286634629169203> dm a lead or co lead for your custom role\n<a:greenarrow:1123286634629169203> we really appreciate the support', color=0x2b2d31)
-            await channel.send(f'{member.mention}', embed=embed)
-
     @commands.command()
     async def perks(self, ctx):
         server_id = ctx.guild.id
-
         if server_id in [957987670787764224, 1123347338841313331]:
             channel_ids = [1122994947444973709, 1123991454788894820]  
             message = discord.Embed(title="Perks command has been used!", description=f"`{ctx.author.display_name}` has used the perks command!", color=0x2b2d31)

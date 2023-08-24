@@ -7,7 +7,7 @@ from discord.ext import commands
 class QOTD(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.qotd_schedule_channel_id = 1131018131813441696  # Replace with your channel ID
+        self.qotd_schedule_channel_id = 1131018131813441696
         self.qotd_schedule = {}
 
     @commands.command(name='qotdschedule')
@@ -45,7 +45,6 @@ class QOTD(commands.Cog):
 
         await ctx.send("Question added to the QOTD schedule!")
 
-    # Add a task to check the schedule daily and send reminders
     @tasks.loop(hours=24)
     async def check_qotd_schedule(self):
         current_date = datetime.datetime.now().strftime('%B %d')

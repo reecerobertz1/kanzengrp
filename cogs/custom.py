@@ -54,11 +54,10 @@ class custom(commands.Cog):
 
         server_id = str(message.guild.id)
 
-        # Check if the server has custom commands
+
         if server_id in self.custom_commands:
             content = message.content.lower()
 
-            # Check if the message is a custom command
             if content in self.custom_commands[server_id]:
                 response = self.custom_commands[server_id][content]
                 await message.channel.send(response)

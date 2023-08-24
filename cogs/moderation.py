@@ -1,6 +1,5 @@
 import asyncio
 import datetime
-import aiohttp
 import discord
 from discord.ext import commands
 from discord import app_commands
@@ -220,18 +219,6 @@ class Moderation(commands.Cog):
             await message.edit(content=None)
         except asyncio.TimeoutError:
             await message.edit(content="~~Are you sure you want to send this update message?~~\nThe update has been cancelled")
-
-    @commands.command()
-    async def newwelc(self, ctx):
-        members = [member for member in ctx.guild.members]
-        member_count = len(members)
-        embed = discord.Embed(color=0x2b2d31, description=f"<a:arrowlightpink:1141452054716489789> [read infortmation](https://discord.com/channels/1131003330810871979/1131005271502753812)\n<a:arrowlightpink:1141452054716489789> [get roles](https://discord.com/channels/1131003330810871979/1133730290221715487)\n<a:arrowlightpink:1141452054716489789> [apply here](https://discord.com/channels/1131003330810871979/1133771634793250847)")
-        embed.set_author(name=ctx.author.name, icon_url=ctx.author.display_avatar.url)
-        embed.set_thumbnail(url=ctx.author.display_avatar.url)
-        timestamp = datetime.datetime.utcnow()
-        embed.timestamp = timestamp
-        embed.set_footer(text=f"{member_count}")
-        await ctx.send(f'<:bubbles:1141532181206929438> Welcome {ctx.author.mention}! <@&1131005057417105418>', embed=embed)
 
 async def setup(bot):
     await bot.add_cog(Moderation(bot))

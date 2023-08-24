@@ -12,7 +12,6 @@ from discord.ext import commands
 import requests
 from PIL import Image, ImageDraw, ImageFont
 
-
 class funcmds(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -28,7 +27,6 @@ class funcmds(commands.Cog):
         self.attempts = 0
 
     def get_random_color(self):
-        # Generate random RGB color values
         r = random.randint(0, 255)
         g = random.randint(0, 255)
         b = random.randint(0, 255)
@@ -40,7 +38,6 @@ class funcmds(commands.Cog):
         await ctx.send(message)
         embed = discord.Embed(title="Say command log", description=f"{ctx.author.name} has used the say command\nthey said: `{message}`", color=0x2b2d31)
         embed.set_footer(text=f"id: {ctx.author.id}", icon_url=ctx.author.avatar)
-
         log_channel_id = self.get_log_channel_id(ctx.guild.id)
         if log_channel_id is not None:
             log_channel = self.bot.get_channel(log_channel_id)
@@ -59,19 +56,16 @@ class funcmds(commands.Cog):
         else:
             return None
 
-
     @commands.command()
     async def dog(self, ctx):
         loading_msg = await ctx.reply("<a:loading:1122893578461520013> Searching for an image")
         response = requests.get('https://dog.ceo/api/breeds/image/random')
         data = response.json()
         image_url = data['message']
-
         embed = discord.Embed(color=discord.Color.from_rgb(*self.get_random_color()))
         embed.set_image(url=image_url)
-
-        await asyncio.sleep(1)  # Wait for 1 second (you can adjust the duration)
-        await loading_msg.delete()  # Delete the loading message
+        await asyncio.sleep(1)
+        await loading_msg.delete()
         await ctx.reply(embed=embed)
 
     @commands.command()
@@ -82,80 +76,46 @@ class funcmds(commands.Cog):
             response.raise_for_status()
             data = response.json()
             image_url = data[0]['url']
-
             embed = discord.Embed(color=discord.Color.from_rgb(*self.get_random_color()))
             embed.set_image(url=image_url)
-
-            await asyncio.sleep(1)  # Wait for 1 second (you can adjust the duration)
-            await loading_msg.delete()  # Delete the loading message
+            await asyncio.sleep(1)
+            await loading_msg.delete()
             await ctx.reply(embed=embed)
         except (requests.exceptions.RequestException, KeyError):
             await ctx.reply("Sorry, I couldn't fetch a cute cat at the moment. Please try again later.")
 
     @commands.command(aliases=['prison', 'lockup'])
     async def jail(self, ctx, member: Optional[discord.Member]):
-        # Get the user's avatar URL
         member = member or ctx.author
         avatar_url = member.avatar.url
-
-        # Open the avatar image
         async with aiohttp.ClientSession() as session:
             async with session.get(str(avatar_url)) as response:
                 avatar_image = await response.read()
 
-        # Open the jail cell door image
         jail_image = Image.open("jail_door.png").convert("RGBA")
-
-        # Open the avatar image using PIL
         avatar_pil = Image.open(io.BytesIO(avatar_image)).convert("RGBA")
         avatar_pil = avatar_pil.resize((550, 550))
-
-        # Resize the jail cell door image to match the avatar size
         jail_image = jail_image.resize(avatar_pil.size)
-
-        # Composite the images
         final_image = Image.alpha_composite(avatar_pil, jail_image)
-
-        # Save the final image
         final_image.save("jail_avatar.png")
-
-        # Send the modified avatar image
         await ctx.send(file=discord.File("jail_avatar.png"))
-
-        # Delete the temporary files
         os.remove("jail_avatar.png")
 
     @commands.command(aliases=['gay'])
     async def pride(self, ctx, member: Optional[discord.Member]):
-        # Get the user's avatar URL
         member = member or ctx.author
         avatar_url = member.avatar.url
-
-        # Open the avatar image
         async with aiohttp.ClientSession() as session:
             async with session.get(str(avatar_url)) as response:
                 avatar_image = await response.read()
 
-        # Open the jail cell door image
         jail_image = Image.open("pride.png").convert("RGBA")
-
-        # Open the avatar image using PIL
         avatar_pil = Image.open(io.BytesIO(avatar_image)).convert("RGBA")
         avatar_pil = avatar_pil.resize((550, 550))
-
-        # Resize the jail cell door image to match the avatar size
         jail_image = jail_image.resize(avatar_pil.size)
-
-        # Composite the images
         final_image = Image.alpha_composite(avatar_pil, jail_image)
-
-        # Save the final image
         final_image.save("pride.png")
-
-        # Send the modified avatar image
         await ctx.send(file=discord.File("pride.png"))
-
-        # Delete the temporary files
         os.remove("pride.png")
 
     @commands.command()
@@ -168,8 +128,8 @@ class funcmds(commands.Cog):
         embed = discord.Embed(color=discord.Color.from_rgb(*self.get_random_color()))
         embed.set_image(url=image_url)
 
-        await asyncio.sleep(1)  # Wait for 1 second (you can adjust the duration)
-        await loading_msg.delete()  # Delete the loading message
+        await asyncio.sleep(1)
+        await loading_msg.delete()
         await ctx.reply(embed=embed)
 
     @commands.command()
@@ -184,8 +144,8 @@ class funcmds(commands.Cog):
             embed = discord.Embed(color=discord.Color.from_rgb(*self.get_random_color()))
             embed.set_image(url=image_url)
 
-            await asyncio.sleep(1)  # Wait for 1 second (you can adjust the duration)
-            await loading_msg.delete()  # Delete the loading message
+            await asyncio.sleep(1)
+            await loading_msg.delete()
             await ctx.reply(embed=embed)
         except (requests.exceptions.RequestException, KeyError):
             await ctx.reply("Sorry, I couldn't fetch a cute cat at the moment. Please try again later.")
@@ -259,7 +219,7 @@ class funcmds(commands.Cog):
         if member is None:
             member = ctx.author
 
-        pp_size = '=' * random.randint(1, 10)  # Randomly generate "=" characters
+        pp_size = '=' * random.randint(1, 10)
         message = f'{member.mention} Your pp size is: 8{pp_size}D'
         await ctx.send(message)
 
@@ -322,11 +282,9 @@ class funcmds(commands.Cog):
 
     @commands.command(name='roast')
     async def roast_command(self, ctx, *, member: discord.Member = None):
-        # If no member is mentioned, default to the author of the command
         if member is None:
             member = ctx.author
 
-        # List of roasts
         roasts = [
             "you're so dumb, you stare at a glass of orange juice because it says 'concentrate'.",
             "I'm not saying I hate you, but I would unplug your life support to charge my phone.",
@@ -345,11 +303,9 @@ class funcmds(commands.Cog):
 
     @commands.command(name='compliment')
     async def compliment_command(self, ctx, *, member: discord.Member = None):
-        # If no member is mentioned, default to the author of the command
         if member is None:
             member = ctx.author
 
-        # List of compliments
         compliments = [
             "you have a beautiful smile!",
             "your kindness is contagious!",
@@ -397,11 +353,8 @@ class funcmds(commands.Cog):
 
     @commands.command()
     async def ship(self, ctx, user1: discord.Member, user2: discord.Member):
-        """Calculates the compatibility between two users."""
-        # Calculate compatibility score (random number between 0 and 100)
         compatibility = random.randint(0, 100)
 
-        # Determine ship name based on compatibility score
         if compatibility < 20:
             ship_name = "Incompatible Duo"
         elif compatibility < 40:
@@ -413,7 +366,6 @@ class funcmds(commands.Cog):
         else:
             ship_name = "Soulmates"
 
-        # Construct the ship message
         ship_message = f"❤️ Compatibility between {user1.mention} and {user2.mention}: {compatibility}%\n"
         ship_message += f"💑 Ship Name: {ship_name}"
 
@@ -429,130 +381,123 @@ class funcmds(commands.Cog):
 
     @commands.command()
     async def trivia(self, ctx):
-        """Starts a trivia game with multiple-choice questions."""
-        # Define a list of trivia questions and their corresponding answers
         trivia_questions = [
             {
                 "question": "What is the capital of France?",
-                "options": ["Ⓐ London", "Ⓑ Paris", "Ⓒ Rome", "Ⓓ Berlin"],
-                "answer": 1  # Index of the correct answer (starts from 0)
+                "options": ["**A.** London", "**B.** Paris", "**C.** Rome", "**D.** Berlin"],
+                "answer": 1 
             },
             {
                 "question": "Which planet is known as the Red Planet?",
-                "options": ["Ⓐ Mars", "Ⓑ Jupiter", "Ⓒ Saturn", "Ⓓ Venus"],
+                "options": ["**A.** Mars", "**B.** Jupiter", "**C.** Saturn", "**D.** Venus"],
                 "answer": 0
             },
             {
                 "question": "What is the chemical symbol for the element oxygen?",
-                "options": ["Ⓐ O", "Ⓑ H", "Ⓒ C", "Ⓓ N"],
+                "options": ["**A.** O", "**B.** H", "**C.** C", "**D.** N"],
                 "answer": 0
             },
             {
                 "question": "What is the bodies largest organ?",
-                "options": ["Ⓐ Skin", "Ⓑ Liver", "Ⓒ Kidney", "D) Large Intestine"],
+                "options": ["**A.** Skin", "**B.** Liver", "**C.** Kidney", "D) Large Intestine"],
                 "answer": 0
             },
             {
                 "question": "How many oceans are there on earth?",
-                "options": ["Ⓐ 3", "Ⓑ 10", "Ⓒ 7", "Ⓓ 5"],
+                "options": ["**A.** 3", "**B.** 10", "**C.** 7", "**D.** 5"],
                 "answer": 3
             },
             {
                 "question": "How long is an Olympic swimming pool (in meters)?",
-                "options": ["Ⓐ 30 meters", "Ⓑ 100 meters", "Ⓒ 50 meters", "Ⓓ 25 meters"],
+                "options": ["**A.** 30 meters", "**B.** 100 meters", "**C.** 50 meters", "**D.** 25 meters"],
                 "answer": 2
             },
             {
                 "question": "How many languages are written from right to left?",
-                "options": ["Ⓐ 12", "Ⓑ 5", "Ⓒ 13", "Ⓓ 20"],
+                "options": ["**A.** 12", "**B.** 5", "**C.** 13", "**D.** 20"],
                 "answer": 0
             },
             {
                 "question": "What is the name of the biggest technology company in South Korea?",
-                "options": ["Ⓐ Asus", "Ⓑ Samsung", "Ⓒ Apple", "Ⓓ Windows"],
+                "options": ["**A.** Asus", "**B.** Samsung", "**C.** Apple", "**D.** Windows"],
                 "answer": 1
             },
             {
                 "question": 'What group is often reffered to as "The kings of kpop"?',
-                "options": ["Ⓐ BTS", "Ⓑ Shinee", "Ⓒ Big Bang", "Ⓓ EXO"],
+                "options": ["**A.** BTS", "**B.** Shinee", "**C.** Big Bang", "**D.** EXO"],
                 "answer": 2
             },
             {
                 "question": 'Which group were the first K-Pop artist to appear on the US Billboard Hot 100?',
-                "options": ["Ⓐ BTS", "Ⓑ Blackpink", "Ⓒ PSY", "Ⓓ Wonder Girls"],
+                "options": ["**A.** BTS", "**B.** Blackpink", "**C.** PSY", "**D.** Wonder Girls"],
                 "answer": 3
             },
             {
                 "question": 'What is Blackpinks most viewed music video on YouTube?',
-                "options": ["Ⓐ Kill This Love", "Ⓑ Lovesick Girls", "Ⓒ DDU-DU-DDU-DU", "Ⓓ Shut Down"],
+                "options": ["**A.** Kill This Love", "**B.** Lovesick Girls", "**C.** DDU-DU-DDU-DU", "**D.** Shut Down"],
                 "answer": 2
             },
             {
                 "question": 'How many sub-units of NCT are there?',
-                "options": ["Ⓐ 3", "Ⓑ 5", "Ⓒ 2", "Ⓓ 4"],
+                "options": ["**A.** 3", "**B.** 5", "**C.** 2", "**D.** 4"],
                 "answer": 3
             },
             {
                 "question": 'Which is the last music video to include all 12 original EXO members?',
-                "options": ["Ⓐ Call Me Baby", "Ⓑ Overdose", "Ⓒ Growl", "Ⓓ Wolf"],
+                "options": ["**A.** Call Me Baby", "**B.** Overdose", "**C.** Growl", "**D.** Wolf"],
                 "answer": 1
             },
             {
                 "question": 'Whats the smallest country in the world?',
-                "options": ["Ⓐ Malta", "Ⓑ Vatican City", "Ⓒ Qatar", "Ⓓ Monaco"],
+                "options": ["**A.** Malta", "**B.** Vatican City", "**C.** Qatar", "**D.** Monaco"],
                 "answer": 1
             },
             {
                 "question": 'Which country cosumes the most chocolate per capita?',
-                "options": ["Ⓐ China", "Ⓑ Germany", "Ⓒ Switzerland", "Ⓓ Sweden"],
+                "options": ["**A.** China", "**B.** Germany", "**C.** Switzerland", "**D.** Sweden"],
                 "answer": 2
             },
             {
                 "question": 'What is the most cosumed manufactured drink in the world?',
-                "options": ["Ⓐ Coca cola", "Ⓑ Tea", "Ⓒ Coffee", "Ⓓ Alcohol"],
+                "options": ["**A.** Coca cola", "**B.** Tea", "**C.** Coffee", "**D.** Alcohol"],
                 "answer": 1
             },
             {
                 "question": 'Which country is known as the "Land of the Rising Sun"?',
-                "options": ["Ⓐ Thailand", "Ⓑ Japan", "Ⓒ  France", "Ⓓ Canada"],
+                "options": ["**A.** Thailand", "**B.** Japan", "**C.**  France", "**D.** Canada"],
                 "answer": 1
             },
             {
                 "question": 'Which animal is known as the "King of the Jungle"?',
-                "options": ["Ⓐ Pigeon (lol idfk)", "Ⓑ Leopard", "Ⓒ  Tiger", "Ⓓ Lion"],
+                "options": ["**A.** Pigeon (lol idfk)", "**B.** Leopard", "**C.**  Tiger", "**D.** Lion"],
                 "answer": 3
             },
             {
                 "question": 'What is the largest mammal in the world?',
-                "options": ["Ⓐ Wahle", "Ⓑ Blue Whale", "Ⓒ  Elephant", "Ⓓ Shark"],
+                "options": ["**A.** Wahle", "**B.** Blue Whale", "**C.**  Elephant", "**D.** Shark"],
                 "answer": 1
             },
             {
                 "question": 'Who painted the Mona Lisa?',
-                "options": ["Ⓐ Pablo Picasso", "Ⓑ Vincent van Gogh", "Ⓒ  Shakespear", "Ⓓ  Leonardo da Vinci"],
+                "options": ["**A.** Pablo Picasso", "**B.** Vincent van Gogh", "**C.**  Shakespear", "**D.**  Leonardo da Vinci"],
                 "answer": 1
             }
         ]
 
-        # Choose a random question from the list
         question = random.choice(trivia_questions)
 
-        # Send the question and options as an embedded message
         embed = discord.Embed(title="Trivia", description=question["question"], color=0x2b2d31)
         for i, option in enumerate(question["options"]):
             embed.add_field(name=f"Option {i+1}", value=option, inline=False)
             embed.set_footer(text='Answer with numbers (1 - 4)')
         question_msg = await ctx.reply(embed=embed)
 
-        # Define a check function to validate answers
         def check_answer(msg):
             return msg.author == ctx.author and msg.channel == ctx.channel
 
         try:
-            # Wait for the user's answer
             user_answer = await self.bot.wait_for('message', timeout=10.0, check=check_answer)
 
-            # Check if the answer is correct
             if user_answer.content.isdigit() and int(user_answer.content) - 1 == question["answer"]:
                 await ctx.reply("✅ Correct answer!")
             elif user_answer.content.isdigit():
@@ -573,19 +518,6 @@ class funcmds(commands.Cog):
         await ctx.reply(f"{avatar_url}")
 
     @commands.command()
-    async def status(self, ctx, member: discord.Member):
-        status = member.status.name.capitalize()
-        activity = member.activity
-
-        if activity is None:
-            await ctx.reply(f"{member.name}'s status: {status}")
-        else:
-            activity_type = activity.type.name.capitalize()
-            activity_name = activity.name
-
-            await ctx.reply(f"{member.name}'s status: `{activity_name}`")
-
-    @commands.command()
     async def giphy(self, ctx, *, search):
         api_key = "PF48beXJTbUkvh35ThoQ4t1qhyjleLwD"
         url = f"https://api.giphy.com/v1/gifs/search"
@@ -604,18 +536,13 @@ class funcmds(commands.Cog):
                 await ctx.send("No GIFs found for the given search query.")
                 return
             
-            # Filter out already shown GIFs from the cache
             gifs = [gif for gif in gifs if gif["id"] not in self.gif_cache.get(ctx.author.id, [])]
             
             if not gifs:
-                # If all GIFs have been shown, reset the cache for the user
                 self.gif_cache[ctx.author.id] = []
                 gifs = data["data"]
             
-            # Randomly choose a GIF from the filtered list
             gif = random.choice(gifs)
-            
-            # Generate random RGB color values
             r = random.randint(0, 255)
             g = random.randint(0, 255)
             b = random.randint(0, 255)
@@ -624,7 +551,6 @@ class funcmds(commands.Cog):
             gif_embed.set_image(url=gif["images"]["original"]["url"])
             await ctx.send(embed=gif_embed)
             
-            # Add the chosen GIF to the cache for the user
             self.gif_cache.setdefault(ctx.author.id, []).append(gif["id"])
         except Exception as e:
             await ctx.send(f"An error occurred: {e}")
