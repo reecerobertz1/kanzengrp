@@ -112,7 +112,7 @@ class infobuttons(discord.ui.View):
 
     @discord.ui.button(label="Role Info", emoji="<:roles_00000:1136752067277504633>")
     async def roles(self, interaction: discord.Interaction, button: discord.ui.Button):
-        embed = discord.Embed(title="<:roles_00000:1136752067277504633> Role Info",description="<@&1131006052209541212> - Editors block owners\n<@&1131006067564875806> - Editors block staff\n<@&1136803676854431745> - our amazing supporters\n<@&1131016215754715166> - Accepted members from recruit\n<@&1131016147282710679> - Default Role from verification " ,color=0x2b2d31)
+        embed = discord.Embed(title="<:roles_00000:1136752067277504633> Role Info",description="<@&1131006052209541212> - Editors block owners\n<@&1131006067564875806> - Editors block staff\n<@&1136803676854431745> - Our amazing supporters\n<@&1131016215754715166> - Accepted members from recruit\n<@&1131016147282710679> - Default Role from verification " ,color=0x2b2d31)
         await interaction.response.send_message(embed=embed, ephemeral=True)   
 
     @discord.ui.button(label="Affiliate Info", emoji="<:partners:1137446533994909766>")
@@ -692,7 +692,7 @@ class ebmessages(commands.Cog):
         view.add_item(button2)
         view.add_item(button3)
         await ctx.message.delete()
-        await ctx.send("https://cdn.discordapp.com/attachments/849724031723634688/1138177832456044644/WELCOME_00000.png")
+        await ctx.send("https://cdn.discordapp.com/attachments/849724031723634688/1144412559647187075/welcome_1_1.gif")
         await ctx.send(embed=embed, view=view)
         await ctx.send(embed=embed2, view=view2)
 
