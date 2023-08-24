@@ -403,7 +403,7 @@ class ebmessages(commands.Cog):
                 await self.save_giveaway_data()
 
     @commands.group(invoke_without_command=True)
-    async def ga(self, ctx: commands.Context):
+    async def ga(self, ctx):
         """group of commands to manage apps"""
         embed = discord.Embed(title="Giveaway Commands", color=0x2B2D31)
         embed.add_field(name="ga pick", value="Picks a random winner for a giveaway early", inline=False)
@@ -437,7 +437,7 @@ class ebmessages(commands.Cog):
             self.giveaway_data = {}
 
     @commands.group(invoke_without_command=True)
-    async def apps(self, ctx: commands.Context):
+    async def apps(self, ctx):
         """group of commands to manage apps"""
         embed = discord.Embed(title="app manager", color=0x2B2D31)
         embed.add_field(name="apps open", value="opens applications", inline=False)
@@ -446,7 +446,7 @@ class ebmessages(commands.Cog):
 
     @apps.command()
     @commands.has_permissions(manage_guild=True)
-    async def open(self, ctx: commands.Context):
+    async def open(self, ctx):
         message = await ctx.reply("are you sure you want to open the applications?")
         await message.add_reaction('👍')
         
@@ -466,9 +466,9 @@ class ebmessages(commands.Cog):
         except asyncio.TimeoutError:
             await message.edit(content="~~are you sure you want to open the applications?~~\nthe recruit has been cancelled!")
 
-    @commands.command()
+    @apps.command()
     @commands.has_permissions(manage_guild=True)
-    async def close(self, ctx: commands.Context):
+    async def close(self, ctx):
         message = await ctx.reply("are you sure you want to close the applications?")
         await message.add_reaction('👍')
 
@@ -495,7 +495,7 @@ class ebmessages(commands.Cog):
 
     @commands.group(invoke_without_command=True)
     @kanzen_lead()
-    async def kanzen(self, ctx: commands.Context):
+    async def kanzen(self, ctx):
         """group of commands to manage apps"""
         embed = discord.Embed(title="app manager", color=0x2B2D31)
         embed.add_field(name="kanzen open", value="opens kanzen applications", inline=False)
@@ -555,7 +555,7 @@ class ebmessages(commands.Cog):
 
     @commands.group(invoke_without_command=True)
     @daegu_leads()
-    async def daegu(self, ctx: commands.Context):
+    async def daegu(self, ctx):
         """group of commands to manage apps"""
         embed = discord.Embed(title="app manager", color=0x2B2D31)
         embed.add_field(name="daegu openapps", value="opens daegu applications", inline=False)
@@ -616,7 +616,7 @@ class ebmessages(commands.Cog):
 
     @commands.group(invoke_without_command=True)
     @aura_leads()
-    async def aura(self, ctx: commands.Context):
+    async def aura(self, ctx):
         """group of commands to manage apps"""
         embed = discord.Embed(title="app manager", color=0x2B2D31)
         embed.add_field(name="aura openapp", value="opens aura applications", inline=False)
@@ -998,7 +998,7 @@ class ebmessages(commands.Cog):
         await interaction.response.send_message(embed=embed, view=view, ephemeral=True)
 
     @commands.group(invoke_without_command=True)
-    async def enter(self, ctx: commands.Context):
+    async def enter(self, ctx):
         """Group of commands to manage apps"""
         if self.check_contest_open():
             embed = discord.Embed(title="Editors blocks server icon + banner contest", color=0x2B2D31)
@@ -1055,7 +1055,7 @@ class ebmessages(commands.Cog):
 
     @commands.group(invoke_without_command=True)
     @is_judge()
-    async def contest(self, ctx: commands.Context):
+    async def contest(self, ctx):
         """Group of commands to manage apps"""
         embed = discord.Embed(title="Editors blocks server icon + banner contest", color=0x2B2D31)
         embed.add_field(name="contest open", value="Opens the banner + icon contest", inline=False)
