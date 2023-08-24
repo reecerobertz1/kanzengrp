@@ -447,7 +447,7 @@ class ebmessages(commands.Cog):
 
     @apps.command()
     @commands.has_permissions(manage_guild=True)
-    async def open(self, ctx):
+    async def open(self, ctx: commands.Context):
         message = await ctx.reply("are you sure you want to open the applications?")
         await message.add_reaction('👍')
         
@@ -469,7 +469,7 @@ class ebmessages(commands.Cog):
 
     @apps.command()
     @commands.has_permissions(manage_guild=True)
-    async def close(self, ctx):
+    async def close(self, ctx: commands.Context):
         message = await ctx.reply("are you sure you want to close the applications?")
         await message.add_reaction('👍')
 
