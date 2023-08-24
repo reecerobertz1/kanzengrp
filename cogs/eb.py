@@ -692,7 +692,7 @@ class ebmessages(commands.Cog):
         view.add_item(button2)
         view.add_item(button3)
         await ctx.message.delete()
-        await ctx.send("https://cdn.discordapp.com/attachments/849724031723634688/1144412559647187075/welcome_1_1.gif")
+        await ctx.send("https://cdn.discordapp.com/attachments/849724031723634688/1144414094712127488/welcome_2_1.gif")
         await ctx.send(embed=embed, view=view)
         await ctx.send(embed=embed2, view=view2)
 
