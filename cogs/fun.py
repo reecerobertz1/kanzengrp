@@ -111,7 +111,7 @@ class funcmds(commands.Cog):
 
         jail_image = Image.open("pride.png").convert("RGBA")
         avatar_pil = Image.open(io.BytesIO(avatar_image)).convert("RGBA")
-        avatar_pil = avatar_pil.resize((550, 550))
+        avatar_pil = avatar_pil.resize((180, 180))
         jail_image = jail_image.resize(avatar_pil.size)
         final_image = Image.alpha_composite(avatar_pil, jail_image)
         final_image.save("pride.png")
