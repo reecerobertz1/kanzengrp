@@ -98,11 +98,10 @@ class Moderation(commands.Cog):
         if not interaction.user.guild_permissions.administrator:
             return await interaction.response.send_message("You have no admin", ephemeral=True)
         
-    @app_commands.context_menu(name="hi")
-    @app_commands.checks.has_permissions(administrator=True)
-    async def _remove_role(self, interaction: discord.Interaction):
-        await interaction.response.send_message(f"hello", ephemeral=True)
-        
+    @app_commands.context_menu(name="Hello")
+    async def hello(interaction: discord.Interaction, message: discord.Message):
+        await interaction.response.send_message("Hey !")
+
     @app_commands.command(name='kanzen', description='Get Kanzen logos')
     @app_commands.guilds(discord.Object(id=1121841073673736215))
     async def kanzenlogos(self, interaction: discord.Interaction):
