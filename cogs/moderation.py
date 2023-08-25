@@ -97,10 +97,6 @@ class Moderation(commands.Cog):
             await interaction.response.send_message(f"{member.mention} no longer has the role {role.mention}.", ephemeral=True)
         if not interaction.user.guild_permissions.administrator:
             return await interaction.response.send_message("You have no admin", ephemeral=True)
-        
-    @app_commands.context_menu(name="Hello")
-    async def hello(interaction: discord.Interaction, message: discord.Message):
-        await interaction.response.send_message("Hey !")
 
     @app_commands.command(name='kanzen', description='Get Kanzen logos')
     @app_commands.guilds(discord.Object(id=1121841073673736215))
