@@ -98,7 +98,7 @@ class Moderation(commands.Cog):
         if not interaction.user.guild_permissions.administrator:
             return await interaction.response.send_message("You have no admin", ephemeral=True)
         
-    @app_commands.context_menu(name="hi", description="hi")
+    @app_commands.context_menu(name="hi")
     @app_commands.checks.has_permissions(administrator=True)
     async def _remove_role(self, interaction: discord.Interaction):
         await interaction.response.send_message(f"hello", ephemeral=True)
