@@ -1090,6 +1090,18 @@ class ebmessages(commands.Cog):
         await ctx.message.delete()
         await ctx.send("@everyone", embed=embed, view=view)
 
+    @commands.command()
+    @commands.has_permissions(manage_guild=True)
+    async def mlt(self, ctx):
+        embed = discord.Embed(description="/ #⃞mlb__edit__ors\n☊     **est . 22** *!*\n⠀ ・**☆** ` multi — fandom `\n\n- ✉ led by **:** [nwjzns](https://instagram.com/nwjzns?igshid=MmJiY2I4NDBkZg==) **;** [cyan.aepp](https://instagram.com/cyan.aepp?igshid=MmJiY2I4NDBkZg==) **;** [sqvrlt](https://instagram.com/sqvrlt?igshid=MmJiY2I4NDBkZg==) \n- **★** ` acts `     **;**     ` collabs `     **;**     ` more `\n- **♡** **join us f__o__r m__or__e** *!* ", color=0x2b2d31)
+        embed.set_footer(text="moonlight", icon_url="https://cdn.discordapp.com/icons/1070606767186268222/fa0df46d6cbe8a28b50023cee908416e.webp?size=1024&width=0&height=256")
+        embed.set_thumbnail(url="https://media.discordapp.net/attachments/1070376289472618496/1075699777834074182/output-onlinegiftools.gif")
+        button = discord.ui.Button(label="grp account", url="https://discord.gg/D9JrK6sN4d", emoji="🌙")
+        view = discord.ui.View()
+        view.add_item(button)
+        await ctx.message.delete()
+        await ctx.send("@everyone", embed=embed, view=view)
+
 
 async def setup(bot):
     await bot.add_cog(ebmessages(bot))
