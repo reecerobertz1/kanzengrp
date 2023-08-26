@@ -1101,6 +1101,7 @@ class ebmessages(commands.Cog):
         view.add_item(button)
         await ctx.message.delete()
         await ctx.send("@everyone", embed=embed, view=view)
+        await ctx.send("mute partner pings with the `mute` role in <#1133730290221715487>")
 
 
 async def setup(bot):
