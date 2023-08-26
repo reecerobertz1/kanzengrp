@@ -676,22 +676,22 @@ class ebmessages(commands.Cog):
                               color=0x2b2d31)
         view2 = infobuttons()
         embed2 = discord.Embed(title="<:rules:1136761913972359178> Server Rules ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏͏͏ ͏͏͏ ", 
-                                description="<a:arrowpink:1134860720777990224> Follow Discord's [tos](https://discord.com/terms) and [guidelines](https://discord.com/guidelines)\n<a:arrowpink:1134860720777990224> No NSFW talk is allowed in this server!!\n<a:arrowpink:1134860720777990224> Be nice and respectful to everyone in the server!\n<a:arrowpink:1134860720777990224> No impersonation of other editors (you will be banned)\n<a:arrowpink:1134860720777990224> Use channels for their intended purpose\n<a:arrowpink:1134860720777990224> No spamming pings, you will be warned and then kicked\n<a:arrowpink:1134860720777990224>  No trash talk of other people", 
-                                color=0xee518f)
+                                description="<a:arrow:1145117135962644491> Follow Discord's [tos](https://discord.com/terms) and [guidelines](https://discord.com/guidelines)\n<a:arrow:1145117135962644491> No NSFW talk is allowed in this server!!\n<a:arrow:1145117135962644491> Be nice and respectful to everyone in the server!\n<a:arrow:1145117135962644491> No impersonation of other editors (you will be banned)\n<a:arrow:1145117135962644491> Use channels for their intended purpose\n<a:arrow:1145117135962644491> No spamming pings, you will be warned and then kicked\n<a:arrow:1145117135962644491>  No trash talk of other people", 
+                                color=0xFC02FF)
         embed.set_footer(text="Follow the groups below!", 
                          icon_url="https://cdn.discordapp.com/icons/1131003330810871979/7594d6a33ba74fffd8373ef2f4bb71df.webp?size=4096")
         
 
-        button = discord.ui.Button(label="Kanzen", url="https://www.instagram.com/kanzengrp/", emoji="<:kanzen:1136701626799886366>")
-        button2 = discord.ui.Button(label="Aura", url="https://www.instagram.com/auragrps/", emoji="<:aura:1136701593018978415>")
-        button3 = discord.ui.Button(label="Daegu", url="https://www.instagram.com/daegutowngrp/", emoji="<:daegu:1136701608026185879>")
+        button = discord.ui.Button(label="Kanzen", url="https://www.instagram.com/kanzengrp/", emoji="<a:kanzen:1145113935524139038>")
+        button2 = discord.ui.Button(label="Aura", url="https://www.instagram.com/auragrps/", emoji="<a:aura:1145114567488319508>")
+        button3 = discord.ui.Button(label="Daegu", url="https://www.instagram.com/daegutowngrp/", emoji="<a:daegu:1145114196455981178>")
 
         view = discord.ui.View()
         view.add_item(button)
         view.add_item(button2)
         view.add_item(button3)
         await ctx.message.delete()
-        await ctx.send("https://cdn.discordapp.com/attachments/849724031723634688/1144414094712127488/welcome_2_1.gif")
+        await ctx.send("https://cdn.discordapp.com/attachments/849724031723634688/1145109085981769749/welcome_1_1.gif")
         await ctx.send(embed=embed, view=view)
         await ctx.send(embed=embed2, view=view2)
 
