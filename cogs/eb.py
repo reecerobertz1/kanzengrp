@@ -98,9 +98,9 @@ class infobuttons(discord.ui.View):
         super().__init__(timeout=None)
         self.value = None
 
-    @discord.ui.button(label="Server Guide", emoji="<:guide:1136757467943022685>")
+    @discord.ui.button(label="Server Guide", emoji="<a:guide:1145120101650145362>")
     async def guide(self, interaction: discord.Interaction, button: discord.ui.Button):
-        embed = discord.Embed(title="<:guide:1136757467943022685> Server Guide", color=0x2b2d31)
+        embed = discord.Embed(title="<a:guide:1145120101650145362> Server Guide", color=0x2b2d31)
         embed.add_field(name="Get Started", value="<#1131007362895970414> - Server announcements are made here!\n<#1131005271502753812> - Server information\n<#1133730290221715487> - Get your roles here", inline=False)
         embed.add_field(name="Boost", value="<#1133772140915732511> - Boost messages are sent here\n<#1133772155499327538> - Claim the booster perks here", inline=False)
         embed.add_field(name="Events", value="<#1135594840739041380> - Server events and information is sent here\n<#1135594856106959032> - Giveaways are hosted here", inline=False)
@@ -110,16 +110,16 @@ class infobuttons(discord.ui.View):
         embed.add_field(name="Bots", value="<#1133772583813263422> - Use our custom bot <@849682093575372841> here! `+help` for commands\n<#1133772598979866774> - Count as high as you can (can't count twice in a row)\n<#1133772609222361270> - Use other bots here other than hoshi\n<#1133772621666844813> - Another spam channel for you to use other bots\n<#1133772650695626882> - Use music commands here\n<#1133772672631836754> - Listen to music here", inline=False)
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
-    @discord.ui.button(label="Role Info", emoji="<:roles_00000:1136752067277504633>")
+    @discord.ui.button(label="Role Info", emoji="<a:roles:1145119385078472766>")
     async def roles(self, interaction: discord.Interaction, button: discord.ui.Button):
-        embed = discord.Embed(title="<:roles_00000:1136752067277504633> Role Info",description="<@&1131006052209541212> - Editors block owners\n<@&1131006067564875806> - Editors block staff\n<@&1136803676854431745> - Our amazing supporters\n<@&1131016215754715166> - Accepted members from recruit\n<@&1131016147282710679> - Default Role from verification " ,color=0x2b2d31)
+        embed = discord.Embed(title="<a:roles:1145119385078472766> Role Info",description="<@&1131006052209541212> - Editors block owners\n<@&1131006067564875806> - Editors block staff\n<@&1136803676854431745> - Our amazing supporters\n<@&1131016215754715166> - Accepted members from recruit\n<@&1131016147282710679> - Default Role from verification " ,color=0x2b2d31)
         await interaction.response.send_message(embed=embed, ephemeral=True)   
 
-    @discord.ui.button(label="Affiliate Info", emoji="<:partners:1137446533994909766>")
+    @discord.ui.button(label="Partnership Info", emoji="<a:partners:1145119380779302913>")
     async def affinfo(self, interaction: discord.Interaction, button: discord.Button):
-        embed = discord.Embed(title="<:partners:1137446533994909766> Affiliate Information", color=0x2b2d31)
-        embed.add_field(name="Advert with ping", value="<a:arrowpink:1134860720777990224> Follow Discord's [tos](https://discord.com/terms) and [guidelines](https://discord.com/guidelines)\n<a:arrowpink:1134860720777990224> Must have 100+ members\nIf you meet our requirements, please message one of our owners", inline=False)
-        embed.add_field(name="Advert without ping", value="<a:arrowpink:1134860720777990224> Follow Discord's [tos](https://discord.com/terms) and [guidelines](https://discord.com/guidelines)\n<a:arrowpink:1134860720777990224> Must have 75+ members\nIf you meet our requirements, please message one of our owners", inline=False)
+        embed = discord.Embed(title="<a:partners:1145119380779302913> Affiliate Information", color=0x2b2d31)
+        embed.add_field(name="Advert with ping", value="<a:arrow:1145117135962644491> Follow Discord's [tos](https://discord.com/terms) and [guidelines](https://discord.com/guidelines)\n<a:arrow:1145117135962644491> Must have 100+ members\nIf you meet our requirements, please message one of our owners", inline=False)
+        embed.add_field(name="Advert without ping", value="<a:arrow:1145117135962644491> Follow Discord's [tos](https://discord.com/terms) and [guidelines](https://discord.com/guidelines)\n<a:arrow:1145117135962644491> Must have 75+ members\nIf you meet our requirements, please message one of our owners", inline=False)
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
 class appbuttons(discord.ui.View):
@@ -675,7 +675,7 @@ class ebmessages(commands.Cog):
                               description="> Thank you for joining Editors Block!\n> This is a community server made for all types of editors.\n> Feel free to ping @owners or @staff if you need any help.\n\nWe will do group recruits for the groups Kanzen, Aura, and Daegu! ͏͏͏  ͏͏͏ ͏͏͏͏͏͏͏͏͏ ͏ ͏", 
                               color=0x2b2d31)
         view2 = infobuttons()
-        embed2 = discord.Embed(title="<:rules:1136761913972359178> Server Rules ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏͏͏ ͏͏͏ ", 
+        embed2 = discord.Embed(title="<a:rules:1145119388056420463> Server Rules ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏͏͏ ͏͏͏ ", 
                                 description="<a:arrow:1145117135962644491> Follow Discord's [tos](https://discord.com/terms) and [guidelines](https://discord.com/guidelines)\n<a:arrow:1145117135962644491> No NSFW talk is allowed in this server!!\n<a:arrow:1145117135962644491> Be nice and respectful to everyone in the server!\n<a:arrow:1145117135962644491> No impersonation of other editors (you will be banned)\n<a:arrow:1145117135962644491> Use channels for their intended purpose\n<a:arrow:1145117135962644491> No spamming pings, you will be warned and then kicked\n<a:arrow:1145117135962644491>  No trash talk of other people", 
                                 color=0xFC02FF)
         embed.set_footer(text="Follow the groups below!", 
