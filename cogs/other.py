@@ -29,18 +29,6 @@ class HelloLoop:
         self.loop = asyncio.get_event_loop()
         self.hello_task = None
 
-    async def send_hello(self):
-        target_channel = self.bot.get_channel(1125053619893440653)
-        while True:
-            revive = [
-            "<@&1122927309813461143> Hi wake up! come and chat", "<@&1122927309813461143> wakey wakey!", "<@&1122927309813461143> hello start a conversation", "im bored anyone want to chat or play a game? <@&1122927309813461143>",
-            "<@&1122927309813461143>", "<@&1122927309813461143> where is everyone?"
-        ]
-
-            ping = random.choice(revive)
-            await target_channel.send(ping)
-            await asyncio.sleep(86400)
-
     @commands.command()
     async def aurarevive(self, ctx):
         if self.hello_loop is None:
@@ -55,12 +43,17 @@ class HelloLoop:
             self.hello_loop = None
             await ctx.send('Stopped pinging chat revive.')
 
-class HelloLoop:
-    def __init__(self, bot, channel):
-        self.bot = bot
-        self.channel = channel
-        self.loop = asyncio.get_event_loop()
-        self.hello_task = None
+    async def send_hello(self):
+        target_channel = self.bot.get_channel(1125053619893440653)
+        while True:
+            revive = [
+            "<@&1122927309813461143> Hi wake up! come and chat", "<@&1122927309813461143> wakey wakey!", "<@&1122927309813461143> hello start a conversation", "im bored anyone want to chat or play a game? <@&1122927309813461143>",
+            "<@&1122927309813461143>", "<@&1122927309813461143> where is everyone?"
+        ]
+
+            ping = random.choice(revive)
+            await target_channel.send(ping)
+            await asyncio.sleep(86400)
 
     async def send_hello(self):
         target_channel = self.bot.get_channel(1122238827973595238)
