@@ -50,6 +50,48 @@ class HelloLoop:
             self.hello_task.cancel()
             self.hello_task = None
 
+    @commands.command()
+    async def aurarevive(self, ctx):
+        if self.hello_loop is None:
+            self.hello_loop = HelloLoop(self.bot, ctx.channel)
+            self.hello_loop.start()
+            await ctx.send('Started pinging chat revive.')
+
+    @commands.command()
+    async def auradie(self, ctx):
+        if self.hello_loop is not None:
+            self.hello_loop.cancel()
+            self.hello_loop = None
+            await ctx.send('Stopped pinging chat revive.')
+
+class HelloLoop:
+    def __init__(self, bot, channel):
+        self.bot = bot
+        self.channel = channel
+        self.loop = asyncio.get_event_loop()
+        self.hello_task = None
+
+    async def send_hello(self):
+        target_channel = self.bot.get_channel(1122238827973595238)
+        while True:
+            revive = [
+            "<@&1122927309813461143> Hi wake up! come and chat", "<@&1122927309813461143> wakey wakey!", "<@&1122927309813461143> hello start a conversation", "im bored anyone want to chat or play a game? <@&1122927309813461143>",
+            "<@&1122927309813461143>", "<@&1122927309813461143> where is everyone?"
+        ]
+
+            ping = random.choice(revive)
+            await target_channel.send(ping)
+            await asyncio.sleep(86400)
+
+    def start(self):
+        if self.hello_task is None:
+            self.hello_task = self.loop.create_task(self.send_hello())
+
+    def cancel(self):
+        if self.hello_task is not None:
+            self.hello_task.cancel()
+            self.hello_task = None
+
     @commands.Cog.listener()
     async def on_message(self, message):
         if message.author.bot:
