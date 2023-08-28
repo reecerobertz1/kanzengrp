@@ -22,13 +22,13 @@ class confessmodal(ui.Modal, title='Kanzen Confessions'):
 
     async def on_submit(self, interaction: discord.Interaction):
         await interaction.response.defer()
-        channel = interaction.client.get_channel(1140186620121841735)
+        channel = interaction.client.get_channel(1145568957345054751)
         embed = discord.Embed(title="New confession", description=f"{self.confession.value}", color=0x2b2d31)
         timestamp = datetime.datetime.utcnow()
         embed.timestamp = timestamp
         embed.set_footer(text=f"Use /confess to send a confession!")
         confessions = await channel.send(embed=embed)
-        await interaction.followup.send(f"Your confession has been sent to <#1140186620121841735>", ephemeral=True)
+        await interaction.followup.send(f"Your confession has been sent to <#1145568957345054751>", ephemeral=True)
         await confessions.add_reaction("<:breaths:1128463455993741352>")
         await confessions.add_reaction("<:pause:1132212249621184634>")
         await confessions.add_reaction("<:__:1132210032822456411>")
