@@ -41,15 +41,6 @@ class HelloLoop:
             await target_channel.send(ping)
             await asyncio.sleep(86400)
 
-    def start(self):
-        if self.hello_task is None:
-            self.hello_task = self.loop.create_task(self.send_hello())
-
-    def cancel(self):
-        if self.hello_task is not None:
-            self.hello_task.cancel()
-            self.hello_task = None
-
     @commands.command()
     async def aurarevive(self, ctx):
         if self.hello_loop is None:
