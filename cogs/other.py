@@ -59,8 +59,8 @@ class HelloLoop:
         target_channel = self.bot.get_channel(1122238827973595238)
         while True:
             revive = [
-            "<@&1122927309813461143> Hi wake up! come and chat", "<@&1122927309813461143> wakey wakey!", "<@&1122927309813461143> hello start a conversation", "im bored anyone want to chat or play a game? <@&1122927309813461143>",
-            "<@&1122927309813461143>", "<@&1122927309813461143> where is everyone?"
+            "<@&1122999575200940083> Hi wake up! come and chat", "<@&1122999575200940083> wakey wakey!", "<@&1122999575200940083> hello start a conversation", "im bored anyone want to chat or play a game? <@&1122999575200940083>",
+            "<@&1122999575200940083>", "<@&1122999575200940083> where is everyone?"
         ]
 
             ping = random.choice(revive)
