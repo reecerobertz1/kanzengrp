@@ -805,6 +805,7 @@ class ebmessages(commands.Cog):
             return None
 
     @commands.command()
+    @is_judge()
     async def accept(self, ctx):
         if ctx.message.reference is not None:
             try:
@@ -821,7 +822,7 @@ class ebmessages(commands.Cog):
                 insta = insta_field.value.lower()
                 insta = [insta.strip() for insta in re.split(r'[,\s]+', insta)]
 
-                user_id = int(re.search(r'\d+', user_id_field.value).group())  # Extract the user ID from the field value
+                user_id = int(re.search(r'\d+', user_id_field.value).group())
                 accepted_server_ids = []
 
                 grps = group_field.value.lower()
@@ -857,7 +858,7 @@ class ebmessages(commands.Cog):
 
                 embed = discord.Embed(title="Congratulations! You have been accepted!", color=0x2b2d31)
 
-                if "all" in groups:  # Check if "all" is in the group list
+                if "all" in groups:
                     invite_links = {
                         "kanzen": await self.create_invite(1121841073673736215),
                         "aura": await self.create_invite(957987670787764224),
@@ -868,7 +869,7 @@ class ebmessages(commands.Cog):
                             embed.add_field(name=group.capitalize(), value=f"[Join Here]({invite_link})", inline=True)
                 else:
                     for group, server_id in accepted_server_ids:
-                        invite_link = await self.create_invite(server_id)  # Implement this function to generate the invite link
+                        invite_link = await self.create_invite(server_id)
                         if invite_link:
                             embed.add_field(name=group.capitalize(), value=f"[Join Here]({invite_link})", inline=True)
 
@@ -880,7 +881,7 @@ class ebmessages(commands.Cog):
                     if channel:
                         await channel.send(f"{user.mention} was accepted")
 
-                    instachannel = ctx.guild.get_channel(1121841074512605186)
+                    instachannel = ctx.guild.get_channel(1137423800623960116)
                     if instachannel:
                         button = discord.ui.Button(label="account link", url=f"{', '.join(insta)}")
 
@@ -915,11 +916,9 @@ class ebmessages(commands.Cog):
 
                 grps = group_field.value.lower()
                 groups = [group.strip() for group in re.split(r'[,\s]+', grps)]
-
                 user_id = user_id_field.value.strip()
-
-                # DM the user with the decline message
                 user = self.bot.get_user(int(user_id))
+
                 if user:
                     decline_message = f"Hey! You have been declined from {', '.join(groups)}. Please don't be upset or discouraged! We will have more recruitments in the future. <3"
                     await user.send(decline_message)
@@ -928,7 +927,6 @@ class ebmessages(commands.Cog):
                     if channel:
                         await channel.send(f"{user.mention} was declined")
 
-                # Edit the original embed to show the declined status
                 embed = msg.embeds[0]
                 embed.add_field(name="Status", value="Declined ❌")
                 await ctx.message.add_reaction("✅")
