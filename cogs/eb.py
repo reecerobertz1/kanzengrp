@@ -880,9 +880,14 @@ class ebmessages(commands.Cog):
                     if channel:
                         await channel.send(f"{user.mention} was accepted")
 
-                    instachannel = ctx.guild.get_channel(1137423800623960116)
+                    instachannel = ctx.guild.get_channel(1121841074512605186)
                     if instachannel:
-                        await instachannel.send(f"You need to follow {', '.join(insta)}\nThey were accepted into {', '.join(groups)}")
+                        button = discord.ui.Button(label="account link", url=f"{', '.join(insta)}")
+
+                        view = discord.ui.View()
+                        view.add_item(button)
+                        follow = discord.Embed(title="Accepted member", description=f"You need to follow {', '.join(insta)}\nThey were accepted into `{', '.join(groups)}`", color=0x2b2d31)
+                        await instachannel.send(embed=follow, view=view)
 
                 embed = msg.embeds[0]
                 embed.add_field(name="Status", value="Accepted ✅")
@@ -893,7 +898,6 @@ class ebmessages(commands.Cog):
                 print(f"Failed to process the command: {e}")
         else:
             await ctx.send("Please reply with the embed you want to process.")
-
 
     @commands.command()
     @is_judge()
@@ -933,15 +937,6 @@ class ebmessages(commands.Cog):
                 print(f"Failed to process the command: {e}")
         else:
             await ctx.send("Please reply with the embed you want to process.")
-
-    @commands.command()
-    @is_judge()
-    async def role1(self, ctx):
-        embed = discord.Embed(title="<:leaf:1137454366886993950> What are your pronouns?",
-                              description="Which of the following pronouns do you use? These roles can help other members of the server use the correct pronouns.\n\n<:1:1137455321028251708> - <@&1131127428668997737> \n<:2:1137455517577531565> - <@&1131127209952809031> \n<:3:1137455658258673704> - <@&1131127449753751663> \n<:4:1137455776877781107> - <@&1131127472142958622> \n<:5:1137455941609078824> - <@&1131127502396465213> \n<:6:1137456046978383892> - <@&1131127523456069723>",
-                              color=0x2b2d31)
-        await ctx.send("https://cdn.discordapp.com/attachments/1131006428631539773/1137844016692609074/pronouns_00000.png")
-        await ctx.send(embed=embed)
 
     @commands.command()
     @is_judge()
@@ -1102,7 +1097,6 @@ class ebmessages(commands.Cog):
         await ctx.message.delete()
         await ctx.send("@everyone", embed=embed, view=view)
         await ctx.send("mute partner pings with the `mute` role in <#1133730290221715487>")
-
 
 async def setup(bot):
     await bot.add_cog(ebmessages(bot))
