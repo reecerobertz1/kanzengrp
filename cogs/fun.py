@@ -35,14 +35,16 @@ class funcmds(commands.Cog):
     @commands.command()
     async def say(self, ctx, *, message):
         await ctx.message.delete()
-        await ctx.send(message)
-        embed = discord.Embed(title="Say command log", description=f"{ctx.author.name} has used the say command\nthey said: `{message}`", color=0x2b2d31)
-        embed.set_footer(text=f"id: {ctx.author.id}", icon_url=ctx.author.avatar)
-        log_channel_id = self.get_log_channel_id(ctx.guild.id)
-        if log_channel_id is not None:
-            log_channel = self.bot.get_channel(log_channel_id)
-            if log_channel:
-                await log_channel.send(embed=embed)
+        async with ctx.typing():
+            await asyncio.sleep(1)
+            await ctx.send(message)
+            embed = discord.Embed(title="Say command log", description=f"{ctx.author.name} has used the say command\nthey said: `{message}`", color=0x2b2d31)
+            embed.set_footer(text=f"id: {ctx.author.id}", icon_url=ctx.author.avatar)
+            log_channel_id = self.get_log_channel_id(ctx.guild.id)
+            if log_channel_id is not None:
+                log_channel = self.bot.get_channel(log_channel_id)
+                if log_channel:
+                    await log_channel.send(embed=embed)
 
     def get_log_channel_id(self, guild_id):
         if guild_id == 1121841073673736215:
@@ -58,48 +60,45 @@ class funcmds(commands.Cog):
 
     @commands.command()
     async def dog(self, ctx):
-        loading_msg = await ctx.reply("<a:loading:1122893578461520013> Searching for an image")
-        response = requests.get('https://dog.ceo/api/breeds/image/random')
-        data = response.json()
-        image_url = data['message']
-        embed = discord.Embed(color=discord.Color.from_rgb(*self.get_random_color()))
-        embed.set_image(url=image_url)
-        await asyncio.sleep(1)
-        await loading_msg.delete()
-        await ctx.reply(embed=embed)
+        async with ctx.typing():
+            response = requests.get('https://dog.ceo/api/breeds/image/random')
+            data = response.json()
+            image_url = data['message']
+            embed = discord.Embed(color=discord.Color.from_rgb(*self.get_random_color()))
+            embed.set_image(url=image_url)
+            await ctx.reply(embed=embed)
 
     @commands.command()
     async def cat(self, ctx):
-        try:
-            loading_msg = await ctx.reply("<a:loading:1122893578461520013> Searching for an image")
-            response = requests.get('https://api.thecatapi.com/v1/images/search')
-            response.raise_for_status()
-            data = response.json()
-            image_url = data[0]['url']
-            embed = discord.Embed(color=discord.Color.from_rgb(*self.get_random_color()))
-            embed.set_image(url=image_url)
-            await asyncio.sleep(1)
-            await loading_msg.delete()
-            await ctx.reply(embed=embed)
-        except (requests.exceptions.RequestException, KeyError):
-            await ctx.reply("Sorry, I couldn't fetch a cute cat at the moment. Please try again later.")
+        async with ctx.typing():
+            try:
+                response = requests.get('https://api.thecatapi.com/v1/images/search')
+                response.raise_for_status()
+                data = response.json()
+                image_url = data[0]['url']
+                embed = discord.Embed(color=discord.Color.from_rgb(*self.get_random_color()))
+                embed.set_image(url=image_url)
+                await ctx.reply(embed=embed)
+            except (requests.exceptions.RequestException, KeyError):
+                await ctx.reply("Sorry, I couldn't fetch a cute cat at the moment. Please try again later.")
 
     @commands.command(aliases=['prison', 'lockup'])
     async def jail(self, ctx, member: Optional[discord.Member]):
-        member = member or ctx.author
-        avatar_url = member.avatar.url
-        async with aiohttp.ClientSession() as session:
-            async with session.get(str(avatar_url)) as response:
-                avatar_image = await response.read()
+        async with ctx.typing():
+            member = member or ctx.author
+            avatar_url = member.avatar.url
+            async with aiohttp.ClientSession() as session:
+                async with session.get(str(avatar_url)) as response:
+                    avatar_image = await response.read()
 
-        jail_image = Image.open("jail_door.png").convert("RGBA")
-        avatar_pil = Image.open(io.BytesIO(avatar_image)).convert("RGBA")
-        avatar_pil = avatar_pil.resize((550, 550))
-        jail_image = jail_image.resize(avatar_pil.size)
-        final_image = Image.alpha_composite(avatar_pil, jail_image)
-        final_image.save("jail_avatar.png")
-        await ctx.send(file=discord.File("jail_avatar.png"))
-        os.remove("jail_avatar.png")
+            jail_image = Image.open("jail_door.png").convert("RGBA")
+            avatar_pil = Image.open(io.BytesIO(avatar_image)).convert("RGBA")
+            avatar_pil = avatar_pil.resize((550, 550))
+            jail_image = jail_image.resize(avatar_pil.size)
+            final_image = Image.alpha_composite(avatar_pil, jail_image)
+            final_image.save("jail_avatar.png")
+            await ctx.send(file=discord.File("jail_avatar.png"))
+            os.remove("jail_avatar.png")
 
     @commands.command(aliases=['gay'])
     async def pride(self, ctx, member: Optional[discord.Member]):
