@@ -107,8 +107,6 @@ class pingloop:
             await message.channel.send("<@&1134876934585712773> where are you")
         if message.content.lower() == "anyone there?":
             await message.channel.send("<@&1134876934585712773> where are you")
-        if message.content.lower() == "hi":
-            await message.channel.send(f"{ctx.author.mention} hello!")
 
 async def setup(bot):
     await bot.add_cog(other(bot))
