@@ -9,14 +9,14 @@ class other(commands.Cog):
         self.hello_loop = None
 
     @commands.command()
-    async def hello(self, ctx):
+    async def kanzenrevive(self, ctx):
         if self.hello_loop is None:
             self.hello_loop = HelloLoop(self.bot, ctx.channel)
             self.hello_loop.start()
             await ctx.send('Started pinging chat revive.')
 
     @commands.command()
-    async def bye(self, ctx):
+    async def aurarevive(self, ctx):
         if self.hello_loop is not None:
             self.hello_loop.cancel()
             self.hello_loop = None
@@ -24,19 +24,26 @@ class other(commands.Cog):
 
     @commands.command()
     async def aurarevive(self, ctx):
-        if self.hello_loop is None:
-            self.hello_loop = HelloLoop(self.bot, ctx.channel)
-            self.hello_loop.start()
+        if self.ping_loop is None:
+            self.ping_loop = HelloLoop(self.bot, ctx.channel)
+            self.ping_loop.start()
             await ctx.send('Started pinging chat revive.')
 
     @commands.command()
     async def auradie(self, ctx):
-        if self.hello_loop is not None:
-            self.hello_loop.cancel()
-            self.hello_loop = None
+        if self.ping_loop is not None:
+            self.ping_loop.cancel()
+            self.ping_loop = None
             await ctx.send('Stopped pinging chat revive.')
 
 class HelloLoop:
+    def __init__(self, bot, channel):
+        self.bot = bot
+        self.channel = channel
+        self.loop = asyncio.get_event_loop()
+        self.hello_task = None
+
+class pingloop:
     def __init__(self, bot, channel):
         self.bot = bot
         self.channel = channel
@@ -55,7 +62,7 @@ class HelloLoop:
             await target_channel.send(ping)
             await asyncio.sleep(86400)
 
-    async def send_hello(self):
+    async def send_ping(self):
         target_channel = self.bot.get_channel(1122238827973595238)
         while True:
             revive = [
@@ -77,7 +84,7 @@ class HelloLoop:
             self.hello_task = None
 
     @commands.Cog.listener()
-    async def on_message(self, message):
+    async def on_message(self, message, ctx):
         if message.author.bot:
             return
         if message.content.lower() == "reece":
@@ -100,6 +107,8 @@ class HelloLoop:
             await message.channel.send("<@&1134876934585712773> where are you")
         if message.content.lower() == "anyone there?":
             await message.channel.send("<@&1134876934585712773> where are you")
+        if message.content.lower() == "hi":
+            await message.channel.send(f"{ctx.author.mention} hello!")
 
 async def setup(bot):
     await bot.add_cog(other(bot))
