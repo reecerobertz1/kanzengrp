@@ -24,16 +24,16 @@ class other(commands.Cog):
 
     @commands.command()
     async def aurarevive(self, ctx):
-        if self.ping_loop is None:
-            self.ping_loop = HelloLoop(self.bot, ctx.channel)
-            self.ping_loop.start()
+        if self.pingloop is None:
+            self.pingloop = HelloLoop(self.bot, ctx.channel)
+            self.pingloop.start()
             await ctx.send('Started pinging chat revive.')
 
     @commands.command()
     async def auradie(self, ctx):
-        if self.ping_loop is not None:
-            self.ping_loop.cancel()
-            self.ping_loop = None
+        if self.pingloop is not None:
+            self.pingloop.cancel()
+            self.pingloop = None
             await ctx.send('Stopped pinging chat revive.')
 
 class HelloLoop:
