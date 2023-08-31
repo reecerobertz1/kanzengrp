@@ -43,13 +43,6 @@ class HelloLoop:
         self.loop = asyncio.get_event_loop()
         self.hello_task = None
 
-class pingloop:
-    def __init__(self, bot, channel):
-        self.bot = bot
-        self.channel = channel
-        self.loop = asyncio.get_event_loop()
-        self.hello_task = None
-
     async def send_hello(self):
         target_channel = self.bot.get_channel(1125053619893440653)
         while True:
@@ -61,6 +54,13 @@ class pingloop:
             ping = random.choice(revive)
             await target_channel.send(ping)
             await asyncio.sleep(86400)
+
+class pingloop:
+    def __init__(self, bot, channel):
+        self.bot = bot
+        self.channel = channel
+        self.loop = asyncio.get_event_loop()
+        self.hello_task = None
 
     async def send_ping(self):
         target_channel = self.bot.get_channel(1122238827973595238)
@@ -107,6 +107,8 @@ class pingloop:
             await message.channel.send("<@&1134876934585712773> where are you")
         if message.content.lower() == "anyone there?":
             await message.channel.send("<@&1134876934585712773> where are you")
+        if message.content.lower() == "hi":
+            await message.channel.send(f"{ctx.author.mention} hello!")
 
 async def setup(bot):
     await bot.add_cog(other(bot))
