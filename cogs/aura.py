@@ -57,6 +57,24 @@ class aura(commands.Cog):
         embed.set_image(url="https://cdn.discordapp.com/attachments/1003438198862659644/1145984912680308786/rules_image_00000.png")
         await ctx.send(embed=embed, view=view)
 
+    @commands.command()
+    async def rolesa(self, ctx):
+        embed1 = discord.Embed(title="・₊˚ name colours", description="<:colours_00000:1146895379879694446><@&1122261109886439495>\n<:colours_00001:1146895383155445801><@&1122261261934133420>\n<:colours_00002:1146895385806262313><@&1122261348420690021>\n<:yellow:1146895815755968612><@&1122261454331052074>\n<:colours_00004:1146895394895310898><@&1122261541539033088>\n<:colours_00005:1146895398393368677><@&1122261624695312505>\n<:colours_00006:1146895400691830855><@&1122261781285445815>\n<:colours_00007:1146895403715928095><@&1122261688826208339>\n<:colours_00008:1146895407260114995><@&1122261866312376370>\n<:blue:1146896528531787997><@&1122261959161683998>\n<:colours_00010:1146895414331715614><@&1122262098546794578>\n<:colours_00011:1146895417469042810><@&1122262010097319976>\n<:colours_00012:1146895419863998585><@&1122262238095495295>\n<:colours_00013:1146895423089410088><@&1122262166188327022>\n<:colours_00014:1146895425727647794><@&1122262320584851536>\n<:colours_00015:1146895427615076492><@&1122262350209224864>", color=0x2b2d31)
+        embed1.set_footer(text="React with the emojis below to select a role!", icon_url="https://cdn.discordapp.com/icons/957987670787764224/5e22eb11a922cda86efb326de2498ded.png?size=1024")
+        embed2 = discord.Embed(title="・₊˚ editing programs", description="<:ae:1146896850511724544> <@&1122999279439581274>\n<:am:1146896878487740446> <@&1122999333516742676>\n<:vs:1146896935123427531> <@&1122999355121606676>\n<:cc:1146896904744095875> <@&1146897567381209169>\n<:ccp:1146896977175519273> <@&1122999375078109194>\n<:fm:958457116186791977> <@&1146897584934375574>", color=0x2b2d31)
+        embed2.set_footer(text="React with the emojis below to select a role!", icon_url="https://cdn.discordapp.com/icons/957987670787764224/5e22eb11a922cda86efb326de2498ded.png?size=1024")
+        embed3 = discord.Embed(title="・₊˚ pronouns", description="<:1:1146898248498425886><@&1122253597539831930>\n<:2:1146898257935618071><@&1122253575469404180>\n<:3:1146898252311035924><@&1122253613725663283>\n<:4:1146898256438243390><@&1122253656033611956>\n<:5:1146898250884993134><@&1122253630725181530>\n<:6:1146898260657717400><@&1122253671871283401>", color=0x2b2d31)
+        embed3.set_footer(text="React with the emojis below to select a role!", icon_url="https://cdn.discordapp.com/icons/957987670787764224/5e22eb11a922cda86efb326de2498ded.png?size=1024")
+        embed4 = discord.Embed(title="・₊˚ games", description="<:1:1146898248498425886> <@&1122999400306851922>\n<:2:1146898257935618071> <@&1122999436289785997>\n<:3:1146898252311035924> <@&1122999419642597446>\n<:4:1146898256438243390> <@&1122999670550048888>", color=0x2b2d31)
+        embed4.set_footer(text="React with the emojis below to select a role!", icon_url="https://cdn.discordapp.com/icons/957987670787764224/5e22eb11a922cda86efb326de2498ded.png?size=1024")
+        embed5 = discord.Embed(title="・₊˚ extra", description="<:1:1146898248498425886><@&1122999466438438962>\n<:2:1146898257935618071><@&1125515778582659122>", color=0x2b2d31)
+        embed5.set_footer(text="React with the emojis below to select a role!", icon_url="https://cdn.discordapp.com/icons/957987670787764224/5e22eb11a922cda86efb326de2498ded.png?size=1024")
+        await ctx.send(embed=embed1)
+        await ctx.send(embed=embed2)
+        await ctx.send(embed=embed3)
+        await ctx.send(embed=embed4)
+        await ctx.send(embed=embed5)
+
 class ia(ui.Modal, title='Inactivity Message'):
      instagram = ui.TextInput(label='Instagram username', placeholder="Enter your Instagram username here...", style=discord.TextStyle.short)
      reason = ui.TextInput(label='Inactivity Reason', placeholder="", style=discord.TextStyle.long)
@@ -68,6 +86,7 @@ class ia(ui.Modal, title='Inactivity Message'):
           channel = interaction.client.get_channel(1122251494700363868)
           await channel.send(embed=embed)
           await interaction.followup.send(f'Your inactive message has been sent successfully', ephemeral=True)
+
 
 async def setup(bot):
     await bot.add_cog(aura(bot))
