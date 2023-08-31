@@ -16,7 +16,7 @@ class other(commands.Cog):
             await ctx.send('Started pinging chat revive.')
 
     @commands.command()
-    async def aurarevive(self, ctx):
+    async def kanzendie(self, ctx):
         if self.hello_loop is not None:
             self.hello_loop.cancel()
             self.hello_loop = None
