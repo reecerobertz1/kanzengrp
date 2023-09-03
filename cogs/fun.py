@@ -11,6 +11,8 @@ import discord
 from discord.ext import commands
 import requests
 from PIL import Image, ImageDraw, ImageFont
+from triviastuff.getQuestions import getQuestions
+from triviastuff.checkHandler import buttonHandler
 
 class funcmds(commands.Cog):
     def __init__(self, bot):
@@ -378,135 +380,6 @@ class funcmds(commands.Cog):
         percentage = random.randint(0, 100)
         await ctx.send(f"{member.mention} is {percentage}% gay. 🏳️‍🌈")
 
-    @commands.command()
-    async def trivia(self, ctx):
-        trivia_questions = [
-            {
-                "question": "What is the capital of France?",
-                "options": ["**A.** London", "**B.** Paris", "**C.** Rome", "**D.** Berlin"],
-                "answer": 1 
-            },
-            {
-                "question": "Which planet is known as the Red Planet?",
-                "options": ["**A.** Mars", "**B.** Jupiter", "**C.** Saturn", "**D.** Venus"],
-                "answer": 0
-            },
-            {
-                "question": "What is the chemical symbol for the element oxygen?",
-                "options": ["**A.** O", "**B.** H", "**C.** C", "**D.** N"],
-                "answer": 0
-            },
-            {
-                "question": "What is the bodies largest organ?",
-                "options": ["**A.** Skin", "**B.** Liver", "**C.** Kidney", "D) Large Intestine"],
-                "answer": 0
-            },
-            {
-                "question": "How many oceans are there on earth?",
-                "options": ["**A.** 3", "**B.** 10", "**C.** 7", "**D.** 5"],
-                "answer": 3
-            },
-            {
-                "question": "How long is an Olympic swimming pool (in meters)?",
-                "options": ["**A.** 30 meters", "**B.** 100 meters", "**C.** 50 meters", "**D.** 25 meters"],
-                "answer": 2
-            },
-            {
-                "question": "How many languages are written from right to left?",
-                "options": ["**A.** 12", "**B.** 5", "**C.** 13", "**D.** 20"],
-                "answer": 0
-            },
-            {
-                "question": "What is the name of the biggest technology company in South Korea?",
-                "options": ["**A.** Asus", "**B.** Samsung", "**C.** Apple", "**D.** Windows"],
-                "answer": 1
-            },
-            {
-                "question": 'What group is often reffered to as "The kings of kpop"?',
-                "options": ["**A.** BTS", "**B.** Shinee", "**C.** Big Bang", "**D.** EXO"],
-                "answer": 2
-            },
-            {
-                "question": 'Which group were the first K-Pop artist to appear on the US Billboard Hot 100?',
-                "options": ["**A.** BTS", "**B.** Blackpink", "**C.** PSY", "**D.** Wonder Girls"],
-                "answer": 3
-            },
-            {
-                "question": 'What is Blackpinks most viewed music video on YouTube?',
-                "options": ["**A.** Kill This Love", "**B.** Lovesick Girls", "**C.** DDU-DU-DDU-DU", "**D.** Shut Down"],
-                "answer": 2
-            },
-            {
-                "question": 'How many sub-units of NCT are there?',
-                "options": ["**A.** 3", "**B.** 5", "**C.** 2", "**D.** 4"],
-                "answer": 3
-            },
-            {
-                "question": 'Which is the last music video to include all 12 original EXO members?',
-                "options": ["**A.** Call Me Baby", "**B.** Overdose", "**C.** Growl", "**D.** Wolf"],
-                "answer": 1
-            },
-            {
-                "question": 'Whats the smallest country in the world?',
-                "options": ["**A.** Malta", "**B.** Vatican City", "**C.** Qatar", "**D.** Monaco"],
-                "answer": 1
-            },
-            {
-                "question": 'Which country cosumes the most chocolate per capita?',
-                "options": ["**A.** China", "**B.** Germany", "**C.** Switzerland", "**D.** Sweden"],
-                "answer": 2
-            },
-            {
-                "question": 'What is the most cosumed manufactured drink in the world?',
-                "options": ["**A.** Coca cola", "**B.** Tea", "**C.** Coffee", "**D.** Alcohol"],
-                "answer": 1
-            },
-            {
-                "question": 'Which country is known as the "Land of the Rising Sun"?',
-                "options": ["**A.** Thailand", "**B.** Japan", "**C.**  France", "**D.** Canada"],
-                "answer": 1
-            },
-            {
-                "question": 'Which animal is known as the "King of the Jungle"?',
-                "options": ["**A.** Pigeon (lol idfk)", "**B.** Leopard", "**C.**  Tiger", "**D.** Lion"],
-                "answer": 3
-            },
-            {
-                "question": 'What is the largest mammal in the world?',
-                "options": ["**A.** Wahle", "**B.** Blue Whale", "**C.**  Elephant", "**D.** Shark"],
-                "answer": 1
-            },
-            {
-                "question": 'Who painted the Mona Lisa?',
-                "options": ["**A.** Pablo Picasso", "**B.** Vincent van Gogh", "**C.**  Shakespear", "**D.**  Leonardo da Vinci"],
-                "answer": 1
-            }
-        ]
-
-        question = random.choice(trivia_questions)
-
-        embed = discord.Embed(title="Trivia", description=question["question"], color=0x2b2d31)
-        for i, option in enumerate(question["options"]):
-            embed.add_field(name=f"Option {i+1}", value=option, inline=False)
-            embed.set_footer(text='Answer with numbers (1 - 4)')
-        question_msg = await ctx.reply(embed=embed)
-
-        def check_answer(msg):
-            return msg.author == ctx.author and msg.channel == ctx.channel
-
-        try:
-            user_answer = await self.bot.wait_for('message', timeout=10.0, check=check_answer)
-
-            if user_answer.content.isdigit() and int(user_answer.content) - 1 == question["answer"]:
-                await ctx.reply("✅ Correct answer!")
-            elif user_answer.content.isdigit():
-                await ctx.reply(f"❌ Incorrect answer! The correct answer is {question['options'][question['answer']]}")
-            else:
-                await ctx.reply("Please provide a valid option number as your answer.")
-
-        except asyncio.TimeoutError:
-            await ctx.reply("⌛ Time's up! You took too long to answer.")
-
     @commands.command(aliases=['pfp', 'icon'])
     async def avatar(self, ctx, member: discord.Member = None):
         if member is None:
@@ -609,6 +482,16 @@ class funcmds(commands.Cog):
                 embed.add_field(name="Attempts Left", value=self.max_attempts - self.attempts, inline=False)
                 embed.set_footer(text='do +guess <letter> to guess the letters')
                 await ctx.reply(embed=embed)
+
+    @commands.hybrid_command(name="trivia", description="Starts a quiz", timeout=3.0)
+    async def trivia(self, ctx):
+        
+        try:
+            view = buttonHandler()
+            embed, answer = await getQuestions()
+            message = await ctx.reply(f"Your current score is: **{view.score}**\nYou have ❤**{view.lives}** lives left.", embed=embed, view = view)
+        except asyncio.TimeoutError:
+            await message.edit(content=f"You ran out of time! Your score was {view.score}!", view=None)
 
 async def setup(bot):
     await bot.add_cog(funcmds(bot))
