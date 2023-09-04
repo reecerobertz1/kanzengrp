@@ -372,7 +372,7 @@ class kgrproles(commands.Cog):
         self.bot = bot
 
     @commands.command()
-    async def roles1(self, ctx):
+    async def rroles(self, ctx):
         select = Select(
             placeholder="Select a role",
             options=[
