@@ -57,14 +57,14 @@ class audios(commands.Cog):
         with open("softaudios.json", "r") as f:
             audios = json.load(f)
             choice = random.choice(audios)
-            await ctx.reply(f"Add a soft audio with `+addsoft`\n{choice}")
+            await ctx.reply(f"Add a soft audio with `+addsoft`\n[here is the audio]({choice})")
 
     @audio.command()
     async def hot(self, ctx):
         with open("hotaudios.json", "r") as f:
             audios = json.load(f)
             choice = random.choice(audios)
-            await ctx.reply(f"Add a hot audio with `+addhot`\n{choice}")
+            await ctx.reply(f"Add a hot audio with `+addhot`\n[here is the audio]({choice})")
 
 async def setup(bot):
     await bot.add_cog(audios(bot))

@@ -31,7 +31,7 @@ class addedits(commands.Cog):
         with open("edits.json", "r") as f:
             audios = json.load(f)
             choice = random.choice(audios)
-            await ctx.reply(f"Add your edits with `+addedit`\n{choice}")
+            await ctx.reply(f"Add your edits with `+addedit`\n[here is the edit]({choice})")
 
 async def setup(bot):
     await bot.add_cog(addedits(bot))
