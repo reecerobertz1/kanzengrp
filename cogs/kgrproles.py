@@ -444,7 +444,7 @@ class kgrproles(commands.Cog):
         await ctx.send(embed=embed, view=view)
 
     @commands.command()
-    async def roles3(self, ctx):
+    async def rroles3(self, ctx):
         embed = discord.Embed(title="<a:kanzenflower:1128154723262943282> Pronouns", description="<:one:1146003619750105168><@&1121852424353755137> \n<:two:1146003617942351902><@&1122635691487137884> \n<:three:1146003614691753994><@&1122635724559241317> \n<:four:1146003611227263047><@&1122635760445706321> \n<:five:1146003609125916712><@&1122635742229835897> \n<:six:1146003606835834951><@&1122635791844266064>", color=0x2b2d31)
         embed.set_thumbnail(url=ctx.guild.icon)
         embed.set_footer(text="Use the buttons to select/deselect a role!")
@@ -452,7 +452,7 @@ class kgrproles(commands.Cog):
         await ctx.send(embed=embed, view=view)
 
     @commands.command()
-    async def roles2(self, ctx):
+    async def rroles2(self, ctx):
         embed = discord.Embed(title="<a:kanzenflower:1128154723262943282> Programs", description="<:aftereffects:1139953449954447380> <@&1122921620047147131> \n<:alightmotion:1139953459303546940> <@&1122921640288850025>\n<:sonyvegas:1139953453813223444> <@&1139954079506911303> \n<:videostar:1139953847784194119> <@&1122921660320858274> \n<:funimate:1139953446552879156> <@&1139954125560365116> \n<:cutecut:1139953845057896549> <@&1139954104383324240> \n<:capcut:1139953436058722436> <@&1139954142215942255>", color=0x2b2d31)
         embed.set_thumbnail(url=ctx.guild.icon)
         embed.set_footer(text="Use the buttons to select/deselect a role!")
@@ -460,7 +460,7 @@ class kgrproles(commands.Cog):
         await ctx.send(embed=embed, view=view)
 
     @commands.command()
-    async def roles4(self, ctx):
+    async def rroles4(self, ctx):
         embed = discord.Embed(title="<a:kanzenflower:1128154723262943282> Games", description="<:fortnite:1123259326006571090> <@&1122921698367389756> \n<:MCicon:1123259350522282025> <@&1122979205324480553> \n<:ROBLOXicon:1123259382063443968> <@&1122921713823395851> \n<:Valoranticon:1123259406092611654> <@&1122921729384271963> \n<:gtaV:1123259437637980183> <@&1122921800502878259> \n<:honkai:1139958684324216934> <@&1139957904712142932> \n<:genshin:1139958246526951464> <@&1122921755216973854> \n<:phasmophobia:1139962251453927556> <@&1139962329950343208>", color=0x2b2d31)
         embed.set_thumbnail(url=ctx.guild.icon)
         embed.set_footer(text="Use the buttons to select/deselect a role!")
@@ -468,7 +468,7 @@ class kgrproles(commands.Cog):
         await ctx.send(embed=embed, view=view)
 
     @commands.command()
-    async def roles5(self, ctx):
+    async def rroles5(self, ctx):
         embed = discord.Embed(title="<a:kanzenflower:1128154723262943282> Other", description="<:hoshistar:1148103083021320293> <@&1122655473368314017> \n<:one:1146003619750105168> <@&1122927309813461143> \n<:two:1146003617942351902> <@&1122928933575335936> \n<:three:1146003614691753994> <@&1122926819553841162> \n<:four:1146003611227263047> <@&1122926767192154142> \n<:five:1146003609125916712> <@&1122926835936809090> \n<:six:1146003606835834951> <@&1129219295310794874>", color=0x2b2d31)
         embed.set_thumbnail(url=ctx.guild.icon)
         embed.set_footer(text="Use the buttons to select/deselect a role!")
