@@ -97,13 +97,13 @@ easy = {
                 ],
                 '16':[
                         "https://cdn.discordapp.com/attachments/1121841074512605186/1148892897530351667/Comp_2_00004.png",
-                        "```A. TXT Soobin\nB. P1harmony Jongseob\nC. BTS Taehyung\nD. Enhypen Jake",
+                        "```A. TXT Soobin\nB. P1harmony Jongseob\nC. BTS Taehyung\nD. Enhypen Jake```",
                         "D",
                         "https://cdn.discordapp.com/attachments/1121841074512605186/1148892761207099463/Comp_2_00004.png"
                 ],
                 '17':[
                         "https://cdn.discordapp.com/attachments/1121841074512605186/1148892897832349777/Comp_2_00005.png",
-                        "```A. Enhypen Ni-Ki\nB. BTS Jimin\nC. TXT Taehyun\nD. Stray Kids Hyunjin",
+                        "```A. Enhypen Ni-Ki\nB. BTS Jimin\nC. TXT Taehyun\nD. Stray Kids Hyunjin```",
                         "A",
                         "https://cdn.discordapp.com/attachments/1121841074512605186/1148892761651683328/Comp_2_00005.png"
                 ]
