@@ -94,6 +94,7 @@ class Help(commands.Cog):
                 embed.add_field(name="+tictactoe", value="<a:Arrow_1:1145603161701224528> Play a game of tictactoe with the person you mention", inline=False)
                 embed.add_field(name="+hangman", value="<a:Arrow_1:1145603161701224528> Play a game of hangman with Hoshi!", inline=False)
                 embed.add_field(name="+trueorfalse", value="<a:Arrow_1:1145603161701224528> Play a game of True or False")
+                embed.add_field(name="+guesstheceleb", value="<a:Arrow_1:1145603161701224528> Play a game of Game the celeb/idol")
                 embed.set_thumbnail(url=ctx.guild.icon)
                 embed.set_footer(text="page 3/8", icon_url=ctx.author.avatar)
             elif selected_category == categories[3]:
