@@ -162,9 +162,9 @@ class Moderation(commands.Cog):
     @commands.command()
     @commands.has_permissions(manage_guild=True)
     async def hoshiupdate(self, ctx):
-        embed = discord.Embed(title='New minigame!', description="The new mini game is True or False!\nUse the buttons to answer and see how high you can get your score! There are 150 questions, some easy some hard and you also only have 3 lives and once theyre gone the game will end!\nalso no cheating cause hoshi will know 👀", color=0x2b2d31)
+        embed = discord.Embed(title='New minigame!', description="The new mini game is Guess the celeb!\nUse the buttons to answer! Right now there is only easy mode, but i am working on a medium and hard mode for you guys. And also it is mostly kpop idols in there + Ariana Grande but there will be other celebrities in there aswell soon.\nIf you do have anyone you want adding to this, please do let me know!", color=0x2b2d31)
         embed.set_footer(text="Go and use these commands in Hoshi's channel!")
-        embed.set_author(name="Hoshi#3105", icon_url="https://cdn.discordapp.com/avatars/849682093575372841/f04c5815341216fdafe736a2564a4d09.png?size=1024")
+        embed.set_author(name="Hoshi#3105", icon_url="https://cdn.discordapp.com/avatars/849682093575372841/5fe0977b9fd873f9cc4ba372dbcfbbdb.png?size=1024")
         message = await ctx.reply("Are you sure you want to send this update message?", embed=embed)
         await message.add_reaction('👍')
         
