@@ -106,6 +106,72 @@ easy = {
                         "```A. Enhypen Ni-Ki\nB. BTS Jimin\nC. TXT Taehyun\nD. Stray Kids Hyunjin```",
                         "A",
                         "https://cdn.discordapp.com/attachments/1121841074512605186/1148892761651683328/Comp_2_00005.png"
+                ],
+                '18':[
+                        "https://cdn.discordapp.com/attachments/1121841074512605186/1149220850957025320/Comp_2_00001.png",
+                        "```A. Enhypen Ni-Ki\nB. BTS Jimin\nC. TXT Taehyun\nD. Stray Kids Hyunjin```",
+                        "C",
+                        "https://cdn.discordapp.com/attachments/1121841074512605186/1149220775438590023/Comp_2_00001.png"
+                ],
+                '19':[
+                        "https://cdn.discordapp.com/attachments/1121841074512605186/1149220851275808808/Comp_2_00002.png",
+                        "```A. TXT Soobin\nB. Seventeen Hoshi\nC. BTS Yoongi\nD. Stray Kids Han```",
+                        "A",
+                        ""
+                ],
+                '20':[
+                        "https://cdn.discordapp.com/attachments/1121841074512605186/1149220850676011048/Comp_2_00000.png",
+                        "```A. Enhypen Jake\nB. BTS Seokjin\nC. Seventeen Seungkwan\nD. TXT Yeonjun```",
+                        "D",
+                        "https://cdn.discordapp.com/attachments/1121841074512605186/1149220774754922566/Comp_2_00000.png"
+                ],
+                '21':[
+                        "https://cdn.discordapp.com/attachments/1121841074512605186/1149220851514871888/Comp_2_00003.png",
+                        "```A. Stray Kids Minho\nB. BTS Jimin\nC. TXT Kai\nD. BTS Jungkook```",
+                        "C",
+                        "https://cdn.discordapp.com/attachments/1121841074512605186/1149220776428445786/Comp_2_00003.png"
+                ],
+                '22':[
+                        "https://cdn.discordapp.com/attachments/1121841074512605186/1149220851758137354/Comp_2_00004.png",
+                        "```A. TXT Beomgyu\nB. BTS Seokjin\nC. TXT Kai\nD. Stray Kids Hyunjin```",
+                        "A",
+                        "https://cdn.discordapp.com/attachments/1121841074512605186/1149220776885628938/Comp_2_00004.png"
+                ],
+                '23':[
+                        "https://cdn.discordapp.com/attachments/1121841074512605186/1149224666817376346/Comp_2_00000.png",
+                        "```A. Taylor Swift\nB. Margot Robbie\nC. Miley Cyrus\nD. Jennifer Lawrence```",
+                        "A",
+                        "https://cdn.discordapp.com/attachments/1121841074512605186/1149224574337155082/Comp_2_00000.png"
+                ],
+                '24':[
+                        "https://cdn.discordapp.com/attachments/1121841074512605186/1149224667501035541/Comp_2_00001.png",
+                        "```A. Jennifer Aniston\nB. Kristen Stewart\nC. Taylor Swift\nD. Margot Robbie```",
+                        "D",
+                        "https://cdn.discordapp.com/attachments/1121841074512605186/1149224574664331284/Comp_2_00001.png"
+                ],
+                '25':[
+                        "https://cdn.discordapp.com/attachments/1121841074512605186/1149224667798839338/Comp_2_00002.png",
+                        "```A. Margot Robbie\nB. Miley Cyrus\nC. Kristen Stewart\nD. Jennifer Aniston```",
+                        "B",
+                        "https://cdn.discordapp.com/attachments/1121841074512605186/1149224574970503208/Comp_2_00002.png"
+                ],
+                '26':[
+                        "https://cdn.discordapp.com/attachments/1121841074512605186/1149225798750978129/Comp_2_00000.png",
+                        "```A. Rihanna\nB. Nicki Minaj\nC. Ice Spice\nD. Beyonce```",
+                        "A",
+                        "https://cdn.discordapp.com/attachments/1121841074512605186/1149225854862368798/Comp_2_00000.png"
+                ],
+                '27':[
+                        "https://cdn.discordapp.com/attachments/1121841074512605186/1149224667798839338/Comp_2_00002.png",
+                        "```A. Keke Palmer\nB. Zendaya\nC. Beyonce\nD. Ice Spice```",
+                        "D",
+                        "https://cdn.discordapp.com/attachments/1121841074512605186/1149225855298580480/Comp_2_00001.png"
+                ],
+                '28':[
+                        "https://cdn.discordapp.com/attachments/1121841074512605186/1149225799304618025/Comp_2_00002.png",
+                        "```A. Zendaya\nB. Keke Palmer\nC. Nicki Minaj\nD. Ice Spice```",
+                        "C",
+                        "https://cdn.discordapp.com/attachments/1121841074512605186/1149225855810277376/Comp_2_00002.png"
                 ]
 }
 
