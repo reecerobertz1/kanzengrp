@@ -19,7 +19,6 @@ class Help(commands.Cog):
             "moderation",
             "applications",
             "community"
-            
         ]
         emojis = [
             ":tata:1121909389280944169",
@@ -30,7 +29,6 @@ class Help(commands.Cog):
             ":chimmy2:1148234652448981072",
             ":cooky:1121909627156705280",
             ":van:1148235344437846107"
-            
         ]
         descriptions = [
             "Includes commands you can use for fun!",
@@ -47,8 +45,10 @@ class Help(commands.Cog):
         options=[discord.SelectOption(label=category, emoji=emoji, description=description) for category, emoji, description in zip(categories, emojis, descriptions)]
         )
 
-        about_hoshi_embed = discord.Embed(title="About Hoshi",description="owner info:\n<a:Arrow_1:1145603161701224528> Hoshi is owned by [Reece](https://instagram.com/remqsi)\n<a:Arrow_1:1145603161701224528> Reece coded Hoshi in [Visual Studio Code](https://code.visualstudio.com/)\n\ndevelopment info:\n<a:Arrow_1:1145603161701224528> Hoshi is coded in Python 3.11.4\n<a:Arrow_1:1145603161701224528> [Download Python 3.11.4](https://www.python.org/downloads/)\n<a:Arrow_1:1145603161701224528> Developed by [Reece](https://instagram.com/remqsi) with help from [Alex](https://instagram.com/rqinflow)\n\nextra info:\n<a:Arrow_1:1145603161701224528> Hoshi's prefix is `+`\n<a:Arrow_1:1145603161701224528> Hoshi was made for [**__Kanzengrp__**](https://instagram.com/kanzengrp)\n\nbug reports\n<a:Arrow_1:1145603161701224528> Use __+report__ to report bug reports!" ,color=0x2b2d31)
+        about_hoshi_embed = discord.Embed(description="owner info:\n<a:Arrow_1:1145603161701224528> Hoshi is owned by [Reece](https://instagram.com/remqsi)\n<a:Arrow_1:1145603161701224528> Reece coded Hoshi in [Visual Studio Code](https://code.visualstudio.com/)\n\ndevelopment info:\n<a:Arrow_1:1145603161701224528> Hoshi is coded in Python 3.11.4\n<a:Arrow_1:1145603161701224528> [Download Python 3.11.4](https://www.python.org/downloads/)\n<a:Arrow_1:1145603161701224528> Developed by [Reece](https://instagram.com/remqsi) with help from [Alex](https://instagram.com/rqinflow)\n\nextra info:\n<a:Arrow_1:1145603161701224528> Hoshi's prefix is `+`\n<a:Arrow_1:1145603161701224528> Hoshi was made for [**__Kanzengrp__**](https://instagram.com/kanzengrp)\n\nbug reports\n<a:Arrow_1:1145603161701224528> Use __+report__ to report bug reports!" ,color=0x2b2d31)
         about_hoshi_embed.set_thumbnail(url=ctx.guild.icon)
+        about_hoshi_embed.set_author(name="About Hoshi", icon_url=self.bot.user.display_avatar.url)
+        about_hoshi_embed.set_footer(text="Home Page", icon_url=ctx.author.avatar)
 
         view = discord.ui.View()
         view.add_item(dropdown)
@@ -95,6 +95,7 @@ class Help(commands.Cog):
                 embed.add_field(name="+hangman", value="<a:Arrow_1:1145603161701224528> Play a game of hangman with Hoshi!", inline=False)
                 embed.add_field(name="+trueorfalse", value="<a:Arrow_1:1145603161701224528> Play a game of True or False", inline=False)
                 embed.add_field(name="+guesstheceleb", value="<a:Arrow_1:1145603161701224528> Play a game of Game the celeb/idol", inline=False)
+                embed.add_field(name="+rps", value="<a:Arrow_1:1145603161701224528> Play a game of Rock Paper Scissors with Hoshi", inline=False)
                 embed.set_thumbnail(url=ctx.guild.icon)
                 embed.set_footer(text="page 3/8", icon_url=ctx.author.avatar)
             elif selected_category == categories[3]:
