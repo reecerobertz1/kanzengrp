@@ -537,5 +537,11 @@ class funcmds(commands.Cog):
         except asyncio.TimeoutError:
             await message.edit(content=f"You ran out of time! Your score was {view.score}!", view=None)
 
+    @commands.command(aliases=["rps"])
+    async def rockpaperscissors(self, ctx):
+        message = await ctx.send("Let's play rock-paper-scissors! Click your choice below.")
+        view = RockPaperScissorsView(message)
+        await message.edit(view=view)
+
 async def setup(bot):
     await bot.add_cog(funcmds(bot))
