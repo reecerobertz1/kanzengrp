@@ -11,6 +11,7 @@ class Help(commands.Cog):
     @commands.command()
     async def help(self, ctx):
         categories = [
+            "home page",
             "fun",
             "editing",
             "minigames",
@@ -21,6 +22,7 @@ class Help(commands.Cog):
             "community"
         ]
         emojis = [
+            ":bt21:1149411052489027674",
             ":tata:1121909389280944169",
             ":shooky:1121909564799987722",
             ":rj:1121909526300479658",
@@ -31,6 +33,7 @@ class Help(commands.Cog):
             ":van:1148235344437846107"
         ]
         descriptions = [
+            "Home page for the help command",
             "Includes commands you can use for fun!",
             "Editing commands that can help you edit",
             "Play some minigames with Hoshi",
@@ -58,7 +61,13 @@ class Help(commands.Cog):
         async def dropdown_callback(interaction: discord.Interaction):
             selected_category = interaction.data["values"][0]
             if selected_category == categories[0]:
-                embed = discord.Embed(title="fun commands", color=0x2b2d31)
+                embed = discord.Embed(description="owner info:\n<a:Arrow_1:1145603161701224528> Hoshi is owned by [Reece](https://instagram.com/remqsi)\n<a:Arrow_1:1145603161701224528> Reece coded Hoshi in [Visual Studio Code](https://code.visualstudio.com/)\n\ndevelopment info:\n<a:Arrow_1:1145603161701224528> Hoshi is coded in Python 3.11.4\n<a:Arrow_1:1145603161701224528> [Download Python 3.11.4](https://www.python.org/downloads/)\n<a:Arrow_1:1145603161701224528> Developed by [Reece](https://instagram.com/remqsi) with help from [Alex](https://instagram.com/rqinflow)\n\nextra info:\n<a:Arrow_1:1145603161701224528> Hoshi's prefix is `+`\n<a:Arrow_1:1145603161701224528> Hoshi was made for [**__Kanzengrp__**](https://instagram.com/kanzengrp)\n\nbug reports\n<a:Arrow_1:1145603161701224528> Use __+report__ to report bug reports!" ,color=0x2b2d31)
+                embed.set_thumbnail(url=ctx.guild.icon)
+                embed.set_author(name="About Hoshi", icon_url=self.bot.user.display_avatar.url)
+                embed.set_footer(text="Home Page", icon_url=ctx.author.avatar)
+            elif selected_category == categories[1]:
+                embed = discord.Embed(color=0x2b2d31)
+                embed.set_author(name="fun commands", icon_url=self.bot.user.display_avatar.url)
                 embed.add_field(name="+dog", value="<a:Arrow_1:1145603161701224528> Sends you a random photo of a dog", inline=False) 
                 embed.add_field(name="+cat", value="<a:Arrow_1:1145603161701224528> Sends you a random photo of a cat", inline=False) 
                 embed.add_field(name="+jail", value="<a:Arrow_1:1145603161701224528> Put someone or yourself in jail", inline=False) 
@@ -74,8 +83,9 @@ class Help(commands.Cog):
                 embed.add_field(name="+giphy", value="<a:Arrow_1:1145603161701224528> Search for a gif with giphy", inline=False)
                 embed.set_thumbnail(url=ctx.guild.icon)
                 embed.set_footer(text="page 1/8", icon_url=ctx.author.avatar)
-            elif selected_category == categories[1]:
-                embed = discord.Embed(title="editing commands", color=0x2b2d31)
+            elif selected_category == categories[2]:
+                embed = discord.Embed(color=0x2b2d31)
+                embed.set_author(name="editing commands", icon_url=self.bot.user.display_avatar.url)
                 embed.add_field(name="+transition", value="<a:Arrow_1:1145603161701224528> Get a random transition to use in your edit", inline=False)
                 embed.add_field(name="+audio soft", value="<a:Arrow_1:1145603161701224528> Get a soft audio added by a member to use for your edit", inline=False)
                 embed.add_field(name="+addsoft", value="<a:Arrow_1:1145603161701224528> Add a soft audio from SoundCloud for others to use", inline=False)
@@ -87,8 +97,9 @@ class Help(commands.Cog):
                 embed.add_field(name="+colorscheme", value="<a:Arrow_1:1145603161701224528> Get a random color scheme to use in your edit", inline=False)
                 embed.set_thumbnail(url=ctx.guild.icon)
                 embed.set_footer(text="page 2/8", icon_url=ctx.author.avatar)
-            elif selected_category == categories[2]:
-                embed = discord.Embed(title="minigames", color=0x2b2d31)
+            elif selected_category == categories[3]:
+                embed = discord.Embed(color=0x2b2d31)
+                embed.set_author(name="minigames", icon_url=self.bot.user.display_avatar.url)
                 embed.add_field(name="+scramble", value="<a:Arrow_1:1145603161701224528> Unscramble the word Hoshi gives you in 20 seconds", inline=False)
                 embed.add_field(name="+trivia", value="<a:Arrow_1:1145603161701224528> Hoshi will ask you a question, make sure to answer correctly", inline=False)
                 embed.add_field(name="+tictactoe", value="<a:Arrow_1:1145603161701224528> Play a game of tictactoe with the person you mention", inline=False)
@@ -98,8 +109,9 @@ class Help(commands.Cog):
                 embed.add_field(name="+rps", value="<a:Arrow_1:1145603161701224528> Play a game of Rock Paper Scissors with Hoshi", inline=False)
                 embed.set_thumbnail(url=ctx.guild.icon)
                 embed.set_footer(text="page 3/8", icon_url=ctx.author.avatar)
-            elif selected_category == categories[3]:
-                embed = discord.Embed(title="kanzen only commands", color=0x2b2d31)
+            elif selected_category == categories[4]:
+                embed = discord.Embed(color=0x2b2d31)
+                embed.set_author(name="kanzen only commands", icon_url=self.bot.user.display_avatar.url)
                 embed.add_field(name="+cmd new", value="<a:Arrow_1:1145603161701224528> Make your own command!", inline=False)
                 embed.add_field(name="+cmd list", value="<a:Arrow_1:1145603161701224528> See all the commands other zennies have added", inline=False)
                 embed.add_field(name="+cmd remove", value="<a:Arrow_1:1145603161701224528> Made a mistake in your command? do", inline=False)
@@ -108,8 +120,9 @@ class Help(commands.Cog):
                 embed.add_field(name="+addpet", value="<a:Arrow_1:1145603161701224528> Attach an image of your pet and add a name when doing this command", inline=False)
                 embed.set_thumbnail(url=ctx.guild.icon)
                 embed.set_footer(text="page 4/8", icon_url=ctx.author.avatar)
-            elif selected_category == categories[4]:
-                embed = discord.Embed(title="levels commands", color=0x2b2d31)
+            elif selected_category == categories[5]:
+                embed = discord.Embed(color=0x2b2d31)
+                embed.set_author(name="level commands", icon_url=self.bot.user.display_avatar.url)
                 embed.add_field(name="+rank", value="<a:Arrow_1:1145603161701224528> See your rank, or someone elses", inline=False)
                 embed.add_field(name="+levels", value="<a:Arrow_1:1145603161701224528> See the level leaderboard for the server", inline=False)
                 embed.add_field(name="+rankcolor", value="<a:Arrow_1:1145603161701224528> Set your rank color with a hex code", inline=False)
@@ -121,8 +134,9 @@ class Help(commands.Cog):
                 embed.add_field(name="+levelling setrole", value="<a:Arrow_1:1145603161701224528> Set the top 20 active role", inline=False)
                 embed.set_thumbnail(url=ctx.guild.icon)
                 embed.set_footer(text="page 5/8", icon_url=ctx.author.avatar)
-            elif selected_category == categories[5]:
-                embed = discord.Embed(title="moderation commands", color=0x2b2d31)
+            elif selected_category == categories[6]:
+                embed = discord.Embed(color=0x2b2d31)
+                embed.set_author(name="moderation commands", icon_url=self.bot.user.display_avatar.url)
                 embed.add_field(name="</kick:1131780353477054484>", value="<a:Arrow_1:1145603161701224528> Kick a member from the server", inline=False)
                 embed.add_field(name="</ban:1131780353477054485>", value="<a:Arrow_1:1145603161701224528> Ban a member from the server", inline=False)
                 embed.add_field(name="</addrole:1131784754698666035>", value="<a:Arrow_1:1145603161701224528> Add a role to a member", inline=False)
@@ -132,8 +146,9 @@ class Help(commands.Cog):
                 embed.add_field(name="+steal", value="<a:Arrow_1:1145603161701224528> Steal an emoji from any server", inline=False)
                 embed.set_thumbnail(url=ctx.guild.icon)
                 embed.set_footer(text="page 6/8", icon_url=ctx.author.avatar)
-            elif selected_category == categories[6]:
-                embed = discord.Embed(title="application commands", color=0x2b2d31)
+            elif selected_category == categories[7]:
+                embed = discord.Embed(color=0x2b2d31)
+                embed.set_author(name="application commands", icon_url=self.bot.user.display_avatar.url)
                 embed.add_field(name="+daegu openapps", value="<a:Arrow_1:1145603161701224528> Opens applications for daegutowngrp", inline=False)
                 embed.add_field(name="+daegu closeapps", value="<a:Arrow_1:1145603161701224528> Closes applications for daegutowngrp", inline=False)
                 embed.add_field(name="+aura openapp", value="<a:Arrow_1:1145603161701224528> Opens applications for auragrps", inline=False)
@@ -146,8 +161,9 @@ class Help(commands.Cog):
                 embed.add_field(name="+answerpriv", value="<a:Arrow_1:1145603161701224528> Answer a question sent in DMs", inline=False)
                 embed.set_thumbnail(url=ctx.guild.icon)
                 embed.set_footer(text="page 7/8", icon_url=ctx.author.avatar)
-            elif selected_category == categories[7]:
-                embed = discord.Embed(title="community commands", color=0x2b2d31)
+            elif selected_category == categories[8]:
+                embed = discord.Embed(color=0x2b2d31)
+                embed.set_author(name="community commands", icon_url=self.bot.user.display_avatar.url)
                 embed.add_field(name="+giveaway", value="<a:Arrow_1:1145603161701224528> Start a giveaway", inline=False)
                 embed.add_field(name="+enter banner", value="<a:Arrow_1:1145603161701224528> Enter in Editors block banner contest", inline=False)
                 embed.add_field(name="+enter icon", value="<a:Arrow_1:1145603161701224528> Enter in Editors block icon contest", inline=False)
