@@ -117,7 +117,7 @@ easy = {
                         "https://cdn.discordapp.com/attachments/1121841074512605186/1149220851275808808/Comp_2_00002.png",
                         "```A. TXT Soobin\nB. Seventeen Hoshi\nC. BTS Yoongi\nD. Stray Kids Han```",
                         "A",
-                        ""
+                        "https://cdn.discordapp.com/attachments/1121841074512605186/1149220775837040640/Comp_2_00002.png"
                 ],
                 '20':[
                         "https://cdn.discordapp.com/attachments/1121841074512605186/1149220850676011048/Comp_2_00000.png",
