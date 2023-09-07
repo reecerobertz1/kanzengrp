@@ -3,7 +3,7 @@ import random
 import discord
 from discord.ext import commands
 from discord import app_commands
-from gtcstuff.celebs import easy
+from gtcstuff.Celebs import easy
 
 class modes(discord.ui.View):
     def __init__(self):
