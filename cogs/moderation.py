@@ -7,6 +7,77 @@ from discord import ui
 from discord.utils import get
 from discord.ui import View, Select
 
+class ReportView(discord.ui.View):
+    def __init__(self, bot):
+        super().__init__()
+        self.bot = bot
+        self.value = None
+
+    @discord.ui.button(label="Report", style=discord.ButtonStyle.red)
+    async def report(self, interaction: discord.Interaction, button: discord.ui.Button):
+        await interaction.response.send_modal(reportmodal(bot=self.bot))
+
+class reportmodal(ui.Modal, title='Bug Report'):
+    def __init__(self, bot, **kwargs):
+        super().__init__(**kwargs)
+        self.bot = bot
+        self.value = None
+
+    notified = ui.TextInput(label='Do you want to be notified when its fixed?', placeholder="Yes/No", style=discord.TextStyle.short)
+    command = ui.TextInput(label='What command is broken', placeholder="Command name here... example: +about", style=discord.TextStyle.short)
+    bug = ui.TextInput(label='What happens when you do the command?', placeholder="Bug here...", style=discord.TextStyle.long)
+
+    async def on_submit(self, interaction: discord.Interaction):
+        await interaction.response.defer()
+        embed = discord.Embed(title="Bug reports", color=0xFF0000)
+        embed.add_field(name='Should we notify you?', value=f'{self.notified.value}', inline=False)
+        embed.add_field(name='What is the command?', value=f'{self.command.value}', inline=False)
+        embed.add_field(name='What is the bug?', value=f'{self.bug.value}', inline=False)
+        embed.add_field(name='Discord ID:', value=interaction.user.id, inline=False)
+        embed.set_footer(text=interaction.user.name, icon_url=interaction.user.display_avatar)
+        timestamp = datetime.datetime.utcnow()
+        embed.timestamp = timestamp
+        view = resolved(self.bot, self.bug.value, self.command.value, interaction.message.reference.message_id)
+        command = self.command.value
+        bug = self.bug.value
+        channel = interaction.client.get_channel(1149339743675502612)
+        await channel.send("<@609515684740988959>", embed=embed, view=view)
+        await interaction.followup.send(f'Your bug report was sent successfully', ephemeral=True)
+
+class resolved(discord.ui.View):
+    def __init__(self, bot, bug, command, message_id):
+        super().__init__()
+        self.bot = bot
+        self.value = None
+        self.command = command
+        self.bug = bug
+        self.message_id = message_id
+
+    @discord.ui.button(label="Resolved", style=discord.ButtonStyle.green)
+    async def resolved(self, interaction: discord.Interaction, button: discord.ui.Button):
+        await interaction.response.defer()
+        message_id = interaction.message.id
+        msg = await interaction.channel.fetch_message(message_id)
+        if msg.embeds:
+            embed = msg.embeds[0]
+            user_id_field = next((field for field in embed.fields if field.name == 'Discord ID:'), None)
+            if user_id_field:
+                user_id = user_id_field.value.strip()
+                user = await interaction.guild.fetch_member(int(user_id))
+                if user:
+                    embed.add_field(name="Status", value="Resolved :white_check_mark:")
+                    await msg.edit(embed=embed, view=None)
+                    resolvedembed = discord.Embed(title="Your report has been resolved!", description=f"Command: {self.command}\nIssue: {self.bug}", color=0x42FF00)
+                    resolvedembed.set_thumbnail(url=self.bot.user.display_avatar.url)
+                    await user.send(embed=resolvedembed)
+                    await interaction.followup.send("The issue has been marked as resolved, and a message has been sent to the user.", ephemeral=True)
+                else:
+                    await interaction.followup.send("Failed to find the user associated with the report.", ephemeral=True)
+            else:
+                await interaction.followup.send("Invalid embed format. Please make sure the embed contains a field with the name 'Discord ID:'.", ephemeral=True)
+        else:
+            await interaction.followup.send("No embeds found in the original message.", ephemeral=True)
+
 class Moderation(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -97,7 +168,7 @@ class Moderation(commands.Cog):
             await interaction.response.send_message(f"{member.mention} no longer has the role {role.mention}.", ephemeral=True)
         if not interaction.user.guild_permissions.administrator:
             return await interaction.response.send_message("You have no admin", ephemeral=True)
-
+        
     @app_commands.command(name='kanzen', description='Get Kanzen logos')
     @app_commands.guilds(discord.Object(id=1121841073673736215))
     async def kanzenlogos(self, interaction: discord.Interaction):
@@ -162,9 +233,9 @@ class Moderation(commands.Cog):
     @commands.command()
     @commands.has_permissions(manage_guild=True)
     async def hoshiupdate(self, ctx):
-        embed = discord.Embed(title='New minigame!', description="The new mini game is Guess the celeb!\nUse the buttons to answer! Right now there is only easy mode, but i am working on a medium and hard mode for you guys. And also it is mostly kpop idols in there + Ariana Grande but there will be other celebrities in there aswell soon.\nIf you do have anyone you want adding to this, please do let me know!", color=0x2b2d31)
+        embed = discord.Embed(title='test', description="", color=0x2b2d31)
         embed.set_footer(text="Go and use these commands in Hoshi's channel!")
-        embed.set_author(name="Hoshi#3105", icon_url="https://cdn.discordapp.com/avatars/849682093575372841/5fe0977b9fd873f9cc4ba372dbcfbbdb.png?size=1024")
+        embed.set_author(name="Hoshi#3105", icon_url="https://cdn.discordapp.com/avatars/849682093575372841/f04c5815341216fdafe736a2564a4d09.png?size=1024")
         message = await ctx.reply("Are you sure you want to send this update message?", embed=embed)
         await message.add_reaction('👍')
         
@@ -176,20 +247,16 @@ class Moderation(commands.Cog):
             
             kanzen_channel_id = 1122655402899800234
             aura_channel_id = 1122242141037547531
-            eb_channel_id = 1141781958788133014
             
             for guild in self.bot.guilds:
                 kanzen = guild.get_channel(kanzen_channel_id)
                 aura = guild.get_channel(aura_channel_id)
-                eb = guild.get_channel(eb_channel_id)
                 
                 if kanzen:
                     await kanzen.send("<@&1122655473368314017>", embed=embed)
                 
                 if aura:
                     await aura.send("<@&1122999466438438962>", embed=embed)
-                if eb:
-                    await eb.send("<@&1141771622785753138>", embed=embed)
             
             await ctx.send("Great! I have sent out the update message!")
             await message.edit(content=None)
@@ -223,6 +290,14 @@ class Moderation(commands.Cog):
             await message.edit(content=None)
         except asyncio.TimeoutError:
             await message.edit(content="~~Are you sure you want to send this update message?~~\nThe update has been cancelled")
+
+    @commands.command()
+    async def report(self, ctx):
+        embed = discord.Embed(title="Bug Report", description="<a:Arrow_1:1145603161701224528> Please click the button and fill out the form that appears on your screen!\n<a:Arrow_1:1145603161701224528> Your bug report will send to the developer of Hoshi\n<a:Arrow_1:1145603161701224528> You can be notified when the issue has been resolved!", color=0x2b2d31)
+        embed.set_footer(text="Click the button below to send a bug report", icon_url=ctx.author.avatar)
+        embed.set_thumbnail(url=self.bot.user.display_avatar.url)
+        view = ReportView(bot=self.bot)
+        await ctx.reply(embed=embed, view=view)
 
 async def setup(bot):
     await bot.add_cog(Moderation(bot))
