@@ -25,7 +25,6 @@ class Starboard(commands.Cog):
                     return
 
                 message_id = reaction.message.id
-
                 if message_id not in self.starboarded_messages:
                     stars = reaction.count
                     channel_name = reaction.message.channel.id
@@ -35,10 +34,7 @@ class Starboard(commands.Cog):
                         embed.description = reaction.message.content
 
                     embed.set_author(name=reaction.message.author.display_name, icon_url=reaction.message.author.avatar.url)
-                    button = discord.ui.Button(label="Original Message", url=f"https://discordapp.com/channels/{reaction.message.guild.id}/{reaction.message.channel.id}/{reaction.message.id}", emoji="⭐")
-
-                    view = discord.ui.View()
-                    view.add_item(button)
+                    embed.add_field(name="Original Message", value=f"[Jump!](https://discordapp.com/channels/{reaction.message.guild.id}/{reaction.message.channel.id}/{reaction.message.id})")
                     image_url = None
 
                     if reaction.message.attachments:
@@ -52,12 +48,12 @@ class Starboard(commands.Cog):
                     if image_url:
                         embed.set_image(url=image_url)
 
-                    sent_message = await starboard_channel.send(f"⭐ {stars} <#{channel_name}>", embed=embed, view=view)
+                    sent_message = await starboard_channel.send(f"⭐ {stars} <#{channel_name}>", embed=embed)
                     self.starboarded_messages[message_id] = (sent_message, channel_name)
                 else:
                     stars = reaction.count
                     message, channel_name = self.starboarded_messages[message_id]
-                    await message.edit(content=f"⭐ {stars} <#{channel_name}>", embed=message.embeds[0], view=view[0])
+                    await message.edit(content=f"⭐ {stars} <#{channel_name}>", embed=message.embeds[0])
 
         except Exception as e:
             error_channel = self.bot.get_channel(self.error_channel_id)
