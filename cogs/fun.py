@@ -14,6 +14,50 @@ from PIL import Image, ImageDraw, ImageFont
 from triviastuff.getQuestions import getQuestions
 from triviastuff.checkHandler import buttonHandler
 
+class RockPaperScissorsView(discord.ui.View):
+    def __init__(self, ctx):
+        super().__init__(timeout=10)
+        self.value = None
+        self.ctx = ctx
+
+    async def on_timeout(self):
+        try:
+            message = await self.ctx.channel.fetch_message(self.ctx.id)
+            await message.edit(content="Rock-paper-scissors game timed out.", view=None)
+        except Exception as e:
+            print(f"An error occurred while editing the message: {e}")
+
+    @discord.ui.button(label="Rock", style=discord.ButtonStyle.gray)
+    async def Rock(self, interaction: discord.Interaction, button: discord.Button):
+        bot_choice = random.choice(["rock", "paper", "scissors"])
+        if bot_choice == "rock":
+            await interaction.response.edit_message(content="It's a tie! Hoshi chose rock.", view=None)
+        elif bot_choice == "paper":
+            await interaction.response.edit_message(content="You lose! Hoshi chose paper.", view=None)
+        else:
+            await interaction.response.edit_message(content="You win! Hoshi chose scissors.", view=None)
+
+    @discord.ui.button(label="Paper", style=discord.ButtonStyle.gray)
+    async def Paper(self, interaction: discord.Interaction, button: discord.Button):
+        bot_choice = random.choice(["rock", "paper", "scissors"])
+        if bot_choice == "paper":
+            await interaction.response.edit_message(content="It's a tie! Hoshi chose paper.", view=None)
+        elif bot_choice == "scissors":
+            await interaction.response.edit_message(content="You lose! Hoshi chose scissors.", view=None)
+        else:
+            await interaction.response.edit_message(content="You win! Hoshi chose rock.", view=None)
+
+    @discord.ui.button(label="Scissors", style=discord.ButtonStyle.gray)
+    async def Scissors(self, interaction: discord.Interaction, button: discord.Button):
+        bot_choice = random.choice(["rock", "paper", "scissors"])
+        if bot_choice == "scissors":
+            await interaction.response.edit_message(content="It's a tie! Hoshi chose scissors.", view=None)
+        elif bot_choice == "rock":
+            await interaction.response.edit_message(content="You lose! Hoshi chose rock.", view=None)
+        else:
+            await interaction.response.edit_message(content="You win! Hoshi chose paper.", view=None)
+
+
 class funcmds(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
