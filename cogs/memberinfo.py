@@ -64,37 +64,31 @@ class MemberInfo(commands.Cog):
         members = discord.utils.find(lambda r: r.name == 'members', ctx.message.guild.roles)
 
         if ctx.guild.id == kanzen:
-            title1 = f"kanzen member {display}"
+            title1 = f"Kanzen member {display}"
         elif ctx.guild.id == aura:
-            title1 = f"aura member {display}"
+            title1 = f"Aura member {display}"
         else:
             title1 = f"Member Info about {display}"
 
         if ae in user.roles:
             program = "after effects"
-            if vs in user.roles:
-                program = "after effects and video star"
-            elif sony in user.roles:
-                program = "after effects and sony vegas pro"
-            elif am in user.roles:
-                program = "after effects and alight motion"
-        if cutecut in user.roles:
+        elif cutecut in user.roles:
             program = "cute cut pro"
-        if sony in user.roles:
+        elif sony in user.roles:
             program = "sony vegas"
-        if vs in user.roles:
+        elif vs in user.roles:
             program = "videostar"
-        if cc in user.roles:
+        elif cc in user.roles:
             program = "cap cut"
-        if fm in user.roles:
+        elif fm in user.roles:
             program = "funimate"
+        elif am in user.roles:
+            program = "alight motion"
         else:
             program = "an unspecified editing software"
 
         if lead in user.roles:
             title = "a Kanzen lead"
-        if Hoshi in user.roles:
-            title = "Hoshi"
         elif leads in user.roles:
             title = "an Aura lead"
         elif staff in user.roles:
@@ -103,6 +97,8 @@ class MemberInfo(commands.Cog):
             title = "a Kanzen member"
         elif members in user.roles:
             title = "an Aura member"
+        elif Hoshi in user.roles:
+            title = "Reece's son"
 
         if sheher in user.roles:
             prns = "she/her"
