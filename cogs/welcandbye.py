@@ -1,6 +1,68 @@
 import datetime
+import random
 import discord
 from discord.ext import commands
+
+class welc(discord.ui.View):
+    def __init__ (self, member):
+        super().__init__(timeout=None)
+        self.value = None
+        self.member = member
+
+    @discord.ui.button(label=f"Wave", emoji="<:brazy_milksip:958479364184490075>")
+    async def guide(self, interaction: discord.Interaction, button: discord.ui.Button):
+        gifs = [
+            "https://tenor.com/view/bts-jin-suga-j-hope-rm-gif-15564709",
+            "https://tenor.com/view/bts-hello-bts-hello-bts-wave-wave-gif-23901650",
+            "https://tenor.com/view/jimin-bts-wave-korean-korean-entertainment-gif-11065936",
+            "https://tenor.com/view/bts-bangtan-boys-bangtan-sonyeondan-kpop-rm-gif-17936283",
+            "https://tenor.com/view/jikook-jimin-jungkook-wave-bts-gif-18607625",
+            "https://tenor.com/view/bts-jhope-bts-hobi-hobi-wave-hobi-bye-gif-24841251",
+            "https://tenor.com/view/bts-hello-yoongi-wave-bye-gif-14546847",
+            "https://tenor.com/view/bts-bangtan-boys-bangtan-sonyeondan-bts-v-kim-taehyung-gif-17366668",
+            "https://tenor.com/view/hi-hello-cute-so-hobi-gif-12926594",
+            "https://tenor.com/view/jimin-bts-hi-wave-gif-13871104",
+            "https://tenor.com/view/bts-hello-wave-hi-hey-gif-10308098",
+            "https://tenor.com/view/taehyung-bts-wave-wink-gif-22711528",
+            "https://tenor.com/view/bts-rm-namjoon-wave-hi-gif-15366897",
+            "https://tenor.com/view/bts-k-pop-ccg-bangtan-sonyeondan-tae-gif-14767559",
+            "https://tenor.com/view/kookie-jungkook-bts-vlive-funny-gif-21382895",
+            "https://tenor.com/view/min-yoongi-suga-rapper-bts-suga-bts-gif-17828015",
+           "https://tenor.com/view/bts-jhope-hobi-hoseok-hello-gif-12444850",
+            "https://tenor.com/view/jungkook-hi-hello-wave-gif-14290086",
+            "https://tenor.com/view/bts-bangtan-boys-bangtan-sonyeondan-rap-monster-kim-namjoon-gif-17180284",
+            "https://tenor.com/view/bts-suga-big-hit-entertainment-bangtan-boys-kpop-gif-16055359",
+            "https://tenor.com/view/bts-jin-wave-cute-kpop-gif-13657754",
+            "https://tenor.com/view/pjmtii-jungkook-wave-bts-gif-22905798",
+            "https://tenor.com/view/bts-bts-hi-wave-kpop-gif-22929533",
+            "https://tenor.com/view/wave-gif-18897262",
+            "https://tenor.com/view/blackpink-lisa-lilifilm-vlog-with-jisoo-wave-gif-21466675",
+            "https://tenor.com/view/blackpink-jisoo-wave-gif-19354205",
+            "https://tenor.com/view/blackpink-wave-jisoo-ros%C3%A9-jennie-gif-19710205",
+            "https://tenor.com/view/blackpink-lisa-photobook-wave-gif-21164172",
+            "https://tenor.com/view/blackpink-wave-gif-19335519",
+            "https://tenor.com/view/jennie-kim-jennie-blow-kiss-hi-black-pink-gif-15906924",
+            "https://tenor.com/view/blackpink-happy-smile-kimjisoo-jisoo-gif-13226528",
+            "https://tenor.com/view/blackpink-ros%C3%A9-chaeyoung-ya-hello-gif-21069665",
+            "https://tenor.com/view/blackpink-jennie-wave-the-show-vlog-gif-20310411",
+            "https://tenor.com/view/hi-hello-wave-lisa-lalisa-gif-14924995",
+            "https://tenor.com/view/blackpink-wave-bye-love-gif-19335534",
+            "https://tenor.com/view/jennie-jennie-wave-jennie-hi-jennie-hello-blackpink-hi-gif-26445042",
+            "https://tenor.com/view/blackpink-jennie-wave-smile-smiling-gif-19975699",
+            "https://tenor.com/view/blackpink-jisoo-wave-kiss-smile-gif-20086330",
+            "https://tenor.com/view/blackpink-touch-cute-jisoo-jennie-gif-13625042",
+            "https://tenor.com/view/blackpink-jennie-wave-smile-gif-19975801",
+            "https://tenor.com/view/rose-roseanne-park-blackpink-kpop-cute-gif-15535366",
+            "https://tenor.com/view/sushichaeng-blackpink-jennie-jennie-kim-jennie-cute-gif-21481445",
+            "https://tenor.com/view/blackpink-wave-bye-jennie-flying-kiss-gif-15741931",
+            "https://tenor.com/view/blackpink-lisoo-lisa-jisoo-wave-gif-21466840",
+            "https://tenor.com/view/lisa-lisa-manoban-hello-cute-smile-gif-15880375",
+            "https://tenor.com/view/blackpink-curly-hair-wave-hands-gif-13323734"
+        ]
+        welcomer = interaction.user.name
+        hello = random.choice(gifs)
+        await interaction.response.send_message(f"{welcomer} has welcomed {self.member} to Kanzengrp!")
+        await interaction.followup.send(f"{hello}")
 
 class welcandleave(commands.Cog):
     def __init__(self, bot):
@@ -22,7 +84,8 @@ class welcandleave(commands.Cog):
             channel2 = self.bot.get_channel(1125053619893440653)
             role = discord.utils.get(member.guild.roles, id=1121842393994494082)
             embed.set_thumbnail(url=member.display_avatar.url)
-            await channel2.send(f"<a:kanzenflower:1128154723262943282> {member.mention} Welcome to **Kanzengrp!**\nTalk to other zennies in this channel\nNeed help? ping Lead or Staff")
+            view = welc(member)
+            await channel2.send(f"<a:kanzenflower:1128154723262943282> {member.mention} Welcome to **Kanzengrp!**\nTalk to other zennies in this channel\nNeed help? ping Lead or Staff", view=view)
             await channel.send(f'{member.mention} Welcome to Kanzengrp!', embed=embed)
             await member.add_roles(role)
             """AURA GRP WELCOME"""
