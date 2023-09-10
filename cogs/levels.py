@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 import requests
-from bot import DaeguBot
+from bot import LalisaBot
 from random import randint
 from typing import Optional, TypedDict, List, Union, Literal, Tuple
 from PIL import ImageDraw, Image, ImageFont
@@ -20,7 +20,7 @@ class LevelRow(TypedDict):
 
 class Levels(commands.Cog):
     """Commands for the levelling system"""
-    def __init__(self, bot: DaeguBot):
+    def __init__(self, bot: LalisaBot):
         self.bot = bot
         self.status_holder = {0: "not active", 1: "active"}
         self.cd_mapping = commands.CooldownMapping.from_cooldown(1, 60, commands.BucketType.user) # cooldown for xp (1 minute/60 seconds)
