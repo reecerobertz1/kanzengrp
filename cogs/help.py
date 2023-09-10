@@ -128,6 +128,7 @@ class Help(commands.Cog):
                 embed.add_field(name="+rank", value="<a:Arrow_1:1145603161701224528> See your rank, or someone elses", inline=False)
                 embed.add_field(name="+levels", value="<a:Arrow_1:1145603161701224528> See the level leaderboard for the server", inline=False)
                 embed.add_field(name="+rankcolor", value="<a:Arrow_1:1145603161701224528> Set your rank color with a hex code", inline=False)
+                embed.add_field(name="+rankbg", value="<a:Arrow_1:1145603161701224528> Attach an image to set your rank background", inline=False)
                 embed.add_field(name="+xp add", value="<a:Arrow_1:1145603161701224528> Add xp to a member", inline=False)
                 embed.add_field(name="+xp remove", value="<a:Arrow_1:1145603161701224528> Remove xp from a member", inline=False)
                 embed.add_field(name="+xp reset", value="<a:Arrow_1:1145603161701224528> Resets xp for everyone", inline=False)
