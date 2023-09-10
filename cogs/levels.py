@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
-from bot import LalisaBot
+import requests
+from bot import DaeguBot
 from random import randint
 from typing import Optional, TypedDict, List, Union, Literal, Tuple
 from PIL import ImageDraw, Image, ImageFont
@@ -19,7 +20,7 @@ class LevelRow(TypedDict):
 
 class Levels(commands.Cog):
     """Commands for the levelling system"""
-    def __init__(self, bot: LalisaBot):
+    def __init__(self, bot: DaeguBot):
         self.bot = bot
         self.status_holder = {0: "not active", 1: "active"}
         self.cd_mapping = commands.CooldownMapping.from_cooldown(1, 60, commands.BucketType.user) # cooldown for xp (1 minute/60 seconds)
@@ -309,49 +310,66 @@ class Levels(commands.Cog):
             percentage = float(xp_progress_have / xp_progress_need)
 
         return percentage, xp_progress_have, xp_progress_need, lvl
+    
+    def _get_bg_image(self, url: str):
+            """Gets background image"""
+            image = requests.get(url, stream=True)
+            b_img = Image.open(BytesIO(image.content))
+            return b_img   
 
     def _get_card(self, name: str, status: str, avatar: BytesIO, levels: LevelRow, rank: int) -> BytesIO:
-        """Creates a rank card.
-        
-        Parameters
-        ----------
-        name: str
-            Username to display on card
-        status: str
-            Discord activity status to display next to avatar
-        avatar: BytesIO
-            Circle shaped avatar to display on card
-        levels: LevelRow
-            Database level row to retrieve level information
-        rank: int
-            Rank to display on card
+            """Creates a rank card.
+            
+            Parameters
+            ----------
+            name: str
+                Username to display on card
+            status: str
+                Discord activity status to display next to avatar
+            avatar: BytesIO
+                Circle shaped avatar to display on card
+            levels: LevelRow
+                Database level row to retrieve level information
+            rank: int
+                Rank to display on card
 
-        Returns
-        -------
-        BytesIO
-            The rank card as a stream of in-memory bytes
-        """
-        percentage, xp_have, xp_need, level = self._xp_calculations(levels)
-        card = Image.new('RGBA', size=(1500, 500), color='grey')
-        bg = Image.open("./assets/rank_bg.png")
-        card.paste(bg)
-        status_circle = Image.open(f'./assets/{status}.png')
-        bar, mask = self._make_progress_bar(percentage, levels['bar_color'])
-        avatar_paste, circle = self._get_round_avatar(avatar)
-        font = ImageFont.truetype("./fonts/Montserrat-Bold.ttf", 64)
-        font2 = ImageFont.truetype("./fonts/Montserrat-Regular.ttf", 46)
-        font3 = ImageFont.truetype("./fonts/Montserrat-Bold.ttf", 50)
-        card.paste(avatar_paste, (25, 84), circle)
-        card.paste(status_circle, (250, 315), status_circle)
-        card.paste(bar, (390, 325), mask)
-        draw = ImageDraw.Draw(card, 'RGBA')
-        draw.text((420, 240), name, "#ffffff", font=font)
-        draw.text((1140, 255), f'{xp_have} / {xp_need}', "#ffffff", font=font2)
-        draw.text((860, 75), f"RANK {str(rank)}    LEVEL {level}", "#ffffff", font=font3)
-        buffer = BytesIO()
-        card.save(buffer, 'png')
-        buffer.seek(0)
-        return buffer
+            Returns
+            -------
+            BytesIO
+                The rank card as a stream of in-memory bytes
+            """
+            percentage, xp_have, xp_need, level = self._xp_calculations(levels)
+            card = Image.new('RGBA', size=(1500, 500), color='grey')
+            if levels['image'] != None:
+                bg = self._get_bg_image(levels['image'])
+            else:
+                bg = Image.open("./assets/rank_bg.png")
+            aspect_ratio = bg.size[0] / bg.size[1]
+            if aspect_ratio > 3:
+                new_width = int(bg.height * 3)
+                bg = bg.crop(((bg.width - new_width) / 2, 0, (bg.width + new_width) / 2, bg.height))
+            elif aspect_ratio < 3:
+                new_height = int(bg.width / 3)
+                bg = bg.crop((0, (bg.height - new_height) / 2, bg.width, (bg.height + new_height) / 2))
+            bg = bg.resize((1500, 500))
+            card.paste(bg)
+            status_circle = Image.open(f'./assets/{status}.png')
+            bar, mask = self._make_progress_bar(percentage, levels['bar_color'])
+            avatar_paste, circle = self._get_round_avatar(avatar)
+            font = ImageFont.truetype("./fonts/Montserrat-Bold.ttf", 64)
+            font2 = ImageFont.truetype("./fonts/Montserrat-Regular.ttf", 46)
+            font3 = ImageFont.truetype("./fonts/Montserrat-Bold.ttf", 50)
+            card.paste(avatar_paste, (25, 84), circle)
+            card.paste(status_circle, (250, 315), status_circle)
+            card.paste(bar, (390, 325), mask)
+            draw = ImageDraw.Draw(card, 'RGBA')
+            draw.text((420, 240), name, "#ffffff", font=font)
+            draw.text((1140, 255), f'{xp_have} / {xp_need}', "#ffffff", font=font2)
+            draw.text((860, 75), f"RANK {str(rank)}    LEVEL {level}", "#ffffff", font=font3)
+            buffer = BytesIO()
+            card.save(buffer, 'png')
+            buffer.seek(0)
+            return buffer
 
     async def _check_top_20(self, member_id: int, guild_id: int) -> bool:
         """Checks if a member is in the top 20.
@@ -623,6 +641,25 @@ class Levels(commands.Cog):
                 await conn.commit()
             await self.bot.pool.release(conn)
 
+    async def set_rank_image(self, member_id: int, guild_id: int, image: str) -> None:
+        """Changes the progress bar image for a member's rank card
+        
+        Parameters
+        ----------
+        member_id: int
+            ID of member whose image is being changed
+        guild_id: int
+            ID of guild to change image in
+        image: str
+            image to change to
+        """
+        query = '''UPDATE levels SET image = ? WHERE member_id = ? AND guild_id = ?'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, image, member_id, guild_id)
+                await conn.commit()
+            await self.bot.pool.release(conn)
+
     async def register_guild(self, guild_id: int) -> None:
         """Adds guild to database
         
@@ -838,11 +875,17 @@ class Levels(commands.Cog):
         response = await self.bot.session.get(avatar_url)
         avatar = BytesIO(await response.read())
         avatar.seek(0)
+
+        # Debug messages
+        print(f"Debug: member.id = {member.id}")
+        print(f"Debug: levels = {levels[0]}")
+
         if levels:
             card = await self.generate_card(str(member), str(member.status), avatar, levels, rank)
             await ctx.send(file=discord.File(card, 'card.png'))
         else:
             await ctx.send(f"{member} doesn't have any levels yet!!")
+
 
     @commands.command(extras={"examples": ["rankcolor #ffffff"]})
     @levels_is_activated()
@@ -866,6 +909,25 @@ class Levels(commands.Cog):
             await ctx.reply(embed=embed)
         else:
             await ctx.reply(f"`{color}` is not a valid hex color")
+
+    @commands.command()
+    async def rankbg(self, ctx):
+        if len(ctx.message.attachments) == 0:
+            await ctx.send("Please attach an image to set as your rank background.")
+            return
+
+        attachment = ctx.message.attachments[0]
+        if not attachment.content_type.split("/")[0] == "image":
+            await ctx.send("Please attach a valid image (PNG, JPG, JPEG, GIF).")
+            return
+
+        member_id = ctx.author.id
+        async with self.bot.pool.acquire() as conn:
+            query = "UPDATE levels SET image = ? WHERE member_id = ? AND guild_id = ?"
+            await conn.execute(query, (attachment.url, member_id, ctx.guild.id))
+            await conn.commit()
+
+        await ctx.send("Your rank background image has been updated.")
 
     @commands.group(invoke_without_command=True)
     @levels_is_activated()
@@ -993,5 +1055,5 @@ class Levels(commands.Cog):
         elif isinstance(error, commands.RoleNotFound):
             await ctx.reply("Couldn't find that role.", mention_author=False)
 
-async def setup(bot: LalisaBot) -> None:
+async def setup(bot):
     await bot.add_cog(Levels(bot))

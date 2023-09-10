@@ -78,7 +78,7 @@ async def setup_hook(self):
 
     # sqlite database setup (moved after the attribute assignments)
     async with self.pool.acquire() as conn:
-        await conn.execute('''CREATE TABLE IF NOT EXISTS levels (member_id BIGINT, guild_id BIGINT, xp INTEGER, messages INTEGER, bar_color TEXT, PRIMARY KEY(member_id, guild_id))''')
+        await conn.execute('''CREATE TABLE IF NOT EXISTS levels (member_id BIGINT, guild_id BIGINT, xp INTEGER, messages INTEGER, bar_color TEXT, image TEXT, PRIMARY KEY(member_id, guild_id))''')
         await conn.execute('''CREATE TABLE IF NOT EXISTS setup (guild_id BIGINT PRIMARY KEY, activated BOOL, top_20_role_id BIGINT)''')
         await conn.commit()
 
