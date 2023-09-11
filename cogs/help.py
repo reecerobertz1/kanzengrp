@@ -69,6 +69,7 @@ class Help(commands.Cog):
                 embed = discord.Embed(color=0x2b2d31)
                 embed.set_author(name="fun commands", icon_url=self.bot.user.display_avatar.url)
                 embed.add_field(name="+memberinfo", value="<a:Arrow_1:1145603161701224528> Shows member info", inline=False) 
+                embed.add_field(name="+serverinfo", value="<a:Arrow_1:1145603161701224528> Shows server info", inline=False)
                 embed.add_field(name="+dog", value="<a:Arrow_1:1145603161701224528> Sends you a random photo of a dog", inline=False) 
                 embed.add_field(name="+cat", value="<a:Arrow_1:1145603161701224528> Sends you a random photo of a cat", inline=False) 
                 embed.add_field(name="+jail", value="<a:Arrow_1:1145603161701224528> Put someone or yourself in jail", inline=False) 
