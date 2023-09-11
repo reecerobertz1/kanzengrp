@@ -314,7 +314,7 @@ class Moderation(commands.Cog):
             embed.add_field(name="Boost Tier", value=ctx.guild.premium_tier, inline=True)
             embed.add_field(name="Creation Date", value=ctx.guild.created_at.__format__("%D"), inline=True)
             embed.set_footer(text=f"Requested by {ctx.author.name}", icon_url=ctx.author.avatar)
-            embed.add_field(name="Server ID", value=ctx.guild.id, inline=False)
+            embed.add_field(name="Server ID", value=ctx.guild.id, inline=True)
             await ctx.reply(embed=embed)
 
 async def setup(bot):
