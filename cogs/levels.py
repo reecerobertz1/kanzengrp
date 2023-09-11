@@ -867,24 +867,25 @@ class Levels(commands.Cog):
     @commands.command(extras={"examples": ["rank", "rank candysnowy", "rank <@609515684740988959>"]})
     @levels_is_activated()
     async def rank(self, ctx: commands.Context, member: Optional[discord.Member]):
-        """makes a rank card"""
-        member = member or ctx.author
-        levels = await self.get_member_levels(member.id, ctx.guild.id)
-        rank = await self.get_rank(member.id, ctx.guild.id)
-        avatar_url = member.display_avatar.replace(static_format='png', size=256).url
-        response = await self.bot.session.get(avatar_url)
-        avatar = BytesIO(await response.read())
-        avatar.seek(0)
+        async with ctx.typing():
+            """makes a rank card"""
+            member = member or ctx.author
+            levels = await self.get_member_levels(member.id, ctx.guild.id)
+            rank = await self.get_rank(member.id, ctx.guild.id)
+            avatar_url = member.display_avatar.replace(static_format='png', size=256).url
+            response = await self.bot.session.get(avatar_url)
+            avatar = BytesIO(await response.read())
+            avatar.seek(0)
 
-        # Debug messages
-        print(f"Debug: member.id = {member.id}")
-        print(f"Debug: levels = {levels[0]}")
+            # Debug messages
+            print(f"Debug: member.id = {member.id}")
+            print(f"Debug: levels = {levels[0]}")
 
-        if levels:
-            card = await self.generate_card(str(member), str(member.status), avatar, levels, rank)
-            await ctx.send(file=discord.File(card, 'card.png'))
-        else:
-            await ctx.send(f"{member} doesn't have any levels yet!!")
+            if levels:
+                card = await self.generate_card(str(member), str(member.status), avatar, levels, rank)
+                await ctx.send(file=discord.File(card, 'card.png'))
+            else:
+                await ctx.send(f"{member} doesn't have any levels yet!!")
 
 
     @commands.command(extras={"examples": ["rankcolor #ffffff"]})
