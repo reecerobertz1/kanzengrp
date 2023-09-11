@@ -307,7 +307,6 @@ class Moderation(commands.Cog):
             embed.set_image(url=ctx.guild.banner)
             embed.add_field(name="Server Name", value=ctx.guild.name, inline=True)
             embed.add_field(name="Server Owner", value=ctx.guild.owner, inline=True)
-            embed.add_field(name="Server ID", value=ctx.guild.id, inline=False)
             embed.add_field(name="Member Count", value=ctx.guild.member_count, inline=True)
             embed.add_field(name="Channel Count", value=len(ctx.guild.channels), inline=True)
             embed.add_field(name="Role Count", value=len(ctx.guild.roles), inline=True)
@@ -315,6 +314,7 @@ class Moderation(commands.Cog):
             embed.add_field(name="Boost Tier", value=ctx.guild.premium_tier, inline=True)
             embed.add_field(name="Creation Date", value=ctx.guild.created_at.__format__("%D"), inline=True)
             embed.set_footer(text=f"Requested by {ctx.author.name}", icon_url=ctx.author.avatar)
+            embed.add_field(name="Server ID", value=ctx.guild.id, inline=False)
             await ctx.reply(embed=embed)
 
 async def setup(bot):
