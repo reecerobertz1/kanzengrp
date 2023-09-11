@@ -299,5 +299,23 @@ class Moderation(commands.Cog):
         view = ReportView(bot=self.bot)
         await ctx.reply(embed=embed, view=view)
 
+    @commands.command()
+    async def serverinfo(self, ctx):
+        async with ctx.typing():
+            embed = discord.Embed(title=f"Server Information for the server {ctx.guild.name}", color=0x2b2d31)
+            embed.set_thumbnail(url=ctx.guild.icon)
+            embed.set_image(url=ctx.guild.banner)
+            embed.add_field(name="Server Name", value=ctx.guild.name, inline=True)
+            embed.add_field(name="Server Owner", value=ctx.guild.owner, inline=True)
+            embed.add_field(name="Server ID", value=ctx.guild.id, inline=False)
+            embed.add_field(name="Member Count", value=ctx.guild.member_count, inline=True)
+            embed.add_field(name="Channel Count", value=len(ctx.guild.channels), inline=True)
+            embed.add_field(name="Role Count", value=len(ctx.guild.roles), inline=True)
+            embed.add_field(name="Boost Count", value=ctx.guild.premium_subscription_count, inline=True)
+            embed.add_field(name="Boost Tier", value=ctx.guild.premium_tier, inline=True)
+            embed.add_field(name="Creation Date", value=ctx.guild.created_at.__format__("%D"), inline=True)
+            embed.set_footer(text=f"Requested by {ctx.author.name}", icon_url=ctx.author.avatar)
+            await ctx.reply(embed=embed)
+
 async def setup(bot):
     await bot.add_cog(Moderation(bot))
