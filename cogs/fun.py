@@ -547,6 +547,12 @@ class funcmds(commands.Cog):
         view = RockPaperScissorsView(message)
         await message.edit(view=view)
 
+    def _get_round_avatar(self, avatar: BytesIO) -> Tuple[Image.Image, Image.Image]:
+        circle = Image.open('./assets/circle-mask.png').resize((60, 60)).convert('L')
+        avatar_image = Image.open(avatar).convert('RGBA')
+        avatar_image = avatar_image.resize((60, 60))
+        return avatar_image, circle
+
     @commands.command()
     async def tweet(self, ctx, *tweet: str) -> BytesIO:
         tweet_text = " ".join(tweet)
