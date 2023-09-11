@@ -4,13 +4,17 @@ import json
 import math
 import os
 import random
+import textwrap
 from typing import Optional
 import typing
 import aiohttp
 import discord
 from discord.ext import commands
 import requests
-from PIL import Image, ImageDraw, ImageFont
+from typing import Optional, TypedDict, List, Union, Literal, Tuple
+from PIL import ImageDraw, Image, ImageFont
+from io import BytesIO
+from easy_pil import Canvas, Editor, Font
 from triviastuff.getQuestions import getQuestions
 from triviastuff.checkHandler import buttonHandler
 
@@ -542,6 +546,37 @@ class funcmds(commands.Cog):
         message = await ctx.send("Let's play rock-paper-scissors! Click your choice below.")
         view = RockPaperScissorsView(message)
         await message.edit(view=view)
+
+    @commands.command()
+    async def tweet(self, ctx, *tweet: str) -> BytesIO:
+        tweet_text = " ".join(tweet)
+        avatar_url = ctx.author.avatar.url
+
+        async with self.bot.session.get(avatar_url) as response:
+            if response.status == 200:
+                avatar_data = await response.read()
+            else:
+                avatar_data = None
+
+        img = Image.open(f'./assets/twitter.png')
+        draw = ImageDraw.Draw(img)
+
+        if avatar_data:
+            avatar = BytesIO(avatar_data)
+            avatar_paste, circle = self._get_round_avatar(avatar)
+            img.paste(avatar_paste, (21, 20), circle)
+        
+        poppins = Font.poppins(size=25)
+        poppins_small = Font.poppins(size=15)
+        wrapped_text = textwrap.fill(tweet_text, width=40)
+        display_name_parts = ctx.author.display_name.split('|')
+        display_name = display_name_parts[0].strip() if display_name_parts else ctx.author.display_name
+
+        draw.text((25, 90), wrapped_text, font=poppins)
+        draw.text((85, 29), display_name, font=poppins_small)
+        draw.text((85, 43), f"@{ctx.author.name}", font=poppins_small)
+        img.save("tweet.png")
+        await ctx.reply(file=discord.File("tweet.png"))
 
 async def setup(bot):
     await bot.add_cog(funcmds(bot))
