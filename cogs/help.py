@@ -145,6 +145,8 @@ class Help(commands.Cog):
                 embed.add_field(name="</addrole:1131784754698666035>", value="<a:Arrow_1:1145603161701224528> Add a role to a member", inline=False)
                 embed.add_field(name="</removerole:1131784754698666036>", value="<a:Arrow_1:1145603161701224528> Remove a role from a member", inline=False)
                 embed.add_field(name="+buildembed", value="<a:Arrow_1:1145603161701224528> Create an embed", inline=False)
+                embed.add_field(name="+iamembers", value="<a:Arrow_1:1145603161701224528> See who sent an inactivity message", inline=False)
+                embed.add_field(name="+iawipe", value="<a:Arrow_1:1145603161701224528> Delete all members from the inactive list", inline=False)
                 embed.add_field(name="+warn", value="<a:Arrow_1:1145603161701224528> Give a warning to a member in [editors block](https://discord.gg/yuqXebz8vr)", inline=False)
                 embed.add_field(name="+steal", value="<a:Arrow_1:1145603161701224528> Steal an emoji from any server", inline=False)
                 embed.set_thumbnail(url=ctx.guild.icon)

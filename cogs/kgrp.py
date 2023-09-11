@@ -64,6 +64,7 @@ class kgrp(commands.Cog):
         await ctx.send(embed=embed2, view=view)
 
     @commands.command()
+    @commands.has_permissions(manage_guild=True)
     async def iamembers(self, ctx):
         try:
             with open('inactive_members.json', 'r') as file:
@@ -79,6 +80,7 @@ class kgrp(commands.Cog):
             await ctx.send('No inactive members found.')
 
     @commands.command()
+    @commands.has_permissions(manage_guild=True)
     async def iawipe(self, ctx):
         try:
             with open('inactive_members.json', 'w') as file:
