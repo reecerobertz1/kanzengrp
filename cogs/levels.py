@@ -10,6 +10,7 @@ import functools
 from utils.views import Paginator
 import re
 import asyncio
+from easy_pil import Canvas, Editor, Font
 
 # class for every database entry
 class LevelRow(TypedDict):
@@ -356,16 +357,16 @@ class Levels(commands.Cog):
             status_circle = Image.open(f'./assets/{status}.png')
             bar, mask = self._make_progress_bar(percentage, levels['bar_color'])
             avatar_paste, circle = self._get_round_avatar(avatar)
-            font = ImageFont.truetype("./fonts/Montserrat-Bold.ttf", 64)
-            font2 = ImageFont.truetype("./fonts/Montserrat-Regular.ttf", 46)
-            font3 = ImageFont.truetype("./fonts/Montserrat-Bold.ttf", 50)
-            card.paste(avatar_paste, (25, 84), circle)
-            card.paste(status_circle, (250, 315), status_circle)
-            card.paste(bar, (390, 325), mask)
+            poppins = Font.poppins(size=67)
+            poppins_small = Font.poppins(size=50)
+            poppins_big = Font.poppins(size=117)
+            card.paste(avatar_paste, (20, 25), circle)
+            card.paste(status_circle, (250, 250), status_circle)
+            card.paste(bar, (50, 375), mask)
             draw = ImageDraw.Draw(card, 'RGBA')
-            draw.text((420, 240), name, "#ffffff", font=font)
-            draw.text((1140, 255), f'{xp_have} / {xp_need}', "#ffffff", font=font2)
-            draw.text((860, 75), f"RANK {str(rank)}    LEVEL {level}", "#ffffff", font=font3)
+            draw.text((350, 165), name, "#ffffff", font=poppins)
+            draw.text((350, 255), f'Level {level} | {xp_have} / {xp_need}', "#ffffff", font=poppins_small)
+            draw.text((1225, 170), f"#{str(rank)}", "#ffffff", font=poppins_big)
             buffer = BytesIO()
             card.save(buffer, 'png')
             buffer.seek(0)
