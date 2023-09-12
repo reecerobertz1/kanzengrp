@@ -11,6 +11,7 @@ from utils.views import Paginator
 import re
 import asyncio
 from easy_pil import Canvas, Editor, Font
+from PIL import Image, ImageEnhance, ImageFilter, UnidentifiedImageError
 
 # class for every database entry
 class LevelRow(TypedDict):
@@ -316,61 +317,67 @@ class Levels(commands.Cog):
             """Gets background image"""
             image = requests.get(url, stream=True)
             b_img = Image.open(BytesIO(image.content))
-            return b_img   
+            return b_img
 
     def _get_card(self, name: str, status: str, avatar: BytesIO, levels: LevelRow, rank: int) -> BytesIO:
-            """Creates a rank card.
-            
-            Parameters
-            ----------
-            name: str
-                Username to display on card
-            status: str
-                Discord activity status to display next to avatar
-            avatar: BytesIO
-                Circle shaped avatar to display on card
-            levels: LevelRow
-                Database level row to retrieve level information
-            rank: int
-                Rank to display on card
+        """Creates a rank card.
+        
+        Parameters
+        ----------
+        name: str
+            Username to display on card
+        status: str
+            Discord activity status to display next to avatar
+        avatar: BytesIO
+            Circle shaped avatar to display on card
+        levels: LevelRow
+            Database level row to retrieve level information
+        rank: int
+            Rank to display on card
 
-            Returns
-            -------
-            BytesIO
-                The rank card as a stream of in-memory bytes
-            """
-            percentage, xp_have, xp_need, level = self._xp_calculations(levels)
-            card = Image.new('RGBA', size=(1500, 500), color='grey')
-            if levels['image'] != None:
-                bg = self._get_bg_image(levels['image'])
-            else:
-                bg = Image.open("./assets/rank_bg.png")
-            aspect_ratio = bg.size[0] / bg.size[1]
-            if aspect_ratio > 3:
-                new_width = int(bg.height * 3)
-                bg = bg.crop(((bg.width - new_width) / 2, 0, (bg.width + new_width) / 2, bg.height))
-            elif aspect_ratio < 3:
-                new_height = int(bg.width / 3)
-                bg = bg.crop((0, (bg.height - new_height) / 2, bg.width, (bg.height + new_height) / 2))
-            bg = bg.resize((1500, 500))
-            card.paste(bg)
-            status_circle = Image.open(f'./assets/{status}.png')
-            bar, mask = self._make_progress_bar(percentage, levels['bar_color'])
-            avatar_paste, circle = self._get_round_avatar(avatar)
-            poppins = Font.poppins(size=67)
-            poppins_small = Font.poppins(size=50)
-            poppins_big = Font.poppins(size=117)
-            card.paste(avatar_paste, (20, 25), circle)
-            card.paste(status_circle, (250, 250), status_circle)
-            card.paste(bar, (50, 375), mask)
-            draw = ImageDraw.Draw(card, 'RGBA')
-            draw.text((350, 165), name, "#ffffff", font=poppins)
-            draw.text((350, 255), f'Level {level} | {xp_have} / {xp_need}', "#ffffff", font=poppins_small)
-            draw.text((1225, 170), f"#{str(rank)}", "#ffffff", font=poppins_big)
-            buffer = BytesIO()
-            card.save(buffer, 'png')
-            buffer.seek(0)
-            return buffer
+        Returns
+        -------
+        BytesIO
+            The rank card as a stream of in-memory bytes
+        """
+        percentage, xp_have, xp_need, level = self._xp_calculations(levels)
+        card = Image.new('RGBA', size=(1500, 500), color='grey')
+        if levels['image'] != None:
+            bg = self._get_bg_image(levels['image'])
+        else:
+            bg = Image.open("./assets/rank_bg.png")
+        aspect_ratio = bg.size[0] / bg.size[1]
+        if aspect_ratio > 3:
+            new_width = int(bg.height * 3)
+            bg = bg.crop(((bg.width - new_width) / 2, 0, (bg.width + new_width) / 2, bg.height))
+        elif aspect_ratio < 3:
+            new_height = int(bg.width / 3)
+            bg = bg.crop((0, (bg.height - new_height) / 2, bg.width, (bg.height + new_height) / 2))
+        bg = bg.resize((1500, 500))
+        card.paste(bg)
+        status_circle = Image.open(f'./assets/{status}.png')
+        bar, mask = self._make_progress_bar(percentage, levels['bar_color'])
+        avatar_paste, circle = self._get_round_avatar(avatar)
+        poppins = Font.poppins(size=67)
+        poppins_small = Font.poppins(size=50)
+        poppins_big = Font.poppins(size=117)
+        card.paste(avatar_paste, (20, 25), circle)
+        card.paste(status_circle, (250, 250), status_circle)
+        card.paste(bar, (50, 375), mask)
+        draw = ImageDraw.Draw(card, 'RGBA')
+        draw.text((350, 110), name, "#ffffff", font=poppins)
+        draw.text((350, 210), f'Level {level} | {xp_have} / {xp_need}', "#ffffff", font=poppins_small)
+        draw.text((1225, 170), f"#{str(rank)}", fill=levels['bar_color'], font=poppins_big)
+        rect_width, rect_height = 500, 5
+        rect_x1 = (card.width - rect_width) // 2.9
+        rect_y1 = (card.height - rect_height) // 2.5
+        rect_x2 = rect_x1 + rect_width
+        rect_y2 = rect_y1 + rect_height
+        draw.rectangle([(rect_x1, rect_y1), (rect_x2, rect_y2)], fill=levels['bar_color'])
+        buffer = BytesIO()
+        card.save(buffer, 'png')
+        buffer.seek(0)
+        return buffer
 
     async def _check_top_20(self, member_id: int, guild_id: int) -> bool:
         """Checks if a member is in the top 20.
@@ -915,12 +922,12 @@ class Levels(commands.Cog):
     @commands.command()
     async def rankbg(self, ctx):
         if len(ctx.message.attachments) == 0:
-            await ctx.send("Please attach an image to set as your rank background.")
+            await ctx.reply("Please attach an image to set as your rank background.")
             return
 
         attachment = ctx.message.attachments[0]
         if not attachment.content_type.split("/")[0] == "image":
-            await ctx.send("Please attach a valid image (PNG, JPG, JPEG, GIF).")
+            await ctx.reply("Please attach a valid image (PNG, JPG, JPEG, GIF).")
             return
 
         member_id = ctx.author.id
@@ -928,8 +935,9 @@ class Levels(commands.Cog):
             query = "UPDATE levels SET image = ? WHERE member_id = ? AND guild_id = ?"
             await conn.execute(query, (attachment.url, member_id, ctx.guild.id))
             await conn.commit()
-
-        await ctx.send("Your rank background image has been updated.")
+        embed=discord.Embed(title="Rank background has been upadted!", color=0x2b2d31)
+        embed.set_image(url=attachment.url)
+        await ctx.reply(embed=embed)
 
     @commands.group(invoke_without_command=True)
     @levels_is_activated()
