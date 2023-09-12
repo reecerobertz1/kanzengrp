@@ -12,6 +12,27 @@ from discord.ui import View, Select
 from typing import List, Optional
 from discord import ui
 
+class gamenight(discord.ui.View):
+    def __init__(self):
+        super().__init__(timeout=None)
+        self.value = None
+
+    @discord.ui.button(label="Interested", emoji="<a:rocknroll:1125872006538199121>")
+    async def he_him(self, interaction: discord.Interaction, button: discord.Button):
+        role_id = 1151053389413765141
+        role = interaction.guild.get_role(role_id)
+        
+        if role in interaction.user.roles:
+            await interaction.user.remove_roles(role)
+            await interaction.response.send_message(f"You will no longer receive a reminder", ephemeral=True)
+        else:
+            await interaction.user.add_roles(role)
+            await interaction.response.send_message(f"You will now receive reminders for the game night!\nWe will ping you with the role <@&1151053389413765141>", ephemeral=True)
+
+    @discord.ui.button(label="Suggest a date an time", emoji="<a:mm_hug_tight:1122277098887848028>")
+    async def date(self, interaction: discord.Interaction, button: discord.Button):
+        await interaction.response.send_modal(date())
+
 class infobuttons(discord.ui.View):
     def __init__ (self):
         super().__init__(timeout=None)
@@ -74,6 +95,11 @@ class aura(commands.Cog):
         await ctx.send(embed=embed3)
         await ctx.send(embed=embed4)
         await ctx.send(embed=embed5)
+    
+    @commands.command()
+    async def gamenight(self, ctx):
+        view = gamenight()
+        await ctx.send("hey aromies \nnani is planning on having a game night sometime around the end of the month, we will be playing among us! \n\nif you’re interested click the `interested` button below to get the game night role so you can be ping for the reminder\nand also click the `suggest a time` button to tell us what date and time is most suitable for you, but include you timezone too! so we can work out what it is in our timezones!\n@everyone", view=view)
 
 class ia(ui.Modal, title='Inactivity Message'):
      instagram = ui.TextInput(label='Instagram username', placeholder="Enter your Instagram username here...", style=discord.TextStyle.short)
@@ -86,7 +112,18 @@ class ia(ui.Modal, title='Inactivity Message'):
           channel = interaction.client.get_channel(1122251494700363868)
           await channel.send(embed=embed)
           await interaction.followup.send(f'Your inactive message has been sent successfully', ephemeral=True)
-
+        
+class date(ui.Modal, title='Game Night'):
+     instagram = ui.TextInput(label='What date and time is best for you?', placeholder="Enter your date and time here...", style=discord.TextStyle.short)
+     reason = ui.TextInput(label='What timezone are you in?', placeholder="Enter timezone...", style=discord.TextStyle.long)
+     async def on_submit(self, interaction: discord.Interaction):
+          await interaction.response.defer()
+          embed = discord.Embed(title='Game Night time suggestions',description=f"**Date & Time:** {self.instagram.value}\n\n**timezone:** {self.reason.value}" ,color=0x2b2d31)
+          embed.set_footer(text=f"sent from: {interaction.user.name} | {interaction.user.id}", icon_url=interaction.user.avatar)
+          embed.set_thumbnail(url=interaction.guild.icon)
+          channel = interaction.client.get_channel(1151070008848429056)
+          await channel.send(embed=embed)
+          await interaction.followup.send(f'Your time and date suggestion has been sent!', ephemeral=True)
 
 async def setup(bot):
     await bot.add_cog(aura(bot))
