@@ -937,6 +937,7 @@ class Levels(commands.Cog):
 
     @commands.command(aliases=['give'], extras={"examples": ["xp add <@609515684740988959> 1000", "xp give candysnowy 1000"]})
     @levels_is_activated()
+    @commands.has_permissions(administrator=True)
     async def add(self, ctx: commands.Context, member: discord.Member, amount: int):
         """
         add xp to a member's level xp
@@ -962,6 +963,7 @@ class Levels(commands.Cog):
 
     @commands.command()
     @levels_is_activated()
+    @commands.has_permissions(administrator=True)
     async def multiadd(self, ctx: commands.Context, members: commands.Greedy[discord.Member], amount: int):
         """
         add xp to multiple members' level xp
@@ -993,6 +995,7 @@ class Levels(commands.Cog):
 
     @commands.command(aliases=['take'], extras={"examples": ["xp remove <@609515684740988959> 1000", "xp take candysnowy 1000"]})
     @levels_is_activated()
+    @commands.has_permissions(administrator=True)
     async def remove(self, ctx: commands.Context, member: discord.Member, amount: int):
         """
         remove xp from a member's level xp
