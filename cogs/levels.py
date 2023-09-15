@@ -195,7 +195,6 @@ class Levels(commands.Cog):
         bucket = self.cd_mapping.get_bucket(message)
         retry_after = bucket.update_rate_limit()
         xp_to_add = randint(8, 25)
-
         await self._level_handler(message, retry_after, xp_to_add)
 
     def _make_progress_bar(self, progress, color):
@@ -211,19 +210,16 @@ class Levels(commands.Cog):
         width = 1050  # Width of the progress bar
         height = 65  # Height of the progress bar
         radius = 32.5  # Radius of the rounded corners
-
         progress_bar = Image.new('RGBA', (width, height), (0, 0, 0, 0))
         draw = ImageDraw.Draw(progress_bar)
         draw.rectangle([(0, 0), (width, height)], fill=(195, 195, 195, 255))
         bg_width = int(width * 1)
         progress_width = int(width * progress)
-        draw.rounded_rectangle([(0, 0), (bg_width, height)], fill=(195, 195, 195, 255), width=1, radius=radius)
+        draw.rounded_rectangle([(0, 0), (bg_width, height)], fill=(195, 195, 195, 255),width=1, radius=radius)
         draw.rounded_rectangle([(0, 0), (progress_width, height)], fill=color, width=1, radius=radius)
-
         mask = Image.new('L', (width, height), 0)
         mask_draw = ImageDraw.Draw(mask)
         mask_draw.rounded_rectangle([(0, 0), (bg_width, height)], fill=255, width=0, radius=radius)
-
         return progress_bar, mask
     
     def _get_round_avatar(self, avatar: BytesIO) -> Tuple[Image.Image, Image.Image]:
@@ -935,20 +931,11 @@ class Levels(commands.Cog):
             query = "UPDATE levels SET image = ? WHERE member_id = ? AND guild_id = ?"
             await conn.execute(query, (attachment.url, member_id, ctx.guild.id))
             await conn.commit()
-        embed=discord.Embed(title="Rank background has been upadted!", color=0x2b2d31)
+        embed=discord.Embed(title="Rank background has been updated!", color=0x2b2d31)
         embed.set_image(url=attachment.url)
         await ctx.reply(embed=embed)
 
-    @commands.group(invoke_without_command=True)
-    @levels_is_activated()
-    async def xp(self, ctx: commands.Context):
-        """group of commands to manage xp"""
-        embed = discord.Embed(title="xp manager", color=0x2B2D31)
-        embed.add_field(name="xp add <member> <xp amount>", value="adds the specified amount of xp to a member", inline=False)
-        embed.add_field(name="xp remove <member> <xp amount>", value="subtracts the specified amount of xp from a member", inline=False)
-        await ctx.reply(embed=embed)
-
-    @xp.command(aliases=['give', 'a'], extras={"examples": ["xp add <@609515684740988959> 1000", "xp give candysnowy 1000"]})
+    @commands.command(aliases=['give'], extras={"examples": ["xp add <@609515684740988959> 1000", "xp give candysnowy 1000"]})
     @levels_is_activated()
     async def add(self, ctx: commands.Context, member: discord.Member, amount: int):
         """
@@ -973,7 +960,38 @@ class Levels(commands.Cog):
         )
         await ctx.reply(embed=embed)
 
-    @xp.command(aliases=['take', 'r'], extras={"examples": ["xp remove <@609515684740988959> 1000", "xp take candysnowy 1000"]})
+    @commands.command()
+    @levels_is_activated()
+    async def multiadd(self, ctx: commands.Context, members: commands.Greedy[discord.Member], amount: int):
+        """
+        add xp to multiple members' level xp
+
+        Parameters
+        -----------
+        amount: int
+            the amount of xp to add
+        members: List[discord.Member]
+            members to give xp to
+        """
+        if not members:
+            await ctx.send("You must mention at least one member to add XP to.")
+            return
+        description = f'Gave `{amount}xp` to {", ".join(str(member) for member in members if isinstance(member, discord.Member))}'
+        embed = discord.Embed(
+            title='xp added!',
+            description=description,
+            color=0x2B2D31
+        )
+        for member in members:
+            if isinstance(member, discord.Member):
+                levels = await self.get_member_levels(member.id, ctx.guild.id)
+                await self.add_xp(member.id, ctx.guild.id, amount, levels)
+                top20 = await self.get_top_20_role_id(ctx.guild.id)
+                if top20 is not None:
+                    await self.top_20_role_handler(member, ctx.guild, top20)
+        await ctx.reply(embed=embed)
+
+    @commands.command(aliases=['take'], extras={"examples": ["xp remove <@609515684740988959> 1000", "xp take candysnowy 1000"]})
     @levels_is_activated()
     async def remove(self, ctx: commands.Context, member: discord.Member, amount: int):
         """
@@ -1004,7 +1022,7 @@ class Levels(commands.Cog):
         else:
             await ctx.reply(f"{str(member)} doesn't have any xp yet!")
 
-    @xp.command()
+    @commands.command()
     @commands.has_permissions(administrator=True)
     @levels_is_activated()
     async def reset(self, ctx: commands.Context):
