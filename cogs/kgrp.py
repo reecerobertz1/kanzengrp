@@ -558,7 +558,7 @@ class kanzen(commands.Cog):
             user1_reason = user1_data.get('reason', 'No Reason')
             user2_reason = user2_data.get('reason', 'No Reason') if user2_data else "No Reason"
 
-            pairs.append(f"**Partners**\n__**{user1_instagram}**__ \n{user1_reason}\n\n**__{user2_instagram}__**\n{user2_reason}\n")
+            pairs.append(f"```Partners```\n__**{user1_instagram}**__ \n{user1_reason}\n\n**__{user2_instagram}__**\n{user2_reason}\n")
         await ctx.send('\n'.join(pairs))
 
     @commands.command()
