@@ -61,7 +61,9 @@ class LalisaBot(commands.Bot):
         super().__init__(
             command_prefix='+',
             intents=intents,
-            help_command=None
+            help_command=None,
+            status=discord.Status.online,
+            activity=discord.Game("Hoshi ♡"),
         )
 
         # makes it so that the cog commands are case insensitive
