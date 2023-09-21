@@ -17,12 +17,11 @@ class Help(commands.Cog):
             "kanzen only",
             "levels",
             "miscellaneous",
-            "applications",
             "community",
+            "applications",
             "moderation"
         ]
         emojis = [
-            ":bt21:1149411052489027674",
             ":tata:1121909389280944169",
             ":shooky:1121909564799987722",
             ":rj:1121909526300479658",
@@ -39,8 +38,8 @@ class Help(commands.Cog):
             "Kanzengrp exclusive commands",
             "Commands for Hoshi levels",
             "All the miscellaneous commands",
-            "Commands for our applications",
             "Community commands for Editors Block",
+            "Commands for our applications",
             "Moderation commands for admins and staff"
         ]
         dropdown = discord.ui.Select(
@@ -61,11 +60,6 @@ class Help(commands.Cog):
         async def dropdown_callback(interaction: discord.Interaction):
             selected_category = interaction.data["values"][0]
             if selected_category == categories[0]:
-                embed = discord.Embed(description="owner info:\n<a:Arrow_1:1145603161701224528> Hoshi is owned by [Reece](https://instagram.com/remqsi)\n<a:Arrow_1:1145603161701224528> Reece coded Hoshi in [Visual Studio Code](https://code.visualstudio.com/)\n<a:Arrow_1:1145603161701224528> [Download VSC](https://code.visualstudio.com/download)\n\ndevelopment info:\n<a:Arrow_1:1145603161701224528> Hoshi is coded in Python 3.11.4\n<a:Arrow_1:1145603161701224528> [Download Python 3.11.4](https://www.python.org/downloads/)\n<a:Arrow_1:1145603161701224528> Developed by [Reece](https://instagram.com/remqsi) with help from [Alex](https://instagram.com/rqinflow)\n\nextra info:\n<a:Arrow_1:1145603161701224528> Hoshi's prefix is **+**\n<a:Arrow_1:1145603161701224528> Hoshi was made for [**__Kanzengrp__**](https://instagram.com/kanzengrp)\n\nbug reports:\n<a:Arrow_1:1145603161701224528> Use __+report__ to report bug reports!", color=0x2b2d31)
-                embed.set_thumbnail(url=ctx.guild.icon_url)
-                embed.set_author(name="About Hoshi", icon_url=self.bot.user.display_avatar.url)
-                embed.set_footer(text="Home Page", icon_url=ctx.author.avatar)
-            elif selected_category == categories[1]:
                 embed = discord.Embed(color=0x2b2d31)
                 embed.set_author(name="fun commands", icon_url=self.bot.user.display_avatar.url)
                 embed.add_field(name="+tweet", value="<a:Arrow_1:1145603161701224528> Tweet as yourself with Hoshi")
@@ -84,7 +78,7 @@ class Help(commands.Cog):
                 embed.add_field(name="+giphy", value="<a:Arrow_1:1145603161701224528> Search for a gif with giphy", inline=False)
                 embed.set_thumbnail(url=ctx.guild.icon)
                 embed.set_footer(text="page 1/8", icon_url=ctx.author.avatar)
-            elif selected_category == categories[2]:
+            elif selected_category == categories[1]:
                 embed = discord.Embed(color=0x2b2d31)
                 embed.set_author(name="editing commands", icon_url=self.bot.user.display_avatar.url)
                 embed.add_field(name="+transition", value="<a:Arrow_1:1145603161701224528> Get a random transition to use in your edit", inline=False)
@@ -99,7 +93,7 @@ class Help(commands.Cog):
                 embed.add_field(name="+colorscheme", value="<a:Arrow_1:1145603161701224528> Get a random color scheme to use in your edit", inline=False)
                 embed.set_thumbnail(url=ctx.guild.icon)
                 embed.set_footer(text="page 2/8", icon_url=ctx.author.avatar)
-            elif selected_category == categories[3]:
+            elif selected_category == categories[2]:
                 embed = discord.Embed(color=0x2b2d31)
                 embed.set_author(name="minigames", icon_url=self.bot.user.display_avatar.url)
                 embed.add_field(name="+scramble", value="<a:Arrow_1:1145603161701224528> Unscramble the word Hoshi gives you in 20 seconds", inline=False)
@@ -111,7 +105,7 @@ class Help(commands.Cog):
                 embed.add_field(name="+rps", value="<a:Arrow_1:1145603161701224528> Play a game of Rock Paper Scissors with Hoshi", inline=False)
                 embed.set_thumbnail(url=ctx.guild.icon)
                 embed.set_footer(text="page 3/8", icon_url=ctx.author.avatar)
-            elif selected_category == categories[4]:
+            elif selected_category == categories[3]:
                 embed = discord.Embed(color=0x2b2d31)
                 embed.set_author(name="kanzen only commands", icon_url=self.bot.user.display_avatar.url)
                 embed.add_field(name="+cmd new", value="<a:Arrow_1:1145603161701224528> Make your own command!", inline=False)
@@ -122,7 +116,7 @@ class Help(commands.Cog):
                 embed.add_field(name="+addpet", value="<a:Arrow_1:1145603161701224528> Attach an image of your pet and add a name when doing this command", inline=False)
                 embed.set_thumbnail(url=ctx.guild.icon)
                 embed.set_footer(text="page 4/8", icon_url=ctx.author.avatar)
-            elif selected_category == categories[5]:
+            elif selected_category == categories[4]:
                 embed = discord.Embed(color=0x2b2d31)
                 embed.set_author(name="level commands", icon_url=self.bot.user.display_avatar.url)
                 embed.add_field(name="+rank", value="<a:Arrow_1:1145603161701224528> See your rank, or someone elses", inline=False)
@@ -137,7 +131,7 @@ class Help(commands.Cog):
                 embed.add_field(name="+levelling setrole", value="<a:Arrow_1:1145603161701224528> Set the top 20 active role", inline=False)
                 embed.set_thumbnail(url=ctx.guild.icon)
                 embed.set_footer(text="page 5/8", icon_url=ctx.author.avatar)
-            elif selected_category == categories[6]:
+            elif selected_category == categories[5]:
                 embed = discord.Embed(color=0x2b2d31)
                 embed.set_author(name="miscellaneous commands", icon_url=self.bot.user.display_avatar.url)
                 embed.add_field(name="+memberinfo", value="<a:Arrow_1:1145603161701224528> Shows member info", inline=False) 
@@ -145,7 +139,7 @@ class Help(commands.Cog):
                 embed.add_field(name="+embed", value="<a:Arrow_1:1145603161701224528> Create an embed", inline=False)
                 embed.set_thumbnail(url=ctx.guild.icon)
                 embed.set_footer(text="page 6/8", icon_url=ctx.author.avatar)
-            elif selected_category == categories[7]:
+            elif selected_category == categories[6]:
                 embed = discord.Embed(color=0x2b2d31)
                 embed.set_author(name="community commands", icon_url=self.bot.user.display_avatar.url)
                 embed.add_field(name="+giveaway", value="<a:Arrow_1:1145603161701224528> Start a giveaway", inline=False)
@@ -166,7 +160,7 @@ class Help(commands.Cog):
                 embed.add_field(name="+answerpriv", value="<a:Arrow_1:1145603161701224528> Answer a question sent in DMs", inline=False)
                 embed.set_thumbnail(url=ctx.guild.icon)
                 embed.set_footer(text="page 7/8", icon_url=ctx.author.avatar)
-            elif selected_category == categories[8]:
+            elif selected_category == categories[7]:
                 embed = discord.Embed(color=0x2b2d31)
                 embed.set_author(name="moderation commands", icon_url=self.bot.user.display_avatar.url)
                 embed.add_field(name="</kick:1131780353477054484>", value="<a:Arrow_1:1145603161701224528> Kick a member from the server", inline=False)
