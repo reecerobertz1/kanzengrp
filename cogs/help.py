@@ -145,7 +145,6 @@ class Help(commands.Cog):
                 embed.add_field(name="+enter icon", value="<a:Arrow_1:1145603161701224528> Enter in Editors block icon contest", inline=False)
                 embed.add_field(name="+contest close", value="<a:Arrow_1:1145603161701224528> Closes the banner / icon contest", inline=False)
                 embed.add_field(name="+contest open", value="<a:Arrow_1:1145603161701224528> Opens the banner / icon contest", inline=False)
-                embed.set_author(name="application commands", icon_url=self.bot.user.display_avatar.url)
                 embed.add_field(name="+daegu openapps", value="<a:Arrow_1:1145603161701224528> Opens applications for daegutowngrp", inline=False)
                 embed.add_field(name="+daegu closeapps", value="<a:Arrow_1:1145603161701224528> Closes applications for daegutowngrp", inline=False)
                 embed.add_field(name="+aura openapp", value="<a:Arrow_1:1145603161701224528> Opens applications for auragrps", inline=False)
