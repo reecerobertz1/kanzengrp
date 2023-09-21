@@ -11,7 +11,7 @@ class status(commands.Cog):
         await self.set_status()
 
     async def set_status(self):
-        activity = Game(name="My prefix is +")
+        activity = Game(name="Hoshi ♡")
         await self.bot.change_presence(activity=activity)
 
 async def setup(bot):
