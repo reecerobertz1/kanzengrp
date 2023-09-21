@@ -11,15 +11,15 @@ class Help(commands.Cog):
     @commands.command()
     async def help(self, ctx):
         categories = [
-            "home page",
             "fun",
             "editing",
             "minigames",
             "kanzen only",
             "levels",
-            "moderation",
+            "miscellaneous",
             "applications",
-            "community"
+            "community",
+            "moderation"
         ]
         emojis = [
             ":bt21:1149411052489027674",
@@ -33,15 +33,15 @@ class Help(commands.Cog):
             ":van:1148235344437846107"
         ]
         descriptions = [
-            "Home page for the help command",
             "Includes commands you can use for fun!",
             "Editing commands that can help you edit",
             "Play some minigames with Hoshi",
             "Kanzengrp exclusive commands",
             "Commands for Hoshi levels",
-            "Moderation commands for admins and staff",
+            "All the miscellaneous commands"
             "Commands for our applications",
-            "Community commands for Editors Block"
+            "Community commands for Editors Block",
+            "Moderation commands for admins and staff"
         ]
         dropdown = discord.ui.Select(
         placeholder="Select a category",
