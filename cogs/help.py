@@ -38,7 +38,7 @@ class Help(commands.Cog):
             "Play some minigames with Hoshi",
             "Kanzengrp exclusive commands",
             "Commands for Hoshi levels",
-            "All the miscellaneous commands"
+            "All the miscellaneous commands",
             "Commands for our applications",
             "Community commands for Editors Block",
             "Moderation commands for admins and staff"
