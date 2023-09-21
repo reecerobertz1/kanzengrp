@@ -18,11 +18,9 @@ class Help(commands.Cog):
             "levels",
             "miscellaneous",
             "community",
-            "applications",
             "moderation"
         ]
         emojis = [
-            ":bt21:1149411052489027674",
             ":tata:1121909389280944169",
             ":shooky:1121909564799987722",
             ":rj:1121909526300479658",
@@ -40,7 +38,6 @@ class Help(commands.Cog):
             "Commands for Hoshi levels",
             "All the miscellaneous commands",
             "Community commands for Editors Block",
-            "Commands for our applications",
             "Moderation commands for admins and staff"
         ]
         dropdown = discord.ui.Select(
