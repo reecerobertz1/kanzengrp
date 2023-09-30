@@ -3,39 +3,6 @@ import random
 import discord
 from discord.ext import commands
 
-class other(commands.Cog):
-    def __init__(self, bot):
-        self.bot = bot
-        self.hello_loop = None
-
-    @commands.command()
-    async def kanzenrevive(self, ctx):
-        if self.hello_loop is None:
-            self.hello_loop = HelloLoop(self.bot, ctx.channel)
-            self.hello_loop.start()
-            await ctx.send('Started pinging chat revive.')
-
-    @commands.command()
-    async def kanzendie(self, ctx):
-        if self.hello_loop is not None:
-            self.hello_loop.cancel()
-            self.hello_loop = None
-            await ctx.send('Stopped pinging chat revive.')
-
-    @commands.command()
-    async def aurarevive(self, ctx):
-        if self.pingloop is None:
-            self.pingloop = HelloLoop(self.bot, ctx.channel)
-            self.pingloop.start()
-            await ctx.send('Started pinging chat revive.')
-
-    @commands.command()
-    async def auradie(self, ctx):
-        if self.pingloop is not None:
-            self.pingloop.cancel()
-            self.pingloop = None
-            await ctx.send('Stopped pinging chat revive.')
-
 class HelloLoop:
     def __init__(self, bot, channel):
         self.bot = bot
@@ -54,6 +21,15 @@ class HelloLoop:
             ping = random.choice(revive)
             await target_channel.send(ping)
             await asyncio.sleep(86400)
+
+    def start(self):
+        if self.hello_task is None:
+            self.hello_task = self.loop.create_task(self.send_hello())
+
+    def cancel(self):
+        if self.hello_task is not None:
+            self.hello_task.cancel()
+            self.hello_task = None
 
 class pingloop:
     def __init__(self, bot, channel):
@@ -74,17 +50,42 @@ class pingloop:
             await target_channel.send(ping)
             await asyncio.sleep(86400)
 
-    def start(self):
-        if self.hello_task is None:
-            self.hello_task = self.loop.create_task(self.send_hello())
+class other(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+        self.hello_loop = None
+        self.hidden = True
 
-    def cancel(self):
-        if self.hello_task is not None:
-            self.hello_task.cancel()
-            self.hello_task = None
+    @commands.command(hidden=True)
+    async def kanzenrevive(self, ctx):
+        if self.hello_loop is None:
+            self.hello_loop = HelloLoop(self.bot, ctx.channel)
+            self.hello_loop.start()
+            await ctx.send('Started pinging chat revive.')
+
+    @commands.command(hidden=True)
+    async def kanzendie(self, ctx):
+        if self.hello_loop is not None:
+            self.hello_loop.cancel()
+            self.hello_loop = None
+            await ctx.send('Stopped pinging chat revive.')
+
+    @commands.command(hidden=True)
+    async def aurarevive(self, ctx):
+        if self.pingloop is None:
+            self.pingloop = HelloLoop(self.bot, ctx.channel)
+            self.pingloop.start()
+            await ctx.send('Started pinging chat revive.')
+
+    @commands.command(hidden=True)
+    async def auradie(self, ctx):
+        if self.pingloop is not None:
+            self.pingloop.cancel()
+            self.pingloop = None
+            await ctx.send('Stopped pinging chat revive.')
 
     @commands.Cog.listener()
-    async def on_message(self, message, ctx):
+    async def on_message(self, message):
         if message.author.bot:
             return
         if message.content.lower() == "reece":
@@ -107,8 +108,6 @@ class pingloop:
             await message.channel.send("<@&1134876934585712773> where are you")
         if message.content.lower() == "anyone there?":
             await message.channel.send("<@&1134876934585712773> where are you")
-        if message.content.lower() == "hi":
-            await message.channel.send(f"{ctx.author.mention} hello!")
 
 async def setup(bot):
     await bot.add_cog(other(bot))
