@@ -317,5 +317,13 @@ class Moderation(commands.Cog):
             embed.add_field(name="Server ID", value=ctx.guild.id, inline=True)
             await ctx.reply(embed=embed)
 
+    @commands.command(description="Dm a user!")
+    async def dm(self, ctx, user: discord.User, *, message: str):
+        try:
+            await user.send(f"{message}")
+            await ctx.send(f"Message sent to {user.mention}.")
+        except discord.Forbidden:
+            await ctx.send("I couldn't send the message. Make sure the user allows direct messages from this server member.")
+
 async def setup(bot):
     await bot.add_cog(Moderation(bot))
