@@ -47,11 +47,11 @@ class LalisaBot(commands.Bot):
             voice_states = True
         )
         super().__init__(
-            command_prefix='-',
+            command_prefix='+',
             intents=intents,
             help_command=None,
             status=discord.Status.online,
-            activity=discord.Game("Hoshi Beta♡"),
+            activity=discord.Game("Hoshi ♡"),
         )
         self._BotBase__cogs = commands.core._CaseInsensitiveDict()
 
