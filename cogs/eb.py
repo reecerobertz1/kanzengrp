@@ -333,8 +333,8 @@ class ebmessages(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.giveaway_data = {}
-        self.load_giveaway_data()
         self.contest_open = True
+        self.hidden = True
 
     def check_contest_open(self):
         return self.contest_open

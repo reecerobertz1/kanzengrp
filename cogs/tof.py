@@ -8,6 +8,7 @@ from tof.manager import buttonHandler
 class tof (commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
+        self.hidden = True
 
     @commands.hybrid_command(name="trueorfalse", description="Play guess True or False", timeout=3.0)
     async def trueorfalse(self, ctx):

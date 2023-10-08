@@ -3,32 +3,24 @@ import discord
 from discord.ext import commands
 
 class custom(commands.Cog):
+    """Help with custom commands (Kanzen Only)"""
     def __init__(self, bot):
         self.bot = bot
         self.custom_commands = {}
 
         try:
-            with open("custom.json", "r") as file:
+            with open("./json files/custom.json", "r") as file:
                 self.custom_commands = json.load(file)
         except FileNotFoundError:
             pass
 
     def save_custom_commands(self):
-        with open("custom.json", "w") as file:
+        with open("./json files/custom.json", "w") as file:
             json.dump(self.custom_commands, file, indent=4)
 
-    @commands.group(invoke_without_command=True)
-    async def cmd(self, ctx: commands.Context):
-        """group of commands to manage apps"""
-        embed = discord.Embed(title="Custom Commands", color=0x2B2D31)
-        embed.add_field(name="cmd new", value="Create your own command", inline=False)
-        embed.add_field(name="cmd remove", value="Remove a command you no longer want", inline=False)
-        embed.add_field(name="cmd list", value="Shows all the custom commands")
-        await ctx.reply(embed=embed)
-
-    @cmd.command()
+    @commands.command(description="Add a custom command")
     @commands.guild_only()
-    async def new(self, ctx, command_name, *, command_response):
+    async def cmdnew(self, ctx, command_name, *, command_response):
         if ctx.guild.id != 1121841073673736215:
             return
 
@@ -62,8 +54,8 @@ class custom(commands.Cog):
                 response = self.custom_commands[server_id][content]
                 await message.channel.send(response)
 
-    @cmd.command()
-    async def remove(self, ctx, command_name):
+    @commands.command(description="Remove a custom command")
+    async def cmdremove(self, ctx, command_name):
         server_id = str(ctx.guild.id)
 
         if server_id in self.custom_commands and command_name in self.custom_commands[server_id]:
@@ -73,8 +65,8 @@ class custom(commands.Cog):
         else:
             await ctx.reply(f"The custom command '{command_name}' does not exist.")
 
-    @cmd.command()
-    async def list(self, ctx):
+    @commands.command(description="See the list of custom commands")
+    async def cmdlist(self, ctx):
         server_id = str(ctx.guild.id)
 
         if server_id in self.custom_commands and self.custom_commands[server_id]:

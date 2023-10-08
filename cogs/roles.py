@@ -7,10 +7,10 @@ import discord
 from discord.ext import commands
 from discord.utils import get
 
-
 class Roles(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.hidden = True
 
     @commands.command()
     async def roles(self, ctx):
@@ -27,8 +27,6 @@ class Roles(commands.Cog):
         )
         async def add_role(interaction: discord.Interaction):
             await interaction.response.defer()
-            
-            # Define the role IDs and their corresponding labels
             role_ids = {
                 "he/him": 1131127428668997737,
                 "she/her": 1131127209952809031,
@@ -41,8 +39,6 @@ class Roles(commands.Cog):
             member = interaction.user
             selected_value = interaction.data["values"][0]
             selected_role_id = role_ids.get(selected_value)
-            
-            # Remove existing pronoun roles from the user
             for role_id in role_ids.values():
                 role = interaction.guild.get_role(role_id)
                 if role and role in member.roles:
@@ -61,7 +57,6 @@ class Roles(commands.Cog):
         select.callback = add_role
         view = View(timeout=None)
         view.add_item(select)
-
         embed = discord.Embed(title="<:leaf:1137454366886993950> What are your pronouns?", description="Which of the following pronouns do you use? These roles can help other members of the server use the correct pronouns.\n\n<:1:1137455321028251708> - <@&1131127428668997737> \n<:2:1137455517577531565> - <@&1131127209952809031> \n<:3:1137455658258673704> - <@&1131127449753751663> \n<:4:1137455776877781107> - <@&1131127472142958622> \n<:5:1137455941609078824> - <@&1131127502396465213> \n<:6:1137456046978383892> - <@&1131127523456069723>", color=0x2b2d31)
         await ctx.send("https://cdn.discordapp.com/attachments/1131006428631539773/1138222545187909713/pronouns_new_00000_2.png")
         await ctx.send(embed=embed, view=view)
@@ -219,8 +214,6 @@ class Roles(commands.Cog):
         )
         async def add_role(interaction: discord.Interaction):
             await interaction.response.defer()
-            
-            # Define the role IDs and their corresponding labels
             role_ids = {
                 "vent": 1141780367808925717
             }
@@ -228,8 +221,6 @@ class Roles(commands.Cog):
             member = interaction.user
             selected_value = interaction.data["values"][0]
             selected_role_id = role_ids.get(selected_value)
-            
-            # Remove existing pronoun roles from the user
             for role_id in role_ids.values():
                 role = interaction.guild.get_role(role_id)
                 if role and role in member.roles:
@@ -252,7 +243,6 @@ class Roles(commands.Cog):
         embed = discord.Embed(title="<:leaf:1137454366886993950> What extra roles do you want?", description="Which of the following roles do you want? These roles are for other access to extra channels in the  server!\n\n<:1:1137455321028251708> - <@&1141780367808925717>", color=0x2b2d31)
         await ctx.send("https://cdn.discordapp.com/attachments/1131006428631539773/1141779053272121485/extra_00000.png")
         await ctx.send(embed=embed, view=view)
-
 
 async def setup(bot):
     await bot.add_cog(Roles(bot))

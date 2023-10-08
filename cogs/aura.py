@@ -69,6 +69,7 @@ class getlogos(discord.ui.View):
 class aura(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.hidden = True
 
     @commands.command()
     @commands.has_permissions(manage_guild=True)

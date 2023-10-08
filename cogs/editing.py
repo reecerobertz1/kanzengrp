@@ -1,10 +1,41 @@
+from io import BytesIO
+import json
 import random
 import discord
 from discord.ext import commands
+from PIL import Image, ImageDraw, ImageFont
+
+JSON_FILE_PATH = "./json files/colors.json"
 
 class editing(commands.Cog):
+    """Commands to help you with editing"""
     def __init__(self, bot):
         self.bot = bot
+
+    def get_edits_data(self):
+        try:
+            with open("./json files/edits.json", "r") as file:
+                data = json.load(file)
+        except FileNotFoundError:
+            data = []
+        return data
+
+    def save_edits_data(self, data):
+        with open("./json files/edits.json", "w") as file:
+            json.dump(data, file, indent=4)
+
+    async def _add_audio(self, ctx, filename, link):
+        audio_data = link
+        try:
+            with open(filename, "r") as file:
+                data = json.load(file)
+        except FileNotFoundError:
+            data = []
+        data.append(audio_data)
+
+        with open(filename, "w") as file:
+            json.dump(data, file, indent=4)
+        await ctx.reply("Audio added successfully.")
 
     @commands.group(invoke_without_command=True)
     async def effects(self, ctx: commands.Context):
@@ -36,96 +67,112 @@ class editing(commands.Cog):
         """Displays a random transition effect for video editing."""
 
         choices = [
-            "BTS - Taehyung", "BTS - Hoseok", "BTS - Yoongi",  "BTS - Namjoon", "BTS - Jimin", "BTS - Jin", "BTS - Jungkook", "Blackpink - Lisa", 
-            "Blackpink - Jennie", "Blackpink rosé", "Blackpink - Jisoo", "Lesserafim - Yunjin", "Lesserafim - Sakura", "Lesserafim - Chaewon", "Lesserafim - Kazuha", 
-            "Lesserafim - Eunchae", "Enhypen - Jake", "Enhypen - Jay", "Enhypen - Heeseung", "Enhypen - Sunghoon", "Enhypen - Sunoo", "Enhypen - Jungwon", "Enhypen - Ni-ki",
-            "New Jeans - Minji", "New Jeans - Hanni", "New Jeans - Danielle", "New Jeans - Haerin", "New Jeans - Hyein", "P1harmony - Keeho", "P1harmony - Intak",
-            "P1harmony - Theo", "P1harmony - Jiung", "P1harmony - Soul", "P1harmony - Jongseob", "Twice - Nayeon", "Twice - Jeonyeon", "Twice - Momo", "Twice - Sana",
-            "Twice - Jihyo", "Twice - Mina", "Twice - Dahyun", "Twice - Chaeyoung", "Twice - Tzuyu", "Ateez - Wooyoung", "Ateez - San", "Ateez - Hoongjoon", "Ateez - Seonghwa",
-            "Ateez - Jongho", "Ateez - Yunho", "Ateez - Mingi", "Seventeen - DK", "Seventeen - Seungkwan", "Seventeen - Mingyu", "Seventeen - Woozi", "Seventeen - Hoshi (not the bot)", "Seventeen - Dino",
-            "Seventeen - Wonwoo", "Seventeen - Junhui", "Seventeen - The8", "Seventeen - Scoups", "Seventeen - Joshua", "Seventeen - Vernon", "Seventeen - Jeonghan", "Aespa - Karina",
-            "Aespa - Ningning", "Aespa - Winter", "Aespa - Giselle", "Aespa - Karina", "TXT - Kai", "TXT - Soobin", "TXT - Yeonjun", "TXT - Beomgyu", "TXT - Taehyun", "Stray Kids - Bang Chan",
-            "Stray Kids - Lee Know", "Stray Kids - Changbin", "Stray Kids - Han", "Stray Kids - Felix", "Stray Kids - Seungmin", "Stray Kids - I.N", "Stray Kids - Hyunjin", "Itzy - Yeji",
-            "Itzy - Ryujin", "Itzy - Lia", "Itzy - Chaeryeong", "Itzy - Yuna", "Stayc - Sumin", "Stayc - Sieun", "Stayc - Isa", "Stayc - Seeun", "Stayc - Yoon", "Stayc - J", "Viviz - Umji", "Viviz - SinB", "Viviz - Eunha"
+            "BTS - Taehyung", "BTS - Hoseok", "BTS - Yoongi",  "BTS - Namjoon", "BTS - Jimin", "BTS - Jin", "BTS - Jungkook", 
+            "Blackpink - Lisa","Blackpink - Jennie", "Blackpink rosé", "Blackpink - Jisoo", 
+            "Lesserafim - Yunjin", "Lesserafim - Sakura", "Lesserafim - Chaewon", "Lesserafim - Kazuha", "Lesserafim - Eunchae", 
+            "Enhypen - Jake", "Enhypen - Jay", "Enhypen - Heeseung", "Enhypen - Sunghoon", "Enhypen - Sunoo", "Enhypen - Jungwon", "Enhypen - Ni-ki",
+            "New Jeans - Minji", "New Jeans - Hanni", "New Jeans - Danielle", "New Jeans - Haerin", "New Jeans - Hyein", 
+            "P1harmony - Keeho", "P1harmony - Intak","P1harmony - Theo", "P1harmony - Jiung", "P1harmony - Soul", "P1harmony - Jongseob", 
+            "Twice - Nayeon", "Twice - Jeonyeon", "Twice - Momo", "Twice - Sana","Twice - Jihyo", "Twice - Mina", "Twice - Dahyun", "Twice - Chaeyoung", "Twice - Tzuyu", 
+            "Ateez - Wooyoung", "Ateez - San", "Ateez - Hoongjoon", "Ateez - Seonghwa","Ateez - Jongho", "Ateez - Yunho", "Ateez - Mingi", 
+            "Seventeen - DK", "Seventeen - Seungkwan", "Seventeen - Mingyu", "Seventeen - Woozi", "Seventeen - Hoshi (not the bot)", "Seventeen - Dino","Seventeen - Wonwoo", "Seventeen - Junhui", "Seventeen - The8", "Seventeen - Scoups", "Seventeen - Joshua", "Seventeen - Vernon", "Seventeen - Jeonghan", 
+            "Aespa - Karina","Aespa - Ningning", "Aespa - Winter", "Aespa - Giselle", "Aespa - Karina", 
+            "TXT - Kai", "TXT - Soobin", "TXT - Yeonjun", "TXT - Beomgyu", "TXT - Taehyun", 
+            "Stray Kids - Bang Chan","Stray Kids - Lee Know", "Stray Kids - Changbin", "Stray Kids - Han", "Stray Kids - Felix", "Stray Kids - Seungmin", "Stray Kids - I.N", "Stray Kids - Hyunjin", 
+            "Itzy - Yeji", "Itzy - Ryujin", "Itzy - Lia", "Itzy - Chaeryeong", "Itzy - Yuna", 
+            "Stayc - Sumin", "Stayc - Sieun", "Stayc - Isa", "Stayc - Seeun", "Stayc - Yoon", "Stayc - J", 
+            "Viviz - Umji", "Viviz - SinB", "Viviz - Eunha"
         ]
 
         person = random.choice(choices)
         await ctx.reply(person)
 
-    @commands.command(aliases=["cs"])
-    async def colorscheme(self, ctx):
-        choices = ["https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-1.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-2.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-3.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-4.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-5.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-6.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-7.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-8.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-9.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-10.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-11.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-12.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-13.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-14.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-15.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-16.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-17.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-18.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-19.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-20.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-21.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-22.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-23.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-24.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-25.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-26.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-27.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-28.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-29.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-30.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-31.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-32.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-33.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-34.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-35.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-36.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-37.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-38.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-39.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-40.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-41.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-42.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-43.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-44.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-45.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-46.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-47.png",
-                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654004233089194/dfgsg.png",
-                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654004564426762/dfgsgf.png",
-                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654004782542919/dfgsdgd_1.png",
-                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654005046779975/dfgsdgf.png",
-                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654005340385310/dfsgsdfg.png",
-                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654005566873672/dsfgdfgd.png",
-                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654005772406915/dfgsdgdf.png",
-                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654006045024266/fdgsdfgd.png",
-                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654006284112042/dfsgdfgdf.png",
-                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654006565122109/sdgsdf.png",
-                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654067684507803/dsfgdgf.png",
-                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654067961335870/sdfgsfd.png",
-                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654068313653418/fsdgdg.png",
-                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654068724711474/dsfgsdfg.png",
-                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654069148323920/dfgsdgd.png",
-                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654069404188682/sdfg.png",
-                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654069647446166/gsdfgdf.png",
-                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654069911683102/dfasf.png",
-                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654070347907262/cs2.png",
-                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654070624718968/cs1.png",
-                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654081974513684/cs5.png",
-                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654082280702113/cs4.png",
-                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654082570113134/cs3.png"]
-        rancolor = random.choice(choices)
-        await ctx.reply(rancolor)
+    def colorscheme(self) -> BytesIO:
+        with open("json files/colors.json", "r") as f:
+            schemes = json.load(f)
+            colors = random.choice(schemes)
+        font = ImageFont.truetype("Montserrat-Bold.ttf", 20)
+        s = 200
+        img = Image.new('RGB', (s*len(colors), 225), (255, 255, 255))
+        for i, color in enumerate(colors):
+            col = Image.new('RGBA', (s, s+25), color)
+            img.paste(col, (i*s, 0))
+            draw = ImageDraw.Draw(img, 'RGBA')
+            draw.rectangle(((i*s, s), ((i+1)*s, s+25)), (0, 0, 0, 65))
+            draw.text(((i+0.5)*s, s), f"{color.upper()}", color, font=font, anchor="ma")
+        buf = BytesIO()
+        img.save(buf, 'PNG')
+        buf.seek(0)
+        return buf
+
+    @commands.command()
+    async def cs(self, ctx):
+        try:
+            image_buffer = self.colorscheme()
+            await ctx.send(file=discord.File(image_buffer, filename="color_palette.png"))
+
+        except Exception as e:
+            await ctx.send(f"An error occurred: {e}")
+
+    @commands.command()
+    async def addedit(self, ctx, link):
+        data = self.get_edits_data()
+        data.append(link)
+        self.save_edits_data(data)
+        await ctx.reply("Your edit added successfully.")
+
+    @commands.group(aliases=['edits'])
+    async def edit(self, ctx):
+        with open("./json files/edits.json", "r") as f:
+            audios = json.load(f)
+            choice = random.choice(audios)
+            await ctx.reply(f"Add your edits with `+addedit`\n[here is the edit]({choice})")
+
+    @commands.command()
+    async def addsoft(self, ctx, link):
+        button = discord.ui.Button(label="Click to hear audio", url=f"{link}")
+
+        view = discord.ui.View()
+        view.add_item(button)
+        log = self.bot.get_channel(1122627075682078720)
+        embed = discord.Embed(title="Added soft audio", description=f"`{ctx.author.display_name}` has added a soft audio!", color=0x2b2d31)
+        embed.set_footer(text=f"id: {ctx.author.id}", icon_url=ctx.author.display_avatar)
+        await self._add_audio(ctx, "./json files/softaudios.json", link)
+        await log.send(embed=embed, view=view)
+
+
+    @commands.command()
+    async def addhot(self, ctx, link):
+        button = discord.ui.Button(label="Click to hear audio", url=f"{link}")
+
+        view = discord.ui.View()
+        view.add_item(button)
+        log = self.bot.get_channel(1122627075682078720)
+        embed = discord.Embed(title="Added hot audio", description=f"`{ctx.author.display_name}` has added a hot audio!", color=0x2b2d31)
+        embed.set_footer(text=f"id: {ctx.author.id}", icon_url=ctx.author.display_avatar)
+        await self._add_audio(ctx, "./json files/hotaudios.json", link)
+        await log.send(embed=embed, view=view)
+
+    @commands.group(invoke_without_command=True)
+    async def audio(self, ctx: commands.Context):
+        embed = discord.Embed(title="Audio Commands", color=0x2B2D31)
+        embed.add_field(name="audio soft", value="Sends a soft audio", inline=False)
+        embed.add_field(name="audio hot", value="Sends a hot audio", inline=False)
+        await ctx.reply(embed=embed)
+
+    @audio.command()
+    async def soft(self, ctx):
+        with open("./json files/softaudios.json", "r") as f:
+            audios = json.load(f)
+            choice = random.choice(audios)
+            await ctx.reply(f"Add a soft audio with `+addsoft`\n[here is the audio]({choice})")
+
+    @audio.command()
+    async def hot(self, ctx):
+        with open("./json files/hotaudios.json", "r") as f:
+            audios = json.load(f)
+            choice = random.choice(audios)
+            await ctx.reply(f"Add a hot audio with `+addhot`\n[here is the audio]({choice})")
 
 async def setup(bot):
     await bot.add_cog(editing(bot))

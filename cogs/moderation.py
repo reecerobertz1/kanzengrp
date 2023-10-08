@@ -79,12 +79,13 @@ class resolved(discord.ui.View):
             await interaction.followup.send("No embeds found in the original message.", ephemeral=True)
 
 class Moderation(commands.Cog):
+    """Commands for mods"""
     def __init__(self, bot):
         self.bot = bot
         self.start_time = datetime.datetime.utcnow()
         self.guilds =[1121841073673736215]
 
-    @commands.command()
+    @commands.command(hidden=True)
     async def suggest(self, ctx, *, suggestion):
         server_id = ctx.guild.id
 
@@ -111,7 +112,7 @@ class Moderation(commands.Cog):
         else:
             await ctx.send("Failed to find the suggestion channel.")
 
-    @commands.command()
+    @commands.command(hidden=True)
     async def servericon(self, ctx):
         embed = discord.Embed(color=0x2b2d31)
         embed.set_image(url=ctx.guild.icon)
@@ -120,7 +121,7 @@ class Moderation(commands.Cog):
         else:
          await ctx.reply("Sorry, i can't find the server icon")
 
-    @commands.command()
+    @commands.command(hidden=True)
     async def serverbanner(self, ctx):
         embed = discord.Embed(color=0x2b2d31)
         embed.set_image(url=ctx.guild.banner)
@@ -129,45 +130,37 @@ class Moderation(commands.Cog):
         else:
          await ctx.reply("Sorry, i can't find the server banner")
 
-    @app_commands.command(name="kick", description="Kick a member from the server.")
-    @app_commands.checks.has_permissions(administrator=True)
-    async def kick(self ,interaction: discord.Interaction ,member: discord.Member, reason: str = "No reason provided"):
+    @commands.hybrid_command(name="kick", description="Kick a member from the server.")
+    @commands.has_permissions(manage_guild=True)
+    async def kick(self, ctx: commands.Context, member: discord.Member, reason: str = "No reason provided"):
         await member.kick(reason=reason)
         await member.send(f"You have been kicked from {member.guild.name} for {reason}")
-        await interaction.response.send_message(f'{member.mention} has been banned for: {reason}', ephemeral=True)
-        if not interaction.user.guild_permissions.administrator:
-            return await interaction.response.send_message("You have no admin", ephemeral=True)
+        await ctx.reply(f'{member.mention} has been kicked for: {reason}')
 
-    @app_commands.command(name="ban", description="Ban a member from the server.")
-    @app_commands.checks.has_permissions(administrator=True)
-    async def ban(self ,interaction: discord.Interaction ,member: discord.Member, reason: str = "No reason provided"):
+    @commands.hybrid_command(name="ban", description="Ban a member from the server.")
+    @commands.has_permissions(manage_guild=True)
+    async def ban(self ,ctx, member: discord.Member, reason: str = "No reason provided"):
         await member.ban(reason=reason)
         await member.send(f"You have been banned from {member.guild.name} for {reason}")
-        await interaction.response.send_message(f'{member.mention} has been banned for: {reason}', ephemeral=True)
-        if not interaction.user.guild_permissions.administrator:
-            return await interaction.response.send_message("You have no admin", ephemeral=True)
+        await ctx.reply(f'{member.mention} has been banned for: {reason}')
         
-    @app_commands.command(name="addrole", description="Add a role to a member.")
-    @app_commands.checks.has_permissions(administrator=True)
-    async def _add_role(self, interaction: discord.Interaction, member: discord.Member, role: discord.Role):
+    @commands.hybrid_command(name="addrole", description="Add a role to a member.")
+    @commands.has_permissions(manage_guild=True)
+    async def _add_role(self, ctx, member: discord.Member, role: discord.Role):
         if role in member.roles:
-            await interaction.response.send_message(f"{member.mention} already has the role {role.mention}.", ephemeral=True)
+            await ctx.reply(f"{member.mention} already has the role {role.mention}.")
         else:
             await member.add_roles(role)
-            await interaction.response.send_message(f"{member.mention} has been given the role {role.mention}.", ephemeral=True)
-        if not interaction.user.guild_permissions.administrator:
-            return await interaction.response.send_message("You have no admin", ephemeral=True)
+            await ctx.reply(f"{member.mention} has been given the role {role.mention}.")
 
-    @app_commands.command(name="removerole", description="Remove a role from a member.")
-    @app_commands.checks.has_permissions(administrator=True)
-    async def _remove_role(self, interaction: discord.Interaction, member: discord.Member, role: discord.Role):
+    @commands.hybrid_command(name="removerole", description="Remove a role from a member.")
+    @commands.has_permissions(manage_guild=True)
+    async def _remove_role(self, ctx, member: discord.Member, role: discord.Role):
         if role not in member.roles:
-            await interaction.response.send_message(f"{member.mention} doesn't have the role {role.mention}.", ephemeral=True)
+            await ctx.reply(f"{member.mention} doesn't have the role {role.mention}.")
         else:
             await member.remove_roles(role)
-            await interaction.response.send_message(f"{member.mention} no longer has the role {role.mention}.", ephemeral=True)
-        if not interaction.user.guild_permissions.administrator:
-            return await interaction.response.send_message("You have no admin", ephemeral=True)
+            await ctx.reply(f"{member.mention} no longer has the role {role.mention}.")
         
     @app_commands.command(name='kanzen', description='Get Kanzen logos')
     @app_commands.guilds(discord.Object(id=1121841073673736215))
@@ -183,19 +176,14 @@ class Moderation(commands.Cog):
     async def auralogos(self, interaction: discord.Interaction):
         await interaction.response.send_message('https://mega.nz/folder/SNkySBBb#kNViVZOVnHzEFmFsuhtLOQ', ephemeral=True)
 
-    @commands.command()
+    @commands.command(description="Warn a member in Editors Block")
     @commands.has_permissions(manage_guild=True)
     async def warn(self, ctx, user: discord.User, *, reason: str):
-        # Send DM to the user
         try:
             await user.send(f"You have been warned for: {reason}")
         except discord.Forbidden:
             await ctx.send("I couldn't send a DM to that user.")
-
-        # Get the logging channel (replace CHANNEL_ID with the actual channel ID)
         log_channel = self.bot.get_channel(1134857444250632343)
-
-        # Send the log to the logging channel
         if log_channel:
             embed = discord.Embed(title="User Warned",description=f"user:\n<a:arrowpink:1134860720777990224> {user.mention}\n\nreason:\n<a:arrowpink:1134860720777990224> {reason}\n\nmoderator:\n<a:arrowpink:1134860720777990224>{ctx.author.mention}" ,color=0x2b2d31)
             timestamp = datetime.datetime.utcnow()
@@ -205,7 +193,7 @@ class Moderation(commands.Cog):
         else:
             await ctx.send("Logging channel not found. Please set the correct channel ID.")
 
-    @commands.command()
+    @commands.command(description="Steal any emoji from any server")
     async def steal(self, ctx, emoji_name: str, *, emoji: discord.PartialEmoji):
         if not isinstance(emoji, discord.PartialEmoji):
             return await ctx.send("Please provide a valid emoji.")
@@ -217,20 +205,7 @@ class Moderation(commands.Cog):
         
         await ctx.send(f"Emoji {emoji} has been added!")
 
-    @commands.command()
-    async def membercount(self, ctx):
-        total_members = len(ctx.guild.members)
-        bot_count = sum(1 for member in ctx.guild.members if member.bot)
-        human_count = total_members - bot_count
-        
-        embed = discord.Embed(title=f"Total members in {ctx.guild.name}", color=0x2b2d31)
-        embed.add_field(name="Total Members", value=total_members, inline=False)
-        embed.add_field(name="Humans", value=human_count, inline=False)
-        embed.add_field(name="Bots", value=bot_count, inline=False)
-        
-        await ctx.send(embed=embed)
-
-    @commands.command()
+    @commands.command(hidden=True)
     @commands.has_permissions(manage_guild=True)
     async def hoshiupdate(self, ctx):
         embed = discord.Embed(title='test', description="", color=0x2b2d31)
@@ -263,7 +238,7 @@ class Moderation(commands.Cog):
         except asyncio.TimeoutError:
             await message.edit(content="~~Are you sure you want to send this update message?~~\nThe update has been cancelled")
 
-    @commands.command()
+    @commands.command(hidden=True)
     @commands.has_permissions(manage_guild=True)
     async def khoshiupdate(self, ctx):
         embed = discord.Embed(title='Confessions command!', description="The new confessions command is where you can tell us your darkest secrets by using the command </confess:1140190517066465341>!\n\nThe messages are sent anonymously so don't worry to much about people knowing who you are when they are sent (they are also not logged either)\n\nThere are reactions that are added onto each confession for you to show how you feel about a confession\nCan't wait to see the weird shit we get!\n\n**This command is kanzengrp only!**", color=0x2b2d31)
@@ -291,39 +266,13 @@ class Moderation(commands.Cog):
         except asyncio.TimeoutError:
             await message.edit(content="~~Are you sure you want to send this update message?~~\nThe update has been cancelled")
 
-    @commands.command()
+    @commands.command(description="Report a bug report to the Hoshi dev")
     async def report(self, ctx):
         embed = discord.Embed(title="Bug Report", description="<a:Arrow_1:1145603161701224528> Please click the button and fill out the form that appears on your screen!\n<a:Arrow_1:1145603161701224528> Your bug report will send to the developer of Hoshi\n<a:Arrow_1:1145603161701224528> You can be notified when the issue has been resolved!", color=0x2b2d31)
         embed.set_footer(text="Click the button below to send a bug report", icon_url=ctx.author.avatar)
         embed.set_thumbnail(url=self.bot.user.display_avatar.url)
         view = ReportView(bot=self.bot)
         await ctx.reply(embed=embed, view=view)
-
-    @commands.command()
-    async def serverinfo(self, ctx):
-        async with ctx.typing():
-            embed = discord.Embed(title=f"Server Information for the server {ctx.guild.name}", color=0x2b2d31)
-            embed.set_thumbnail(url=ctx.guild.icon)
-            embed.set_image(url=ctx.guild.banner)
-            embed.add_field(name="Server Name", value=ctx.guild.name, inline=True)
-            embed.add_field(name="Server Owner", value=ctx.guild.owner, inline=True)
-            embed.add_field(name="Member Count", value=ctx.guild.member_count, inline=True)
-            embed.add_field(name="Channel Count", value=len(ctx.guild.channels), inline=True)
-            embed.add_field(name="Role Count", value=len(ctx.guild.roles), inline=True)
-            embed.add_field(name="Boost Count", value=ctx.guild.premium_subscription_count, inline=True)
-            embed.add_field(name="Boost Tier", value=ctx.guild.premium_tier, inline=True)
-            embed.add_field(name="Creation Date", value=ctx.guild.created_at.__format__("%D"), inline=True)
-            embed.set_footer(text=f"Requested by {ctx.author.name}", icon_url=ctx.author.avatar)
-            embed.add_field(name="Server ID", value=ctx.guild.id, inline=True)
-            await ctx.reply(embed=embed)
-
-    @commands.command(description="Dm a user!")
-    async def dm(self, ctx, user: discord.User, *, message: str):
-        try:
-            await user.send(f"{message}")
-            await ctx.send(f"Message sent to {user.mention}.")
-        except discord.Forbidden:
-            await ctx.send("I couldn't send the message. Make sure the user allows direct messages from this server member.")
 
 async def setup(bot):
     await bot.add_cog(Moderation(bot))

@@ -1,11 +1,9 @@
 import asyncio
 import math
 import random
-from typing import Optional
 import discord
 from discord.ext import commands
-from PIL import Image, ImageDraw, ImageFont
-
+from discord.ui import View, Button
 
 class Player:
     def __init__(self, member):
@@ -13,8 +11,28 @@ class Player:
         self.hp = 100
         self.defense = 0
 
+class BattleView(View):
+    def __init__(self):
+        super().__init__(timeout=None)
+        self.value = None
 
-class Battle(commands.Cog):
+    @discord.ui.button(label="Attack")
+    async def attack_button(self, button: discord.Button, interaction: discord.Interaction):
+        self.value = "attack"
+        self.stop()
+
+    @discord.ui.button(label="Defend")
+    async def defend_button(self, button: discord.Button, interaction: discord.Interaction):
+        self.value = "defend"
+        self.stop()
+
+    @discord.ui.button(label="Escape", style=discord.ButtonStyle.danger)
+    async def escape_button(self, button: discord.Button, interaction: discord.Interaction):
+        self.value = "escape"
+        self.stop()
+
+class Games(commands.Cog):
+    """Play some games with Hoshi or other members"""
     def __init__(self, bot):
         self.bot = bot
         self.occupied = []
@@ -24,14 +42,6 @@ class Battle(commands.Cog):
                      * 1 - player.defense / 100)
         player.hp -= damage
         return damage
-    
-    def kanzen_only():
-        def predicate(ctx: commands.Context):
-            if ctx.guild.id == 1121841073673736215:
-                return True
-            else:
-                return False
-        return commands.check(predicate)
 
     async def defend(self, player):
         player.defense += 5
@@ -46,23 +56,23 @@ class Battle(commands.Cog):
         return heal, False
 
     async def turn(self, ctx, p1, p2):
-        await ctx.send(f"{p1.member.mention} **choose a move**:  `attack`, `defend`, `escape`")
+        view = BattleView()
+        await ctx.send(f"{p1.member.mention} **choose a move**:", view=view)
+
         try:
-            choice = await self.bot.wait_for('message',
-                                             check=lambda m: m.channel == ctx.channel and m.author == p1.member and
-                                             (
-                                                 m.content == "attack" or m.content == "defend" or m.content == "escape"),
-                                             timeout=30)
-            if choice.content.lower() == "defend":
+            await view.wait()
+            choice = view.value
+
+            if choice == "defend":
                 healAmount, defenseMaxed = await self.defend(p1)
                 if defenseMaxed:
                     await ctx.reply(f"You healed for `{healAmount}`, but your defense is maxed out")
                 else:
                     await ctx.reply(f"You healed for `{healAmount}`, and your defense rose by `5`")
-            elif choice.content.lower() == "attack":
+            elif choice == "attack":
                 damage = await self.attack(p2)
                 await ctx.reply(f"You attacked dealing **{damage}** damage")
-            elif choice.content.lower() == "escape":
+            elif choice == "escape":
                 await ctx.send(f"{p1.member.name} tried escaping. **tried**")
                 await ctx.send(embed=discord.Embed(title="CRITICAL HIT", description="9999 Damage!",
                                                    colour=0x2b2d31))
@@ -73,10 +83,10 @@ class Battle(commands.Cog):
             await ctx.send(embed=discord.Embed(title="CRITICAL HIT", description="9999 Damage!",
                                                colour=0x2b2d31))
             p1.hp = -9999
-        await ctx.send(embed = discord.Embed(title="Stats", description=f" {p1.member.mention}\n**HP:** `{p1.hp}`\n**Defense**: `{p1.defense}`\n \n {p2.member.mention}\n**HP**: `{p2.hp}`\n**Defense**: `{p2.defense}`", color=0x2b2d31))
 
-    @commands.command(aliases=["battle"])
-    @kanzen_only()
+        await ctx.send(embed=discord.Embed(title="Stats", description=f" {p1.member.mention}\n**HP:** `{p1.hp}`\n**Defense**: `{p1.defense}`\n \n {p2.member.mention}\n**HP**: `{p2.hp}`\n**Defense**: `{p2.defense}`", color=0x2b2d31))
+
+    @commands.command(aliases=["battle"], description="Fight other members to the death")
     async def fight(self, ctx, opponent: discord.Member):
         if ctx.channel.id in self.occupied:
             await ctx.reply("This battlefield is occupied")
@@ -136,4 +146,4 @@ class Battle(commands.Cog):
             await ctx.send(f'RIP {loser.member.mention} you will not be missed....  because {winner.member.mention} has won the battle')
 
 async def setup(bot):
-    await bot.add_cog(Battle(bot))
+    await bot.add_cog(Games(bot))

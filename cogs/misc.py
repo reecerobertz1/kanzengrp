@@ -1,17 +1,71 @@
 import asyncio
 import platform
-import time
 from typing import Optional
 import discord
 from discord.ext import commands
-from datetime import datetime, timedelta, timezone
-import aiohttp
+from datetime import datetime
 
-class MemberInfo(commands.Cog):
+class misc(commands.Cog):
+    """Miscellaneous commands"""
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(aliases=["hoshiinfo", "about"])
+    @commands.command(aliases=['be', 'embed'], description="Build an embed")
+    @commands.has_permissions(manage_guild=True)
+    async def buildembed(self, ctx: commands.Context, channel: Optional[discord.TextChannel] = None):
+        if channel is None:
+            channel = ctx.channel
+
+        await ctx.message.delete()
+        async def ask_question(question):
+            message = await ctx.send(question)
+            response = await self.bot.wait_for('message', check=lambda m: m.author == ctx.author)
+            await message.delete()
+            await response.delete()
+            return response.content
+
+        title = await ask_question("What title do you want your embed to have?")
+        description = await ask_question("Okay! What do you want your description to be?")
+        color_input = await ask_question("What color do you want your embed to be? (in hex; e.g., 2B2D31)")
+        if color_input.lower() == 'x':
+            color = 0x60e5fc
+        else:
+            try:
+                color = int(color_input, 16)
+            except ValueError:
+                await ctx.send("Invalid color code. Using default color.")
+                color = 0x60e5fc
+
+        embed = discord.Embed(title=title, description=description, colour=color)
+        thumbnail_url = await ask_question("Enter the thumbnail URL (Type `X` to skip)")
+        if thumbnail_url.lower() != 'x':
+            embed.set_thumbnail(url=thumbnail_url)
+
+        image_url = await ask_question("Enter the image URL (Type `X` to skip)")
+        if image_url.lower() != 'x':
+            embed.set_image(url=image_url)
+
+        footer_input = await ask_question("What should the footer be? (Type `X` to skip)")
+        if footer_input.lower() != 'x':
+            embed.set_footer(text=footer_input)
+
+        fields_completed = False
+        while not fields_completed:
+            field_name = await ask_question("What do you want the name of the field to be? (Type `X` to finish adding fields)")
+            if field_name.lower() == 'x':
+                fields_completed = True
+            else:
+                field_value = await ask_question("What do you want the value of the field to be?")
+                inline_input = await ask_question("Do you want this field to be inline? (yes/no)")
+                if inline_input.lower() == 'yes':
+                    inline = True
+                else:
+                    inline = False
+                embed.add_field(name=field_name, value=field_value, inline=inline)
+
+        message = await channel.send(embed=embed)
+
+    @commands.command(aliases=["hoshiinfo", "about"], description="Information about Hoshi")
     async def abouthoshi(self, ctx):
         delta_uptime = datetime.utcnow() - self.bot.launch_time
         hours, remainder = divmod(int(delta_uptime.total_seconds()), 3600)
@@ -33,16 +87,14 @@ class MemberInfo(commands.Cog):
         embed.set_field_at(5, name="** **", value=f"**Latency:** {latency}ms", inline=False)
         await message.edit(embed=embed)
 
-    @commands.command()
+    @commands.command(description="Get memberinfo for someone")
     async def memberinfo(self, ctx, user: Optional[discord.Member] = None):
         kanzen = 1121841073673736215
         aura = 957987670787764224
-
         if user is None:
             user = ctx.author
 
         display = user.display_name
-
         sheher = discord.utils.find(lambda r: r.name == 'she/her', ctx.message.guild.roles)
         theythem = discord.utils.find(lambda r: r.name == 'they/them', ctx.message.guild.roles)
         shethey = discord.utils.find(lambda r: r.name == 'she/they', ctx.message.guild.roles)
@@ -62,7 +114,6 @@ class MemberInfo(commands.Cog):
         zennies = discord.utils.find(lambda r: r.name == 'zennies', ctx.message.guild.roles)
         staff = discord.utils.find(lambda r: r.name == 'staff', ctx.message.guild.roles)
         members = discord.utils.find(lambda r: r.name == 'members', ctx.message.guild.roles)
-
         if ctx.guild.id == kanzen:
             title1 = f"Kanzen member {display}"
         elif ctx.guild.id == aura:
@@ -143,7 +194,6 @@ class MemberInfo(commands.Cog):
 
         embed.set_thumbnail(url=user.avatar.url)
         embed.set_image(url=ctx.guild.banner)
-
         if "|" in display:
             list = display.split("|")
             name1 = list[0]
@@ -155,7 +205,6 @@ class MemberInfo(commands.Cog):
                 description=f"<a:Arrow_1:1145603161701224528> {name}'s pronouns are {prns}\n<a:Arrow_1:1145603161701224528> {prn1} {program} to edit\n<a:Arrow_1:1145603161701224528> {prn3} {title}", color=0x2b2d31
             )
             button = discord.ui.Button(label=f"Click here to go to {prn2} Instagram", url=f"https://instagram.com/{acc}")
-
             view = discord.ui.View()
             view.add_item(button)
             embed.set_thumbnail(url=user.avatar.url)
@@ -164,5 +213,41 @@ class MemberInfo(commands.Cog):
         else:
             await ctx.reply(embed=embed)
 
+    @commands.command(description="Get the server information")
+    async def serverinfo(self, ctx):
+        async with ctx.typing():
+            embed = discord.Embed(title=f"Server Information for the server {ctx.guild.name}", color=0x2b2d31)
+            embed.set_thumbnail(url=ctx.guild.icon)
+            embed.set_image(url=ctx.guild.banner)
+            embed.add_field(name="Server Name", value=ctx.guild.name, inline=True)
+            embed.add_field(name="Server Owner", value=ctx.guild.owner, inline=True)
+            embed.add_field(name="Member Count", value=ctx.guild.member_count, inline=True)
+            embed.add_field(name="Channel Count", value=len(ctx.guild.channels), inline=True)
+            embed.add_field(name="Role Count", value=len(ctx.guild.roles), inline=True)
+            embed.add_field(name="Boost Count", value=ctx.guild.premium_subscription_count, inline=True)
+            embed.add_field(name="Boost Tier", value=ctx.guild.premium_tier, inline=True)
+            embed.add_field(name="Creation Date", value=ctx.guild.created_at.__format__("%D"), inline=True)
+            embed.set_footer(text=f"Requested by {ctx.author.name}", icon_url=ctx.author.avatar)
+            embed.add_field(name="Server ID", value=ctx.guild.id, inline=True)
+            await ctx.reply(embed=embed)
+
+    @commands.command(description="Get the member count for a server")
+    async def membercount(self, ctx):
+        total_members = len(ctx.guild.members)
+        bot_count = sum(1 for member in ctx.guild.members if member.bot)
+        human_count = total_members - bot_count
+        
+        embed = discord.Embed(title=f"Total members in {ctx.guild.name}", color=0x2b2d31)
+        embed.add_field(name="Total Members", value=total_members, inline=False)
+        embed.add_field(name="Humans", value=human_count, inline=False)
+        embed.add_field(name="Bots", value=bot_count, inline=False)
+        
+        await ctx.send(embed=embed)
+
+    @commands.command(description="Get the image link for an emoji")
+    async def emoji(self, ctx, emoji: discord.Emoji):
+        emoji_url = emoji.url
+        await ctx.send(f"Here's the image for the emoji {emoji.name}: {emoji_url}")
+
 async def setup(bot):
-    await bot.add_cog(MemberInfo(bot))
+    await bot.add_cog(misc(bot))

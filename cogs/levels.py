@@ -759,7 +759,7 @@ class Levels(commands.Cog):
     async def on_guild_join(self, guild: discord.Guild):
         await self.register_guild(guild.id)
 
-    @commands.group(invoke_without_command=True)
+    @commands.group(invoke_without_command=True, hidden=True)
     @commands.has_permissions(administrator=True)
     async def levelling(self, ctx: commands.Context):
         """Group that manages status of the levelling system"""
@@ -774,7 +774,7 @@ class Levels(commands.Cog):
             embed.add_field(name="top 20 role", value="a top 20 role has not been set.\nuse `+levelling setrole <role>` if you want to give a role to members ranked top 20!", inline=False)
         await ctx.send(embed=embed)
 
-    @levelling.command(aliases=["on"])
+    @levelling.command(aliases=["on"], description="Activate the levelling system in a server")
     @commands.has_permissions(administrator=True)
     async def activate(self, ctx: commands.Context):
         """Activates levelling system in current guild"""
@@ -786,7 +786,7 @@ class Levels(commands.Cog):
         )
         await ctx.reply(embed=embed)
 
-    @levelling.command(aliases=["off"])
+    @levelling.command(aliases=["off"], description="Deactivate the levelling system in a server")
     @commands.has_permissions(administrator=True)
     async def deactivate(self, ctx: commands.Context):
         """Activates levelling system in current guild"""
@@ -798,7 +798,7 @@ class Levels(commands.Cog):
         )
         await ctx.reply(embed=embed)
 
-    @levelling.command()
+    @levelling.command(description="Set the top 20 role")
     @commands.has_permissions(administrator=True)
     async def setrole(self, ctx: commands.Context, role: discord.Role):
         """Sets a role for members ranked top 20
@@ -816,7 +816,7 @@ class Levels(commands.Cog):
         )
         await ctx.reply(embed=embed)
 
-    @levelling.command()
+    @levelling.command(description="Remove the top 20 role")
     @commands.has_permissions(administrator=True)
     async def removerole(self, ctx: commands.Context, role: discord.Role):
         """Removes the top 20 role
@@ -834,7 +834,7 @@ class Levels(commands.Cog):
         )
         await ctx.reply(embed=embed)
 
-    @commands.command(aliases=['levels', 'lb'])
+    @commands.command(description="See the level leaderboard")
     @levels_is_activated()
     async def leaderboard(self, ctx: commands.Context):
         """sends the current leaderboard"""
@@ -868,7 +868,7 @@ class Levels(commands.Cog):
         else:
             await ctx.send(embed=embed)
 
-    @commands.command(extras={"examples": ["rank", "rank candysnowy", "rank <@609515684740988959>"]})
+    @commands.command(description="Check your rank")
     @levels_is_activated()
     async def rank(self, ctx: commands.Context, member: Optional[discord.Member]):
         async with ctx.typing():
@@ -887,12 +887,12 @@ class Levels(commands.Cog):
 
             if levels:
                 card = await self.generate_card(str(member), str(member.status), avatar, levels, rank)
-                await ctx.send(file=discord.File(card, 'card.png'))
+                await ctx.reply(file=discord.File(card, 'card.png'), mention_author=False)
             else:
-                await ctx.send(f"{member} doesn't have any levels yet!!")
+                await ctx.reply(f"{member} doesn't have any levels yet!!", mention_author=False)
 
 
-    @commands.command(extras={"examples": ["rankcolor #ffffff"]})
+    @commands.command(description="Change your rank card color with hex codes")
     @levels_is_activated()
     async def rankcolor(self, ctx: commands.Context, color: str):
         """
@@ -915,7 +915,7 @@ class Levels(commands.Cog):
         else:
             await ctx.reply(f"`{color}` is not a valid hex color")
 
-    @commands.command()
+    @commands.command(description="Attatch an image when doing this command!")
     async def rankbg(self, ctx):
         if len(ctx.message.attachments) == 0:
             await ctx.reply("Please attach an image to set as your rank background.")
@@ -935,9 +935,9 @@ class Levels(commands.Cog):
         embed.set_image(url=attachment.url)
         await ctx.reply(embed=embed)
 
-    @commands.command(aliases=['give'], extras={"examples": ["xp add <@609515684740988959> 1000", "xp give candysnowy 1000"]})
+    @commands.command(description="Add xp to someone")
     @levels_is_activated()
-    @commands.has_permissions(administrator=True)
+    @commands.has_permissions(manage_guild=True)
     async def add(self, ctx: commands.Context, member: discord.Member, amount: int):
         """
         add xp to a member's level xp
@@ -961,9 +961,9 @@ class Levels(commands.Cog):
         )
         await ctx.reply(embed=embed)
 
-    @commands.command()
+    @commands.command(description="Add xp to multiple people")
     @levels_is_activated()
-    @commands.has_permissions(administrator=True)
+    @commands.has_permissions(manage_guild=True)
     async def multiadd(self, ctx: commands.Context, members: commands.Greedy[discord.Member], amount: int):
         """
         add xp to multiple members' level xp
@@ -993,9 +993,9 @@ class Levels(commands.Cog):
                     await self.top_20_role_handler(member, ctx.guild, top20)
         await ctx.reply(embed=embed)
 
-    @commands.command(aliases=['take'], extras={"examples": ["xp remove <@609515684740988959> 1000", "xp take candysnowy 1000"]})
+    @commands.command(aliases=['take'], description="Remove xp from someone")
     @levels_is_activated()
-    @commands.has_permissions(administrator=True)
+    @commands.has_permissions(manage_guild=True)
     async def remove(self, ctx: commands.Context, member: discord.Member, amount: int):
         """
         remove xp from a member's level xp
@@ -1025,9 +1025,10 @@ class Levels(commands.Cog):
         else:
             await ctx.reply(f"{str(member)} doesn't have any xp yet!")
 
-    @commands.command()
+    @commands.command(description="Reset the levels")
     @commands.has_permissions(administrator=True)
     @levels_is_activated()
+    @commands.has_permissions(manage_guild=True)
     async def reset(self, ctx: commands.Context):
         """Wipes all XP from the database"""
         message = await ctx.reply("are you sure you want to reset the ranks? it's irreversible!")
@@ -1048,7 +1049,7 @@ class Levels(commands.Cog):
         except asyncio.TimeoutError:
             await message.edit(content="~~are you sure you want to reset the ranks? it's irreversible!~~\nreset has been cancelled!")
 
-    @commands.command()
+    @commands.command(description="Get anywhere from 100xp - 300xp everyday!")
     @kanzen_only()
     @commands.dynamic_cooldown(kanzen_cooldown, commands.BucketType.user)
     async def daily(self, ctx: commands.Context):

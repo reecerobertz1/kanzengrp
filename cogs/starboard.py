@@ -6,6 +6,7 @@ class Starboard(commands.Cog):
         self.bot = bot
         self.error_channel_id = 1136384691671416932
         self.starboarded_messages = {}
+        self.hidden = True
 
     @commands.Cog.listener()
     async def on_reaction_add(self, reaction, member):

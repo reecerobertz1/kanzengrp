@@ -15,6 +15,7 @@ class TicTacToe(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.games = {}
+        self.hidden = True
 
     def print_board(self, board):
         line = "** **"
