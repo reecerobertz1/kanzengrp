@@ -207,10 +207,10 @@ class Moderation(commands.Cog):
 
     @commands.command(hidden=True)
     @commands.has_permissions(manage_guild=True)
-    async def hoshiupdate(self, ctx):
-        embed = discord.Embed(title='test', description="", color=0x2b2d31)
+    async def hoshiupdate(self, ctx, message: str):
+        embed = discord.Embed(title='HOSHI REVAMP', description=message, color=0x2b2d31)
         embed.set_footer(text="Go and use these commands in Hoshi's channel!")
-        embed.set_author(name="Hoshi#3105", icon_url="https://cdn.discordapp.com/avatars/849682093575372841/f04c5815341216fdafe736a2564a4d09.png?size=1024")
+        embed.set_author(name="Hoshi#3105", icon_url=self.bot.user.display_avatar.url)
         message = await ctx.reply("Are you sure you want to send this update message?", embed=embed)
         await message.add_reaction('👍')
         
@@ -243,7 +243,7 @@ class Moderation(commands.Cog):
     async def khoshiupdate(self, ctx):
         embed = discord.Embed(title='Confessions command!', description="The new confessions command is where you can tell us your darkest secrets by using the command </confess:1140190517066465341>!\n\nThe messages are sent anonymously so don't worry to much about people knowing who you are when they are sent (they are also not logged either)\n\nThere are reactions that are added onto each confession for you to show how you feel about a confession\nCan't wait to see the weird shit we get!\n\n**This command is kanzengrp only!**", color=0x2b2d31)
         embed.set_footer(text="Go and use these commands in Hoshi's channel!")
-        embed.set_author(name="Hoshi#3105", icon_url="https://cdn.discordapp.com/avatars/849682093575372841/f04c5815341216fdafe736a2564a4d09.png?size=1024")
+        embed.set_author(name="Hoshi#3105", icon_url=self.bot.user.display_avatar.url)
         message = await ctx.reply("Are you sure you want to send this update message?", embed=embed)
         await message.add_reaction('👍')
         
