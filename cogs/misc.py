@@ -4,11 +4,26 @@ from typing import Optional
 import discord
 from discord.ext import commands
 from datetime import datetime
+from dispie import EmbedCreator
+from dispie import EmbedCreator
 
 class misc(commands.Cog):
     """Miscellaneous commands"""
     def __init__(self, bot):
         self.bot = bot
+
+    @commands.command(aliases=['be', 'embed'], description="Build an embed")
+    async def buildembed(self, ctx: commands.Context):
+        """Embed Generator With Default Embed And Author Check So Only The Invoker Can Use The Editor"""
+        view = EmbedCreator(bot=self.bot)
+        async def check(interaction: discord.Interaction):
+                if interaction.user.id == ctx.author.id:
+                    return True
+                else:
+                    await interaction.response.send_message(f"Only {ctx.author} can use this interaction!", ephemeral=True)
+                    return False
+        view.interaction_check = check
+        await ctx.send(embed=view.get_default_embed, view=view)
 
     @commands.command(aliases=['be', 'embed'], description="Build an embed")
     @commands.has_permissions(manage_guild=True)
