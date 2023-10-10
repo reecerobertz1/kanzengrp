@@ -208,7 +208,7 @@ class misc(commands.Cog):
         emoji_url = emoji.url
         await ctx.send(f"Here's the image for the emoji {emoji.name}: {emoji_url}")
 
-    @commands.command(aliases=['pfp', 'icon'])
+    @commands.command(aliases=['pfp', 'icon'], description="Get someone's discord avatar")
     async def avatar(self, ctx, member: discord.Member = None):
         if member is None:
             member = ctx.author
