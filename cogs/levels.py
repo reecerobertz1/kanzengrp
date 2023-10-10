@@ -834,7 +834,7 @@ class Levels(commands.Cog):
         )
         await ctx.reply(embed=embed)
 
-    @commands.command(description="See the level leaderboard")
+    @commands.command(description="See the level leaderboard", aliases=["lb", "levels"])
     @levels_is_activated()
     async def leaderboard(self, ctx: commands.Context):
         """sends the current leaderboard"""
