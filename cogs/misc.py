@@ -208,5 +208,18 @@ class misc(commands.Cog):
         emoji_url = emoji.url
         await ctx.send(f"Here's the image for the emoji {emoji.name}: {emoji_url}")
 
+    @commands.command(aliases=['pfp', 'icon'])
+    async def avatar(self, ctx, member: discord.Member = None):
+        if member is None:
+            member = ctx.author
+
+        avatar_url = member.display_avatar.url
+        embed = discord.Embed(color=0x2b2d31)
+        embed.set_image(url=avatar_url)
+        button = discord.ui.Button(label="Download", url=avatar_url, emoji="⬇")
+        view = discord.ui.View()
+        view.add_item(button)
+        await ctx.reply(embed=embed, view=view)
+
 async def setup(bot):
     await bot.add_cog(misc(bot))

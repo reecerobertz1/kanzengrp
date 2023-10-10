@@ -365,15 +365,6 @@ class Fun(commands.Cog):
         percentage = random.randint(0, 100)
         await ctx.send(f"{member.mention} is **{percentage}%** gay. 🏳️‍🌈")
 
-    @commands.command(aliases=['pfp', 'icon'],description="Get someone avatar")
-    async def avatar(self, ctx, member: discord.Member = None):
-        if member is None:
-            member = ctx.author
-
-        avatar_url = member.display_avatar.url
-
-        await ctx.reply(f"{avatar_url}")
-
     @commands.command(description="Search for gifs")
     async def giphy(self, ctx, *, search):
         api_key = "PF48beXJTbUkvh35ThoQ4t1qhyjleLwD"
