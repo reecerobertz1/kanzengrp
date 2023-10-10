@@ -5,7 +5,6 @@ import discord
 from discord.ext import commands
 from datetime import datetime
 from dispie import EmbedCreator
-from dispie import EmbedCreator
 
 class misc(commands.Cog):
     """Miscellaneous commands"""
