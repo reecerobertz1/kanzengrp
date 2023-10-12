@@ -24,6 +24,13 @@ class Economy(commands.Cog):
                 maxbank INTEGER
             )''')
 
+    def reece_only():
+        async def predicate(ctx):
+            role_id = 1121842279351590973
+            role = ctx.guild.get_role(role_id)
+            return role in ctx.author.roles
+        return commands.check(predicate)
+
     @commands.Cog.listener()
     async def on_ready(self):
         await self.init_database()
@@ -90,6 +97,7 @@ class Economy(commands.Cog):
 
     @commands.command(aliases=["bal"], description="Check your bank and wallet balance")
     @kanzen_only()
+    @reece_only()
     async def balance(self, ctx, user: discord.Member = None):
         user = user or ctx.author
         wallet_balance, bank_balance = await self.get_balance(user.id)
@@ -103,6 +111,7 @@ class Economy(commands.Cog):
 
     @commands.command(aliases=['dep'], description="Deposite money into your bank")
     @kanzen_only()
+    @reece_only()
     async def deposit(self, ctx, amount: int):
         if amount <= 0:
             return await ctx.send("Amount must be greater than 0.")
@@ -116,6 +125,7 @@ class Economy(commands.Cog):
 
     @commands.command(description="Withdraw money from your bank")
     @kanzen_only()
+    @reece_only()
     async def withdraw(self, ctx, amount: int):
         if amount <= 0:
             return await ctx.send("Amount must be greater than 0.")
@@ -127,6 +137,7 @@ class Economy(commands.Cog):
 
     @commands.command(description="Donate to ~~the poor~~ other members")
     @kanzen_only()
+    @reece_only()
     async def donate(self, ctx, user: discord.Member, amount: int):
         if amount <= 0:
             return await ctx.send("Amount must be greater than 0.")
@@ -140,7 +151,9 @@ class Economy(commands.Cog):
         await ctx.send(f"You gave {user.display_name} {amount} coins. {user.display_name}'s new balance is: Wallet: <a:coin:1154168127802843216> {new_wallet_balance} coins, Bank: <a:coin:1154168127802843216> {new_bank_balance} coins.")
 
     @commands.command(description="Beg celebs for coins")
+    @commands.cooldown(1, 10, commands.BucketType.user)
     @kanzen_only()
+    @reece_only()
     async def beg(self, ctx):
         celeb_names = [
             "Bill Gates",
@@ -166,6 +179,21 @@ class Economy(commands.Cog):
                 "'I could spare a few coins. After all, I'm Jeff Bezos.'",
                 "You get some coins from the ex-Amazon CEO.",
                 "Jeff Bezos donates some of his Amazon money to you."
+            ],
+            "Oprah Winfrey": [
+            "Oprah reaches into her pocket and gives you some coins!",
+            "'You get coins! You get coins! Everybody gets coins!' - Oprah",
+            "You receive a gift of coins from Oprah Winfrey."
+            ],
+            "Taylor Swift": [
+                "Taylor Swift hands you some coins with a smile.",
+                "'Coins for the fans!' - Taylor Swift",
+                "You get coins from the pop sensation, Taylor Swift."
+            ],
+            "Dwayne 'The Rock' Johnson": [
+                "'Can you smell what The Rock is giving?' - Dwayne Johnson",
+                "The Rock shares some of his success with you in coins.",
+                "You receive a 'Rock'-solid amount of coins from Dwayne Johnson."
             ]
         }
 
@@ -173,13 +201,21 @@ class Economy(commands.Cog):
         celeb_line = random.choice(celeb_lines.get(celeb_name, ["No coins for you."]))
         earnings = random.randint(1, 100)
         wallet_balance, _ = await self.update_balance(ctx.author.id, earnings, 0)
-        embed=discord.Embed(title=celeb_name, description=celeb_line)
+        embed=discord.Embed(title=celeb_name, description=celeb_line, color=0x2b2d31)
         embed.add_field(name="You received", value=f"<a:coin:1154168127802843216> {earnings}")
         embed.add_field(name="Your new wallet balance", value=f"<a:coin:1154168127802843216> {wallet_balance}")
         await ctx.reply(embed=embed)
 
+    @beg.error
+    async def beg_error(self, ctx, error):
+        if isinstance(error, commands.CommandOnCooldown):
+            seconds = round(error.retry_after)
+            await ctx.reply(f"You are on cooldown. Try again in {seconds} seconds.")
+
     @commands.command(description="Search locations for coins")
+    @commands.cooldown(1, 10, commands.BucketType.user)
     @kanzen_only()
+    @reece_only()
     async def search(self, ctx):
         search_responses = {
             'a park': [
@@ -229,11 +265,18 @@ class Economy(commands.Cog):
         else:
             await ctx.reply(response)
 
+    @search.error
+    async def search_error(self, ctx, error):
+        if isinstance(error, commands.CommandOnCooldown):
+            seconds = round(error.retry_after)
+            await ctx.reply(f"You are on cooldown. Try again in {seconds} seconds.")
+
     @commands.command(description="See the richest kanzen members")
     @kanzen_only()
+    @reece_only()
     async def wealth(self, ctx, page: int = 1):
         if page <= 0:
-            return await ctx.send("Page number must be greater than 0.")
+            return await ctx.send("There is currently no one on the leaderboard")
 
         async with self.pool.acquire() as conn:
             async with conn.cursor() as cursor:
@@ -291,6 +334,7 @@ class Economy(commands.Cog):
 
     @commands.command(description="See what is in the shop")
     @kanzen_only()
+    @reece_only()
     async def shop(self, ctx):
         shop_items = {
             "Cookie": 10,
@@ -318,6 +362,7 @@ class Economy(commands.Cog):
 
     @commands.command(description="Buy items from the shop")
     @kanzen_only()
+    @reece_only()
     async def buy(self, ctx, item: str, quantity: int = 1):
         shop_items = {
             "Cookie": 10,
@@ -329,34 +374,29 @@ class Economy(commands.Cog):
             "Car": 1000,
         }
 
-        item = item.capitalize()  # Capitalize item name for case-insensitive matching
+        item = item.capitalize()
 
         if item not in shop_items:
             return await ctx.send("Item not found in the shop.")
 
-        price = shop_items[item] * quantity  # Calculate the total price for the specified quantity
+        price = shop_items[item] * quantity
         wallet_balance, _ = await self.get_balance(ctx.author.id)
-
         if wallet_balance < price:
             return await ctx.send("You don't have enough coins to buy this item.")
 
         new_wallet_balance, _ = await self.update_balance(ctx.author.id, -price, 0)
-
-        # Check if the item is already in the user's inventory
         async with self.pool.acquire() as conn:
             async with conn.cursor() as cursor:
                 await cursor.execute("SELECT quantity FROM inventory WHERE user = ? AND item = ?", (ctx.author.id, item))
                 row = await cursor.fetchone()
 
         if row:
-            # Update the quantity if the item already exists in the inventory
             async with self.pool.acquire() as conn:
                 async with conn.cursor() as cursor:
                     new_quantity = row[0] + quantity
                     await cursor.execute("UPDATE inventory SET quantity = ? WHERE user = ? AND item = ?", (new_quantity, ctx.author.id, item))
                     await conn.commit()
         else:
-            # Insert the purchased item into the inventory table
             async with self.pool.acquire() as conn:
                 async with conn.cursor() as cursor:
                     await cursor.execute("INSERT INTO inventory (user, item, quantity) VALUES (?, ?, ?)", (ctx.author.id, item, quantity))
@@ -366,6 +406,7 @@ class Economy(commands.Cog):
 
     @commands.command(description="See what items you have")
     @kanzen_only()
+    @reece_only()
     async def inventory(self, ctx):
         async with self.pool.acquire() as conn:
             async with conn.cursor() as cursor:
@@ -392,6 +433,7 @@ class Economy(commands.Cog):
 
     @commands.command(description="Sell your unwanted items")
     @kanzen_only()
+    @reece_only()
     async def sell(self, ctx, item: str, quantity: int = 1):
         shop_items = {
             "Cookie": 10,
@@ -402,14 +444,12 @@ class Economy(commands.Cog):
             "Car": 1000,
         }
 
-        item = item.capitalize()  # Capitalize item name for case-insensitive matching
+        item = item.capitalize()
 
         if item not in shop_items:
             return await ctx.send("Item not found in the shop.")
 
-        price = shop_items[item] * quantity  # Calculate the total price for the specified quantity
-
-        # Check if the item is in the user's inventory
+        price = shop_items[item] * quantity
         async with self.pool.acquire() as conn:
             async with conn.cursor() as cursor:
                 await cursor.execute("SELECT quantity FROM inventory WHERE user = ? AND item = ?", (ctx.author.id, item))
@@ -417,28 +457,23 @@ class Economy(commands.Cog):
 
         if not row or row[0] < quantity:
             return await ctx.send("You don't have enough of this item to sell.")
-
-        # Calculate the amount to give back to the user (70% of the purchase price)
         sell_price = int(price * 0.7)
         wallet_balance, _ = await self.get_balance(ctx.author.id)
         new_wallet_balance, _ = await self.update_balance(ctx.author.id, sell_price, 0)
-
-        # Update the quantity in the user's inventory
         async with self.pool.acquire() as conn:
             async with conn.cursor() as cursor:
                 new_quantity = row[0] - quantity
                 if new_quantity <= 0:
-                    # If the quantity becomes zero, remove the item from the inventory
                     await cursor.execute("DELETE FROM inventory WHERE user = ? AND item = ?", (ctx.author.id, item))
                 else:
-                    # Otherwise, update the quantity
                     await cursor.execute("UPDATE inventory SET quantity = ? WHERE user = ? AND item = ?", (new_quantity, ctx.author.id, item))
                 await conn.commit()
 
         await ctx.send(f"You have successfully sold {quantity} {item}(s) for <a:coin:1154168127802843216> {sell_price} coins. Your new wallet balance is <a:coin:1154168127802843216> {new_wallet_balance} coins.")
 
-    @commands.command(hidden=True)
+    @commands.command()
     @kanzen_only()
+    @reece_only()
     async def newshop(self, ctx):
         categories = [
             "Badges",
@@ -456,17 +491,13 @@ class Economy(commands.Cog):
         placeholder="Select a category",
         options=[discord.SelectOption(label=category, emoji=emoji, description=description) for category, emoji, description in zip(categories, emojis, descriptions)]
         )
-
         about_hoshi_embed = discord.Embed(description="owner info:\n<a:Arrow_1:1145603161701224528> Hoshi is owned by [Reece](https://instagram.com/remqsi)\n<a:Arrow_1:1145603161701224528> Reece coded Hoshi in [Visual Studio Code](https://code.visualstudio.com/)\n\ndevelopment info:\n<a:Arrow_1:1145603161701224528> Hoshi is coded in Python 3.11.4\n<a:Arrow_1:1145603161701224528> [Download Python 3.11.4](https://www.python.org/downloads/)\n<a:Arrow_1:1145603161701224528> Developed by [Reece](https://instagram.com/remqsi) with help from [Alex](https://instagram.com/rqinflow)\n\nextra info:\n<a:Arrow_1:1145603161701224528> Hoshi's prefix is `+`\n<a:Arrow_1:1145603161701224528> Hoshi was made for [**__Kanzengrp__**](https://instagram.com/kanzengrp)\n\nbug reports\n<a:Arrow_1:1145603161701224528> Use __+report__ to report bug reports!" ,color=0x2b2d31)
         about_hoshi_embed.set_thumbnail(url=ctx.guild.icon)
         about_hoshi_embed.set_author(name="About Hoshi", icon_url=self.bot.user.display_avatar.url)
         about_hoshi_embed.set_footer(text="Home Page", icon_url=ctx.author.avatar)
-
         view = discord.ui.View()
         view.add_item(dropdown)
-
         message = await ctx.send(embed=about_hoshi_embed, view=view)
-
         async def dropdown_callback(interaction: discord.Interaction):
             selected_category = interaction.data["values"][0]
             if selected_category == categories[0]:
@@ -485,8 +516,9 @@ class Economy(commands.Cog):
             await interaction.response.edit_message(embed=embed, view=view)
         dropdown.callback = dropdown_callback
 
-    @commands.command(hidden=True)
+    @commands.command()
     @kanzen_only()
+    @reece_only()
     # @commands.cooldown(1, 10, commands.BucketType.user)
     async def fish(self, ctx):
         user_id = ctx.author.id
