@@ -24,13 +24,6 @@ class Economy(commands.Cog):
                 maxbank INTEGER
             )''')
 
-    def reece_only():
-        async def predicate(ctx):
-            role_id = 1121842279351590973
-            role = ctx.guild.get_role(role_id)
-            return role in ctx.author.roles
-        return commands.check(predicate)
-
     @commands.Cog.listener()
     async def on_ready(self):
         await self.init_database()
@@ -97,7 +90,6 @@ class Economy(commands.Cog):
 
     @commands.command(aliases=["bal"], description="Check your bank and wallet balance")
     @kanzen_only()
-    @reece_only()
     async def balance(self, ctx, user: discord.Member = None):
         user = user or ctx.author
         wallet_balance, bank_balance = await self.get_balance(user.id)
@@ -111,7 +103,6 @@ class Economy(commands.Cog):
 
     @commands.command(aliases=['dep'], description="Deposite money into your bank")
     @kanzen_only()
-    @reece_only()
     async def deposit(self, ctx, amount: int):
         if amount <= 0:
             return await ctx.send("Amount must be greater than 0.")
@@ -125,7 +116,6 @@ class Economy(commands.Cog):
 
     @commands.command(description="Withdraw money from your bank")
     @kanzen_only()
-    @reece_only()
     async def withdraw(self, ctx, amount: int):
         if amount <= 0:
             return await ctx.send("Amount must be greater than 0.")
@@ -137,7 +127,6 @@ class Economy(commands.Cog):
 
     @commands.command(description="Donate to ~~the poor~~ other members")
     @kanzen_only()
-    @reece_only()
     async def donate(self, ctx, user: discord.Member, amount: int):
         if amount <= 0:
             return await ctx.send("Amount must be greater than 0.")
@@ -153,7 +142,6 @@ class Economy(commands.Cog):
     @commands.command(description="Beg celebs for coins")
     @commands.cooldown(1, 10, commands.BucketType.user)
     @kanzen_only()
-    @reece_only()
     async def beg(self, ctx):
         celeb_names = [
             "Bill Gates",
@@ -215,7 +203,6 @@ class Economy(commands.Cog):
     @commands.command(description="Search locations for coins")
     @commands.cooldown(1, 10, commands.BucketType.user)
     @kanzen_only()
-    @reece_only()
     async def search(self, ctx):
         search_responses = {
             'a park': [
@@ -273,7 +260,6 @@ class Economy(commands.Cog):
 
     @commands.command(description="See the richest kanzen members")
     @kanzen_only()
-    @reece_only()
     async def wealth(self, ctx, page: int = 1):
         if page <= 0:
             return await ctx.send("There is currently no one on the leaderboard")
@@ -334,7 +320,6 @@ class Economy(commands.Cog):
 
     @commands.command(description="See what is in the shop")
     @kanzen_only()
-    @reece_only()
     async def shop(self, ctx):
         shop_items = {
             "Cookie": 10,
@@ -362,7 +347,6 @@ class Economy(commands.Cog):
 
     @commands.command(description="Buy items from the shop")
     @kanzen_only()
-    @reece_only()
     async def buy(self, ctx, item: str, quantity: int = 1):
         shop_items = {
             "Cookie": 10,
@@ -406,7 +390,6 @@ class Economy(commands.Cog):
 
     @commands.command(description="See what items you have")
     @kanzen_only()
-    @reece_only()
     async def inventory(self, ctx):
         async with self.pool.acquire() as conn:
             async with conn.cursor() as cursor:
@@ -433,7 +416,6 @@ class Economy(commands.Cog):
 
     @commands.command(description="Sell your unwanted items")
     @kanzen_only()
-    @reece_only()
     async def sell(self, ctx, item: str, quantity: int = 1):
         shop_items = {
             "Cookie": 10,
@@ -471,9 +453,8 @@ class Economy(commands.Cog):
 
         await ctx.send(f"You have successfully sold {quantity} {item}(s) for <a:coin:1154168127802843216> {sell_price} coins. Your new wallet balance is <a:coin:1154168127802843216> {new_wallet_balance} coins.")
 
-    @commands.command()
+    @commands.command(hidden=True)
     @kanzen_only()
-    @reece_only()
     async def newshop(self, ctx):
         categories = [
             "Badges",
@@ -516,9 +497,8 @@ class Economy(commands.Cog):
             await interaction.response.edit_message(embed=embed, view=view)
         dropdown.callback = dropdown_callback
 
-    @commands.command()
+    @commands.command(hidden=True)
     @kanzen_only()
-    @reece_only()
     # @commands.cooldown(1, 10, commands.BucketType.user)
     async def fish(self, ctx):
         user_id = ctx.author.id
