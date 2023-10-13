@@ -12,34 +12,6 @@ from discord.ui import View, Select
 from typing import List, Optional
 from discord import ui
 
-class trickortreat(discord.ui.View):
-    def __init__ (self):
-        super().__init__(timeout=None)
-        self.value = None
-
-    @discord.ui.button(label="Join", emoji="<a:pumpkin:1151485353585295475>")
-    async def Join(self, interaction: discord.Interaction, button: discord.Button):
-        await interaction.response.send_modal(tt())
-
-class tt(ui.Modal, title='Trick or Treat'):
-    instagram = ui.TextInput(label='Instagram username', placeholder="Enter your Instagram username here...", style=discord.TextStyle.short)
-    biases = ui.TextInput(label='Who do you want your partner to edit?', placeholder="", style=discord.TextStyle.long)
-    async def on_submit(self, interaction: discord.Interaction):
-        await interaction.response.defer()
-        try:
-            with open('biases.json', 'r') as file:
-                biases_data = json.load(file)
-        except FileNotFoundError:
-            biases_data = []
-        user_data = {
-            'instagram': self.instagram.value,
-            'reason': self.biases.value
-        }
-        biases_data.append(user_data)
-        with open('biases.json', 'w') as file:
-            json.dump(biases_data, file, indent=4)
-        await interaction.followup.send(f'You have joined the tick or treat event!', ephemeral=True)
-
 class infobuttons(discord.ui.View):
     def __init__ (self):
         super().__init__(timeout=None)
@@ -494,7 +466,7 @@ class kanzen(commands.Cog):
     async def info(self, ctx):
         embed = discord.Embed(description="### <:k1:1162416090975055922><:k2:1162416110323380234><:k3:1162416125548691488><:k4:1162416144574070915><:k6:1162416161334513694><:k7:1162416178535342102><:k8:1162416201314615367> !\n> Thank you for joining Kanzengrp! We hope you have a good time!\n> If you ever need any help feel free to ping @lead or @staff\n> \n> To get the logos press the logos button below! And if you need\n> to send an inactivity message, you can click the inactive button!", color=0x2b2d31)
         view = infobuttons()
-        embed2 = discord.Embed(description='### <:r1:1162417579474821171><:r2:1162417581077057650><:r3:1162417582356308051><:r4:1162417584797393088><:r5:1162417587255259337>\n<a:Arrow_1:1145603161701224528> always watermark the logos\n<a:Arrow_1:1145603161701224528> do not share the logos link outside the server!\n<a:Arrow_1:1145603161701224528> make sure you are following [@remqsi](https://www.instagram.com/kanzengrp/) + [@kanzengrp](https://www.instagram.com/kanzengrp/)\n<a:Arrow_1:1145603161701224528> if you do ever decide to leave the grp, or move accounts. please let lead or staff know!\n\n### <:c0:1162417704825782343><:c1:1162417697187975208><:c2:1162417699658420244><:c3:1162417700996391003><:c4:1162417702745419818>\n<a:Arrow_1:1145603161701224528> please be as active as possible!\n<a:Arrow_1:1145603161701224528> no using any slurs / words that can be offensive!\n<a:Arrow_1:1145603161701224528> please set your nickname as "your name | username"\n<a:Arrow_1:1145603161701224528> no impersonation as other editors\n<a:Arrow_1:1145603161701224528> no trash talking other editors and groups!', color=0x2b2d31)
+        embed2 = discord.Embed(description='### <:r1:1162417579474821171><:r2:1162417581077057650><:r3:1162417582356308051><:r4:1162417584797393088><:r5:1162417587255259337>\n<a:Arrow_1:1145603161701224528> always watermark the logos\n<a:Arrow_1:1145603161701224528> do not share the logos link outside the server!\n<a:Arrow_1:1145603161701224528> make sure you are following [@remqsi](https://www.instagram.com/kanzengrp/) + [@kanzengrp](https://www.instagram.com/kanzengrp/)\n<a:Arrow_1:1145603161701224528> if you do ever decide to leave the grp, or move accounts. please let lead or staff know!\n\n### <:c0_:1162417704825782343><:c0:1162417704825782343><:c1:1162417697187975208><:c2:1162417699658420244><:c3:1162417700996391003><:c4:1162417702745419818>\n<a:Arrow_1:1145603161701224528> please be as active as possible!\n<a:Arrow_1:1145603161701224528> no using any slurs / words that can be offensive!\n<a:Arrow_1:1145603161701224528> please set your nickname as "your name | username"\n<a:Arrow_1:1145603161701224528> no impersonation as other editors\n<a:Arrow_1:1145603161701224528> no trash talking other editors and groups!', color=0x2b2d31)
         embed2.set_image(url="https://cdn.discordapp.com/attachments/1121841074512605186/1154928824421728276/banner_welc_00000.png")
         embed.set_author(name="Kanzengrp", icon_url="https://cdn.discordapp.com/icons/1121841073673736215/a_3e9040a87fb77b1ca0ee22eb3654c0d7.gif?size=4096")
         await ctx.send(embed=embed)
@@ -636,40 +608,6 @@ class kanzen(commands.Cog):
         embed.set_footer(text="Use the buttons to select/deselect a role!")
         view=other()
         await ctx.send(embed=embed, view=view)
-
-    @commands.command()
-    async def halloweentot(self, ctx):
-        view=trickortreat()
-        await ctx.send("🎃 **HALLOWEEN TRICK OR TREAT**\nThis year, instead of Secret Santa, we're doing a Halloween twist!\n\n**HOW IT WORKS:**\n- Everyone gets paired up randomly.\n- Click the ''join'' button below and share your Instagram username and a list of your favorite things (if you have a long list, just send your top favorites).\n- Now, you can either make your partner's day by sharing something they love or play a little trick by sharing something related to someone else.\n- Don't forget to use __**#kanzentrickortreat**__ when you share your post.\n- If you join, you'll get a message from <@849682093575372841> on October 1st with your partner's details.\n\n**EXTRA INFO:**\n- Participating in this event earns you **3500xp**.\n- You can post your edit anytime in October.", view=view)
-
-    @commands.command()
-    async def totpartners(self, ctx):
-        try:
-            with open('biases.json', 'r') as file:
-                biases_data = json.load(file)
-        except FileNotFoundError:
-            biases_data = []
-        random.shuffle(biases_data)
-        pairs = []
-        for i in range(0, len(biases_data), 2):
-            user1_data = biases_data[i]
-            user2_data = biases_data[i + 1] if i + 1 < len(biases_data) else None
-
-            user1_instagram = user1_data.get('instagram', 'No Instagram')
-            user2_instagram = user2_data.get('instagram', 'No Instagram') if user2_data else "No partner"
-
-            user1_reason = user1_data.get('reason', 'No Reason')
-            user2_reason = user2_data.get('reason', 'No Reason') if user2_data else "No Reason"
-
-            pairs.append(f"**Partners**\n\"{user1_instagram}\" - \"{user1_reason}\"\n\"{user2_instagram}\" - \"{user2_reason}\"")
-        await ctx.send('\n'.join(pairs))
-
-    @commands.command()
-    async def dmpartner(self, ctx, user: discord.Member, *, message: str):
-        embed = discord.Embed(title="**Halloween Trick or Treat**", description=message, color=0x2b2d31)
-        embed.set_thumbnail(url=ctx.guild.icon)
-        embed.set_footer(text="Have fun Trick or Treating!", icon_url=user.avatar)
-        await user.send(embed=embed)
 
 async def setup(bot):
     await bot.add_cog(kanzen(bot))
