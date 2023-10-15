@@ -87,32 +87,80 @@ class editing(commands.Cog):
         person = random.choice(choices)
         await ctx.reply(person)
 
-    def colorscheme(self) -> BytesIO:
-        with open("json files/colors.json", "r") as f:
-            schemes = json.load(f)
-            colors = random.choice(schemes)
-        font = ImageFont.truetype("Montserrat-Bold.ttf", 20)
-        s = 200
-        img = Image.new('RGB', (s*len(colors), 225), (255, 255, 255))
-        for i, color in enumerate(colors):
-            col = Image.new('RGBA', (s, s+25), color)
-            img.paste(col, (i*s, 0))
-            draw = ImageDraw.Draw(img, 'RGBA')
-            draw.rectangle(((i*s, s), ((i+1)*s, s+25)), (0, 0, 0, 65))
-            draw.text(((i+0.5)*s, s), f"{color.upper()}", color, font=font, anchor="ma")
-        buf = BytesIO()
-        img.save(buf, 'PNG')
-        buf.seek(0)
-        return buf
-
-    @commands.command(description="Get a random color scheme for edits")
-    async def cs(self, ctx):
-        try:
-            image_buffer = self.colorscheme()
-            await ctx.send(file=discord.File(image_buffer, filename="color_palette.png"))
-
-        except Exception as e:
-            await ctx.send(f"An error occurred: {e}")
+    @commands.command(aliases=["cs"], description="Get a random color scheme for edits")
+    async def colorscheme(self, ctx):
+        choices = ["https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-1.png",
+                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-2.png",
+                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-3.png",
+                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-4.png",
+                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-5.png",
+                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-6.png",
+                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-7.png",
+                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-8.png",
+                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-9.png",
+                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-10.png",
+                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-11.png",
+                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-12.png",
+                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-13.png",
+                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-14.png",
+                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-15.png",
+                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-16.png",
+                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-17.png",
+                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-18.png",
+                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-19.png",
+                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-20.png",
+                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-21.png",
+                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-22.png",
+                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-23.png",
+                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-24.png",
+                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-25.png",
+                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-26.png",
+                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-27.png",
+                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-28.png",
+                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-29.png",
+                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-30.png",
+                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-31.png",
+                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-32.png",
+                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-33.png",
+                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-34.png",
+                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-35.png",
+                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-36.png",
+                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-37.png",
+                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-38.png",
+                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-39.png",
+                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-40.png",
+                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-41.png",
+                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-42.png",
+                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-43.png",
+                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-44.png",
+                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-45.png",
+                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-46.png",
+                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-47.png",
+                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654004233089194/dfgsg.png",
+                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654004564426762/dfgsgf.png",
+                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654004782542919/dfgsdgd_1.png",
+                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654005046779975/dfgsdgf.png",
+                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654005340385310/dfsgsdfg.png",
+                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654005566873672/dsfgdfgd.png",
+                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654005772406915/dfgsdgdf.png",
+                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654006045024266/fdgsdfgd.png",
+                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654006284112042/dfsgdfgdf.png",
+                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654006565122109/sdgsdf.png",
+                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654067684507803/dsfgdgf.png",
+                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654067961335870/sdfgsfd.png",
+                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654068313653418/fsdgdg.png",
+                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654068724711474/dsfgsdfg.png",
+                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654069148323920/dfgsdgd.png",
+                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654069404188682/sdfg.png",
+                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654069647446166/gsdfgdf.png",
+                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654069911683102/dfasf.png",
+                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654070347907262/cs2.png",
+                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654070624718968/cs1.png",
+                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654081974513684/cs5.png",
+                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654082280702113/cs4.png",
+                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654082570113134/cs3.png"]
+        rancolor = random.choice(choices)
+        await ctx.reply(rancolor)
 
     @commands.command(description="Add your own edits to Hoshi")
     async def addedit(self, ctx, link):
@@ -140,7 +188,6 @@ class editing(commands.Cog):
         await self._add_audio(ctx, "./json files/softaudios.json", link)
         await log.send(embed=embed, view=view)
 
-
     @commands.command(description="Add a hot audio")
     async def addhot(self, ctx, link):
         button = discord.ui.Button(label="Click to hear audio", url=f"{link}")
@@ -151,6 +198,18 @@ class editing(commands.Cog):
         embed = discord.Embed(title="Added hot audio", description=f"`{ctx.author.display_name}` has added a hot audio!", color=0x2b2d31)
         embed.set_footer(text=f"id: {ctx.author.id}", icon_url=ctx.author.display_avatar)
         await self._add_audio(ctx, "./json files/hotaudios.json", link)
+        await log.send(embed=embed, view=view)
+
+    @commands.command(description="Add a collab audio")
+    async def addcollab(self, ctx, link):
+        button = discord.ui.Button(label="Click to hear audio", url=f"{link}")
+
+        view = discord.ui.View()
+        view.add_item(button)
+        log = self.bot.get_channel(1122627075682078720)
+        embed = discord.Embed(title="Added collab audio", description=f"`{ctx.author.display_name}` has added a collab audio!", color=0x2b2d31)
+        embed.set_footer(text=f"id: {ctx.author.id}", icon_url=ctx.author.display_avatar)
+        await self._add_audio(ctx, "./json files/collabaudios.json", link)
         await log.send(embed=embed, view=view)
 
     @commands.group(invoke_without_command=True, description="See the command categories for audios")
@@ -173,6 +232,13 @@ class editing(commands.Cog):
             audios = json.load(f)
             choice = random.choice(audios)
             await ctx.reply(f"Add a hot audio with `+addhot`\n[here is the audio]({choice})")
+
+    @audio.command(description="Use the command +audio collab for collab audios")
+    async def collab(self, ctx):
+        with open("./json files/collabaudios.json", "r") as f:
+            audios = json.load(f)
+            choice = random.choice(audios)
+            await ctx.reply(f"Add a collab audio with `+addcollab`\n[here is the audio]({choice})")
 
 async def setup(bot):
     await bot.add_cog(editing(bot))
