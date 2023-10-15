@@ -208,7 +208,7 @@ class Moderation(commands.Cog):
     @commands.command(hidden=True)
     @commands.has_permissions(manage_guild=True)
     async def hoshiupdate(self, ctx, message: str):
-        embed = discord.Embed(title='HOSHI REVAMP', description=message, color=0x2b2d31)
+        embed = discord.Embed(title='NEW COMMAND', description=message, color=0x2b2d31)
         embed.set_footer(text="Go and use these commands in Hoshi's channel!")
         embed.set_author(name="Hoshi#3105", icon_url=self.bot.user.display_avatar.url)
         message = await ctx.reply("Are you sure you want to send this update message?", embed=embed)
