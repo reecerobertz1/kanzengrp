@@ -468,7 +468,7 @@ class kanzen(commands.Cog):
         view = infobuttons()
         embed2 = discord.Embed(description='### Group Rules:\n<a:Arrow_1:1145603161701224528> always watermark the logos\n<a:Arrow_1:1145603161701224528> do not share the logos link outside the server!\n<a:Arrow_1:1145603161701224528> make sure you are following [@remqsi](https://www.instagram.com/kanzengrp/) + [@kanzengrp](https://www.instagram.com/kanzengrp/)\n<a:Arrow_1:1145603161701224528> if you do ever decide to leave the grp, or move accounts. please let lead or staff know!\n\n### Chat Rules:\n<a:Arrow_1:1145603161701224528> please be as active as possible!\n<a:Arrow_1:1145603161701224528> no using any slurs / words that can be offensive!\n<a:Arrow_1:1145603161701224528> please set your nickname as "your name | username"\n<a:Arrow_1:1145603161701224528> no impersonation as other editors\n<a:Arrow_1:1145603161701224528> no trash talking other editors and groups!', color=0x2b2d31)
         embed2.set_image(url="https://cdn.discordapp.com/attachments/1121841074512605186/1154928824421728276/banner_welc_00000.png")
-        embed.set_author(name="Kanzengrp", icon_url="https://cdn.discordapp.com/icons/1121841073673736215/a_3e9040a87fb77b1ca0ee22eb3654c0d7.gif?size=4096")
+        embed.set_author(name="Kanzengrp", icon_url="https://cdn.discordapp.com/icons/1121841073673736215/a_2589a17d1463e51248bd02fd9af3e01a.gif?size=1024")
         await ctx.send(embed=embed)
         await ctx.send(embed=embed2, view=view)
 
