@@ -60,9 +60,9 @@ class ia(ui.Modal, title='Inactivity Message'):
      async def on_submit(self, interaction: discord.Interaction):
           await interaction.response.defer()
           embed = discord.Embed(title='Inactivity Message', color=0x2b2d31)
-          embed.add_field(name="Instagram Username", value=self.instagram.value)
-          embed.add_field(name="Instagram Link", value=f"https://instagram.com/{self.instagram.value}")
-          embed.add_field(name="Reason", value=self.reason.value)
+          embed.add_field(name="Instagram Username", value=self.instagram.value, inline=False)
+          embed.add_field(name="Instagram Link", value=f"https://instagram.com/{self.instagram.value}", inline=False)
+          embed.add_field(name="Reason", value=self.reason.value, inline=False)
           embed.set_author(name=f"sent by {interaction.user.name}", icon_url=interaction.user.avatar)
           embed.set_footer(text=interaction.user.id, icon_url=interaction.guild.icon)
           channel = interaction.client.get_channel(1121913672822968330)
