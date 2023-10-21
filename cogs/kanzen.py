@@ -59,22 +59,6 @@ class ia(ui.Modal, title='Inactivity Message'):
     reason = ui.TextInput(label='Inactivity Reason', placeholder="", style=discord.TextStyle.long)
     async def on_submit(self, interaction: discord.Interaction):
         await interaction.response.defer()
-        user_id = interaction.user.id
-        user_mention = f'<@{user_id}>'
-        inactive_members = []
-        try:
-            with open('inactive_members.json', 'r') as file:
-                inactive_members = json.load(file)
-        except FileNotFoundError:
-            pass
-        user_data = {
-            'instagram': self.instagram.value,
-            'reason': self.reason.value
-        }
-        inactive_members.append(user_data)
-        with open('inactive_members.json', 'w') as file:
-            json.dump(inactive_members, file)
-
         embed = discord.Embed(title='Inactivity Message', color=0x2b2d31)
         embed.add_field(name='Instagram Name:', value=f'{self.instagram.value}', inline=False)
         embed.add_field(name='Instagram Account Link:', value=f'https://instagram.com/{self.instagram.value}', inline=False)
