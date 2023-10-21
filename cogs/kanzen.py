@@ -65,11 +65,9 @@ class ia(ui.Modal, title='Inactivity Message'):
           embed.add_field(name="Reason", value=self.reason.value)
           embed.set_author(name=f"sent by {interaction.user.name}", icon_url=interaction.user.avatar)
           embed.set_footer(text=interaction.user.id, icon_url=interaction.guild.icon)
-          channel = interaction.client.get_channel(1145568921987059802)
-          suggestion = await channel.send(embed=embed)
+          channel = interaction.client.get_channel(1121913672822968330)
+          await channel.send(embed=embed)
           await interaction.followup.send(f'Your suggestion has been sent successfully', ephemeral=True)
-          await suggestion.add_reaction("<:LIKE:1146004608154607627>")
-          await suggestion.add_reaction("<:DISLIKE:1146004603834478602>")
 
 class suggest(ui.Modal, title='Suggestions'):
      suggestion = ui.TextInput(label='What would you like to suggest?', placeholder="Put suggestion here...", style=discord.TextStyle.long)
