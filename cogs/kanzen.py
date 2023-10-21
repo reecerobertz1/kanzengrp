@@ -55,18 +55,21 @@ class getlogos(discord.ui.View):
         await interaction.followup.send("#𝗞𝗮𝗻𝘇𝗲𝗻𝗴𝗿𝗽")
 
 class ia(ui.Modal, title='Inactivity Message'):
-    instagram = ui.TextInput(label='Instagram username', placeholder="Enter your Instagram username here...", style=discord.TextStyle.short)
-    reason = ui.TextInput(label='Inactivity Reason', placeholder="", style=discord.TextStyle.long)
-    async def on_submit(self, interaction: discord.Interaction):
-        await interaction.response.defer()
-        embed = discord.Embed(title='Inactivity Message', color=0x2b2d31)
-        embed.add_field(name='Instagram Name:', value=f'{self.instagram.value}', inline=False)
-        embed.add_field(name='Instagram Account Link:', value=f'https://instagram.com/{self.instagram.value}', inline=False)
-        embed.add_field(name='Inactivity Reason:', value=f'{self.reason.value}', inline=False)
-        embed.add_field(name="Discord ID:", value=interaction.user.id, inline=False)
-        channel = interaction.client.get_channel(1121913672822968330)
-        await channel.send(embed=embed)
-        await interaction.followup.send(f'Your inactive message has been sent successfully', ephemeral=True)
+     instagram = ui.TextInput(label='What is your instagram username?', placeholder="Put username here...", style=discord.TextStyle.short)
+     reason = ui.TextInput(label='What is your reason?', placeholder="Put reason here...", style=discord.TextStyle.long)
+     async def on_submit(self, interaction: discord.Interaction):
+          await interaction.response.defer()
+          embed = discord.Embed(title='Inactivity Message', color=0x2b2d31)
+          embed.add_field(name="Instagram Username", value=self.instagram.value)
+          embed.add_field(name="Instagram Link", value=f"https://instagram.com/{self.instagram.value}")
+          embed.add_field(name="Reason", value=self.reason.value)
+          embed.set_author(name=f"sent by {interaction.user.name}", icon_url=interaction.user.avatar)
+          embed.set_footer(text=interaction.user.id, icon_url=interaction.guild.icon)
+          channel = interaction.client.get_channel(1145568921987059802)
+          suggestion = await channel.send(embed=embed)
+          await interaction.followup.send(f'Your suggestion has been sent successfully', ephemeral=True)
+          await suggestion.add_reaction("<:LIKE:1146004608154607627>")
+          await suggestion.add_reaction("<:DISLIKE:1146004603834478602>")
 
 class suggest(ui.Modal, title='Suggestions'):
      suggestion = ui.TextInput(label='What would you like to suggest?', placeholder="Put suggestion here...", style=discord.TextStyle.long)
