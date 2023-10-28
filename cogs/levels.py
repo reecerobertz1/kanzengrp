@@ -365,7 +365,7 @@ class Levels(commands.Cog):
         lead_roles_x = (card.width - roles_img.width) // 2
         lead_roles_y = (card.height - roles_img.height) // 2
         card.paste(roles_img, (lead_roles_x, lead_roles_y), roles_img)
-        lead_role_id = 1167692870141100052
+        lead_role_id = 1121842279351590973
         has_lead_role = any(role.id == lead_role_id for role in user.roles)
         if has_lead_role:
             special_role_img = Image.open('./assets/lead.png')
@@ -373,7 +373,7 @@ class Levels(commands.Cog):
             custom_x = 1250
             custom_y = 365
             card.paste(special_role_img, (custom_x, custom_y), special_role_img)
-        staff_role_id = 1167692870141100052
+        staff_role_id = 1135244903165722695
         has_staff_role = any(role.id == staff_role_id for role in user.roles)
         if has_staff_role:
             staff_role_img = Image.open('./assets/staff.png')
@@ -381,7 +381,7 @@ class Levels(commands.Cog):
             custom_x = 1050
             custom_y = 365
             card.paste(staff_role_img, (custom_x, custom_y), staff_role_img)
-        booster_role_id = 1167692870141100052
+        booster_role_id = 1128460924886458489
         has_booster_role = any(role.id == booster_role_id for role in user.roles)
         if has_booster_role:
             booster_role_img = Image.open('./assets/booster.png')
@@ -389,7 +389,7 @@ class Levels(commands.Cog):
             custom_x = 850
             custom_y = 365
             card.paste(booster_role_img, (custom_x, custom_y), booster_role_img)
-        top20_role_id = 1167692870141100052
+        top20_role_id = 1125233965599555615
         has_top20_role = any(role.id == top20_role_id for role in user.roles)
         if has_top20_role:
             top20_role_img = Image.open('./assets/top20.png')
@@ -397,7 +397,7 @@ class Levels(commands.Cog):
             custom_x = 650
             custom_y = 365
             card.paste(top20_role_img, (custom_x, custom_y), top20_role_img)
-        zennies_role_id = 1167692870141100052
+        zennies_role_id = 1121842393994494082
         has_zennies_role = any(role.id == zennies_role_id for role in user.roles)
         if has_zennies_role:
             zennies_role_img = Image.open('./assets/zennies.png')
