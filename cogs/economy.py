@@ -6,6 +6,8 @@ import discord
 from discord.ext import commands
 import asqlite
 from utils.views import Paginator
+from easy_pil import Font
+from PIL import Image, ImageDraw, ImageFont
 
 class Economy(commands.Cog):
     """Commands for the economy system"""
@@ -91,15 +93,38 @@ class Economy(commands.Cog):
     @commands.command(aliases=["bal"], description="Check your bank and wallet balance")
     @kanzen_only()
     async def balance(self, ctx, user: discord.Member = None):
-        user = user or ctx.author
-        wallet_balance, bank_balance = await self.get_balance(user.id)
-        embed = discord.Embed(
-            title=f'Balance for {user.display_name}',
-            color=0x2b2d31
-        )
-        embed.add_field(name='Wallet', value=f'<a:coin:1154168127802843216> {wallet_balance} coins')
-        embed.add_field(name='Bank', value=f'<a:coin:1154168127802843216> {bank_balance} coins')
-        await ctx.send(embed=embed)
+        async with ctx.typing():
+            user = user or ctx.author
+            wallet_balance, bank_balance = await self.get_balance(user.id)
+            avatar_url = ctx.author.avatar.url
+            async with self.bot.session.get(avatar_url) as response:
+                if response.status == 200:
+                    avatar_data = await response.read()
+                else:
+                    avatar_data = None
+
+            img = Image.open('./assets/bank_card.png')
+            draw = ImageDraw.Draw(img)
+            if avatar_data:
+                avatar = BytesIO(avatar_data)
+                avatar_paste, circle = self._get_round_avatar(avatar)
+                img.paste(avatar_paste, (35, 250), circle)
+
+            poppins = Font.poppins(size=25)
+            poppins_small = Font.poppins(size=25)
+            display_name_parts = ctx.author.display_name.split('|')
+            display_name = display_name_parts[0].strip() if display_name_parts else ctx.author.display_name
+            draw.text((75, 245), display_name, font=poppins_small)
+            draw.text((75, 115), f'wallet: {str(wallet_balance)}', '#FDCA04', font=poppins)
+            draw.text((75, 165), f'bank: {str(bank_balance)}', font=poppins)
+            coin_img = Image.open('./assets/coin.png')
+            coin_img = coin_img.resize((40, 40))
+            bank_img = Image.open('./assets/bank.png')
+            bank_img = bank_img.resize((40, 40))
+            img.paste(coin_img, (25, 115), coin_img)
+            img.paste(bank_img, (25, 165), bank_img)
+            img.save("bank.png")
+            await ctx.reply(file=discord.File("bank.png"))
 
     @commands.command(aliases=['dep'], description="Deposite money into your bank")
     @kanzen_only()
