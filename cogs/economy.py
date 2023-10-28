@@ -144,16 +144,16 @@ class Economy(commands.Cog):
             return
 
         wallet_balance, bank_balance = await self.get_balance(member.id)
-        wallet_to_take = min(amount, wallet_balance)
+        bank_to_take = min(amount, bank_balance)
+        new_bank_balance = await self.update_balance(member.id, 0, -bank_to_take)
         author_wallet_balance, author_bank_balance = await self.get_balance(ctx.author.id)
-        new_author_wallet_balance, _ = await self.update_balance(ctx.author.id, wallet_to_take, 0)
-        bank_to_take = max(0, amount - wallet_to_take)
+        new_author_bank_balance = await self.update_balance(ctx.author.id, 0, bank_to_take)
         embed = discord.Embed(title=title, description=f"You stole <:coin:1167639638123487232> {amount} from {member.display_name}", color=0x2b2d31)
-        embed.set_footer(text=f"You new balance is {new_author_wallet_balance}")
+        embed.set_footer(text=f"Your new bank balance is {new_author_bank_balance}")
         await ctx.send(embed=embed)
 
     @rob.error
-    async def take_error(self, ctx, error):
+    async def rob_error(self, ctx, error):
         if isinstance(error, commands.CommandOnCooldown):
             remaining = round(error.retry_after)
             if remaining >= 60:
@@ -161,6 +161,7 @@ class Economy(commands.Cog):
                 await ctx.send(f"Sorry, you're on a cooldown from using this command. Try again in {mins} minutes.")
             else:
                 await ctx.send(f"Sorry, you're on a cooldown from using this command. Try again in {remaining} seconds.")
+
 
     @commands.command(aliases=['dep'], description="Deposite money into your bank")
     @kanzen_only()
