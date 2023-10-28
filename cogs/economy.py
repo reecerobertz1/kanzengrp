@@ -360,10 +360,8 @@ class Economy(commands.Cog):
 
         message = await ctx.send(embed=leaderboard_embed)
         
-        if page > 1:
-            await message.add_reaction("⬅️")
-        if end_idx < len(rows):
-            await message.add_reaction("➡️")
+        await message.add_reaction("⬅️")
+        await message.add_reaction("➡️")
 
         def check(reaction, user):
             return (
@@ -401,13 +399,12 @@ class Economy(commands.Cog):
                     leaderboard_embed.add_field(
                         name=f"{idx}. User not found",
                         value=f"<a:coin:1154168127802843216> Wallet: {wallet_balance} coins\n"
-                            f"<:bank:YOUR_BANK_ICON_ID> Bank: {bank_balance} coins",
+                            f"<:bank:1154163938234208367> Bank: {bank_balance} coins",
                         inline=False
                     )
 
             await message.edit(embed=leaderboard_embed)
             await message.remove_reaction(str(reaction.emoji), ctx.author)
-
 
     async def get_wallet_balance(self, user_id):
         async with self.pool.acquire() as conn:
