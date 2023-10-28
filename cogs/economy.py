@@ -90,6 +90,12 @@ class Economy(commands.Cog):
                 return False
         return commands.check(predicate)
 
+    def _get_round_avatar(self, avatar: BytesIO) -> Tuple[Image.Image, Image.Image]:
+        circle = Image.open('./assets/circle-mask.png').resize((35, 35)).convert('L')
+        avatar_image = Image.open(avatar).convert('RGBA')
+        avatar_image = avatar_image.resize((35, 35))
+        return avatar_image, circle
+
     @commands.command(aliases=["bal"], description="Check your bank and wallet balance")
     @kanzen_only()
     async def balance(self, ctx, user: discord.Member = None, avatar_size: int = 140, image_size: int = 64) -> BytesIO:
