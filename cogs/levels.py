@@ -405,6 +405,38 @@ class Levels(commands.Cog):
             custom_x = 25
             custom_y = 260
             card.paste(zennies_role_img, (custom_x, custom_y), zennies_role_img)
+        auralead_role_id = 957993316794917024
+        has_auralead_role = any(role.id == auralead_role_id for role in user.roles)
+        if has_auralead_role:
+            auralead_role_img = Image.open('./assets/auralead.png')
+            auralead_role_img = auralead_role_img.resize((75, 75))
+            custom_x = 25
+            custom_y = 90
+            card.paste(auralead_role_img, (custom_x, custom_y), auralead_role_img)
+        aurabooster_role_id = 1123757238272659556
+        has_aurabooster_role = any(role.id == aurabooster_role_id for role in user.roles)
+        if has_aurabooster_role:
+            aurabooster_role_img = Image.open('./assets/aurabooster.png')
+            aurabooster_role_img = aurabooster_role_img.resize((75, 75))
+            custom_x = 145
+            custom_y = 90
+            card.paste(aurabooster_role_img, (custom_x, custom_y), aurabooster_role_img)
+        auratop20_role_id = 1125865632332775577
+        has_auratop20_role = any(role.id == auratop20_role_id for role in user.roles)
+        if has_auratop20_role:
+            auratop20_role_img = Image.open('./assets/auratop20.png')
+            auratop20_role_img = auratop20_role_img.resize((75, 75))
+            custom_x = 25
+            custom_y = 175
+            card.paste(auratop20_role_img, (custom_x, custom_y), auratop20_role_img)
+        aromie_role_id = 1122253152192831549
+        has_aromie_role = any(role.id == aromie_role_id for role in user.roles)
+        if has_aromie_role:
+            aromie_role_img = Image.open('./assets/aromie.png')
+            aromie_role_img = aromie_role_img.resize((75, 75))
+            custom_x = 145
+            custom_y = 175
+            card.paste(aromie_role_img, (custom_x, custom_y), aromie_role_img)
         
         card.paste(avatar_paste, (1150, 95), circle)
         card.paste(bar, (280, 400), mask)
