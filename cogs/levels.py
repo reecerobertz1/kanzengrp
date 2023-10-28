@@ -411,6 +411,7 @@ class Levels(commands.Cog):
         card.paste(bar, (395, 42), mask)
         draw = ImageDraw.Draw(card, 'RGBA')
         draw.text((385, 123), name, "#ffffff", font=poppins)
+        draw.text((726, 326), 'SPECIAL ROLE BADGES', '#1F1F1F', font=poppins_xsmall)
         draw.text((725, 325), 'SPECIAL ROLE BADGES', fill=levels['bar_color'], font=poppins_xsmall)
         draw.text((385, 222), f'Level {level} | {xp_have} / {xp_need}', "#ffffff", font=poppins_small)
         draw.text((1225, 110), f"#{str(rank)}", fill=levels['bar_color'], font=poppins_big)
