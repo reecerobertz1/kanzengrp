@@ -228,9 +228,9 @@ class Levels(commands.Cog):
         avatar: BytesIO
             The avatar to convert into a circle
         """
-        circle = Image.open('./assets/circle-mask.png').resize((325, 325)).convert('L')
+        circle = Image.open('./assets/circle-mask.png').resize((250, 250)).convert('L')
         avatar_image = Image.open(avatar).convert('RGBA')
-        avatar_image = avatar_image.resize((325, 325))
+        avatar_image = avatar_image.resize((250, 250))
         return avatar_image, circle
     
     def _human_format(self, number: int) -> str:
@@ -358,9 +358,9 @@ class Levels(commands.Cog):
         avatar_paste, circle = self._get_round_avatar(avatar)
         poppins = Font.poppins(size=67)
         poppins_small = Font.poppins(size=50)
-        poppins_xsmall = Font.poppins(size=35)
+        poppins_xsmall = Font.poppins(size=25)
         poppins_xxsmall = Font.poppins(size=15)
-        poppins_big = Font.poppins(size=150)
+        poppins_big = Font.poppins(size=100)
         roles_img = Image.open('./assets/roles.png')
         lead_roles_x = (card.width - roles_img.width) // 2
         lead_roles_y = (card.height - roles_img.height) // 2
@@ -369,55 +369,54 @@ class Levels(commands.Cog):
         has_lead_role = any(role.id == lead_role_id for role in user.roles)
         if has_lead_role:
             special_role_img = Image.open('./assets/lead.png')
-            special_role_img = special_role_img.resize((100, 100))
-            custom_x = 1250
-            custom_y = 365
+            special_role_img = special_role_img.resize((75, 75))
+            custom_x = 25
+            custom_y = 90
             card.paste(special_role_img, (custom_x, custom_y), special_role_img)
         staff_role_id = 1135244903165722695
         has_staff_role = any(role.id == staff_role_id for role in user.roles)
         if has_staff_role:
             staff_role_img = Image.open('./assets/staff.png')
-            staff_role_img = staff_role_img.resize((100, 100))
-            custom_x = 1050
-            custom_y = 365
+            staff_role_img = staff_role_img.resize((75, 75))
+            custom_x = 145
+            custom_y = 90
             card.paste(staff_role_img, (custom_x, custom_y), staff_role_img)
         booster_role_id = 1128460924886458489
         has_booster_role = any(role.id == booster_role_id for role in user.roles)
         if has_booster_role:
             booster_role_img = Image.open('./assets/booster.png')
-            booster_role_img = booster_role_img.resize((100, 100))
-            custom_x = 850
-            custom_y = 365
+            booster_role_img = booster_role_img.resize((75, 75))
+            custom_x = 25
+            custom_y = 175
             card.paste(booster_role_img, (custom_x, custom_y), booster_role_img)
         top20_role_id = 1125233965599555615
         has_top20_role = any(role.id == top20_role_id for role in user.roles)
         if has_top20_role:
             top20_role_img = Image.open('./assets/top20.png')
-            top20_role_img = top20_role_img.resize((100, 100))
-            custom_x = 650
-            custom_y = 365
+            top20_role_img = top20_role_img.resize((75, 75))
+            custom_x = 145
+            custom_y = 175
             card.paste(top20_role_img, (custom_x, custom_y), top20_role_img)
         zennies_role_id = 1121842393994494082
         has_zennies_role = any(role.id == zennies_role_id for role in user.roles)
         if has_zennies_role:
             zennies_role_img = Image.open('./assets/zennies.png')
-            zennies_role_img = zennies_role_img.resize((100, 100))
-            custom_x = 450
-            custom_y = 365
+            zennies_role_img = zennies_role_img.resize((75, 75))
+            custom_x = 25
+            custom_y = 260
             card.paste(zennies_role_img, (custom_x, custom_y), zennies_role_img)
         
-        card.paste(avatar_paste, (20, 13), circle)
-        card.paste(status_circle, (255, 245), status_circle)
-        card.paste(bar, (395, 42), mask)
+        card.paste(avatar_paste, (1150, 95), circle)
+        card.paste(bar, (280, 400), mask)
         draw = ImageDraw.Draw(card, 'RGBA')
-        draw.text((385, 123), name, "#ffffff", font=poppins)
-        draw.text((726, 326), 'SPECIAL ROLE BADGES', '#1F1F1F', font=poppins_xsmall)
-        draw.text((725, 325), 'SPECIAL ROLE BADGES', fill=levels['bar_color'], font=poppins_xsmall)
-        draw.text((385, 222), f'Level {level} | {xp_have} / {xp_need}', "#ffffff", font=poppins_small)
-        draw.text((1225, 110), f"#{str(rank)}", fill=levels['bar_color'], font=poppins_big)
+        draw.text((385, 250), name, "#ffffff", font=poppins)
+        draw.text((51, 16), 'SPECIAL ROLE\n    BADGES', '#1F1F1F', font=poppins_xsmall)
+        draw.text((50, 15), 'SPECIAL ROLE\n    BADGES', fill=levels['bar_color'], font=poppins_xsmall)
+        draw.text((385, 325), f'Level {level} | {xp_have}xp - {xp_need}xp', "#ffffff", font=poppins_small)
+        draw.text((1225, 150), f"#{str(rank)}", fill=levels['bar_color'], font=poppins_big)
         rect_width, rect_height = 500, 5
         rect_x1 = (card.width - rect_width) // 2.63
-        rect_y1 = (card.height - rect_height) // 2.35
+        rect_y1 = (card.height - rect_height) // 1.51
         rect_x2 = rect_x1 + rect_width
         rect_y2 = rect_y1 + rect_height
         draw.rectangle([(rect_x1, rect_y1), (rect_x2, rect_y2)], fill=levels['bar_color'])
@@ -885,7 +884,7 @@ class Levels(commands.Cog):
         )
         await ctx.reply(embed=embed)
 
-    @commands.command(description="See the level leaderboard")
+    @commands.command(aliases=['lb', 'levels'], description="See the level leaderboard")
     @levels_is_activated()
     async def leaderboard(self, ctx: commands.Context):
         """sends the current leaderboard"""
@@ -908,7 +907,7 @@ class Levels(commands.Cog):
             description += f"**{i}.** <@!{row['member_id']}>\n{row['xp']} xp | {row['messages']} {msg} | level {lvl}\n\n"
 
             if i % per_page == 0 or i == len(rows):
-                embed = discord.Embed(title="leaderboard", description=description, color=0x2B2D31)
+                embed = discord.Embed(title="leaderboard", description=description, color=0x2b2d31)
                 embed.set_thumbnail(url=ctx.guild.icon.url)
                 embeds.append(embed)
                 description = ""
