@@ -362,7 +362,7 @@ class Economy(commands.Cog):
         
         if page > 1:
             await message.add_reaction("⬅️")
-        if start_idx > 0:
+        if end_idx < len(rows):
             await message.add_reaction("➡️")
 
         def check(reaction, user):
@@ -380,7 +380,7 @@ class Economy(commands.Cog):
 
             if str(reaction.emoji) == "⬅️" and page > 1:
                 page -= 1
-            elif str(reaction.emoji) == "➡️" and start_idx > 0:
+            elif str(reaction.emoji) == "➡️" and end_idx < len(rows):
                 page += 1
 
             start_idx = (page - 1) * per_page
