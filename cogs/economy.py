@@ -134,7 +134,8 @@ class Economy(commands.Cog):
             await ctx.reply(file=discord.File("bank.png"))
 
     @commands.command(description="Steal coins from other members")
-    @commands.cooldown(1, 3600, commands.BucketType.user) 
+    @commands.cooldown(1, 3600, commands.BucketType.user)
+    @kanzen_only()
     async def rob(self, ctx, member: discord.Member):
         titles = ["LOL you stole from someone... naughty naughty", "wow- are you that broke", "well we all need money... mind sharing 🥲"]
         title = random.choice(titles)
