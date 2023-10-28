@@ -91,6 +91,35 @@ class Economy(commands.Cog):
                 return False
         return commands.check(predicate)
 
+    @commands.command(description="Steal coins from other members")
+    @commands.cooldown(1, 3600, commands.BucketType.user) 
+    async def rob(self, ctx, member: discord.Member):
+        titles = ["LOL you stole from someone... naughty naughty", "wow- are you that broke", "well we all need money... mind sharing 🥲"]
+        title = random.choice(titles)
+        amount = random.randint(0, 1000)
+        if amount == 0:
+            await ctx.send("No coins taken, as the random amount was 0.")
+            return
+
+        wallet_balance, bank_balance = await self.get_balance(member.id)
+        wallet_to_take = min(amount, wallet_balance)
+        author_wallet_balance, author_bank_balance = await self.get_balance(ctx.author.id)
+        new_author_wallet_balance, _ = await self.update_balance(ctx.author.id, wallet_to_take, 0)
+        bank_to_take = max(0, amount - wallet_to_take)
+        embed = discord.Embed(title=title, description=f"You stole <:coin:1167639638123487232> {amount} from {member.display_name}", color=0x2b2d31)
+        embed.set_footer(text=f"You new balance is {new_author_wallet_balance}")
+        await ctx.send(embed=embed)
+
+    @rob.error
+    async def take_error(self, ctx, error):
+        if isinstance(error, commands.CommandOnCooldown):
+            remaining = round(error.retry_after)
+            if remaining >= 60:
+                mins = remaining // 60
+                await ctx.send(f"Sorry, you're on a cooldown from using this command. Try again in {mins} minutes.")
+            else:
+                await ctx.send(f"Sorry, you're on a cooldown from using this command. Try again in {remaining} seconds.")
+
     def _get_round_avatar(self, avatar: BytesIO) -> Tuple[Image.Image, Image.Image]:
         circle = Image.open('./assets/circle-mask.png').resize((35, 35)).convert('L')
         avatar_image = Image.open(avatar).convert('RGBA')
@@ -132,36 +161,6 @@ class Economy(commands.Cog):
             img.paste(bank_img, (25, 165), bank_img)
             img.save("bank.png")
             await ctx.reply(file=discord.File("bank.png"))
-
-    @commands.command(description="Steal coins from other members")
-    @commands.cooldown(1, 3600, commands.BucketType.user)
-    @kanzen_only()
-    async def rob(self, ctx, member: discord.Member):
-        titles = ["LOL you stole from someone... naughty naughty", "wow- are you that broke", "well we all need money... mind sharing 🥲"]
-        title = random.choice(titles)
-        amount = random.randint(0, 1000)
-        if amount == 0:
-            await ctx.send("No coins taken, as the random amount was 0.")
-            return
-
-        wallet_balance, bank_balance = await self.get_balance(member.id)
-        wallet_to_take = min(amount, wallet_balance)
-        author_wallet_balance, author_bank_balance = await self.get_balance(ctx.author.id)
-        new_author_wallet_balance, _ = await self.update_balance(ctx.author.id, wallet_to_take, 0)
-        bank_to_take = max(0, amount - wallet_to_take)
-        embed = discord.Embed(title=title, description=f"You stole <:coin:1167639638123487232> {amount} from {member.display_name}", color=0x2b2d31)
-        embed.set_footer(text=f"You new balance is {new_author_wallet_balance}")
-        await ctx.send(embed=embed)
-
-    @rob.error
-    async def take_error(self, ctx, error):
-        if isinstance(error, commands.CommandOnCooldown):
-            remaining = round(error.retry_after)
-            if remaining >= 60:
-                mins = remaining // 60
-                await ctx.send(f"Sorry, you're on a cooldown from using this command. Try again in {mins} minutes.")
-            else:
-                await ctx.send(f"Sorry, you're on a cooldown from using this command. Try again in {remaining} seconds.")
 
     @commands.command(aliases=['dep'], description="Deposite money into your bank")
     @kanzen_only()
