@@ -408,7 +408,6 @@ class Economy(commands.Cog):
             await message.edit(embed=leaderboard_embed)
             await message.remove_reaction(str(reaction.emoji), ctx.author)
 
-
     async def get_wallet_balance(self, user_id):
         async with self.pool.acquire() as conn:
             async with conn.cursor() as cursor:
