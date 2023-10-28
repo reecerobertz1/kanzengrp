@@ -152,7 +152,7 @@ class Economy(commands.Cog):
         embed.set_footer(text=f"You new balance is {new_author_wallet_balance}")
         await ctx.send(embed=embed)
 
-    @steal.error
+    @rob.error
     async def take_error(self, ctx, error):
         if isinstance(error, commands.CommandOnCooldown):
             remaining = round(error.retry_after)
