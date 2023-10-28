@@ -92,7 +92,7 @@ class Economy(commands.Cog):
 
     @commands.command(aliases=["bal"], description="Check your bank and wallet balance")
     @kanzen_only()
-    async def balance(self, ctx, user: discord.Member = None):
+    async def balance(self, ctx, user: discord.Member = None, avatar_size: int = 140, image_size: int = 64) -> BytesIO:
         async with ctx.typing():
             user = user or ctx.author
             wallet_balance, bank_balance = await self.get_balance(user.id)
