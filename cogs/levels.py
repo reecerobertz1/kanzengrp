@@ -315,7 +315,7 @@ class Levels(commands.Cog):
             b_img = Image.open(BytesIO(image.content))
             return b_img
 
-    def _get_card(self, name: str, status: str, avatar: BytesIO, levels: LevelRow, rank: int) -> BytesIO:
+    def _get_card(self, name: str, status: str, avatar: BytesIO, levels: LevelRow, rank: int, user: discord.User) -> BytesIO:
         """Creates a rank card.
         
         Parameters
@@ -330,6 +330,8 @@ class Levels(commands.Cog):
             Database level row to retrieve level information
         rank: int
             Rank to display on card
+        user: discord.User
+            User object to check roles
 
         Returns
         -------
@@ -338,7 +340,7 @@ class Levels(commands.Cog):
         """
         percentage, xp_have, xp_need, level = self._xp_calculations(levels)
         card = Image.new('RGBA', size=(1500, 500), color='grey')
-        if levels['image'] != None:
+        if levels['image'] is not None:
             bg = self._get_bg_image(levels['image'])
         else:
             bg = Image.open("./assets/rank_bg.png")
@@ -356,17 +358,65 @@ class Levels(commands.Cog):
         avatar_paste, circle = self._get_round_avatar(avatar)
         poppins = Font.poppins(size=67)
         poppins_small = Font.poppins(size=50)
-        poppins_big = Font.poppins(size=117)
-        card.paste(avatar_paste, (20, 25), circle)
-        card.paste(status_circle, (250, 250), status_circle)
-        card.paste(bar, (50, 375), mask)
+        poppins_xsmall = Font.poppins(size=35)
+        poppins_xxsmall = Font.poppins(size=15)
+        poppins_big = Font.poppins(size=150)
+        roles_img = Image.open('./assets/roles.png')
+        lead_roles_x = (card.width - roles_img.width) // 2
+        lead_roles_y = (card.height - roles_img.height) // 2
+        card.paste(roles_img, (lead_roles_x, lead_roles_y), roles_img)
+        lead_role_id = 1167692870141100052
+        has_lead_role = any(role.id == lead_role_id for role in user.roles)
+        if has_lead_role:
+            special_role_img = Image.open('./assets/lead.png')
+            special_role_img = special_role_img.resize((100, 100))
+            custom_x = 1250
+            custom_y = 365
+            card.paste(special_role_img, (custom_x, custom_y), special_role_img)
+        staff_role_id = 1167692870141100052
+        has_staff_role = any(role.id == staff_role_id for role in user.roles)
+        if has_staff_role:
+            staff_role_img = Image.open('./assets/staff.png')
+            staff_role_img = staff_role_img.resize((100, 100))
+            custom_x = 1050
+            custom_y = 365
+            card.paste(staff_role_img, (custom_x, custom_y), staff_role_img)
+        booster_role_id = 1167692870141100052
+        has_booster_role = any(role.id == booster_role_id for role in user.roles)
+        if has_booster_role:
+            booster_role_img = Image.open('./assets/booster.png')
+            booster_role_img = booster_role_img.resize((100, 100))
+            custom_x = 850
+            custom_y = 365
+            card.paste(booster_role_img, (custom_x, custom_y), booster_role_img)
+        top20_role_id = 1167692870141100052
+        has_top20_role = any(role.id == top20_role_id for role in user.roles)
+        if has_top20_role:
+            top20_role_img = Image.open('./assets/top20.png')
+            top20_role_img = top20_role_img.resize((100, 100))
+            custom_x = 650
+            custom_y = 365
+            card.paste(top20_role_img, (custom_x, custom_y), top20_role_img)
+        zennies_role_id = 1167692870141100052
+        has_zennies_role = any(role.id == zennies_role_id for role in user.roles)
+        if has_zennies_role:
+            zennies_role_img = Image.open('./assets/zennies.png')
+            zennies_role_img = zennies_role_img.resize((100, 100))
+            custom_x = 450
+            custom_y = 365
+            card.paste(zennies_role_img, (custom_x, custom_y), zennies_role_img)
+        
+        card.paste(avatar_paste, (20, 13), circle)
+        card.paste(status_circle, (255, 245), status_circle)
+        card.paste(bar, (395, 42), mask)
         draw = ImageDraw.Draw(card, 'RGBA')
-        draw.text((350, 110), name, "#ffffff", font=poppins)
-        draw.text((350, 210), f'Level {level} | {xp_have} / {xp_need}', "#ffffff", font=poppins_small)
-        draw.text((1225, 170), f"#{str(rank)}", fill=levels['bar_color'], font=poppins_big)
+        draw.text((385, 123), name, "#ffffff", font=poppins)
+        draw.text((725, 325), 'SPECIAL ROLE BADGES', fill=levels['bar_color'], font=poppins_xsmall)
+        draw.text((385, 222), f'Level {level} | {xp_have} / {xp_need}', "#ffffff", font=poppins_small)
+        draw.text((1225, 110), f"#{str(rank)}", fill=levels['bar_color'], font=poppins_big)
         rect_width, rect_height = 500, 5
-        rect_x1 = (card.width - rect_width) // 2.9
-        rect_y1 = (card.height - rect_height) // 2.5
+        rect_x1 = (card.width - rect_width) // 2.63
+        rect_y1 = (card.height - rect_height) // 2.35
         rect_x2 = rect_x1 + rect_width
         rect_y2 = rect_y1 + rect_height
         draw.rectangle([(rect_x1, rect_y1), (rect_x2, rect_y2)], fill=levels['bar_color'])
@@ -540,7 +590,7 @@ class Levels(commands.Cog):
             await self.bot.pool.release(conn)
         return rank[0] + 1
 
-    async def generate_card(self, name: str, status: str, avatar: BytesIO, levels: LevelRow, rank: int) -> BytesIO:
+    async def generate_card(self, name: str, status: str, avatar: BytesIO, levels: LevelRow, rank: int, member: discord.Member) -> BytesIO:
         """Generates a rank card asynchronously.
         
         Parameters
@@ -562,7 +612,7 @@ class Levels(commands.Cog):
             The rank card as a stream of in-memory bytes
         """
         card_generator = functools.partial(self._get_card, name, status, avatar, levels, rank)
-        card = await self.bot.loop.run_in_executor(None, card_generator)
+        card = await self.bot.loop.run_in_executor(None, self._get_card, str(member), str(member.status), avatar, levels, rank, member)
         return card
 
     async def top_20_role_handler(self, member: discord.Member, guild: discord.Guild, role_id: int) -> None:
@@ -834,7 +884,7 @@ class Levels(commands.Cog):
         )
         await ctx.reply(embed=embed)
 
-    @commands.command(description="See the level leaderboard", aliases=["lb", "levels"])
+    @commands.command(description="See the level leaderboard")
     @levels_is_activated()
     async def leaderboard(self, ctx: commands.Context):
         """sends the current leaderboard"""
@@ -881,12 +931,8 @@ class Levels(commands.Cog):
             avatar = BytesIO(await response.read())
             avatar.seek(0)
 
-            # Debug messages
-            print(f"Debug: member.id = {member.id}")
-            print(f"Debug: levels = {levels[0]}")
-
             if levels:
-                card = await self.generate_card(str(member), str(member.status), avatar, levels, rank)
+                card = await self.generate_card(str(member), str(member.status), avatar, levels, rank, member)
                 await ctx.reply(file=discord.File(card, 'card.png'), mention_author=False)
             else:
                 await ctx.reply(f"{member} doesn't have any levels yet!!", mention_author=False)
