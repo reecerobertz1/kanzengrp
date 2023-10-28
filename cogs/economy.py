@@ -364,6 +364,7 @@ class Economy(commands.Cog):
             await message.add_reaction("⬅️")
         if end_idx < len(rows):
             await message.add_reaction("➡️")
+
         def check(reaction, user):
             return (
                 user == ctx.author
@@ -381,14 +382,31 @@ class Economy(commands.Cog):
                 page -= 1
             elif str(reaction.emoji) == "➡️" and end_idx < len(rows):
                 page += 1
+
             start_idx = (page - 1) * per_page
             end_idx = start_idx + per_page
             leaderboard_embed.clear_fields()
             for idx, (user_id, wallet_balance, bank_balance) in enumerate(rows[start_idx:end_idx], start=start_idx + 1):
+                user = self.bot.get_user(user_id)
+                if user:
+                    leaderboard_embed.add_field(
+                        name=f"{idx}. {user.display_name}",
+                        value=f"<:wallet:1154163630699458660> Wallet: <a:coin:1154168127802843216> {wallet_balance}\n"
+                            f"<:bank:1154163938234208367> Bank: <a:coin:1154168127802843216> {bank_balance}",
+                        inline=False
+                    )
+                    leaderboard_embed.set_footer(text=f"Page {page}", icon_url=ctx.author.avatar)
+                    leaderboard_embed.set_thumbnail(url=ctx.guild.icon)
+                else:
+                    leaderboard_embed.add_field(
+                        name=f"{idx}. User not found",
+                        value=f"<a:coin:1154168127802843216> Wallet: {wallet_balance} coins\n"
+                            f"<:bank:YOUR_BANK_ICON_ID> Bank: {bank_balance} coins",
+                        inline=False
+                    )
 
-                leaderboard_embed.set_footer(text=f"Page {page}", icon_url=ctx.author.avatar)
-                await message.edit(embed=leaderboard_embed)
-                await message.remove_reaction(str(reaction.emoji), ctx.author)
+            await message.edit(embed=leaderboard_embed)
+            await message.remove_reaction(str(reaction.emoji), ctx.author)
 
     async def get_wallet_balance(self, user_id):
         async with self.pool.acquire() as conn:
