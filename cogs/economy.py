@@ -362,7 +362,7 @@ class Economy(commands.Cog):
         
         if page > 1:
             await message.add_reaction("⬅️")
-        if end_idx < len(rows):
+        if start_idx > 0:
             await message.add_reaction("➡️")
 
         def check(reaction, user):
@@ -380,7 +380,7 @@ class Economy(commands.Cog):
 
             if str(reaction.emoji) == "⬅️" and page > 1:
                 page -= 1
-            elif str(reaction.emoji) == "➡️" and end_idx < len(rows):
+            elif str(reaction.emoji) == "➡️" and start_idx > 0:
                 page += 1
 
             start_idx = (page - 1) * per_page
@@ -407,6 +407,7 @@ class Economy(commands.Cog):
 
             await message.edit(embed=leaderboard_embed)
             await message.remove_reaction(str(reaction.emoji), ctx.author)
+
 
     async def get_wallet_balance(self, user_id):
         async with self.pool.acquire() as conn:
