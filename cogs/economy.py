@@ -8,6 +8,7 @@ import asqlite
 from utils.views import Paginator
 from easy_pil import Font
 from PIL import Image, ImageDraw, ImageFont
+from typing import Optional, Tuple
 
 class Economy(commands.Cog):
     """Commands for the economy system"""
