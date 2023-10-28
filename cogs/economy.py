@@ -149,7 +149,6 @@ class Economy(commands.Cog):
         author_wallet_balance, author_bank_balance = await self.get_balance(ctx.author.id)
         new_author_bank_balance = await self.update_balance(ctx.author.id, 0, bank_to_take)
         embed = discord.Embed(title=title, description=f"You stole <:coin:1167639638123487232> {amount} from {member.display_name}", color=0x2b2d31)
-        embed.set_footer(text=f"Your new bank balance is {new_author_bank_balance}")
         await ctx.send(embed=embed)
 
     @rob.error
