@@ -357,7 +357,38 @@ class Economy(commands.Cog):
                         f"<:bank:YOUR_BANK_ICON_ID> Bank: {bank_balance} coins",
                     inline=False
                 )
-        await ctx.send(embed=leaderboard_embed)
+
+        message = await ctx.send(embed=leaderboard_embed)
+        
+        if page > 1:
+            await message.add_reaction("⬅️")
+        if end_idx < len(rows):
+            await message.add_reaction("➡️")
+        def check(reaction, user):
+            return (
+                user == ctx.author
+                and reaction.message.id == message.id
+                and str(reaction.emoji) in ["⬅️", "➡️"]
+            )
+
+        while True:
+            try:
+                reaction, _ = await self.bot.wait_for("reaction_add", check=check, timeout=60.0)
+            except TimeoutError:
+                break
+
+            if str(reaction.emoji) == "⬅️" and page > 1:
+                page -= 1
+            elif str(reaction.emoji) == "➡️" and end_idx < len(rows):
+                page += 1
+            start_idx = (page - 1) * per_page
+            end_idx = start_idx + per_page
+            leaderboard_embed.clear_fields()
+            for idx, (user_id, wallet_balance, bank_balance) in enumerate(rows[start_idx:end_idx], start=start_idx + 1):
+
+                leaderboard_embed.set_footer(text=f"Page {page}", icon_url=ctx.author.avatar)
+                await message.edit(embed=leaderboard_embed)
+                await message.remove_reaction(str(reaction.emoji), ctx.author)
 
     async def get_wallet_balance(self, user_id):
         async with self.pool.acquire() as conn:
