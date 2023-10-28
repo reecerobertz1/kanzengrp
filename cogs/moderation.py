@@ -194,7 +194,7 @@ class Moderation(commands.Cog):
             await ctx.send("Logging channel not found. Please set the correct channel ID.")
 
     @commands.command(description="Steal any emoji from any server")
-    async def emoji(self, ctx, emoji_name: str, *, emoji: discord.PartialEmoji):
+    async def steal(self, ctx, emoji_name: str, *, emoji: discord.PartialEmoji):
         if not isinstance(emoji, discord.PartialEmoji):
             return await ctx.send("Please provide a valid emoji.")
 

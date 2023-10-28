@@ -133,9 +133,9 @@ class Economy(commands.Cog):
             img.save("bank.png")
             await ctx.reply(file=discord.File("bank.png"))
 
-    @commands.command(aliases=['rob'], description="Steal coins from other members")
+    @commands.command(description="Steal coins from other members")
     @commands.cooldown(1, 3600, commands.BucketType.user) 
-    async def steal(self, ctx, member: discord.Member):
+    async def rob(self, ctx, member: discord.Member):
         titles = ["LOL you stole from someone... naughty naughty", "wow- are you that broke", "well we all need money... mind sharing 🥲"]
         title = random.choice(titles)
         amount = random.randint(0, 1000)
