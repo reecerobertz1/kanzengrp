@@ -445,13 +445,37 @@ class Levels(commands.Cog):
         draw.text((51, 16), 'SPECIAL ROLE\n    BADGES', '#1F1F1F', font=poppins_xsmall)
         draw.text((50, 15), 'SPECIAL ROLE\n    BADGES', fill=levels['bar_color'], font=poppins_xsmall)
         draw.text((385, 325), f'Level {level} | {xp_have}xp - {xp_need}xp', "#ffffff", font=poppins_small)
-        draw.text((1225, 150), f"#{str(rank)}", fill=levels['bar_color'], font=poppins_big)
+        draw.text((1165, 275), f"rank {str(rank)}", fill=levels['bar_color'], font=poppins_small)
         rect_width, rect_height = 500, 5
         rect_x1 = (card.width - rect_width) // 2.63
         rect_y1 = (card.height - rect_height) // 1.51
         rect_x2 = rect_x1 + rect_width
         rect_y2 = rect_y1 + rect_height
         draw.rectangle([(rect_x1, rect_y1), (rect_x2, rect_y2)], fill=levels['bar_color'])
+        right_rect_width, right_rect_height = 5, 251
+        right_rect_x1 = (card.width - rect_width) // 0.715
+        right_rect_y1 = (card.height - rect_height) // 5.3
+        right_rect_x2 = right_rect_x1 + right_rect_width
+        right_rect_y2 = right_rect_y1 + right_rect_height
+        draw.rectangle([(right_rect_x1, right_rect_y1), (right_rect_x2, right_rect_y2)], fill=levels['bar_color'])
+        left_rect_width, left_rect_height = 5, 251
+        left_rect_x1 = (card.width - rect_width) // 0.873
+        left_rect_y1 = (card.height - rect_height) // 5.3
+        left_rect_x2 = left_rect_x1 + left_rect_width
+        left_rect_y2 = left_rect_y1 + left_rect_height
+        draw.rectangle([(left_rect_x1, left_rect_y1), (left_rect_x2, left_rect_y2)], fill=levels['bar_color'])
+        top_rect_width, top_rect_height = 251, 5
+        top_rect_x1 = (card.width - rect_width) // 0.87
+        top_rect_y1 = (card.height - rect_height) // 5.3
+        top_rect_x2 = top_rect_x1 + top_rect_width
+        top_rect_y2 = top_rect_y1 + top_rect_height
+        draw.rectangle([(top_rect_x1, top_rect_y1), (top_rect_x2, top_rect_y2)], fill=levels['bar_color'])
+        bottom_rect_width, bottom_rect_height = 251, 5
+        bottom_rect_x1 = (card.width - rect_width) // 0.87
+        bottom_rect_y1 = (card.height - rect_height) // 1.46
+        bottom_rect_x2 = bottom_rect_x1 + bottom_rect_width
+        bottom_rect_y2 = bottom_rect_y1 + bottom_rect_height
+        draw.rectangle([(bottom_rect_x1, bottom_rect_y1), (bottom_rect_x2, bottom_rect_y2)], fill=levels['bar_color'])
         buffer = BytesIO()
         card.save(buffer, 'png')
         buffer.seek(0)
