@@ -429,29 +429,7 @@ class Economy(commands.Cog):
     @commands.command(description="See what is in the shop")
     @kanzen_only()
     async def shop(self, ctx):
-        shop_items = {
-            "Cookie": 10,
-            "Soda": 15,
-            "Pizza": 25,
-            "Laptop": 100,
-            "Gaming PC": 500,
-            "Car": 1000,
-        }
-
-        shop_embed = discord.Embed(
-            title="Welcome to the Shop!",
-            description="Buy items to enhance your life!",
-            color=0x2b2d31
-        )
-
-        for item, price in shop_items.items():
-            shop_embed.add_field(
-                name=item,
-                value=f"Price: <a:coin:1154168127802843216> {price} coins",
-                inline=False
-            )
-
-        await ctx.send(embed=shop_embed)
+        await ctx.reply("https://cdn.discordapp.com/attachments/849724031723634688/1168054813976703086/shop_00000.png?ex=65505ed1&is=653de9d1&hm=8e8e59041f65e64e410ef2ea35a8b120d693199d283e016909abf3d71acb304d&")
 
     @commands.command(description="Buy items from the shop")
     @kanzen_only()
@@ -560,50 +538,6 @@ class Economy(commands.Cog):
                 await conn.commit()
 
         await ctx.send(f"You have successfully sold {quantity} {item}(s) for <a:coin:1154168127802843216> {sell_price} coins. Your new wallet balance is <a:coin:1154168127802843216> {new_wallet_balance} coins.")
-
-    @commands.command(hidden=True)
-    @kanzen_only()
-    async def newshop(self, ctx):
-        categories = [
-            "Badges",
-            "Gadgets"
-        ]
-        emojis = [
-            ":bt21:1149411052489027674",
-            ":tata:1121909389280944169"
-        ]
-        descriptions = [
-            "Home page for the help command",
-            "Includes commands you can use for fun!"
-        ]
-        dropdown = discord.ui.Select(
-        placeholder="Select a category",
-        options=[discord.SelectOption(label=category, emoji=emoji, description=description) for category, emoji, description in zip(categories, emojis, descriptions)]
-        )
-        about_hoshi_embed = discord.Embed(description="owner info:\n<a:Arrow_1:1145603161701224528> Hoshi is owned by [Reece](https://instagram.com/remqsi)\n<a:Arrow_1:1145603161701224528> Reece coded Hoshi in [Visual Studio Code](https://code.visualstudio.com/)\n\ndevelopment info:\n<a:Arrow_1:1145603161701224528> Hoshi is coded in Python 3.11.4\n<a:Arrow_1:1145603161701224528> [Download Python 3.11.4](https://www.python.org/downloads/)\n<a:Arrow_1:1145603161701224528> Developed by [Reece](https://instagram.com/remqsi) with help from [Alex](https://instagram.com/rqinflow)\n\nextra info:\n<a:Arrow_1:1145603161701224528> Hoshi's prefix is `+`\n<a:Arrow_1:1145603161701224528> Hoshi was made for [**__Kanzengrp__**](https://instagram.com/kanzengrp)\n\nbug reports\n<a:Arrow_1:1145603161701224528> Use __+report__ to report bug reports!" ,color=0x2b2d31)
-        about_hoshi_embed.set_thumbnail(url=ctx.guild.icon)
-        about_hoshi_embed.set_author(name="About Hoshi", icon_url=self.bot.user.display_avatar.url)
-        about_hoshi_embed.set_footer(text="Home Page", icon_url=ctx.author.avatar)
-        view = discord.ui.View()
-        view.add_item(dropdown)
-        message = await ctx.send(embed=about_hoshi_embed, view=view)
-        async def dropdown_callback(interaction: discord.Interaction):
-            selected_category = interaction.data["values"][0]
-            if selected_category == categories[0]:
-                embed = discord.Embed(description="owner info:\n<a:Arrow_1:1145603161701224528> Hoshi is owned by [Reece](https://instagram.com/remqsi)\n<a:Arrow_1:1145603161701224528> Reece coded Hoshi in [Visual Studio Code](https://code.visualstudio.com/)\n<a:Arrow_1:1145603161701224528> [Download VSC](https://code.visualstudio.com/download)\n\ndevelopment info:\n<a:Arrow_1:1145603161701224528> Hoshi is coded in Python 3.11.4\n<a:Arrow_1:1145603161701224528> [Download Python 3.11.4](https://www.python.org/downloads/)\n<a:Arrow_1:1145603161701224528> Developed by [Reece](https://instagram.com/remqsi) with help from [Alex](https://instagram.com/rqinflow)\n\nextra info:\n<a:Arrow_1:1145603161701224528> Hoshi's prefix is **+**\n<a:Arrow_1:1145603161701224528> Hoshi was made for [**__Kanzengrp__**](https://instagram.com/kanzengrp)\n\nbug reports:\n<a:Arrow_1:1145603161701224528> Use __+report__ to report bug reports!", color=0x2b2d31)
-                embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/1121841074512605186/1154413210187866202/e02ce86bcfd6d1d6c2f775afb3ec8c01_w200.gif")
-                embed.set_author(name="About Hoshi", icon_url=self.bot.user.display_avatar.url)
-                embed.set_footer(text="Home Page", icon_url=ctx.author.avatar)
-            elif selected_category == categories[1]:
-                embed = discord.Embed(color=0x2b2d31)
-                embed.set_author(name="fun commands", icon_url=self.bot.user.display_avatar.url)
-                embed.add_field(name="+tweet", value="<a:Arrow_1:1145603161701224528> Tweet as yourself with Hoshi")
-                embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/1121841074512605186/1154413210187866202/e02ce86bcfd6d1d6c2f775afb3ec8c01_w200.gif")
-                embed.set_footer(text="page 1/8", icon_url=ctx.author.avatar)
-            else:
-                embed = discord.Embed(title="Invalid category", description="Please select a valid category from the dropdown menu.")
-            await interaction.response.edit_message(embed=embed, view=view)
-        dropdown.callback = dropdown_callback
 
     @commands.command(hidden=True)
     @kanzen_only()
