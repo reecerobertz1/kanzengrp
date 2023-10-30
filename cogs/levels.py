@@ -1185,7 +1185,7 @@ class Levels(commands.Cog):
             else:
                 await ctx.reply(f"You need to wait {int(error.retry_after)} seconds before claiming daily XP again!")
 
-    @commands.command(description="Get anywhere from 100xp - 300xp everyday!")
+    @commands.command(description="Get anywhere from 5000xp - 15000xp every month!")
     @kanzen_only()
     @commands.dynamic_cooldown(kanzen_monthly_cooldown, commands.BucketType.user)
     async def monthly(self, ctx: commands.Context):
