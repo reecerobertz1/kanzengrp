@@ -71,6 +71,15 @@ class Levels(commands.Cog):
         # other members have a 24 hour cooldown
         return commands.Cooldown(1, 86400)
 
+    def kanzen_monthly_cooldown(message: discord.Message):
+        role = message.guild.get_role(1128460924886458489)
+        if role in message.author.roles:
+            # boosters have a 2 week cooldown
+            return commands.Cooldown(1, 1209600)
+        
+        # other members have a 1 month cooldown
+        return commands.Cooldown(1, 2592000)
+
     async def register_member_levels(self, member_id: int, guild_id: int, xp: Optional[int] = 25) -> None:
         """Registers a member to the levels database
         
@@ -1175,6 +1184,34 @@ class Levels(commands.Cog):
                 await ctx.reply(f"You need to wait {int(minutes)} minutes before claiming daily XP again!")
             else:
                 await ctx.reply(f"You need to wait {int(error.retry_after)} seconds before claiming daily XP again!")
+
+    @commands.command(description="Get anywhere from 100xp - 300xp everyday!")
+    @kanzen_only()
+    @commands.dynamic_cooldown(kanzen_monthly_cooldown, commands.BucketType.user)
+    async def monthly(self, ctx: commands.Context):
+        """Command to claim monthly xp"""
+        xp = randint(5000, 15000)
+        levels = await self.get_member_levels(ctx.author.id, ctx.guild.id)
+        if levels is not None:
+            await self.add_xp(ctx.author.id, ctx.guild.id, xp, levels)
+        else:
+            await self.register_member_levels(ctx.member.id, ctx.guild.id, xp)
+        await ctx.reply(f"You claimed your monthly xp! you got **{xp}xp**")
+
+    @monthly.error
+    async def monthly_error(self, ctx: commands.Context, error: commands.CommandError):
+        if isinstance(error, commands.CommandOnCooldown):
+            if error.retry_after > 86400:
+                days = error.retry_after // 86400
+                await ctx.reply(f"You need to wait {int(days)} days before claiming monthly XP again!")
+            elif error.retry_after > 3600:
+                hours = error.retry_after // 3600
+                await ctx.reply(f"You need to wait {int(hours)} hours before claiming monthly XP again!")
+            elif error.retry_after > 60:
+                minutes = error.retry_after // 60
+                await ctx.reply(f"You need to wait {int(minutes)} minutes before claiming monthly XP again!")
+            else:
+                await ctx.reply(f"You need to wait {int(error.retry_after)} seconds before claiming monthly XP again!")
 
     @commands.Cog.listener()
     async def on_message(self, message: discord.Message) -> None:
