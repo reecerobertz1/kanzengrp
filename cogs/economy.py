@@ -313,6 +313,69 @@ class Economy(commands.Cog):
         else:
             await ctx.reply(response)
 
+    @commands.command(description="commit a crime for coins")
+    @commands.cooldown(1, 10, commands.BucketType.user)
+    @kanzen_only()
+    async def crime(self, ctx):
+        crime_responses = {
+            'shoplifting': [
+                ("You successfully shoplifted and got away with it!", random.randint(100, 1000)),
+                ("You were caught shoplifting and had to give back the stolen items.", 0)
+            ],
+            'trespassing': [
+                ("You trespassed and found a valuable item!", random.randint(100, 1000)),
+                ("You were caught trespassing and had to leave the premises.", 0)
+            ],
+            'drug dealing': [
+                ("You successfully made a drug deal and earned some money.", random.randint(100, 1000)),
+                ("Your drug deal went wrong and you lost your drugs.", 0)
+            ],
+            'fraud': [
+                ("You successfully committed fraud and gained some money.", random.randint(100, 1000)),
+                ("Your attempt at fraud failed and you didn't earn anything.", 0)
+            ],
+            'tax evasion': [
+                ("You managed to evade taxes and saved some money.", random.randint(100, 1000)),
+                ("Your attempt at tax evasion was discovered, and you had to pay fines.", 0)
+            ],
+            'arson': [
+                ("You successfully set a fire and caused chaos.", random.randint(100, 1000)),
+                ("Your attempt at arson failed, and no significant damage was done.", 0)
+            ],
+            'cyber bullying': [
+                ("You successfully cyber bullied someone and felt a sense of power.", random.randint(100, 1000)),
+                ("Your attempt at cyber bullying backfired, and you faced backlash.", 0)
+            ],
+            'hacking': [
+                ("You successfully hacked into a system and gained valuable information.", random.randint(100, 1000)),
+                ("Your hacking attempt failed, and you couldn't access the desired information.", 0)
+            ],
+            'identity theft': [
+                ("You successfully stole someone's identity and used it to your advantage.", random.randint(100, 1000)),
+                ("Your attempt at identity theft failed, and you couldn't gain any benefits.", 0)
+            ]
+        }
+        random_choices = random.sample(list(crime_responses.keys()), 3)
+        where = discord.Embed(title="What crime would you like to commit?", description=f"**{', '.join(random_choices)}**", color=0x2b2d31)
+        await ctx.reply(embed=where)
+        def check(msg):
+            return msg.author == ctx.author and msg.content.lower() in map(str.lower, random_choices)
+        try:
+            choice_msg = await self.bot.wait_for('message', check=check, timeout=30.0)
+            user_choice = choice_msg.content.lower()
+        except asyncio.TimeoutError:
+            return await ctx.reply("You took too long to choose a location. Try again later.")
+
+        response, earnings = random.choice(crime_responses[user_choice])
+        if earnings > 0:
+            wallet_balance, _ = await self.update_balance(ctx.author.id, earnings, 0)
+            searched = discord.Embed(title=f"You committed {user_choice}", description=response, color=0x2b2d31)
+            searched.add_field(name="You found", value=f"<a:coin:1154168127802843216> {earnings}")
+            searched.add_field(name="Your new wallet balance", value=f"<a:coin:1154168127802843216> {wallet_balance}")
+            await ctx.reply(embed=searched)
+        else:
+            await ctx.reply(response)
+
     @search.error
     async def search_error(self, ctx, error):
         if isinstance(error, commands.CommandOnCooldown):
