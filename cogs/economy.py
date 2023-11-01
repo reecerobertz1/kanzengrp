@@ -170,7 +170,7 @@ class Economy(commands.Cog):
         wallet_balance, bank_balance = await self.get_balance(ctx.author.id)
         if wallet_balance < amount:
             return await ctx.send("You don't have enough coins in your wallet.")
-        if bank_balance + amount > 10000:
+        if bank_balance + amount > 1000000:
             return await ctx.send("Your bank is full.")
         new_wallet_balance, new_bank_balance = await self.update_balance(ctx.author.id, -amount, amount)
         await ctx.send(f"You deposited <a:coin:1154168127802843216> {amount} coins into your bank. Your new balance is: Wallet: <a:coin:1154168127802843216> {new_wallet_balance} coins, Bank: <a:coin:1154168127802843216> {new_bank_balance} coins.")
