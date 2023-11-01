@@ -327,7 +327,7 @@ class Economy(commands.Cog):
                 ("You were caught trespassing and had to leave the premises.", 0)
             ],
             'drug dealing': [
-                ("You successfully made a drug deal and earned some money.", random.randint(100, 1000)),
+                ("You successfully made a drug deal and earned some money.", random.randint(100, 1500)),
                 ("Your drug deal went wrong and you lost your drugs.", 0)
             ],
             'fraud': [
@@ -335,11 +335,11 @@ class Economy(commands.Cog):
                 ("Your attempt at fraud failed and you didn't earn anything.", 0)
             ],
             'tax evasion': [
-                ("You managed to evade taxes and saved some money.", random.randint(100, 1000)),
+                ("You managed to evade taxes and saved some money.", random.randint(100, 10000)),
                 ("Your attempt at tax evasion was discovered, and you had to pay fines.", 0)
             ],
             'arson': [
-                ("You successfully set a fire and caused chaos.", random.randint(100, 1000)),
+                ("You successfully set a fire and caused chaos.", random.randint(100, 2000)),
                 ("Your attempt at arson failed, and no significant damage was done.", 0)
             ],
             'cyber bullying': [
@@ -347,11 +347,11 @@ class Economy(commands.Cog):
                 ("Your attempt at cyber bullying backfired, and you faced backlash.", 0)
             ],
             'hacking': [
-                ("You successfully hacked into a system and gained valuable information.", random.randint(100, 1000)),
+                ("You successfully hacked into a system and gained valuable information.", random.randint(100, 3000)),
                 ("Your hacking attempt failed, and you couldn't access the desired information.", 0)
             ],
             'identity theft': [
-                ("You successfully stole someone's identity and used it to your advantage.", random.randint(100, 1000)),
+                ("You successfully stole someone's identity and used it to your advantage.", random.randint(100, 5000)),
                 ("Your attempt at identity theft failed, and you couldn't gain any benefits.", 0)
             ]
         }
