@@ -453,7 +453,7 @@ class Levels(commands.Cog):
         draw = ImageDraw.Draw(card, 'RGBA')
         draw.text((105, 15), name, fill=levels['bar_color'], font=poppins_xsmall)
         draw.text((1283, 25), 'Server Badges', fill=levels['bar_color'], font=poppins_xxsmall)
-        draw.text((535, 427), f'{xp_have} ', fill=levels['bar_color'], font=font3)
+        draw.text((535, 420), f'{xp_have} ', fill=levels['bar_color'], font=font3)
         draw.text((650, 425), f'/ {xp_need}', fill=levels['bar_color'], font=poppins_small)
         draw.text((235, 430), f'{level}', fill=levels['bar_color'], font=font2)
         draw.text((15,425), 'Server Level','#ffffff', font=poppins_xsmall)
