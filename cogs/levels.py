@@ -378,7 +378,7 @@ class Levels(commands.Cog):
         if has_lead_role:
             special_role_img = Image.open('./assets/lead.png')
             special_role_img = special_role_img.resize((75, 75))
-            custom_x = 25
+            custom_x = 1275
             custom_y = 90
             card.paste(special_role_img, (custom_x, custom_y), special_role_img)
         staff_role_id = 1135244903165722695
@@ -386,7 +386,7 @@ class Levels(commands.Cog):
         if has_staff_role:
             staff_role_img = Image.open('./assets/staff.png')
             staff_role_img = staff_role_img.resize((75, 75))
-            custom_x = 145
+            custom_x = 1375
             custom_y = 90
             card.paste(staff_role_img, (custom_x, custom_y), staff_role_img)
         booster_role_id = 1128460924886458489
@@ -394,7 +394,7 @@ class Levels(commands.Cog):
         if has_booster_role:
             booster_role_img = Image.open('./assets/booster.png')
             booster_role_img = booster_role_img.resize((75, 75))
-            custom_x = 25
+            custom_x = 1275
             custom_y = 175
             card.paste(booster_role_img, (custom_x, custom_y), booster_role_img)
         top20_role_id = 1125233965599555615
@@ -402,7 +402,7 @@ class Levels(commands.Cog):
         if has_top20_role:
             top20_role_img = Image.open('./assets/top20.png')
             top20_role_img = top20_role_img.resize((75, 75))
-            custom_x = 145
+            custom_x = 1375
             custom_y = 175
             card.paste(top20_role_img, (custom_x, custom_y), top20_role_img)
         zennies_role_id = 1121842393994494082
@@ -410,7 +410,7 @@ class Levels(commands.Cog):
         if has_zennies_role:
             zennies_role_img = Image.open('./assets/zennies.png')
             zennies_role_img = zennies_role_img.resize((75, 75))
-            custom_x = 25
+            custom_x = 1275
             custom_y = 260
             card.paste(zennies_role_img, (custom_x, custom_y), zennies_role_img)
         auralead_role_id = 957993316794917024
@@ -418,7 +418,7 @@ class Levels(commands.Cog):
         if has_auralead_role:
             auralead_role_img = Image.open('./assets/auralead.png')
             auralead_role_img = auralead_role_img.resize((75, 75))
-            custom_x = 25
+            custom_x = 1275
             custom_y = 90
             card.paste(auralead_role_img, (custom_x, custom_y), auralead_role_img)
         aurabooster_role_id = 1123757238272659556
@@ -426,7 +426,7 @@ class Levels(commands.Cog):
         if has_aurabooster_role:
             aurabooster_role_img = Image.open('./assets/aurabooster.png')
             aurabooster_role_img = aurabooster_role_img.resize((75, 75))
-            custom_x = 145
+            custom_x = 1375
             custom_y = 90
             card.paste(aurabooster_role_img, (custom_x, custom_y), aurabooster_role_img)
         auratop20_role_id = 1125865632332775577
@@ -434,7 +434,7 @@ class Levels(commands.Cog):
         if has_auratop20_role:
             auratop20_role_img = Image.open('./assets/auratop20.png')
             auratop20_role_img = auratop20_role_img.resize((75, 75))
-            custom_x = 25
+            custom_x = 1275
             custom_y = 175
             card.paste(auratop20_role_img, (custom_x, custom_y), auratop20_role_img)
         aromie_role_id = 1122253152192831549
@@ -442,7 +442,7 @@ class Levels(commands.Cog):
         if has_aromie_role:
             aromie_role_img = Image.open('./assets/aromie.png')
             aromie_role_img = aromie_role_img.resize((75, 75))
-            custom_x = 145
+            custom_x = 1375
             custom_y = 175
             card.paste(aromie_role_img, (custom_x, custom_y), aromie_role_img)
         
