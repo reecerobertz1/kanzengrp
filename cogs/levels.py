@@ -95,7 +95,7 @@ class Levels(commands.Cog):
         query = '''INSERT INTO levels (member_id, guild_id, messages, xp, bar_color) VALUES (?, ?, ?, ?, ?)'''
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cursor:
-                await cursor.execute(query, (member_id, guild_id, 1, xp, "#4089ff"))
+                await cursor.execute(query, (member_id, guild_id, 1, xp, "#ecdfb3"))
                 await conn.commit()
             await self.bot.pool.release(conn)
 
