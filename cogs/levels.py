@@ -368,7 +368,9 @@ class Levels(commands.Cog):
         poppins = Font.poppins(size=67)
         poppins_small = Font.poppins(size=50)
         poppins_xsmall = Font.poppins(size=35)
-        poppins_xxsmall = Font.poppins(size=25)
+        poppins_xxsmall = Font.montserrat(size=25)
+        font2 = ImageFont.truetype("./fonts/Montserrat-Bold.ttf", 35)
+        font3 = ImageFont.truetype("./fonts/Montserrat-Bold.ttf", 50)
         roles_img = Image.open('./assets/roles.png')
         lead_roles_x = (card.width - roles_img.width) // 2
         lead_roles_y = (card.height - roles_img.height) // 2
@@ -446,16 +448,17 @@ class Levels(commands.Cog):
             custom_y = 175
             card.paste(aromie_role_img, (custom_x, custom_y), aromie_role_img)
         
-        card.paste(avatar_paste, (65, 35), circle)
+        card.paste(avatar_paste, (15, 15), circle)
         card.paste(bar, (0, 490), mask)
         draw = ImageDraw.Draw(card, 'RGBA')
-        draw.text((300, 35), name, fill=levels['bar_color'], font=poppins)
+        draw.text((105, 15), name, fill=levels['bar_color'], font=poppins_xsmall)
         draw.text((1283, 25), 'Server Badges', fill=levels['bar_color'], font=poppins_xxsmall)
-        draw.text((650, 425), f'{xp_have} | {xp_need}', fill=levels['bar_color'], font=poppins_small)
-        draw.text((385, 145), f'{level}', fill=levels['bar_color'], font=poppins_small)
-        draw.text((300,110), 'Server Level','#ffffff', font=poppins_xsmall)
-        draw.text((525,110), 'Server Rank', '#ffffff', font=poppins_xsmall)
-        draw.text((600, 145), f"#{str(rank)}", fill=levels['bar_color'], font=poppins_small)
+        draw.text((535, 427), f'{xp_have} ', fill=levels['bar_color'], font=font3)
+        draw.text((650, 425), f'/ {xp_need}', fill=levels['bar_color'], font=poppins_small)
+        draw.text((235, 430), f'{level}', fill=levels['bar_color'], font=font2)
+        draw.text((15,425), 'Server Level','#ffffff', font=poppins_xsmall)
+        draw.text((15,390), 'Server Rank', '#ffffff', font=poppins_xsmall)
+        draw.text((235, 390), f"#{str(rank)}", fill=levels['bar_color'], font=font2)
         rect_width, rect_height = 150, 2
         rect_x1 = (card.width - rect_width) // 1.045
         rect_y1 = (card.height - rect_height) // 9
