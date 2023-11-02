@@ -216,15 +216,15 @@ class Levels(commands.Cog):
         color: int
             The color of their progress bar
         """
-        width = 1050  # Width of the progress bar
-        height = 65  # Height of the progress bar
-        radius = 32.5  # Radius of the rounded corners
+        width = 1500  # Width of the progress bar
+        height = 10  # Height of the progress bar
+        radius = 0  # Radius of the rounded corners
         progress_bar = Image.new('RGBA', (width, height), (0, 0, 0, 0))
         draw = ImageDraw.Draw(progress_bar)
         draw.rectangle([(0, 0), (width, height)], fill=(195, 195, 195, 255))
         bg_width = int(width * 1)
         progress_width = int(width * progress)
-        draw.rounded_rectangle([(0, 0), (bg_width, height)], fill=(195, 195, 195, 255),width=1, radius=radius)
+        draw.rounded_rectangle([(0, 0), (bg_width, height)], fill=(24, 25, 28, 255),width=1, radius=radius)
         draw.rounded_rectangle([(0, 0), (progress_width, height)], fill=color, width=1, radius=radius)
         mask = Image.new('L', (width, height), 0)
         mask_draw = ImageDraw.Draw(mask)
@@ -367,9 +367,8 @@ class Levels(commands.Cog):
         avatar_paste, circle = self._get_round_avatar(avatar)
         poppins = Font.poppins(size=67)
         poppins_small = Font.poppins(size=50)
-        poppins_xsmall = Font.poppins(size=25)
-        poppins_xxsmall = Font.poppins(size=15)
-        poppins_big = Font.poppins(size=100)
+        poppins_xsmall = Font.poppins(size=35)
+        poppins_xxsmall = Font.poppins(size=25)
         roles_img = Image.open('./assets/roles.png')
         lead_roles_x = (card.width - roles_img.width) // 2
         lead_roles_y = (card.height - roles_img.height) // 2
@@ -447,44 +446,22 @@ class Levels(commands.Cog):
             custom_y = 175
             card.paste(aromie_role_img, (custom_x, custom_y), aromie_role_img)
         
-        card.paste(avatar_paste, (1150, 95), circle)
-        card.paste(bar, (280, 400), mask)
+        card.paste(avatar_paste, (65, 35), circle)
+        card.paste(bar, (0, 490), mask)
         draw = ImageDraw.Draw(card, 'RGBA')
-        draw.text((385, 250), name, "#ffffff", font=poppins)
-        draw.text((51, 16), 'SPECIAL ROLE\n    BADGES', '#1F1F1F', font=poppins_xsmall)
-        draw.text((50, 15), 'SPECIAL ROLE\n    BADGES', fill=levels['bar_color'], font=poppins_xsmall)
-        draw.text((385, 325), f'Level {level} | {xp_have}xp - {xp_need}xp', "#ffffff", font=poppins_small)
-        draw.text((1165, 275), f"rank {str(rank)}", fill=levels['bar_color'], font=poppins_small)
-        rect_width, rect_height = 500, 5
-        rect_x1 = (card.width - rect_width) // 2.63
-        rect_y1 = (card.height - rect_height) // 1.51
+        draw.text((300, 35), name, fill=levels['bar_color'], font=poppins)
+        draw.text((1283, 25), 'Server Badges', fill=levels['bar_color'], font=poppins_xxsmall)
+        draw.text((650, 425), f'{xp_have} | {xp_need}', fill=levels['bar_color'], font=poppins_small)
+        draw.text((385, 145), f'{level}', fill=levels['bar_color'], font=poppins_small)
+        draw.text((300,110), 'Server Level','#ffffff', font=poppins_xsmall)
+        draw.text((525,110), 'Server Rank', '#ffffff', font=poppins_xsmall)
+        draw.text((600, 145), f"#{str(rank)}", fill=levels['bar_color'], font=poppins_small)
+        rect_width, rect_height = 150, 2
+        rect_x1 = (card.width - rect_width) // 1.045
+        rect_y1 = (card.height - rect_height) // 9
         rect_x2 = rect_x1 + rect_width
         rect_y2 = rect_y1 + rect_height
         draw.rectangle([(rect_x1, rect_y1), (rect_x2, rect_y2)], fill=levels['bar_color'])
-        right_rect_width, right_rect_height = 5, 251
-        right_rect_x1 = (card.width - rect_width) // 0.715
-        right_rect_y1 = (card.height - rect_height) // 5.3
-        right_rect_x2 = right_rect_x1 + right_rect_width
-        right_rect_y2 = right_rect_y1 + right_rect_height
-        draw.rectangle([(right_rect_x1, right_rect_y1), (right_rect_x2, right_rect_y2)], fill=levels['bar_color'])
-        left_rect_width, left_rect_height = 5, 251
-        left_rect_x1 = (card.width - rect_width) // 0.873
-        left_rect_y1 = (card.height - rect_height) // 5.3
-        left_rect_x2 = left_rect_x1 + left_rect_width
-        left_rect_y2 = left_rect_y1 + left_rect_height
-        draw.rectangle([(left_rect_x1, left_rect_y1), (left_rect_x2, left_rect_y2)], fill=levels['bar_color'])
-        top_rect_width, top_rect_height = 251, 5
-        top_rect_x1 = (card.width - rect_width) // 0.87
-        top_rect_y1 = (card.height - rect_height) // 5.3
-        top_rect_x2 = top_rect_x1 + top_rect_width
-        top_rect_y2 = top_rect_y1 + top_rect_height
-        draw.rectangle([(top_rect_x1, top_rect_y1), (top_rect_x2, top_rect_y2)], fill=levels['bar_color'])
-        bottom_rect_width, bottom_rect_height = 251, 5
-        bottom_rect_x1 = (card.width - rect_width) // 0.87
-        bottom_rect_y1 = (card.height - rect_height) // 1.46
-        bottom_rect_x2 = bottom_rect_x1 + bottom_rect_width
-        bottom_rect_y2 = bottom_rect_y1 + bottom_rect_height
-        draw.rectangle([(bottom_rect_x1, bottom_rect_y1), (bottom_rect_x2, bottom_rect_y2)], fill=levels['bar_color'])
         buffer = BytesIO()
         card.save(buffer, 'png')
         buffer.seek(0)
