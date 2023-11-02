@@ -237,9 +237,9 @@ class Levels(commands.Cog):
         avatar: BytesIO
             The avatar to convert into a circle
         """
-        circle = Image.open('./assets/circle-mask.png').resize((250, 250)).convert('L')
+        circle = Image.open('./assets/circle-mask.png').resize((50, 50)).convert('L')
         avatar_image = Image.open(avatar).convert('RGBA')
-        avatar_image = avatar_image.resize((250, 250))
+        avatar_image = avatar_image.resize((50, 50))
         return avatar_image, circle
     
     def _human_format(self, number: int) -> str:
