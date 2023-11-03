@@ -248,7 +248,7 @@ class Economy(commands.Cog):
 
         celeb_name = random.choice(celeb_names)
         celeb_line = random.choice(celeb_lines.get(celeb_name, ["No coins for you."]))
-        earnings = random.randint(1, 100)
+        earnings = random.randint(1, 10000)
         wallet_balance, _ = await self.update_balance(ctx.author.id, earnings, 0)
         embed=discord.Embed(title=celeb_name, description=celeb_line, color=0x2b2d31)
         embed.add_field(name="You received", value=f"<a:coin:1154168127802843216> {earnings}")
@@ -267,13 +267,13 @@ class Economy(commands.Cog):
     async def search(self, ctx):
         search_responses = {
             'a park': [
-                ("You searched a park and found a squirrel that gave you some coins!", random.randint(1, 100)),
-                ("You explored a park and stumbled upon a hidden treasure!", random.randint(1, 100)),
-                ("You searched a park and found some loose change!", random.randint(1, 100))
+                ("You searched a park and found a squirrel that gave you some coins!", random.randint(1, 500)),
+                ("You explored a park and stumbled upon a hidden treasure!", random.randint(1, 500)),
+                ("You searched a park and found some loose change!", random.randint(1, 500))
             ],
             'an alley': [
-                ("You searched an alley and found a wallet with some coins inside!", random.randint(1, 100)),
-                ("You explored a dark alley and found some discarded coins!", random.randint(1, 100)),
+                ("You searched an alley and found a wallet with some coins inside!", random.randint(1, 1000)),
+                ("You explored a dark alley and found some discarded coins!", random.randint(1, 1000)),
                 ("You searched an alley and found nothing but trash.", 0)
             ],
             'a dumpster': [
@@ -282,13 +282,13 @@ class Economy(commands.Cog):
                 ("You searched a dumpster and got dirty for no reward.", 0)
             ],
             'the forest': [
-                ("You ventured into the forest and found a hidden treasure chest!", random.randint(1, 100)),
-                ("You explored the forest and found a friendly forest creature!", random.randint(1, 100)),
+                ("You ventured into the forest and found a hidden treasure chest!", random.randint(1, 500)),
+                ("You explored the forest and found a friendly forest creature!", random.randint(1, 500)),
                 ("You searched the forest, but it seems there was nothing valuable there today.", 0)
             ],
             'a cave': [
-                ("You entered a dark cave and found a hidden stash of coins!", random.randint(1, 100)),
-                ("You explored a mysterious cave and found a rare gemstone!", random.randint(1, 100)),
+                ("You entered a dark cave and found a hidden stash of coins!", random.randint(1, 350)),
+                ("You explored a mysterious cave and found a rare gemstone!", random.randint(1, 350)),
                 ("You searched a cave but found nothing valuable.", 0)
             ]
         }
@@ -492,7 +492,7 @@ class Economy(commands.Cog):
     @commands.command(description="See what is in the shop")
     @kanzen_only()
     async def shop(self, ctx):
-        await ctx.reply("https://cdn.discordapp.com/attachments/849724031723634688/1168054813976703086/shop_00000.png?ex=65505ed1&is=653de9d1&hm=8e8e59041f65e64e410ef2ea35a8b120d693199d283e016909abf3d71acb304d&")
+        await ctx.reply("https://cdn.discordapp.com/attachments/1121841074512605186/1169853368982843422/shop_00000.png?ex=6556e9d9&is=654474d9&hm=63dce218961ab52626ac0dbeb87e68dfd77085fef78b42ddf1a4e68495fb4573&")
 
     @commands.command(description="Buy items from the shop")
     @kanzen_only()
@@ -501,10 +501,10 @@ class Economy(commands.Cog):
             "Cookie": 10,
             "Soda": 15,
             "Pizza": 25,
-            "Laptop": 100,
+            "Laptop": 500,
             "Fishing_rod": 250,
-            "Gaming PC": 500,
-            "Car": 1000,
+            "Gaming PC": 5000,
+            "Car": 1000000,
         }
 
         item = item.capitalize()
@@ -570,9 +570,9 @@ class Economy(commands.Cog):
             "Cookie": 10,
             "Soda": 15,
             "Pizza": 25,
-            "Laptop": 100,
-            "Gaming PC": 500,
-            "Car": 1000,
+            "Laptop": 500,
+            "Gaming PC": 5000,
+            "Car": 100000,
         }
 
         item = item.capitalize()
