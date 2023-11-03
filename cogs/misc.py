@@ -256,7 +256,7 @@ class misc(commands.Cog):
                 image.paste(textbox_image, (0, 0), textbox_image)
 
                 draw = ImageDraw.Draw(image)
-                poppins = Font.poppins(size=43)
+                poppins = Font.poppins(size=40)
                 font2 = ImageFont.truetype("./fonts/Montserrat-Bold.ttf", 65)
                 font4 = ImageFont.truetype("./fonts/Montserrat-Bold.ttf", 35)
 
@@ -266,7 +266,7 @@ class misc(commands.Cog):
                 draw.text((417, 292), display, '#000000', font=font2)
                 draw.text((415, 290), display, '#ffffff', font=font2)
                 draw.text((60, 720), about_me_text, '#ffffff', font=poppins)
-                draw.text((450, 460), f"{prn1} the pronouns {prns}\n{prn3} {title}\n{prn2} edit on {program}", '#ffffff', font=poppins)
+                draw.text((450, 460), f"{prn1} the pronouns {prns}\n{prn3} {title}\n{prn1} {program} to edit", '#ffffff', font=poppins)
                 draw.text((470, 680), "About Me", fill=(255, 255, 255), font=font4)
                 draw.text((640, 410), "Extra Info", fill=(255, 255, 255), font=font4)
 
