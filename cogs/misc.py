@@ -256,7 +256,7 @@ class misc(commands.Cog):
                 image.paste(textbox_image, (0, 0), textbox_image)
 
                 draw = ImageDraw.Draw(image)
-                font = ImageFont.truetype("arial.ttf", size=45)
+                poppins = Font.poppins(size=43)
                 font2 = ImageFont.truetype("./fonts/Montserrat-Bold.ttf", 65)
                 font4 = ImageFont.truetype("./fonts/Montserrat-Bold.ttf", 35)
 
