@@ -138,7 +138,7 @@ class Economy(commands.Cog):
     async def rob(self, ctx, member: discord.Member):
         titles = ["LOL you stole from someone... naughty naughty", "wow- are you that broke", "well we all need money... mind sharing 🥲"]
         title = random.choice(titles)
-        amount = random.randint(0, 200)
+        amount = random.randint(0, 50000)
         if amount == 0:
             await ctx.send("No coins taken, as the random amount was 0.")
             return
