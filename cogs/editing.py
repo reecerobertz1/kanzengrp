@@ -87,80 +87,44 @@ class editing(commands.Cog):
         person = random.choice(choices)
         await ctx.reply(person)
 
-    @commands.command(aliases=["cs"], description="Get a random color scheme for edits")
-    async def colorscheme(self, ctx):
-        choices = ["https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-1.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-2.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-3.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-4.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-5.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-6.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-7.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-8.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-9.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-10.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-11.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-12.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-13.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-14.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-15.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-16.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-17.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-18.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-19.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-20.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-21.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-22.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-23.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-24.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-25.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-26.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-27.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-28.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-29.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-30.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-31.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-32.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-33.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-34.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-35.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-36.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-37.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-38.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-39.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-40.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-41.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-42.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-43.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-44.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-45.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-46.png",
-                   "https://digitalsynopsis.com/wp-content/uploads/2019/11/color-schemes-palettes-47.png",
-                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654004233089194/dfgsg.png",
-                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654004564426762/dfgsgf.png",
-                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654004782542919/dfgsdgd_1.png",
-                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654005046779975/dfgsdgf.png",
-                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654005340385310/dfsgsdfg.png",
-                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654005566873672/dsfgdfgd.png",
-                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654005772406915/dfgsdgdf.png",
-                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654006045024266/fdgsdfgd.png",
-                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654006284112042/dfsgdfgdf.png",
-                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654006565122109/sdgsdf.png",
-                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654067684507803/dsfgdgf.png",
-                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654067961335870/sdfgsfd.png",
-                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654068313653418/fsdgdg.png",
-                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654068724711474/dsfgsdfg.png",
-                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654069148323920/dfgsdgd.png",
-                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654069404188682/sdfg.png",
-                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654069647446166/gsdfgdf.png",
-                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654069911683102/dfasf.png",
-                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654070347907262/cs2.png",
-                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654070624718968/cs1.png",
-                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654081974513684/cs5.png",
-                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654082280702113/cs4.png",
-                   "https://cdn.discordapp.com/attachments/1055747641620832358/1143654082570113134/cs3.png"]
-        rancolor = random.choice(choices)
-        await ctx.reply(rancolor)
+    def calculate_brightness(self, color):
+        return (0.299 * color[0] + 0.587 * color[1] + 0.114 * color[2]) / 255
+
+    @commands.command(description="Generate a color palette image", aliases=['cs', 'palette'])
+    async def colorpalette(self, ctx):
+        with open('./json files/colors.json', 'r') as file:
+            color_groups = json.load(file)
+
+        group = random.choice(color_groups)
+        padding = 5
+        square_size = 100
+        max_columns = len(group)
+        image_width = max_columns * (square_size + padding) - padding
+        image_height = square_size
+        image = Image.new('RGB', (image_width, image_height), (255, 255, 255))
+        draw = ImageDraw.Draw(image)
+        font = ImageFont.truetype("./fonts/Montserrat-Regular.ttf")
+        font1 = ImageFont.truetype("./fonts/Montserrat-Bold.ttf")
+
+        x = 0
+
+        for color_hex in group:
+            color = tuple(int(color_hex.lstrip('#')[i:i + 2], 16) for i in (0, 2, 4))
+            draw.rectangle([x, 0, x + square_size, square_size], fill=color)
+
+            hex_code = color_hex.upper()
+            text_width, text_height = draw.textsize(hex_code, font=font1)
+            text_x = x + (square_size - text_width) // 2
+            text_y = square_size - text_height
+
+            brightness = self.calculate_brightness(color)
+            text_color = "#272727" if brightness > 0.5 else "#ffffff"
+            
+            draw.text((text_x, text_y), hex_code, fill=text_color, font=font1)
+            x += square_size + padding
+
+        image.save("color_palette.png")
+        await ctx.send(file=discord.File("color_palette.png"))
 
     @commands.command(description="Add your own edits to Hoshi")
     async def addedit(self, ctx, link):
