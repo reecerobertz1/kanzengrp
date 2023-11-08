@@ -13,12 +13,12 @@ import asyncio
 from easy_pil import Canvas, Editor, Font
 from PIL import Image, ImageEnhance, ImageFilter, UnidentifiedImageError
 
-# class for every database entry
 class LevelRow(TypedDict):
     member_id: int
     xp: int
     messages: int
     bar_color: str
+    format: str
 
 class Levels(commands.Cog):
     """Commands for the levelling system"""
@@ -48,7 +48,6 @@ class Levels(commands.Cog):
             return status == 1
         return commands.check(predicate)
 
-    # check for commands that are only for kanzen
     def kanzen_only():
         def predicate(ctx: commands.Context):
             if ctx.guild.id == 1121841073673736215:
@@ -70,7 +69,7 @@ class Levels(commands.Cog):
         
         # other members have a 24 hour cooldown
         return commands.Cooldown(1, 86400)
-
+    
     def kanzen_monthly_cooldown(message: discord.Message):
         role = message.guild.get_role(1128460924886458489)
         if role in message.author.roles:
@@ -79,6 +78,16 @@ class Levels(commands.Cog):
         
         # other members have a 1 month cooldown
         return commands.Cooldown(1, 2592000)
+
+    async def get_rank_format(self, member_id, guild_id):
+        async with self.bot.pool.acquire() as conn:
+            async with conn.transaction():
+                query = "SELECT format FROM levels WHERE member_id = ? AND guild_id = ? LIMIT 1"
+                result = await conn.execute(query, member_id, guild_id)
+                row = await result.fetchone()
+                if row:
+                    return row['format']
+        return None
 
     async def register_member_levels(self, member_id: int, guild_id: int, xp: Optional[int] = 25) -> None:
         """Registers a member to the levels database
@@ -231,7 +240,57 @@ class Levels(commands.Cog):
         mask_draw.rounded_rectangle([(0, 0), (bg_width, height)], fill=255, width=0, radius=radius)
         return progress_bar, mask
     
-    def _get_round_avatar(self, avatar: BytesIO) -> Tuple[Image.Image, Image.Image]:
+    def _make_progress_bar2(self, progress, color):
+        """Makes a progress bar for a member's rank card.
+        
+        Parameters
+        ----------
+        progress: float
+            How far into their current level the member is
+        color: int
+            The color of their progress bar
+        """
+        width = 1080  # Width of the progress bar
+        height = 30  # Height of the progress bar
+        radius = 0  # Radius of the rounded corners
+        progress_bar = Image.new('RGBA', (width, height), (0, 0, 0, 0))
+        draw = ImageDraw.Draw(progress_bar)
+        draw.rectangle([(0, 0), (width, height)], fill=(195, 195, 195, 255))
+        bg_width = int(width * 1)
+        progress_width = int(width * progress)
+        draw.rounded_rectangle([(0, 0), (bg_width, height)], fill=(24, 25, 28, 255),width=1, radius=radius)
+        draw.rounded_rectangle([(0, 0), (progress_width, height)], fill=color, width=1, radius=radius)
+        mask = Image.new('L', (width, height), 0)
+        mask_draw = ImageDraw.Draw(mask)
+        mask_draw.rounded_rectangle([(0, 0), (bg_width, height)], fill=255, width=0, radius=radius)
+        return progress_bar, mask
+    
+    def _make_progress_bar3(self, progress, color):
+        """Makes a progress bar for a member's rank card.
+        
+        Parameters
+        ----------
+        progress: float
+            How far into their current level the member is
+        color: int
+            The color of their progress bar
+        """
+        width = 1080  # Width of the progress bar
+        height = 35  # Height of the progress bar
+        radius = 0  # Radius of the rounded corners
+        progress_bar = Image.new('RGBA', (width, height), (0, 0, 0, 0))
+        draw = ImageDraw.Draw(progress_bar)
+        draw.rectangle([(0, 0), (width, height)], fill=(195, 195, 195, 255))
+        bg_width = int(width * 1)
+        progress_width = int(width * progress)
+        draw.rounded_rectangle([(0, 0), (bg_width, height)], fill=(24, 25, 28, 255),width=1, radius=radius)
+        draw.rounded_rectangle([(0, 0), (progress_width, height)], fill=color, width=1, radius=radius)
+        mask = Image.new('L', (width, height), 0)
+        mask_draw = ImageDraw.Draw(mask)
+        mask_draw.rounded_rectangle([(0, 0), (bg_width, height)], fill=255, width=0, radius=radius)
+        return progress_bar, mask
+    
+    def _get_round_avatar1(self, avatar: BytesIO) -> Tuple[Image.Image, Image.Image]:
         """Converts square avatar retrieved from Discord into a circle avatar
         
         avatar: BytesIO
@@ -240,6 +299,28 @@ class Levels(commands.Cog):
         circle = Image.open('./assets/circle-mask.png').resize((75, 75)).convert('L')
         avatar_image = Image.open(avatar).convert('RGBA')
         avatar_image = avatar_image.resize((75, 75))
+        return avatar_image, circle
+
+    def _get_round_avatar2(self, avatar: BytesIO) -> Tuple[Image.Image, Image.Image]:
+        """Converts square avatar retrieved from Discord into a circle avatar
+        
+        avatar: BytesIO
+            The avatar to convert into a circle
+        """
+        circle = Image.open('./assets/circle-mask.png').resize((150, 150)).convert('L')
+        avatar_image = Image.open(avatar).convert('RGBA')
+        avatar_image = avatar_image.resize((150, 150))
+        return avatar_image, circle
+
+    def _get_round_avatar3(self, avatar: BytesIO) -> Tuple[Image.Image, Image.Image]:
+        """Converts square avatar retrieved from Discord into a circle avatar
+        
+        avatar: BytesIO
+            The avatar to convert into a circle
+        """
+        circle = Image.open('./assets/circle-mask.png').resize((150, 150)).convert('L')
+        avatar_image = Image.open(avatar).convert('RGBA')
+        avatar_image = avatar_image.resize((150, 150))
         return avatar_image, circle
     
     def _human_format(self, number: int) -> str:
@@ -324,7 +405,7 @@ class Levels(commands.Cog):
             b_img = Image.open(BytesIO(image.content))
             return b_img
 
-    def _get_card(self, name: str, status: str, avatar: BytesIO, levels: LevelRow, rank: int, user: discord.User) -> BytesIO:
+    def _get_card1(self, name: str, status: str, avatar: BytesIO, levels: LevelRow, rank: int, user: discord.User) -> BytesIO:
         """Creates a rank card.
         
         Parameters
@@ -364,7 +445,7 @@ class Levels(commands.Cog):
         card.paste(bg)
         status_circle = Image.open(f'./assets/{status}.png')
         bar, mask = self._make_progress_bar(percentage, levels['bar_color'])
-        avatar_paste, circle = self._get_round_avatar(avatar)
+        avatar_paste, circle = self._get_round_avatar1(avatar)
         poppins = Font.poppins(size=67)
         poppins_small = Font.poppins(size=50)
         poppins_xsmall = Font.poppins(size=35)
@@ -453,7 +534,7 @@ class Levels(commands.Cog):
         draw = ImageDraw.Draw(card, 'RGBA')
         draw.text((105, 15), name, fill=levels['bar_color'], font=poppins_xsmall)
         draw.text((1283, 25), 'Server Badges', fill=levels['bar_color'], font=poppins_xxsmall)
-        draw.text((520, 427), f'{xp_have} ', fill=levels['bar_color'], font=font3)
+        draw.text((535, 427), f'{xp_have} ', fill=levels['bar_color'], font=font3)
         draw.text((650, 425), f'/ {xp_need}', fill=levels['bar_color'], font=poppins_small)
         draw.text((235, 430), f'{level}', fill=levels['bar_color'], font=font2)
         draw.text((15,425), 'Server Level','#ffffff', font=poppins_xsmall)
@@ -465,6 +546,280 @@ class Levels(commands.Cog):
         rect_x2 = rect_x1 + rect_width
         rect_y2 = rect_y1 + rect_height
         draw.rectangle([(rect_x1, rect_y1), (rect_x2, rect_y2)], fill=levels['bar_color'])
+        buffer = BytesIO()
+        card.save(buffer, 'png')
+        buffer.seek(0)
+        return buffer
+    
+    def _get_card2(self, name: str, status: str, avatar: BytesIO, levels: LevelRow, rank: int, user: discord.User) -> BytesIO:
+        """Creates a rank card.
+        
+        Parameters
+        ----------
+        name: str
+            Username to display on the card
+        status: str
+            Discord activity status to display next to the avatar
+        avatar: BytesIO
+            Circle-shaped avatar to display on the card
+        levels: LevelRow
+            Database level row to retrieve level information
+        rank: int
+            Rank to display on the card
+        user: discord.User
+            User object to check roles
+
+        Returns
+        -------
+        BytesIO
+            The rank card as a stream of in-memory bytes
+        """
+        percentage, xp_have, xp_need, level = self._xp_calculations(levels)
+        card = Image.new('RGBA', size=(1080, 1080), color='grey')
+        if levels['image'] is not None:
+            bg = self._get_bg_image(levels['image'])
+            bg = bg.resize((1080, 1080))
+        else:
+            bg = Image.open("./assets/rank2_bg.png")
+            min_dim = min(bg.size)
+            bg = bg.crop((0, 0, min_dim, min_dim))
+            bg = bg.resize((1080, 1080))
+        card.paste(bg)
+        status_circle = Image.open(f'./assets/{status}.png')
+        bar, mask = self._make_progress_bar2(percentage, levels['bar_color'])
+        avatar_paste, circle = self._get_round_avatar2(avatar)
+        poppins = Font.poppins(size=67)
+        poppins_small = Font.poppins(size=50)
+        poppins_xsmall = Font.poppins(size=35)
+        poppins_xxsmall = Font.montserrat(size=25)
+        font2 = ImageFont.truetype("./fonts/Montserrat-Bold.ttf", 35)
+        font3 = ImageFont.truetype("./fonts/Montserrat-Bold.ttf", 50)
+        roles_img = Image.open('./assets/rank2_badges.png')
+        lead_roles_x = (card.width - roles_img.width) // 2
+        lead_roles_y = (card.height - roles_img.height) // 2
+        card.paste(roles_img, (lead_roles_x, lead_roles_y), roles_img)
+        lead_role_id = 1121842279351590973
+        has_lead_role = any(role.id == lead_role_id for role in user.roles)
+        if has_lead_role:
+            special_role_img = Image.open('./assets/lead.png')
+            special_role_img = special_role_img.resize((90, 90))
+            custom_x = 65
+            custom_y = 290
+            card.paste(special_role_img, (custom_x, custom_y), special_role_img)
+        staff_role_id = 1135244903165722695
+        has_staff_role = any(role.id == staff_role_id for role in user.roles)
+        if has_staff_role:
+            staff_role_img = Image.open('./assets/staff.png')
+            staff_role_img = staff_role_img.resize((90, 90))
+            custom_x = 215
+            custom_y = 290
+            card.paste(staff_role_img, (custom_x, custom_y), staff_role_img)
+        booster_role_id = 1128460924886458489
+        has_booster_role = any(role.id == booster_role_id for role in user.roles)
+        if has_booster_role:
+            booster_role_img = Image.open('./assets/booster.png')
+            booster_role_img = booster_role_img.resize((115, 115))
+            custom_x = 65
+            custom_y = 450
+            card.paste(booster_role_img, (custom_x, custom_y), booster_role_img)
+        top20_role_id = 1125233965599555615
+        has_top20_role = any(role.id == top20_role_id for role in user.roles)
+        if has_top20_role:
+            top20_role_img = Image.open('./assets/top20.png')
+            top20_role_img = top20_role_img.resize((115, 115))
+            custom_x = 215
+            custom_y = 450
+            card.paste(top20_role_img, (custom_x, custom_y), top20_role_img)
+        zennies_role_id = 1121842393994494082
+        has_zennies_role = any(role.id == zennies_role_id for role in user.roles)
+        if has_zennies_role:
+            zennies_role_img = Image.open('./assets/zennies.png')
+            zennies_role_img = zennies_role_img.resize((115, 115))
+            custom_x = 65
+            custom_y = 610
+            card.paste(zennies_role_img, (custom_x, custom_y), zennies_role_img)
+        auralead_role_id = 957993316794917024
+        has_auralead_role = any(role.id == auralead_role_id for role in user.roles)
+        if has_auralead_role:
+            auralead_role_img = Image.open('./assets/auralead.png')
+            auralead_role_img = auralead_role_img.resize((115, 115))
+            custom_x = 65
+            custom_y = 290
+            card.paste(auralead_role_img, (custom_x, custom_y), auralead_role_img)
+        aurabooster_role_id = 1123757238272659556
+        has_aurabooster_role = any(role.id == aurabooster_role_id for role in user.roles)
+        if has_aurabooster_role:
+            aurabooster_role_img = Image.open('./assets/aurabooster.png')
+            aurabooster_role_img = aurabooster_role_img.resize((115, 115))
+            custom_x = 215
+            custom_y = 290
+            card.paste(aurabooster_role_img, (custom_x, custom_y), aurabooster_role_img)
+        auratop20_role_id = 1125865632332775577
+        has_auratop20_role = any(role.id == auratop20_role_id for role in user.roles)
+        if has_auratop20_role:
+            auratop20_role_img = Image.open('./assets/auratop20.png')
+            auratop20_role_img = auratop20_role_img.resize((115, 115))
+            custom_x = 65
+            custom_y = 450
+            card.paste(auratop20_role_img, (custom_x, custom_y), auratop20_role_img)
+        aromie_role_id = 1122253152192831549
+        has_aromie_role = any(role.id == aromie_role_id for role in user.roles)
+        if has_aromie_role:
+            aromie_role_img = Image.open('./assets/aromie.png')
+            aromie_role_img = aromie_role_img.resize((115, 115))
+            custom_x = 215
+            custom_y = 450
+            card.paste(aromie_role_img, (custom_x, custom_y), aromie_role_img)
+        
+        card.paste(avatar_paste, (800, 35), circle)
+        card.paste(bar, (0, 1055), mask)
+        draw = ImageDraw.Draw(card, 'RGBA')
+        draw.text((775, 175), name, fill=levels['bar_color'], font=poppins_xsmall)
+        draw.text((60, 225), 'Server Badges', fill=levels['bar_color'], font=font2)
+        draw.text((400, 1000), f'{xp_have} / {xp_need}', fill=levels['bar_color'], font=font3)
+        draw.text((290, 853), f'{level}', fill=levels['bar_color'], font=font2)
+        draw.text((75, 850), 'Server Level','#ffffff', font=poppins_xsmall)
+        draw.text((75, 900), 'Server Rank', '#ffffff', font=poppins_xsmall)
+        draw.text((290, 903), f"#{str(rank)}", fill=levels['bar_color'], font=font2)
+        buffer = BytesIO()
+        card.save(buffer, 'png')
+        buffer.seek(0)
+        return buffer
+
+    def _get_card3(self, name: str, status: str, avatar: BytesIO, levels: LevelRow, rank: int, user: discord.User) -> BytesIO:
+        """Creates a rank card.
+        
+        Parameters
+        ----------
+        name: str
+            Username to display on the card
+        status: str
+            Discord activity status to display next to the avatar
+        avatar: BytesIO
+            Circle-shaped avatar to display on the card
+        levels: LevelRow
+            Database level row to retrieve level information
+        rank: int
+            Rank to display on the card
+        user: discord.User
+            User object to check roles
+
+        Returns
+        -------
+        BytesIO
+            The rank card as a stream of in-memory bytes
+        """
+        percentage, xp_have, xp_need, level = self._xp_calculations(levels)
+        card = Image.new('RGBA', size=(1080, 1500), color='grey')
+        if levels['image'] is not None:
+            bg = self._get_bg_image(levels['image'])
+        else:
+            bg = Image.open("./assets/rank3_bg.png")
+        bg_width, bg_height = bg.size
+        card_width, card_height = card.size
+        aspect_ratio = bg_width / bg_height
+        new_width = card_width
+        new_height = int(card_width / aspect_ratio)
+        bg = bg.resize((new_width, new_height))
+        y_offset = (card_height - new_height) // 2
+        card.paste(bg, (0, y_offset))
+        card.paste(bg)
+        status_circle = Image.open(f'./assets/{status}.png')
+        bar, mask = self._make_progress_bar3(percentage, levels['bar_color'])
+        avatar_paste, circle = self._get_round_avatar3(avatar)
+        poppins = Font.poppins(size=67)
+        poppins_small = Font.poppins(size=50)
+        poppins_xsmall = Font.poppins(size=35)
+        poppins_xxsmall = Font.montserrat(size=25)
+        font2 = ImageFont.truetype("./fonts/Montserrat-Bold.ttf", 35)
+        font3 = ImageFont.truetype("./fonts/Montserrat-Bold.ttf", 50)
+        roles_img = Image.open('./assets/rank3_badges.png')
+        lead_roles_x = (card.width - roles_img.width) // 2
+        lead_roles_y = (card.height - roles_img.height) // 2
+        card.paste(roles_img, (lead_roles_x, lead_roles_y), roles_img)
+        lead_role_id = 1121842279351590973
+        has_lead_role = any(role.id == lead_role_id for role in user.roles)
+        if has_lead_role:
+            special_role_img = Image.open('./assets/lead.png')
+            special_role_img = special_role_img.resize((90, 90))
+            custom_x = 100
+            custom_y = 420
+            card.paste(special_role_img, (custom_x, custom_y), special_role_img)
+        staff_role_id = 1135244903165722695
+        has_staff_role = any(role.id == staff_role_id for role in user.roles)
+        if has_staff_role:
+            staff_role_img = Image.open('./assets/staff.png')
+            staff_role_img = staff_role_img.resize((90, 90))
+            custom_x = 275
+            custom_y = 420
+            card.paste(staff_role_img, (custom_x, custom_y), staff_role_img)
+        booster_role_id = 1128460924886458489
+        has_booster_role = any(role.id == booster_role_id for role in user.roles)
+        if has_booster_role:
+            booster_role_img = Image.open('./assets/booster.png')
+            booster_role_img = booster_role_img.resize((115, 115))
+            custom_x = 100
+            custom_y = 620
+            card.paste(booster_role_img, (custom_x, custom_y), booster_role_img)
+        top20_role_id = 1125233965599555615
+        has_top20_role = any(role.id == top20_role_id for role in user.roles)
+        if has_top20_role:
+            top20_role_img = Image.open('./assets/top20.png')
+            top20_role_img = top20_role_img.resize((115, 115))
+            custom_x = 275
+            custom_y = 620
+            card.paste(top20_role_img, (custom_x, custom_y), top20_role_img)
+        zennies_role_id = 1121842393994494082
+        has_zennies_role = any(role.id == zennies_role_id for role in user.roles)
+        if has_zennies_role:
+            zennies_role_img = Image.open('./assets/zennies.png')
+            zennies_role_img = zennies_role_img.resize((115, 115))
+            custom_x = 100
+            custom_y = 850
+            card.paste(zennies_role_img, (custom_x, custom_y), zennies_role_img)
+        auralead_role_id = 957993316794917024
+        has_auralead_role = any(role.id == auralead_role_id for role in user.roles)
+        if has_auralead_role:
+            auralead_role_img = Image.open('./assets/auralead.png')
+            auralead_role_img = auralead_role_img.resize((115, 115))
+            custom_x = 100
+            custom_y = 420
+            card.paste(auralead_role_img, (custom_x, custom_y), auralead_role_img)
+        aurabooster_role_id = 1123757238272659556
+        has_aurabooster_role = any(role.id == aurabooster_role_id for role in user.roles)
+        if has_aurabooster_role:
+            aurabooster_role_img = Image.open('./assets/aurabooster.png')
+            aurabooster_role_img = aurabooster_role_img.resize((115, 115))
+            custom_x = 275
+            custom_y = 420
+            card.paste(aurabooster_role_img, (custom_x, custom_y), aurabooster_role_img)
+        auratop20_role_id = 1125865632332775577
+        has_auratop20_role = any(role.id == auratop20_role_id for role in user.roles)
+        if has_auratop20_role:
+            auratop20_role_img = Image.open('./assets/auratop20.png')
+            auratop20_role_img = auratop20_role_img.resize((115, 115))
+            custom_x = 100
+            custom_y = 620
+            card.paste(auratop20_role_img, (custom_x, custom_y), auratop20_role_img)
+        aromie_role_id = 1122253152192831549
+        has_aromie_role = any(role.id == aromie_role_id for role in user.roles)
+        if has_aromie_role:
+            aromie_role_img = Image.open('./assets/aromie.png')
+            aromie_role_img = aromie_role_img.resize((115, 115))
+            custom_x = 275
+            custom_y = 620
+            card.paste(aromie_role_img, (custom_x, custom_y), aromie_role_img)
+        
+        card.paste(avatar_paste, (75, 75), circle)
+        card.paste(bar, (0, 1475), mask)
+        draw = ImageDraw.Draw(card, 'RGBA')
+        draw.text((250, 85), name, fill=levels['bar_color'], font=poppins)
+        draw.text((150, 325), 'Server Badges', fill=levels['bar_color'], font=poppins_xxsmall)
+        draw.text((415, 1400), f'{xp_have} / {xp_need}', fill=levels['bar_color'], font=poppins_small)
+        draw.text((325, 1203), f'{level}', fill=levels['bar_color'], font=font2)
+        draw.text((100,1200), 'Server Level','#ffffff', font=poppins_xsmall)
+        draw.text((100,1250), 'Server Rank', '#ffffff', font=poppins_xsmall)
+        draw.text((325, 1253), f"#{str(rank)}", fill=levels['bar_color'], font=font2)
         buffer = BytesIO()
         card.save(buffer, 'png')
         buffer.seek(0)
@@ -635,7 +990,7 @@ class Levels(commands.Cog):
             await self.bot.pool.release(conn)
         return rank[0] + 1
 
-    async def generate_card(self, name: str, status: str, avatar: BytesIO, levels: LevelRow, rank: int, member: discord.Member) -> BytesIO:
+    async def generate_card_rank1(self, name: str, status: str, avatar: BytesIO, levels: LevelRow, rank: int, member: discord.Member) -> BytesIO:
         """Generates a rank card asynchronously.
         
         Parameters
@@ -656,8 +1011,58 @@ class Levels(commands.Cog):
         BytesIO
             The rank card as a stream of in-memory bytes
         """
-        card_generator = functools.partial(self._get_card, name, status, avatar, levels, rank)
-        card = await self.bot.loop.run_in_executor(None, self._get_card, str(member), str(member.status), avatar, levels, rank, member)
+        card_generator = functools.partial(self._get_card1, name, status, avatar, levels, rank)
+        card = await self.bot.loop.run_in_executor(None, self._get_card1, str(member), str(member.status), avatar, levels, rank, member)
+        return card
+    
+    async def generate_card_rank2(self, name: str, status: str, avatar: BytesIO, levels: LevelRow, rank: int, member: discord.Member) -> BytesIO:
+        """Generates a rank card asynchronously.
+        
+        Parameters
+        ----------
+        name: str
+            Username to display on card
+        status: str
+            Discord activity status to display next to avatar
+        avatar: BytesIO
+            Circle shaped avatar to display on card
+        levels: LevelRow
+            Database level row to retrieve level information
+        rank: int
+            Rank to display on card
+
+        Returns
+        -------
+        BytesIO
+            The rank card as a stream of in-memory bytes
+        """
+        card_generator = functools.partial(self._get_card2, name, status, avatar, levels, rank)
+        card = await self.bot.loop.run_in_executor(None, self._get_card2, str(member), str(member.status), avatar, levels, rank, member)
+        return card
+
+    async def generate_card_rank3(self, name: str, status: str, avatar: BytesIO, levels: LevelRow, rank: int, member: discord.Member) -> BytesIO:
+        """Generates a rank card asynchronously.
+        
+        Parameters
+        ----------
+        name: str
+            Username to display on card
+        status: str
+            Discord activity status to display next to avatar
+        avatar: BytesIO
+            Circle shaped avatar to display on card
+        levels: LevelRow
+            Database level row to retrieve level information
+        rank: int
+            Rank to display on card
+
+        Returns
+        -------
+        BytesIO
+            The rank card as a stream of in-memory bytes
+        """
+        card_generator = functools.partial(self._get_card3, name, status, avatar, levels, rank)
+        card = await self.bot.loop.run_in_executor(None, self._get_card3, str(member), str(member.status), avatar, levels, rank, member)
         return card
 
     async def top_20_role_handler(self, member: discord.Member, guild: discord.Guild, role_id: int) -> None:
@@ -967,7 +1372,6 @@ class Levels(commands.Cog):
     @levels_is_activated()
     async def rank(self, ctx: commands.Context, member: Optional[discord.Member]):
         async with ctx.typing():
-            """makes a rank card"""
             member = member or ctx.author
             levels = await self.get_member_levels(member.id, ctx.guild.id)
             rank = await self.get_rank(member.id, ctx.guild.id)
@@ -977,11 +1381,43 @@ class Levels(commands.Cog):
             avatar.seek(0)
 
             if levels:
-                card = await self.generate_card(str(member), str(member.status), avatar, levels, rank, member)
-                await ctx.reply(file=discord.File(card, 'card.png'), mention_author=False)
+                format = await self.get_rank_format(member.id, ctx.guild.id)
+                if format == "Rank 1":
+                    card = await self.generate_card_rank1(str(member), str(member.status), avatar, levels, rank, member)
+                elif format == "Rank 2":
+                    card = await self.generate_card_rank2(str(member), str(member.status), avatar, levels, rank, member)
+                elif format == "Rank 3":
+                    card = await self.generate_card_rank3(str(member), str(member.status), avatar, levels, rank, member)
+                else:
+                    card = None
+                if card:
+                    await ctx.reply(file=discord.File(card, 'card.png'), mention_author=False)
+                else:
+                    await ctx.reply(f"Hey! new update for ranks has been released, you can now choose between 3 different formats for your rank card.\nPlease select a format! to do so do +rank1, +rank2 or +rank3!", mention_author=False)  # Display the unknown format
             else:
                 await ctx.reply(f"{member} doesn't have any levels yet!!", mention_author=False)
 
+    async def update_rank_format(self, member_id, guild_id, format):
+        async with self.bot.pool.acquire() as conn:
+            await conn.execute("UPDATE levels SET format = $1 WHERE member_id = $2 AND guild_id = $3", format, member_id, guild_id)
+
+    @commands.command(description="Change your rank card format to version 1")
+    async def rank1(self, ctx):
+        await self.update_rank_format(ctx.author.id, ctx.guild.id, "Rank 1")
+        embed = discord.Embed(title="New format selected!", description="You have selected format version 1\n\nIf you want to cusomise this rank card you can with the commands **+rankcolor** and include a hexcode (example: #2b2d31)\n\nYou can also change your background with +rankimage and attach you background image, please do remember that the background image needs to be **1500x500** format so it isn't cropped!", color=0x2b2d31)
+        await ctx.reply(embed=embed)
+
+    @commands.command(description="Change your rank card format to version 2")
+    async def rank2(self, ctx):
+        await self.update_rank_format(ctx.author.id, ctx.guild.id, "Rank 2")
+        embed = discord.Embed(title="New format selected!", description="You have selected format version 1\n\nIf you want to cusomise this rank card you can with the commands **+rankcolor** and include a hexcode (example: #2b2d31)\n\nYou can also change your background with +rankimage and attach you background image, please do remember that the background image needs to be **1080x1080** format so it isn't cropped!", color=0x2b2d31)
+        await ctx.reply(embed=embed)
+
+    @commands.command(description="Change your rank card format to version 3")
+    async def rank3(self, ctx):
+        await self.update_rank_format(ctx.author.id, ctx.guild.id, "Rank 3")
+        embed = discord.Embed(title="New format selected!", description="You have selected format version 1\n\nIf you want to cusomise this rank card you can with the commands **+rankcolor** and include a hexcode (example: #2b2d31)\n\nYou can also change your background with +rankimage and attach you background image, please do remember that the background image needs to be **1080x1500** format so it isn't cropped!", color=0x2b2d31)
+        await ctx.reply(embed=embed)
 
     @commands.command(description="Change your rank card color with hex codes")
     @levels_is_activated()
