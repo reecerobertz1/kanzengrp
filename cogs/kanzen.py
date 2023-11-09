@@ -449,12 +449,20 @@ class kanzen(commands.Cog):
     @commands.command()
     @commands.has_permissions(manage_guild=True)
     async def info(self, ctx):
-        embed = discord.Embed(description="### Welcome!\n> Thank you for joining Kanzengrp! We hope you have a good time!\n> If you ever need any help feel free to ping @lead or @staff\n> \n> To get the logos press the logos button below! And if you need\n> to send an inactivity message, you can click the inactive button!", color=0x2b2d31)
-        view = infobuttons()
-        embed2 = discord.Embed(description='### Group Rules:\n<a:Arrow_1:1145603161701224528> always watermark the logos\n<a:Arrow_1:1145603161701224528> do not share the logos link outside the server!\n<a:Arrow_1:1145603161701224528> make sure you are following [@remqsi](https://www.instagram.com/kanzengrp/) + [@kanzengrp](https://www.instagram.com/kanzengrp/)\n<a:Arrow_1:1145603161701224528> if you do ever decide to leave the grp, or move accounts. please let lead or staff know!\n\n### Chat Rules:\n<a:Arrow_1:1145603161701224528> please be as active as possible!\n<a:Arrow_1:1145603161701224528> no using any slurs / words that can be offensive!\n<a:Arrow_1:1145603161701224528> please set your nickname as "your name | username"\n<a:Arrow_1:1145603161701224528> no impersonation as other editors\n<a:Arrow_1:1145603161701224528> no trash talking other editors and groups!', color=0x2b2d31)
+        embed = discord.Embed(title="Welcome!", description="> Thank you for joining Kanzengrp! We hope you have a good time!\n> If you ever need any help feel free to ping @lead or @staff\n> \n> To get the logos press the logos button below! And if you need\n> to send an inactivity message, you can click the inactive button!", color=0x2b2d31)
+
+        embed.set_author(name="Kanzengrp", icon_url="https://cdn.discordapp.com/icons/1121841073673736215/a_41c896fafe3505a2472dcea387acb97a.gif?size=1024")
+        embed2 = discord.Embed(description='**Group Rules**\n<a:Arrow_1:1145603161701224528> always watermark the logos\n<a:Arrow_1:1145603161701224528> do not share the logos link outside the server!\n<a:Arrow_1:1145603161701224528> make sure you are following [@remqsi](https://www.instagram.com/kanzengrp/) + [@kanzengrp](https://www.instagram.com/kanzengrp/)\n<a:Arrow_1:1145603161701224528> if you do ever decide to leave the grp, or move accounts. please let lead or staff know!', color=0x2b2d31)
         embed2.set_image(url="https://cdn.discordapp.com/attachments/1121841074512605186/1154928824421728276/banner_welc_00000.png")
-        embed.set_author(name="Kanzengrp", icon_url="https://cdn.discordapp.com/icons/1121841073673736215/a_2589a17d1463e51248bd02fd9af3e01a.gif?size=1024")
-        await ctx.send(embed=embed)
+        embed2.add_field(name="Chat Rules", value='<a:Arrow_1:1145603161701224528> please be as active as possible!\n<a:Arrow_1:1145603161701224528> no using any slurs / words that can be offensive!\n<a:Arrow_1:1145603161701224528> please set your nickname as "your name | username"\n<a:Arrow_1:1145603161701224528> no impersonation as other editors\n<a:Arrow_1:1145603161701224528> no trash talking other editors and groups!', inline=False)
+        view = infobuttons()
+        ttbutton = discord.ui.Button(label=f"Tiktok", url=f"https://www.tiktok.com/@kanzengrp?_t=8hBEO47Fw37&_r=1", emoji="<:tiktok:1171995663890911273>")
+        igbutton = discord.ui.Button(label=f"Instagram", url=f"https://www.instagram.com/kanzengrp/", emoji="<:insta:1171995666382336040>")
+        button_view = discord.ui.View()
+        button_view.add_item(ttbutton)
+        button_view.add_item(igbutton)
+
+        message = await ctx.send(embed=embed, view=button_view)
         await ctx.send(embed=embed2, view=view)
 
     @commands.command()
