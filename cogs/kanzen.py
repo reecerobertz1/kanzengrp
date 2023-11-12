@@ -462,6 +462,7 @@ class kanzen(commands.Cog):
         button_view = discord.ui.View()
         button_view.add_item(ttbutton)
         button_view.add_item(igbutton)
+        button_view.add_item(cbutton)
 
         message = await ctx.send(embed=embed, view=button_view)
         await ctx.send(embed=embed2, view=view)
