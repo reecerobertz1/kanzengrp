@@ -40,7 +40,7 @@ class reportmodal(ui.Modal, title='Bug Report'):
         view = resolved(self.bot, self.bug.value, self.command.value, interaction.message.reference.message_id)
         command = self.command.value
         bug = self.bug.value
-        channel = interaction.client.get_channel(1149339743675502612)
+        channel = interaction.client.get_channel(1173113066477588511)
         await channel.send("<@609515684740988959>", embed=embed, view=view)
         await interaction.followup.send(f'Your bug report was sent successfully', ephemeral=True)
 
