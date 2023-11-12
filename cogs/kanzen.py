@@ -458,6 +458,7 @@ class kanzen(commands.Cog):
         view = infobuttons()
         ttbutton = discord.ui.Button(label=f"Tiktok", url=f"https://www.tiktok.com/@kanzengrp?_t=8hBEO47Fw37&_r=1", emoji="<:tiktok:1171995663890911273>")
         igbutton = discord.ui.Button(label=f"Instagram", url=f"https://www.instagram.com/kanzengrp/", emoji="<:insta:1171995666382336040>")
+        cbutton = discord.ui.Button(label="Card", url="https://kanzengrp.carrd.co", emoji="<:carrd:1173159791988838430>")
         button_view = discord.ui.View()
         button_view.add_item(ttbutton)
         button_view.add_item(igbutton)
