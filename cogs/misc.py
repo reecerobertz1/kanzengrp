@@ -12,6 +12,7 @@ import requests
 from io import BytesIO
 import os
 import textwrap
+from dispie import EmbedCreator
 
 class misc(commands.Cog):
     """Miscellaneous Commands"""
