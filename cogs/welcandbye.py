@@ -57,7 +57,12 @@ class welc(discord.ui.View):
             "https://tenor.com/view/blackpink-wave-bye-jennie-flying-kiss-gif-15741931",
             "https://tenor.com/view/blackpink-lisoo-lisa-jisoo-wave-gif-21466840",
             "https://tenor.com/view/lisa-lisa-manoban-hello-cute-smile-gif-15880375",
-            "https://tenor.com/view/blackpink-curly-hair-wave-hands-gif-13323734"
+            "https://tenor.com/view/blackpink-curly-hair-wave-hands-gif-13323734",
+            "https://tenor.com/view/lesserafim-yunjin-blows-kiss-with-candy-lesserafim-yunjin-huh-yunjin-mwah-gif-26468116",
+            "https://tenor.com/view/kazuha-lesserafim-kazuha-lesserafim-nakamura-kazuha-gif-387759147393748565",
+            "https://tenor.com/view/kazuha-nakamura-kazuha-lesserafim-le-sserafim-wave-gif-7028135244005719993",
+            "https://tenor.com/view/le-sserafim-chaewon-kpop-lesserafim-k-pop-gif-5305875374031120683",
+            "https://tenor.com/view/izone-sakura-izone-miyawaki-sakura-sakura-miyawaki-bye-bye-gif-18000800"
         ]
         welcomer = interaction.user.name
         hello = random.choice(gifs)
