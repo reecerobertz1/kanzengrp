@@ -27,7 +27,8 @@ extensions = {
     "cogs.tof",
     "cogs.ttt",
     "cogs.welcandbye",
-    "cogs.economy"
+    "cogs.economy",
+    "cogs.christmas"
 }
 class LalisaBot(commands.Bot):
     session: aiohttp.ClientSession
