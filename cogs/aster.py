@@ -108,7 +108,7 @@ class aster(commands.Cog):
         else:
             await ctx.send("Please reply with the embed you want to process.")
 
-    @app_commands.command(name='apply', description='Get Aura logos')
+    @app_commands.command(name='apply', description='Apply for aster staff')
     @app_commands.guilds(discord.Object(id=748021504830341330))
     async def apply(self, interaction: discord.Interaction):
         embed = discord.Embed(title="Staff Applications", description="Thank you for wanting to be apart of our team! here is some information about each role before you apply!", color=0x2b2d31)
