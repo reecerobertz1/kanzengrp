@@ -79,6 +79,7 @@ class welcandleave(commands.Cog):
         self.server2_welcome_channel_id = 1123274964406120479
         self.server6_id = 1131003330810871979
         self.server6_channel = 1133767338588639323
+        self.server7_id = 748021504830341330
         self.server7_channel = 748021504830341334
         self.hidden = True
 
