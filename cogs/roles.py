@@ -17,12 +17,12 @@ class Roles(commands.Cog):
         select = Select(
             placeholder="Select a role",
             options=[
-                discord.SelectOption(label="he/him", value="he/him", emoji="<:1:1137455321028251708>"),
-                discord.SelectOption(label="she/her", value="she/her", emoji="<:2:1137455517577531565>"),
-                discord.SelectOption(label="they/them", value="they/them", emoji="<:3:1137455658258673704>"),
-                discord.SelectOption(label="he/they", value="he/they", emoji="<:4:1137455776877781107>"),
-                discord.SelectOption(label="she/they", value="she/they", emoji="<:5:1137455941609078824>"),
-                discord.SelectOption(label="any/ask", value="any/ask", emoji="<:6:1137456046978383892>")
+                discord.SelectOption(label="he/him", value="he/him", emoji="<:_1:1178012295503286423>"),
+                discord.SelectOption(label="she/her", value="she/her", emoji="<:_2:1178012298208624651>"),
+                discord.SelectOption(label="they/them", value="they/them", emoji="<:_3:1178012301287243786>"),
+                discord.SelectOption(label="he/they", value="he/they", emoji="<:_4:1178012304554610688>"),
+                discord.SelectOption(label="she/they", value="she/they", emoji="<:_5:1178012281406234674>"),
+                discord.SelectOption(label="any/ask", value="any/ask", emoji="<:_6:1178012308035874867>")
             ]
         )
         async def add_role(interaction: discord.Interaction):
@@ -57,8 +57,8 @@ class Roles(commands.Cog):
         select.callback = add_role
         view = View(timeout=None)
         view.add_item(select)
-        embed = discord.Embed(title="<:leaf:1137454366886993950> What are your pronouns?", description="Which of the following pronouns do you use? These roles can help other members of the server use the correct pronouns.\n\n<:1:1137455321028251708> - <@&1131127428668997737> \n<:2:1137455517577531565> - <@&1131127209952809031> \n<:3:1137455658258673704> - <@&1131127449753751663> \n<:4:1137455776877781107> - <@&1131127472142958622> \n<:5:1137455941609078824> - <@&1131127502396465213> \n<:6:1137456046978383892> - <@&1131127523456069723>", color=0x2b2d31)
-        await ctx.send("https://cdn.discordapp.com/attachments/1131006428631539773/1138222545187909713/pronouns_new_00000_2.png")
+        embed = discord.Embed(title="❄ What are your pronouns?", description="Which of the following pronouns do you use? These roles can help other members of the server use the correct pronouns.\n\n<:_1:1178012295503286423> - <@&1131127428668997737> \n<:_2:1178012298208624651> - <@&1131127209952809031> \n<:_3:1178012301287243786> - <@&1131127449753751663> \n<:_4:1178012304554610688> - <@&1131127472142958622> \n<:_5:1178012281406234674> - <@&1131127502396465213> \n<:_6:1178012308035874867> - <@&1131127523456069723>", color=0x2b2d31)
+        await ctx.send("https://cdn.discordapp.com/attachments/1131006428631539773/1178017923512668190/extra_00000_00001.png?ex=65749daf&is=656228af&hm=e9425c9f907ad4e0add96d9b12cc1d8df9e543f569c3ea04106162931074b18d&")
         await ctx.send(embed=embed, view=view)
         await ctx.send("<:Empty:1137842301188702239>")
 
@@ -69,12 +69,12 @@ class Roles(commands.Cog):
             min_values=0,
             placeholder="Select a role",
             options=[
-                discord.SelectOption(label="qotd", value="qotd", emoji="<:1:1137455321028251708>"),
-                discord.SelectOption(label="events", value="events", emoji="<:2:1137455517577531565>"),
-                discord.SelectOption(label="giveaways", value="giveaways", emoji="<:3:1137455658258673704>"),
-                discord.SelectOption(label="welc", value="welc", emoji="<:4:1137455776877781107>"),
-                discord.SelectOption(label="apps", value="apps", emoji="<:5:1137455941609078824>"),
-                discord.SelectOption(label="hoshi updates", emoji="<:6_:1137456046978383892>")
+                discord.SelectOption(label="qotd", value="qotd", emoji="<:_1:1178012295503286423>"),
+                discord.SelectOption(label="events", value="events", emoji="<:_2:1178012298208624651>"),
+                discord.SelectOption(label="giveaways", value="giveaways", emoji="<:_3:1178012301287243786>"),
+                discord.SelectOption(label="welc", value="welc", emoji="<:_4:1178012304554610688>"),
+                discord.SelectOption(label="apps", value="apps", emoji="<:_5:1178012281406234674>"),
+                discord.SelectOption(label="hoshi updates", emoji="<:_6:1178012308035874867>")
             ]
         )
         async def add_role(interaction: discord.Interaction):
@@ -127,8 +127,8 @@ class Roles(commands.Cog):
         view = View(timeout=None)
         view.add_item(select)
 
-        embed = discord.Embed(title="<:leaf:1137454366886993950> What server pings would you like?", description="The staff will ping these roles whenever there's something related to these roles happening in the server.\n\n<:1:1137455321028251708> - <@&1133770119777099866> \n<:2:1137455517577531565> - <@&1131127168102055996> \n<:3:1137455658258673704> - <@&1131127104226992208> \n<:4:1137455776877781107> - <@&1131005057417105418> \n<:5:1137455941609078824> - <@&1131127124187684894>\n<:6_:1137456046978383892> - <@&1141771622785753138>", color=0x2b2d31)
-        await ctx.send("https://cdn.discordapp.com/attachments/1131006428631539773/1138225991446179930/pings_new_00000.png")
+        embed = discord.Embed(title="❄ What server pings would you like?", description="The staff will ping these roles whenever there's something related to these roles happening in the server.\n\n<:_1:1178012295503286423> - <@&1133770119777099866> \n<:_2:1178012298208624651> - <@&1131127168102055996> \n<:_3:1178012301287243786> - <@&1131127104226992208> \n<:_4:1178012304554610688> - <@&1131005057417105418> \n<:_5:1178012281406234674> - <@&1131127124187684894>\n<:_6:1178012308035874867> - <@&1141771622785753138>", color=0x2b2d31)
+        await ctx.send("https://cdn.discordapp.com/attachments/1131006428631539773/1178017912959807489/extra_00000_00002.png?ex=65749dac&is=656228ac&hm=6956e40361e24079feced4ced29184e354ceaf6a4cd62e18971b95146c39ef5d&")
         await ctx.send(embed=embed, view=view)
         await ctx.send("<:Empty:1137842301188702239>")
 
@@ -139,12 +139,12 @@ class Roles(commands.Cog):
             min_values=0,
             placeholder="Select a role",
             options=[
-                discord.SelectOption(label="collab", value="collab", emoji="<:1:1137455321028251708>"),
-                discord.SelectOption(label="edit help", value="edit help", emoji="<:2:1137455517577531565>"),
-                discord.SelectOption(label="dts", value="dts", emoji="<:3:1137455658258673704>"),
-                discord.SelectOption(label="ops", value="ops", emoji="<:4:1137455776877781107>"),
-                discord.SelectOption(label="chat revive", value="chat revive", emoji="<:5:1137455941609078824>"),
-                discord.SelectOption(label="games", emoji="<:6_:1137456046978383892>")
+                discord.SelectOption(label="collab", value="collab", emoji="<:_1:1178012295503286423>"),
+                discord.SelectOption(label="edit help", value="edit help", emoji="<:_2:1178012298208624651>"),
+                discord.SelectOption(label="dts", value="dts", emoji="<:_3:1178012301287243786>"),
+                discord.SelectOption(label="ops", value="ops", emoji="<:_4:1178012304554610688>"),
+                discord.SelectOption(label="chat revive", value="chat revive", emoji="<:_5:1178012281406234674>"),
+                discord.SelectOption(label="games", emoji="<:_6:1178012308035874867>")
             ]
         )
         async def add_role(interaction: discord.Interaction):
@@ -197,25 +197,29 @@ class Roles(commands.Cog):
         view = View(timeout=None)
         view.add_item(select)
 
-        embed = discord.Embed(title="<:leaf:1137454366886993950> What member pings would you like?",
-                              description="These roles can be used by anyone in this server to ping other members! Please do not abuse these roles!\n\n<:1:1137455321028251708> - <@&1131130157160206396>\n<:2:1137455517577531565> - <@&1131127084379549757>\n<:3:1137455658258673704> - <@&1131130102328078336>\n<:4:1137455776877781107> - <@&1131127146186821685>\n<:5:1137455941609078824> - <@&1134876934585712773>\n<:6_:1137456046978383892> - <@&1141771607501713519>",
+        embed = discord.Embed(title="❄ What member pings would you like?",
+                              description="These roles can be used by anyone in this server to ping other members! Please do not abuse these roles!\n\n<:_1:1178012295503286423> - <@&1131130157160206396>\n<:_2:1178012298208624651> - <@&1131127084379549757>\n<:_3:1178012301287243786> - <@&1131130102328078336>\n<:_4:1178012304554610688> - <@&1131127146186821685>\n<:_5:1178012281406234674> - <@&1134876934585712773>\n<:_6:1178012308035874867> - <@&1141771607501713519>",
                               color=0x2b2d31)
-        await ctx.send("https://cdn.discordapp.com/attachments/1131006428631539773/1138232205261422682/member_pings_new_00000.png")
+        await ctx.send("https://cdn.discordapp.com/attachments/1131006428631539773/1178017885021536303/extra_00000_00003.png?ex=65749da6&is=656228a6&hm=767c1e5226b89cc0af7e362dd3e4ef0b42d125b692a5e96e788de311a8f44691&")
         await ctx.send(embed=embed, view=view)
         await ctx.send("<:Empty:1137842301188702239>")
 
     @commands.command()
     async def roles3(self, ctx):
         select = Select(
+            max_values=2,
+            min_values=0,
             placeholder="Select a role",
             options=[
-                discord.SelectOption(label="vent", value="vent", emoji="<:1:1137455321028251708>")
+                discord.SelectOption(label="vent", value="vent", emoji="<:_1:1178012295503286423>"),
+                discord.SelectOption(label="partner mute", value="partner mute", emoji="<:_2:1178012298208624651>")
             ]
         )
         async def add_role(interaction: discord.Interaction):
             await interaction.response.defer()
             role_ids = {
-                "vent": 1141780367808925717
+                "vent": 1141780367808925717,
+                "partner mute": 1131127183159590953
             }
             
             member = interaction.user
@@ -240,8 +244,8 @@ class Roles(commands.Cog):
         view = View(timeout=None)
         view.add_item(select)
 
-        embed = discord.Embed(title="<:leaf:1137454366886993950> What extra roles do you want?", description="Which of the following roles do you want? These roles are for other access to extra channels in the  server!\n\n<:1:1137455321028251708> - <@&1141780367808925717>", color=0x2b2d31)
-        await ctx.send("https://cdn.discordapp.com/attachments/1131006428631539773/1141779053272121485/extra_00000.png")
+        embed = discord.Embed(title="❄ What extra roles do you want?", description="Which of the following roles do you want? These roles are for other access to extra channels in the  server!\n\n<:_1:1178012295503286423> - <@&1141780367808925717>\n<:_2:1178012298208624651> - <@&1131127183159590953>", color=0x2b2d31)
+        await ctx.send("https://cdn.discordapp.com/attachments/1131006428631539773/1178017933138608279/extra_00000_00000.png?ex=65749db1&is=656228b1&hm=3139cf8969deb5d2ed095591940d181d7f63aeb7bd6fcf9f9af6d79c01e48000&")
         await ctx.send(embed=embed, view=view)
 
 async def setup(bot):
