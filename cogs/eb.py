@@ -809,7 +809,7 @@ class ebmessages(commands.Cog):
 
     @commands.command()
     @is_judge()
-    async def accept(self, ctx):
+    async def aaccept(self, ctx):
         if ctx.message.reference is not None:
             try:
                 msg = await ctx.channel.fetch_message(ctx.message.reference.message_id)
@@ -905,7 +905,7 @@ class ebmessages(commands.Cog):
 
     @commands.command()
     @is_judge()
-    async def decline(self, ctx):
+    async def ddecline(self, ctx):
         if ctx.message.reference is not None:
             try:
                 msg = await ctx.channel.fetch_message(ctx.message.reference.message_id)
