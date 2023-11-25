@@ -118,7 +118,7 @@ class welcandleave(commands.Cog):
             await channel.send(f'Welcome {member.mention} <@&1131005057417105418>', embed=embed)
             await member.add_roles(role)
             """ASTER SERVER"""
-        elif member.guild.id == self.server6_id:
+        elif member.guild.id == self.server7_id:
             member_count = len(member.guild.members) 
             embed = discord.Embed(color=0x2b2d31,title="ASTER", description=f"¹﹒[regulations](https://discord.com/channels/748021504830341330/786982725579833394).\n²﹒[booster perks](https://discord.com/channels/748021504830341330/1036575005598826627).\n³﹒[personal profile](https://discord.com/channels/748021504830341330/792121849856393257).")
             channel = self.bot.get_channel(self.server7_channel)
