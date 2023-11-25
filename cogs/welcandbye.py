@@ -79,6 +79,7 @@ class welcandleave(commands.Cog):
         self.server2_welcome_channel_id = 1123274964406120479
         self.server6_id = 1131003330810871979
         self.server6_channel = 1133767338588639323
+        self.server7_channel = 1133767338588639323
         self.hidden = True
 
     @commands.Cog.listener()
@@ -116,6 +117,13 @@ class welcandleave(commands.Cog):
             embed.set_thumbnail(url=member.display_avatar.url)
             await channel.send(f'Welcome {member.mention} <@&1131005057417105418>', embed=embed)
             await member.add_roles(role)
+            """ASTER SERVER"""
+        elif member.guild.id == self.server6_id:
+            member_count = len(member.guild.members) 
+            embed = discord.Embed(color=0x2b2d31,title="ASTER", description=f"¹﹒[regulations](https://discord.com/channels/748021504830341330/786982725579833394).\n²﹒[booster perks](https://discord.com/channels/748021504830341330/1036575005598826627).\n³﹒[personal profile](https://discord.com/channels/748021504830341330/792121849856393257).")
+            channel = self.bot.get_channel(self.server7_channel)
+            embed.set_thumbnail(url=member.display_avatar.url)
+            await channel.send(f'<a:astersheart:1028181292342312970> welcome {member.display_name} ||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​|| _ _ _ _ _ _ <@&1060732335156367450> {member.mention}', embed=embed)
 
     @commands.Cog.listener()
     async def on_member_remove(self, member: discord.Member):
