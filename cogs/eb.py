@@ -98,28 +98,28 @@ class infobuttons(discord.ui.View):
         super().__init__(timeout=None)
         self.value = None
 
-    @discord.ui.button(label="Server Guide", emoji="<a:guide:1145120101650145362>")
+    @discord.ui.button(label="Server Guide", emoji="<a:guide:1177931831220371486>")
     async def guide(self, interaction: discord.Interaction, button: discord.ui.Button):
-        embed = discord.Embed(title="<a:guide:1145120101650145362> Server Guide", color=0x2b2d31)
+        embed = discord.Embed(title="<a:guide:1177931831220371486> Server Guide", color=0x2b2d31)
         embed.add_field(name="Get Started", value="<#1131007362895970414> - Server announcements are made here!\n<#1131005271502753812> - Server information\n<#1133730290221715487> - Get your roles here", inline=False)
         embed.add_field(name="Boost", value="<#1133772140915732511> - Boost messages are sent here\n<#1133772155499327538> - Claim the booster perks here", inline=False)
         embed.add_field(name="Events", value="<#1135594840739041380> - Server events and information is sent here\n<#1135594856106959032> - Giveaways are hosted here", inline=False)
         embed.add_field(name="Applications", value="<#1133771634793250847> - You can apply for the groups here\n<#1133771722659741877> - Ask questions about the applications\n<#1133771757816393839> - Answers from the qna", inline=False)
-        embed.add_field(name="Main", value="<#1133767338588639323> - Start a converstion here with other members!\n<#1133767363339223110> - Speak other languages here!\n<#1133771941619191913> - Send self promotion here\n<#1134559895480442951> - Support the server with `/bump`", inline=False)
-        embed.add_field(name="Editing", value="<#1133770895593324664> - Get opinions on your edits! \n<#1133770809366814890> - Get edit help with <@&1131127084379549757>\n<#1133770828882903141> - Ping <@&1131130102328078336> to get dts for your next post!\n<#1133770844817080360> - Ping <@&1131130157160206396> to collab with other server members\n<#1136756099710730331> - Talk in vc while editing", inline=False)
-        embed.add_field(name="Bots", value="<#1133772583813263422> - Use our custom bot <@849682093575372841> here! `+help` for commands\n<#1133772598979866774> - Count as high as you can (can't count twice in a row)\n<#1133772609222361270> - Use other bots here other than hoshi\n<#1133772621666844813> - Another spam channel for you to use other bots\n<#1133772650695626882> - Use music commands here\n<#1133772672631836754> - Listen to music here", inline=False)
+        embed.add_field(name="Main", value="<#1133767338588639323> - Start a converstion here with other members!\n<#1133767363339223110> - Speak other languages here!\n<#1133771941619191913> - Send self promotion here", inline=False)
+        embed.add_field(name="Editing", value="<#1133770895593324664> - Get opinions on your edits! \n<#1133770809366814890> - Get edit help with <@&1131127084379549757>\n<#1133770828882903141> - Ping <@&1131130102328078336> to get dts for your next post!\n<#1133770844817080360> - Ping <@&1131130157160206396> to collab with other server members", inline=False)
+        embed.add_field(name="Bots", value="<#1133772583813263422> - A spam channel for you to use other bots\n<#1133772598979866774> - Count as high as you can (can't count twice in a row)\n<#1133772650695626882> - Use music commands here\n<#1133772672631836754> - Listen to music here", inline=False)
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
-    @discord.ui.button(label="Role Info", emoji="<a:roles:1145119385078472766>")
+    @discord.ui.button(label="Role Info", emoji="<a:roles:1177931818171908096>")
     async def roles(self, interaction: discord.Interaction, button: discord.ui.Button):
-        embed = discord.Embed(title="<a:roles:1145119385078472766> Role Info",description="<@&1131006052209541212> - Editors block owners\n<@&1131006067564875806> - Editors block staff\n<@&1136803676854431745> - Our amazing supporters\n<@&1131016215754715166> - Accepted members from recruit\n<@&1131016147282710679> - Default Role from verification " ,color=0x2b2d31)
+        embed = discord.Embed(title="<a:roles:1177931818171908096> Role Info",description="<@&1131006052209541212> - Editors block owners\n<@&1131006067564875806> - Editors block staff\n<@&1136803676854431745> - Our amazing supporters\n<@&1131016215754715166> - Accepted members from recruit\n<@&1131016147282710679> - Default Role from verification " ,color=0x2b2d31)
         await interaction.response.send_message(embed=embed, ephemeral=True)   
 
-    @discord.ui.button(label="Partnership Info", emoji="<a:partners:1145119380779302913>")
+    @discord.ui.button(label="Partnership Info", emoji="<a:partners:1177931821997105172>")
     async def affinfo(self, interaction: discord.Interaction, button: discord.Button):
-        embed = discord.Embed(title="<a:partners:1145119380779302913> Affiliate Information", color=0x2b2d31)
-        embed.add_field(name="Advert with ping", value="<a:arrow:1145117135962644491> Follow Discord's [tos](https://discord.com/terms) and [guidelines](https://discord.com/guidelines)\n<a:arrow:1145117135962644491> Must have 100+ members\nIf you meet our requirements, please message one of our owners", inline=False)
-        embed.add_field(name="Advert without ping", value="<a:arrow:1145117135962644491> Follow Discord's [tos](https://discord.com/terms) and [guidelines](https://discord.com/guidelines)\n<a:arrow:1145117135962644491> Must have 75+ members\nIf you meet our requirements, please message one of our owners", inline=False)
+        embed = discord.Embed(title="<a:partners:1177931821997105172> Affiliate Information", color=0x2b2d31)
+        embed.add_field(name="Advert with ping", value="<a:redarrow:1177929884492902480> Follow Discord's [tos](https://discord.com/terms) and [guidelines](https://discord.com/guidelines)\n<a:redarrow:1177929884492902480> Must have 100+ members\nIf you meet our requirements, please message one of our owners", inline=False)
+        embed.add_field(name="Advert without ping", value="<a:redarrow:1177929884492902480> Follow Discord's [tos](https://discord.com/terms) and [guidelines](https://discord.com/guidelines)\n<a:redarrow:1177929884492902480> Must have 75+ members\nIf you meet our requirements, please message one of our owners", inline=False)
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
 class appbuttons(discord.ui.View):
@@ -278,6 +278,7 @@ class kapps(ui.Modal, title='Applications'):
           embed.add_field(name='Editing app:', value=f'{self.app.value}', inline=False)
           embed.add_field(name='Group(s) they want to be in:', value=f'kanzen', inline=False)
           embed.add_field(name='Anything else:', value=f'{self.extra.value}', inline=False)
+          embed.set_thumbnail(url=interaction.guild.icon)
           embed.add_field(name="Discord ID:", value=interaction.user.id, inline=False)
           channel = interaction.client.get_channel(1131006328207327294)
           form = await channel.send(embed=embed)
@@ -300,6 +301,7 @@ class dapps(ui.Modal, title='Applications'):
           embed.add_field(name='Editing app:', value=f'{self.app.value}', inline=False)
           embed.add_field(name='Group(s) they want to be in:', value=f'daegu', inline=False)
           embed.add_field(name='Anything else:', value=f'{self.extra.value}', inline=False)
+          embed.set_thumbnail(url=interaction.guild.icon)
           embed.add_field(name="Discord ID:", value=interaction.user.id, inline=False)
           channel = interaction.client.get_channel(1131006328207327294)
           form = await channel.send(embed=embed)
@@ -323,6 +325,7 @@ class aapps(ui.Modal, title='Applications'):
           embed.add_field(name='Group(s) they want to be in:', value=f'aura', inline=False)
           embed.add_field(name='Anything else:', value=f'{self.extra.value}', inline=False)
           embed.add_field(name="Discord ID:", value=interaction.user.id, inline=False)
+          embed.set_thumbnail(url=interaction.guild.icon)
           channel = interaction.client.get_channel(1131006328207327294)
           form = await channel.send(embed=embed)
           await interaction.followup.send(f'Your application has been sent successfully', ephemeral=True)
@@ -675,23 +678,23 @@ class ebmessages(commands.Cog):
                               description="> Thank you for joining Editors Block!\n> This is a community server made for all types of editors.\n> Feel free to ping @owners or @staff if you need any help.\n\nWe will do group recruits for the groups Kanzen, Aura, and Daegu! ͏͏͏  ͏͏͏ ͏͏͏͏͏͏͏͏͏ ͏ ͏", 
                               color=0x2b2d31)
         view2 = infobuttons()
-        embed2 = discord.Embed(title="<a:rules:1145119388056420463> Server Rules ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏͏͏ ͏͏͏ ", 
-                                description="<a:arrow:1145117135962644491> Follow Discord's [tos](https://discord.com/terms) and [guidelines](https://discord.com/guidelines)\n<a:arrow:1145117135962644491> No NSFW talk is allowed in this server!!\n<a:arrow:1145117135962644491> Be nice and respectful to everyone in the server!\n<a:arrow:1145117135962644491> No impersonation of other editors (you will be banned)\n<a:arrow:1145117135962644491> Use channels for their intended purpose\n<a:arrow:1145117135962644491> No spamming pings, you will be warned and then kicked\n<a:arrow:1145117135962644491>  No trash talk of other people", 
-                                color=0xFC02FF)
+        embed2 = discord.Embed(title="<a:rules:1177931813507825714> Server Rules ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏͏͏ ͏͏͏ ", 
+                                description="<a:redarrow:1177929884492902480>Follow Discord's tos and guidelines\n<a:redarrow:1177929884492902480>No NSFW talk is allowed in this server!!\n<a:redarrow:1177929884492902480>Be nice and respectful to everyone in the server!\n<a:redarrow:1177929884492902480>No impersonation of other editors (you will be banned)\n<a:redarrow:1177929884492902480>Use channels for their intended purpose\n<a:redarrow:1177929884492902480>No spamming pings, you will be warned and then kicked\n<a:redarrow:1177929884492902480>No trash talk of other people", 
+                                color=0x9c2121)
         embed.set_footer(text="Follow the groups below!", 
-                         icon_url="https://cdn.discordapp.com/icons/1131003330810871979/7594d6a33ba74fffd8373ef2f4bb71df.webp?size=4096")
+                         icon_url=ctx.guild.icon)
         
 
-        button = discord.ui.Button(label="Kanzen", url="https://www.instagram.com/kanzengrp/", emoji="<a:kanzen:1145113935524139038>")
-        button2 = discord.ui.Button(label="Aura", url="https://www.instagram.com/auragrps/", emoji="<a:aura:1145114567488319508>")
-        button3 = discord.ui.Button(label="Daegu", url="https://www.instagram.com/daegutowngrp/", emoji="<a:daegu:1145114196455981178>")
+        button = discord.ui.Button(label="Kanzen", url="https://www.instagram.com/kanzengrp/", emoji="<a:kanzen:1177931825457405973>")
+        button2 = discord.ui.Button(label="Daegu", url="https://www.instagram.com/daegutowngrp/", emoji="<a:daegu:1177931836853334087>")
+        button3 = discord.ui.Button(label="Aura", url="https://www.instagram.com/auragrps/", emoji="<a:aura:1177931840393326603>")
 
         view = discord.ui.View()
         view.add_item(button)
         view.add_item(button2)
         view.add_item(button3)
         await ctx.message.delete()
-        await ctx.send("https://cdn.discordapp.com/attachments/849724031723634688/1145109085981769749/welcome_1_1.gif")
+        await ctx.send("https://cdn.discordapp.com/attachments/1131006428631539773/1177944433468112947/welcome_1_1_1_1.gif?ex=6574593e&is=6561e43e&hm=47ad0b55c91441f4cd65b68f68a5f7f05a00cd1120903401be4313f18d1c0d14&")
         await ctx.send(embed=embed, view=view)
         await ctx.send(embed=embed2, view=view2)
 
