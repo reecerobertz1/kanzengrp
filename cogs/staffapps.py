@@ -88,7 +88,7 @@ class staffapps(commands.Cog):
                     if role:
                         await user.add_roles(role)
 
-                    accept_message = f"your app to editors block staff have been accepted to proceed contact"
+                    accept_message = f"Your application for {role_name} has been accepted!\nPlease go to this channel https://discord.com/channels/1131003330810871979/1131018131813441696 and we will give you more information shortly!\nThank you for wanting to be apart of our team!"
                     await user.send(accept_message)
 
                     channel = ctx.guild.get_channel(1131006361921130526)
