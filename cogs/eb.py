@@ -940,31 +940,6 @@ class ebmessages(commands.Cog):
             await ctx.send("Please reply with the embed you want to process.")
 
     @commands.command()
-    @is_judge()
-    async def role2(self, ctx):
-        embed = discord.Embed(title="<:leaf:1137454366886993950> What server pings would you like?",
-                              description="The staff will ping these roles whenever there's something related to these roles happening in the server.\n\n<:1:1137455321028251708> - <@&1133770119777099866> \n<:2:1137455517577531565> - <@&1131127168102055996> \n<:3:1137455658258673704> - <@&1131127104226992208> \n<:4:1137455776877781107> - <@&1131005057417105418> \n<:5:1137455941609078824> - <@&1131127124187684894>",
-                              color=0x2b2d31)
-        await ctx.send("https://cdn.discordapp.com/attachments/1131006428631539773/1137843838153666610/pings_00000.png")
-        await ctx.send(embed=embed)
-
-
-    @commands.command()
-    @is_judge()
-    async def role3(self, ctx):
-        embed = discord.Embed(title="<:leaf:1137454366886993950> What member pings would you like?",
-                              description="These roles can be used by anyone in this server to ping other members! Please do not abuse these roles!\n\n<:1:1137455321028251708> - <@&1131130157160206396>\n<:2:1137455517577531565> - <@&1131127084379549757>\n<:3:1137455658258673704> - <@&1131130102328078336>\n<:4:1137455776877781107> - <@&1131127146186821685>\n<:5:1137455941609078824> - <@&1134876934585712773>",
-                              color=0x2b2d31)
-        await ctx.send("https://cdn.discordapp.com/attachments/1131006428631539773/1137843866800754858/member_pings_00000.png")
-        await ctx.send(embed=embed)
-
-    @commands.command()
-    @is_judge()
-    async def space1(self, ctx):
-        await ctx.send("<:Empty:1137842301188702239>")
-
-    @commands.command()
-    @is_judge()
     async def staffinfo(self, ctx):
         view = staffinfo()
         embed = discord.Embed(title="<:leaf:1137454366886993950> Staff Handbook", description="<a:arrowpink:1134860720777990224> Please do not abuse your staff power!\n<a:arrowpink:1134860720777990224> Help people when they ping you (if you're free)\n<a:arrowpink:1134860720777990224> Not helping in the server will get you removed as staff, unless you have a reason\n<a:arrowpink:1134860720777990224> Set a good example in the server\n<a:arrowpink:1134860720777990224> If you see anyone with inappropriate name, you can change their nicknames\n<a:arrowpink:1134860720777990224> See any scam messages and accounts delete them and ban the account\n<a:arrowpink:1134860720777990224> If there is any inappropriate content sent into the server, delete and ban\n<a:arrowpink:1134860720777990224> If there is any rude and disrespectful messages sent, delete and tell an owner!", color=0x2b2d31)
@@ -973,7 +948,6 @@ class ebmessages(commands.Cog):
         await ctx.send(embed=embed, view=view)
 
     @commands.command()
-    @is_judge()
     async def ebperks(self, ctx):
         view = ebperks()
         embed = discord.Embed(title="Editor's Block perks",description="dqrkwrld perks:\n<a:arrowpink:1134860720777990224> plugins for after effects\n\nremqsi perks:\n<a:arrowpink:1134860720777990224> Remqsi's colouring packs 1 & 2\n<a:arrowpink:1134860720777990224> BTS Photos\n<a:arrowpink:1134860720777990224> Enhypen Photos\n<a:arrowpink:1134860720777990224> Blackpink Photos\n<a:arrowpink:1134860720777990224> Break your heart project file\n<a:arrowpink:1134860720777990224> Lisa candy project file\n\nprobshyunjin perks:\n<a:arrowpink:1134860720777990224> after effects colorings\n<a:arrowpink:1134860720777990224> turbulence displace settings for after effects\n\nhrts4h0bi perks:\n<a:arrowpink:1134860720777990224> alight motion project files\n<a:arrowpink:1134860720777990224> overlays from youtube\n\nvoidsquake perks\n<a:arrowpink:1134860720777990224> lisa blackpink photopack\n<a:arrowpink:1134860720777990224> yunjin lesserafim photopack\n<a:arrowpink:1134860720777990224> after effects presets\n<a:arrowpink:1134860720777990224> voidsquake audios\n<a:arrowpink:1134860720777990224> after effects plugins\n\nlqvenx perks\n<a:arrowpink:1134860720777990224> all of ariana grande's instagram\n<a:arrowpink:1134860720777990224> bea photospack\n<a:arrowpink:1134860720777990224> lisa photospack\n<a:arrowpink:1134860720777990224> rosé photospack\n<a:arrowpink:1134860720777990224> videostar qrcodes" ,color=0x2b2d31)
@@ -981,96 +955,9 @@ class ebmessages(commands.Cog):
         await perks.send(embed=embed, view=view)
 
     @commands.command()
-    @is_judge()
     async def perkpreview(self, ctx):
         embed = discord.Embed(title="Editors block perks", description="dqrkwrld perks:\n<a:arrowpink:1134860720777990224> plugins for after effects\n\nremqsi perks:\n<a:arrowpink:1134860720777990224> Remqsi's colouring packs 1 & 2\n<a:arrowpink:1134860720777990224> BTS Photos\n<a:arrowpink:1134860720777990224> Enhypen Photos\n<a:arrowpink:1134860720777990224> Blackpink Photos\n<a:arrowpink:1134860720777990224> Break your heart project file\n<a:arrowpink:1134860720777990224> Lisa candy project file\n\nprobshyunjin perks:\n<a:arrowpink:1134860720777990224> after effects colorings\n<a:arrowpink:1134860720777990224> turbulence displace settings for after effects\n\nhrts4h0bi perks:\n<a:arrowpink:1134860720777990224> alight motion project files\n<a:arrowpink:1134860720777990224> overlays from youtube\n\nvoidsquake perks\n<a:arrowpink:1134860720777990224> lisa blackpink photopack\n<a:arrowpink:1134860720777990224> yunjin lesserafim photopack\n<a:arrowpink:1134860720777990224> after effects presets\n<a:arrowpink:1134860720777990224> voidsquake audios\n<a:arrowpink:1134860720777990224> after effects plugins\n\nlqvenx perks\n<a:arrowpink:1134860720777990224> all of ariana grande's instagram\n<a:arrowpink:1134860720777990224> bea photospack\n<a:arrowpink:1134860720777990224> lisa photospack\n<a:arrowpink:1134860720777990224> rosé photospack\n<a:arrowpink:1134860720777990224> videostar qrcodes\n\nYou can also get a custom role in the server, it can have a name and color of your choice! And you can have a custom role icon when the server reaches level 2!", color=0x2b2d31)
         await ctx.send(embed=embed)
-
-    @app_commands.command(name="suggest", description="Make a suggestion")
-    async def suggest(self, interaction: discord.Interaction):
-        view = suggest()
-        embed = discord.Embed(title="<:bubbles:1141532181206929438> Make a suggestion", description="You can suggest:\n<a:arrowpink:1134860720777990224> anything for the server\n<a:arrowpink:1134860720777990224> activities/events\n<a:arrowpink:1134860720777990224> hoshi commands anything really!\n\nPlease do try to explain in details what you're suggesting so we can do it the way you want!\nAny inappropriate suggestions won't be added and will be deleted", color=0x2b2d31)
-        embed.set_thumbnail(url=interaction.guild.icon)
-        await interaction.response.send_message(embed=embed, view=view, ephemeral=True)
-
-    @commands.group(invoke_without_command=True)
-    async def enter(self, ctx):
-        """Group of commands to manage apps"""
-        if self.check_contest_open():
-            embed = discord.Embed(title="Editors blocks server icon + banner contest", color=0x2B2D31)
-            embed.add_field(name="enter banner", value="Send your banner submission", inline=False)
-            embed.add_field(name="enter icon", value="Send your server icon submission", inline=False)
-            await ctx.reply(embed=embed)
-        else:
-            await ctx.send("The contest is currently closed.")
-
-    @enter.command()
-    async def banner(self, ctx):
-        if self.check_contest_open():
-            if ctx.message.attachments:
-                image_url = ctx.message.attachments[0].url
-                username = ctx.author.name
-
-                embed = discord.Embed(title="Banner Submission", description=f"Banner created by {username}", color=0x2b2d31)
-                embed.set_image(url=image_url)
-                embed.set_footer(text="Vote for this banner with the emojis below!", icon_url=image_url)
-
-                channel = self.bot.get_channel(1143334118168469514)
-                msg = await channel.send(embed=embed)
-                await msg.add_reaction("✅")
-                await msg.add_reaction("❌")
-
-                await ctx.message.delete()
-                await ctx.send("Thank you for entering! I have successfully sent your server banner.")
-            else:
-                await ctx.send("You need to attach an image with the command.")
-        else:
-            await ctx.send("The contest is currently closed.")
-
-    @enter.command()
-    async def icon(self, ctx):
-        if self.check_contest_open():
-            if ctx.message.attachments:
-                image_url = ctx.message.attachments[0].url
-                username = ctx.author.name
-
-                embed = discord.Embed(title="Icon Submission", description=f"Icon created by {username}", color=0x2b2d31)
-                embed.set_image(url=image_url)
-                embed.set_footer(text="Vote for this server icon with the emojis below!", icon_url=image_url)
-
-                channel = self.bot.get_channel(1143334118168469514)
-                msg = await channel.send(embed=embed)
-                await msg.add_reaction("✅")
-                await msg.add_reaction("❌")
-                await ctx.message.delete()
-                await ctx.send("Thank you for entering! I have successfully sent your server icon.")
-            else:
-                await ctx.send("You need to attach an image with the command.")
-        else:
-            await ctx.send("The contest is currently closed.")
-
-    @commands.group(invoke_without_command=True)
-    @is_judge()
-    async def contest(self, ctx):
-        """Group of commands to manage apps"""
-        embed = discord.Embed(title="Editors blocks server icon + banner contest", color=0x2B2D31)
-        embed.add_field(name="contest open", value="Opens the banner + icon contest", inline=False)
-        embed.add_field(name="contest close", value="Closes the banner + icon contest", inline=False)
-        await ctx.reply(embed=embed)
-
-    @contest.command()
-    @is_judge()
-    async def close(self, ctx):
-        """Close the contest for entries"""
-        self.contest_closed = True
-        await ctx.send("The contest is now closed. Entries are no longer accepted.")
-
-    @contest.command()
-    @is_judge()
-    async def open(self, ctx):
-        """Open the contest for entries"""
-        self.contest_closed = False
-        await ctx.send("The contest is now open. You can start submitting entries again.")
 
     @commands.command()
     @commands.has_permissions(manage_guild=True)
