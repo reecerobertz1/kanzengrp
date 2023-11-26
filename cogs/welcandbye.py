@@ -109,7 +109,7 @@ class welcandleave(commands.Cog):
         elif member.guild.id == self.server6_id:
             member_count = len(member.guild.members) 
             embed = discord.Embed(color=0x2b2d31, description=f"<a:arrowlightpink:1141452054716489789> [read infortmation](https://discord.com/channels/1131003330810871979/1131005271502753812)\n<a:arrowlightpink:1141452054716489789> [get roles](https://discord.com/channels/1131003330810871979/1133730290221715487)\n<a:arrowlightpink:1141452054716489789> [apply here](https://discord.com/channels/1131003330810871979/1133771634793250847)")
-            role = member.guild.get_role(1141442504881864765)  
+            role = member.guild.get_role(1131016147282710679)  
             channel = self.bot.get_channel(self.server6_channel)
             timestamp = datetime.datetime.utcnow()
             embed.timestamp = timestamp
