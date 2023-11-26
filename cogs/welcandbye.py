@@ -108,7 +108,7 @@ class welcandleave(commands.Cog):
             """EDITORS BLOCK SERVER"""
         elif member.guild.id == self.server6_id:
             member_count = len(member.guild.members) 
-            embed = discord.Embed(color=0x2b2d31, description=f"<a:arrowlightpink:1141452054716489789> [read infortmation](https://discord.com/channels/1131003330810871979/1131005271502753812)\n<a:arrowlightpink:1141452054716489789> [get roles](https://discord.com/channels/1131003330810871979/1133730290221715487)\n<a:arrowlightpink:1141452054716489789> [apply here](https://discord.com/channels/1131003330810871979/1133771634793250847)")
+            embed = discord.Embed(color=0x2b2d31, description=f"<a:arrowlightpink:1141452054716489789> [read infortmation](https://discord.com/channels/1131003330810871979/1131005271502753812)\n<a:arrowlightpink:1141452054716489789> [apply here](https://discord.com/channels/1131003330810871979/1133771634793250847)")
             role = member.guild.get_role(1131016147282710679)  
             channel = self.bot.get_channel(self.server6_channel)
             timestamp = datetime.datetime.utcnow()
@@ -116,7 +116,8 @@ class welcandleave(commands.Cog):
             embed.set_footer(text=f"Member Count: {member_count}")  
             embed.set_author(name=f"{member.display_name}", icon_url=member.display_avatar.url)
             embed.set_thumbnail(url=member.display_avatar.url)
-            await channel.send(f'Welcome {member.mention} <@&1131005057417105418>', embed=embed)
+            await channel.send(f'Welcome {member.mention} <@&1131005057417105418>', embed=embed, view=view)
+            view = welc(member)
             await member.add_roles(role)
             """ASTER SERVER"""
         elif member.guild.id == self.server7_id:
