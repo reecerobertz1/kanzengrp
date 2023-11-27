@@ -1000,5 +1000,18 @@ class ebmessages(commands.Cog):
         await ctx.send("@everyone", embed=embed, view=view)
         await ctx.send("mute partner pings with the `mute` role in <#1133730290221715487>")
 
+    @commands.command()
+    @commands.has_permissions(manage_guild=True)
+    async def ve(self, ctx):
+        embed = discord.Embed(title="video editors ༉‧₊˚✧", description="*”inclusive server for editing help, editing resources, commissions, and a place to take a break”* ִֶָ 𓂃⊹ ִֶָ  🍮\n\n╰﹕ self-promo\n╰﹕ editing contests + giveaways \n╰﹕ editing help for multiple programs \n* after effects, premiere pro, videostar, alight motion, capcut etc.\n╰﹕ free editing resources \n* overlays, audios, scenepacks + more\n╰﹕ organized commission channels  \n╰﹕responsive staff\n╰﹕ chill, clean + aesthetic\n\n.୧ ‧₊˚ 🍵 ⋅ ☆")
+        embed.set_thumbnail(url="https://cdn.discordapp.com/icons/896466725904744478/a_c3952deb1661bc8b52eecc1c9370f2b4.gif?size=1024&width=0&height=307")
+        embed.set_footer(icon_url="https://cdn.discordapp.com/icons/896466725904744478/a_c3952deb1661bc8b52eecc1c9370f2b4.gif?size=1024&width=0&height=307", text="video editors")
+        button = discord.ui.Button(label="Discord Server", url="https://discord.gg/FPhRKQbwUt", emoji="<a:white_butterflies:1178521667002175559>")
+        view = discord.ui.View()
+        view.add_item(button)
+        await ctx.message.delete()
+        await ctx.send("@everyone", embed=embed, view=view)
+        await ctx.send("mute partner pings with the `partner mute` role in #Channels & Roles")
+
 async def setup(bot):
     await bot.add_cog(ebmessages(bot))
