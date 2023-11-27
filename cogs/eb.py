@@ -992,7 +992,7 @@ class ebmessages(commands.Cog):
         embed = discord.Embed(description="`we are a general server that has a large and a great community.`\n\n**our pros**: we do giveaways once a week, we host events and much more!\n\n`we have a great active chat with awesome staff.`\n\n**our giveaways: robux, nitro, cashapp + MUCH MORE! **\n\nwe have amazing channels and fun **ai based** stuff too!\n\njoin **purest**!", color=0x2b2d31)
         embed.set_footer(text="purest", icon_url="https://cdn.discordapp.com/icons/1160072478564036670/0b8bf5065160d9abb9cb5d1afaba4cac.webp?size=1024&format=webp&width=0&height=307")
         embed.set_thumbnail(url="https://cdn.discordapp.com/icons/1160072478564036670/0b8bf5065160d9abb9cb5d1afaba4cac.webp?size=1024&format=webp&width=0&height=307")
-        button = discord.ui.Button(label="Discord Server", url="discord.gg/purest", emoji="<:pale:1178516794718294126>")
+        button = discord.ui.Button(label="Discord Server", url="https://discord.gg/purest", emoji="<:pale:1178516794718294126>")
         embed.set_image(url="https://i.imgur.com/s6hH6SDh.jpg")
         view = discord.ui.View()
         view.add_item(button)
