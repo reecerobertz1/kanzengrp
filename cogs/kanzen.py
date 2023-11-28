@@ -12,6 +12,80 @@ from discord.ui import View, Select
 from typing import List, Optional
 from discord import ui
 
+class roles(discord.ui.View):
+    def __init__(self):
+        super().__init__(timeout=None)
+        self.value = None
+
+    @discord.ui.button(label="Moderator")
+    async def mod(self, interaction: discord.Interaction, button: discord.Button):
+        await interaction.response.send_modal(mod())
+
+    @discord.ui.button(label="Staff")
+    async def staff(self, interaction: discord.Interaction, button: discord.Button):
+        await interaction.response.send_modal(staff())
+
+class mod(ui.Modal, title='Moderator Applications'):
+    one = ui.TextInput(label='whats your instagram username?', placeholder="enter your instagram username", style=discord.TextStyle.long)
+    two = ui.TextInput(label='why do you want to be apart of our staff?', placeholder="i want to become kanzens staff because...", style=discord.TextStyle.long)
+    three = ui.TextInput(label='what do you bring to the table?', placeholder="list things you want to bring to kanzens...", style=discord.TextStyle.long)
+    four = ui.TextInput(label="how active are you scale of 1 - 10?", placeholder="enter your activity rate here", style=discord.TextStyle.short)
+    async def on_submit(self, interaction: discord.Interaction):
+        await interaction.response.defer()
+        embed = discord.Embed(title='Moderator Applications',description=f"**what's their instagram:**\n{self.one.value}\n\n**why do you want to be apart of kanzens staff?:**\n{self.two.value}\n\n**what do you bring to the table?:**\n{self.three.value}\n\n**how active are you scale of 1 - 10?:**\n{self.four.value}" ,color=0x2b2d31)
+        embed.set_footer(text=f"sent from: {interaction.user.name}", icon_url=interaction.user.avatar)
+        embed.set_thumbnail(url=interaction.guild.icon)
+        embed.add_field(name="Discord ID:", value=interaction.user.id, inline=False)
+        embed.add_field(name="Role:", value="mod", inline=False)
+        channel = interaction.client.get_channel(1178976893861646366)
+        await channel.send(embed=embed)
+        await interaction.followup.send(f'thank you {interaction.user.display_name} for applying for kanzens staff!', ephemeral=True)
+
+class staff(ui.Modal, title='Staff Applications'):
+    one = ui.TextInput(label='whats your instagram username?', placeholder="enter your instagram username", style=discord.TextStyle.long)
+    two = ui.TextInput(label='why should we choose you to be a staff?', placeholder="i want to become kanzens staff because...", style=discord.TextStyle.long)
+    three = ui.TextInput(label='any experience have being staff?', placeholder="what expirience do you have? list here...", style=discord.TextStyle.long)
+    four = ui.TextInput(label='what activities would you like to host?', placeholder="list activities here...", style=discord.TextStyle.long)
+    five = ui.TextInput(label="how active are you scale of 1 - 10?", placeholder="enter your activity rate here", style=discord.TextStyle.short)
+    async def on_submit(self, interaction: discord.Interaction):
+        await interaction.response.defer()
+        embed = discord.Embed(title='Staff Applications',description=f"**what's their instagram:**\n{self.one.value}\n\n**why do you want to be apart of the kanzens staff team?:**\n{self.two.value}\n\n**do you have any expirience being staff?:**\n{self.three.value}\n\n**what kind of activities would you like to do in kanzens?**\n{self.four.value}\n\n**how active are you scale of 1 - 10?:**\n{self.five.value}" ,color=0x2b2d31)
+        embed.set_footer(text=f"sent from: {interaction.user.name}", icon_url=interaction.user.avatar)
+        embed.set_thumbnail(url=interaction.guild.icon)
+        embed.add_field(name="Discord ID:", value=interaction.user.id, inline=False)
+        embed.add_field(name="Role:", value="staff", inline=False)
+        channel = interaction.client.get_channel(1178976893861646366)
+        await channel.send(embed=embed)
+        await interaction.followup.send(f'thank you {interaction.user.display_name} for applying for kanzens staff!', ephemeral=True)
+
+class trickortreat(discord.ui.View):
+    def __init__ (self):
+        super().__init__(timeout=None)
+        self.value = None
+
+    @discord.ui.button(label="Join", emoji="<a:pumpkin:1151485353585295475>")
+    async def Join(self, interaction: discord.Interaction, button: discord.Button):
+        await interaction.response.send_modal(tt())
+
+class tt(ui.Modal, title='Trick or Treat'):
+    instagram = ui.TextInput(label='Instagram username', placeholder="Enter your Instagram username here...", style=discord.TextStyle.short)
+    biases = ui.TextInput(label='Who do you want your partner to edit?', placeholder="", style=discord.TextStyle.long)
+    async def on_submit(self, interaction: discord.Interaction):
+        await interaction.response.defer()
+        try:
+            with open('biases.json', 'r') as file:
+                biases_data = json.load(file)
+        except FileNotFoundError:
+            biases_data = []
+        user_data = {
+            'instagram': self.instagram.value,
+            'reason': self.biases.value
+        }
+        biases_data.append(user_data)
+        with open('biases.json', 'w') as file:
+            json.dump(biases_data, file, indent=4)
+        await interaction.followup.send(f'You have joined the tick or treat event!', ephemeral=True)
+
 class infobuttons(discord.ui.View):
     def __init__ (self):
         super().__init__(timeout=None)
@@ -55,19 +129,34 @@ class getlogos(discord.ui.View):
         await interaction.followup.send("#𝗞𝗮𝗻𝘇𝗲𝗻𝗴𝗿𝗽")
 
 class ia(ui.Modal, title='Inactivity Message'):
-     instagram = ui.TextInput(label='What is your instagram username?', placeholder="Put username here...", style=discord.TextStyle.short)
-     reason = ui.TextInput(label='What is your reason?', placeholder="Put reason here...", style=discord.TextStyle.long)
-     async def on_submit(self, interaction: discord.Interaction):
-          await interaction.response.defer()
-          embed = discord.Embed(title='Inactivity Message', color=0x2b2d31)
-          embed.add_field(name="Instagram Username", value=self.instagram.value, inline=False)
-          embed.add_field(name="Instagram Link", value=f"https://instagram.com/{self.instagram.value}", inline=False)
-          embed.add_field(name="Reason", value=self.reason.value, inline=False)
-          embed.set_author(name=f"sent by {interaction.user.name}", icon_url=interaction.user.avatar)
-          embed.set_footer(text=interaction.user.id, icon_url=interaction.guild.icon)
-          channel = interaction.client.get_channel(1121913672822968330)
-          await channel.send(embed=embed)
-          await interaction.followup.send(f'Your suggestion has been sent successfully', ephemeral=True)
+    instagram = ui.TextInput(label='Instagram username', placeholder="Enter your Instagram username here...", style=discord.TextStyle.short)
+    reason = ui.TextInput(label='Inactivity Reason', placeholder="", style=discord.TextStyle.long)
+    async def on_submit(self, interaction: discord.Interaction):
+        await interaction.response.defer()
+        user_id = interaction.user.id
+        user_mention = f'<@{user_id}>'
+        inactive_members = []
+        try:
+            with open('inactive_members.json', 'r') as file:
+                inactive_members = json.load(file)
+        except FileNotFoundError:
+            pass
+        user_data = {
+            'instagram': self.instagram.value,
+            'reason': self.reason.value
+        }
+        inactive_members.append(user_data)
+        with open('inactive_members.json', 'w') as file:
+            json.dump(inactive_members, file)
+
+        embed = discord.Embed(title='Inactivity Message', color=0x2b2d31)
+        embed.add_field(name='Instagram Name:', value=f'{self.instagram.value}', inline=False)
+        embed.add_field(name='Instagram Account Link:', value=f'https://instagram.com/{self.instagram.value}', inline=False)
+        embed.add_field(name='Inactivity Reason:', value=f'{self.reason.value}', inline=False)
+        embed.add_field(name="Discord ID:", value=interaction.user.id, inline=False)
+        channel = interaction.client.get_channel(1121913672822968330)
+        await channel.send(embed=embed)
+        await interaction.followup.send(f'Your inactive message has been sent successfully', ephemeral=True)
 
 class suggest(ui.Modal, title='Suggestions'):
      suggestion = ui.TextInput(label='What would you like to suggest?', placeholder="Put suggestion here...", style=discord.TextStyle.long)
@@ -254,7 +343,7 @@ class games(discord.ui.View):
         super().__init__(timeout=None)
         self.value = None
 
-    @discord.ui.button(emoji="<:fn:1173123421123645471>")
+    @discord.ui.button(emoji="<:fortnite:1123259326006571090>")
     async def fn(self, interaction: discord.Interaction, button: discord.Button):
         role_id = 1122921698367389756
         role = interaction.guild.get_role(role_id)
@@ -458,14 +547,13 @@ class kanzen(commands.Cog):
         view = infobuttons()
         ttbutton = discord.ui.Button(label=f"Tiktok", url=f"https://www.tiktok.com/@kanzengrp?_t=8hBEO47Fw37&_r=1", emoji="<:tiktok:1171995663890911273>")
         igbutton = discord.ui.Button(label=f"Instagram", url=f"https://www.instagram.com/kanzengrp/", emoji="<:insta:1171995666382336040>")
-        cbutton = discord.ui.Button(label="Card", url="https://kanzengrp.carrd.co", emoji="<:carrd:1173159791988838430>")
         button_view = discord.ui.View()
         button_view.add_item(ttbutton)
         button_view.add_item(igbutton)
-        button_view.add_item(cbutton)
 
         message = await ctx.send(embed=embed, view=button_view)
         await ctx.send(embed=embed2, view=view)
+
 
     @commands.command()
     @commands.has_permissions(manage_guild=True)
@@ -505,22 +593,22 @@ class kanzen(commands.Cog):
         select = Select(
             placeholder="Select a role",
             options=[
-                discord.SelectOption(label="red", value="red", emoji="<:red:1173122695479701534>"),
-                discord.SelectOption(label="peach", value="peach", emoji="<:peach:1173122698155671673>"),
-                discord.SelectOption(label="orange", value="orange", emoji="<:orange:1173122699497840721>"),
-                discord.SelectOption(label="yellow", value="yellow", emoji="<:yellow:1173122700953264158>"),
-                discord.SelectOption(label="light green", value="light green", emoji="<:lightgreen:1173122703239163974>"),
-                discord.SelectOption(label="green", value="green", emoji="<:green:1173122704870748170>"),
-                discord.SelectOption(label="teal", value="teal", emoji="<:teal:1173122709127962674>"),
-                discord.SelectOption(label="light teal", value="light teal", emoji="<:lightteal:1173122707211169842>"),
-                discord.SelectOption(label="light blue", value="light blue", emoji="<:lightblue:1173122711682289674>"),
-                discord.SelectOption(label="blue", value="blue", emoji="<:blue:1173122712919617556>"),
-                discord.SelectOption(label="purple", value="purple", emoji="<:purple:1173122714433757294>"),
-                discord.SelectOption(label="lavender", value="lavender", emoji="<:lavander:1173122716694478868>"),
-                discord.SelectOption(label="pink", value="pink", emoji="<:pink:1173122763796529283>"),
-                discord.SelectOption(label="light pink", value="light pink", emoji="<:lightpink:1173122766225014854>"),
-                discord.SelectOption(label="white", value="white", emoji="<:white:1173122767747547147>"),
-                discord.SelectOption(label="black", value="black", emoji="<:black:1173122722675568730>")
+                discord.SelectOption(label="red", value="red", emoji="<:red:1123256597167231076>"),
+                discord.SelectOption(label="peach", value="peach", emoji="<:peach:1123256601365725247>"),
+                discord.SelectOption(label="orange", value="orange", emoji="<:orange:1123256593316855962>"),
+                discord.SelectOption(label="yellow", value="yellow", emoji="<:yellow:1123256589160304712>"),
+                discord.SelectOption(label="light green", value="light green", emoji="<:lightgreen:1123256587981693018>"),
+                discord.SelectOption(label="green", value="green", emoji="<:green:1123260467721277634>"),
+                discord.SelectOption(label="teal", value="teal", emoji="<:teal:1123256594654830673>"),
+                discord.SelectOption(label="light teal", value="light teal", emoji="<:lightteal:1123256585326702703>"),
+                discord.SelectOption(label="light blue", value="light blue", emoji="<:lightblue:1123256581417615390>"),
+                discord.SelectOption(label="blue", value="blue", emoji="<:blue:1123256591819481150>"),
+                discord.SelectOption(label="purple", value="purple", emoji="<:purple:1123256504741527652>"),
+                discord.SelectOption(label="lavender", value="lavender", emoji="<:lavender:1123256583917420545>"),
+                discord.SelectOption(label="pink", value="pink", emoji="<:pink:1123256905289191484>"),
+                discord.SelectOption(label="light pink", value="light pink", emoji="<:lightpink:1123256598496813127>"),
+                discord.SelectOption(label="white", value="white", emoji="<:white:1123256528602927154>"),
+                discord.SelectOption(label="black", value="black", emoji="<:black:1123256580100587681>")
             ]
         )
         async def add_role(interaction: discord.Interaction):
@@ -567,7 +655,7 @@ class kanzen(commands.Cog):
         view = View(timeout=None)
         view.add_item(select)
 
-        embed = discord.Embed(title="<a:kanzenflower:1128154723262943282> Colours", description="<:red:1173122695479701534><@&1122919355273986138> \n<:peach:1173122698155671673><@&1122920134223335524> \n<:orange:1173122699497840721><@&1122920245267542106> \n<:yellow:1173122700953264158><@&1122920319557046413> \n<:lightgreen:1173122703239163974><@&1122920394735763526> \n<:green:1173122704870748170><@&1122920478194028646> \n<:teal:1173122709127962674><@&1122920653876633670> \n<:lightteal:1173122707211169842><@&1122920539766407178> \n<:lightblue:1173122711682289674><@&1122920731529973841> \n<:blue:1173122712919617556><@&1122920821216792617> \n<:purple:1173122714433757294><@&1122920986086477964> \n<:lavander:1173122716694478868><@&1122920902858899456> \n<:pink:1173122763796529283><@&1122921065744707634> \n<:lightpink:1173122766225014854><@&1122921134174769304> \n<:white:1173122767747547147><@&1122921232145338480> \n<:black:1173122722675568730><@&1122921204630696009>", color=0x2b2d31)
+        embed = discord.Embed(title="<a:kanzenflower:1128154723262943282> Colours", description="<:red:1123256597167231076><@&1122919355273986138> \n<:peach:1123256601365725247><@&1122920134223335524> \n<:orange:1123256593316855962><@&1122920245267542106> \n<:yellow:1123256589160304712><@&1122920319557046413> \n<:lightgreen:1123256587981693018><@&1122920394735763526> \n<:green:1123260467721277634><@&1122920478194028646> \n<:teal:1123256594654830673><@&1122920653876633670> \n<:lightteal:1123256585326702703><@&1122920539766407178> \n<:lightblue:1123256581417615390><@&1122920731529973841> \n<:blue:1123256591819481150><@&1122920821216792617> \n<:purple:1123256504741527652><@&1122920986086477964> \n<:lavender:1123256583917420545><@&1122920902858899456> \n<:pink:1123256905289191484><@&1122921065744707634> \n<:lightpink:1123256598496813127><@&1122921134174769304> \n<:white:1123256528602927154><@&1122921232145338480> \n<:black:1123256580100587681><@&1122921204630696009>", color=0x2b2d31)
         embed.set_thumbnail(url=ctx.guild.icon)
         embed.set_footer(text="Use the drop down menu to select/deselect a role!")
         await ctx.send(embed=embed, view=view)
@@ -590,7 +678,7 @@ class kanzen(commands.Cog):
 
     @commands.command()
     async def rroles4(self, ctx):
-        embed = discord.Embed(title="<a:kanzenflower:1128154723262943282> Games", description="<:fn:1173123421123645471> <@&1122921698367389756> \n<:MCicon:1123259350522282025> <@&1122979205324480553> \n<:ROBLOXicon:1123259382063443968> <@&1122921713823395851> \n<:Valoranticon:1123259406092611654> <@&1122921729384271963> \n<:gtaV:1123259437637980183> <@&1122921800502878259> \n<:honkai:1139958684324216934> <@&1139957904712142932> \n<:genshin:1139958246526951464> <@&1122921755216973854> \n<:phasmophobia:1139962251453927556> <@&1139962329950343208>", color=0x2b2d31)
+        embed = discord.Embed(title="<a:kanzenflower:1128154723262943282> Games", description="<:fortnite:1123259326006571090> <@&1122921698367389756> \n<:MCicon:1123259350522282025> <@&1122979205324480553> \n<:ROBLOXicon:1123259382063443968> <@&1122921713823395851> \n<:Valoranticon:1123259406092611654> <@&1122921729384271963> \n<:gtaV:1123259437637980183> <@&1122921800502878259> \n<:honkai:1139958684324216934> <@&1139957904712142932> \n<:genshin:1139958246526951464> <@&1122921755216973854> \n<:phasmophobia:1139962251453927556> <@&1139962329950343208>", color=0x2b2d31)
         embed.set_thumbnail(url=ctx.guild.icon)
         embed.set_footer(text="Use the buttons to select/deselect a role!")
         view=games()
@@ -603,6 +691,48 @@ class kanzen(commands.Cog):
         embed.set_footer(text="Use the buttons to select/deselect a role!")
         view=other()
         await ctx.send(embed=embed, view=view)
+
+    @commands.command()
+    async def halloweentot(self, ctx):
+        view=trickortreat()
+        await ctx.send("🎃 **HALLOWEEN TRICK OR TREAT**\nThis year, instead of Secret Santa, we're doing a Halloween twist!\n\n**HOW IT WORKS:**\n- Everyone gets paired up randomly.\n- Click the ''join'' button below and share your Instagram username and a list of your favorite things (if you have a long list, just send your top favorites).\n- Now, you can either make your partner's day by sharing something they love or play a little trick by sharing something related to someone else.\n- Don't forget to use __**#kanzentrickortreat**__ when you share your post.\n- If you join, you'll get a message from <@849682093575372841> on October 1st with your partner's details.\n\n**EXTRA INFO:**\n- Participating in this event earns you **3500xp**.\n- You can post your edit anytime in October.", view=view)
+
+    @commands.command()
+    async def totpartners(self, ctx):
+        try:
+            with open('biases.json', 'r') as file:
+                biases_data = json.load(file)
+        except FileNotFoundError:
+            biases_data = []
+        random.shuffle(biases_data)
+        pairs = []
+        for i in range(0, len(biases_data), 2):
+            user1_data = biases_data[i]
+            user2_data = biases_data[i + 1] if i + 1 < len(biases_data) else None
+
+            user1_instagram = user1_data.get('instagram', 'No Instagram')
+            user2_instagram = user2_data.get('instagram', 'No Instagram') if user2_data else "No partner"
+
+            user1_reason = user1_data.get('reason', 'No Reason')
+            user2_reason = user2_data.get('reason', 'No Reason') if user2_data else "No Reason"
+
+            pairs.append(f"**Partners**\n\"{user1_instagram}\" - \"{user1_reason}\"\n\"{user2_instagram}\" - \"{user2_reason}\"")
+        await ctx.send('\n'.join(pairs))
+
+    @commands.command()
+    async def dmpartner(self, ctx, user: discord.Member, *, message: str):
+        embed = discord.Embed(title="**Halloween Trick or Treat**", description=message, color=0x2b2d31)
+        embed.set_thumbnail(url=ctx.guild.icon)
+        embed.set_footer(text="Have fun Trick or Treating!", icon_url=user.avatar)
+        await user.send(embed=embed)
+
+    @commands.command()
+    async def staffapps(self, ctx):
+        embed = discord.Embed(title="Kanzen Staff Apps", description="Thank you for wanting to apply to be apart of Kanzen's staff team! Here is some info for each role\n\n**Moderator**:\nHelp moderate the chat, delete messages and time-out members when needed! Use the warn commands with Hoshi as well, each member will have 3 warnings before being kicked, each warning will go after a month unless the receive another one. If you are abusing your power as an moderator, you will be removed and never added back as any type of staff\n\n**Staff**:\nStaff will help the lead and head staff out with group events, you can also host your own events too like watch parties and game nights. You cant host any collabs unless you have multiple going at once. You will also help out with server stuff, like making/deleting channels", color=0x2b2d31)
+        embed.set_thumbnail(url=ctx.guild.icon)
+        embed.set_footer(icon_url=ctx.author.avatar, text="Click the buttons below to apply! (only one)")
+        view=roles()
+        await ctx.reply(embed=embed, view=view)
 
 async def setup(bot):
     await bot.add_cog(kanzen(bot))
