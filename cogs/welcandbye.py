@@ -9,7 +9,7 @@ class welc(discord.ui.View):
         self.value = None
         self.member = member
 
-    @discord.ui.button(label=f"Wave", emoji="<:brazy_milksip:958479364184490075>")
+    @discord.ui.button(label=f"Wave", emoji="<a:jkwave:1179680953501753466>")
     async def guide(self, interaction: discord.Interaction, button: discord.ui.Button):
         gifs = [
             "https://tenor.com/view/bts-jin-suga-j-hope-rm-gif-15564709",
