@@ -35,7 +35,7 @@ class misc(commands.Cog):
                 )
             ''')
 
-    @commands.command(aliases=['be', 'embed'], description="Build an embed")
+    @commands.command(aliases=['be', 'embed'], description="Build an embed", extras="aliases +be, +embed")
     async def buildembed(self, ctx: commands.Context):
         """Embed Generator With Default Embed And Author Check So Only The Invoker Can Use The Editor"""
         view = EmbedCreator(bot=self.bot)
@@ -48,7 +48,7 @@ class misc(commands.Cog):
         view.interaction_check = check
         await ctx.send(embed=view.get_default_embed, view=view)
 
-    @commands.command(aliases=["hoshiinfo", "about"], description="Information about Hoshi")
+    @commands.command(aliases=["hoshiinfo", "about"], description="Information about Hoshi", extras="aliases +hoshiinfo, +about")
     async def abouthoshi(self, ctx):
         delta_uptime = datetime.utcnow() - self.bot.launch_time
         hours, remainder = divmod(int(delta_uptime.total_seconds()), 3600)
@@ -70,7 +70,7 @@ class misc(commands.Cog):
         embed.set_field_at(5, name="** **", value=f"**Latency:** {latency}ms", inline=False)
         await message.edit(embed=embed)
 
-    @commands.command(description="Get the server information")
+    @commands.command(description="Get the server information", extras="+serverinfo")
     async def serverinfo(self, ctx):
         async with ctx.typing():
             embed = discord.Embed(title=f"Server Information for the server {ctx.guild.name}", color=0x2b2d31)
@@ -88,7 +88,7 @@ class misc(commands.Cog):
             embed.add_field(name="Server ID", value=ctx.guild.id, inline=True)
             await ctx.reply(embed=embed)
 
-    @commands.command(description="Get the member count for a server")
+    @commands.command(description="Get the member count for a server", extras="+membercount")
     async def membercount(self, ctx):
         total_members = len(ctx.guild.members)
         bot_count = sum(1 for member in ctx.guild.members if member.bot)
@@ -101,12 +101,12 @@ class misc(commands.Cog):
         
         await ctx.send(embed=embed)
 
-    @commands.command(description="Get the image link for an emoji")
+    @commands.command(description="Get the image link for an emoji", extras="+emoji (emoji)")
     async def emoji(self, ctx, emoji: discord.Emoji):
         emoji_url = emoji.url
         await ctx.send(f"Here's the image for the emoji {emoji.name}: {emoji_url}")
 
-    @commands.command(aliases=['pfp', 'icon'], description="Get someone's discord avatar")
+    @commands.command(aliases=['pfp', 'icon'], description="Get someone's discord avatar", extras="+avatar (optional @member)")
     async def avatar(self, ctx, member: discord.Member = None):
         if member is None:
             member = ctx.author
@@ -119,7 +119,7 @@ class misc(commands.Cog):
         view.add_item(button)
         await ctx.reply(embed=embed, view=view)
 
-    @commands.command(description="See someone's member profile!")
+    @commands.command(description="See someone's member profile!", extras="+profile (optional @member)")
     async def profile(self, ctx, user: Optional[discord.Member] = None):
         async with ctx.typing():
             if user is None:
@@ -285,7 +285,7 @@ class misc(commands.Cog):
                 else:
                     await ctx.send("You haven't set up your profile yet!")
 
-    @commands.command(description="Set your profile about me")
+    @commands.command(description="Set your profile about me", extras='+aboutme "Hello my name is...')
     async def aboutme(self, ctx, about_me: str):
         user_id = ctx.author.id
         async with self.db.cursor() as cursor:
@@ -315,7 +315,7 @@ class misc(commands.Cog):
 
             await ctx.send("Your profile information has been set!")
 
-    @commands.command(description="Set your profile banner")
+    @commands.command(description="Set your profile banner", extras="+profilebanner (attatch image)")
     async def profilebanner(self, ctx):
         user_id = ctx.author.id
         if len(ctx.message.attachments) > 0:
@@ -338,7 +338,7 @@ class misc(commands.Cog):
             await ctx.send("Your profile banner has been updated!")
 
 
-    @commands.command(description="Set your profile background")
+    @commands.command(description="Set your profile background", extras="+profilebg")
     async def profilebg(self, ctx):
         user_id = ctx.author.id
         if len(ctx.message.attachments) > 0:

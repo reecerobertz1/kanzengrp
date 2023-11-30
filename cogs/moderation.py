@@ -130,21 +130,21 @@ class Moderation(commands.Cog):
         else:
          await ctx.reply("Sorry, i can't find the server banner")
 
-    @commands.hybrid_command(name="kick", description="Kick a member from the server.")
+    @commands.hybrid_command(name="kick", description="Kick a member from the server.", extras="+kick @member (reason)")
     @commands.has_permissions(manage_guild=True)
     async def kick(self, ctx: commands.Context, member: discord.Member, reason: str = "No reason provided"):
         await member.kick(reason=reason)
         await member.send(f"You have been kicked from {member.guild.name} for {reason}")
         await ctx.reply(f'{member.mention} has been kicked for: {reason}')
 
-    @commands.hybrid_command(name="ban", description="Ban a member from the server.")
+    @commands.hybrid_command(name="ban", description="Ban a member from the server.", extras="+ban @member (reason)")
     @commands.has_permissions(manage_guild=True)
     async def ban(self ,ctx, member: discord.Member, reason: str = "No reason provided"):
         await member.ban(reason=reason)
         await member.send(f"You have been banned from {member.guild.name} for {reason}")
         await ctx.reply(f'{member.mention} has been banned for: {reason}')
         
-    @commands.hybrid_command(name="addrole", description="Add a role to a member.")
+    @commands.hybrid_command(name="addrole", description="Add a role to a member.", extras="+addrole @member @role")
     @commands.has_permissions(manage_guild=True)
     async def _add_role(self, ctx, member: discord.Member, role: discord.Role):
         if role in member.roles:
@@ -153,7 +153,7 @@ class Moderation(commands.Cog):
             await member.add_roles(role)
             await ctx.reply(f"{member.mention} has been given the role {role.mention}.")
 
-    @commands.hybrid_command(name="removerole", description="Remove a role from a member.")
+    @commands.hybrid_command(name="removerole", description="Remove a role from a member.", extras="+removerole @member @role")
     @commands.has_permissions(manage_guild=True)
     async def _remove_role(self, ctx, member: discord.Member, role: discord.Role):
         if role not in member.roles:
@@ -162,21 +162,16 @@ class Moderation(commands.Cog):
             await member.remove_roles(role)
             await ctx.reply(f"{member.mention} no longer has the role {role.mention}.")
         
-    @app_commands.command(name='kanzen', description='Get Kanzen logos')
+    @app_commands.command(name='logos', description='Get Kanzen logos')
     @app_commands.guilds(discord.Object(id=1121841073673736215))
-    async def kanzenlogos(self, interaction: discord.Interaction):
+    async def logos(self, interaction: discord.Interaction):
         channel = interaction.client.get_channel(1122627075682078720)
         log = discord.Embed(title="Logo command has been used!", description=f"`{interaction.user.display_name}` has used the logos command", color=0x2b2d31)
         log.set_footer(text=f"id: {interaction.user.id}", icon_url=interaction.user.display_avatar)
         await interaction.response.send_message('https://mega.nz/folder/J40zCTYY#L73pTeQKWpCh15wpuQaIFA', ephemeral=True)
         await channel.send(embed=log)
 
-    @app_commands.command(name='aura', description='Get Aura logos')
-    @app_commands.guilds(discord.Object(id=957987670787764224))
-    async def auralogos(self, interaction: discord.Interaction):
-        await interaction.response.send_message('https://mega.nz/folder/SNkySBBb#kNViVZOVnHzEFmFsuhtLOQ', ephemeral=True)
-
-    @commands.command(description="Warn a member in Editors Block")
+    @commands.command(description="Warn a member in Editors Block", extras="+warn @member (reason)")
     @commands.has_permissions(manage_guild=True)
     async def warn(self, ctx, user: discord.User, *, reason: str):
         try:
@@ -193,7 +188,7 @@ class Moderation(commands.Cog):
         else:
             await ctx.send("Logging channel not found. Please set the correct channel ID.")
 
-    @commands.command(description="Steal any emoji from any server")
+    @commands.command(description="Steal any emoji from any server", extras="+emoji (new emoji name) (emoji)")
     async def steal(self, ctx, emoji_name: str, *, emoji: discord.PartialEmoji):
         if not isinstance(emoji, discord.PartialEmoji):
             return await ctx.send("Please provide a valid emoji.")
@@ -205,68 +200,7 @@ class Moderation(commands.Cog):
         
         await ctx.send(f"Emoji {emoji} has been added!")
 
-    @commands.command(hidden=True)
-    @commands.has_permissions(manage_guild=True)
-    async def hoshiupdate(self, ctx, message: str):
-        embed = discord.Embed(title='NEW COMMAND', description=message, color=0x2b2d31)
-        embed.set_footer(text="Go and use these commands in Hoshi's channel!")
-        embed.set_author(name="Hoshi#3105", icon_url=self.bot.user.display_avatar.url)
-        message = await ctx.reply("Are you sure you want to send this update message?", embed=embed)
-        await message.add_reaction('👍')
-        
-        def check(reaction, user):
-            return user == ctx.author and str(reaction) == '👍'
-        
-        try:
-            reaction, user = await self.bot.wait_for('reaction_add', timeout=15.0, check=check)
-            
-            kanzen_channel_id = 1122655402899800234
-            aura_channel_id = 1122242141037547531
-            
-            for guild in self.bot.guilds:
-                kanzen = guild.get_channel(kanzen_channel_id)
-                aura = guild.get_channel(aura_channel_id)
-                
-                if kanzen:
-                    await kanzen.send("<@&1122655473368314017>", embed=embed)
-                
-                if aura:
-                    await aura.send("<@&1122999466438438962>", embed=embed)
-            
-            await ctx.send("Great! I have sent out the update message!")
-            await message.edit(content=None)
-        except asyncio.TimeoutError:
-            await message.edit(content="~~Are you sure you want to send this update message?~~\nThe update has been cancelled")
-
-    @commands.command(hidden=True)
-    @commands.has_permissions(manage_guild=True)
-    async def khoshiupdate(self, ctx):
-        embed = discord.Embed(title='Confessions command!', description="The new confessions command is where you can tell us your darkest secrets by using the command </confess:1140190517066465341>!\n\nThe messages are sent anonymously so don't worry to much about people knowing who you are when they are sent (they are also not logged either)\n\nThere are reactions that are added onto each confession for you to show how you feel about a confession\nCan't wait to see the weird shit we get!\n\n**This command is kanzengrp only!**", color=0x2b2d31)
-        embed.set_footer(text="Go and use these commands in Hoshi's channel!")
-        embed.set_author(name="Hoshi#3105", icon_url=self.bot.user.display_avatar.url)
-        message = await ctx.reply("Are you sure you want to send this update message?", embed=embed)
-        await message.add_reaction('👍')
-        
-        def check(reaction, user):
-            return user == ctx.author and str(reaction) == '👍'
-        
-        try:
-            reaction, user = await self.bot.wait_for('reaction_add', timeout=15.0, check=check)
-            
-            kanzen_channel_id = 1122655402899800234
-            
-            for guild in self.bot.guilds:
-                kanzen = guild.get_channel(kanzen_channel_id)
-                
-                if kanzen:
-                    await kanzen.send("<@&1122655473368314017>", embed=embed)
-            
-            await ctx.send("Great! I have sent out the update message!")
-            await message.edit(content=None)
-        except asyncio.TimeoutError:
-            await message.edit(content="~~Are you sure you want to send this update message?~~\nThe update has been cancelled")
-
-    @commands.command(description="Report a bug report to the Hoshi dev")
+    @commands.command(description="Report a bug report to the Hoshi dev", extras="+report")
     async def report(self, ctx):
         embed = discord.Embed(title="Bug Report", description="<a:Arrow_1:1145603161701224528> Please click the button and fill out the form that appears on your screen!\n<a:Arrow_1:1145603161701224528> Your bug report will send to the developer of Hoshi\n<a:Arrow_1:1145603161701224528> You can be notified when the issue has been resolved!", color=0x2b2d31)
         embed.set_footer(text="Click the button below to send a bug report", icon_url=ctx.author.avatar)

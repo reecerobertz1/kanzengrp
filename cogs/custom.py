@@ -18,7 +18,7 @@ class custom(commands.Cog):
         with open("./json files/custom.json", "w") as file:
             json.dump(self.custom_commands, file, indent=4)
 
-    @commands.command(description="Add a custom command")
+    @commands.command(description="Add a custom command", extras="+cmdnew (command name) (command response)")
     @commands.guild_only()
     async def cmdnew(self, ctx, command_name, *, command_response):
         if ctx.guild.id != 1121841073673736215:
@@ -54,7 +54,7 @@ class custom(commands.Cog):
                 response = self.custom_commands[server_id][content]
                 await message.channel.send(response)
 
-    @commands.command(description="Remove a custom command")
+    @commands.command(description="Remove a custom command", extras="+cmdremove (command name)")
     async def cmdremove(self, ctx, command_name):
         server_id = str(ctx.guild.id)
 
@@ -65,7 +65,7 @@ class custom(commands.Cog):
         else:
             await ctx.reply(f"The custom command '{command_name}' does not exist.")
 
-    @commands.command(description="See the list of custom commands")
+    @commands.command(description="See the list of custom commands", extras="+cmdlist")
     async def cmdlist(self, ctx):
         server_id = str(ctx.guild.id)
 

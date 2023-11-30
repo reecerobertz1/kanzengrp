@@ -37,32 +37,32 @@ class editing(commands.Cog):
             json.dump(data, file, indent=4)
         await ctx.reply("Audio added successfully.")
 
-    @commands.group(invoke_without_command=True, description="See the commands for effecrs for each prgram/app")
+    @commands.group(invoke_without_command=True, description="See the commands for effecrs for each prgram/app", hidden=True)
     async def effects(self, ctx: commands.Context):
         embed = discord.Embed(title="Effect Commands", color=0x2B2D31)
         embed.add_field(name="effects ae", value="Sends effects for After Effects", inline=False)
         embed.add_field(name="effects vs", value="Sends effects for videostar", inline=False)
         await ctx.reply(embed=embed)
 
-    @effects.command(description="Use the +effects ae command for ae effects")
+    @effects.command(description="Use the +effects ae command for ae effects", extras="+effects ae")
     async def ae(self, ctx):
         choices = ["4-Color Gradient", "S_HalfTone", "Gradient Ramp", "S_PseudoColor", "S_FlysEyeHex", "S_WipeTiles", "S_EdgeRays", "S_WipeMoire", "S_WipeDots", "S_WipePixelate", "S_WipePlasma", "S_WipeFlux", "S_GlowDist", "S_Glint", "Glow", "Turbulent Displace", "Wave Warp", "BCC lens blur OBS", "Invert", "Exposure", "BCC Cross Glitch", "BCC LED", "Omino Diffuse", "Omino Squares", "Grid"]
         raneffect = random.choice(choices)
         await ctx.reply(raneffect)
 
-    @effects.command(description="Use the +effects vs command for vs effects")
+    @effects.command(description="Use the +effects vs command for vs effects", extras="+effects vs")
     async def vs(self, ctx):
         choices = ["Select Shift", "Luma Fade", "Contrast", "Swap Hue", "Delete Color", "neXt-Ray", "Solarize", "Rainbow Halo", "E-Sample", "E-Saber", "E-Glitter", "E-Rays", "E-Anime", "E-Aura", "Frozen", "Zoom Blur", "Lens Blur", "Ring Blur", "Light Rays", "Minimax Hex", "Minimax Spin", "LED Image Circle", "LED Image Square", "LED Reveal", "Color Shadow", "Cosmic Wave", "Hole Wipe 1", "Hole Wipe 2", "Rect Wipe 1", "Rect Wipe 2", "*-Bit Wipe", "Glitch A0", "Glitch A1", "Glitch A2", "Glitch A4", "Glitch A5", "Glitch A6", "Glitch A7", "Glitch A8", "Glitch A9", "Blacken", "Hue Shift", "Color SHift", "Video Smear", "Video Melt", "Bevel Edge", "Halftone", "Block Filter", "Outline", "Scanner 1", "Scanner 2", "Edge", "White Edge", "White Lines"]
         raneffect = random.choice(choices)
         await ctx.reply(raneffect)
 
-    @commands.command(aliases=["transitions"],description="Get transitions to use in edits")
+    @commands.command(aliases=["transitions"],description="Get transitions to use in edits", extras="alias +transitions")
     async def transition(self, ctx):
         choices = ["Warp Fisheye", "Zoom in", "Zoom out", "Inside Cube", "Ink Splash", "Split Cube", "Polaroid Pop Up", "CC scale wipe", "3D flip", "3D tunnel", "Tile Scramble", "do something with a cube, dont be lazy", "idfk... look at someone's edits take inspo from them (GIVE THEM IB CREDITS THOUGH)", "rotation", "slide down", "slide right", "slide left", "slide up", "slide somewhere", "3D flip into a cube", "i can't think of anything... do the command again"]
         raneffect = random.choice(choices)
         await ctx.reply(raneffect)
 
-    @commands.command(aliases=["who2edit"], description="Stuck for who to edit? Use this command")
+    @commands.command(aliases=["who2edit"], description="Stuck for who to edit? Use this command", extras="alias +who2edit")
     async def whotoedit(self, ctx):
         """Displays a random transition effect for video editing."""
 
@@ -90,7 +90,7 @@ class editing(commands.Cog):
     def calculate_brightness(self, color):
         return (0.299 * color[0] + 0.587 * color[1] + 0.114 * color[2]) / 255
 
-    @commands.command(description="Generate a color palette image", aliases=['cs', 'palette'])
+    @commands.command(description="Generate a color palette image", aliases=['cs', 'palette'], extras="aliases +cs, +palette")
     async def colorpalette(self, ctx):
         with open('./json files/colors.json', 'r') as file:
             color_groups = json.load(file)
@@ -126,21 +126,21 @@ class editing(commands.Cog):
         image.save("color_palette.png")
         await ctx.send(file=discord.File("color_palette.png"))
 
-    @commands.command(description="Add your own edits to Hoshi")
+    @commands.command(description="Add your own edits to Hoshi", extras="+addedit (streamable link)")
     async def addedit(self, ctx, link):
         data = self.get_edits_data()
         data.append(link)
         self.save_edits_data(data)
         await ctx.reply("Your edit added successfully.")
 
-    @commands.group(aliases=['edits'],description="See edits added by other members")
+    @commands.group(aliases=['edits'],description="See edits added by other members", extras="aliases +edits")
     async def edit(self, ctx):
         with open("./json files/edits.json", "r") as f:
             audios = json.load(f)
             choice = random.choice(audios)
             await ctx.reply(f"Add your edits with `+addedit`\n[here is the edit]({choice})")
 
-    @commands.command(description="Add a soft audio")
+    @commands.command(description="Add a soft audio", extras="+addsoft (soundcloud link)")
     async def addsoft(self, ctx, link):
         button = discord.ui.Button(label="Click to hear audio", url=f"{link}")
 
@@ -152,7 +152,7 @@ class editing(commands.Cog):
         await self._add_audio(ctx, "./json files/softaudios.json", link)
         await log.send(embed=embed, view=view)
 
-    @commands.command(description="Add a hot audio")
+    @commands.command(description="Add a hot audio", extras="+addhot (soundcloud link)")
     async def addhot(self, ctx, link):
         button = discord.ui.Button(label="Click to hear audio", url=f"{link}")
 
@@ -164,7 +164,7 @@ class editing(commands.Cog):
         await self._add_audio(ctx, "./json files/hotaudios.json", link)
         await log.send(embed=embed, view=view)
 
-    @commands.command(description="Add a collab audio")
+    @commands.command(description="Add a collab audio", extras="+addcollab (soundcloud link)")
     async def addcollab(self, ctx, link):
         button = discord.ui.Button(label="Click to hear audio", url=f"{link}")
 
@@ -176,28 +176,28 @@ class editing(commands.Cog):
         await self._add_audio(ctx, "./json files/collabaudios.json", link)
         await log.send(embed=embed, view=view)
 
-    @commands.group(invoke_without_command=True, description="See the command categories for audios")
+    @commands.group(invoke_without_command=True, description="See the command categories for audios", hidden=True)
     async def audio(self, ctx: commands.Context):
         embed = discord.Embed(title="Audio Commands", color=0x2B2D31)
         embed.add_field(name="audio soft", value="Sends a soft audio", inline=False)
         embed.add_field(name="audio hot", value="Sends a hot audio", inline=False)
         await ctx.reply(embed=embed)
 
-    @audio.command(description="Use the command +audio soft for soft audios")
+    @audio.command(description="Use the command +audio soft for soft audios", extras="+audio soft")
     async def soft(self, ctx):
         with open("./json files/softaudios.json", "r") as f:
             audios = json.load(f)
             choice = random.choice(audios)
             await ctx.reply(f"Add a soft audio with `+addsoft`\n[here is the audio]({choice})")
 
-    @audio.command(description="Use the command +audio hot for hot audios")
+    @audio.command(description="Use the command +audio hot for hot audios", extras="+audio hot")
     async def hot(self, ctx):
         with open("./json files/hotaudios.json", "r") as f:
             audios = json.load(f)
             choice = random.choice(audios)
             await ctx.reply(f"Add a hot audio with `+addhot`\n[here is the audio]({choice})")
 
-    @audio.command(description="Use the command +audio collab for collab audios")
+    @audio.command(description="Use the command +audio collab for collab audios", extras="+audio collab")
     async def collab(self, ctx):
         with open("./json files/collabaudios.json", "r") as f:
             audios = json.load(f)

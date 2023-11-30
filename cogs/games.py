@@ -86,7 +86,7 @@ class Games(commands.Cog):
 
         await ctx.send(embed=discord.Embed(title="Stats", description=f" {p1.member.mention}\n**HP:** `{p1.hp}`\n**Defense**: `{p1.defense}`\n \n {p2.member.mention}\n**HP**: `{p2.hp}`\n**Defense**: `{p2.defense}`", color=0x2b2d31))
 
-    @commands.command(aliases=["battle"], description="Fight other members to the death")
+    @commands.command(aliases=["battle"], description="Fight other members to the death", extras="+fight @member : alias +battle")
     async def fight(self, ctx, opponent: discord.Member):
         if ctx.channel.id in self.occupied:
             await ctx.reply("This battlefield is occupied")

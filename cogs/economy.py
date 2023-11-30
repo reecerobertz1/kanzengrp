@@ -97,7 +97,7 @@ class Economy(commands.Cog):
         avatar_image = avatar_image.resize((35, 35))
         return avatar_image, circle
 
-    @commands.command(aliases=["bal"], description="Check your bank and wallet balance")
+    @commands.command(aliases=["bal"], description="Check your bank and wallet balance", extras="alias +bal")
     @kanzen_only()
     async def balance(self, ctx, user: discord.Member = None, avatar_size: int = 140, image_size: int = 64) -> BytesIO:
         async with ctx.typing():
@@ -133,7 +133,7 @@ class Economy(commands.Cog):
             img.save("bank.png")
             await ctx.reply(file=discord.File("bank.png"))
 
-    @commands.command(description="Steal coins from other members")
+    @commands.command(description="Steal coins from other members", extras="+rob @member")
     @commands.cooldown(1, 3600, commands.BucketType.user) 
     async def rob(self, ctx, member: discord.Member):
         titles = ["LOL you stole from someone... naughty naughty", "wow- are you that broke", "well we all need money... mind sharing 🥲"]
@@ -162,7 +162,7 @@ class Economy(commands.Cog):
                 await ctx.send(f"Sorry, you're on a cooldown from using this command. Try again in {remaining} seconds.")
 
 
-    @commands.command(aliases=['dep'], description="Deposite money into your bank")
+    @commands.command(aliases=['dep'], description="Deposite money into your bank", extras="+deposit (amount) : alias +dep")
     @kanzen_only()
     async def deposit(self, ctx, amount: int):
         if amount <= 0:
@@ -175,7 +175,7 @@ class Economy(commands.Cog):
         new_wallet_balance, new_bank_balance = await self.update_balance(ctx.author.id, -amount, amount)
         await ctx.send(f"You deposited <a:coin:1154168127802843216> {amount} coins into your bank. Your new balance is: Wallet: <a:coin:1154168127802843216> {new_wallet_balance} coins, Bank: <a:coin:1154168127802843216> {new_bank_balance} coins.")
 
-    @commands.command(description="Withdraw money from your bank")
+    @commands.command(description="Withdraw money from your bank", extras="+withdraw (amount)")
     @kanzen_only()
     async def withdraw(self, ctx, amount: int):
         if amount <= 0:
@@ -186,7 +186,7 @@ class Economy(commands.Cog):
         new_wallet_balance, new_bank_balance = await self.update_balance(ctx.author.id, amount, -amount)
         await ctx.send(f"You withdrew <a:coin:1154168127802843216> {amount} coins from your bank. Your new balance is: Wallet: <a:coin:1154168127802843216> {new_wallet_balance} coins, Bank: <a:coin:1154168127802843216> {new_bank_balance} coins.")
 
-    @commands.command(description="Donate to ~~the poor~~ other members")
+    @commands.command(description="Donate to ~~the poor~~ other members", extras="+donate @member (amount)")
     @kanzen_only()
     async def donate(self, ctx, user: discord.Member, amount: int):
         if amount <= 0:
@@ -200,7 +200,7 @@ class Economy(commands.Cog):
         new_wallet_balance, new_bank_balance = await self.update_balance(user.id, amount, 0)
         await ctx.send(f"You gave {user.display_name} {amount} coins. {user.display_name}'s new balance is: Wallet: <a:coin:1154168127802843216> {new_wallet_balance} coins, Bank: <a:coin:1154168127802843216> {new_bank_balance} coins.")
 
-    @commands.command(description="Beg celebs for coins")
+    @commands.command(description="Beg celebs for coins", extras="+beg")
     @commands.cooldown(1, 10, commands.BucketType.user)
     @kanzen_only()
     async def beg(self, ctx):
@@ -261,32 +261,32 @@ class Economy(commands.Cog):
             seconds = round(error.retry_after)
             await ctx.reply(f"You are on cooldown. Try again in {seconds} seconds.")
 
-    @commands.command(description="Search locations for coins")
+    @commands.command(description="Search locations for coins", extras="+search | a park")
     @commands.cooldown(1, 10, commands.BucketType.user)
     @kanzen_only()
     async def search(self, ctx):
         search_responses = {
-            'a park': [
+            'park': [
                 ("You searched a park and found a squirrel that gave you some coins!", random.randint(1, 500)),
                 ("You explored a park and stumbled upon a hidden treasure!", random.randint(1, 500)),
                 ("You searched a park and found some loose change!", random.randint(1, 500))
             ],
-            'an alley': [
+            'alley': [
                 ("You searched an alley and found a wallet with some coins inside!", random.randint(1, 1000)),
                 ("You explored a dark alley and found some discarded coins!", random.randint(1, 1000)),
                 ("You searched an alley and found nothing but trash.", 0)
             ],
-            'a dumpster': [
+            'dumpster': [
                 ("You searched a dumpster and found a valuable item worth some coins!", random.randint(1, 100)),
                 ("You rummaged through a dumpster and found some hidden coins!", random.randint(1, 100)),
                 ("You searched a dumpster and got dirty for no reward.", 0)
             ],
-            'the forest': [
+            'forest': [
                 ("You ventured into the forest and found a hidden treasure chest!", random.randint(1, 500)),
                 ("You explored the forest and found a friendly forest creature!", random.randint(1, 500)),
                 ("You searched the forest, but it seems there was nothing valuable there today.", 0)
             ],
-            'a cave': [
+            'cave': [
                 ("You entered a dark cave and found a hidden stash of coins!", random.randint(1, 350)),
                 ("You explored a mysterious cave and found a rare gemstone!", random.randint(1, 350)),
                 ("You searched a cave but found nothing valuable.", 0)
@@ -313,7 +313,7 @@ class Economy(commands.Cog):
         else:
             await ctx.reply(response)
 
-    @commands.command(description="commit a crime for coins")
+    @commands.command(description="commit a crime for coins", extras="+crime | shoplifting")
     @commands.cooldown(1, 10, commands.BucketType.user)
     @kanzen_only()
     async def crime(self, ctx):
@@ -382,7 +382,7 @@ class Economy(commands.Cog):
             seconds = round(error.retry_after)
             await ctx.reply(f"You are on cooldown. Try again in {seconds} seconds.")
 
-    @commands.command(description="See the richest kanzen members")
+    @commands.command(description="See the richest kanzen members", extras="+wealth")
     @kanzen_only()
     async def wealth(self, ctx, page: int = 1):
         if page <= 0:
@@ -489,12 +489,12 @@ class Economy(commands.Cog):
                 else:
                     return 0
 
-    @commands.command(description="See what is in the shop")
+    @commands.command(description="See what is in the shop", extras="+shop")
     @kanzen_only()
     async def shop(self, ctx):
         await ctx.reply("https://cdn.discordapp.com/attachments/1121841074512605186/1169853368982843422/shop_00000.png?ex=6556e9d9&is=654474d9&hm=63dce218961ab52626ac0dbeb87e68dfd77085fef78b42ddf1a4e68495fb4573&")
 
-    @commands.command(description="Buy items from the shop")
+    @commands.command(description="Buy items from the shop", extras="+buy cookie (amount)")
     @kanzen_only()
     async def buy(self, ctx, item: str, quantity: int = 1):
         shop_items = {
@@ -537,7 +537,7 @@ class Economy(commands.Cog):
 
         await ctx.send(f"You have successfully purchased {quantity} {item}(s) for <a:coin:1154168127802843216> {price} coins. Your new wallet balance is <a:coin:1154168127802843216> {new_wallet_balance} coins.")
 
-    @commands.command(description="See what items you have")
+    @commands.command(description="See what items you have", extras="+inventory")
     @kanzen_only()
     async def inventory(self, ctx):
         async with self.pool.acquire() as conn:
@@ -563,7 +563,7 @@ class Economy(commands.Cog):
 
         await ctx.send(embed=inventory_embed)
 
-    @commands.command(description="Sell your unwanted items")
+    @commands.command(description="Sell your unwanted items", extras="+sell cookie (amount)")
     @kanzen_only()
     async def sell(self, ctx, item: str, quantity: int = 1):
         shop_items = {
@@ -601,37 +601,6 @@ class Economy(commands.Cog):
                 await conn.commit()
 
         await ctx.send(f"You have successfully sold {quantity} {item}(s) for <a:coin:1154168127802843216> {sell_price} coins. Your new wallet balance is <a:coin:1154168127802843216> {new_wallet_balance} coins.")
-
-    @commands.command(hidden=True)
-    @kanzen_only()
-    # @commands.cooldown(1, 10, commands.BucketType.user)
-    async def fish(self, ctx):
-        user_id = ctx.author.id
-        has_fishing_rod = await self.check_inventory(user_id, "Fishing_rod")
-        has_another_item = await self.check_inventory(user_id, "fishing_rod")
-
-        if not has_fishing_rod:
-            await ctx.send("You need a fishing rod before you can fish DUH")
-            return
-        if not await self.use_item(user_id, "fishing_rod"):
-            await ctx.send("Your fishing rod has run out of uses!")
-            return
-        catch = random.choice(["fish", "fish", "coins", "nothing"])
-        if catch == "fish":
-            await self.add_item(user_id, "fish", 1)
-            await ctx.send("You caught a fish!")
-        elif catch == "coins":
-            coins_found = random.randint(1, 10)
-            await self.update_balance(user_id, coins_found, 0)
-            await ctx.send(f"You found {coins_found} coins while fishing!")
-        else:
-            await ctx.send("You didn't catch anything while fishing.")
-
-    @fish.error
-    async def fish_error(ctx, error):
-        if isinstance(error, commands.CommandOnCooldown):
-            seconds = round(error.retry_after)
-            await ctx.send(f"You are on cooldown. Try again in {seconds} seconds.")
 
 async def setup(bot):
     await bot.add_cog(Economy(bot))

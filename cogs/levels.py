@@ -1274,7 +1274,7 @@ class Levels(commands.Cog):
             embed.add_field(name="top 20 role", value="a top 20 role has not been set.\nuse `+levelling setrole <role>` if you want to give a role to members ranked top 20!", inline=False)
         await ctx.send(embed=embed)
 
-    @levelling.command(aliases=["on"], description="Activate the levelling system in a server")
+    @levelling.command(aliases=["on"], description="Activate the levelling system in a server", extras="+levelling activate")
     @commands.has_permissions(administrator=True)
     async def activate(self, ctx: commands.Context):
         """Activates levelling system in current guild"""
@@ -1286,7 +1286,7 @@ class Levels(commands.Cog):
         )
         await ctx.reply(embed=embed)
 
-    @levelling.command(aliases=["off"], description="Deactivate the levelling system in a server")
+    @levelling.command(aliases=["off"], description="Deactivate the levelling system in a server", extras="+levelling deactivate")
     @commands.has_permissions(administrator=True)
     async def deactivate(self, ctx: commands.Context):
         """Activates levelling system in current guild"""
@@ -1298,7 +1298,7 @@ class Levels(commands.Cog):
         )
         await ctx.reply(embed=embed)
 
-    @levelling.command(description="Set the top 20 role")
+    @levelling.command(description="Set the top 20 role", extras="+levelling setrole @role")
     @commands.has_permissions(administrator=True)
     async def setrole(self, ctx: commands.Context, role: discord.Role):
         """Sets a role for members ranked top 20
@@ -1316,7 +1316,7 @@ class Levels(commands.Cog):
         )
         await ctx.reply(embed=embed)
 
-    @levelling.command(description="Remove the top 20 role")
+    @levelling.command(description="Remove the top 20 role", extras="+levelling removerole @role")
     @commands.has_permissions(administrator=True)
     async def removerole(self, ctx: commands.Context, role: discord.Role):
         """Removes the top 20 role
@@ -1334,7 +1334,7 @@ class Levels(commands.Cog):
         )
         await ctx.reply(embed=embed)
 
-    @commands.command(aliases=['lb', 'levels'], description="See the level leaderboard")
+    @commands.command(aliases=['lb', 'levels'], description="See the level leaderboard", extras="aliases +lb, +levels")
     @levels_is_activated()
     async def leaderboard(self, ctx: commands.Context):
         """sends the current leaderboard"""
@@ -1368,7 +1368,7 @@ class Levels(commands.Cog):
         else:
             await ctx.send(embed=embed)
 
-    @commands.command(description="Check your rank")
+    @commands.command(description="Check your rank", extras="+rank (optional @member)")
     @levels_is_activated()
     async def rank(self, ctx: commands.Context, member: Optional[discord.Member]):
         async with ctx.typing():
@@ -1401,25 +1401,25 @@ class Levels(commands.Cog):
         async with self.bot.pool.acquire() as conn:
             await conn.execute("UPDATE levels SET format = $1 WHERE member_id = $2 AND guild_id = $3", format, member_id, guild_id)
 
-    @commands.command(description="Change your rank card format to version 1")
+    @commands.command(description="Change your rank card format to version 1", extras="+rank1")
     async def rank1(self, ctx):
         await self.update_rank_format(ctx.author.id, ctx.guild.id, "Rank 1")
-        embed = discord.Embed(title="New format selected!", description="You have selected format version 1\n\nIf you want to cusomise this rank card you can with the commands **+rankcolor** and include a hexcode (example: #2b2d31)\n\nYou can also change your background with +rankimage and attach you background image, please do remember that the background image needs to be **1500x500** format so it isn't cropped!", color=0x2b2d31)
+        embed = discord.Embed(title="New format selected!", description="You have selected format **version 1**\n\nIf you want to cusomise this rank card you can with the commands **+rankcolor** and include a hexcode (example: #2b2d31)\n\nYou can also change your background with +rankbg and attach you background image, please do remember that the background image needs to be **1500x500** format so it isn't cropped!", color=0x2b2d31)
         await ctx.reply(embed=embed)
 
-    @commands.command(description="Change your rank card format to version 2")
+    @commands.command(description="Change your rank card format to version 2", extras="+rank2")
     async def rank2(self, ctx):
         await self.update_rank_format(ctx.author.id, ctx.guild.id, "Rank 2")
-        embed = discord.Embed(title="New format selected!", description="You have selected format version 1\n\nIf you want to cusomise this rank card you can with the commands **+rankcolor** and include a hexcode (example: #2b2d31)\n\nYou can also change your background with +rankimage and attach you background image, please do remember that the background image needs to be **1080x1080** format so it isn't cropped!", color=0x2b2d31)
+        embed = discord.Embed(title="New format selected!", description="You have selected format **version 2**\n\nIf you want to cusomise this rank card you can with the commands **+rankcolor** and include a hexcode (example: #2b2d31)\n\nYou can also change your background with +rankbg and attach you background image, please do remember that the background image needs to be **1080x1080** format so it isn't cropped!", color=0x2b2d31)
         await ctx.reply(embed=embed)
 
     @commands.command(description="Change your rank card format to version 3")
     async def rank3(self, ctx):
-        await self.update_rank_format(ctx.author.id, ctx.guild.id, "Rank 3")
-        embed = discord.Embed(title="New format selected!", description="You have selected format version 1\n\nIf you want to cusomise this rank card you can with the commands **+rankcolor** and include a hexcode (example: #2b2d31)\n\nYou can also change your background with +rankimage and attach you background image, please do remember that the background image needs to be **1080x1500** format so it isn't cropped!", color=0x2b2d31)
+        await self.update_rank_format(ctx.author.id, ctx.guild.id, "Rank 3", extras="+rank3")
+        embed = discord.Embed(title="New format selected!", description="You have selected format **version 3**\n\nIf you want to cusomise this rank card you can with the commands **+rankcolor** and include a hexcode (example: #2b2d31)\n\nYou can also change your background with +rankbg and attach you background image, please do remember that the background image needs to be **1080x1500** format so it isn't cropped!", color=0x2b2d31)
         await ctx.reply(embed=embed)
 
-    @commands.command(description="Change your rank card color with hex codes")
+    @commands.command(description="Change your rank card color with hex codes", extras="+rankcolor #2b2d31")
     @levels_is_activated()
     async def rankcolor(self, ctx: commands.Context, color: str):
         """
@@ -1442,7 +1442,7 @@ class Levels(commands.Cog):
         else:
             await ctx.reply(f"`{color}` is not a valid hex color")
 
-    @commands.command(description="Attatch an image when doing this command!")
+    @commands.command(description="Attatch an image when doing this command!", extras="+rankbg (attatch image)")
     async def rankbg(self, ctx):
         if len(ctx.message.attachments) == 0:
             await ctx.reply("Please attach an image to set as your rank background.")
@@ -1462,7 +1462,7 @@ class Levels(commands.Cog):
         embed.set_image(url=attachment.url)
         await ctx.reply(embed=embed)
 
-    @commands.command(description="Add xp to someone")
+    @commands.command(description="Add xp to someone", extras="+add @member amount")
     @levels_is_activated()
     @commands.has_permissions(manage_guild=True)
     async def add(self, ctx: commands.Context, member: discord.Member, amount: int):
@@ -1488,7 +1488,7 @@ class Levels(commands.Cog):
         )
         await ctx.reply(embed=embed)
 
-    @commands.command(description="Add xp to multiple people")
+    @commands.command(description="Add xp to multiple people", extras="+multiadd @member @member amount")
     @levels_is_activated()
     @commands.has_permissions(manage_guild=True)
     async def multiadd(self, ctx: commands.Context, members: commands.Greedy[discord.Member], amount: int):
@@ -1520,7 +1520,7 @@ class Levels(commands.Cog):
                     await self.top_20_role_handler(member, ctx.guild, top20)
         await ctx.reply(embed=embed)
 
-    @commands.command(aliases=['take'], description="Remove xp from someone")
+    @commands.command(aliases=['take'], description="Remove xp from someone", extras="+remove @member amount")
     @levels_is_activated()
     @commands.has_permissions(manage_guild=True)
     async def remove(self, ctx: commands.Context, member: discord.Member, amount: int):
@@ -1552,7 +1552,7 @@ class Levels(commands.Cog):
         else:
             await ctx.reply(f"{str(member)} doesn't have any xp yet!")
 
-    @commands.command(description="Reset the levels")
+    @commands.command(description="Reset the levels", extras="+reset")
     @commands.has_permissions(administrator=True)
     @levels_is_activated()
     @commands.has_permissions(manage_guild=True)
@@ -1576,7 +1576,7 @@ class Levels(commands.Cog):
         except asyncio.TimeoutError:
             await message.edit(content="~~are you sure you want to reset the ranks? it's irreversible!~~\nreset has been cancelled!")
 
-    @commands.command(description="Get anywhere from 100xp - 300xp everyday!")
+    @commands.command(description="Get anywhere from 100xp - 300xp everyday!", extras="+daily")
     @kanzen_only()
     @commands.dynamic_cooldown(kanzen_cooldown, commands.BucketType.user)
     async def daily(self, ctx: commands.Context):
@@ -1600,34 +1600,6 @@ class Levels(commands.Cog):
                 await ctx.reply(f"You need to wait {int(minutes)} minutes before claiming daily XP again!")
             else:
                 await ctx.reply(f"You need to wait {int(error.retry_after)} seconds before claiming daily XP again!")
-
-    @commands.command(description="Get anywhere from 5000xp - 15000xp every month!")
-    @kanzen_only()
-    @commands.dynamic_cooldown(kanzen_monthly_cooldown, commands.BucketType.user)
-    async def monthly(self, ctx: commands.Context):
-        """Command to claim monthly xp"""
-        xp = randint(5000, 15000)
-        levels = await self.get_member_levels(ctx.author.id, ctx.guild.id)
-        if levels is not None:
-            await self.add_xp(ctx.author.id, ctx.guild.id, xp, levels)
-        else:
-            await self.register_member_levels(ctx.member.id, ctx.guild.id, xp)
-        await ctx.reply(f"You claimed your monthly xp! you got **{xp}xp**")
-
-    @monthly.error
-    async def monthly_error(self, ctx: commands.Context, error: commands.CommandError):
-        if isinstance(error, commands.CommandOnCooldown):
-            if error.retry_after > 86400:
-                days = error.retry_after // 86400
-                await ctx.reply(f"You need to wait {int(days)} days before claiming monthly XP again!")
-            elif error.retry_after > 3600:
-                hours = error.retry_after // 3600
-                await ctx.reply(f"You need to wait {int(hours)} hours before claiming monthly XP again!")
-            elif error.retry_after > 60:
-                minutes = error.retry_after // 60
-                await ctx.reply(f"You need to wait {int(minutes)} minutes before claiming monthly XP again!")
-            else:
-                await ctx.reply(f"You need to wait {int(error.retry_after)} seconds before claiming monthly XP again!")
 
     @commands.Cog.listener()
     async def on_message(self, message: discord.Message) -> None:
