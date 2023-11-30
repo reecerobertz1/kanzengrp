@@ -22,7 +22,7 @@ class HelpSelect(Select):
             if not getattr(i, "hidden", False):
                 commands_mixer.append(i)
 
-        embed = discord.Embed(description='\n'.join(f"<a:Arrow_1:1145603161701224528> **{self.bot.command_prefix}{command.name}:**\n<:reply1:1179652862473678950> {command.description}\n<:reply:1179653104170455040> {command.extras}" for command in commands_mixer), color=0x2b2d31)
+        embed = discord.Embed(description='\n'.join(f"**{self.bot.command_prefix}{command.name}:**\n<:reply1:1179652862473678950> {command.description}\n<:reply:1179653104170455040> {command.extras}" for command in commands_mixer), color=0x2b2d31)
         embed.set_thumbnail(url=interaction.guild.icon)
         embed.set_author(name=f"{cog.__cog_name__} commands", icon_url=interaction.user.avatar)
         await interaction.response.edit_message(embed=embed)
