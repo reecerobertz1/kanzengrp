@@ -1619,7 +1619,7 @@ class Levels(commands.Cog):
     async def delete_member(self, ctx, member_id: int):
         guild_id = ctx.guild.id
 
-        async with self.pool.acquire() as conn:
+        async with self.bot.pool.acquire() as conn:
             await conn.execute('DELETE FROM levels WHERE member_id = $1 AND guild_id = $2', member_id, guild_id)
 
         await ctx.send(f"Member with ID {member_id} has been removed from the database.")
