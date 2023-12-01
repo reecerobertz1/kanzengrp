@@ -27,6 +27,7 @@ class Levels(commands.Cog):
         self.status_holder = {0: "not active", 1: "active"}
         self.cd_mapping = commands.CooldownMapping.from_cooldown(1, 60, commands.BucketType.user) # cooldown for xp (1 minute/60 seconds)
         self.regex_hex = "^#(?:[0-9a-fA-F]{3}){1,2}$" # regex to match hex colors for progress bar color
+        self.emoji="<:cooky:1121909627156705280>"
 
     def levels_is_activated():
         async def predicate(ctx: commands.Context):

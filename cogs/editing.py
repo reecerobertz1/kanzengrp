@@ -11,6 +11,7 @@ class editing(commands.Cog):
     """Commands to help you with editing"""
     def __init__(self, bot):
         self.bot = bot
+        self.emoji = "<:koya:1121909483698925618>"
 
     def get_edits_data(self):
         try:

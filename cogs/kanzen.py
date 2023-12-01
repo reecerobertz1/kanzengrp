@@ -534,6 +534,7 @@ class kanzen(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.hidden = True
+        self.emoji = "<:shooky:1121909564799987722>"
 
     @commands.command()
     @commands.has_permissions(manage_guild=True)

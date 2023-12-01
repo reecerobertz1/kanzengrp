@@ -20,6 +20,7 @@ class misc(commands.Cog):
         self.bot = bot
         self.db = None
         self.bot.loop.create_task(self.initialize_database())
+        self.emoji="<:mang:1121909428866793582>"
 
     async def initialize_database(self):
         self.db = await asqlite.connect("levels.db")

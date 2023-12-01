@@ -22,6 +22,7 @@ class reportmodal(ui.Modal, title='Bug Report'):
         super().__init__(**kwargs)
         self.bot = bot
         self.value = None
+        self.emoji="<:rj:1121909526300479658>"
 
     notified = ui.TextInput(label='Do you want to be notified when its fixed?', placeholder="Yes/No", style=discord.TextStyle.short)
     command = ui.TextInput(label='What command is broken', placeholder="Command name here... example: +about", style=discord.TextStyle.short)

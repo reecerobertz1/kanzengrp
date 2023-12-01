@@ -80,6 +80,7 @@ class welcandleave(commands.Cog):
         self.server7_id = 748021504830341330
         self.server7_channel = 748021504830341334
         self.hidden = True
+        self.emoji = "<:shooky:1121909564799987722>"
 
     @commands.Cog.listener()
     async def on_member_join(self ,member: discord.Member):

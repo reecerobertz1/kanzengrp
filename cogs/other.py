@@ -8,6 +8,7 @@ class other(commands.Cog):
         self.bot = bot
         self.hello_loop = None
         self.hidden = True
+        self.emoji = "<:shooky:1121909564799987722>"
 
     @commands.Cog.listener()
     async def on_message(self, message):

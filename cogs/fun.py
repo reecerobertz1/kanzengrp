@@ -103,6 +103,7 @@ class Fun(commands.Cog):
         self.attempts = 0
         self.games = {}
         self.occupied = []
+        self.emoji="<:chimmy2:1148234652448981072>"
 
     def get_random_color(self):
         r = random.randint(0, 255)

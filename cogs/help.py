@@ -31,6 +31,7 @@ class Help(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.hidden = True
+        self.emoji = "<:shooky:1121909564799987722>"
 
     @commands.command(
         name="help", description="Help command for all of Hoshi's commands"

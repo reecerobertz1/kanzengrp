@@ -16,6 +16,7 @@ class Economy(commands.Cog):
         self.bot = bot
         self.pool = None
         self.bot.loop.create_task(self.init_database())
+        self.emoji = "<:tata:1121909389280944169>"
 
     async def init_database(self):
         self.pool = await asqlite.create_pool('databases/levels.db')

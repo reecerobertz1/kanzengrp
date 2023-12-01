@@ -33,6 +33,7 @@ class aster(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.hidden = True
+        self.emoji = "<:tata:1121909389280944169>"
 
     @commands.command()
     async def decline(self, ctx):

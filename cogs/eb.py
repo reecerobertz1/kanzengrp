@@ -338,6 +338,7 @@ class ebmessages(commands.Cog):
         self.giveaway_data = {}
         self.contest_open = True
         self.hidden = True
+        self.emoji = "<:tata:1121909389280944169>"
 
     def check_contest_open(self):
         return self.contest_open

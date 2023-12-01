@@ -7,6 +7,7 @@ class custom(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.custom_commands = {}
+        self.emoji = "<:shooky:1121909564799987722>"
 
         try:
             with open("./json files/custom.json", "r") as file:

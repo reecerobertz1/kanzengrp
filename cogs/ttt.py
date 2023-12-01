@@ -16,6 +16,7 @@ class TicTacToe(commands.Cog):
         self.bot = bot
         self.games = {}
         self.hidden = True
+        self.emoji = "<:shooky:1121909564799987722>"
 
     def print_board(self, board):
         line = "** **"

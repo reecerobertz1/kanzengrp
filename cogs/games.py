@@ -36,6 +36,7 @@ class Games(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.occupied = []
+        self.emoji="<:van:1148235344437846107>"
 
     async def attack(self, player):
         damage = int((math.pow(random.randrange(30, 95), 1.35) / 10)

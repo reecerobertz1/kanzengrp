@@ -290,6 +290,7 @@ class celeb(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
         self.hidden = True
+        self.emoji = "<:tata:1121909389280944169>"
 
     @commands.hybrid_command(name="guesstheceleb", description="Play guess the celebrity")
     async def guesstheceleb(self, ctx):
