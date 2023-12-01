@@ -5,7 +5,7 @@ from discord.ui import View, Select
 class HelpSelect(Select):
     def __init__(self, bot: commands.Bot):
         options = [
-            discord.SelectOption(label=cog_name, description=cog.__doc__, value=cog_name)
+            discord.SelectOption(label=cog_name, description=cog.__doc__, value=cog_name, emoji=str(cog.emoji))
             for cog_name, cog in bot.cogs.items()
             if cog.__cog_commands__ and not getattr(cog, "hidden", False) and cog_name != 'jishaku'
         ]
@@ -31,7 +31,7 @@ class Help(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.hidden = True
-        self.emoji = "<:shooky:1121909564799987722>"
+        self.emoji = "<:tata:1121909389280944169>"
 
     @commands.command(
         name="help", description="Help command for all of Hoshi's commands"
