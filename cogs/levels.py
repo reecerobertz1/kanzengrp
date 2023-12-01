@@ -1616,7 +1616,7 @@ class Levels(commands.Cog):
             await ctx.reply("Couldn't find that role.", mention_author=False)
 
     @commands.command(description="Remove a member from the levels databse for a server", extras="+delete @member")
-    async def delete_member(self, ctx, member_id: int):
+    async def delete(self, ctx, member_id: int):
         guild_id = ctx.guild.id
 
         async with self.bot.pool.acquire() as conn:
