@@ -1615,5 +1615,15 @@ class Levels(commands.Cog):
         elif isinstance(error, commands.RoleNotFound):
             await ctx.reply("Couldn't find that role.", mention_author=False)
 
+    @commands.command(description="Remove a member from the levels databse for a server", extras="+delete @member")
+    async def delete(self, ctx, member: discord.Member):
+        guild_id = ctx.guild.id
+        member_id = member.id
+
+        async with self.bot.pool.acquire() as conn:
+            await conn.execute('DELETE FROM levels WHERE member_id = $1 AND guild_id = $2', member_id, guild_id)
+
+        await ctx.send(f"{member.display_name} has been removed from the database.")
+
 async def setup(bot):
     await bot.add_cog(Levels(bot))
