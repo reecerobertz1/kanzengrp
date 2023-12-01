@@ -676,7 +676,7 @@ class ebmessages(commands.Cog):
     @commands.has_permissions(manage_guild=True)
     async def lol(self, ctx):
         embed = discord.Embed(title="Welcome *!*", 
-                              description="> Thank you for joining Editors Block!\n> This is a community server made for all types of editors.\n> Feel free to ping @owners or @staff if you need any help.\n\nWe will do group recruits for the groups Kanzen, Aura, and Daegu! ͏͏͏  ͏͏͏ ͏͏͏͏͏͏͏͏͏ ͏ ͏", 
+                              description="> Thank you for joining Editors Block!\n> This is a community server made for all types of editors.\n> Feel free to ping @owners or @staff if you need any help.\n\nWe will do group recruits for the groups Kanzengrp and Daegutowngrp! ͏͏͏  ͏͏͏ ͏͏͏͏͏͏͏͏͏ ͏ ͏", 
                               color=0x2b2d31)
         view2 = infobuttons()
         embed2 = discord.Embed(title="<a:rules:1177931813507825714> Server Rules ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏͏͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏͏͏ ͏͏͏ ", 
@@ -688,12 +688,10 @@ class ebmessages(commands.Cog):
 
         button = discord.ui.Button(label="Kanzen", url="https://www.instagram.com/kanzengrp/", emoji="<a:kanzen:1177931825457405973>")
         button2 = discord.ui.Button(label="Daegu", url="https://www.instagram.com/daegutowngrp/", emoji="<a:daegu:1177931836853334087>")
-        button3 = discord.ui.Button(label="Aura", url="https://www.instagram.com/auragrps/", emoji="<a:aura:1177931840393326603>")
 
         view = discord.ui.View()
         view.add_item(button)
         view.add_item(button2)
-        view.add_item(button3)
         await ctx.message.delete()
         await ctx.send("https://cdn.discordapp.com/attachments/1131006428631539773/1177944433468112947/welcome_1_1_1_1.gif?ex=6574593e&is=6561e43e&hm=47ad0b55c91441f4cd65b68f68a5f7f05a00cd1120903401be4313f18d1c0d14&")
         await ctx.send(embed=embed, view=view)
