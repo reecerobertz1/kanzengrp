@@ -148,7 +148,15 @@ class Moderation(commands.Cog):
 
             return updated_warnings
 
+    def is_staff():
+        async def predicate(ctx):
+            role_id = 1135244903165722695
+            role = ctx.guild.get_role(role_id)
+            return role in ctx.author.roles
+        return commands.check(predicate)
+
     @commands.command(description="Give a warning to a member", extras="+warn @member (reason)")
+    @is_staff()
     async def warn(self, ctx, member: discord.Member, *, reason: str):
         guild_id = ctx.guild.id
         warner = ctx.author.name
@@ -190,6 +198,7 @@ class Moderation(commands.Cog):
             print(f"Failed to send a warning DM to {member}.")
 
     @commands.command(aliases=['cw'], description="Clear all warnings from a member", extras="+clearwarnings @member : alias +cw")
+    @is_staff()
     async def clearwarnings(self, ctx, member: discord.Member):
         guild_id = ctx.guild.id
         member_id = member.id
