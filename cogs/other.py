@@ -28,6 +28,8 @@ class other(commands.Cog):
             await message.channel.send("OMG JIMIN<:chimmy:1128727915664785409>:heartpulse::face_with_peeking_eye::heart_eyes::face_holding_back_tears::pleading_face::sob::weary::tired_face::heartpulse::heartpulse::heartpulse::heartpulse::heartpulse::heartpulse::heartpulse::heartpulse::heartpulse::pray_tone1::pinching_hand:<:chimmy:1128727915664785409> <:chimmy:1128727915664785409> <:chimmy:1128727915664785409> <:chimmy:1128727915664785409> <:chimmy:1128727915664785409> <:chimmy:1128727915664785409> :face_holding_back_tears::face_holding_back_tears::face_holding_back_tears:")
         if message.content.lower() == "kelly":
             await message.channel.send("Jungkook is so jungkook and no one will ever jungkook like jungkook <:boobs:1142888878999613520>")
+        if message.content.lower() == "savvi":
+            await message.channel.send("SAVVI IS THE FUCKING BEST NO ONE ELSE CAN BEAT HER")
         if "MessageType.premium_guild" in str(message.type):
                 embed = discord.Embed(title=f"Thank you for boosting! {message.author.display_name}!", description="<a:Arrow_1:1145603161701224528> dm staff or lead for your custom role\n<a:Arrow_1:1145603161701224528> go into [#booster-perks](https://discord.com/channels/1121841073673736215/1164318431462563951) to claim the perks\n<a:Arrow_1:1145603161701224528> we really appreciate your support!", color=0x2b2d31)
                 embed.set_author(name=message.author.display_name, icon_url=message.author.display_avatar)
