@@ -50,7 +50,7 @@ class LalisaBot(commands.Bot):
             intents=intents,
             help_command=None,
             status=discord.Status.online,
-            activity=discord.Game("Hoshi ♡"),
+            activity=discord.Game("Hoshi ?"),
         )
         self._BotBase__cogs = commands.core._CaseInsensitiveDict()
 
