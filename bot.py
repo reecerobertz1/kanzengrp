@@ -70,7 +70,6 @@ class LalisaBot(commands.Bot):
             await conn.execute('''CREATE TABLE IF NOT EXISTS inventory (user INTEGER,item TEXT,quantity INTEGER DEFAULT 0,PRIMARY KEY (user, item))''')
             await conn.execute('''CREATE TABLE IF NOT EXISTS profiles (user_id INTEGER PRIMARY KEY, about_me TEXT, instagram_username TEXT, pronouns TEXT, banner_url TEXT, background_url TEXT)''')
             await conn.execute('''CREATE TABLE IF NOT EXISTS user_profiles (user_id INTEGER PRIMARY KEY, discord_id INTEGER, bias_list TEXT)''') 
-            await conn.execute('''CREATE TABLE IF NOT EXISTS warning (member_id INTEGER, guild_id INTEGER ,reasons TEXT, warnings INTEGER)''')    
             await conn.commit()
 
         if not hasattr(self, "tree"):
