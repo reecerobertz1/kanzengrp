@@ -595,22 +595,22 @@ class kanzen(commands.Cog):
         select = Select(
             placeholder="Select a role",
             options=[
-                discord.SelectOption(label="red", value="red", emoji="<:red:1123256597167231076>"),
-                discord.SelectOption(label="peach", value="peach", emoji="<:peach:1123256601365725247>"),
-                discord.SelectOption(label="orange", value="orange", emoji="<:orange:1123256593316855962>"),
-                discord.SelectOption(label="yellow", value="yellow", emoji="<:yellow:1123256589160304712>"),
-                discord.SelectOption(label="light green", value="light green", emoji="<:lightgreen:1123256587981693018>"),
-                discord.SelectOption(label="green", value="green", emoji="<:green:1123260467721277634>"),
-                discord.SelectOption(label="teal", value="teal", emoji="<:teal:1123256594654830673>"),
-                discord.SelectOption(label="light teal", value="light teal", emoji="<:lightteal:1123256585326702703>"),
-                discord.SelectOption(label="light blue", value="light blue", emoji="<:lightblue:1123256581417615390>"),
-                discord.SelectOption(label="blue", value="blue", emoji="<:blue:1123256591819481150>"),
-                discord.SelectOption(label="purple", value="purple", emoji="<:purple:1123256504741527652>"),
-                discord.SelectOption(label="lavender", value="lavender", emoji="<:lavender:1123256583917420545>"),
-                discord.SelectOption(label="pink", value="pink", emoji="<:pink:1123256905289191484>"),
-                discord.SelectOption(label="light pink", value="light pink", emoji="<:lightpink:1123256598496813127>"),
-                discord.SelectOption(label="white", value="white", emoji="<:white:1123256528602927154>"),
-                discord.SelectOption(label="black", value="black", emoji="<:black:1123256580100587681>")
+                discord.SelectOption(label="red", value="red", emoji="<:red:1173122695479701534>"),
+                discord.SelectOption(label="peach", value="peach", emoji="<:peach:1173122698155671673>"),
+                discord.SelectOption(label="orange", value="orange", emoji="<:orange:1173122699497840721>"),
+                discord.SelectOption(label="yellow", value="yellow", emoji="<:yellow:1173122700953264158>"),
+                discord.SelectOption(label="light green", value="light green", emoji="<:lightgreen:1173122703239163974>"),
+                discord.SelectOption(label="green", value="green", emoji="<:green:1173122704870748170>"),
+                discord.SelectOption(label="teal", value="teal", emoji="<:teal:1173122709127962674>"),
+                discord.SelectOption(label="light teal", value="light teal", emoji="<:lightteal:1173122707211169842>"),
+                discord.SelectOption(label="light blue", value="light blue", emoji="<:lightblue:1173122711682289674>"),
+                discord.SelectOption(label="blue", value="blue", emoji="<:lightblue:1173122711682289674>"),
+                discord.SelectOption(label="purple", value="purple", emoji="<:purple:1173122714433757294>"),
+                discord.SelectOption(label="lavender", value="lavender", emoji="<:lavander:1173122716694478868>"),
+                discord.SelectOption(label="pink", value="pink", emoji="<:pink:1173122763796529283>"),
+                discord.SelectOption(label="light pink", value="light pink", emoji="<:lightpink:1173122766225014854>"),
+                discord.SelectOption(label="white", value="white", emoji="<:white:1173122767747547147>"),
+                discord.SelectOption(label="black", value="black", emoji="<:black:1173122722675568730>")
             ]
         )
         async def add_role(interaction: discord.Interaction):
@@ -657,7 +657,7 @@ class kanzen(commands.Cog):
         view = View(timeout=None)
         view.add_item(select)
 
-        embed = discord.Embed(title="<a:kanzenflower:1128154723262943282> Colours", description="<:red:1123256597167231076><@&1122919355273986138> \n<:peach:1123256601365725247><@&1122920134223335524> \n<:orange:1123256593316855962><@&1122920245267542106> \n<:yellow:1123256589160304712><@&1122920319557046413> \n<:lightgreen:1123256587981693018><@&1122920394735763526> \n<:green:1123260467721277634><@&1122920478194028646> \n<:teal:1123256594654830673><@&1122920653876633670> \n<:lightteal:1123256585326702703><@&1122920539766407178> \n<:lightblue:1123256581417615390><@&1122920731529973841> \n<:blue:1123256591819481150><@&1122920821216792617> \n<:purple:1123256504741527652><@&1122920986086477964> \n<:lavender:1123256583917420545><@&1122920902858899456> \n<:pink:1123256905289191484><@&1122921065744707634> \n<:lightpink:1123256598496813127><@&1122921134174769304> \n<:white:1123256528602927154><@&1122921232145338480> \n<:black:1123256580100587681><@&1122921204630696009>", color=0x2b2d31)
+        embed = discord.Embed(title="<a:kanzenflower:1128154723262943282> Colours", description="<:red:1173122695479701534><@&1122919355273986138> \n<:peach:1173122698155671673><@&1122920134223335524> \n<:orange:1173122699497840721><@&1122920245267542106> \n<:yellow:1173122700953264158><@&1122920319557046413> \n<:lightgreen:1173122703239163974><@&1122920394735763526> \n<:green:1173122704870748170><@&1122920478194028646> \n<:teal:1173122709127962674><@&1122920653876633670> \n<:lightteal:1173122707211169842><@&1122920539766407178> \n<:lightblue:1173122711682289674><@&1122920731529973841> \n<:lightblue:1173122711682289674><@&1122920821216792617> \n<:purple:1173122714433757294><@&1122920986086477964> \n<:lavander:1173122716694478868><@&1122920902858899456> \n<:pink:1173122763796529283><@&1122921065744707634> \n<:lightpink:1173122766225014854><@&1122921134174769304> \n<:white:1173122767747547147><@&1122921232145338480> \n<:black:1173122722675568730><@&1122921204630696009>", color=0x2b2d31)
         embed.set_thumbnail(url=ctx.guild.icon)
         embed.set_footer(text="Use the drop down menu to select/deselect a role!")
         await ctx.send(embed=embed, view=view)
