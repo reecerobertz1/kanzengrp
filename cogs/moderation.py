@@ -322,5 +322,9 @@ class Moderation(commands.Cog):
         view = ReportView(bot=self.bot)
         await ctx.reply(embed=embed, view=view)
 
+    @commands.command()
+    async def anal(self, ctx):
+        await ctx.reply("ass lovers")
+
 async def setup(bot):
     await bot.add_cog(Moderation(bot))
