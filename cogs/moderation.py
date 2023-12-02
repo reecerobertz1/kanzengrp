@@ -7,6 +7,7 @@ from discord import app_commands
 from discord import ui
 from discord.utils import get
 from discord.ui import View, Select
+import asqlite
 
 class ReportView(discord.ui.View):
     def __init__(self, bot):
@@ -84,7 +85,119 @@ class Moderation(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.guilds = [1121841073673736215]
-        self.emoji="<:rj:1121909526300479658>"
+        self.emoji = "<:tata:1121909389280944169>"
+        self.warning_channel_id = 1178952898273628200
+        self.pool = None
+        bot.loop.create_task(self.init_database())
+
+    async def init_database(self):
+        self.pool = await asqlite.create_pool('databases/levels.db')
+        async with self.pool.acquire() as conn:
+            await conn.execute('''CREATE TABLE IF NOT EXISTS warning (member_id INTEGER, guild_id INTEGER, reasons TEXT, warnings INTEGER)''')
+
+    async def get_warnings(self, member_id):
+        async with self.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute("SELECT warnings, reasons FROM warning WHERE member_id = ?", (member_id,))
+                row = await cursor.fetchone()
+                if row is None:
+                    await self.add_warning(member_id)
+                    return 0, 0
+                return row[0], row[1]
+            
+    async def add_warning(self, member_id, guild_id, reason, change):
+        async with self.pool.acquire() as conn:
+            await conn.execute("INSERT INTO warning (member_id, guild_id, reasons, warnings) VALUES ($1, $2, $3, $4)", member_id, guild_id, reason, change)
+            await conn.commit()
+
+    async def view_warnings(self, ctx, member: discord.Member):
+        guild_id = ctx.guild.id
+        member_id = member.id
+
+        async with self.pool.acquire() as conn:
+            warning = await conn.fetchrow('SELECT reasons FROM warning WHERE member_id = $1 AND guild_id = $2', member_id, guild_id)
+
+        if warning:
+            embed = discord.Embed(
+                title=f"Warnings for {member.display_name}",
+                color=0x2b2d31,
+                timestamp=datetime.utcnow()
+            )
+
+            embed.add_field(name="Warning", value=warning['reasons'], inline=False)
+            await ctx.send(embed=embed)
+        else:
+            await ctx.send(f"{member.display_name} has no warnings.")
+
+    async def update_warnings(self, conn, member_id, guild_id, reason, change=1):
+        async with self.pool.acquire() as conn:
+            existing_warnings = await conn.fetchone('SELECT warnings FROM warning WHERE member_id = $1 AND guild_id = $2', member_id, guild_id)
+
+            if existing_warnings:
+                current_warnings = existing_warnings['warnings']
+                updated_warnings = current_warnings + change
+
+                await conn.execute('UPDATE warning SET reasons = $1, warnings = $2 WHERE member_id = $3 AND guild_id = $4',
+                                reason, updated_warnings, member_id, guild_id)
+
+            else:
+                updated_warnings = change
+                await self.add_warning(member_id, guild_id, reason, updated_warnings)
+
+            await conn.commit()
+
+            return updated_warnings
+
+    @commands.command(description="Give a warning to a member", extras="+warn @member (reason)")
+    async def warn(self, ctx, member: discord.Member, *, reason: str):
+        guild_id = ctx.guild.id
+        warner = ctx.author.name
+        member_id = member.id
+        async with self.pool.acquire() as conn:
+            warning_count = await self.update_warnings(conn, member_id, guild_id, reason)
+            try:
+                await self.send_warning_embed(ctx.guild, member, reason, warning_count, warner)
+                await self.send_warning_dm(member, reason, warning_count)
+                await ctx.reply(f"Successfully warned <@{member_id}>")
+            except discord.Forbidden:
+                print(f"Failed to send a warning message to {member}.")
+
+    async def send_warning_embed(self, guild, member, reason, warning_count, warner):
+        channel = guild.get_channel(self.warning_channel_id)
+        if channel:
+            embed = discord.Embed(
+                title=f"Member Warned: {member.display_name}",
+                color=0x2b2d31,
+                timestamp=datetime.utcnow()
+            )
+            embed.add_field(name="Reason", value=reason, inline=False)
+            embed.add_field(name="Warning Count", value=warning_count, inline=False)
+            embed.set_thumbnail(url=member.display_avatar)
+            embed.set_footer(text=f"warning from @{warner}")
+
+            await channel.send(embed=embed)
+
+    async def send_warning_dm(self, member, reason, warning_count):
+        embed = discord.Embed(
+            title="You've Received a Warning",
+            description=f"You've been warned for the following reason:\n\n{reason}\n\nTotal Warnings: {warning_count}",
+            color=0x2b2d31
+        )
+
+        try:
+            await member.send(embed=embed)
+        except discord.Forbidden:
+            print(f"Failed to send a warning DM to {member}.")
+
+    @commands.command(aliases=['cw'], description="Clear all warnings from a member", extras="+clearwarnings @member : alias +cw")
+    async def clearwarnings(self, ctx, member: discord.Member):
+        guild_id = ctx.guild.id
+        member_id = member.id
+
+        async with self.pool.acquire() as conn:
+            await conn.execute('DELETE FROM warning WHERE member_id = $1 AND guild_id = $2', member_id, guild_id)
+
+        await ctx.send(f"Warnings for {member.display_name} have been cleared.")
 
     @commands.command(hidden=True)
     async def suggest(self, ctx, *, suggestion):
