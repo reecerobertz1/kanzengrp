@@ -343,7 +343,7 @@ class games(discord.ui.View):
         super().__init__(timeout=None)
         self.value = None
 
-    @discord.ui.button(emoji="<:fortnite:1123259326006571090>")
+    @discord.ui.button(emoji="<:fn:1173123421123645471>")
     async def fn(self, interaction: discord.Interaction, button: discord.Button):
         role_id = 1122921698367389756
         role = interaction.guild.get_role(role_id)
@@ -680,7 +680,7 @@ class kanzen(commands.Cog):
 
     @commands.command()
     async def rroles4(self, ctx):
-        embed = discord.Embed(title="<a:kanzenflower:1128154723262943282> Games", description="<:fortnite:1123259326006571090> <@&1122921698367389756> \n<:MCicon:1123259350522282025> <@&1122979205324480553> \n<:ROBLOXicon:1123259382063443968> <@&1122921713823395851> \n<:Valoranticon:1123259406092611654> <@&1122921729384271963> \n<:gtaV:1123259437637980183> <@&1122921800502878259> \n<:honkai:1139958684324216934> <@&1139957904712142932> \n<:genshin:1139958246526951464> <@&1122921755216973854> \n<:phasmophobia:1139962251453927556> <@&1139962329950343208>", color=0x2b2d31)
+        embed = discord.Embed(title="<a:kanzenflower:1128154723262943282> Games", description="<:fn:1173123421123645471> <@&1122921698367389756> \n<:MCicon:1123259350522282025> <@&1122979205324480553> \n<:ROBLOXicon:1123259382063443968> <@&1122921713823395851> \n<:Valoranticon:1123259406092611654> <@&1122921729384271963> \n<:gtaV:1123259437637980183> <@&1122921800502878259> \n<:honkai:1139958684324216934> <@&1139957904712142932> \n<:genshin:1139958246526951464> <@&1122921755216973854> \n<:phasmophobia:1139962251453927556> <@&1139962329950343208>", color=0x2b2d31)
         embed.set_thumbnail(url=ctx.guild.icon)
         embed.set_footer(text="Use the buttons to select/deselect a role!")
         view=games()
