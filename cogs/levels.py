@@ -1416,7 +1416,7 @@ class Levels(commands.Cog):
 
     @commands.command(description="Change your rank card format to version 3", extras="rank3")
     async def rank3(self, ctx):
-        await self.update_rank_format(ctx.author.id, ctx.guild.id, "Rank 3", extras="+rank3")
+        await self.update_rank_format(ctx.author.id, ctx.guild.id, "Rank 3")
         embed = discord.Embed(title="New format selected!", description="You have selected format **version 3**\n\nIf you want to cusomise this rank card you can with the commands **+rankcolor** and include a hexcode (example: #2b2d31)\n\nYou can also change your background with +rankbg and attach you background image, please do remember that the background image needs to be **1080x1500** format so it isn't cropped!", color=0x2b2d31)
         await ctx.reply(embed=embed)
 
