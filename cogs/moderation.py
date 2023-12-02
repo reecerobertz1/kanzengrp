@@ -285,23 +285,6 @@ class Moderation(commands.Cog):
         await interaction.response.send_message('https://mega.nz/folder/J40zCTYY#L73pTeQKWpCh15wpuQaIFA', ephemeral=True)
         await channel.send(embed=log)
 
-    @commands.command(description="Warn a member in Editors Block", extras="+warn @member (reason)")
-    @commands.has_permissions(manage_guild=True)
-    async def warn(self, ctx, user: discord.User, *, reason: str):
-        try:
-            await user.send(f"You have been warned for: {reason}")
-        except discord.Forbidden:
-            await ctx.send("I couldn't send a DM to that user.")
-        log_channel = self.bot.get_channel(1134857444250632343)
-        if log_channel:
-            embed = discord.Embed(title="User Warned",description=f"user:\n<a:arrowpink:1134860720777990224> {user.mention}\n\nreason:\n<a:arrowpink:1134860720777990224> {reason}\n\nmoderator:\n<a:arrowpink:1134860720777990224>{ctx.author.mention}" ,color=0x2b2d31)
-            timestamp = datetime.datetime.utcnow()
-            embed.timestamp = timestamp
-            embed.set_footer(text=f"user id : {user.id}")
-            await log_channel.send(embed=embed)
-        else:
-            await ctx.send("Logging channel not found. Please set the correct channel ID.")
-
     @commands.command(description="Steal any emoji from any server", extras="+emoji (new emoji name) (emoji)")
     async def steal(self, ctx, emoji_name: str, *, emoji: discord.PartialEmoji):
         if not isinstance(emoji, discord.PartialEmoji):
@@ -321,10 +304,6 @@ class Moderation(commands.Cog):
         embed.set_thumbnail(url=self.bot.user.display_avatar.url)
         view = ReportView(bot=self.bot)
         await ctx.reply(embed=embed, view=view)
-
-    @commands.command()
-    async def anal(self, ctx):
-        await ctx.reply("ass lovers")
 
 async def setup(bot):
     await bot.add_cog(Moderation(bot))
