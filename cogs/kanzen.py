@@ -729,6 +729,7 @@ class kanzen(commands.Cog):
         await user.send(embed=embed)
 
     @commands.command()
+    @commands.has_permissions(manage_guild=True)
     async def staffapps(self, ctx):
         embed = discord.Embed(title="Kanzen Staff Apps", description="Thank you for wanting to apply to be apart of Kanzen's staff team! Here is some info for each role\n\n**Moderator**:\nHelp moderate the chat, delete messages and time-out members when needed! Use the warn commands with Hoshi as well, each member will have 3 warnings before being kicked, each warning will go after a month unless the receive another one. If you are abusing your power as an moderator, you will be removed and never added back as any type of staff\n\n**Staff**:\nStaff will help the lead and head staff out with group events, you can also host your own events too like watch parties and game nights. You cant host any collabs unless you have multiple going at once. You will also help out with server stuff, like making/deleting channels", color=0x2b2d31)
         embed.set_thumbnail(url=ctx.guild.icon)
