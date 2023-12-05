@@ -32,6 +32,8 @@ class other(commands.Cog):
             await message.channel.send("SAVVI IS THE FUCKING BEST NO ONE ELSE CAN BEAT HER")
         if message.content.lower() == "kio":
             await message.channel.send("kio - savvi's discord e girl kitten sex toy")
+        if message.content.lower() == "mari":
+            await message.channel.send("Mari Ferrari MJ is what I choose")
         if "MessageType.premium_guild" in str(message.type):
                 embed = discord.Embed(title=f"Thank you for boosting! {message.author.display_name}!", description="<a:Arrow_1:1145603161701224528> dm staff or lead for your custom role\n<a:Arrow_1:1145603161701224528> go into [#booster-perks](https://discord.com/channels/1121841073673736215/1164318431462563951) to claim the perks\n<a:Arrow_1:1145603161701224528> we really appreciate your support!", color=0x2b2d31)
                 embed.set_author(name=message.author.display_name, icon_url=message.author.display_avatar)
