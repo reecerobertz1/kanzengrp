@@ -79,6 +79,8 @@ class welcandleave(commands.Cog):
         self.server6_channel = 1133767338588639323
         self.server7_id = 748021504830341330
         self.server7_channel = 748021504830341334
+        self.daegu = 896619762354892821
+        self.daegu_welc = 896924663819694132
         self.hidden = True
         self.emoji = "<:shooky:1121909564799987722>"
 
@@ -94,6 +96,18 @@ class welcandleave(commands.Cog):
             view = welc(member)
             await channel2.send(f"<a:kanzenflower:1128154723262943282> {member.mention} Welcome to **Kanzengrp!**\nTalk to other zennies in this channel\nNeed help? ping Lead or Staff", view=view)
             await channel.send(f'{member.mention} Welcome to Kanzengrp!', embed=embed)
+            await member.add_roles(role)
+            """DAEGUTOWN SERVER"""
+        elif member.guild.id == self.daegu:
+            embed = discord.Embed(title=f'✦ {member.name} joined daegu!', color=0x2b2d31, description=f"- read our [information](https://discord.com/channels/896619762354892821/896924663819694132/1158304340147179570)\n- get your [roles](https://discord.com/channels/896619762354892821/896924663819694132/1158304340147179570) and [bias roles](https://discord.com/channels/896619762354892821/896924663819694132/1158304340147179570)\n- logos and hashtag are [here](https://discord.com/channels/896619762354892821/896924663819694132/1158304340147179570)")
+            embed.set_footer(text='Need help? ping @lead or @staff', icon_url=member.display_avatar.url)
+            channel = self.bot.get_channel(self.daegu_welc)
+            channel2 = self.bot.get_channel(1064806374992785469)
+            role = discord.utils.get(member.guild.roles, id=896925970672549958)
+            embed.set_thumbnail(url=member.display_avatar.url)
+            view = welc(member)
+            await channel2.send(f"✦ Welcome to Daegutown {member.name}!\nThank you for joining", view=view)
+            await channel.send(f'{member.mention}', embed=embed)
             await member.add_roles(role)
             """EDITORS BLOCK SERVER"""
         elif member.guild.id == self.server6_id:
@@ -124,6 +138,12 @@ class welcandleave(commands.Cog):
             embed.set_thumbnail(url=member.display_avatar.url)
             embed.set_footer(text='Hope to see you again <3')
             channel = self.bot.get_channel(self.server1_welcome_channel_id)
+            await channel.send(f'{member.mention}', embed=embed)
+        elif member.guild.id == self.daegu:
+            embed = discord.Embed(title=f"{member.display_name} has left daegu!", color=0x2b2d31, description="We will miss you !")
+            embed.set_thumbnail(url=member.display_avatar.url)
+            embed.set_footer(text='Hope to see you again <3')
+            channel = self.bot.get_channel(self.daegu_welc)
             await channel.send(f'{member.mention}', embed=embed)
 
 async def setup(bot):
