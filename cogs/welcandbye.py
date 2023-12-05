@@ -66,7 +66,7 @@ class welc(discord.ui.View):
         ]
         welcomer = interaction.user.name
         hello = random.choice(gifs)
-        await interaction.response.send_message(f"{welcomer} has welcomed {self.member} to Kanzengrp!")
+        await interaction.response.send_message(f"{welcomer} has welcomed {self.member} to {interaction.guild.name}!")
         await interaction.followup.send(f"{hello}")
 
 class welcandleave(commands.Cog):
