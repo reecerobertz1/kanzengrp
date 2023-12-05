@@ -104,10 +104,17 @@ class infobuttons(discord.ui.View):
         await channel.send(embed=log)
         await interaction.response.send_message(f'I have sent you the logos! Check your DMs', ephemeral=True)
 
+    @discord.ui.button(label="Server Roles")
+    async def roles(self, interaction: discord.Interaction, button: discord.ui.Button):
+        embed = discord.Embed(title="Kanzen Roles", description="<:lead:1181429630029275136> - is for the kanzen lead\n<:headstaff:1181430061333745724> - is for head staff\n<:mods:1181430661588987944> - is for moderators\n<:staff:1181429748191199244> - is for staff\n<:trainee:1181430659902885929> - is for trainee staff\n<:devs:1181430657520504882> - is for hoshi developers\n<:boosters:1181430064584347729> - is for kanzen boosters\n<:top20:1181430063397339136> - is for the top 20 active members\n<:zennie:1181430664415948870> - is for everyone", color=0x2b2d31)
+        embed.set_thumbnail(url=interaction.user.display_avatar)
+        await interaction.response.send_message(embed=embed, ephemeral=True)
+
     @discord.ui.button(label="Booster Perks")
     async def bp(self, interaction: discord.Interaction, button: discord.ui.Button):
         embed = discord.Embed(title="Kanzen Perks", description="<a:Arrow_1:1145603161701224528> Remqsi's colouring packs 1 & 2\n<a:Arrow_1:1145603161701224528> BTS Photos\n<a:Arrow_1:1145603161701224528> Enhypen Photos\n<a:Arrow_1:1145603161701224528> Blackpink Photos\n<a:Arrow_1:1145603161701224528> Break your heart project file\n<a:Arrow_1:1145603161701224528> Lisa candy project file", color=0x2b2d31)
         embed.set_footer(text="This is just a preview, only boosters get the link")
+        embed.set_thumbnail(url=interaction.user.display_avatar)
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
     @discord.ui.button(label="Inactivity")
