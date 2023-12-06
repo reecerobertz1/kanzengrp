@@ -31,7 +31,7 @@ class other(commands.Cog):
         if message.content.lower() == "savvi":
             await message.channel.send("SAVVI IS THE FUCKING BEST NO ONE ELSE CAN BEAT HER")
         if message.content.lower() == "kio":
-            await message.channel.send("kio - savvi's discord e girl kitten sex toy")
+            await message.channel.send("savvi's discord e girl kitten sex toy\n\n\n\n\n\n\n\n\nOMG FUCK ME HARDER")
         if message.content.lower() == "mari":
             await message.channel.send("Mari Ferrari MJ")
         if "MessageType.premium_guild" in str(message.type):
