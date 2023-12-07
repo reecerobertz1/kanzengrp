@@ -540,12 +540,6 @@ class Levels(commands.Cog):
         draw.text((15,425), 'Server Level','#ffffff', font=poppins_xsmall)
         draw.text((15,390), 'Server Rank', '#ffffff', font=poppins_xsmall)
         draw.text((235, 390), f"#{str(rank)}", fill=levels['bar_color'], font=font2)
-        rect_width, rect_height = 150, 2
-        rect_x1 = (card.width - rect_width) // 1.045
-        rect_y1 = (card.height - rect_height) // 9
-        rect_x2 = rect_x1 + rect_width
-        rect_y2 = rect_y1 + rect_height
-        draw.rectangle([(rect_x1, rect_y1), (rect_x2, rect_y2)], fill=levels['bar_color'])
         buffer = BytesIO()
         card.save(buffer, 'png')
         buffer.seek(0)
