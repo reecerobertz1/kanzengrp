@@ -987,7 +987,7 @@ class ebmessages(commands.Cog):
         embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/1121841074512605186/1182262869102952488/2404c799fefaeb2d130f20b2b2976426.png?ex=65840f19&is=65719a19&hm=7700c24d23365dda9ee6217b2c497d114ac25d76b51b8210db9576d2e64bad13&")
         embed.set_footer(text="est 2022 - an editing group", icon_url="https://cdn.discordapp.com/attachments/1121841074512605186/1182262869102952488/2404c799fefaeb2d130f20b2b2976426.png?ex=65840f19&is=65719a19&hm=7700c24d23365dda9ee6217b2c497d114ac25d76b51b8210db9576d2e64bad13&")
         button = discord.ui.Button(label="Discord Server", url="https://discord.gg/aster-748021504830341330", emoji="<:asterheart:1182263426295283773>")
-        button2 = discord.ui.Button(label="Website", url="grpaster.com", emoji="<:asterstamp:1182264157026930768>")
+        button2 = discord.ui.Button(label="Website", url="https://grpaster.com", emoji="<:asterstamp:1182264157026930768>")
         view = discord.ui.View()
         view.add_item(button)
         view.add_item(button2)
