@@ -994,6 +994,7 @@ class ebmessages(commands.Cog):
         await ctx.message.delete()
         await ctx.send("@everyone", embed=embed, view=view)
         await ctx.send("mute partner pings with the `partner mute` role in <id:customize>")
+        await ctx.send("if you want to become a partner with Editors Block, please go to <#1131005271502753812> and click the `Partnership Info` button and see if you meet our requirements, if you do message <@609515684740988959>")
 
 async def setup(bot):
     await bot.add_cog(ebmessages(bot))
