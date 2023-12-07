@@ -122,14 +122,18 @@ class infobuttons(discord.ui.View):
         embed.add_field(name="Advert without ping", value="<a:redarrow:1177929884492902480> Follow Discord's [tos](https://discord.com/terms) and [guidelines](https://discord.com/guidelines)\n<a:redarrow:1177929884492902480> Must have 75+ members\nIf you meet our requirements, please message one of our owners", inline=False)
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
-class appbuttons(discord.ui.View):
+class kdapps(discord.ui.View):
     def __init__ (self):
         super().__init__(timeout=None)
         self.value = None
         
-    @discord.ui.button(label="Click to apply!")
-    async def roles(self, interaction: discord.Interaction, button: discord.ui.Button):
-         await interaction.response.send_modal(grprctkda())
+    @discord.ui.button(label="Kanzen!")
+    async def kanzen(self, interaction: discord.Interaction, button: discord.ui.Button):
+         await interaction.response.send_modal(kapps())
+
+    @discord.ui.button(label="Daegu!")
+    async def daegu(self, interaction: discord.Interaction, button: discord.ui.Button):
+         await interaction.response.send_message(f"Hey {interaction.user.name} daegu apps are closed as of right now, we will open them on the 1st!", ephemeral=True)
 
 class kanzenapps(discord.ui.View):
     def __init__ (self):
@@ -440,55 +444,18 @@ class ebmessages(commands.Cog):
         except FileNotFoundError:
             self.giveaway_data = {}
 
-    @commands.group(invoke_without_command=True)
-    async def apps(self, ctx):
-        """group of commands to manage apps"""
-        embed = discord.Embed(title="app manager", color=0x2B2D31)
-        embed.add_field(name="apps open", value="opens applications", inline=False)
-        embed.add_field(name="apps close", value="close application", inline=False)
-        await ctx.reply(embed=embed)
-
-    @apps.command()
+    @commands.command()
     @commands.has_permissions(manage_guild=True)
-    async def open(self, ctx):
-        message = await ctx.reply("are you sure you want to open the applications?")
-        await message.add_reaction('👍')
-        
-        def check(reaction, user):
-            return user == ctx.author and str(reaction) == '👍'
-        
-        try:
-            reaction, user = await self.bot.wait_for('reaction_add', timeout=15.0, check=check)
+    async def kdopen(self, ctx):
             application_channel_id = 1133771634793250847
             application_channel = self.bot.get_channel(application_channel_id)
-            view = appbuttons()
-            embed = discord.Embed(title="Apply Here *!*", description="information:\n<a:bounceyarrow:1128155233437106187> This recruit is for the groups Kanzengrp, Auragrps and Daegutowngrp\n<a:bounceyarrow:1128155233437106187> You will receive a dm from our bot Hoshi with your application results\n<a:bounceyarrow:1128155233437106187>  You do not need to use a certain editing app to apply\n<a:bounceyarrow:1128155233437106187> All fandoms and styles are accepted here!\n<a:bounceyarrow:1128155233437106187> We mostly look for unique edits with smooth transitions\n<a:bounceyarrow:1128155233437106187> Velocity edits ARE NOT accepted\n<a:bounceyarrow:1128155233437106187> You can apply for any group, just be specific in your application what groups\n\napplication rules:\n<a:bounceyarrow:1128155233437106187> Follow the rules on the recruit posts posted by the group you want to join\n<a:bounceyarrow:1128155233437106187> Be patient with apps! staff are not active 24/7\n<a:bounceyarrow:1128155233437106187> Only apply once, unless we decide to reapps", color=0x2b2d31)
+            view = kdapps()
+            embed = discord.Embed(title="Kanzen & Daegu Recruit", description="Make sure you follow all the rules for both groups!\nThis is not a joint recruit but since we share the same server we are doing it this way\n\nBelow are 2 buttons, one is for kanzengrp the other is for daegutowngrp, click the button for the group you want to apply for, do both if you want, fill out the form and wait for a reply from Hoshi\n\nif you apply for both groups and you hear back from one group but not the other, it does not mean your application has been seen by the other group! We are not looking at each other's entries", color=0x2b2d31)
+            embed.set_image(url="https://cdn.discordapp.com/attachments/1121841074512605186/1181771209772380241/BTS_Fila_Fall_2020_Collection_all-2000x1991_00000.png?ex=65824534&is=656fd034&hm=e41a62bd5503a25d241c2848527f673ac513c40a79bdc804a64d007c5fad6dda&")
+            embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/1121841074512605186/1181777210194014238/Comp_1_00000.png?ex=65824acb&is=656fd5cb&hm=10edfe8a851626ee5281658acc2b6db40b5bfd61bced031c9737cdb5dd9eb2fc&")
             await application_channel.purge()
             application_channel = await application_channel.send("<@&1131127124187684894>", embed=embed, view=view)
             await ctx.send("great! applications are now open")
-            return await message.edit(content=None)
-        except asyncio.TimeoutError:
-            await message.edit(content="~~are you sure you want to open the applications?~~\nthe recruit has been cancelled!")
-
-    @apps.command()
-    @commands.has_permissions(manage_guild=True)
-    async def close(self, ctx):
-        message = await ctx.reply("are you sure you want to close the applications?")
-        await message.add_reaction('👍')
-
-        def check(reaction, user):
-            return user == ctx.author and str(reaction) == '👍'
-        
-        try:
-            reaction, user = await self.bot.wait_for('reaction_add', timeout=15.0, check=check)
-            application_channel_id = 1133771634793250847
-            application_channel = self.bot.get_channel(application_channel_id)
-            await application_channel.purge()
-            await application_channel.send("Applications are currently closed!")
-            await ctx.send("great! applications are now closed")
-            return await message.edit(content=None)
-        except asyncio.TimeoutError:
-            await message.edit(content="~~are you sure you want to open the applications?~~\nthe recruit has been cancelled!")
 
     def kanzen_lead():
         async def predicate(ctx):
