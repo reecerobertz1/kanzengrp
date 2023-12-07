@@ -979,5 +979,21 @@ class ebmessages(commands.Cog):
         await ctx.send("@everyone", embed=embed, view=view)
         await ctx.send("mute partner pings with the `partner mute` role in #Channels & Roles")
 
+    @commands.command()
+    @commands.has_permissions(manage_guild=True)
+    async def aster(self, ctx):
+        embed = discord.Embed(color=0x2b2d31, title="grpaster", description="Come join grpaster!\nWe are a very warm and welcoming group with great staff and moderators! apply for our group via our website <a:white_hearts:1179053300830720020>")
+        embed.set_image(url="https://cdn.discordapp.com/attachments/1017838617504272415/1177720874208608427/aster_banner_00000.png?ex=657cc389&is=656a4e89&hm=8e4a14666e4bb5aec6f62a5ec18605408f46bf3f5c536a5f3dc02cee5eaf5323&")
+        embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/1121841074512605186/1182262869102952488/2404c799fefaeb2d130f20b2b2976426.png?ex=65840f19&is=65719a19&hm=7700c24d23365dda9ee6217b2c497d114ac25d76b51b8210db9576d2e64bad13&")
+        embed.set_footer(text="est 2022 - an editing group", icon_url="https://cdn.discordapp.com/attachments/1121841074512605186/1182262869102952488/2404c799fefaeb2d130f20b2b2976426.png?ex=65840f19&is=65719a19&hm=7700c24d23365dda9ee6217b2c497d114ac25d76b51b8210db9576d2e64bad13&")
+        button = discord.ui.Button(label="Discord Server", url="https://discord.gg/aster-748021504830341330", emoji="<:asterheart:1182263426295283773>")
+        button2 = discord.ui.Button(label="Website", url="grpaster.com", emoji="<:asterstamp:1182264157026930768>")
+        view = discord.ui.View()
+        view.add_item(button)
+        view.add_item(button2)
+        await ctx.message.delete()
+        await ctx.send("@everyone", embed=embed, view=view)
+        await ctx.send("mute partner pings with the `partner mute` role in <id:customize>")
+
 async def setup(bot):
     await bot.add_cog(ebmessages(bot))
