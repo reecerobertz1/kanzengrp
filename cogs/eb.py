@@ -284,7 +284,7 @@ class kapps(ui.Modal, title='Applications'):
           embed.add_field(name='Anything else:', value=f'{self.extra.value}', inline=False)
           embed.set_thumbnail(url=interaction.guild.icon)
           embed.add_field(name="Discord ID:", value=interaction.user.id, inline=False)
-          channel = interaction.client.get_channel(1131006328207327294)
+          channel = interaction.client.get_channel(1180035924755746906)
           form = await channel.send(embed=embed)
           await interaction.followup.send(f'Your application has been sent successfully', ephemeral=True)
           await form.add_reaction("✅")
