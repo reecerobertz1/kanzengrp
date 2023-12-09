@@ -46,7 +46,7 @@ class Fun(commands.Cog):
         b = random.randint(0, 255)
         return r, g, b
 
-    @commands.command(description="Make Hoshi say something", extras="+say hello")
+    @commands.hypbrid_command(name="say", description="Make Hoshi say something", extras="+say hello")
     async def say(self, ctx, *, message):
         await ctx.message.delete()
         async with ctx.typing():
