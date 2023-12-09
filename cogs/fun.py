@@ -186,7 +186,7 @@ class Fun(commands.Cog):
         else:
             await ctx.send("No pets have been added yet.")
 
-    @commands.command(name="ppsize", aliases=['pp'],description="See who has the biggest pp", extras="+ppsize (optional @member) : alias +pp")
+    @commands.hybrid_command(name="ppsize", aliases=['pp'],description="See who has the biggest pp", extras="+ppsize (optional @member) : alias +pp")
     async def ppsize(self, ctx, member: discord.Member = None):
         if member is None:
             member = ctx.author
@@ -195,7 +195,7 @@ class Fun(commands.Cog):
         message = f'{member.mention} Your pp size is: 8{pp_size}D'
         await ctx.send(message)
 
-    @commands.command(name="hug", description="Hug someone", extras="+hug (optional @member)")
+    @commands.hybrid_command(name="hug", description="Hug someone", extras="+hug (optional @member)")
     async def hug(self, ctx, member: typing.Optional[discord.Member]):
         if member is None:
             await ctx.send(f"Hoshi gave {ctx.author.mention} a hug <a:mm_hug_tight:1122621840305684632>")
@@ -205,7 +205,7 @@ class Fun(commands.Cog):
             embed.set_image(url=(random.choice(urls)))
             await ctx.reply(embed=embed)
 
-    @commands.command(name="kiss", description="Kiss someone", extras="+kiss (optional @member)")
+    @commands.hybrid_command(name="kiss", description="Kiss someone", extras="+kiss (optional @member)")
     async def kiss(self, ctx, member: typing.Optional[discord.Member]):
         author = ctx.message.author.mention
         if member is None:
@@ -216,7 +216,7 @@ class Fun(commands.Cog):
             embed.set_image(url=(random.choice(hugs)))
             await ctx.reply(embed=embed)
 
-    @commands.command(name="slap", description="Slap a bitch", extras="+slap (optional @member)")
+    @commands.hybrid_command(name="slap", description="Slap a bitch", extras="+slap (optional @member)")
     async def slap(self, ctx, member: typing.Optional[discord.Member]):
         author = ctx.message.author.mention
         if member is None:
@@ -227,7 +227,7 @@ class Fun(commands.Cog):
             embed.set_image(url=(random.choice(hugs)))
             await ctx.reply(embed=embed)
 
-    @commands.command(name="happybirthday", aliases=["birthday"],description="Wish someone a happy birthday", extras="+happybirthday (optional @member) : +birthday")
+    @commands.hybrid_command(name="happybirthday", aliases=["birthday"],description="Wish someone a happy birthday", extras="+happybirthday (optional @member) : +birthday")
     async def happybirthday(self, ctx, member: typing.Optional[discord.Member]):
         author = ctx.message.author.mention
         if member is None:
@@ -238,7 +238,7 @@ class Fun(commands.Cog):
             embed.set_image(url=(random.choice(bday)))
             await ctx.reply(embed=embed)
 
-    @commands.command(name='roast',description="Roast someone", extras="+roast (optional @member)")
+    @commands.hybrid_command(name='roast',description="Roast someone", extras="+roast (optional @member)")
     async def roast(self, ctx, *, member: discord.Member = None, roast_text: str = None):
         if member is None:
             member = ctx.author
@@ -251,7 +251,7 @@ class Fun(commands.Cog):
         roast = random.choice(roasts)
         await ctx.reply(roast)
 
-    @commands.command(name='compliment',description="Give someone a compliment", extras="+compliment (optional @member)")
+    @commands.hybrid_command(name='compliment',description="Give someone a compliment", extras="+compliment (optional @member)")
     async def compliment(self, ctx, *, member: discord.Member = None, compliment_text: str = None):
         if member is None:
             member = ctx.author
