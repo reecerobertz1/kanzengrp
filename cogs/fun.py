@@ -225,7 +225,7 @@ class Fun(commands.Cog):
 
         await ctx.send("Pet added successfully!")
 
-    @commands.hybrid_command(name="pets", description="See all of kanzen's pets", extras="+pets")
+    @commands.command(description="See all of kanzen's pets", extras="+pets")
     @kanzen_only()
     async def pets(self, ctx):
         try:
