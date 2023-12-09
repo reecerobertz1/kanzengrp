@@ -92,7 +92,7 @@ class Fun(commands.Cog):
             except (requests.exceptions.RequestException, KeyError):
                 await ctx.reply("Sorry, I couldn't fetch a cute cat at the moment. Please try again later.")
 
-    @commands.command(name="jail", aliases=['prison', 'lockup'],description="Lock someone up in jail", extras="+jail (optional @member) : aliases +prison, +lockup")
+    @commands.hybrid_command(name="jail", aliases=['prison', 'lockup'],description="Lock someone up in jail", extras="+jail (optional @member) : aliases +prison, +lockup")
     async def jail(self, ctx, member: Optional[discord.Member]):
         async with ctx.typing():
             member = member or ctx.author
@@ -110,7 +110,7 @@ class Fun(commands.Cog):
             await ctx.send(file=discord.File("jail_avatar.png"))
             os.remove("jail_avatar.png")
 
-    @commands.command(name="pride", aliases=['gay'],description="Edits your avatar with the pride flag", extras="+pride (optional @member) : alias +gay")
+    @commands.hybrid_command(name="pride", aliases=['gay'],description="Edits your avatar with the pride flag", extras="+pride (optional @member) : alias +gay")
     async def pride(self, ctx, member: Optional[discord.Member]):
         member = member or ctx.author
         avatar_url = member.avatar.url
