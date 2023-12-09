@@ -50,43 +50,6 @@ class confessmodal(ui.Modal, title='Kanzen Confessions'):
         await confessions.add_reaction("<a:crysad:1132210059233988678>")
         await confessions.add_reaction("<a:wAHhh:1128463952423174164>")
 
-class RockPaperScissorsView(discord.ui.View):
-    def __init__(self, ctx):
-        super().__init__(timeout=10)
-        self.value = None
-        self.ctx = ctx
-
-    @discord.ui.button(label="🪨 Rock", style=discord.ButtonStyle.gray)
-    async def Rock(self, interaction: discord.Interaction, button: discord.Button):
-        bot_choice = random.choice(["rock", "paper", "scissors"])
-        if bot_choice == "rock":
-            await interaction.response.edit_message(content="It's a tie! Hoshi chose rock.", view=None)
-        elif bot_choice == "paper":
-            await interaction.response.edit_message(content="You lose! Hoshi chose paper.", view=None)
-        else:
-            await interaction.response.edit_message(content="You win! Hoshi chose scissors.", view=None)
-
-    @discord.ui.button(label="📰 Paper", style=discord.ButtonStyle.gray)
-    async def Paper(self, interaction: discord.Interaction, button: discord.Button):
-        bot_choice = random.choice(["rock", "paper", "scissors"])
-        if bot_choice == "paper":
-            await interaction.response.edit_message(content="It's a tie! Hoshi chose paper.", view=None)
-        elif bot_choice == "scissors":
-            await interaction.response.edit_message(content="You lose! Hoshi chose scissors.", view=None)
-        else:
-            await interaction.response.edit_message(content="You win! Hoshi chose rock.", view=None)
-
-    @discord.ui.button(label="✂ Scissors", style=discord.ButtonStyle.gray)
-    async def Scissors(self, interaction: discord.Interaction, button: discord.Button):
-        bot_choice = random.choice(["rock", "paper", "scissors"])
-        if bot_choice == "scissors":
-            await interaction.response.edit_message(content="It's a tie! Hoshi chose scissors.", view=None)
-        elif bot_choice == "rock":
-            await interaction.response.edit_message(content="You lose! Hoshi chose rock.", view=None)
-        else:
-            await interaction.response.edit_message(content="You win! Hoshi chose paper.", view=None)
-
-
 class Fun(commands.Cog):
     """Hoshi's fun commands"""
     def __init__(self, bot):
@@ -420,12 +383,6 @@ class Fun(commands.Cog):
             message = await ctx.reply(f"Your current score is: **{view.score}**\nYou have ❤**{view.lives}** lives left.", embed=embed, view = view)
         except asyncio.TimeoutError:
             await message.edit(content=f"You ran out of time! Your score was {view.score}!", view=None)
-
-    @commands.command(aliases=["rps"],description="Play rock, paper scissors with Hoshi", extras="alias +rps")
-    async def rockpaperscissors(self, ctx):
-        message = await ctx.send("Let's play rock-paper-scissors! Click your choice below.")
-        view = RockPaperScissorsView(message)
-        await message.edit(view=view)
 
     def _get_round_avatar(self, avatar: BytesIO) -> Tuple[Image.Image, Image.Image]:
         circle = Image.open('./assets/circle-mask.png').resize((160, 160)).convert('L')
