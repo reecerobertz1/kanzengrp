@@ -301,7 +301,7 @@ class Fun(commands.Cog):
         percentage = random.randint(0, 100)
         await ctx.send(f"{member.mention} is **{percentage}%** gay. 🏳️‍🌈")
 
-    @commands.hybrid_command(name='giphy',description="Search for gifs", extras="+giphy bts dance")
+    @commands.command(name='giphy',description="Search for gifs", extras="+giphy bts dance")
     async def giphy(self, ctx, *, search):
         api_key = "PF48beXJTbUkvh35ThoQ4t1qhyjleLwD"
         url = f"https://api.giphy.com/v1/gifs/search"
