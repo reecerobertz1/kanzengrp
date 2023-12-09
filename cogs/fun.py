@@ -421,7 +421,7 @@ class Fun(commands.Cog):
         except asyncio.TimeoutError:
             await message.edit(content=f"You ran out of time! Your score was {view.score}!", view=None)
 
-    @commands.hybrid_command(name='rockpaperscissors',aliases=["rps"],description="Play rock, paper scissors with Hoshi", extras="alias +rps")
+    @commands.hybrid_command(name='rps',aliases=["rps"],description="Play rock, paper scissors with Hoshi", extras="alias +rps")
     async def rockpaperscissors(self, ctx):
         message = await ctx.send("Let's play rock-paper-scissors! Click your choice below.")
         view = RockPaperScissorsView(message)
