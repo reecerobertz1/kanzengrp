@@ -22,34 +22,6 @@ from triviastuff.checkHandler import buttonHandler
 
 WORDS = ["apple", "banana", "orange", "grape", "strawberry", "melon", "kiwi", "cherry", "peach","computer","python","discord","programming","keyboard","gaming","music","puzzle","chocolate","coffee","internet","book","beach","mountain","travel","camera","science","flower","rainbow","butterfly","vampire","zombie","castle","ocean","space","sunset","moonlight","fireworks","candle","diamond","treasure","magic","wizard","unicorn","mermaid","dragon","superhero","mystery","adventure","fantasy","horror","comedy","romance","dinosaur","jungle","robot","pirate","ninja","samurai","karate","guitar","painting","museum","pizza","sushi","ice cream","cupcake","raincoat","umbrella","piano","guitar","violin","bicycle","skateboard","surfing","sailing","kayaking","volleyball","basketball","soccer","football","tennis","swimming","dancing","singing","writing","drawing","cooking","baking","gardening","reading","shopping","sleeping","cycling","hiking","running","yoga","meditation","relaxing","waterfall","adventure","telescope","spaceship","galaxy","sunrise","marshmallow","telescope","puzzle","rainbow","hotdog"]
 
-class confessbutton(discord.ui.View):
-    def __init__(self):
-        super().__init__(timeout=30)
-        self.value = None
-        self.start_time = datetime.datetime.utcnow()
-
-    @discord.ui.button(label="Click to confess", style=discord.ButtonStyle.red)
-    async def confess(self, interaction: discord.Interaction, button: discord.Button):
-        await interaction.response.send_modal(confessmodal())
-
-class confessmodal(ui.Modal, title='Kanzen Confessions'):
-    confession = ui.TextInput(label='Whats your confession', placeholder="Enter confession here...", style=discord.TextStyle.short)
-
-    async def on_submit(self, interaction: discord.Interaction):
-        await interaction.response.defer()
-        channel = interaction.client.get_channel(1145568957345054751)
-        embed = discord.Embed(title="New confession", description=f"{self.confession.value}", color=0x2b2d31)
-        timestamp = datetime.datetime.utcnow()
-        embed.timestamp = timestamp
-        embed.set_footer(text=f"Use /confess to send a confession!")
-        confessions = await channel.send(embed=embed)
-        await interaction.followup.send(f"Your confession has been sent to <#1145568957345054751>", ephemeral=True)
-        await confessions.add_reaction("<:breaths:1128463455993741352>")
-        await confessions.add_reaction("<:pause:1132212249621184634>")
-        await confessions.add_reaction("<:__:1132210032822456411>")
-        await confessions.add_reaction("<a:crysad:1132210059233988678>")
-        await confessions.add_reaction("<a:wAHhh:1128463952423174164>")
-
 class Fun(commands.Cog):
     """Hoshi's fun commands"""
     def __init__(self, bot):
