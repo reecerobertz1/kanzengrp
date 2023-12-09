@@ -155,7 +155,7 @@ class Moderation(commands.Cog):
             return role in ctx.author.roles
         return commands.check(predicate)
 
-    @commands.command(description="Give a warning to a member", extras="+warn @member (reason)")
+    @commands.hybrid_command(name="warn", description="Give a warning to a member", extras="+warn @member (reason)")
     @is_staff()
     async def warn(self, ctx, member: discord.Member, *, reason: str):
         guild_id = ctx.guild.id
@@ -187,17 +187,18 @@ class Moderation(commands.Cog):
 
     async def send_warning_dm(self, member, reason, warning_count):
         embed = discord.Embed(
-            title="You've Received a Warning",
-            description=f"You've been warned for the following reason:\n\n{reason}\n\nTotal Warnings: {warning_count}",
+            title="<:warn:1182986477634859090> Warning <:warn:1182986477634859090>",
+            description=f"reason:\n{reason}\nYou now have {warning_count} warning(s)",
             color=0x2b2d31
         )
+        embed.set_thumbnail(url=member.display_avatar)
 
         try:
             await member.send(embed=embed)
         except discord.Forbidden:
             print(f"Failed to send a warning DM to {member}.")
 
-    @commands.command(aliases=['cw'], description="Clear all warnings from a member", extras="+clearwarnings @member : alias +cw")
+    @commands.hybrid_command(name="clearwarnings",aliases=['cw'], description="Clear all warnings from a member", extras="+clearwarnings @member : alias +cw")
     @is_staff()
     async def clearwarnings(self, ctx, member: discord.Member):
         guild_id = ctx.guild.id
