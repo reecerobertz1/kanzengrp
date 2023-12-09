@@ -72,7 +72,7 @@ class Fun(commands.Cog):
         else:
             return None
 
-    @commands.hybrid_command(name="dog", description="See photos + gifs of dogs", extras="+dog")
+    @commands.command(name="dog", description="See photos + gifs of dogs", extras="+dog")
     async def dog(self, ctx):
         async with ctx.typing():
             response = requests.get('https://dog.ceo/api/breeds/image/random')
@@ -80,7 +80,7 @@ class Fun(commands.Cog):
             image_url = data['message']
             await ctx.reply(image_url)
 
-    @commands.hybrid_command(name="cat", description="See photos + gifs of cats", extras="+cat")
+    @commands.command(name="cat", description="See photos + gifs of cats", extras="+cat")
     async def cat(self, ctx):
         async with ctx.typing():
             try:
@@ -92,7 +92,7 @@ class Fun(commands.Cog):
             except (requests.exceptions.RequestException, KeyError):
                 await ctx.reply("Sorry, I couldn't fetch a cute cat at the moment. Please try again later.")
 
-    @commands.hybrid_command(name="jail", aliases=['prison', 'lockup'],description="Lock someone up in jail", extras="+jail (optional @member) : aliases +prison, +lockup")
+    @commands.command(name="jail", aliases=['prison', 'lockup'],description="Lock someone up in jail", extras="+jail (optional @member) : aliases +prison, +lockup")
     async def jail(self, ctx, member: Optional[discord.Member]):
         async with ctx.typing():
             member = member or ctx.author
@@ -110,7 +110,7 @@ class Fun(commands.Cog):
             await ctx.send(file=discord.File("jail_avatar.png"))
             os.remove("jail_avatar.png")
 
-    @commands.hybrid_command(name="pride", aliases=['gay'],description="Edits your avatar with the pride flag", extras="+pride (optional @member) : alias +gay")
+    @commands.command(name="pride", aliases=['gay'],description="Edits your avatar with the pride flag", extras="+pride (optional @member) : alias +gay")
     async def pride(self, ctx, member: Optional[discord.Member]):
         member = member or ctx.author
         avatar_url = member.avatar.url
@@ -186,7 +186,7 @@ class Fun(commands.Cog):
         else:
             await ctx.send("No pets have been added yet.")
 
-    @commands.hybrid_command(name="ppsize", aliases=['pp'],description="See who has the biggest pp", extras="+ppsize (optional @member) : alias +pp")
+    @commands.command(name="ppsize", aliases=['pp'],description="See who has the biggest pp", extras="+ppsize (optional @member) : alias +pp")
     async def ppsize(self, ctx, member: discord.Member = None):
         if member is None:
             member = ctx.author
@@ -195,7 +195,7 @@ class Fun(commands.Cog):
         message = f'{member.mention} Your pp size is: 8{pp_size}D'
         await ctx.send(message)
 
-    @commands.hybrid_command(name="hug", description="Hug someone", extras="+hug (optional @member)")
+    @commands.command(name="hug", description="Hug someone", extras="+hug (optional @member)")
     async def hug(self, ctx, member: typing.Optional[discord.Member]):
         if member is None:
             await ctx.send(f"Hoshi gave {ctx.author.mention} a hug <a:mm_hug_tight:1122621840305684632>")
@@ -205,7 +205,7 @@ class Fun(commands.Cog):
             embed.set_image(url=(random.choice(urls)))
             await ctx.reply(embed=embed)
 
-    @commands.hybrid_command(name="kiss", description="Kiss someone", extras="+kiss (optional @member)")
+    @commands.command(name="kiss", description="Kiss someone", extras="+kiss (optional @member)")
     async def kiss(self, ctx, member: typing.Optional[discord.Member]):
         author = ctx.message.author.mention
         if member is None:
@@ -216,7 +216,7 @@ class Fun(commands.Cog):
             embed.set_image(url=(random.choice(hugs)))
             await ctx.reply(embed=embed)
 
-    @commands.hybrid_command(name="slap", description="Slap a bitch", extras="+slap (optional @member)")
+    @commands.command(name="slap", description="Slap a bitch", extras="+slap (optional @member)")
     async def slap(self, ctx, member: typing.Optional[discord.Member]):
         author = ctx.message.author.mention
         if member is None:
@@ -227,7 +227,7 @@ class Fun(commands.Cog):
             embed.set_image(url=(random.choice(hugs)))
             await ctx.reply(embed=embed)
 
-    @commands.hybrid_command(name="happybirthday", aliases=["birthday"],description="Wish someone a happy birthday", extras="+happybirthday (optional @member) : +birthday")
+    @commands.command(name="happybirthday", aliases=["birthday"],description="Wish someone a happy birthday", extras="+happybirthday (optional @member) : +birthday")
     async def happybirthday(self, ctx, member: typing.Optional[discord.Member]):
         author = ctx.message.author.mention
         if member is None:
@@ -238,7 +238,7 @@ class Fun(commands.Cog):
             embed.set_image(url=(random.choice(bday)))
             await ctx.reply(embed=embed)
 
-    @commands.hybrid_command(name='roast',description="Roast someone", extras="+roast (optional @member)")
+    @commands.command(name='roast',description="Roast someone", extras="+roast (optional @member)")
     async def roast(self, ctx, *, member: discord.Member = None, roast_text: str = None):
         if member is None:
             member = ctx.author
@@ -251,7 +251,7 @@ class Fun(commands.Cog):
         roast = random.choice(roasts)
         await ctx.reply(roast)
 
-    @commands.hybrid_command(name='compliment',description="Give someone a compliment", extras="+compliment (optional @member)")
+    @commands.command(name='compliment',description="Give someone a compliment", extras="+compliment (optional @member)")
     async def compliment(self, ctx, *, member: discord.Member = None, compliment_text: str = None):
         if member is None:
             member = ctx.author
@@ -264,7 +264,7 @@ class Fun(commands.Cog):
         compliment = random.choice(compliments)
         await ctx.reply(compliment)
 
-    @commands.hybrid_command(name='8ball',description="Ask 8ball a question", extras="+8ball will i have a good day?")
+    @commands.command(name='8ball',description="Ask 8ball a question", extras="+8ball will i have a good day?")
     async def eight_ball(self, ctx, *, question):
         responses = ["It is certain.","It is decidedly so.","Without a doubt.","Yes - definitely.","You may rely on it.","As I see it, yes.","Most likely.","Outlook good.","Yes.","Signs point to yes.","Reply hazy, try again.","Ask again later.","Better not tell you now.","Cannot predict now.","Concentrate and ask again.","Don't count on it.","My reply is no.","My sources say no.","Outlook not so good.","Very doubtful."]
         response = random.choice(responses)
@@ -273,7 +273,7 @@ class Fun(commands.Cog):
         embed.set_footer(text=f"8ball for {ctx.author.name}", icon_url=ctx.author.avatar)
         await ctx.reply(embed=embed)
 
-    @commands.hybrid_command(name='ship',description="Ship 2 people together", extras="+ship @member @member")
+    @commands.command(name='ship',description="Ship 2 people together", extras="+ship @member @member")
     async def ship(self, ctx, user1: discord.Member, user2: discord.Member):
         compatibility = random.randint(0, 100)
 
@@ -293,7 +293,7 @@ class Fun(commands.Cog):
 
         await ctx.send(ship_message)
 
-    @commands.hybrid_command(name='howgay',description="How gay really are you?", extras="+howgay (optional @member)")
+    @commands.command(name='howgay',description="How gay really are you?", extras="+howgay (optional @member)")
     async def howgay(self, ctx, member: discord.Member = None):
         if member is None:
             member = ctx.author
@@ -301,7 +301,7 @@ class Fun(commands.Cog):
         percentage = random.randint(0, 100)
         await ctx.send(f"{member.mention} is **{percentage}%** gay. 🏳️‍🌈")
 
-    @commands.hybrid_command(name='giphy',description="Search for gifs", extras="+giphy bts dance")
+    @commands.command(name='giphy',description="Search for gifs", extras="+giphy bts dance")
     async def giphy(self, ctx, *, search):
         api_key = "PF48beXJTbUkvh35ThoQ4t1qhyjleLwD"
         url = f"https://api.giphy.com/v1/gifs/search"
@@ -346,7 +346,7 @@ class Fun(commands.Cog):
     def get_hidden_word(self):
         return "".join(letter if letter in self.guesses else "_" for letter in self.current_word)
 
-    @commands.hybrid_command(name="trivia", description="Play a game of trivia", timeout=3.0, extras="+trivia")
+    @commands.command(name="trivia", description="Play a game of trivia", timeout=3.0, extras="+trivia")
     async def trivia(self, ctx):
         
         try:
@@ -362,7 +362,7 @@ class Fun(commands.Cog):
         avatar_image = avatar_image.resize((160, 160))
         return avatar_image, circle
 
-    @commands.hybrid_command(name='tweet',description="Tweet as yourself with Hoshi", extras="+tweet hello twitter")
+    @commands.command(name='tweet',description="Tweet as yourself with Hoshi", extras="+tweet hello twitter")
     async def tweet(self, ctx, *tweet: str) -> BytesIO:
         tweet_text = " ".join(tweet)
         avatar_url = ctx.author.avatar.url
@@ -391,7 +391,7 @@ class Fun(commands.Cog):
         img.save("tweet.png")
         await ctx.reply(file=discord.File("tweet.png"))
 
-    @commands.hybrid_command(name='scramble',description="Unscramble words given to you by Hoshi", extras="+scramble")
+    @commands.command(name='scramble',description="Unscramble words given to you by Hoshi", extras="+scramble")
     async def scramble(self, ctx):
         word = random.choice(WORDS)
         scrambled_word = ''.join(random.sample(word, len(word)))
