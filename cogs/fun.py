@@ -264,7 +264,7 @@ class Fun(commands.Cog):
         compliment = random.choice(compliments)
         await ctx.reply(compliment)
 
-    @commands.command(name='8ball',description="Ask 8ball a question", extras="+8ball will i have a good day?")
+    @commands.hybrid_command(name='8ball',description="Ask 8ball a question", extras="+8ball will i have a good day?")
     async def eight_ball(self, ctx, *, question):
         responses = ["It is certain.","It is decidedly so.","Without a doubt.","Yes - definitely.","You may rely on it.","As I see it, yes.","Most likely.","Outlook good.","Yes.","Signs point to yes.","Reply hazy, try again.","Ask again later.","Better not tell you now.","Cannot predict now.","Concentrate and ask again.","Don't count on it.","My reply is no.","My sources say no.","Outlook not so good.","Very doubtful."]
         response = random.choice(responses)
@@ -273,7 +273,7 @@ class Fun(commands.Cog):
         embed.set_footer(text=f"8ball for {ctx.author.name}", icon_url=ctx.author.avatar)
         await ctx.reply(embed=embed)
 
-    @commands.command(name='ship',description="Ship 2 people together", extras="+ship @member @member")
+    @commands.hybrid_command(name='ship',description="Ship 2 people together", extras="+ship @member @member")
     async def ship(self, ctx, user1: discord.Member, user2: discord.Member):
         compatibility = random.randint(0, 100)
 
@@ -293,7 +293,7 @@ class Fun(commands.Cog):
 
         await ctx.send(ship_message)
 
-    @commands.command(name='howgay',description="How gay really are you?", extras="+howgay (optional @member)")
+    @commands.hybrid_command(name='howgay',description="How gay really are you?", extras="+howgay (optional @member)")
     async def howgay(self, ctx, member: discord.Member = None):
         if member is None:
             member = ctx.author
