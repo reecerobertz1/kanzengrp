@@ -72,7 +72,7 @@ class Fun(commands.Cog):
         else:
             return None
 
-    @commands.command(name="dog", description="See photos + gifs of dogs", extras="+dog")
+    @commands.hybrid_command(name="dog", description="See photos + gifs of dogs", extras="+dog")
     async def dog(self, ctx):
         async with ctx.typing():
             response = requests.get('https://dog.ceo/api/breeds/image/random')
@@ -80,7 +80,7 @@ class Fun(commands.Cog):
             image_url = data['message']
             await ctx.reply(image_url)
 
-    @commands.command(name="cat", description="See photos + gifs of cats", extras="+cat")
+    @commands.hybrid_command(name="cat", description="See photos + gifs of cats", extras="+cat")
     async def cat(self, ctx):
         async with ctx.typing():
             try:
