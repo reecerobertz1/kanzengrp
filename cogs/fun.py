@@ -111,7 +111,7 @@ class Fun(commands.Cog):
         b = random.randint(0, 255)
         return r, g, b
 
-    @commands.hybrid_command(name="say", description="Make Hoshi say something", extras="+say hello")
+    @commands.command(description="Make Hoshi say something", extras="+say hello")
     async def say(self, ctx, *, message):
         await ctx.message.delete()
         async with ctx.typing():
@@ -421,7 +421,7 @@ class Fun(commands.Cog):
         except asyncio.TimeoutError:
             await message.edit(content=f"You ran out of time! Your score was {view.score}!", view=None)
 
-    @commands.hybrid_command(name='rps',aliases=["rps"],description="Play rock, paper scissors with Hoshi", extras="alias +rps")
+    @commands.command(aliases=["rps"],description="Play rock, paper scissors with Hoshi", extras="alias +rps")
     async def rockpaperscissors(self, ctx):
         message = await ctx.send("Let's play rock-paper-scissors! Click your choice below.")
         view = RockPaperScissorsView(message)
