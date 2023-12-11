@@ -1571,7 +1571,6 @@ class Levels(commands.Cog):
             await message.edit(content="~~are you sure you want to reset the ranks? it's irreversible!~~\nreset has been cancelled!")
 
     @commands.command(description="Get anywhere from 100xp - 300xp everyday!", extras="+daily")
-    @kanzen_only()
     @commands.dynamic_cooldown(kanzen_cooldown, commands.BucketType.user)
     async def daily(self, ctx: commands.Context):
         """Command to claim daily xp"""
