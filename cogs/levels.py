@@ -68,6 +68,11 @@ class Levels(commands.Cog):
             # boosters have a 12 hour cooldown
             return commands.Cooldown(1, 43200)
         
+        daegu = message.guild.get_role(896925970672549958)
+        if daegu in message.author.roles:
+            # boosters have a 12 hour cooldown
+            return commands.Cooldown(1, 43200)
+        
         # other members have a 24 hour cooldown
         return commands.Cooldown(1, 86400)
     
