@@ -314,6 +314,11 @@ class Moderation(commands.Cog):
         embed.set_thumbnail(url=self.bot.user.display_avatar.url)
         view = ReportView(bot=self.bot)
         await ctx.reply(embed=embed, view=view)
+        
+    @commands.hybrid_command(name="dm", aliases=["message"], description="Dm a user through hoshi", extras="+dm @member (message) : alias +message")
+    async def dm(self, ctx, member: discord.Member, *, message: str):
+        await member.send(message)
+        await ctx.send(f"i have successfully messaged {member.mention}\n{message}")        
 
 async def setup(bot):
     await bot.add_cog(Moderation(bot))
