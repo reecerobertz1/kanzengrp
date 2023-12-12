@@ -98,7 +98,7 @@ class Moderation(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.guilds = [1121841073673736215]
-        self.emoji = "<:tata:1121909389280944169>"
+        self.emoji = "<:rj:1121909526300479658>"
         self.warning_channel_id = 1178952898273628200
         self.pool = None
         bot.loop.create_task(self.init_database())
