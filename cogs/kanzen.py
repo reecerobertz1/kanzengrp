@@ -118,12 +118,12 @@ class kanzen(commands.Cog):
     
     @commands.command()
     @is_booster()
-    async def perks(self, ctx, member: discord.Member):
-        member = ctx.author
+    async def perks(self, ctx):
         embed = discord.Embed(title="Kanzen Booster Perks", description="<a:Arrow_1:1145603161701224528> Remqsi's colouring packs 1 & 2\n<a:Arrow_1:1145603161701224528> BTS Photos\n<a:Arrow_1:1145603161701224528> Enhypen Photos\n<a:Arrow_1:1145603161701224528> Blackpink Photos\n<a:Arrow_1:1145603161701224528> Break your heart project file\n<a:Arrow_1:1145603161701224528> Lisa candy project file", color=0x2b2d31)
         embed.set_thumbnail(url=ctx.author.avatar)
         embed.set_footer(text="Thank you for your support", icon_url=ctx.author.avatar)
-        await member.send("https://mega.nz/folder/N1tgSLqD#DZ73U23GXk1LqyZKUpdNww", embed=embed)
+        await ctx.author.send("https://mega.nz/folder/N1tgSLqD#DZ73U23GXk1LqyZKUpdNww", embed=embed)
+        await ctx.reply("Check dms! i have sent you our perks")
 
 async def setup(bot):
     await bot.add_cog(kanzen(bot))
