@@ -38,8 +38,7 @@ class fb(ui.Modal, title='Feedback'):
     feedback = ui.TextInput(label='Inactivity Reason', placeholder="", style=discord.TextStyle.long)
     async def on_submit(self, interaction: discord.Interaction):
         await interaction.response.defer()
-        embed = discord.Embed(title='Feedback', color=0x2b2d31)
-        embed.add_field(name='Inactivity Reason:', value=f'{self.feedback.value}', inline=False)
+        embed = discord.Embed(title='Feedback', description=self.feedback.value, color=0x2b2d31)
         embed.set_footer(text=f"sent from {interaction.user} | {interaction.user.id}", icon_url=interaction.user.display_avatar)
         channel = interaction.client.get_channel(1102977351010222101)
         await channel.send(embed=embed)
