@@ -17,7 +17,7 @@ class infobuttons(discord.ui.View):
         await interaction.response.send_modal(ia())
 
     @discord.ui.button(label="Feedback")
-    async def inactive(self, interaction: discord.Interaction, button: discord.Button):
+    async def feedback(self, interaction: discord.Interaction, button: discord.Button):
         await interaction.response.send_modal(fb())
 
 class ia(ui.Modal, title='Inactivity Message'):
