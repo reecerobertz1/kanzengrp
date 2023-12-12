@@ -9,6 +9,19 @@ from discord.utils import get
 from discord.ui import View, Select
 import asqlite
 
+class ga(discord.ui.View):
+    def __init__(self):
+        super().__init__(timeout=None)
+        self.value = None
+
+    @discord.ui.button(label="Click for link")
+    async def link(self, interaction: discord.Interaction, button: discord.Button):
+        channel = interaction.client.get_channel(1122627075682078720)
+        log = discord.Embed(title="Giveaway button has been used!", description=f"`{interaction.user.display_name}` has used the giveaway button", color=0x2b2d31)
+        log.set_footer(text=f"id: {interaction.user.id}", icon_url=interaction.user.display_avatar)
+        await channel.send(embed=log)
+        await interaction.response.send_message("https://mega.nz/folder/048lUZaY#5_OEu5tYJQCxfyo-dW03hw")
+
 class ReportView(discord.ui.View):
     def __init__(self, bot):
         super().__init__()
@@ -319,6 +332,16 @@ class Moderation(commands.Cog):
     async def dm(self, ctx, member: discord.Member, *, message: str):
         await member.send(message)
         await ctx.send(f"i have successfully messaged {member.mention}\n{message}")        
+
+    @app_commands.command(name="verify", description="Verify a member for the christmas giveaway")
+    @app_commands.checks.has_permissions(manage_guild=True)
+    async def verify(self, interaction: discord.Interaction, member: discord.Member):
+        embed = discord.Embed(title="Kanzen Christmas Giveaway", description="Thank you so much for joining our Christmas giveaway!\nClick the button below to be access the mega link. \n\nPlease remember to give credits when it's needed, and we hope you enjoy everything we have added!\nIf there are any problems with the link or the button please contact <@609515684740988959>\n\nAgain thank you for joining and happy holidays!", color=0x2b2d31)
+        embed.set_thumbnail(url=member.display_avatar)
+        embed.set_image(url="https://cdn.discordapp.com/attachments/1121841074512605186/1176504748875186196/image.png?ex=658acbee&is=657856ee&hm=976042c1a4881080baa09215e3056d6f6128a8b9e0672cf9b59acfee8f9b00c7&")
+        view=ga()
+        await member.send(embed=embed, view=view)
+        await interaction.response.send_message("poo poo", ephemeral=True)
 
 async def setup(bot):
     await bot.add_cog(Moderation(bot))
