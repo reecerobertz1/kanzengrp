@@ -1392,7 +1392,8 @@ class Levels(commands.Cog):
                 if card:
                     await ctx.reply(file=discord.File(card, 'card.png'), mention_author=False)
                 else:
-                    await ctx.reply(f"Hey! new update for ranks has been released, you can now choose between 3 different formats for your rank card.\nPlease select a format! to do so do +rank1, +rank2 or +rank3!", mention_author=False)  # Display the unknown format
+                    embed = discord.Embed("Need to select a format!", description="Hey! you need to select a rank card format\nDo these commands to select one **+rank1, +rank2, +rank3**\nrank 1 = 1500x500 format\nrank 2 = 1080x1080 format\nrank 3 = 1080x1500 format")
+                    await ctx.reply(fembed=embed, mention_author=False)
             else:
                 await ctx.reply(f"{member} doesn't have any levels yet!!", mention_author=False)
 
