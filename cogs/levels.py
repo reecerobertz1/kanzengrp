@@ -471,8 +471,8 @@ class Levels(commands.Cog):
             custom_y = 375
             card.paste(special_role_img, (custom_x, custom_y), special_role_img)
         hstaff_id = 1178924350523588618
-        has_lead_role = any(role.id == lead_role_id for role in user.roles)
-        if has_lead_role:
+        has_hstaff_role = any(role.id == hstaff_id for role in user.roles)
+        if has_hstaff_role:
             special_role_img = Image.open('./assets/hstaff.png')
             special_role_img = special_role_img.resize((100, 100))
             custom_x = 1265
@@ -601,8 +601,8 @@ class Levels(commands.Cog):
             custom_y = 725
             card.paste(special_role_img, (custom_x, custom_y), special_role_img)
         hstaff_id = 1178924350523588618
-        has_lead_role = any(role.id == lead_role_id for role in user.roles)
-        if has_lead_role:
+        has_hstaff_role = any(role.id == hstaff_id for role in user.roles)
+        if has_hstaff_role:
             special_role_img = Image.open('./assets/hstaff.png')
             special_role_img = special_role_img.resize((125, 125))
             custom_x = 55
@@ -732,8 +732,8 @@ class Levels(commands.Cog):
             custom_y = 1035
             card.paste(special_role_img, (custom_x, custom_y), special_role_img)
         hstaff_id = 1178924350523588618
-        has_lead_role = any(role.id == lead_role_id for role in user.roles)
-        if has_lead_role:
+        has_hstaff_role = any(role.id == hstaff_id for role in user.roles)
+        if has_hstaff_role:
             special_role_img = Image.open('./assets/hstaff.png')
             special_role_img = special_role_img.resize((125, 125))
             custom_x = 90
