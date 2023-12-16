@@ -457,11 +457,28 @@ class Levels(commands.Cog):
         poppins_xsmall = Font.poppins(size=35)
         poppins_xxsmall = Font.montserrat(size=25)
         font2 = ImageFont.truetype("./fonts/Montserrat-Bold.ttf", 35)
+        font2small = ImageFont.truetype("./fonts/Montserrat-Bold.ttf", 15)
         font3 = ImageFont.truetype("./fonts/Montserrat-Bold.ttf", 50)
         roles_img = Image.open('./assets/roles.png')
         lead_roles_x = (card.width - roles_img.width) // 2
         lead_roles_y = (card.height - roles_img.height) // 2
         card.paste(roles_img, (lead_roles_x, lead_roles_y), roles_img)
+        zennies_role_id = 1121842393994494082
+        has_zennies_role = any(role.id == zennies_role_id for role in user.roles)
+        if has_zennies_role:
+            zennies_role_img = Image.open('./assets/rank box.png')
+            zennies_role_img = zennies_role_img.resize((1500, 500))
+            custom_x = 0
+            custom_y = 0
+            card.paste(zennies_role_img, (custom_x, custom_y), zennies_role_img)
+        diamondrank_role_id = 1121842393994494082
+        has_diamondrank_role = any(role.id == diamondrank_role_id for role in user.roles)
+        if has_diamondrank_role:
+            diamondrank_role_img = Image.open('./assets/diamondrank.png')
+            diamondrank_role_img = diamondrank_role_img.resize((250, 250))
+            custom_x = 1007
+            custom_y = 0
+            card.paste(diamondrank_role_img, (custom_x, custom_y), diamondrank_role_img)
         lead_role_id = 1121842279351590973
         has_lead_role = any(role.id == lead_role_id for role in user.roles)
         if has_lead_role:
@@ -471,8 +488,8 @@ class Levels(commands.Cog):
             custom_y = 375
             card.paste(special_role_img, (custom_x, custom_y), special_role_img)
         hstaff_id = 1178924350523588618
-        has_hstaff_role = any(role.id == hstaff_id for role in user.roles)
-        if has_hstaff_role:
+        has_lead_role = any(role.id == lead_role_id for role in user.roles)
+        if has_lead_role:
             special_role_img = Image.open('./assets/hstaff.png')
             special_role_img = special_role_img.resize((100, 100))
             custom_x = 1265
@@ -537,6 +554,7 @@ class Levels(commands.Cog):
         draw.text((15,425), 'Server Level','#ffffff', font=poppins_xsmall)
         draw.text((15,390), 'Server Rank', '#ffffff', font=poppins_xsmall)
         draw.text((235, 390), f"#{str(rank)}", fill=levels['bar_color'], font=font2)
+        draw.text((1065, 15), f"Kanzen Ranked", fill=levels['bar_color'], font=font2small)
         buffer = BytesIO()
         card.save(buffer, 'png')
         buffer.seek(0)
