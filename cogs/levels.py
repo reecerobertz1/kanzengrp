@@ -1376,8 +1376,8 @@ class Levels(commands.Cog):
             avatar = BytesIO(await response.read())
             avatar.seek(0)
 
-            if ctx.guild.id == 1157492644402970744:
-                button = discord.ui.Button(label=f"Join kanzen's recruit", url=f"https://instagram.com/kanzengrp")
+            if ctx.guild.id == 896619762354892821:
+                button = discord.ui.Button(label=f"Made for Kanzengrp", url=f"https://instagram.com/kanzengrp")
                 view = discord.ui.View()
                 view.add_item(button)
             else:
