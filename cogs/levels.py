@@ -475,9 +475,9 @@ class Levels(commands.Cog):
         has_diamondrank_role = any(role.id == diamondrank_role_id for role in user.roles)
         if has_diamondrank_role:
             diamondrank_role_img = Image.open('./assets/diamondrank.png')
-            diamondrank_role_img = diamondrank_role_img.resize((250, 250))
-            custom_x = 1007
-            custom_y = 0
+            diamondrank_role_img = diamondrank_role_img.resize((175, 175))
+            custom_x = 1055
+            custom_y = 35
             card.paste(diamondrank_role_img, (custom_x, custom_y), diamondrank_role_img)
         lead_role_id = 1121842279351590973
         has_lead_role = any(role.id == lead_role_id for role in user.roles)
