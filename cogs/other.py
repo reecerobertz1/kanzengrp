@@ -35,7 +35,7 @@ class other(commands.Cog):
         if message.content.lower() == "mari":
             await message.channel.send("Mari Ferrari MJ")
         if "MessageType.premium_guild" in str(message.type):
-                embed = discord.Embed(title=f"Thank you for boosting! {message.author.display_name}!", description="<a:Arrow_1:1145603161701224528> dm staff or lead for your custom role\n<a:Arrow_1:1145603161701224528> go into [#booster-perks](https://discord.com/channels/1121841073673736215/1164318431462563951) to claim the perks\n<a:Arrow_1:1145603161701224528> we really appreciate your support!", color=0x2b2d31)
+                embed = discord.Embed(title=f"Thank you for boosting! {message.author.display_name}!", description="<a:Arrow_1:1145603161701224528> dm staff or lead for your custom role\n<a:Arrow_1:1145603161701224528> do `+perks` to claim the perks\n<a:Arrow_1:1145603161701224528> we really appreciate your support!", color=0x2b2d31)
                 embed.set_author(name=message.author.display_name, icon_url=message.author.display_avatar)
                 embed.set_footer(text=f"We are up to {message.guild.premium_subscription_count} boosts!")
                 if message.guild.id == 1121841073673736215:
