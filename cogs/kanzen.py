@@ -63,6 +63,20 @@ class ia(ui.Modal, title='Inactivity Message'):
         await channel.send(embed=embed)
         await interaction.followup.send(f'Your inactive message has been sent successfully', ephemeral=True)
 
+class feedback(ui.Modal, title='Kanzen Feedback'):
+    rate = ui.TextInput(label='Scale of 1-10, how would you rate Kanzen', placeholder="Enter your rating here", style=discord.TextStyle.short)
+    improve = ui.TextInput(label='How can we improve', placeholder="Bullet point ideas here...", style=discord.TextStyle.long)
+    likes = ui.TextInput(label='What do you like about our group?', placeholder="List your likes here...", style=discord.TextStyle.long)
+    dislikes = ui.TextInput(label='What do you dislike about our group?', placeholder="List your dislikes here...", style=discord.TextStyle.long)
+    async def on_submit(self, interaction: discord.Interaction):
+        await interaction.response.defer()
+        embed = discord.Embed(title='Feedback', description=f"what do they rate kanzen 1 - 10:\n{self.rate.value}\n\nhow can we improve:\n{self.improve.value}\n\nwhat do they like:\n{self.likes.value}\n\nwhat do they dislike:\n{self.dislikes.value}", color=0x2b2d31)
+        embed.set_thumbnail(url=interaction.guild.icon)
+        embed.set_footer(text=f"Sent from {interaction.user.name}", icon_url=interaction.user.display_avatar)
+        channel = interaction.client.get_channel(1187434136395325469)
+        await channel.send(embed=embed)
+        await interaction.followup.send(f"Thank you {interaction.user.display_name} your feedback has been sent!", ephemeral=True)
+
 class kanzen(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -118,6 +132,10 @@ class kanzen(commands.Cog):
         await ctx.send(embed=embed1)
         await ctx.send(embed=embed2)
         await ctx.send(embed=embed3)
+
+    @app_commands.command(name="feedback", description="give feedback")
+    async def feedback(self, interaction: discord.Interaction):
+        await interaction.response.send_modal(feedback())
 
 async def setup(bot):
     await bot.add_cog(kanzen(bot))
