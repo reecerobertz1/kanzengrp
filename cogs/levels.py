@@ -1069,7 +1069,7 @@ class Levels(commands.Cog):
             True for silver rank, otherwise False
         """
         rank = await self.get_rank(member_id, guild_id)
-        return rank < 35
+        return rank < 36
     
     async def _check_gold(self, member_id: int, guild_id: int) -> bool:
         """Checks if a member is in silver rank.
@@ -1087,7 +1087,7 @@ class Levels(commands.Cog):
             True for silver rank, otherwise False
         """
         rank = await self.get_rank(member_id, guild_id)
-        return rank < 20
+        return rank < 21
     
     async def _check_diamond(self, member_id: int, guild_id: int) -> bool:
         """Checks if a member is in silver rank.
@@ -1105,7 +1105,7 @@ class Levels(commands.Cog):
             True for silver rank, otherwise False
         """
         rank = await self.get_rank(member_id, guild_id)
-        return rank < 15
+        return rank < 16
 
     async def _check_plat(self, member_id: int, guild_id: int) -> bool:
         """Checks if a member is in silver rank.
@@ -1123,7 +1123,7 @@ class Levels(commands.Cog):
             True for silver rank, otherwise False
         """
         rank = await self.get_rank(member_id, guild_id)
-        return rank < 5
+        return rank < 6
     
     async def _check_elite(self, member_id: int, guild_id: int) -> bool:
         """Checks if a member is in silver rank.
@@ -1141,7 +1141,7 @@ class Levels(commands.Cog):
             True for silver rank, otherwise False
         """
         rank = await self.get_rank(member_id, guild_id)
-        return rank < 3
+        return rank < 4
 
     async def _get_silver_movedown(self, member_ids: list, guild_id: int) -> int:
         """
