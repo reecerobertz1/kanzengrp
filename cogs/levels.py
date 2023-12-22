@@ -200,9 +200,21 @@ class Levels(commands.Cog):
             else: # not on cooldown so we update the xp
                 await self._update_xp(member_id, guild_id, levels, xp)
                 await self._level_check(message, levels['xp'], xp)
-                top20 = await self.get_top_20_role_id(message.guild.id)
-                if top20 is not None:
-                    await self.top_20_role_handler(message.author, message.guild, top20)
+                silver = await self.get_silver_role_id(message.guild.id)
+                if silver is not None:
+                    await self.silver_role_handler(message.author, message.guild, silver)
+                gold = await self.get_gold_role_id(message.guild.id)
+                if gold is not None:
+                    await self.gold_role_handler(message.author, message.guild, gold)
+                diamond = await self.get_diamond_role_id(message.guild.id)
+                if diamond is not None:
+                    await self.diamond_role_handler(message.author, message.guild, diamond)
+                plat = await self.get_plat_role_id(message.guild.id)
+                if plat is not None:
+                    await self.plat_role_handler(message.author, message.guild, plat)
+                elite = await self.get_elite_role_id(message.guild.id)
+                if elite is not None:
+                    await self.elite_role_handler(message.author, message.guild, elite)
 
     async def handle_message(self, message: discord.Message) -> None:
         """Handles messages sent on Discord.
@@ -471,14 +483,54 @@ class Levels(commands.Cog):
             custom_x = 0
             custom_y = 0
             card.paste(zennies_role_img, (custom_x, custom_y), zennies_role_img)
-        diamondrank_role_id = 1121842393994494082
+        diamondrank_role_id = 1187540240836087858
         has_diamondrank_role = any(role.id == diamondrank_role_id for role in user.roles)
-        if has_diamondrank_role:
+        goldrank_role_id = 1187540222708297748
+        has_goldrank_role = any(role.id == goldrank_role_id for role in user.roles)
+        silverrank_role_id = 1187508615364477039
+        has_silverrank_role = any(role.id == silverrank_role_id for role in user.roles)
+        bronzerank_role_id = 1187508597761003572
+        has_bronzerank_role = any(role.id == bronzerank_role_id for role in user.roles)
+        platrank_role_id = 1187540267696398427
+        has_platrank_role = any(role.id == platrank_role_id for role in user.roles)
+        eliterank_role_id = 1187540294221172786
+        has_eliterank_role = any(role.id == eliterank_role_id for role in user.roles)
+        if has_eliterank_role:
+            eliterank_role_img = Image.open('./assets/eliterank.png')
+            eliterank_role_img = eliterank_role_img.resize((175, 175))
+            custom_x = 1055
+            custom_y = 35
+            card.paste(eliterank_role_img, (custom_x, custom_y), eliterank_role_img)
+        elif has_platrank_role:
+            platrank_role_img = Image.open('./assets/platrank.png')
+            platrank_role_img = platrank_role_img.resize((175, 175))
+            custom_x = 1055
+            custom_y = 35
+            card.paste(platrank_role_img, (custom_x, custom_y), platrank_role_img)
+        elif has_diamondrank_role:
             diamondrank_role_img = Image.open('./assets/diamondrank.png')
             diamondrank_role_img = diamondrank_role_img.resize((175, 175))
             custom_x = 1055
             custom_y = 35
             card.paste(diamondrank_role_img, (custom_x, custom_y), diamondrank_role_img)
+        elif has_goldrank_role:
+            goldrank_role_img = Image.open('./assets/goldrank.png')
+            goldrank_role_img = goldrank_role_img.resize((175, 175))
+            custom_x = 1055
+            custom_y = 35
+            card.paste(goldrank_role_img, (custom_x, custom_y), goldrank_role_img)
+        elif has_silverrank_role:
+            silverrank_role_img = Image.open('./assets/silverrank.png')
+            silverrank_role_img = silverrank_role_img.resize((175, 175))
+            custom_x = 1055
+            custom_y = 35
+            card.paste(silverrank_role_img, (custom_x, custom_y), silverrank_role_img)
+        elif has_bronzerank_role:
+            bronzerank_role_img = Image.open('./assets/bronzerank.png')
+            bronzerank_role_img = bronzerank_role_img.resize((175, 175))
+            custom_x = 1055
+            custom_y = 35
+            card.paste(bronzerank_role_img, (custom_x, custom_y), bronzerank_role_img)
         lead_role_id = 1121842279351590973
         has_lead_role = any(role.id == lead_role_id for role in user.roles)
         if has_lead_role:
@@ -603,6 +655,7 @@ class Levels(commands.Cog):
         poppins_xxsmall = Font.montserrat(size=25)
         font2 = ImageFont.truetype("./fonts/Montserrat-Bold.ttf", 35)
         font3 = ImageFont.truetype("./fonts/Montserrat-Bold.ttf", 50)
+        font2small = ImageFont.truetype("./fonts/Montserrat-Bold.ttf", 23)
         roles_img = Image.open('./assets/rank2_badges.png')
         lead_roles_x = (card.width - roles_img.width) // 2
         lead_roles_y = (card.height - roles_img.height) // 2
@@ -612,6 +665,126 @@ class Levels(commands.Cog):
         card.paste(roles_img, (lead_roles_x, lead_roles_y), roles_img)
         lead_role_id = 1121842279351590973
         has_lead_role = any(role.id == lead_role_id for role in user.roles)
+        zennies_role_id = 1121842393994494082
+        has_zennies_role = any(role.id == zennies_role_id for role in user.roles)
+        if has_zennies_role:
+            zennies_role_img = Image.open('./assets/rank box.png')
+            zennies_role_img = zennies_role_img.resize((1500, 500))
+            custom_x = -190
+            custom_y = 800
+            card.paste(zennies_role_img, (custom_x, custom_y), zennies_role_img)
+        diamondrank_role_id = 1187540240836087858
+        has_diamondrank_role = any(role.id == diamondrank_role_id for role in user.roles)
+        goldrank_role_id = 1187540222708297748
+        has_goldrank_role = any(role.id == goldrank_role_id for role in user.roles)
+        silverrank_role_id = 1187508615364477039
+        has_silverrank_role = any(role.id == silverrank_role_id for role in user.roles)
+        bronzerank_role_id = 1187508597761003572
+        has_bronzerank_role = any(role.id == bronzerank_role_id for role in user.roles)
+        platrank_role_id = 1187540267696398427
+        has_platrank_role = any(role.id == platrank_role_id for role in user.roles)
+        eliterank_role_id = 1187540294221172786
+        has_eliterank_role = any(role.id == eliterank_role_id for role in user.roles)
+        if has_eliterank_role:
+            eliterank_role_img = Image.open('./assets/eliterank.png')
+            eliterank_role_img = eliterank_role_img.resize((175, 175))
+            custom_x = 865
+            custom_y = 825
+            card.paste(eliterank_role_img, (custom_x, custom_y), eliterank_role_img)
+        elif has_platrank_role:
+            platrank_role_img = Image.open('./assets/platrank.png')
+            platrank_role_img = platrank_role_img.resize((175, 175))
+            custom_x = 865
+            custom_y = 825
+            card.paste(platrank_role_img, (custom_x, custom_y), platrank_role_img)
+        elif has_diamondrank_role:
+            diamondrank_role_img = Image.open('./assets/diamondrank.png')
+            diamondrank_role_img = diamondrank_role_img.resize((175, 175))
+            custom_x = 865
+            custom_y = 825
+            card.paste(diamondrank_role_img, (custom_x, custom_y), diamondrank_role_img)
+        elif has_goldrank_role:
+            goldrank_role_img = Image.open('./assets/goldrank.png')
+            goldrank_role_img = goldrank_role_img.resize((175, 175))
+            custom_x = 865
+            custom_y = 825
+            card.paste(goldrank_role_img, (custom_x, custom_y), goldrank_role_img)
+        elif has_silverrank_role:
+            silverrank_role_img = Image.open('./assets/silverrank.png')
+            silverrank_role_img = silverrank_role_img.resize((175, 175))
+            custom_x = 865
+            custom_y = 825
+            card.paste(silverrank_role_img, (custom_x, custom_y), silverrank_role_img)
+        elif has_bronzerank_role:
+            bronzerank_role_img = Image.open('./assets/bronzerank.png')
+            bronzerank_role_img = bronzerank_role_img.resize((175, 175))
+            custom_x = 865
+            custom_y = 825
+            card.paste(bronzerank_role_img, (custom_x, custom_y), bronzerank_role_img)
+        lead_role_id = 1121842279351590973
+        has_lead_role = any(role.id == lead_role_id for role in user.roles)
+        if has_lead_role:
+            special_role_img = Image.open('./assets/lead.png')
+            special_role_img = special_role_img.resize((75, 75))
+            custom_x = 1375
+            custom_y = 375
+            card.paste(special_role_img, (custom_x, custom_y), special_role_img)
+        hstaff_id = 1178924350523588618
+        has_lead_role = any(role.id == lead_role_id for role in user.roles)
+        if has_lead_role:
+            special_role_img = Image.open('./assets/hstaff.png')
+            special_role_img = special_role_img.resize((100, 100))
+            custom_x = 1265
+            custom_y = 365
+            card.paste(special_role_img, (custom_x, custom_y), special_role_img)
+        staff_role_id = 1135244903165722695
+        has_staff_role = any(role.id == staff_role_id for role in user.roles)
+        if has_staff_role:
+            staff_role_img = Image.open('./assets/staff.png')
+            staff_role_img = staff_role_img.resize((75, 75))
+            custom_x = 1275
+            custom_y = 275
+            card.paste(staff_role_img, (custom_x, custom_y), staff_role_img)
+        mods_id = 1135244903165722695
+        mods_role = any(role.id == mods_id for role in user.roles)
+        if mods_role:
+            mods_img = Image.open('./assets/mods.png')
+            mods_img = mods_img.resize((75, 75))
+            custom_x = 1375
+            custom_y = 275
+            card.paste(mods_img, (custom_x, custom_y), mods_img)
+        devs_id = 1179255802003988573
+        devs_role = any(role.id == devs_id for role in user.roles)
+        if devs_role:
+            devs_img = Image.open('./assets/devs.png')
+            devs_img = devs_img.resize((75, 75))
+            custom_x = 1375
+            custom_y = 175
+            card.paste(devs_img, (custom_x, custom_y), devs_img)
+        booster_role_id = 1128460924886458489
+        has_booster_role = any(role.id == booster_role_id for role in user.roles)
+        if has_booster_role:
+            booster_role_img = Image.open('./assets/booster.png')
+            booster_role_img = booster_role_img.resize((75, 75))
+            custom_x = 1275
+            custom_y = 175
+            card.paste(booster_role_img, (custom_x, custom_y), booster_role_img)
+        top20_role_id = 1125233965599555615
+        has_top20_role = any(role.id == top20_role_id for role in user.roles)
+        if has_top20_role:
+            top20_role_img = Image.open('./assets/top20.png')
+            top20_role_img = top20_role_img.resize((75, 75))
+            custom_x = 1375
+            custom_y = 90
+            card.paste(top20_role_img, (custom_x, custom_y), top20_role_img)
+        zennies_role_id = 1121842393994494082
+        has_zennies_role = any(role.id == zennies_role_id for role in user.roles)
+        if has_zennies_role:
+            zennies_role_img = Image.open('./assets/zennies.png')
+            zennies_role_img = zennies_role_img.resize((75, 75))
+            custom_x = 1275
+            custom_y = 90
+            card.paste(zennies_role_img, (custom_x, custom_y), zennies_role_img)
         if has_lead_role:
             special_role_img = Image.open('./assets/lead.png')
             special_role_img = special_role_img.resize((100, 100))
@@ -685,6 +858,7 @@ class Levels(commands.Cog):
         draw.text((75, 850), 'Server Level','#ffffff', font=poppins_xsmall)
         draw.text((75, 900), 'Server Rank', '#ffffff', font=poppins_xsmall)
         draw.text((290, 903), f"#{str(rank)}", fill=levels['bar_color'], font=font2)
+        draw.text((845, 780), f"Kanzen Ranked", fill=levels['bar_color'], font=font2small)
         buffer = BytesIO()
         card.save(buffer, 'png')
         buffer.seek(0)
@@ -737,12 +911,69 @@ class Levels(commands.Cog):
         poppins_xxsmall = Font.montserrat(size=25)
         font2 = ImageFont.truetype("./fonts/Montserrat-Bold.ttf", 35)
         font3 = ImageFont.truetype("./fonts/Montserrat-Bold.ttf", 50)
+        font2small = ImageFont.truetype("./fonts/Montserrat-Bold.ttf", 23)
         roles_img = Image.open('./assets/rank3_badges.png')
         lead_roles_x = (card.width - roles_img.width) // 2
         lead_roles_y = (card.height - roles_img.height) // 2
         card.paste(roles_img, (lead_roles_x, lead_roles_y), roles_img)
         lead_role_id = 1121842279351590973
         has_lead_role = any(role.id == lead_role_id for role in user.roles)
+        zennies_role_id = 1121842393994494082
+        has_zennies_role = any(role.id == zennies_role_id for role in user.roles)
+        if has_zennies_role:
+            zennies_role_img = Image.open('./assets/rank box.png')
+            zennies_role_img = zennies_role_img.resize((1500, 500))
+            custom_x = -190
+            custom_y = 1225
+            card.paste(zennies_role_img, (custom_x, custom_y), zennies_role_img)
+        diamondrank_role_id = 1187540240836087858
+        has_diamondrank_role = any(role.id == diamondrank_role_id for role in user.roles)
+        goldrank_role_id = 1187540222708297748
+        has_goldrank_role = any(role.id == goldrank_role_id for role in user.roles)
+        silverrank_role_id = 1187508615364477039
+        has_silverrank_role = any(role.id == silverrank_role_id for role in user.roles)
+        bronzerank_role_id = 1187508597761003572
+        has_bronzerank_role = any(role.id == bronzerank_role_id for role in user.roles)
+        platrank_role_id = 1187540267696398427
+        has_platrank_role = any(role.id == platrank_role_id for role in user.roles)
+        eliterank_role_id = 1187540294221172786
+        has_eliterank_role = any(role.id == eliterank_role_id for role in user.roles)
+        if has_eliterank_role:
+            eliterank_role_img = Image.open('./assets/eliterank.png')
+            eliterank_role_img = eliterank_role_img.resize((175, 175))
+            custom_x = 865
+            custom_y = 1250
+            card.paste(eliterank_role_img, (custom_x, custom_y), eliterank_role_img)
+        elif has_platrank_role:
+            platrank_role_img = Image.open('./assets/platrank.png')
+            platrank_role_img = platrank_role_img.resize((175, 175))
+            custom_x = 865
+            custom_y = 1250
+            card.paste(platrank_role_img, (custom_x, custom_y), platrank_role_img)
+        elif has_diamondrank_role:
+            diamondrank_role_img = Image.open('./assets/diamondrank.png')
+            diamondrank_role_img = diamondrank_role_img.resize((175, 175))
+            custom_x = 865
+            custom_y = 1250
+            card.paste(diamondrank_role_img, (custom_x, custom_y), diamondrank_role_img)
+        elif has_goldrank_role:
+            goldrank_role_img = Image.open('./assets/goldrank.png')
+            goldrank_role_img = goldrank_role_img.resize((175, 175))
+            custom_x = 865
+            custom_y = 1250
+            card.paste(goldrank_role_img, (custom_x, custom_y), goldrank_role_img)
+        elif has_silverrank_role:
+            silverrank_role_img = Image.open('./assets/silverrank.png')
+            silverrank_role_img = silverrank_role_img.resize((175, 175))
+            custom_x = 865
+            custom_y = 1250
+            card.paste(silverrank_role_img, (custom_x, custom_y), silverrank_role_img)
+        elif has_bronzerank_role:
+            bronzerank_role_img = Image.open('./assets/bronzerank.png')
+            bronzerank_role_img = bronzerank_role_img.resize((175, 175))
+            custom_x = 865
+            custom_y = 1250
+            card.paste(bronzerank_role_img, (custom_x, custom_y), bronzerank_role_img)
         if has_lead_role:
             special_role_img = Image.open('./assets/lead.png')
             special_role_img = special_role_img.resize((125, 125))
@@ -816,13 +1047,14 @@ class Levels(commands.Cog):
         draw.text((100,1200), 'Server Level','#ffffff', font=poppins_xsmall)
         draw.text((100,1250), 'Server Rank', '#ffffff', font=poppins_xsmall)
         draw.text((325, 1253), f"#{str(rank)}", fill=levels['bar_color'], font=font2)
+        draw.text((845, 1205), f"Kanzen Ranked", fill=levels['bar_color'], font=font2small)
         buffer = BytesIO()
         card.save(buffer, 'png')
         buffer.seek(0)
         return buffer
-
-    async def _check_top_20(self, member_id: int, guild_id: int) -> bool:
-        """Checks if a member is in the top 20.
+    
+    async def _check_silver(self, member_id: int, guild_id: int) -> bool:
+        """Checks if a member is in silver rank.
         
         Parameters
         ----------
@@ -834,12 +1066,138 @@ class Levels(commands.Cog):
         Returns
         -------
         bool
-            True for top 20, otherwise False
+            True for silver rank, otherwise False
         """
         rank = await self.get_rank(member_id, guild_id)
-        return rank < 21 # true if top 20 false if not
+        return rank < 35
     
-    async def _get_top_20_movedown(self, member_ids: list, guild_id: int) -> int:
+    async def _check_gold(self, member_id: int, guild_id: int) -> bool:
+        """Checks if a member is in silver rank.
+        
+        Parameters
+        ----------
+        member_id: int
+            ID of member to check
+        guild_id: int
+            ID of the guild to check in
+
+        Returns
+        -------
+        bool
+            True for silver rank, otherwise False
+        """
+        rank = await self.get_rank(member_id, guild_id)
+        return rank < 20
+    
+    async def _check_diamond(self, member_id: int, guild_id: int) -> bool:
+        """Checks if a member is in silver rank.
+        
+        Parameters
+        ----------
+        member_id: int
+            ID of member to check
+        guild_id: int
+            ID of the guild to check in
+
+        Returns
+        -------
+        bool
+            True for silver rank, otherwise False
+        """
+        rank = await self.get_rank(member_id, guild_id)
+        return rank < 15
+
+    async def _check_plat(self, member_id: int, guild_id: int) -> bool:
+        """Checks if a member is in silver rank.
+        
+        Parameters
+        ----------
+        member_id: int
+            ID of member to check
+        guild_id: int
+            ID of the guild to check in
+
+        Returns
+        -------
+        bool
+            True for silver rank, otherwise False
+        """
+        rank = await self.get_rank(member_id, guild_id)
+        return rank < 5
+    
+    async def _check_elite(self, member_id: int, guild_id: int) -> bool:
+        """Checks if a member is in silver rank.
+        
+        Parameters
+        ----------
+        member_id: int
+            ID of member to check
+        guild_id: int
+            ID of the guild to check in
+
+        Returns
+        -------
+        bool
+            True for silver rank, otherwise False
+        """
+        rank = await self.get_rank(member_id, guild_id)
+        return rank < 3
+
+    async def _get_silver_movedown(self, member_ids: list, guild_id: int) -> int:
+        """
+        Gets the member to remove from top 20 role when a new member gets the role 
+        
+        (if 20 people already have the role)
+        
+        Parameters
+        ----------
+        member_ids: list
+            List containing all the IDs of members with the top 20 role
+        guild_id: int
+            ID of the guild to get role info from
+
+        Returns
+        -------
+        int
+            The ID of the member to remove from the top 20 role
+        """
+        t = tuple(member_ids)
+        query = "SELECT member_id FROM levels WHERE guild_id = ? AND xp = (SELECT MIN(xp) FROM levels WHERE member_id IN {} AND guild_id = ?)".format(t)
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, guild_id, guild_id)
+                member_id = await cursor.fetchone()
+            await self.bot.pool.release(conn)
+        return member_id[0]
+    
+    async def _get_gold_movedown(self, member_ids: list, guild_id: int) -> int:
+        """
+        Gets the member to remove from top 20 role when a new member gets the role 
+        
+        (if 20 people already have the role)
+        
+        Parameters
+        ----------
+        member_ids: list
+            List containing all the IDs of members with the top 20 role
+        guild_id: int
+            ID of the guild to get role info from
+
+        Returns
+        -------
+        int
+            The ID of the member to remove from the top 20 role
+        """
+        t = tuple(member_ids)
+        query = "SELECT member_id FROM levels WHERE guild_id = ? AND xp = (SELECT MIN(xp) FROM levels WHERE member_id IN {} AND guild_id = ?)".format(t)
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, guild_id, guild_id)
+                member_id = await cursor.fetchone()
+            await self.bot.pool.release(conn)
+        return member_id[0]
+    
+    async def _get_diamond_movedown(self, member_ids: list, guild_id: int) -> int:
         """
         Gets the member to remove from top 20 role when a new member gets the role 
         
@@ -866,8 +1224,62 @@ class Levels(commands.Cog):
             await self.bot.pool.release(conn)
         return member_id[0]
 
-    async def _get_number_20(self, guild_id: int) -> int:
-        """Gets the member ranked 20th.
+    async def _get_plat_movedown(self, member_ids: list, guild_id: int) -> int:
+        """
+        Gets the member to remove from top 20 role when a new member gets the role 
+        
+        (if 20 people already have the role)
+        
+        Parameters
+        ----------
+        member_ids: list
+            List containing all the IDs of members with the top 20 role
+        guild_id: int
+            ID of the guild to get role info from
+
+        Returns
+        -------
+        int
+            The ID of the member to remove from the top 20 role
+        """
+        t = tuple(member_ids)
+        query = "SELECT member_id FROM levels WHERE guild_id = ? AND xp = (SELECT MIN(xp) FROM levels WHERE member_id IN {} AND guild_id = ?)".format(t)
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, guild_id, guild_id)
+                member_id = await cursor.fetchone()
+            await self.bot.pool.release(conn)
+        return member_id[0]
+
+    async def _get_elite_movedown(self, member_ids: list, guild_id: int) -> int:
+        """
+        Gets the member to remove from top 20 role when a new member gets the role 
+        
+        (if 20 people already have the role)
+        
+        Parameters
+        ----------
+        member_ids: list
+            List containing all the IDs of members with the top 20 role
+        guild_id: int
+            ID of the guild to get role info from
+
+        Returns
+        -------
+        int
+            The ID of the member to remove from the top 20 role
+        """
+        t = tuple(member_ids)
+        query = "SELECT member_id FROM levels WHERE guild_id = ? AND xp = (SELECT MIN(xp) FROM levels WHERE member_id IN {} AND guild_id = ?)".format(t)
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, guild_id, guild_id)
+                member_id = await cursor.fetchone()
+            await self.bot.pool.release(conn)
+        return member_id[0]
+
+    async def _get_silver(self, guild_id: int) -> int:
+        """Gets the member silver ranked.
 
         Parameters
         ----------
@@ -877,9 +1289,93 @@ class Levels(commands.Cog):
         Returns
         -------
         int
-            The ID of the member ranked 20th
+            The ID of the member ranked silver
+        """
+        query = '''SELECT member_id FROM levels WHERE guild_id = ? ORDER BY xp LIMIT 35'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, guild_id)
+                member_ids = await cursor.fetchall()
+            await self.bot.pool.release(conn)
+        return member_ids[-1][0]
+
+    async def _get_gold(self, guild_id: int) -> int:
+        """Gets the member silver ranked.
+
+        Parameters
+        ----------
+        guild_id: int
+            ID of the guild to get member from
+
+        Returns
+        -------
+        int
+            The ID of the member ranked silver
         """
         query = '''SELECT member_id FROM levels WHERE guild_id = ? ORDER BY xp LIMIT 20'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, guild_id)
+                member_ids = await cursor.fetchall()
+            await self.bot.pool.release(conn)
+        return member_ids[-1][0]
+
+    async def _get_diamond(self, guild_id: int) -> int:
+        """Gets the member silver ranked.
+
+        Parameters
+        ----------
+        guild_id: int
+            ID of the guild to get member from
+
+        Returns
+        -------
+        int
+            The ID of the member ranked silver
+        """
+        query = '''SELECT member_id FROM levels WHERE guild_id = ? ORDER BY xp LIMIT 15'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, guild_id)
+                member_ids = await cursor.fetchall()
+            await self.bot.pool.release(conn)
+        return member_ids[-1][0]
+
+    async def _get_plat(self, guild_id: int) -> int:
+        """Gets the member silver ranked.
+
+        Parameters
+        ----------
+        guild_id: int
+            ID of the guild to get member from
+
+        Returns
+        -------
+        int
+            The ID of the member ranked silver
+        """
+        query = '''SELECT member_id FROM levels WHERE guild_id = ? ORDER BY xp LIMIT 5'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, guild_id)
+                member_ids = await cursor.fetchall()
+            await self.bot.pool.release(conn)
+        return member_ids[-1][0]
+
+    async def _get_elite(self, guild_id: int) -> int:
+        """Gets the member silver ranked.
+
+        Parameters
+        ----------
+        guild_id: int
+            ID of the guild to get member from
+
+        Returns
+        -------
+        int
+            The ID of the member ranked silver
+        """
+        query = '''SELECT member_id FROM levels WHERE guild_id = ? ORDER BY xp LIMIT 3'''
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cursor:
                 await cursor.execute(query, guild_id)
@@ -1061,9 +1557,9 @@ class Levels(commands.Cog):
         card = await self.bot.loop.run_in_executor(None, self._get_card3, str(member), str(member.status), avatar, levels, rank, member)
         return card
 
-    async def top_20_role_handler(self, member: discord.Member, guild: discord.Guild, role_id: int) -> None:
+    async def silver_role_handler(self, member: discord.Member, guild: discord.Guild, role_id: int) -> None:
         """
-        Handles top 20 role.
+        Handles silver rank role.
         
         Checks if a member's XP-changes requires modifications to the role members
         
@@ -1074,33 +1570,197 @@ class Levels(commands.Cog):
         guild: discord.Guild
             Guild containing the role
         role_id: int
-            ID of the top 20 role
+            ID of the silver rank role
         """
-        check = await self._check_top_20(member.id, guild.id)
+        check = await self._check_silver(member.id, guild.id)
         if check is True:
             role = member.get_role(role_id)
             if role is None:
                 role = guild.get_role(role_id)
-                await member.add_roles(role, reason=f'{str(member)} made it to the top 20!')
-                if len(role.members) > 20:
+                await member.add_roles(role, reason=f'{str(member)} made it to silver rank!')
+                if len(role.members) > 35:
                     mem_ids = []
                     for member in role.members:
                         mem_ids.append(member.id)
-                    member_movedown_id = await self._get_top_20_movedown(mem_ids, guild.id)
+                    member_movedown_id = await self._get_silver_movedown(mem_ids, guild.id)
                     remove_member = guild.get_member(member_movedown_id)
                     if remove_member is None:
                         remove_member = await guild.fetch_member(member_movedown_id)
-                    await remove_member.remove_roles(role, reason=f'{str(remove_member)} dropped out of the top 20!')
+                    await remove_member.remove_roles(role, reason=f'{str(remove_member)} dropped out of silver rank!')
                     
         if check is False:
             role = member.get_role(role_id)
             if role is not None: 
-                await member.remove_roles(role, reason=f'{str(member)} dropped out of the top 20!')
-                add_mem_id = await self._get_number_20(guild.id)
+                await member.remove_roles(role, reason=f'{str(member)} dropped out of silver rank!')
+                add_mem_id = await self._get_silver(guild.id)
                 add_member = guild.get_member(add_mem_id)
                 if add_member is None:
                     add_member = await guild.fetch_member(add_mem_id)
-                await add_member.add_roles(role, reason=f'{str(add_member)} made it to the top 20!')
+                await add_member.add_roles(role, reason=f'{str(add_member)} made it to silver rank!')
+
+    async def gold_role_handler(self, member: discord.Member, guild: discord.Guild, role_id: int) -> None:
+        """
+        Handles gold rank role.
+        
+        Checks if a member's XP-changes requires modifications to the role members
+        
+        Parameters
+        ----------
+        member: discord.Member
+            Member to check for role modifications
+        guild: discord.Guild
+            Guild containing the role
+        role_id: int
+            ID of the gold rank role
+        """
+        check = await self._check_gold(member.id, guild.id)
+        if check is True:
+            role = member.get_role(role_id)
+            if role is None:
+                role = guild.get_role(role_id)
+                await member.add_roles(role, reason=f'{str(member)} made it to gold rank!')
+                if len(role.members) > 20:
+                    mem_ids = []
+                    for member in role.members:
+                        mem_ids.append(member.id)
+                    member_movedown_id = await self._get_gold_movedown(mem_ids, guild.id)
+                    remove_member = guild.get_member(member_movedown_id)
+                    if remove_member is None:
+                        remove_member = await guild.fetch_member(member_movedown_id)
+                    await remove_member.remove_roles(role, reason=f'{str(remove_member)} dropped out of gold rank!')
+                    
+        if check is False:
+            role = member.get_role(role_id)
+            if role is not None: 
+                await member.remove_roles(role, reason=f'{str(member)} dropped out of gold rank!')
+                add_mem_id = await self._get_gold(guild.id)
+                add_member = guild.get_member(add_mem_id)
+                if add_member is None:
+                    add_member = await guild.fetch_member(add_mem_id)
+                await add_member.add_roles(role, reason=f'{str(add_member)} made it to gold rank!')
+
+    async def diamond_role_handler(self, member: discord.Member, guild: discord.Guild, role_id: int) -> None:
+        """
+        Handles diamond rank role.
+        
+        Checks if a member's XP-changes requires modifications to the role members
+        
+        Parameters
+        ----------
+        member: discord.Member
+            Member to check for role modifications
+        guild: discord.Guild
+            Guild containing the role
+        role_id: int
+            ID of the diamond rank role
+        """
+        check = await self._check_diamond(member.id, guild.id)
+        if check is True:
+            role = member.get_role(role_id)
+            if role is None:
+                role = guild.get_role(role_id)
+                await member.add_roles(role, reason=f'{str(member)} made it to diamond rank!')
+                if len(role.members) > 15:
+                    mem_ids = []
+                    for member in role.members:
+                        mem_ids.append(member.id)
+                    member_movedown_id = await self._get_diamond_movedown(mem_ids, guild.id)
+                    remove_member = guild.get_member(member_movedown_id)
+                    if remove_member is None:
+                        remove_member = await guild.fetch_member(member_movedown_id)
+                    await remove_member.remove_roles(role, reason=f'{str(remove_member)} dropped out of diamond rank!')
+                    
+        if check is False:
+            role = member.get_role(role_id)
+            if role is not None: 
+                await member.remove_roles(role, reason=f'{str(member)} dropped out of diamond rank!')
+                add_mem_id = await self._get_diamond(guild.id)
+                add_member = guild.get_member(add_mem_id)
+                if add_member is None:
+                    add_member = await guild.fetch_member(add_mem_id)
+                await add_member.add_roles(role, reason=f'{str(add_member)} made it to diamond rank!')
+
+    async def plat_role_handler(self, member: discord.Member, guild: discord.Guild, role_id: int) -> None:
+        """
+        Handles plat rank role.
+        
+        Checks if a member's XP-changes requires modifications to the role members
+        
+        Parameters
+        ----------
+        member: discord.Member
+            Member to check for role modifications
+        guild: discord.Guild
+            Guild containing the role
+        role_id: int
+            ID of the plat rank role
+        """
+        check = await self._check_plat(member.id, guild.id)
+        if check is True:
+            role = member.get_role(role_id)
+            if role is None:
+                role = guild.get_role(role_id)
+                await member.add_roles(role, reason=f'{str(member)} made it to plat rank!')
+                if len(role.members) > 5:
+                    mem_ids = []
+                    for member in role.members:
+                        mem_ids.append(member.id)
+                    member_movedown_id = await self._get_plat_movedown(mem_ids, guild.id)
+                    remove_member = guild.get_member(member_movedown_id)
+                    if remove_member is None:
+                        remove_member = await guild.fetch_member(member_movedown_id)
+                    await remove_member.remove_roles(role, reason=f'{str(remove_member)} dropped out of plat rank!')
+                    
+        if check is False:
+            role = member.get_role(role_id)
+            if role is not None: 
+                await member.remove_roles(role, reason=f'{str(member)} dropped out of plat rank!')
+                add_mem_id = await self._get_plat(guild.id)
+                add_member = guild.get_member(add_mem_id)
+                if add_member is None:
+                    add_member = await guild.fetch_member(add_mem_id)
+                await add_member.add_roles(role, reason=f'{str(add_member)} made it to plat rank!')
+
+    async def elite_role_handler(self, member: discord.Member, guild: discord.Guild, role_id: int) -> None:
+        """
+        Handles elite rank role.
+        
+        Checks if a member's XP-changes requires modifications to the role members
+        
+        Parameters
+        ----------
+        member: discord.Member
+            Member to check for role modifications
+        guild: discord.Guild
+            Guild containing the role
+        role_id: int
+            ID of the elite rank role
+        """
+        check = await self._check_elite(member.id, guild.id)
+        if check is True:
+            role = member.get_role(role_id)
+            if role is None:
+                role = guild.get_role(role_id)
+                await member.add_roles(role, reason=f'{str(member)} made it to elite rank!')
+                if len(role.members) > 3:
+                    mem_ids = []
+                    for member in role.members:
+                        mem_ids.append(member.id)
+                    member_movedown_id = await self._get_elite_movedown(mem_ids, guild.id)
+                    remove_member = guild.get_member(member_movedown_id)
+                    if remove_member is None:
+                        remove_member = await guild.fetch_member(member_movedown_id)
+                    await remove_member.remove_roles(role, reason=f'{str(remove_member)} dropped out of elite rank!')
+                    
+        if check is False:
+            role = member.get_role(role_id)
+            if role is not None: 
+                await member.remove_roles(role, reason=f'{str(member)} dropped out of elite rank!')
+                add_mem_id = await self._get_elite(guild.id)
+                add_member = guild.get_member(add_mem_id)
+                if add_member is None:
+                    add_member = await guild.fetch_member(add_mem_id)
+                await add_member.add_roles(role, reason=f'{str(add_member)} made it to elite rank!')
 
     async def get_leaderboard_stats(self, guild_id: int) -> List[LevelRow]:
         """Gets every member's levels ordered by XP
@@ -1213,16 +1873,54 @@ class Levels(commands.Cog):
                     await cursor.execute(query, status, guild_id)
                     await conn.commit()
                 await self.bot.pool.release(conn)
-
-    async def get_top_20_role_id(self, guild_id: int) -> Union[int, None]:
-        """Gets the top 20 role id for a guild if there is one
+        
+    async def get_bronze_role_id(self, guild_id: int) -> Union[int, None]:
+        """Gets the Bronze role id for a guild if there is one
         
         Parameters
         ----------
         guild_id: int
-            ID of guild to get status for
+            ID of the guild to get status for
         """
-        query = '''SELECT top_20_role_id FROM setup WHERE guild_id = ?'''
+        query = '''SELECT bronze_role_id FROM setup WHERE guild_id = ?'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, guild_id)
+                role_id = await cursor.fetchone()
+            await self.bot.pool.release(conn)
+        if role_id is not None:
+            return role_id[0]
+        else:
+            return None
+        
+    async def get_gold_role_id(self, guild_id: int) -> Union[int, None]:
+        """Gets the gold role id for a guild if there is one
+        
+        Parameters
+        ----------
+        guild_id: int
+            ID of the guild to get status for
+        """
+        query = '''SELECT gold_role_id FROM setup WHERE guild_id = ?'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, guild_id)
+                role_id = await cursor.fetchone()
+            await self.bot.pool.release(conn)
+        if role_id is not None:
+            return role_id[0]
+        else:
+            return None
+        
+    async def get_diamond_role_id(self, guild_id: int) -> Union[int, None]:
+        """Gets the diamond role id for a guild if there is one
+        
+        Parameters
+        ----------
+        guild_id: int
+            ID of the guild to get status for
+        """
+        query = '''SELECT diamond_role_id FROM setup WHERE guild_id = ?'''
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cursor:
                 await cursor.execute(query, guild_id)
@@ -1233,18 +1931,165 @@ class Levels(commands.Cog):
         else:
             return None
 
-    async def set_top_20_role(self, guild_id: int, role_id: int) -> None:
-        """Sets a guild's top 20 role
+    async def get_plat_role_id(self, guild_id: int) -> Union[int, None]:
+        """Gets the plat role id for a guild if there is one
+        
+        Parameters
+        ----------
+        guild_id: int
+            ID of the guild to get status for
+        """
+        query = '''SELECT plat_role_id FROM setup WHERE guild_id = ?'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, guild_id)
+                role_id = await cursor.fetchone()
+            await self.bot.pool.release(conn)
+        if role_id is not None:
+            return role_id[0]
+        else:
+            return None
+
+    async def get_elite_role_id(self, guild_id: int) -> Union[int, None]:
+        """Gets the elite role id for a guild if there is one
+        
+        Parameters
+        ----------
+        guild_id: int
+            ID of the guild to get status for
+        """
+        query = '''SELECT elite_role_id FROM setup WHERE guild_id = ?'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, guild_id)
+                role_id = await cursor.fetchone()
+            await self.bot.pool.release(conn)
+        if role_id is not None:
+            return role_id[0]
+        else:
+            return None
+
+    async def get_silver_role_id(self, guild_id: int) -> Union[int, None]:
+        """Gets the silver role id for a guild if there is one
+        
+        Parameters
+        ----------
+        guild_id: int
+            ID of the guild to get status for
+        """
+        query = '''SELECT silver_role_id FROM setup WHERE guild_id = ?'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, guild_id)
+                role_id = await cursor.fetchone()
+            await self.bot.pool.release(conn)
+        if role_id is not None:
+            return role_id[0]
+        else:
+            return None
+
+    async def set_silver_role(self, guild_id: int, role_id: int) -> None:
+        """Sets a guild's silver role
         
         Parameters
         ----------
         guild_id: int
             ID of guild with the role in it
         role_id: int, optional
-            ID of the role to give to top 20s
+            ID of the role to give to silver
         """
         role_id = "NULL" if role_id == 0 else role_id
-        query = '''UPDATE setup SET top_20_role_id = ? WHERE guild_id = ?'''
+        query = '''UPDATE setup SET silver_role_id = ? WHERE guild_id = ?'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, role_id, guild_id)
+                await conn.commit()
+            await self.bot.pool.release(conn)
+
+    async def set_gold_role(self, guild_id: int, role_id: int) -> None:
+        """Sets a guild's gold role
+        
+        Parameters
+        ----------
+        guild_id: int
+            ID of guild with the role in it
+        role_id: int, optional
+            ID of the role to give to gold
+        """
+        role_id = "NULL" if role_id == 0 else role_id
+        query = '''UPDATE setup SET gold_role_id = ? WHERE guild_id = ?'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, role_id, guild_id)
+                await conn.commit()
+            await self.bot.pool.release(conn)
+
+    async def set_diamond_role(self, guild_id: int, role_id: int) -> None:
+        """Sets a guild's diamond role
+        
+        Parameters
+        ----------
+        guild_id: int
+            ID of guild with the role in it
+        role_id: int, optional
+            ID of the role to give to diamond
+        """
+        role_id = "NULL" if role_id == 0 else role_id
+        query = '''UPDATE setup SET diamond_role_id = ? WHERE guild_id = ?'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, role_id, guild_id)
+                await conn.commit()
+            await self.bot.pool.release(conn)
+
+    async def set_plat_role(self, guild_id: int, role_id: int) -> None:
+        """Sets a guild's plat role
+        
+        Parameters
+        ----------
+        guild_id: int
+            ID of guild with the role in it
+        role_id: int, optional
+            ID of the role to give to plat
+        """
+        role_id = "NULL" if role_id == 0 else role_id
+        query = '''UPDATE setup SET plat_role_id = ? WHERE guild_id = ?'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, role_id, guild_id)
+                await conn.commit()
+            await self.bot.pool.release(conn)
+
+    async def set_elite_role(self, guild_id: int, role_id: int) -> None:
+        """Sets a guild's elite role
+        
+        Parameters
+        ----------
+        guild_id: int
+            ID of guild with the role in it
+        role_id: int, optional
+            ID of the role to give to elite
+        """
+        role_id = "NULL" if role_id == 0 else role_id
+        query = '''UPDATE setup SET elite_role_id = ? WHERE guild_id = ?'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, role_id, guild_id)
+                await conn.commit()
+            await self.bot.pool.release(conn)
+
+    async def set_bronze_role(self, guild_id: int, role_id: int) -> None:
+        """Sets a guild's Bronze role
+        
+        Parameters
+        ----------
+        guild_id: int
+            ID of the guild with the role
+        role_id: int, optional
+            ID of the Bronze role
+        """
+        role_id = "NULL" if role_id == 0 else role_id
+        query = '''UPDATE setup SET bronze_role_id = ? WHERE guild_id = ?'''
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cursor:
                 await cursor.execute(query, role_id, guild_id)
@@ -1294,38 +2139,120 @@ class Levels(commands.Cog):
         )
         await ctx.reply(embed=embed)
 
-    @levelling.command(description="Set the top 20 role", extras="+levelling setrole @role")
+    @levelling.command(description="Set the Bronze role", extras="+levelling setbronze @role")
     @commands.has_permissions(administrator=True)
-    async def setrole(self, ctx: commands.Context, role: discord.Role):
-        """Sets a role for members ranked top 20
+    async def setbronze(self, ctx: commands.Context, role: discord.Role):
+        """Sets a role for members ranked Bronze
+        
+        Parameters
+        ----------
+        role: discord.Role
+            The role to give to Bronze members
+        """
+        guild = ctx.guild
+        bronze_role_id = role.id
+        await self.set_bronze_role(guild.id, bronze_role_id)
+        for member in guild.members:
+            if member.bot:
+                continue
+            try:
+                await member.add_roles(role, reason=f'Setting Bronze role for all human members.')
+            except Exception as e:
+                print(f"Error adding Bronze role to {member}: {e}")
+
+        embed = discord.Embed(
+            title='Bronze role has been set!',
+            description=f'Bronze role has been set for all human members to {role.mention}!',
+            color=0x2B2D31
+        )
+        await ctx.reply(embed=embed)
+
+    @levelling.command(description="Set the silver role", extras="+levelling setsilver @role")
+    @commands.has_permissions(administrator=True)
+    async def setsilver(self, ctx: commands.Context, role: discord.Role):
+        """Sets a role for members ranked silver
         
         Parameters
         ----------
         role: discord.Role
             the role to give the members
         """
-        await self.set_top_20_role(ctx.guild.id, role.id)
+        await self.set_silver_role(ctx.guild.id, role.id)
         embed = discord.Embed(
-            title='top 20 role has been set!',
-            description=f'members ranked top 20 will receive the {role.mention} role!',
+            title='silver role has been set!',
+            description=f'members ranked silver will receive the {role.mention} role!',
             color=0x2B2D31
         )
         await ctx.reply(embed=embed)
 
-    @levelling.command(description="Remove the top 20 role", extras="+levelling removerole @role")
+    @levelling.command(description="Set the gold role", extras="+levelling setgold @role")
     @commands.has_permissions(administrator=True)
-    async def removerole(self, ctx: commands.Context, role: discord.Role):
-        """Removes the top 20 role
+    async def setgold(self, ctx: commands.Context, role: discord.Role):
+        """Sets a role for members ranked gold
         
         Parameters
         ----------
         role: discord.Role
-            role set as the top 20 role
+            the role to give the members
         """
-        await self.set_top_20_role(ctx.guild.id, 0)
+        await self.set_gold_role(ctx.guild.id, role.id)
         embed = discord.Embed(
-            title='top 20 role has been removed!',
-            description=f'members ranked top 20 will no longer receive the {role.mention} role!',
+            title='gold role has been set!',
+            description=f'members ranked gold will receive the {role.mention} role!',
+            color=0x2B2D31
+        )
+        await ctx.reply(embed=embed)
+
+    @levelling.command(description="Set the diamond role", extras="+levelling setdiamond @role")
+    @commands.has_permissions(administrator=True)
+    async def setdiamond(self, ctx: commands.Context, role: discord.Role):
+        """Sets a role for members ranked diamond
+        
+        Parameters
+        ----------
+        role: discord.Role
+            the role to give the members
+        """
+        await self.set_diamond_role(ctx.guild.id, role.id)
+        embed = discord.Embed(
+            title='diamond role has been set!',
+            description=f'members ranked diamond will receive the {role.mention} role!',
+            color=0x2B2D31
+        )
+        await ctx.reply(embed=embed)
+
+    @levelling.command(description="Set the plat role", extras="+levelling setplat @role")
+    @commands.has_permissions(administrator=True)
+    async def setplat(self, ctx: commands.Context, role: discord.Role):
+        """Sets a role for members ranked plat
+        
+        Parameters
+        ----------
+        role: discord.Role
+            the role to give the members
+        """
+        await self.set_plat_role(ctx.guild.id, role.id)
+        embed = discord.Embed(
+            title='plat role has been set!',
+            description=f'members ranked plat will receive the {role.mention} role!',
+            color=0x2B2D31
+        )
+        await ctx.reply(embed=embed)
+
+    @levelling.command(description="Set the elite role", extras="+levelling setelite @role")
+    @commands.has_permissions(administrator=True)
+    async def setelite(self, ctx: commands.Context, role: discord.Role):
+        """Sets a role for members ranked elite
+        
+        Parameters
+        ----------
+        role: discord.Role
+            the role to give the members
+        """
+        await self.set_elite_role(ctx.guild.id, role.id)
+        embed = discord.Embed(
+            title='elite role has been set!',
+            description=f'members ranked elite will receive the {role.mention} role!',
             color=0x2B2D31
         )
         await ctx.reply(embed=embed)
@@ -1481,9 +2408,21 @@ class Levels(commands.Cog):
         """
         levels = await self.get_member_levels(member.id, ctx.guild.id)
         await self.add_xp(member.id, ctx.guild.id, amount, levels)
-        top20 = await self.get_top_20_role_id(ctx.guild.id)
-        if top20 is not None:
-            await self.top_20_role_handler(member, ctx.guild, top20)
+        silver = await self.get_silver_role_id(ctx.guild.id)
+        if silver is not None:
+            await self.silver_role_handler(member, ctx.guild, silver)
+        gold = await self.get_gold_role_id(ctx.guild.id)
+        if gold is not None:
+            await self.gold_role_handler(member, ctx.guild, gold)
+        diamond = await self.get_diamond_role_id(ctx.guild.id)
+        if diamond is not None:
+            await self.diamond_role_handler(member, ctx.guild, diamond)
+        plat = await self.get_plat_role_id(ctx.guild.id)
+        if plat is not None:
+            await self.plat_role_handler(member, ctx.guild, plat)
+        elite = await self.get_elite_role_id(ctx.guild.id)
+        if elite is not None:
+            await self.elite_role_handler(member, ctx.guild, elite)
         embed = discord.Embed(
             title='xp added!',
             description=f'gave `{amount}xp` to {str(member)}',
@@ -1518,9 +2457,21 @@ class Levels(commands.Cog):
             if isinstance(member, discord.Member):
                 levels = await self.get_member_levels(member.id, ctx.guild.id)
                 await self.add_xp(member.id, ctx.guild.id, amount, levels)
-                top20 = await self.get_top_20_role_id(ctx.guild.id)
-                if top20 is not None:
-                    await self.top_20_role_handler(member, ctx.guild, top20)
+                silver = await self.get_silver_role_id(ctx.guild.id)
+                if silver is not None:
+                    await self.silver_role_handler(member, ctx.guild, silver)
+                gold = await self.get_gold_role_id(ctx.guild.id)
+                if gold is not None:
+                    await self.gold_role_handler(member, ctx.guild, gold)
+                diamond = await self.get_diamond_role_id(ctx.guild.id)
+                if diamond is not None:
+                    await self.diamond_role_handler(member, ctx.guild, diamond)
+                plat = await self.get_plat_role_id(ctx.guild.id)
+                if plat is not None:
+                    await self.plat_role_handler(member, ctx.guild, plat)
+                elite = await self.get_elite_role_id(ctx.guild.id)
+                if elite is not None:
+                    await self.elite_role_handler(member, ctx.guild, elite)
         await ctx.reply(embed=embed)
 
     @commands.command(aliases=['take'], description="Remove xp from someone", extras="+remove @member amount")
@@ -1543,9 +2494,21 @@ class Levels(commands.Cog):
                 await ctx.reply("you can't take away more xp than the user already has!")
             else:
                 await self.remove_xp(member.id, ctx.guild.id, amount, levels)
-                top20 = await self.get_top_20_role_id(ctx.guild.id)
-                if top20 is not None:
-                    await self.top_20_role_handler(member, ctx.guild, top20)
+                silver = await self.get_silver_role_id(ctx.guild.id)
+                if silver is not None:
+                    await self.silver_role_handler(member, ctx.guild, silver)
+                gold = await self.get_gold_role_id(ctx.guild.id)
+                if gold is not None:
+                    await self.gold_role_handler(member, ctx.guild, gold)
+                diamond = await self.get_diamond_role_id(ctx.guild.id)
+                if diamond is not None:
+                    await self.diamond_role_handler(member, ctx.guild, diamond)
+                plat = await self.get_plat_role_id(ctx.guild.id)
+                if plat is not None:
+                    await self.plat_role_handler(member, ctx.guild, plat)
+                elite = await self.get_elite_role_id(ctx.guild.id)
+                if elite is not None:
+                    await self.elite_role_handler(member, ctx.guild, elite)
                 embed = discord.Embed(
                     title='xp removed!',
                     description=f'removed `{amount}xp` from {str(member)}',
