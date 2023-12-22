@@ -1578,7 +1578,7 @@ class Levels(commands.Cog):
             if role is None:
                 role = guild.get_role(role_id)
                 await member.add_roles(role, reason=f'{str(member)} made it to silver rank!')
-                if len(role.members) > 35:
+                if len(role.members) > 36:
                     mem_ids = []
                     for member in role.members:
                         mem_ids.append(member.id)
@@ -1619,7 +1619,7 @@ class Levels(commands.Cog):
             if role is None:
                 role = guild.get_role(role_id)
                 await member.add_roles(role, reason=f'{str(member)} made it to gold rank!')
-                if len(role.members) > 20:
+                if len(role.members) > 21:
                     mem_ids = []
                     for member in role.members:
                         mem_ids.append(member.id)
@@ -1660,7 +1660,7 @@ class Levels(commands.Cog):
             if role is None:
                 role = guild.get_role(role_id)
                 await member.add_roles(role, reason=f'{str(member)} made it to diamond rank!')
-                if len(role.members) > 15:
+                if len(role.members) > 16:
                     mem_ids = []
                     for member in role.members:
                         mem_ids.append(member.id)
@@ -1701,7 +1701,7 @@ class Levels(commands.Cog):
             if role is None:
                 role = guild.get_role(role_id)
                 await member.add_roles(role, reason=f'{str(member)} made it to plat rank!')
-                if len(role.members) > 5:
+                if len(role.members) > 6:
                     mem_ids = []
                     for member in role.members:
                         mem_ids.append(member.id)
@@ -1742,7 +1742,7 @@ class Levels(commands.Cog):
             if role is None:
                 role = guild.get_role(role_id)
                 await member.add_roles(role, reason=f'{str(member)} made it to elite rank!')
-                if len(role.members) > 3:
+                if len(role.members) > 4:
                     mem_ids = []
                     for member in role.members:
                         mem_ids.append(member.id)
