@@ -2259,7 +2259,7 @@ class Levels(commands.Cog):
 
     @commands.command(aliases=['lb', 'levels'], description="See the level leaderboard", extras="aliases +lb, +levels")
     @levels_is_activated()
-    async def leaderboard(self, ctx: commands.Context, role: discord.Role):
+    async def leaderboard(self, ctx: commands.Context):
         """sends the current leaderboard"""
         embeds = []
         description = ""
@@ -2280,29 +2280,31 @@ class Levels(commands.Cog):
 
             elite_role = 1187540294221172786
             has_elite = discord.utils.get(user.roles, id=elite_role) is not None
-            emoji = "<:elite:1187761795109244988>" if has_elite else ""
-
             platinum_role = 1187540267696398427
             has_platinum = discord.utils.get(user.roles, id=platinum_role) is not None
-            emoji = "<:platinum:1187746184803143700>" if has_platinum and not has_elite else emoji
-
             diamond_role = 1187540240836087858
             has_diamond = discord.utils.get(user.roles, id=diamond_role) is not None
-            emoji = "<:diamond:1187746195276316682>" if has_diamond and not has_elite and not has_platinum else emoji
-
             gold_role = 1187540222708297748
             has_gold = discord.utils.get(user.roles, id=gold_role) is not None
-            emoji = "<:gold:1187746191182676070>" if has_gold and not has_elite and not has_platinum and not has_diamond else emoji
-
             silver_role = 1187508615364477039
             has_silver = discord.utils.get(user.roles, id=silver_role) is not None
-            emoji = "<:silver:1187746188196327524>" if has_silver and not has_elite and not has_platinum and not has_diamond and not has_gold else emoji
-
             bronze_role = 1187508597761003572
             has_bronze = discord.utils.get(user.roles, id=bronze_role) is not None
-            emoji = "<:bronze:1187746198879207475>" if has_bronze and not has_elite and not has_platinum and not has_diamond and not has_gold and not has_silver else emoji
             
-            description += f"**{i}.**<@!{row['member_id']}> {emoji}\n{row['xp']} xp | {row['messages']} {msg} | level {lvl}\n\n"
+            if has_elite:
+                emoji = "<:elite:1187761795109244988>"
+            elif has_platinum:
+                emoji = "<:platinum:1187746184803143700>"
+            elif has_diamond:
+                emoji = "<:diamond:1187746195276316682>"
+            elif has_gold:
+                emoji = "<:gold:1187746191182676070>"
+            elif has_silver:
+                emoji = "<:silver:1187746188196327524>"
+            elif has_bronze:
+                emoji = "<:bronze:1187746198879207475>"
+
+            description += f"**{i}.** <@!{row['member_id']}> {emoji}\n{row['xp']} xp | {row['messages']} {msg} | level {lvl}\n\n"
 
             if i % per_page == 0 or i == len(rows):
                 embed = discord.Embed(title="leaderboard", description=description, color=0x2b2d31)
