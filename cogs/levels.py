@@ -2259,7 +2259,7 @@ class Levels(commands.Cog):
 
     @commands.command(aliases=['lb', 'levels'], description="See the level leaderboard", extras="aliases +lb, +levels")
     @levels_is_activated()
-    async def leaderboard(self, ctx: commands.Context):
+    async def leaderboard(self, ctx: commands.Context, role: discord.Role):
         """sends the current leaderboard"""
         embeds = []
         description = ""
