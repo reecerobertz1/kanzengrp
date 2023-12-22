@@ -2261,62 +2261,66 @@ class Levels(commands.Cog):
     @levels_is_activated()
     async def leaderboard(self, ctx: commands.Context):
         """sends the current leaderboard"""
-        embeds = []
-        description = ""
-        rows = await self.get_leaderboard_stats(ctx.guild.id)
-        per_page = 5 if ctx.author.is_on_mobile() else 10
+        try:
+            embeds = []
+            description = ""
+            rows = await self.get_leaderboard_stats(ctx.guild.id)
+            per_page = 5 if ctx.author.is_on_mobile() else 10
 
-        for i, row in enumerate(rows, start=1):
-            msg = "messages" if row['messages'] != 1 else "message"
-            xp = row["xp"]
-            lvl = 0
+            for i, row in enumerate(rows, start=1):
+                msg = "messages" if row['messages'] != 1 else "message"
+                xp = row["xp"]
+                lvl = 0
 
-            while True:
-                if xp < ((50*(lvl**2))+(50*(lvl-1))):
-                    break
-                lvl += 1
+                while True:
+                    if xp < ((50*(lvl**2))+(50*(lvl-1))):
+                        break
+                    lvl += 1
 
-            user = ctx.guild.get_member(row['member_id'])
+                user = ctx.guild.get_member(row['member_id'])
 
-            elite_role = 1187540294221172786
-            has_elite = discord.utils.get(user.roles, id=elite_role) is not None
-            platinum_role = 1187540267696398427
-            has_platinum = discord.utils.get(user.roles, id=platinum_role) is not None
-            diamond_role = 1187540240836087858
-            has_diamond = discord.utils.get(user.roles, id=diamond_role) is not None
-            gold_role = 1187540222708297748
-            has_gold = discord.utils.get(user.roles, id=gold_role) is not None
-            silver_role = 1187508615364477039
-            has_silver = discord.utils.get(user.roles, id=silver_role) is not None
-            bronze_role = 1187508597761003572
-            has_bronze = discord.utils.get(user.roles, id=bronze_role) is not None
-            
-            if has_elite:
-                emoji = "<:elite:1187761795109244988>"
-            elif has_platinum:
-                emoji = "<:platinum:1187746184803143700>"
-            elif has_diamond:
-                emoji = "<:diamond:1187746195276316682>"
-            elif has_gold:
-                emoji = "<:gold:1187746191182676070>"
-            elif has_silver:
-                emoji = "<:silver:1187746188196327524>"
-            elif has_bronze:
-                emoji = "<:bronze:1187746198879207475>"
+                if user is not None:  # Check if the member exists
+                    elite_role = 1187540294221172786
+                    has_elite = discord.utils.get(user.roles, id=elite_role) is not None
+                    platinum_role = 1187540267696398427
+                    has_platinum = discord.utils.get(user.roles, id=platinum_role) is not None
+                    diamond_role = 1187540240836087858
+                    has_diamond = discord.utils.get(user.roles, id=diamond_role) is not None
+                    gold_role = 1187540222708297748
+                    has_gold = discord.utils.get(user.roles, id=gold_role) is not None
+                    silver_role = 1187508615364477039
+                    has_silver = discord.utils.get(user.roles, id=silver_role) is not None
+                    bronze_role = 1187508597761003572
+                    has_bronze = discord.utils.get(user.roles, id=bronze_role) is not None
+                    
+                    if has_elite:
+                        emoji = "<:elite:1187761795109244988>"
+                    elif has_platinum:
+                        emoji = "<:platinum:1187746184803143700>"
+                    elif has_diamond:
+                        emoji = "<:diamond:1187746195276316682>"
+                    elif has_gold:
+                        emoji = "<:gold:1187746191182676070>"
+                    elif has_silver:
+                        emoji = "<:silver:1187746188196327524>"
+                    elif has_bronze:
+                        emoji = "<:bronze:1187746198879207475>"
 
-            description += f"**{i}.** <@!{row['member_id']}> {emoji}\n{row['xp']} xp | {row['messages']} {msg} | level {lvl}\n\n"
+                    description += f"**{i}.** <@!{row['member_id']}> {emoji}\n{row['xp']} xp | {row['messages']} {msg} | level {lvl}\n\n"
 
-            if i % per_page == 0 or i == len(rows):
-                embed = discord.Embed(title="leaderboard", description=description, color=0x2b2d31)
-                embed.set_thumbnail(url=ctx.guild.icon.url)
-                embeds.append(embed)
-                description = ""
+                    if i % per_page == 0 or i == len(rows):
+                        embed = discord.Embed(title="leaderboard", description=description, color=0x2b2d31)
+                        embed.set_thumbnail(url=ctx.guild.icon.url)
+                        embeds.append(embed)
+                        description = ""
 
-        if len(embeds) > 1:
-            view = Paginator(embeds)
-            await ctx.send(embed=view.initial, view=view)
-        else:
-            await ctx.send(embed=embed)
+            if len(embeds) > 1:
+                view = Paginator(embeds)
+                await ctx.send(embed=view.initial, view=view)
+            else:
+                await ctx.send(embed=embed)
+        except Exception as e:
+            print(f"An error occurred: {e}")
 
     @commands.command(description="Check your rank", extras="+rank (optional @member)")
     @levels_is_activated()
