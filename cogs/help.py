@@ -22,7 +22,7 @@ class HelpSelect(Select):
             if not getattr(i, "hidden", False):
                 commands_mixer.append(i)
 
-        embed = discord.Embed(description='\n'.join(f"**{self.bot.command_prefix}{command.name}:**\n<:reply1:1179652862473678950> {command.description}\n<:reply:1179653104170455040> {command.extras}" for command in commands_mixer), color=0x2b2d31)
+        embed = discord.Embed(description='\n'.join(f"**{self.bot.command_prefix}{command.name}:**\n<:1166196254141861979:1188190233267818566>  {command.description}\n<:1166196258499727480:1188190249768210582> {command.extras}" for command in commands_mixer), color=0x2b2d31)
         embed.set_thumbnail(url=interaction.guild.icon)
         embed.set_author(name=f"{cog.__cog_name__} commands", icon_url=interaction.user.avatar)
         await interaction.response.edit_message(embed=embed)
@@ -38,10 +38,11 @@ class Help(commands.Cog):
     )
     async def help(self, ctx):
         embed = discord.Embed(
-            description="owner info:\n<a:Arrow_1:1145603161701224528> Hoshi is owned by [Reece](https://instagram.com/remqsi)\n<a:Arrow_1:1145603161701224528> Reece coded Hoshi in [Visual Studio Code](https://code.visualstudio.com/)\n\ndevelopment info:\n<a:Arrow_1:1145603161701224528> Hoshi is coded in Python 3.11.4\n<a:Arrow_1:1145603161701224528> [Download Python 3.11.4](https://www.python.org/downloads/)\n<a:Arrow_1:1145603161701224528> Developed by [Reece](https://instagram.com/remqsi) with help from [Alex](https://instagram.com/rqinflow)\n\nextra info:\n<a:Arrow_1:1145603161701224528> Hoshi's prefix is `+`\n<a:Arrow_1:1145603161701224528> Hoshi was made for [**__Kanzengrp__**](https://instagram.com/kanzengrp)\n\nbug reports\n<a:Arrow_1:1145603161701224528> Use __+report__ to report bug reports!",
+            description="owner info:\n<:CF12:1188186414387568691> Hoshi is owned by [Reece](https://instagram.com/remqsi)\n<:CF12:1188186414387568691> Reece coded Hoshi in [Visual Studio Code](https://code.visualstudio.com/)\n\ndevelopment info:\n<:CF12:1188186414387568691> Hoshi is coded in Python 3.11.4\n<:CF12:1188186414387568691> Developed by [Reece](https://instagram.com/remqsi), [Alex](https://instagram.com/rqinflow) and [Josh](https://instagram.com/xiaosaeq)\n\nextra info:\n<:CF12:1188186414387568691> Hoshi's prefix is `+`\n<:CF12:1188186414387568691> Hoshi was made for [Kanzengrp](https://instagram.com/kanzengrp)\n<:CF12:1188186414387568691>  Use __+report__ to report bugs",
             color=0x2b2d31,
         )
-        embed.set_author(name="About Hoshi", icon_url=self.bot.user.display_avatar.url)
+        embed.set_author(name=f"requsted by {ctx.author.name}", icon_url=ctx.author.avatar)
+        embed.set_footer(text="• Use the dropdown menu to select a category", icon_url=self.bot.user.display_avatar.url)
         embed.set_thumbnail(url=ctx.guild.icon)
         view = View().add_item(HelpSelect(self.bot))
         await ctx.reply(embed=embed, view=view)
