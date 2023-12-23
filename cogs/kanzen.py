@@ -26,9 +26,15 @@ class infobuttons(discord.ui.View):
         await channel.send(embed=log)
         await interaction.response.send_message(f'I have sent you the logos! Check your DMs', ephemeral=True)
 
-    @discord.ui.button(label="Server Roles")
-    async def roles(self, interaction: discord.Interaction, button: discord.ui.Button):
-        embed = discord.Embed(title="Kanzen Roles", description="<:lead:1181429630029275136> - is for the kanzen lead\n<:headstaff:1181430061333745724> - is for head staff\n<:mods:1181430661588987944> - is for moderators\n<:staff:1181429748191199244> - is for staff\n<:trainee:1181430659902885929> - is for trainee staff\n<:devs:1181430657520504882> - is for hoshi developers\n<:boosters:1181430064584347729> - is for kanzen boosters\n<:top20:1181430063397339136> - is for the top 20 active members\n<:zennie:1181430664415948870> - is for everyone", color=0x2b2d31)
+    @discord.ui.button(label="Kanzen Ranked")
+    async def ranks(self, interaction: discord.Interaction, button: discord.ui.Button):
+        embed = discord.Embed(title="Kanzen Ranked", description="Here are the ranked roles we have in kanzen. These ranks will allow you to unlock new logos made for each rank and you can show off your rank to all your followers on instagram/tiktok\n\n**These ranks are:**", color=0x2b2d31)
+        embed.add_field(name="** **", value="<:bronze:1187746198879207475> <@&1187508597761003572> **default rank**\n<:purplebar:1188201890882785330><:PU:1187799226042830978><:PU:1187799226042830978><:PU:1187799226042830978><:PU:1187799226042830978><:PU:1187799226042830978>", inline=True)
+        embed.add_field(name="** **", value="<:silver:1187746188196327524> <@&1187508615364477039> **top 35**\n<:purplebar:1188201890882785330><:purplebar:1188201890882785330><:PU:1187799226042830978><:PU:1187799226042830978><:PU:1187799226042830978><:PU:1187799226042830978>", inline=True)
+        embed.add_field(name="** **", value="<:gold:1187746191182676070> <@&1187540222708297748> **top 20**\n<:purplebar:1188201890882785330><:purplebar:1188201890882785330><:purplebar:1188201890882785330><:PU:1187799226042830978><:PU:1187799226042830978><:PU:1187799226042830978>", inline=True)
+        embed.add_field(name="** **", value="<:diamond:1187746195276316682> <@&1187540240836087858> **top 15**\n<:purplebar:1188201890882785330><:purplebar:1188201890882785330><:purplebar:1188201890882785330><:purplebar:1188201890882785330><:PU:1187799226042830978><:PU:1187799226042830978>", inline=True)
+        embed.add_field(name="** **", value="<:platinum:1187746184803143700> <@&1187540267696398427> **top 5**\n<:purplebar:1188201890882785330><:purplebar:1188201890882785330><:purplebar:1188201890882785330><:purplebar:1188201890882785330><:purplebar:1188201890882785330><:PU:1187799226042830978>", inline=True)
+        embed.add_field(name="** **", value="<:elite:1187761795109244988> <@&1187540294221172786> **top 3**\n<:purplebar:1188201890882785330><:purplebar:1188201890882785330><:purplebar:1188201890882785330><:purplebar:1188201890882785330><:purplebar:1188201890882785330><:purplebar:1188201890882785330>", inline=True)
         embed.set_thumbnail(url=interaction.user.display_avatar)
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
