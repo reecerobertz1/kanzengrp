@@ -2279,7 +2279,7 @@ class Levels(commands.Cog):
 
                 user = ctx.guild.get_member(row['member_id'])
 
-                if user is not None:  # Check if the member exists
+                if user is not None:
                     elite_role = 1187540294221172786
                     has_elite = discord.utils.get(user.roles, id=elite_role) is not None
                     platinum_role = 1187540267696398427
@@ -2293,18 +2293,18 @@ class Levels(commands.Cog):
                     bronze_role = 1187508597761003572
                     has_bronze = discord.utils.get(user.roles, id=bronze_role) is not None
                     
-                    if has_elite:
-                        emoji = "<:elite:1187761795109244988>"
-                    elif has_platinum:
-                        emoji = "<:platinum:1187746184803143700>"
-                    elif has_diamond:
-                        emoji = "<:diamond:1187746195276316682>"
-                    elif has_gold:
-                        emoji = "<:gold:1187746191182676070>"
-                    elif has_silver:
-                        emoji = "<:silver:1187746188196327524>"
-                    elif has_bronze:
-                        emoji = "<:bronze:1187746198879207475>"
+                if has_elite:
+                    emoji = "<:elite:1188301436539383819>"
+                elif has_platinum:
+                    emoji = "<:platinum:1188301440863715398>"
+                elif has_diamond:
+                    emoji = "<:diamond:1188301431996960769>"
+                elif has_gold:
+                    emoji = "<:gold:1188301438967873657>"
+                elif has_silver:
+                    emoji = "<:silver:1188301443640340530>"
+                elif has_bronze:
+                    emoji = "<:bronze:1188301445871714314>"
 
                     description += f"**{i}.** <@!{row['member_id']}> {emoji}\n{row['xp']} xp | {row['messages']} {msg} | level {lvl}\n\n"
 
