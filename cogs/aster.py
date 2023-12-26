@@ -36,7 +36,7 @@ class aster(commands.Cog):
         self.emoji = "<:tata:1121909389280944169>"
 
     @commands.command()
-    async def decline(self, ctx):
+    async def dddecline(self, ctx):
         if ctx.message.reference is not None:
             try:
                 msg = await ctx.channel.fetch_message(ctx.message.reference.message_id)
@@ -65,7 +65,7 @@ class aster(commands.Cog):
             await ctx.send("Please reply with the embed you want to process.")
 
     @commands.command()
-    async def accept(self, ctx):
+    async def aaaccept(self, ctx):
         if ctx.message.reference is not None:
             try:
                 msg = await ctx.channel.fetch_message(ctx.message.reference.message_id)
