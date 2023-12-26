@@ -774,8 +774,7 @@ class ebmessages(commands.Cog):
             return None
 
     @commands.command()
-    @is_judge()
-    async def aaccept(self, ctx):
+    async def accept(self, ctx):
         if ctx.message.reference is not None:
             try:
                 msg = await ctx.channel.fetch_message(ctx.message.reference.message_id)
@@ -870,8 +869,7 @@ class ebmessages(commands.Cog):
             await ctx.send("Please reply with the embed you want to process.")
 
     @commands.command()
-    @is_judge()
-    async def ddecline(self, ctx):
+    async def decline(self, ctx):
         if ctx.message.reference is not None:
             try:
                 msg = await ctx.channel.fetch_message(ctx.message.reference.message_id)
