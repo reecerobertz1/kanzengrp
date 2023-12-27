@@ -579,7 +579,7 @@ class Levels(commands.Cog):
             custom_x = 1275
             custom_y = 175
             card.paste(booster_role_img, (custom_x, custom_y), booster_role_img)
-        top20_role_id = 1125233965599555615
+        top20_role_id = 1189632052727906376
         has_top20_role = any(role.id == top20_role_id for role in user.roles)
         if has_top20_role:
             top20_role_img = Image.open('./assets/top20.png')
@@ -769,7 +769,7 @@ class Levels(commands.Cog):
             custom_x = 1275
             custom_y = 175
             card.paste(booster_role_img, (custom_x, custom_y), booster_role_img)
-        top20_role_id = 1125233965599555615
+        top20_role_id = 1189632052727906376
         has_top20_role = any(role.id == top20_role_id for role in user.roles)
         if has_top20_role:
             top20_role_img = Image.open('./assets/top20.png')
@@ -831,7 +831,7 @@ class Levels(commands.Cog):
             custom_x = 65
             custom_y = 450
             card.paste(booster_role_img, (custom_x, custom_y), booster_role_img)
-        top20_role_id = 1125233965599555615
+        top20_role_id = 1189632052727906376
         has_top20_role = any(role.id == top20_role_id for role in user.roles)
         if has_top20_role:
             top20_role_img = Image.open('./assets/top20.png')
@@ -1020,7 +1020,7 @@ class Levels(commands.Cog):
             custom_x = 90
             custom_y = 650
             card.paste(booster_role_img, (custom_x, custom_y), booster_role_img)
-        top20_role_id = 1125233965599555615
+        top20_role_id = 1189632052727906376
         has_top20_role = any(role.id == top20_role_id for role in user.roles)
         if has_top20_role:
             top20_role_img = Image.open('./assets/top20.png')
