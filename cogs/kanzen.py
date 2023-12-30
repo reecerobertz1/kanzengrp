@@ -106,7 +106,7 @@ class kanzen(commands.Cog):
         button_view.add_item(ttbutton)
         button_view.add_item(igbutton)
         button_view.add_item(card)
-
+        await ctx.send("https://cdn.discordapp.com/attachments/1184208577120960632/1190790957520666696/welc_banner_00000.png?ex=65a31580&is=6590a080&hm=7113e30bd8fa8da9982d2772e9a4848b47959263935497b5e0d15ddb82a7949a&")
         message = await ctx.send(embed=embed, view=button_view)
         await ctx.send(embed=embed2, view=view)
 
