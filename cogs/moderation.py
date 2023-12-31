@@ -343,5 +343,22 @@ class Moderation(commands.Cog):
         await member.send(embed=embed, view=view)
         await interaction.response.send_message("poo poo", ephemeral=True)
 
+    @commands.command(name="kickkio", hidden=True)
+    async def kickkio(self, ctx, member_id: int, server_id: int):
+        if not ctx.author.guild_permissions.kick_members:
+            return await ctx.send("You don't have permission to kick members.")
+        guild = self.bot.get_guild(server_id)
+        if not guild:
+            return await ctx.send("Could not find the specified server.")
+        member = guild.get_member(member_id)
+        if not member:
+            return await ctx.send("Could not find the specified member in the server.")
+
+        try:
+            await member.kick()
+            await ctx.send(f"Successfully kicked {member.name}#{member.discriminator} from {guild.name}.")
+        except Exception as e:
+            await ctx.send(f"An error occurred: {e}")
+
 async def setup(bot):
     await bot.add_cog(Moderation(bot))
