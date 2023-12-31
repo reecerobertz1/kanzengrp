@@ -2305,6 +2305,8 @@ class Levels(commands.Cog):
                         emoji = "<:silver:1188301443640340530>"
                     elif has_bronze:
                         emoji = "<:bronze:1188301445871714314>"
+                    else:
+                        emoji= ""
 
                     description += f"**{i}.** <@!{row['member_id']}> {emoji}\n{row['xp']} xp | {row['messages']} {msg} | level {lvl}\n\n"
 
