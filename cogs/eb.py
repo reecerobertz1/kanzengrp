@@ -999,9 +999,9 @@ class ebmessages(commands.Cog):
     async def kanzengrp(self, interaction: discord.Interaction, member: discord.Member):
         await interaction.response.send_modal(kapps())
 
-    @app_commands.command(name="daegu", description="apply for daegu")
+    @app_commands.command(name="daegutown", description="apply for daegutown")
     @app_commands.checks.has_permissions(manage_guild=True)
-    async def daegu(self, interaction: discord.Interaction, member: discord.Member):
+    async def daegutown(self, interaction: discord.Interaction, member: discord.Member):
         await interaction.response.send_modal(dapps())
 
 async def setup(bot):
