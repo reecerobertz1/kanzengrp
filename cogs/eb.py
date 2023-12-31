@@ -994,5 +994,15 @@ class ebmessages(commands.Cog):
         await ctx.send("mute partner pings with the `partner mute` role in <id:customize>")
         await ctx.send("if you want to become a partner with Editors Block, please go to <#1131005271502753812> and click the `Partnership Info` button and see if you meet our requirements, if you do message <@609515684740988959>")
 
+    @app_commands.command(name="kanzen", description="apply for kanzen")
+    @app_commands.checks.has_permissions(manage_guild=True)
+    async def kanzen(self, interaction: discord.Interaction, member: discord.Member):
+        await interaction.response.send_modal(kapps())
+
+    @app_commands.command(name="daegu", description="apply for daegu")
+    @app_commands.checks.has_permissions(manage_guild=True)
+    async def daegu(self, interaction: discord.Interaction, member: discord.Member):
+        await interaction.response.send_modal(dapps())
+
 async def setup(bot):
     await bot.add_cog(ebmessages(bot))
