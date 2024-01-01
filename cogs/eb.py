@@ -133,7 +133,8 @@ class kdapps(discord.ui.View):
 
     @discord.ui.button(label="Daegu!")
     async def daegu(self, interaction: discord.Interaction, button: discord.ui.Button):
-         await interaction.response.send_message(f"Hey {interaction.user.name} daegu apps are closed as of right now, we will open them on the 1st!", ephemeral=True)
+        await interaction.response.send_modal(dapps())
+
 
 class kanzenapps(discord.ui.View):
     def __init__ (self):
