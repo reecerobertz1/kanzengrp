@@ -28,6 +28,8 @@ class Levels(commands.Cog):
         self.cd_mapping = commands.CooldownMapping.from_cooldown(1, 60, commands.BucketType.user) # cooldown for xp (1 minute/60 seconds)
         self.regex_hex = "^#(?:[0-9a-fA-F]{3}){1,2}$" # regex to match hex colors for progress bar color
         self.emoji="<:cooky:1121909627156705280>"
+        self.channels = [1064806374992785469, 1112328650298249226, 896882404805971998, 1060656267670061106, 1181419043153002546, 1135247559431032833, 1125053619893440653, 1165791833222291576, 1184208577120960632]
+        self.guilds = [896619762354892821, 1121841073673736215]
 
     def levels_is_activated():
         async def predicate(ctx: commands.Context):
@@ -227,6 +229,12 @@ class Levels(commands.Cog):
 
         if message.author.bot is True: 
             return # author is a bot, we don't want to add xp to bots
+        
+        if message.guild.id not in self.guilds:
+            return
+
+        if message.channel.id not in self.channels:
+            return
 
         bucket = self.cd_mapping.get_bucket(message)
         retry_after = bucket.update_rate_limit()
