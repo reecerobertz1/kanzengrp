@@ -87,7 +87,7 @@ class welcandleave(commands.Cog):
     @commands.Cog.listener()
     async def on_member_join(self ,member: discord.Member):
         if member.guild.id == self.server1_id:
-            embed = discord.Embed(title='<a:kanzenflower:1128154723262943282> Welcome to Kanzen!', color=0x2b2d31, description=f"Welcome to kanzen {member.name}!\n<a:bounceyarrow:1128155233437106187> Read our [information](https://discord.com/channels/1121841073673736215/1121913361169391666)\n<a:bounceyarrow:1128155233437106187> Get your roles [here](https://discord.com/channels/1121841073673736215/1139958872279359518)\n<a:bounceyarrow:1128155233437106187> Logos and hashtag are [here](https://discord.com/channels/1121841073673736215/1121913361169391666)")
+            embed = discord.Embed(title='<a:kanzenflower:1128154723262943282> Welcome to Kanzen!', color=0x2b2d31, description=f"Welcome to kanzen {member.name}!\n<a:Arrow_1:1145603161701224528> Read our [information](https://discord.com/channels/1121841073673736215/1148042725950767138)\n<a:Arrow_1:1145603161701224528> Logos and hashtag are [here](https://discord.com/channels/1121841073673736215/1148042725950767138)")
             embed.set_footer(text='Need help? ping @lead or @staff', icon_url=member.display_avatar.url)
             channel = self.bot.get_channel(self.server1_welcome_channel_id)
             channel2 = self.bot.get_channel(1125053619893440653)
