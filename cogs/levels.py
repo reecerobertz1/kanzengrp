@@ -252,7 +252,7 @@ class Levels(commands.Cog):
             The color of their progress bar
         """
         width = 1500  # Width of the progress bar
-        height = 10  # Height of the progress bar
+        height = 25  # Height of the progress bar
         radius = 0  # Radius of the rounded corners
         progress_bar = Image.new('RGBA', (width, height), (0, 0, 0, 0))
         draw = ImageDraw.Draw(progress_bar)
@@ -474,23 +474,27 @@ class Levels(commands.Cog):
         avatar_paste, circle = self._get_round_avatar1(avatar)
         poppins = Font.poppins(size=67)
         poppins_small = Font.poppins(size=50)
-        poppins_xsmall = Font.poppins(size=35)
-        poppins_xxsmall = Font.montserrat(size=25)
+        poppins_xsmall = Font.poppins(size=30)
+        font4 = ImageFont.truetype("./fonts/Montserrat-Bold.ttf", size=27)
         font2 = ImageFont.truetype("./fonts/Montserrat-Bold.ttf", 35)
         font2small = ImageFont.truetype("./fonts/Montserrat-Bold.ttf", 15)
         font3 = ImageFont.truetype("./fonts/Montserrat-Bold.ttf", 50)
-        roles_img = Image.open('./assets/roles.png')
-        lead_roles_x = (card.width - roles_img.width) // 2
-        lead_roles_y = (card.height - roles_img.height) // 2
-        card.paste(roles_img, (lead_roles_x, lead_roles_y), roles_img)
         zennies_role_id = 1121842393994494082
         has_zennies_role = any(role.id == zennies_role_id for role in user.roles)
         if has_zennies_role:
-            zennies_role_img = Image.open('./assets/rank box.png')
+            zennies_role_img = Image.open('./assets/rank1.png')
             zennies_role_img = zennies_role_img.resize((1500, 500))
             custom_x = 0
             custom_y = 0
             card.paste(zennies_role_img, (custom_x, custom_y), zennies_role_img)
+        daegu_role_id = 896925970672549958
+        has_daegu_role = any(role.id == daegu_role_id for role in user.roles)
+        if has_daegu_role:
+            daegu_role_img = Image.open('./assets/rank1 daegu.png')
+            daegu_role_img = daegu_role_img.resize((1500, 500))
+            custom_x = 0
+            custom_y = 0
+            card.paste(daegu_role_img, (custom_x, custom_y), daegu_role_img)
         diamondrank_role_id = 1187540240836087858
         has_diamondrank_role = any(role.id == diamondrank_role_id for role in user.roles)
         goldrank_role_id = 1187540222708297748
@@ -505,116 +509,114 @@ class Levels(commands.Cog):
         has_eliterank_role = any(role.id == eliterank_role_id for role in user.roles)
         if has_eliterank_role:
             eliterank_role_img = Image.open('./assets/eliterank.png')
-            eliterank_role_img = eliterank_role_img.resize((175, 175))
-            custom_x = 1055
-            custom_y = 35
+            eliterank_role_img = eliterank_role_img.resize((300, 300))
+            custom_x = -15
+            custom_y = 100
             card.paste(eliterank_role_img, (custom_x, custom_y), eliterank_role_img)
         elif has_platrank_role:
             platrank_role_img = Image.open('./assets/platrank.png')
-            platrank_role_img = platrank_role_img.resize((175, 175))
-            custom_x = 1055
-            custom_y = 35
+            platrank_role_img = platrank_role_img.resize((300, 300))
+            custom_x = -15
+            custom_y = 100
             card.paste(platrank_role_img, (custom_x, custom_y), platrank_role_img)
         elif has_diamondrank_role:
             diamondrank_role_img = Image.open('./assets/diamondrank.png')
-            diamondrank_role_img = diamondrank_role_img.resize((175, 175))
-            custom_x = 1055
-            custom_y = 35
+            diamondrank_role_img = diamondrank_role_img.resize((300, 300))
+            custom_x = -15
+            custom_y = 100
             card.paste(diamondrank_role_img, (custom_x, custom_y), diamondrank_role_img)
         elif has_goldrank_role:
             goldrank_role_img = Image.open('./assets/goldrank.png')
-            goldrank_role_img = goldrank_role_img.resize((175, 175))
-            custom_x = 1055
-            custom_y = 35
+            goldrank_role_img = goldrank_role_img.resize((300, 300))
+            custom_x = -15
+            custom_y = 100
             card.paste(goldrank_role_img, (custom_x, custom_y), goldrank_role_img)
         elif has_silverrank_role:
             silverrank_role_img = Image.open('./assets/silverrank.png')
-            silverrank_role_img = silverrank_role_img.resize((175, 175))
-            custom_x = 1055
-            custom_y = 35
+            silverrank_role_img = silverrank_role_img.resize((300, 300))
+            custom_x = -15
+            custom_y = 100
             card.paste(silverrank_role_img, (custom_x, custom_y), silverrank_role_img)
         elif has_bronzerank_role:
             bronzerank_role_img = Image.open('./assets/bronzerank.png')
-            bronzerank_role_img = bronzerank_role_img.resize((175, 175))
-            custom_x = 1055
-            custom_y = 35
+            bronzerank_role_img = bronzerank_role_img.resize((300, 300))
+            custom_x = -15
+            custom_y = 100
             card.paste(bronzerank_role_img, (custom_x, custom_y), bronzerank_role_img)
         lead_role_id = 1121842279351590973
         has_lead_role = any(role.id == lead_role_id for role in user.roles)
         if has_lead_role:
             special_role_img = Image.open('./assets/lead.png')
             special_role_img = special_role_img.resize((75, 75))
-            custom_x = 1375
-            custom_y = 375
+            custom_x = 665
+            custom_y = 395
             card.paste(special_role_img, (custom_x, custom_y), special_role_img)
         hstaff_id = 1178924350523588618
-        has_lead_role = any(role.id == lead_role_id for role in user.roles)
-        if has_lead_role:
+        has_hstaff_role = any(role.id == hstaff_id for role in user.roles)
+        if has_hstaff_role:
             special_role_img = Image.open('./assets/hstaff.png')
-            special_role_img = special_role_img.resize((100, 100))
-            custom_x = 1265
-            custom_y = 365
+            special_role_img = special_role_img.resize((90, 90))
+            custom_x = 545
+            custom_y = 390
             card.paste(special_role_img, (custom_x, custom_y), special_role_img)
         staff_role_id = 1135244903165722695
         has_staff_role = any(role.id == staff_role_id for role in user.roles)
         if has_staff_role:
             staff_role_img = Image.open('./assets/staff.png')
             staff_role_img = staff_role_img.resize((75, 75))
-            custom_x = 1275
-            custom_y = 275
+            custom_x = 465
+            custom_y = 395
             card.paste(staff_role_img, (custom_x, custom_y), staff_role_img)
         mods_id = 1135244903165722695
         mods_role = any(role.id == mods_id for role in user.roles)
         if mods_role:
             mods_img = Image.open('./assets/mods.png')
             mods_img = mods_img.resize((75, 75))
-            custom_x = 1375
-            custom_y = 275
+            custom_x = 365
+            custom_y = 395
             card.paste(mods_img, (custom_x, custom_y), mods_img)
         devs_id = 1179255802003988573
         devs_role = any(role.id == devs_id for role in user.roles)
         if devs_role:
             devs_img = Image.open('./assets/devs.png')
-            devs_img = devs_img.resize((75, 75))
-            custom_x = 1375
-            custom_y = 175
+            devs_img = devs_img.resize((65, 65))
+            custom_x = 265
+            custom_y = 400
             card.paste(devs_img, (custom_x, custom_y), devs_img)
         booster_role_id = 1128460924886458489
         has_booster_role = any(role.id == booster_role_id for role in user.roles)
         if has_booster_role:
             booster_role_img = Image.open('./assets/booster.png')
             booster_role_img = booster_role_img.resize((75, 75))
-            custom_x = 1275
-            custom_y = 175
+            custom_x = 95
+            custom_y = 395
             card.paste(booster_role_img, (custom_x, custom_y), booster_role_img)
         top20_role_id = 1189632052727906376
         has_top20_role = any(role.id == top20_role_id for role in user.roles)
         if has_top20_role:
             top20_role_img = Image.open('./assets/top20.png')
             top20_role_img = top20_role_img.resize((75, 75))
-            custom_x = 1375
-            custom_y = 90
+            custom_x = 175
+            custom_y = 395
             card.paste(top20_role_img, (custom_x, custom_y), top20_role_img)
         zennies_role_id = 1121842393994494082
         has_zennies_role = any(role.id == zennies_role_id for role in user.roles)
         if has_zennies_role:
             zennies_role_img = Image.open('./assets/zennies.png')
             zennies_role_img = zennies_role_img.resize((75, 75))
-            custom_x = 1275
-            custom_y = 90
+            custom_x = 15
+            custom_y = 395
             card.paste(zennies_role_img, (custom_x, custom_y), zennies_role_img)
         
         card.paste(avatar_paste, (15, 15), circle)
-        card.paste(bar, (0, 490), mask)
+        card.paste(bar, (0, 480), mask)
         draw = ImageDraw.Draw(card, 'RGBA')
-        draw.text((105, 15), name, fill=levels['bar_color'], font=poppins_xsmall)
-        draw.text((1283, 25), 'Server Badges', fill=levels['bar_color'], font=poppins_xxsmall)
-        draw.text((650, 425), f'{xp_have} / {xp_need}', fill=levels['bar_color'], font=poppins_small)
-        draw.text((235, 430), f'{level}', fill=levels['bar_color'], font=font2)
-        draw.text((15,425), 'Server Level','#ffffff', font=poppins_xsmall)
-        draw.text((15,390), 'Server Rank', '#ffffff', font=poppins_xsmall)
-        draw.text((235, 390), f"#{str(rank)}", fill=levels['bar_color'], font=font2)
-        draw.text((1065, 15), f"Kanzen Ranked", fill=levels['bar_color'], font=font2small)
+        draw.text((105, 30), name, fill=levels['bar_color'], font=poppins_xsmall)
+        draw.text((800, 415), f'{xp_have}/{xp_need}', fill=levels['bar_color'], font=font4)
+        draw.text((1190, 411), f'{level}', fill=levels['bar_color'], font=font2)
+        draw.text((1005,411), 'Server Level','#ffffff', font=poppins_xsmall)
+        draw.text((1250,411), 'Server Rank', '#ffffff', font=poppins_xsmall)
+        draw.text((1435, 411), f"#{str(rank)}", fill=levels['bar_color'], font=font2)
         buffer = BytesIO()
         card.save(buffer, 'png')
         buffer.seek(0)
@@ -659,28 +661,28 @@ class Levels(commands.Cog):
         avatar_paste, circle = self._get_round_avatar2(avatar)
         poppins = Font.poppins(size=67)
         poppins_small = Font.poppins(size=50)
-        poppins_xsmall = Font.poppins(size=35)
+        poppins_xsmall = Font.poppins(size=30)
+        font4 = ImageFont.truetype("./fonts/Montserrat-Bold.ttf", size=27)
         poppins_xxsmall = Font.montserrat(size=25)
         font2 = ImageFont.truetype("./fonts/Montserrat-Bold.ttf", 35)
         font3 = ImageFont.truetype("./fonts/Montserrat-Bold.ttf", 50)
         font2small = ImageFont.truetype("./fonts/Montserrat-Bold.ttf", 23)
-        roles_img = Image.open('./assets/rank2_badges.png')
-        lead_roles_x = (card.width - roles_img.width) // 2
-        lead_roles_y = (card.height - roles_img.height) // 2
-        card.paste(roles_img, (lead_roles_x, lead_roles_y), roles_img)
-        lead_roles_x = (card.width - roles_img.width) // 2
-        lead_roles_y = (card.height - roles_img.height) // 2
-        card.paste(roles_img, (lead_roles_x, lead_roles_y), roles_img)
         lead_role_id = 1121842279351590973
         has_lead_role = any(role.id == lead_role_id for role in user.roles)
         zennies_role_id = 1121842393994494082
         has_zennies_role = any(role.id == zennies_role_id for role in user.roles)
         if has_zennies_role:
-            zennies_role_img = Image.open('./assets/rank box.png')
-            zennies_role_img = zennies_role_img.resize((1500, 500))
-            custom_x = -190
-            custom_y = 800
+            zennies_role_img = Image.open('./assets/rank2.png')
+            zennies_role_img = zennies_role_img.resize((1080, 1080))
+            custom_x = 0
+            custom_y = 0
             card.paste(zennies_role_img, (custom_x, custom_y), zennies_role_img)
+        else:
+            daegu_role_img = Image.open('./assets/rank 2 daegu.png')
+            daegu_role_img = daegu_role_img.resize((1080, 1080))
+            custom_x = 0
+            custom_y = 0
+            card.paste(daegu_role_img, (custom_x, custom_y), daegu_role_img)
         diamondrank_role_id = 1187540240836087858
         has_diamondrank_role = any(role.id == diamondrank_role_id for role in user.roles)
         goldrank_role_id = 1187540222708297748
@@ -695,178 +697,114 @@ class Levels(commands.Cog):
         has_eliterank_role = any(role.id == eliterank_role_id for role in user.roles)
         if has_eliterank_role:
             eliterank_role_img = Image.open('./assets/eliterank.png')
-            eliterank_role_img = eliterank_role_img.resize((175, 175))
-            custom_x = 865
-            custom_y = 825
+            eliterank_role_img = eliterank_role_img.resize((300, 300))
+            custom_x = -20
+            custom_y = 600
             card.paste(eliterank_role_img, (custom_x, custom_y), eliterank_role_img)
         elif has_platrank_role:
             platrank_role_img = Image.open('./assets/platrank.png')
-            platrank_role_img = platrank_role_img.resize((175, 175))
-            custom_x = 865
-            custom_y = 825
+            platrank_role_img = platrank_role_img.resize((300, 300))
+            custom_x = -20
+            custom_y = 600
             card.paste(platrank_role_img, (custom_x, custom_y), platrank_role_img)
         elif has_diamondrank_role:
             diamondrank_role_img = Image.open('./assets/diamondrank.png')
-            diamondrank_role_img = diamondrank_role_img.resize((175, 175))
-            custom_x = 865
-            custom_y = 825
+            diamondrank_role_img = diamondrank_role_img.resize((300, 300))
+            custom_x = -20
+            custom_y = 600
             card.paste(diamondrank_role_img, (custom_x, custom_y), diamondrank_role_img)
         elif has_goldrank_role:
             goldrank_role_img = Image.open('./assets/goldrank.png')
-            goldrank_role_img = goldrank_role_img.resize((175, 175))
-            custom_x = 865
-            custom_y = 825
+            goldrank_role_img = goldrank_role_img.resize((300, 300))
+            custom_x = -20
+            custom_y = 600
             card.paste(goldrank_role_img, (custom_x, custom_y), goldrank_role_img)
         elif has_silverrank_role:
             silverrank_role_img = Image.open('./assets/silverrank.png')
-            silverrank_role_img = silverrank_role_img.resize((175, 175))
-            custom_x = 865
-            custom_y = 825
+            silverrank_role_img = silverrank_role_img.resize((300, 300))
+            custom_x = -20
+            custom_y = 600
             card.paste(silverrank_role_img, (custom_x, custom_y), silverrank_role_img)
         elif has_bronzerank_role:
             bronzerank_role_img = Image.open('./assets/bronzerank.png')
-            bronzerank_role_img = bronzerank_role_img.resize((175, 175))
-            custom_x = 865
-            custom_y = 825
+            bronzerank_role_img = bronzerank_role_img.resize((300, 300))
+            custom_x = -20
+            custom_y = 600
             card.paste(bronzerank_role_img, (custom_x, custom_y), bronzerank_role_img)
         lead_role_id = 1121842279351590973
         has_lead_role = any(role.id == lead_role_id for role in user.roles)
         if has_lead_role:
             special_role_img = Image.open('./assets/lead.png')
             special_role_img = special_role_img.resize((75, 75))
-            custom_x = 1375
-            custom_y = 375
+            custom_x = 665
+            custom_y = 973
             card.paste(special_role_img, (custom_x, custom_y), special_role_img)
         hstaff_id = 1178924350523588618
-        has_lead_role = any(role.id == lead_role_id for role in user.roles)
-        if has_lead_role:
+        has_hstaff_role = any(role.id == hstaff_id for role in user.roles)
+        if has_hstaff_role:
             special_role_img = Image.open('./assets/hstaff.png')
-            special_role_img = special_role_img.resize((100, 100))
-            custom_x = 1265
-            custom_y = 365
+            special_role_img = special_role_img.resize((90, 90))
+            custom_x = 545
+            custom_y = 968
             card.paste(special_role_img, (custom_x, custom_y), special_role_img)
         staff_role_id = 1135244903165722695
         has_staff_role = any(role.id == staff_role_id for role in user.roles)
         if has_staff_role:
             staff_role_img = Image.open('./assets/staff.png')
             staff_role_img = staff_role_img.resize((75, 75))
-            custom_x = 1275
-            custom_y = 275
+            custom_x = 465
+            custom_y = 973
             card.paste(staff_role_img, (custom_x, custom_y), staff_role_img)
         mods_id = 1135244903165722695
         mods_role = any(role.id == mods_id for role in user.roles)
         if mods_role:
             mods_img = Image.open('./assets/mods.png')
             mods_img = mods_img.resize((75, 75))
-            custom_x = 1375
-            custom_y = 275
+            custom_x = 365
+            custom_y = 973
             card.paste(mods_img, (custom_x, custom_y), mods_img)
         devs_id = 1179255802003988573
         devs_role = any(role.id == devs_id for role in user.roles)
         if devs_role:
             devs_img = Image.open('./assets/devs.png')
-            devs_img = devs_img.resize((75, 75))
-            custom_x = 1375
-            custom_y = 175
+            devs_img = devs_img.resize((65, 65))
+            custom_x = 265
+            custom_y = 978
             card.paste(devs_img, (custom_x, custom_y), devs_img)
         booster_role_id = 1128460924886458489
         has_booster_role = any(role.id == booster_role_id for role in user.roles)
         if has_booster_role:
             booster_role_img = Image.open('./assets/booster.png')
             booster_role_img = booster_role_img.resize((75, 75))
-            custom_x = 1275
-            custom_y = 175
+            custom_x = 95
+            custom_y = 973
             card.paste(booster_role_img, (custom_x, custom_y), booster_role_img)
         top20_role_id = 1189632052727906376
         has_top20_role = any(role.id == top20_role_id for role in user.roles)
         if has_top20_role:
             top20_role_img = Image.open('./assets/top20.png')
             top20_role_img = top20_role_img.resize((75, 75))
-            custom_x = 1375
-            custom_y = 90
+            custom_x = 175
+            custom_y = 973
             card.paste(top20_role_img, (custom_x, custom_y), top20_role_img)
         zennies_role_id = 1121842393994494082
         has_zennies_role = any(role.id == zennies_role_id for role in user.roles)
         if has_zennies_role:
             zennies_role_img = Image.open('./assets/zennies.png')
             zennies_role_img = zennies_role_img.resize((75, 75))
-            custom_x = 1275
-            custom_y = 90
-            card.paste(zennies_role_img, (custom_x, custom_y), zennies_role_img)
-        if has_lead_role:
-            special_role_img = Image.open('./assets/lead.png')
-            special_role_img = special_role_img.resize((100, 100))
-            custom_x = 200
-            custom_y = 725
-            card.paste(special_role_img, (custom_x, custom_y), special_role_img)
-        hstaff_id = 1178924350523588618
-        has_hstaff_role = any(role.id == hstaff_id for role in user.roles)
-        if has_hstaff_role:
-            special_role_img = Image.open('./assets/hstaff.png')
-            special_role_img = special_role_img.resize((125, 125))
-            custom_x = 55
-            custom_y = 715
-            card.paste(special_role_img, (custom_x, custom_y), special_role_img)
-        staff_role_id = 1135244903165722695
-        has_staff_role = any(role.id == staff_role_id for role in user.roles)
-        if has_staff_role:
-            staff_role_img = Image.open('./assets/staff.png')
-            staff_role_img = staff_role_img.resize((100, 100))
-            custom_x = 200
-            custom_y = 600
-            card.paste(staff_role_img, (custom_x, custom_y), staff_role_img)
-        mods_id = 1135244903165722695
-        mods_role = any(role.id == mods_id for role in user.roles)
-        if mods_role:
-            mods_img = Image.open('./assets/mods.png')
-            mods_img = mods_img.resize((100, 100))
-            custom_x = 65
-            custom_y = 600
-            card.paste(mods_img, (custom_x, custom_y), mods_img)
-        devs_id = 1179255802003988573
-        devs_role = any(role.id == devs_id for role in user.roles)
-        if devs_role:
-            devs_img = Image.open('./assets/devs.png')
-            devs_img = devs_img.resize((100, 100))
-            custom_x = 200
-            custom_y = 450
-            card.paste(devs_img, (custom_x, custom_y), devs_img)
-        booster_role_id = 1128460924886458489
-        has_booster_role = any(role.id == booster_role_id for role in user.roles)
-        if has_booster_role:
-            booster_role_img = Image.open('./assets/booster.png')
-            booster_role_img = booster_role_img.resize((100, 100))
-            custom_x = 65
-            custom_y = 450
-            card.paste(booster_role_img, (custom_x, custom_y), booster_role_img)
-        top20_role_id = 1189632052727906376
-        has_top20_role = any(role.id == top20_role_id for role in user.roles)
-        if has_top20_role:
-            top20_role_img = Image.open('./assets/top20.png')
-            top20_role_img = top20_role_img.resize((100, 100))
-            custom_x = 200
-            custom_y = 300
-            card.paste(top20_role_img, (custom_x, custom_y), top20_role_img)
-        zennies_role_id = 1121842393994494082
-        has_zennies_role = any(role.id == zennies_role_id for role in user.roles)
-        if has_zennies_role:
-            zennies_role_img = Image.open('./assets/zennies.png')
-            zennies_role_img = zennies_role_img.resize((100, 100))
-            custom_x = 65
-            custom_y = 300
+            custom_x = 15
+            custom_y = 973
             card.paste(zennies_role_img, (custom_x, custom_y), zennies_role_img)
         
-        card.paste(avatar_paste, (800, 35), circle)
+        card.paste(avatar_paste, (15, 15), circle)
         card.paste(bar, (0, 1055), mask)
         draw = ImageDraw.Draw(card, 'RGBA')
-        draw.text((775, 175), name, fill=levels['bar_color'], font=poppins_xsmall)
-        draw.text((60, 225), 'Server Badges', fill=levels['bar_color'], font=font2)
-        draw.text((400, 1000), f'{xp_have} / {xp_need}', fill=levels['bar_color'], font=font3)
-        draw.text((290, 853), f'{level}', fill=levels['bar_color'], font=font2)
-        draw.text((75, 850), 'Server Level','#ffffff', font=poppins_xsmall)
-        draw.text((75, 900), 'Server Rank', '#ffffff', font=poppins_xsmall)
-        draw.text((290, 903), f"#{str(rank)}", fill=levels['bar_color'], font=font2)
-        draw.text((845, 780), f"Kanzen Ranked", fill=levels['bar_color'], font=font2small)
+        draw.text((185, 45), name, fill=levels['bar_color'], font=poppins_small)
+        draw.text((850, 995), f'{xp_have}/{xp_need}', fill=levels['bar_color'], font=font4)
+        draw.text((205, 903), f'{level}', fill=levels['bar_color'], font=font2)
+        draw.text((25, 903), 'Server Level','#ffffff', font=poppins_xsmall)
+        draw.text((255, 903), 'Server Rank', '#ffffff', font=poppins_xsmall)
+        draw.text((435, 903), f"#{str(rank)}", fill=levels['bar_color'], font=font2)
         buffer = BytesIO()
         card.save(buffer, 'png')
         buffer.seek(0)
@@ -915,25 +853,28 @@ class Levels(commands.Cog):
         avatar_paste, circle = self._get_round_avatar3(avatar)
         poppins = Font.poppins(size=67)
         poppins_small = Font.poppins(size=50)
-        poppins_xsmall = Font.poppins(size=35)
+        poppins_xsmall = Font.poppins(size=30)
+        font4 = ImageFont.truetype("./fonts/Montserrat-Bold.ttf", size=27)
         poppins_xxsmall = Font.montserrat(size=25)
         font2 = ImageFont.truetype("./fonts/Montserrat-Bold.ttf", 35)
         font3 = ImageFont.truetype("./fonts/Montserrat-Bold.ttf", 50)
         font2small = ImageFont.truetype("./fonts/Montserrat-Bold.ttf", 23)
-        roles_img = Image.open('./assets/rank3_badges.png')
-        lead_roles_x = (card.width - roles_img.width) // 2
-        lead_roles_y = (card.height - roles_img.height) // 2
-        card.paste(roles_img, (lead_roles_x, lead_roles_y), roles_img)
         lead_role_id = 1121842279351590973
         has_lead_role = any(role.id == lead_role_id for role in user.roles)
         zennies_role_id = 1121842393994494082
         has_zennies_role = any(role.id == zennies_role_id for role in user.roles)
         if has_zennies_role:
-            zennies_role_img = Image.open('./assets/rank box.png')
-            zennies_role_img = zennies_role_img.resize((1500, 500))
-            custom_x = -190
-            custom_y = 1225
+            zennies_role_img = Image.open('./assets/rank3.png')
+            zennies_role_img = zennies_role_img.resize((1080, 1500))
+            custom_x = 0
+            custom_y = 0
             card.paste(zennies_role_img, (custom_x, custom_y), zennies_role_img)
+        else:
+            daegu_role_img = Image.open('./assets/rank3 daegu.png')
+            daegu_role_img = daegu_role_img.resize((1080, 1500))
+            custom_x = 0
+            custom_y = 0
+            card.paste(daegu_role_img, (custom_x, custom_y), daegu_role_img)
         diamondrank_role_id = 1187540240836087858
         has_diamondrank_role = any(role.id == diamondrank_role_id for role in user.roles)
         goldrank_role_id = 1187540222708297748
@@ -948,114 +889,114 @@ class Levels(commands.Cog):
         has_eliterank_role = any(role.id == eliterank_role_id for role in user.roles)
         if has_eliterank_role:
             eliterank_role_img = Image.open('./assets/eliterank.png')
-            eliterank_role_img = eliterank_role_img.resize((175, 175))
-            custom_x = 865
-            custom_y = 1250
+            eliterank_role_img = eliterank_role_img.resize((300, 300))
+            custom_x = -15
+            custom_y = 1010
             card.paste(eliterank_role_img, (custom_x, custom_y), eliterank_role_img)
         elif has_platrank_role:
             platrank_role_img = Image.open('./assets/platrank.png')
-            platrank_role_img = platrank_role_img.resize((175, 175))
-            custom_x = 865
-            custom_y = 1250
+            platrank_role_img = platrank_role_img.resize((300, 300))
+            custom_x = -15
+            custom_y = 1010
             card.paste(platrank_role_img, (custom_x, custom_y), platrank_role_img)
         elif has_diamondrank_role:
             diamondrank_role_img = Image.open('./assets/diamondrank.png')
-            diamondrank_role_img = diamondrank_role_img.resize((175, 175))
-            custom_x = 865
-            custom_y = 1250
+            diamondrank_role_img = diamondrank_role_img.resize((300, 300))
+            custom_x = -15
+            custom_y = 1010
             card.paste(diamondrank_role_img, (custom_x, custom_y), diamondrank_role_img)
         elif has_goldrank_role:
             goldrank_role_img = Image.open('./assets/goldrank.png')
-            goldrank_role_img = goldrank_role_img.resize((175, 175))
-            custom_x = 865
-            custom_y = 1250
+            goldrank_role_img = goldrank_role_img.resize((300, 300))
+            custom_x = -15
+            custom_y = 1010
             card.paste(goldrank_role_img, (custom_x, custom_y), goldrank_role_img)
         elif has_silverrank_role:
             silverrank_role_img = Image.open('./assets/silverrank.png')
-            silverrank_role_img = silverrank_role_img.resize((175, 175))
-            custom_x = 865
-            custom_y = 1250
+            silverrank_role_img = silverrank_role_img.resize((300, 300))
+            custom_x = -15
+            custom_y = 1010
             card.paste(silverrank_role_img, (custom_x, custom_y), silverrank_role_img)
         elif has_bronzerank_role:
             bronzerank_role_img = Image.open('./assets/bronzerank.png')
-            bronzerank_role_img = bronzerank_role_img.resize((175, 175))
-            custom_x = 865
-            custom_y = 1250
+            bronzerank_role_img = bronzerank_role_img.resize((300, 300))
+            custom_x = -15
+            custom_y = 1010
             card.paste(bronzerank_role_img, (custom_x, custom_y), bronzerank_role_img)
+        lead_role_id = 1121842279351590973
+        has_lead_role = any(role.id == lead_role_id for role in user.roles)
         if has_lead_role:
             special_role_img = Image.open('./assets/lead.png')
-            special_role_img = special_role_img.resize((125, 125))
-            custom_x = 260
-            custom_y = 1035
+            special_role_img = special_role_img.resize((75, 75))
+            custom_x = 665
+            custom_y = 1387
             card.paste(special_role_img, (custom_x, custom_y), special_role_img)
         hstaff_id = 1178924350523588618
         has_hstaff_role = any(role.id == hstaff_id for role in user.roles)
         if has_hstaff_role:
             special_role_img = Image.open('./assets/hstaff.png')
-            special_role_img = special_role_img.resize((125, 125))
-            custom_x = 90
-            custom_y = 1050
+            special_role_img = special_role_img.resize((90, 90))
+            custom_x = 545
+            custom_y = 1382
             card.paste(special_role_img, (custom_x, custom_y), special_role_img)
         staff_role_id = 1135244903165722695
         has_staff_role = any(role.id == staff_role_id for role in user.roles)
         if has_staff_role:
             staff_role_img = Image.open('./assets/staff.png')
-            staff_role_img = staff_role_img.resize((125, 125))
-            custom_x = 90
-            custom_y = 850
+            staff_role_img = staff_role_img.resize((75, 75))
+            custom_x = 465
+            custom_y = 1387
             card.paste(staff_role_img, (custom_x, custom_y), staff_role_img)
         mods_id = 1135244903165722695
         mods_role = any(role.id == mods_id for role in user.roles)
         if mods_role:
             mods_img = Image.open('./assets/mods.png')
-            mods_img = mods_img.resize((125, 125))
-            custom_x = 250
-            custom_y = 850
+            mods_img = mods_img.resize((75, 75))
+            custom_x = 365
+            custom_y = 1387
             card.paste(mods_img, (custom_x, custom_y), mods_img)
         devs_id = 1179255802003988573
         devs_role = any(role.id == devs_id for role in user.roles)
         if devs_role:
             devs_img = Image.open('./assets/devs.png')
-            devs_img = devs_img.resize((125, 125))
-            custom_x = 250
-            custom_y = 650
+            devs_img = devs_img.resize((65, 65))
+            custom_x = 265
+            custom_y = 1392
             card.paste(devs_img, (custom_x, custom_y), devs_img)
         booster_role_id = 1128460924886458489
         has_booster_role = any(role.id == booster_role_id for role in user.roles)
         if has_booster_role:
             booster_role_img = Image.open('./assets/booster.png')
-            booster_role_img = booster_role_img.resize((125, 125))
-            custom_x = 90
-            custom_y = 650
+            booster_role_img = booster_role_img.resize((75, 75))
+            custom_x = 95
+            custom_y = 1387
             card.paste(booster_role_img, (custom_x, custom_y), booster_role_img)
         top20_role_id = 1189632052727906376
         has_top20_role = any(role.id == top20_role_id for role in user.roles)
         if has_top20_role:
             top20_role_img = Image.open('./assets/top20.png')
-            top20_role_img = top20_role_img.resize((125, 125))
-            custom_x = 250
-            custom_y = 450
+            top20_role_img = top20_role_img.resize((75, 75))
+            custom_x = 175
+            custom_y = 1387
             card.paste(top20_role_img, (custom_x, custom_y), top20_role_img)
         zennies_role_id = 1121842393994494082
         has_zennies_role = any(role.id == zennies_role_id for role in user.roles)
         if has_zennies_role:
             zennies_role_img = Image.open('./assets/zennies.png')
-            zennies_role_img = zennies_role_img.resize((125, 125))
-            custom_x = 90
-            custom_y = 450
+            zennies_role_img = zennies_role_img.resize((75, 75))
+            custom_x = 15
+            custom_y = 1387
             card.paste(zennies_role_img, (custom_x, custom_y), zennies_role_img)
         
-        card.paste(avatar_paste, (75, 75), circle)
+        card.paste(avatar_paste, (15, 15), circle)
         card.paste(bar, (0, 1475), mask)
         draw = ImageDraw.Draw(card, 'RGBA')
-        draw.text((250, 85), name, fill=levels['bar_color'], font=poppins)
-        draw.text((120, 325), 'Server Badges', fill=levels['bar_color'], font=poppins_xsmall)
-        draw.text((415, 1400), f'{xp_have} / {xp_need}', fill=levels['bar_color'], font=poppins_small)
-        draw.text((325, 1203), f'{level}', fill=levels['bar_color'], font=font2)
-        draw.text((100,1200), 'Server Level','#ffffff', font=poppins_xsmall)
-        draw.text((100,1250), 'Server Rank', '#ffffff', font=poppins_xsmall)
-        draw.text((325, 1253), f"#{str(rank)}", fill=levels['bar_color'], font=font2)
-        draw.text((845, 1205), f"Kanzen Ranked", fill=levels['bar_color'], font=font2small)
+        draw.text((185, 45), name, fill=levels['bar_color'], font=poppins_small)
+        draw.text((860, 1405), f'{xp_have}/{xp_need}', fill=levels['bar_color'], font=font4)
+        draw.text((205, 1313), f'{level}', fill=levels['bar_color'], font=font2)
+        draw.text((25, 1313), 'Server Level','#ffffff', font=poppins_xsmall)
+        draw.text((255, 1313), 'Server Rank', '#ffffff', font=poppins_xsmall)
+        draw.text((435, 1313), f"#{str(rank)}", fill=levels['bar_color'], font=font2)
         buffer = BytesIO()
         card.save(buffer, 'png')
         buffer.seek(0)
