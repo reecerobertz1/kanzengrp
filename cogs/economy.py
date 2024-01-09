@@ -56,7 +56,7 @@ class Economy(commands.Cog):
 
     async def create_account(self, user):
         async with self.pool.acquire() as conn:
-            await conn.execute("INSERT INTO bank (user, wallet, bank, maxbank) VALUES (?, 0, 100, 10000)", (user,))
+            await conn.execute("INSERT INTO bank (user, wallet, bank, maxbank) VALUES (?, 0, 100, 9999999999999999)", (user,))
             await conn.commit()
 
     async def update_balance(self, user, wallet_change=0, bank_change=0):
