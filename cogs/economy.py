@@ -416,8 +416,8 @@ class Economy(commands.Cog):
                 leaderboard_embed.set_thumbnail(url=ctx.guild.icon)
             else:
                 leaderboard_embed.add_field(
-                    name=f"{idx}. User not found",
-                    value=f"<a:coin:1192540229727440896> Wallet: {wallet_balance} coins\n"
+                    name=f"** **",
+                    value=f"**{idx}.** User not found\n<a:coin:1192540229727440896> Wallet: {wallet_balance} coins\n"
                         f"<:bank:YOUR_BANK_ICON_ID> Bank: {bank_balance} coins",
                     inline=False
                 )
@@ -452,8 +452,8 @@ class Economy(commands.Cog):
                 user = self.bot.get_user(user_id)
                 if user:
                     leaderboard_embed.add_field(
-                        name=f"{idx}. {user.display_name}",
-                        value=f"<:wallet:1154163630699458660> Wallet: <a:coin:1192540229727440896> {wallet_balance}\n"
+                        name=f"** **",
+                        value=f"**{idx}.** <@!{user.id}>\n<:wallet:1154163630699458660> Wallet: <a:coin:1192540229727440896> {wallet_balance}\n"
                             f"<:bank:1154163938234208367> Bank: <a:coin:1192540229727440896> {bank_balance}",
                         inline=False
                     )
@@ -461,8 +461,8 @@ class Economy(commands.Cog):
                     leaderboard_embed.set_thumbnail(url=ctx.guild.icon)
                 else:
                     leaderboard_embed.add_field(
-                        name=f"{idx}. User not found",
-                        value=f"<a:coin:1192540229727440896> Wallet: {wallet_balance} coins\n"
+                        name=f"** **",
+                        value=f"**{idx}.** User not found\n<a:coin:1192540229727440896> Wallet: {wallet_balance} coins\n"
                             f"<:bank:1154163938234208367> Bank: {bank_balance} coins",
                         inline=False
                     )
