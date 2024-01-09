@@ -74,6 +74,10 @@ class Economy(commands.Cog):
                 await conn.commit()
                 return wallet_balance, bank_balance
 
+    async def update_max_bank(self, user, maxbank):
+        async with self.bot.pool.acquire() as conn:
+            await conn.execute("UPDATE bank SET maxbank = $1 WHERE user = $2", maxbank, user)
+
     async def use_item(self, user_id, item_name):
         user_inventory = await self.check_inventory(user_id)
         if item_name not in user_inventory:
@@ -97,6 +101,11 @@ class Economy(commands.Cog):
         avatar_image = Image.open(avatar).convert('RGBA')
         avatar_image = avatar_image.resize((35, 35))
         return avatar_image, circle
+
+    @commands.command(hidden=True)
+    async def bankmax(self, ctx: commands.Context, member: discord.Member, amount: int):
+        await self.update_max_bank(member.id, amount)
+        await ctx.reply("all done!")
 
     @commands.command(aliases=["bal"], description="Check your bank and wallet balance", extras="alias +bal")
     @kanzen_only()
