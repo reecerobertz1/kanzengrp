@@ -56,7 +56,7 @@ class getlogos(discord.ui.View):
 
     @discord.ui.button(label="Get logos!")
     async def logos(self, interaction: discord.Interaction, button: discord.Button):
-        await interaction.response.send_message("Here are the logos!\n[click here](https://mega.nz/folder/J40zCTYY#L73pTeQKWpCh15wpuQaIFA)")
+        await interaction.response.send_message("Here are the logos!\n[click here](<https://mega.nz/folder/to0R2DBZ#CIRQ7BwDCqPc2jLurLRSWQ>)")
         await interaction.followup.send("#𝗞𝗮𝗻𝘇𝗲𝗻𝗴𝗿𝗽")
 
 class ia(ui.Modal, title='Inactivity Message'):
