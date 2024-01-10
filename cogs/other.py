@@ -2,6 +2,14 @@ import asyncio
 import random
 import discord
 from discord.ext import commands
+import datetime
+import humanize
+from typing import TypedDict
+
+class AFK(TypedDict):
+    user_id: int
+    reason: str
+    time: datetime.datetime
 
 class other(commands.Cog):
     def __init__(self, bot):
@@ -9,6 +17,22 @@ class other(commands.Cog):
         self.hello_loop = None
         self.hidden = True
         self.emoji = "<:shooky:1121909564799987722>"
+
+    async def check_afk(self, userid: int) -> AFK:
+        query = "SELECT reason, time, user_id FROM afk WHERE user_id = $1"
+        async with self.bot.pool.acquire() as connection:
+            async with connection.transaction():
+                async with connection.cursor() as cursor:
+                    await cursor.execute(query, userid)
+                    result = await cursor.fetchall()
+        return result[0] if result else None
+
+    async def remove_afk(self, userid: int) -> None:
+        query = "DELETE FROM afk WHERE user_id = $1"
+        async with self.bot.pool.acquire() as connection:
+            async with connection.transaction():
+                async with connection.cursor() as cursor:
+                    await cursor.execute(query, userid)
 
     @commands.Cog.listener()
     async def on_message(self, message):
