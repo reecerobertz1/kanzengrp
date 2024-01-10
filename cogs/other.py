@@ -42,6 +42,15 @@ class other(commands.Cog):
                     await message.channel.send(f"{message.author.mention}", embed=embed)
                 else:
                     pass
+        afk = await self.check_afk(message.author.id)
+        if afk is not None:
+            await self.remove_afk(message.author.id)
+            await message.reply(f"Hey, <@!{afk['user_id']}> welcome back! You were AFK for **{afk['reason']}**")
+        if len(message.mentions) > 0:
+            for mention in message.mentions:
+                afk_mention = await self.check_afk(mention.id)
+                if afk_mention is not None:
+                    await message.reply(f"**{mention.name}** went AFK **{afk_mention['reason']}**")
 
 async def setup(bot):
     await bot.add_cog(other(bot))

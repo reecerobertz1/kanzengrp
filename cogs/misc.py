@@ -36,6 +36,13 @@ class misc(commands.Cog):
                 )
             ''')
 
+    async def set_afk(self, userid: int, reason: str) -> None:
+        query = "INSERT INTO afk (user_id, reason, time) VALUES ($1, $2, $3) ON CONFLICT (user_id) DO UPDATE SET reason = $2, time = $3"
+        async with self.bot.pool.acquire() as connection:
+            async with connection.transaction():
+                await connection.execute(query, userid, reason, discord.utils.utcnow())
+        await self.bot.pool.release(connection)
+
     @commands.command(aliases=['be', 'embed'], description="Build an embed", extras="aliases +be, +embed")
     async def buildembed(self, ctx: commands.Context):
         """Embed Generator With Default Embed And Author Check So Only The Invoker Can Use The Editor"""
@@ -360,6 +367,11 @@ class misc(commands.Cog):
                 ''', (user_id, about_me, instagram_username, pronouns, banner_url, background_url))
                 await self.db.commit()
             await ctx.send("Your profile background has been updated!")
+
+    @commands.hybrid_command(name="afk", extras="+afk (reason)", description="set an afk status")
+    async def afk(self, ctx, *, reason: str):
+        await self.set_afk(ctx.author.id, reason)
+        await ctx.reply(f"Okay! I have set your AFK status as\n**{reason}**")
 
 async def setup(bot):
     await bot.add_cog(misc(bot))
