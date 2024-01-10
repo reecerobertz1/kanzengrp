@@ -333,32 +333,87 @@ class Moderation(commands.Cog):
         await member.send(message)
         await ctx.send(f"i have successfully messaged {member.mention}\n{message}")        
 
-    @app_commands.command(name="verify", description="Verify a member for the christmas giveaway")
-    @app_commands.checks.has_permissions(manage_guild=True)
-    async def verify(self, interaction: discord.Interaction, member: discord.Member):
-        embed = discord.Embed(title="Kanzen Christmas Giveaway", description="Thank you so much for joining our Christmas giveaway!\nClick the button below to be access the mega link. \n\nPlease remember to give credits when it's needed, and we hope you enjoy everything we have added!\nIf there are any problems with the link or the button please contact <@609515684740988959>\n\nAgain thank you for joining and happy holidays!", color=0x2b2d31)
-        embed.set_thumbnail(url=member.display_avatar)
-        embed.set_image(url="https://cdn.discordapp.com/attachments/1121841074512605186/1176504748875186196/image.png?ex=658acbee&is=657856ee&hm=976042c1a4881080baa09215e3056d6f6128a8b9e0672cf9b59acfee8f9b00c7&")
-        view=ga()
-        await member.send(embed=embed, view=view)
-        await interaction.response.send_message("poo poo", ephemeral=True)
+    async def get_rep(self, member_id, guild_id, helped):
+        async with self.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute("SELECT count, helped FROM staffrep WHERE member_id = ?", (member_id,))
+                row = await cursor.fetchone()
+                if row is None:
+                    await self.add_rep(member_id)
+                    return 0, 0
+                return row[0], row[1]
 
-    @commands.command(name="kickkio", hidden=True)
-    async def kickkio(self, ctx, member_id: int, server_id: int):
-        if not ctx.author.guild_permissions.kick_members:
-            return await ctx.send("You don't have permission to kick members.")
-        guild = self.bot.get_guild(server_id)
-        if not guild:
-            return await ctx.send("Could not find the specified server.")
-        member = guild.get_member(member_id)
-        if not member:
-            return await ctx.send("Could not find the specified member in the server.")
+    async def add_rep(self, member_id, guild_id, helped, change):
+        async with self.pool.acquire() as conn:
+            await conn.execute("INSERT INTO staffrep (member_id, guild_id, helped, count) VALUES ($1, $2, $3, $4)", member_id, guild_id, helped, change)
+            await conn.commit()
+
+    async def update_rep(self, member_id, guild_id, helped, change=1):
+        async with self.pool.acquire() as conn:
+            existing_warnings = await conn.fetchone('SELECT count FROM staffrep WHERE member_id = $1 AND guild_id = $2', member_id, guild_id)
+            if existing_warnings:
+                current_warnings = existing_warnings['count']
+                updated_warnings = current_warnings + change
+                await conn.execute('UPDATE staffrep SET helped = $1, count = $2 WHERE member_id = $3 AND guild_id = $4',
+                                helped, updated_warnings, member_id, guild_id)
+            else:
+                updated_warnings = change
+                await self.add_rep(member_id, guild_id, helped, updated_warnings)
+            await conn.commit()
+            return updated_warnings
+
+    @commands.hybrid_command(name="staffrep", description="add rep to a staff member for helping", extra="+staffrep @member")
+    @commands.has_permissions(administrator=True)
+    @commands.has_permissions(manage_guild=True)
+    async def staffrep(self, ctx, member: discord.Member, *, helped):
+        await self.update_rep(member.id, ctx.guild.id, helped)
+        await ctx.reply(f"Successfully added rep for {member.display_name}\n**{helped}**")
+
+    async def reset_staffrep(self, guild_id: int) -> None:
+        """Resets the levels for a guild
+        
+        Parameters
+        ----------
+        guild_id: int
+            ID of guild to reset levels in
+        """
+        query = '''UPDATE staffrep SET count = 0, helped = NULL WHERE guild_id = $1'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, guild_id)
+                await conn.commit()
+        await self.bot.pool.release(conn)
+
+    @commands.command(aliases=['rr'], description="Reset the staff rep", extras="alias : +rr")
+    @commands.has_permissions(administrator=True)
+    @commands.has_permissions(manage_guild=True)
+    async def resetrep(self, ctx: commands.Context):
+        """Wipes all XP from the database"""
+        message = await ctx.reply("are you sure you want to reset the staff rep? it's irreversible!")
+        await message.add_reaction('👍')
+
+        def check(reaction, user):
+            return user == ctx.author and str(reaction) == '👍'
 
         try:
-            await member.kick()
-            await ctx.send(f"Successfully kicked {member.name}#{member.discriminator} from {guild.name}.")
-        except Exception as e:
-            await ctx.send(f"An error occurred: {e}")
+            reaction, user = await self.bot.wait_for('reaction_add', timeout=15.0, check=check)
+            await self.reset_staffrep(ctx.guild.id)
+            embed = discord.Embed(
+                title='success!',
+                description=f'reps have been erased.',
+                color=0x2B2D31
+            )
+            return await message.edit(content=None, embed=embed)
+        except asyncio.TimeoutError:
+            await message.edit(content="~~are you sure you want to reset the ranks? it's irreversible!~~\nreset has been cancelled!")
+
+    @commands.command()
+    async def showrep(self, ctx, member: discord.Member, *, helped=""):
+        rep = await self.get_rep(member.id, ctx.guild.id, helped)
+        embed = discord.Embed(title=f"Rep for {member.display_name}", color=0x2b2d31)
+        embed.add_field(name="Amount of rep:", value=rep[0], inline=False)
+        embed.add_field(name="Last helped with:", value=rep[1], inline=False)
+        await ctx.reply(embed=embed)
 
 async def setup(bot):
     await bot.add_cog(Moderation(bot))
