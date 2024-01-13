@@ -185,7 +185,7 @@ class other(commands.Cog):
             warningembed.set_footer(text=f"sent from {message.author.display_name} | {message.author.id}", icon_url=message.author.display_avatar)
             warningembed.set_thumbnail(url=message.author.display_avatar)
             member = message.author
-            memberembed = discord.Embed(title="You have received a warning", description=f"<:CF12:1188186414387568691> You have gotten this warning for saying {blocked_word}\n<:CF12:1188186414387568691> You now have **{count}** warnings. If you get to **3** warnings you will instantly be banned from our group", color=0x2b2d31, url="https://instagram.com/kanzengrp/")
+            memberembed = discord.Embed(title="You have received a warning", description=f"<:CF12:1188186414387568691> You have gotten this warning for saying:\n**{description}**\n\n<:CF12:1188186414387568691> You now have **{count}** warnings. If you get to **3** warnings you will instantly be banned from our group", color=0x2b2d31, url="https://instagram.com/kanzengrp/")
             memberembed.set_thumbnail(url=message.guild.icon)
             memberembed.add_field(name="Your full sentence was:", value=description)
             await message.author.send(embed=memberembed)
