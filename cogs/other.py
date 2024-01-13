@@ -187,7 +187,6 @@ class other(commands.Cog):
             member = message.author
             memberembed = discord.Embed(title="You have received a warning", description=f"<:CF12:1188186414387568691> You have gotten this warning for saying:\n**{description}**\n\n<:CF12:1188186414387568691> You now have **{count}** warnings. If you get to **3** warnings you will instantly be banned from our group", color=0x2b2d31, url="https://instagram.com/kanzengrp/")
             memberembed.set_thumbnail(url=message.guild.icon)
-            memberembed.add_field(name="Your full sentence was:", value=description)
             await message.author.send(embed=memberembed)
             warning = message.guild.get_channel(1178952898273628200)
             member_id = message.author.id
