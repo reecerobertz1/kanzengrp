@@ -191,7 +191,7 @@ class other(commands.Cog):
             await message.author.send(embed=memberembed)
             warning = message.guild.get_channel(1178952898273628200)
             member_id = message.author.id
-            reason = ', '.join(blocked_words)
+            reason = blocked_word
             guild_id = message.guild.id
             await self.update_warns(member_id, guild_id, reason, change=1)
             count = await self.get_warnings(member_id)
