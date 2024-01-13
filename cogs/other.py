@@ -171,30 +171,42 @@ class other(commands.Cog):
             await message.channel.send("OMG JIMIN<:chimmy:1128727915664785409>:heartpulse::face_with_peeking_eye::heart_eyes::face_holding_back_tears::pleading_face::sob::weary::tired_face::heartpulse::heartpulse::heartpulse::heartpulse::heartpulse::heartpulse::heartpulse::heartpulse::heartpulse::pray_tone1::pinching_hand:<:chimmy:1128727915664785409> <:chimmy:1128727915664785409> <:chimmy:1128727915664785409> <:chimmy:1128727915664785409> <:chimmy:1128727915664785409> <:chimmy:1128727915664785409> :face_holding_back_tears::face_holding_back_tears::face_holding_back_tears:")
         if message.content.lower() == "kelly":
             await message.channel.send("Jungkook is so jungkook and no one will ever jungkook like jungkook <:boobs:1142888878999613520>")
-        blocked_word = "poo poo"
-        if blocked_word in message.content.lower():
+        blocked_words = ["butterfly", "kiss"]
+        lower_content = message.content.lower()
+
+        if any(word in lower_content for word in blocked_words):
             await message.delete()
             member_id = message.author.id
             count = await self.get_warnings(member_id)
-            description = message.content.lower().replace(blocked_word, f"**__{blocked_word}__**")
+
+            for blocked_word in blocked_words:
+                lower_content = lower_content.replace(blocked_word, f"**__{blocked_word}__**")
+
+            description = lower_content
+
             warningembed = discord.Embed(title="Word Blocked", description=description, color=0xD11717)
             warningembed.set_footer(text=f"sent from {message.author.display_name} | {message.author.id}", icon_url=message.author.display_avatar)
             warningembed.set_thumbnail(url=message.author.display_avatar)
+
             member = message.author
-            memberembed = discord.Embed(title="You have received a warning", description=f"<:CF12:1188186414387568691> You have gotten this warning for saying **{blocked_word}**\n<:CF12:1188186414387568691> You now have **{count}** warnings. If you get to **3** warnings you will instantly be banned from our group", color=0x2b2d31, url="https://instagram.com/kanzengrp/")
+            memberembed = discord.Embed(title="You have received a warning", description=f"<:CF12:1188186414387568691> You have gotten this warning for saying {', '.join(['**'+word+'**' for word in blocked_words])}\n<:CF12:1188186414387568691> You now have **{count}** warnings. If you get to **3** warnings you will instantly be banned from our group", color=0x2b2d31, url="https://instagram.com/kanzengrp/")
             memberembed.set_thumbnail(url=message.guild.icon)
             memberembed.add_field(name="Your full sentence was:", value=description)
+
             await message.author.send(embed=memberembed)
+
             warning = message.guild.get_channel(1178952898273628200)
             member_id = message.author.id
-            reason = blocked_word
+            reason = ', '.join(blocked_words)
             guild_id = message.guild.id
+
             await self.update_warns(member_id, guild_id, reason, change=1)
             count = await self.get_warnings(member_id)
+
             if count == 3:
                 member = message.author
-                await member.kick(reason="Reached 3 warnings")
-                banembed = discord.Embed(title="You have been banned from Kanzengrp", description=f"You have been banned from Kanzengrp for getting **3 warnings**\nYou received your last warning for saying {blocked_word}. If you you would like to appeal your ban, click the button below but it may not be accepted.", color=0x2b2d31, url="https://instagram.com/kanzengrp/")
+                await member.ban(reason="Reached 3 warnings")
+                banembed = discord.Embed(title="You have been banned from Kanzengrp", description=f"You have been banned from Kanzengrp for getting **3 warnings**\nYou received your last warning for saying {', '.join(['**'+word+'**' for word in blocked_words])}. If you would like to appeal your ban, click the button below but it may not be accepted.", color=0x2b2d31, url="https://instagram.com/kanzengrp/")
                 banembed.set_thumbnail(url=message.guild.icon)
                 view = banappeal(bot=self.bot)
                 await member.send(embed=banembed, view=view)
