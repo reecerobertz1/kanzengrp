@@ -1009,13 +1009,11 @@ class Economy(commands.Cog):
                 buttons = walkdog(bot=self.bot)
             view = buttons
             await ctx.reply(embed=ranembeds, view=view)
-        if role == "mcdonalds":
+        if role == "amazon":
             embed = discord.Embed(title="Drop of customer's packages", color=0x2b2d31)
             embed.set_image(url="https://cdn.discordapp.com/attachments/1184208577120960632/1196001013497344090/amazon1_00000.png?ex=65b609be&is=65a394be&hm=2d3ab0b0aa00e215d5357b6abedc15812f1208c439deca510d66d7ae7c329c37&")
             view = amazon(bot=self.bot)
             await ctx.reply(embed=embed, view=view)
-        else:
-            await ctx.reply("You have not applied for a job yet! Do `+jobs` to view the available jobs.")
 
     @work.error
     async def work_error(self, ctx: commands.Context, error: commands.CommandError):
