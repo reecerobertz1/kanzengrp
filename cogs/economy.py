@@ -10,6 +10,303 @@ from easy_pil import Font
 from PIL import Image, ImageDraw, ImageFont
 from typing import Optional, Tuple
 
+gifs = {
+    "0": [
+        "https://cdn.discordapp.com/attachments/1184208577120960632/1193993133457940510/dogwalker-man_00000.png?ex=65aebbc2&is=659c46c2&hm=e7f05ac5edd74becf1be518216103005e94f7d496b11241a0564c094abb2daa3&",
+        "https://cdn.discordapp.com/attachments/1184208577120960632/1193993484206624768/dogwalker-man.gif?ex=65aebc15&is=659c4715&hm=d2cc0d043e77f718c89e9eea3f7927b2eefe6fa1ff5f5a25215664098353645c&"
+    ],
+    "1": [
+        "https://cdn.discordapp.com/attachments/1184208577120960632/1193993708656394360/dogwalker-girl_00000.png?ex=65aebc4b&is=659c474b&hm=e7ff476ec8608cea0538e50ca864091bdc0a6869308df273619b351530fb92eb&",
+        "https://cdn.discordapp.com/attachments/1184208577120960632/1193993876365643856/dogwalker-girl_1.gif?ex=65aebc73&is=659c4773&hm=c0d0ddbf5aa5ab73e192b1ad2f72f9490f5152177a54077851135624695c6999&"
+    ]
+}
+
+class amazon(discord.ui.View):
+    def __init__ (self, bot):
+        super().__init__(timeout=None)
+        self.value = None
+        self.bot = bot
+
+    @discord.ui.button(label="package 1")
+    async def burger(self, interaction: discord.Interaction, button: discord.ui.Button):
+        embed=discord.Embed(color=0x2b2d31)
+        embed.set_image(url="https://cdn.discordapp.com/attachments/1184208577120960632/1196001945652047902/amazon2_00000.png?ex=65b60a9c&is=65a3959c&hm=55fd203885c87fe22b434d531defd8318b6dfa253d122e00638111cf891cedbb&")
+        await interaction.response.edit_message(content=None, view=amazon1(bot=self.bot), embed=embed)
+
+class amazon1(discord.ui.View):
+    def __init__ (self, bot):
+        super().__init__(timeout=None)
+        self.value = None
+        self.bot = bot
+
+    @discord.ui.button(label="package 2")
+    async def burger(self, interaction: discord.Interaction, button: discord.ui.Button):
+        embed=discord.Embed(color=0x2b2d31)
+        embed.set_image(url="https://cdn.discordapp.com/attachments/1184208577120960632/1196001962957738005/amazon3_00000.png?ex=65b60aa0&is=65a395a0&hm=e62cf11483e759de433d8c050bc380982c9e626263e14b00f94faa6d4558d3f4&")
+        await interaction.response.edit_message(content=None, view=amazon2(bot=self.bot), embed=embed)
+
+class amazon2(discord.ui.View):
+    def __init__ (self, bot):
+        super().__init__(timeout=None)
+        self.value = None
+        self.bot = bot
+
+    @discord.ui.button(label="package 3")
+    async def burger(self, interaction: discord.Interaction, button: discord.ui.Button):
+        embed=discord.Embed(color=0x2b2d31)
+        embed.set_image(url="https://cdn.discordapp.com/attachments/1184208577120960632/1196001978623459358/amazon4_00000.png?ex=65b60aa4&is=65a395a4&hm=dd5fc6ce25fcf6a03164722f7778e959952c71e3fa9b2603da94093a13affaf3&")
+        await interaction.response.edit_message(content=None, view=amazon3(bot=self.bot), embed=embed)
+
+class amazon3(discord.ui.View):
+    def __init__ (self, bot):
+        super().__init__(timeout=None)
+        self.value = None
+        self.bot = bot
+
+    @discord.ui.button(label="finish job")
+    async def burger(self, interaction: discord.Interaction, button: discord.ui.Button):
+        earnings = random.randint(2435, 2435)
+        query = "UPDATE bank SET wallet = wallet + $1 WHERE user = $2"
+        async with self.bot.pool.acquire() as conn:
+            async with conn.transaction():
+                await conn.execute(query, earnings, interaction.user.id)
+        embed = discord.Embed(description=f"You earned <a:coin:1192540229727440896> **{earnings}**", color=0x2b2d31)
+        embed.set_image(url="https://cdn.discordapp.com/attachments/1184208577120960632/1196005062363840562/amazon5_00000.png?ex=65b60d83&is=65a39883&hm=42a5d3a2a32fc576c7045d47f457de5d0e58b9c69474fa425bf6516541545883&")
+        await interaction.response.edit_message(content=None, view=None, embed=embed)
+        rantip = ["1","2","3","4"]
+        tipran = random.choice(rantip)
+        tips = random.randint(100, 1000)
+        if tipran == "3":
+            query = "UPDATE bank SET wallet = wallet + $1 WHERE user = $2"
+            async with self.bot.pool.acquire() as conn:
+                async with conn.transaction():
+                    await conn.execute(query, tips, interaction.user.id)
+                    await interaction.followup.send(f"you have been tipped <a:coin:1192540229727440896> {tips}")
+
+class makeburger(discord.ui.View):
+    def __init__ (self, bot):
+        super().__init__(timeout=None)
+        self.value = None
+        self.bot = bot
+
+    @discord.ui.button(label="start burger")
+    async def burger(self, interaction: discord.Interaction, button: discord.ui.Button):
+        embed=discord.Embed(color=0x2b2d31)
+        embed.set_image(url="https://cdn.discordapp.com/attachments/1184208577120960632/1191096093002440835/burger_2_00000.png?ex=65a431ae&is=6591bcae&hm=97e934864962b7cfdc0c4c7c8df5906788131d99232c2d9e5e59ec1c6b338263&")
+        await interaction.response.edit_message(content=None, view=makeburger1(bot=self.bot), embed=embed)
+
+class makeburger1(discord.ui.View):
+    def __init__ (self, bot):
+        super().__init__(timeout=None)
+        self.value = None
+        self.bot = bot
+
+    @discord.ui.button(label="add patty")
+    async def burger(self, interaction: discord.Interaction, button: discord.ui.Button):
+        embed=discord.Embed(color=0x2b2d31)
+        embed.set_image(url="https://cdn.discordapp.com/attachments/1184208577120960632/1191096146937004042/burger_3_00000.png?ex=65a431ba&is=6591bcba&hm=1851c9f38db8dab8c9305e42bfbf422a33d3ffef8260867b91b3c62af2574db3&")
+        await interaction.response.edit_message(content=None, view=makeburger2(bot=self.bot), embed=embed)
+
+class makeburger2(discord.ui.View):
+    def __init__ (self, bot):
+        super().__init__(timeout=None)
+        self.value = None
+        self.bot = bot
+
+    @discord.ui.button(label="add cheese")
+    async def burger(self, interaction: discord.Interaction, button: discord.ui.Button):
+        embed=discord.Embed(color=0x2b2d31)
+        embed.set_image(url="https://cdn.discordapp.com/attachments/1184208577120960632/1191097335455957032/burger_4_00000.png?ex=65a432d6&is=6591bdd6&hm=7f2464c026d8fe81745206c2d81d3daa7e7ee8f038decdd2672ccae22480172c&")
+        await interaction.response.edit_message(content=None, view=makeburger3(bot=self.bot), embed=embed)
+
+class makeburger3(discord.ui.View):
+    def __init__ (self, bot):
+        super().__init__(timeout=None)
+        self.value = None
+        self.bot = bot
+
+    @discord.ui.button(label="add lettuce")
+    async def burger(self, interaction: discord.Interaction, button: discord.ui.Button):
+        embed=discord.Embed(color=0x2b2d31)
+        embed.set_image(url="https://cdn.discordapp.com/attachments/1184208577120960632/1191097582148128788/burger_5_00000.png?ex=65a43311&is=6591be11&hm=d109ebfb3c2b6182ed65c7622d810ce613fd484e0b53f103c1c71d2c18681b7a&")
+        await interaction.response.edit_message(content=None, view=makeburger4(bot=self.bot), embed=embed)
+
+class makeburger4(discord.ui.View):
+    def __init__ (self, bot):
+        super().__init__(timeout=None)
+        self.value = None
+        self.bot = bot
+
+    @discord.ui.button(label="add tomato")
+    async def burger(self, interaction: discord.Interaction, button: discord.ui.Button):
+        embed=discord.Embed(color=0x2b2d31)
+        embed.set_image(url="https://cdn.discordapp.com/attachments/1184208577120960632/1191097966992294010/burger_6_00000.png?ex=65a4336c&is=6591be6c&hm=7e57d6a0bc041e5eeb8a32188c9e5cbf1bdfe4814ed4fcb0a23969501a2234f0&")
+        await interaction.response.edit_message(content=None, view=makeburger5(bot=self.bot), embed=embed)
+
+class makeburger5(discord.ui.View):
+    def __init__ (self, bot):
+        super().__init__(timeout=None)
+        self.value = None
+        self.bot = bot
+
+    @discord.ui.button(label="finish burger")
+    async def burger(self, interaction: discord.Interaction, button: discord.ui.Button):
+        earnings = random.randint(5354, 5354)
+        query = "UPDATE bank SET wallet = wallet + $1 WHERE user = $2"
+        async with self.bot.pool.acquire() as conn:
+            async with conn.transaction():
+                await conn.execute(query, earnings, interaction.user.id)
+        embed = discord.Embed(description=f"You earned <a:coin:1192540229727440896> **{earnings}**", color=0x2b2d31)
+        embed.set_image(url="https://cdn.discordapp.com/attachments/1184208577120960632/1191098165089292369/burger_7_00000.png?ex=65a4339c&is=6591be9c&hm=8b801b0f04d0ae6d3029a5736b0b793da2ecb7c6692c596a1eb069271cbd0183&")
+        await interaction.response.edit_message(content=None, view=None, embed=embed)
+        rantip = ["1","2","3","4"]
+        tipran = random.choice(rantip)
+        tips = random.randint(100, 1000)
+        if tipran == "3":
+            query = "UPDATE bank SET wallet = wallet + $1 WHERE user = $2"
+            async with self.bot.pool.acquire() as conn:
+                async with conn.transaction():
+                    await conn.execute(query, tips, interaction.user.id)
+                    await interaction.followup.send(f"you have been tipped <a:coin:1192540229727440896> {tips}")
+
+class happymeal(discord.ui.View):
+    def __init__ (self, bot):
+        super().__init__(timeout=None)
+        self.value = None
+        self.bot = bot
+
+    @discord.ui.button(label="start happy meal")
+    async def starthm(self, interaction: discord.Interaction, button: discord.ui.Button):
+        embed=discord.Embed(color=0x2b2d31)
+        embed.set_image(url="https://cdn.discordapp.com/attachments/1184208577120960632/1192534600052912169/hm1_00000.png?ex=65a96d64&is=6596f864&hm=198a5a97ad8d851f2cecc4d6ee4a3b6d77cb4bed9b561e75c22a05db3074100d&")
+        await interaction.response.edit_message(content=None, view=hm2(bot=self.bot), embed=embed)
+
+class hm2(discord.ui.View):
+    def __init__ (self, bot):
+        super().__init__(timeout=None)
+        self.value = None
+        self.bot = bot
+
+    @discord.ui.button(label="add drink")
+    async def starthm(self, interaction: discord.Interaction, button: discord.ui.Button):
+        embed=discord.Embed(color=0x2b2d31)
+        embed.set_image(url="https://cdn.discordapp.com/attachments/1184208577120960632/1192535857916285090/hm2_00000.png?ex=65a96e90&is=6596f990&hm=8ad9c8ab3c34d0ee4c8cb1f5db4e800dd7e1730af814adfc1b870e5f80b69fb2&")
+        await interaction.response.edit_message(content=None, view=hm3(bot=self.bot), embed=embed)
+
+class hm3(discord.ui.View):
+    def __init__ (self, bot):
+        super().__init__(timeout=None)
+        self.value = None
+        self.bot = bot
+
+    @discord.ui.button(label="add fries")
+    async def starthm(self, interaction: discord.Interaction, button: discord.ui.Button):
+        embed=discord.Embed(color=0x2b2d31)
+        embed.set_image(url="https://cdn.discordapp.com/attachments/1184208577120960632/1192536391553392731/hm3_00000.png?ex=65a96f10&is=6596fa10&hm=c3e0180d3da86a7af1c02f64c58575280a3855e6665cbc126055ef2381c48c39&")
+        await interaction.response.edit_message(content=None, view=hm4(bot=self.bot), embed=embed)
+
+class hm4(discord.ui.View):
+    def __init__ (self, bot):
+        super().__init__(timeout=None)
+        self.value = None
+        self.bot = bot
+
+    @discord.ui.button(label="add burger")
+    async def starthm(self, interaction: discord.Interaction, button: discord.ui.Button):
+        embed=discord.Embed(color=0x2b2d31)
+        embed.set_image(url="https://cdn.discordapp.com/attachments/1184208577120960632/1192536777429352568/hm4_00000.png?ex=65a96f6c&is=6596fa6c&hm=9b5e9a441a7e4c2f1d41d6565f9750f9f7902dd655f56b71302fb0b7312614cf&")
+        await interaction.response.edit_message(content=None, view=hm5(bot=self.bot), embed=embed)
+
+class hm5(discord.ui.View):
+    def __init__ (self, bot):
+        super().__init__(timeout=None)
+        self.value = None
+        self.bot = bot
+
+    @discord.ui.button(label="add toy")
+    async def starthm(self, interaction: discord.Interaction, button: discord.ui.Button):
+        embed=discord.Embed(color=0x2b2d31)
+        embed.set_image(url="https://cdn.discordapp.com/attachments/1184208577120960632/1192537364304765069/hm5_00000.png?ex=65a96ff7&is=6596faf7&hm=762768a398644f7094ff3ddd26959deadf4f5b0e5755f585ea513149abbf3fe0&")
+        await interaction.response.edit_message(content=None, view=hm6(bot=self.bot), embed=embed)
+
+class hm6(discord.ui.View):
+    def __init__ (self, bot):
+        super().__init__(timeout=None)
+        self.value = None
+        self.bot = bot
+
+    @discord.ui.button(label="finish happy meal")
+    async def burger(self, interaction: discord.Interaction, button: discord.ui.Button):
+        earnings = random.randint(5354, 5354)
+        query = "UPDATE bank SET wallet = wallet + $1 WHERE user = $2"
+        async with self.bot.pool.acquire() as conn:
+            async with conn.transaction():
+                await conn.execute(query, earnings, interaction.user.id)
+        embed = discord.Embed(description=f"You earned <a:coin:1192540229727440896> **{earnings}**", color=0x2b2d31)
+        await interaction.response.edit_message(content=None, view=None, embed=embed)
+        rantip = ["1","2","3","4"]
+        tipran = random.choice(rantip)
+        tips = random.randint(100, 1000)
+        if tipran == "3":
+            query = "UPDATE bank SET wallet = wallet + $1 WHERE user = $2"
+            async with self.bot.pool.acquire() as conn:
+                async with conn.transaction():
+                    await conn.execute(query, tips, interaction.user.id)
+                    await interaction.followup.send(f"you have been tipped <a:coin:1192540229727440896> {tips}")
+
+class pickupshit(discord.ui.View):
+    def __init__ (self, bot):
+        super().__init__(timeout=None)
+        self.value = None
+        self.bot = bot
+
+    @discord.ui.button(label="pickup shit")
+    async def starthm(self, interaction: discord.Interaction, button: discord.ui.Button):
+        earnings = random.randint(1766, 1766)
+        query = "UPDATE bank SET wallet = wallet + $1 WHERE user = $2"
+        async with self.bot.pool.acquire() as conn:
+            async with conn.transaction():
+                await conn.execute(query, earnings, interaction.user.id)
+        embed=discord.Embed(title="Job Complete", description=f"You have earnt <a:coin:1192540229727440896> {earnings}", color=0x2b2d31)
+        embed.set_image(url="https://cdn.discordapp.com/attachments/1184208577120960632/1193990123667345579/dogwalker_00000.png?ex=65aeb8f4&is=659c43f4&hm=e2631d448194102a748407bb624e2acf1cd1cc64bf6b701196dae59533ad61ee&")
+        await interaction.response.edit_message(content=None, view=None, embed=embed)
+        rantip = ["1","2","3","4"]
+        tipran = random.choice(rantip)
+        tips = random.randint(100, 1000)
+        if tipran == "3":
+            query = "UPDATE bank SET wallet = wallet + $1 WHERE user = $2"
+            async with self.bot.pool.acquire() as conn:
+                async with conn.transaction():
+                    await conn.execute(query, tips, interaction.user.id)
+                    await interaction.followup.send(f"you have been tipped <a:coin:1192540229727440896> {tips}")
+
+class walkdog(discord.ui.View):
+    def __init__ (self, bot):
+        super().__init__(timeout=None)
+        self.value = None
+        self.bot = bot
+
+    @discord.ui.button(label="walk the dog")
+    async def starthm(self, interaction: discord.Interaction, button: discord.ui.Button):
+        earnings = random.randint(1766, 1766)
+        query = "UPDATE bank SET wallet = wallet + $1 WHERE user = $2"
+        async with self.bot.pool.acquire() as conn:
+            async with conn.transaction():
+                await conn.execute(query, earnings, interaction.user.id)
+        rangif = gifs[str(random.randrange(len(gifs)))]
+        embed=discord.Embed(title="Job Complete", description=f"You have earnt <a:coin:1192540229727440896> {earnings}", color=0x2b2d31)
+        embed.set_image(url=rangif[1])
+        await interaction.response.edit_message(content=None, view=None, embed=embed)
+        rantip = ["1","2","3","4"]
+        tipran = random.choice(rantip)
+        tips = random.randint(100, 1000)
+        if tipran == "3":
+            query = "UPDATE bank SET wallet = wallet + $1 WHERE user = $2"
+            async with self.bot.pool.acquire() as conn:
+                async with conn.transaction():
+                    await conn.execute(query, tips, interaction.user.id)
+                    await interaction.followup.send(f"you have been tipped <a:coin:1192540229727440896> {tips}")
+
 class Economy(commands.Cog):
     """Commands for the economy system"""
     def __init__(self, bot):
@@ -611,6 +908,123 @@ class Economy(commands.Cog):
                 await conn.commit()
 
         await ctx.send(f"You have successfully sold {quantity} {item}(s) for <a:coin:1154168127802843216> {sell_price} coins. Your new wallet balance is <a:coin:1154168127802843216> {new_wallet_balance} coins.")
+
+    async def get_job_role(self, user):
+        async with self.bot.pool.acquire() as conn:
+            async with conn.transaction():
+                query = "SELECT job FROM bank WHERE user = ? LIMIT 1"
+                result = await conn.execute(query, user)
+                row = await result.fetchone()
+                if row:
+                    return row['job']
+                return None
+
+    @commands.command(description="See what jobs are avaliable", extras="+jobs")
+    @kanzen_only()
+    async def jobs(self, ctx):
+        role = await self.get_job_role(ctx.author.id)
+        if role == "mcdonalds":
+            mcdonalds = "✅"
+        else:
+            mcdonalds = ""
+        if role == "twitch":
+            twitch = "✅"
+        else:
+            twitch = ""
+        if role == "amazon":
+            amazon = "✅"
+        else:
+            amazon = ""
+        if role == "dog":
+            dog = "✅"
+        else:
+            dog = ""
+        if role == "mod":
+            mod = "✅"
+        else:
+            mod = ""
+        embed = discord.Embed(title="Kanzen Jobs", description=f"If a job is marked with ✅, that is the job you have selected.\n\n<:CF12:1188186414387568691> [**Mcdonalds worker**](https://instagram.com/kanzengrp) {mcdonalds}\n<:Empty:1188186122350759996> Flip Burgers and make fries\n<:Empty:1188186122350759996> Salary **5,354** per shift\n<:Empty:1188186122350759996> `+apply mcdonalds`\n\n<:CF12:1188186414387568691> [**Twitch Streamer**](https://instagram.com/kanzengrp) {twitch}\n<:Empty:1188186122350759996> Play video games on stream\n<:Empty:1188186122350759996> Salary **7,645** per shift\n<:Empty:1188186122350759996> `COMING SOON`\n\n<:CF12:1188186414387568691> [**Amazon Delivery Driver**](https://instagram.com/kanzengrp) {amazon}\n<:Empty:1188186122350759996> Deliver packages to customers\n<:Empty:1188186122350759996> Salary **2,435** per shift\n<:Empty:1188186122350759996> `+apply amazon`\n\n<:CF12:1188186414387568691> [**Dog Walker**](https://instagram.com/kanzengrp) {dog}\n<:Empty:1188186122350759996> Walk dogs for people in Kanzen's town\n<:Empty:1188186122350759996> Salary **1,766** per shift\n<:Empty:1188186122350759996> `+apply dogwalker`\n\n<:CF12:1188186414387568691> [**Discord Moderator**](https://instagram.com/kanzengrp) {mod}\n<:Empty:1188186122350759996> Deal with shitty people and Discord kittens\n<:Empty:1188186122350759996> Salary **6,454** per shift\n<:Empty:1188186122350759996> `COMING SOON`", color=0x2b2d31)
+        embed.set_thumbnail(url=ctx.author.avatar)
+        embed.set_footer(text="• Do +apply (job title) to apply for a job", icon_url=ctx.guild.icon)
+        await ctx.reply(embed=embed)
+
+    @commands.group(invoke_without_command=True, description="Apply for one of our jobs", extras="+apply (job name)")
+    @kanzen_only()
+    async def apply(self, ctx: commands.Context):
+        await ctx.reply("Please do the command again and say what job role you'd like to apply for\nExample: `+apply`")
+
+    @apply.command(hidden=True)
+    @kanzen_only()
+    async def amazon(self, ctx):
+        await self.update_job(ctx.author.id, "amazon")
+        await ctx.reply("Thank you for applying for the position `amazon`\nTo do a shift please do `+work `")
+
+    @apply.command(hidden=True)
+    @kanzen_only()
+    async def mcdonalds(self, ctx):
+        await self.update_job(ctx.author.id, "mcdonalds")
+        await ctx.reply("Thank you for applying for the position `mcdonalds`\nTo do a shift please do `+work`")
+
+    @apply.command(hidden=True)
+    @kanzen_only()
+    async def dogwalker(self, ctx):
+        await self.update_job(ctx.author.id, "dogwalker")
+        await ctx.reply("Thank you for applying for the position `dogwalker`\nTo do a shift please do `+work`")
+
+    @commands.command(description="Work a shift", extras="+work (twitch/dogwalker/mcdonalds/moderator)")
+    @kanzen_only()
+    @commands.cooldown(1, 3 * 60 * 60, commands.BucketType.user)
+    async def work(self, ctx):
+        role = await self.get_job_role(ctx.author.id)
+        if role == "twitch":
+            await ctx.reply("twitch lol")
+        if role == "mcdonalds":
+            embed1 = discord.Embed(title="Make a burger", description="Use the buttons below to make a burger!", color=0x2b2d31)
+            embed1.set_image(url="https://cdn.discordapp.com/attachments/1184208577120960632/1191094770244780032/burger_1_00000.png?ex=65a43072&is=6591bb72&hm=f04d2d3b5e9bdd9079fe0256aec99423560227997e8c1eda58be79dccd116509&")
+            embed2 = discord.Embed(title="Make a Happy Meal", description="Use the buttons below to make a Happy Meal", color=0x2b2d31)
+            embed2.set_image(url="https://cdn.discordapp.com/attachments/1184208577120960632/1191094770244780032/burger_1_00000.png?ex=65a43072&is=6591bb72&hm=f04d2d3b5e9bdd9079fe0256aec99423560227997e8c1eda58be79dccd116509&")
+            embedsran = [embed1, embed2]
+            ranembeds = random.choice(embedsran)
+            if ranembeds == embed1:
+                buttons = makeburger(bot=self.bot)
+            elif ranembeds == embed2:
+                buttons = happymeal(bot=self.bot)
+            view = buttons
+            await ctx.reply(embed=ranembeds, view=view)
+        if role == "dogwalker":
+            embed1 = discord.Embed(title="Pick up the dog shit", description="The dog took a massive shit on the side on the road... pick it up", color=0x2b2d31)
+            embed1.set_image(url="https://cdn.discordapp.com/attachments/1184208577120960632/1193989944398577855/dogwalker_00000.png?ex=65aeb8ca&is=659c43ca&hm=7154bb7ac9dc38f868474deb66f3ed2f5abf5bee99e2369fc9a22a02e720237e&")
+            embed2 = discord.Embed(title="Walk the dog", description="The old lady needs her scruffy dog walked, click the button to walk", color=0x2b2d31)
+            rangif = gifs[str(random.randrange(len(gifs)))]
+            embed2.set_image(url=rangif[0])
+            embedsran = [embed1, embed2]
+            ranembeds = random.choice(embedsran)
+            if ranembeds == embed1:
+                buttons = pickupshit(bot=self.bot)
+            elif ranembeds == embed2:
+                buttons = walkdog(bot=self.bot)
+            view = buttons
+            await ctx.reply(embed=ranembeds, view=view)
+        if role == "mcdonalds":
+            embed = discord.Embed(title="Drop of customer's packages", color=0x2b2d31)
+            embed.set_image(url="https://cdn.discordapp.com/attachments/1184208577120960632/1196001013497344090/amazon1_00000.png?ex=65b609be&is=65a394be&hm=2d3ab0b0aa00e215d5357b6abedc15812f1208c439deca510d66d7ae7c329c37&")
+            view = amazon(bot=self.bot)
+            await ctx.reply(embed=embed, view=view)
+        if role == None:
+            await ctx.reply("You have not applied for a job yet! Do `+jobs` to view the available jobs.")
+
+    @work.error
+    async def work_error(self, ctx: commands.Context, error: commands.CommandError):
+        if isinstance(error, commands.CommandOnCooldown):
+            if error.retry_after > 3600:
+                hours = int(error.retry_after // 3600)
+                minutes = int((error.retry_after % 3600) // 60)
+                await ctx.reply(f"You need to wait {hours} hours and {minutes} minutes before working again!")
+            elif error.retry_after > 60:
+                minutes = int(error.retry_after // 60)
+                await ctx.reply(f"You need to wait {minutes} minutes before working again!")
+            else:
+                await ctx.reply(f"You need to wait {int(error.retry_after)} seconds before working again!")
 
 async def setup(bot):
     await bot.add_cog(Economy(bot))
