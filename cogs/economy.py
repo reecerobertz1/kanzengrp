@@ -909,6 +909,10 @@ class Economy(commands.Cog):
 
         await ctx.send(f"You have successfully sold {quantity} {item}(s) for <a:coin:1154168127802843216> {sell_price} coins. Your new wallet balance is <a:coin:1154168127802843216> {new_wallet_balance} coins.")
 
+    async def update_job(self, user, job):
+        async with self.bot.pool.acquire() as conn:
+            await conn.execute("UPDATE bank SET job = $1 WHERE user = $2", job, user)
+
     async def get_job_role(self, user):
         async with self.bot.pool.acquire() as conn:
             async with conn.transaction():
