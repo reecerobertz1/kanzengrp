@@ -192,7 +192,7 @@ class Games(commands.Cog):
 
         await ctx.send(embed=discord.Embed(title="Stats", description=f" {p1.member.mention}\n**HP:** `{p1.hp}`\n**Defense**: `{p1.defense}`\n \n {p2.member.mention}\n**HP**: `{p2.hp}`\n**Defense**: `{p2.defense}`", color=0x2b2d31))
 
-    @commands.command(aliases=["battle"], description="Fight other members to the death", extras="+fight @member : alias +battle")
+    @commands.hybrid_command(aliases=["battle"], description="Fight other members to the death", extras="+fight @member : alias +battle")
     async def fight(self, ctx, opponent: discord.Member):
         if ctx.channel.id in self.occupied:
             await ctx.reply("This battlefield is occupied")
@@ -251,7 +251,7 @@ class Games(commands.Cog):
         if case == 6:
             await ctx.send(f'RIP {loser.member.mention} you will not be missed....  because {winner.member.mention} has won the battle')
 
-    @commands.command(aliases=['ttt'], description="Starts a tic-tac-toe game with another member.", extras="+tictactoe @member : alias +ttt")
+    @commands.hybrid_command(aliases=['ttt'], description="Starts a tic-tac-toe game with another member.", extras="+tictactoe @member : alias +ttt")
     async def tictactoe(self, ctx: commands.Context):
         mention = ctx.message.mentions
 
