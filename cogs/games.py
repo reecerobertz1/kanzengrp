@@ -252,7 +252,7 @@ class Games(commands.Cog):
             await ctx.send(f'RIP {loser.member.mention} you will not be missed....  because {winner.member.mention} has won the battle')
 
     @commands.hybrid_command(aliases=['ttt'], description="Starts a tic-tac-toe game with another member.", extras="+tictactoe @member : alias +ttt")
-    async def tictactoe(self, ctx: commands.Context):
+    async def tictactoe(self, ctx: commands.Context, member: discord.Member):
         mention = ctx.message.mentions
 
         if not mention:
