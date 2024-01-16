@@ -4,6 +4,111 @@ import random
 import discord
 from discord.ext import commands
 from discord.ui import View, Button
+from typing import List
+
+class TicTacToeButton(discord.ui.Button['TicTacToe']):
+    def __init__(self, x: int, y: int, player1, player2):
+        super().__init__(style=discord.ButtonStyle.secondary, label='\u200b', row=y)
+        self.x = x
+        self.y = y
+        self.player1 = player1
+        self.player2 = player2
+
+    async def callback(self, interaction: discord.Interaction):
+        assert self.view is not None
+        view: TicTacToe = self.view
+        state = view.board[self.y][self.x]
+        if state in (view.X, view.O):
+            return
+
+        if view.current_player == view.player_1:
+            if interaction.user == view.player_1:
+                self.style = discord.ButtonStyle.blurple
+                self.label = 'X'
+                self.disabled = True
+                view.board[self.y][self.x] = view.X
+                view.current_player = view.player_2
+                content = f"<:o_:1087132605876555807> It's {self.player2.mention}'s turn"
+            else:
+                return await interaction.response.send_message('Not your turn!', ephemeral=True)
+        else:
+            if interaction.user == view.player_2:
+                self.style = discord.ButtonStyle.red
+                self.label = 'O'
+                self.disabled = True
+                view.board[self.y][self.x] = view.O
+                view.current_player = view.player_1
+                content = f"<:x_:1087132262400794644> It's {self.player1.mention}'s turn"
+            else:
+                return await interaction.response.send_message('Not your turn!', ephemeral=True)
+
+        winner = view.check_board_winner()
+        if winner is not None:
+            if winner == view.X:
+                content = f'{self.player1.mention} won!'
+            elif winner == view.O:
+                content = f'{self.player2.mention} won!'
+            else:
+                content = "It's a tie!"
+
+            for child in view.children:
+                child.disabled = True
+
+            view.stop()
+
+        await interaction.response.edit_message(content=content, view=view)
+
+class TicTacToe(discord.ui.View):
+    children: List[TicTacToeButton]
+    X = -1
+    O = 1
+    Tie = 2
+
+    def __init__(self, player1, player2):
+        super().__init__()
+        self.current_player = self.X
+        self.player_1 = player1
+        self.player_2 = player2
+        self.board = [
+            [0, 0, 0],
+            [0, 0, 0],
+            [0, 0, 0],
+        ]
+        for x in range(3):
+            for y in range(3):
+                self.add_item(TicTacToeButton(x, y, player1, player2))
+
+    def check_board_winner(self):
+        for across in self.board:
+            value = sum(across)
+            if value == 3:
+                return self.O
+            elif value == -3:
+                return self.X
+
+        for line in range(3):
+            value = self.board[0][line] + self.board[1][line] + self.board[2][line]
+            if value == 3:
+                return self.O
+            elif value == -3:
+                return self.X
+
+        diag = self.board[0][2] + self.board[1][1] + self.board[2][0]
+        if diag == 3:
+            return self.O
+        elif diag == -3:
+            return self.X
+
+        diag = self.board[0][0] + self.board[1][1] + self.board[2][2]
+        if diag == 3:
+            return self.O
+        elif diag == -3:
+            return self.X
+        
+        if all(i != 0 for row in self.board for i in row):
+            return self.Tie
+
+        return None
 
 class Player:
     def __init__(self, member):
@@ -145,6 +250,27 @@ class Games(commands.Cog):
             await ctx.send(f'{loser.member.mention} will get their revenge on {winner.member.mention} soon...\n{winner.member.mention} better sleep with one eye open')
         if case == 6:
             await ctx.send(f'RIP {loser.member.mention} you will not be missed....  because {winner.member.mention} has won the battle')
+
+    @commands.command(aliases=['ttt'], description="Starts a tic-tac-toe game with another member.", extras="+tictactoe @member : alias +ttt")
+    async def tictactoe(self, ctx: commands.Context):
+        mention = ctx.message.mentions
+
+        if not mention:
+            await ctx.reply("You need to mention someone before playing.")
+            return
+        elif len(mention) > 1:
+            await ctx.reply("Please mention only one member to play with.")
+            return
+
+        player1 = ctx.author
+        player2 = mention[0]
+
+        if player2.bot:
+            await ctx.reply("You cannot play with a bot.")
+            return
+
+        embed = discord.Embed(title="🎮 TicTacToe Game", description=f"{player1.mention} vs {player2.mention}", color=0x2b2d31)
+        message = await ctx.send(embed=embed, view=TicTacToe(player1, player2))
 
 async def setup(bot):
     await bot.add_cog(Games(bot))
