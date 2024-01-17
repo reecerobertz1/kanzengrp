@@ -473,14 +473,18 @@ class Economy(commands.Cog):
     @kanzen_only()
     async def deposit(self, ctx, amount: int):
         if amount <= 0:
-            return await ctx.send("Amount must be greater than 0.")
+            return await ctx.reply("Amount must be greater than 0.")
         wallet_balance, bank_balance = await self.get_balance(ctx.author.id)
         if wallet_balance < amount:
-            return await ctx.send("You don't have enough coins in your wallet.")
+            return await ctx.reply("You don't have enough coins in your wallet.")
         if bank_balance + amount > 1000000:
-            return await ctx.send("Your bank is full.")
+            return await ctx.reply("Your bank is full.")
         new_wallet_balance, new_bank_balance = await self.update_balance(ctx.author.id, -amount, amount)
-        await ctx.send(f"You deposited <a:coin:1154168127802843216> {amount} coins into your bank. Your new balance is: Wallet: <a:coin:1154168127802843216> {new_wallet_balance} coins, Bank: <a:coin:1154168127802843216> {new_bank_balance} coins.")
+        embed = discord.Embed(title="Deposited Coins <:wallet:1197271492182937670><:arrow10:1197269261211672760><:bank:1197269525138251876>", description=f"You deposited <a:coin:1192540229727440896> **{amount}**", color=0x2b2d31)
+        embed.set_thumbnail(url=ctx.author.display_avatar)
+        embed.add_field(name="<:wallet:1197271492182937670> Wallet Balance", value=f"<a:coin:1192540229727440896> **{new_wallet_balance}**", inline=False)
+        embed.add_field(name="<:bank:1197269525138251876> Bank Balance", value=f"<a:coin:1192540229727440896> **{new_bank_balance}**", inline=False)
+        await ctx.reply(embed=embed)
 
     @commands.command(description="Withdraw money from your bank", extras="+withdraw (amount)")
     @kanzen_only()
@@ -491,7 +495,11 @@ class Economy(commands.Cog):
         if bank_balance < amount:
             return await ctx.send("You don't have enough coins in your bank.")
         new_wallet_balance, new_bank_balance = await self.update_balance(ctx.author.id, amount, -amount)
-        await ctx.send(f"You withdrew <a:coin:1154168127802843216> {amount} coins from your bank. Your new balance is: Wallet: <a:coin:1154168127802843216> {new_wallet_balance} coins, Bank: <a:coin:1154168127802843216> {new_bank_balance} coins.")
+        embed = discord.Embed(title="Withdrew Coins <:bank:1197269525138251876><:arrow10:1197269261211672760><:wallet:1197271492182937670>", description=f"You withdrew <a:coin:1192540229727440896> **{amount}**", color=0x2b2d31)
+        embed.set_thumbnail(url=ctx.author.display_avatar)
+        embed.add_field(name="<:wallet:1197271492182937670> Wallet Balance", value=f"<a:coin:1192540229727440896> **{new_wallet_balance}**", inline=False)
+        embed.add_field(name="<:bank:1197269525138251876> Bank Balance", value=f"<a:coin:1192540229727440896> **{new_bank_balance}**", inline=False)
+        await ctx.reply(embed=embed)
 
     @commands.command(description="Donate to ~~the poor~~ other members", extras="+donate @member (amount)")
     @kanzen_only()
@@ -505,7 +513,11 @@ class Economy(commands.Cog):
             return await ctx.send("You don't have enough coins in your wallet.")
         _, _ = await self.update_balance(ctx.author.id, -amount, 0)
         new_wallet_balance, new_bank_balance = await self.update_balance(user.id, amount, 0)
-        await ctx.send(f"You gave {user.display_name} {amount} coins. {user.display_name}'s new balance is: Wallet: <a:coin:1154168127802843216> {new_wallet_balance} coins, Bank: <a:coin:1154168127802843216> {new_bank_balance} coins.")
+        embed = discord.Embed(title="Donated Coins", description=f"You donated <a:coin:1192540229727440896> **{amount}** to **{user.display_name}**", color=0x2b2d31)
+        embed.set_thumbnail(url=ctx.author.display_avatar)
+        embed.add_field(name=f"<:wallet:1197271492182937670> {user.display_name}'s Wallet Balance", value=f"<a:coin:1192540229727440896> **{new_wallet_balance}**", inline=False)
+        embed.add_field(name=f"<:bank:1197269525138251876> {user.display_name}'s Bank Balance", value=f"<a:coin:1192540229727440896> **{new_bank_balance}**", inline=False)
+        await ctx.reply(embed=embed)
 
     @commands.command(description="Beg celebs for coins", extras="+beg")
     @commands.cooldown(1, 10, commands.BucketType.user)
@@ -558,8 +570,9 @@ class Economy(commands.Cog):
         earnings = random.randint(1, 10000)
         wallet_balance, _ = await self.update_balance(ctx.author.id, earnings, 0)
         embed=discord.Embed(title=celeb_name, description=celeb_line, color=0x2b2d31)
-        embed.add_field(name="You received", value=f"<a:coin:1154168127802843216> {earnings}")
-        embed.add_field(name="Your new wallet balance", value=f"<a:coin:1154168127802843216> {wallet_balance}")
+        embed.set_thumbnail(url=ctx.author.display_avatar)
+        embed.add_field(name="You received", value=f"<a:coin:1192540229727440896> {earnings}", inline=False)
+        embed.add_field(name="Your new wallet balance", value=f"<a:coin:1192540229727440896> {wallet_balance}", inline=False)
         await ctx.reply(embed=embed)
 
     @beg.error
@@ -600,7 +613,8 @@ class Economy(commands.Cog):
             ]
         }
         random_choices = random.sample(list(search_responses.keys()), 3)
-        where = discord.Embed(title="Where would you like to search?", description=f"**{', '.join(random_choices)}**", color=0x2b2d31)
+        where = discord.Embed(title="Where would you like to search?", description=f"**{' , '.join(random_choices)}**", color=0x2b2d31)
+        where.set_thumbnail(url=ctx.author.display_avatar)
         await ctx.reply(embed=where)
         def check(msg):
             return msg.author == ctx.author and msg.content.lower() in map(str.lower, random_choices)
@@ -614,8 +628,9 @@ class Economy(commands.Cog):
         if earnings > 0:
             wallet_balance, _ = await self.update_balance(ctx.author.id, earnings, 0)
             searched = discord.Embed(title=f"You searched {user_choice}", description=response, color=0x2b2d31)
-            searched.add_field(name="You found", value=f"<a:coin:1154168127802843216> {earnings}")
-            searched.add_field(name="Your new wallet balance", value=f"<a:coin:1154168127802843216> {wallet_balance}")
+            searched.add_field(name="You found", value=f"<a:coin:1192540229727440896> **{earnings}**", inline=False)
+            searched.add_field(name="Your new wallet balance", value=f"<a:coin:1192540229727440896> **{wallet_balance}**", inline=False)
+            searched.set_thumbnail(url=ctx.author.display_avatar)
             await ctx.reply(embed=searched)
         else:
             await ctx.reply(response)
@@ -663,7 +678,7 @@ class Economy(commands.Cog):
             ]
         }
         random_choices = random.sample(list(crime_responses.keys()), 3)
-        where = discord.Embed(title="What crime would you like to commit?", description=f"**{', '.join(random_choices)}**", color=0x2b2d31)
+        where = discord.Embed(title="What crime would you like to commit?", description=f"**{' , '.join(random_choices)}**", color=0x2b2d31)
         await ctx.reply(embed=where)
         def check(msg):
             return msg.author == ctx.author and msg.content.lower() in map(str.lower, random_choices)
@@ -676,9 +691,10 @@ class Economy(commands.Cog):
         response, earnings = random.choice(crime_responses[user_choice])
         if earnings > 0:
             wallet_balance, _ = await self.update_balance(ctx.author.id, earnings, 0)
-            searched = discord.Embed(title=f"You committed {user_choice}", description=response, color=0x2b2d31)
-            searched.add_field(name="You found", value=f"<a:coin:1154168127802843216> {earnings}")
-            searched.add_field(name="Your new wallet balance", value=f"<a:coin:1154168127802843216> {wallet_balance}")
+            searched = discord.Embed(title=f"You commited {user_choice}", description=response, color=0x2b2d31)
+            searched.add_field(name="You got", value=f"<a:coin:1192540229727440896> **{earnings}**", inline=False)
+            searched.add_field(name="Your new wallet balance", value=f"<a:coin:1192540229727440896> **{wallet_balance}**", inline=False)
+            searched.set_thumbnail(url=ctx.author.display_avatar)
             await ctx.reply(embed=searched)
         else:
             await ctx.reply(response)
@@ -714,7 +730,7 @@ class Economy(commands.Cog):
             if user:
                 leaderboard_embed.add_field(
                     name=f"** **",
-                    value=f"**{idx}.** <@!{user.id}>\n<:wallet:1154163630699458660> Wallet: <a:coin:1192540229727440896> {wallet_balance}\n"
+                    value=f"**{idx}.** <@!{user.id}>\n<:wallet:1197271492182937670> Wallet: <a:coin:1192540229727440896> {wallet_balance}\n"
                         f"<:bank:1154163938234208367> Bank: <a:coin:1192540229727440896> {bank_balance}",
                     inline=False
                 )
@@ -759,7 +775,7 @@ class Economy(commands.Cog):
                 if user:
                     leaderboard_embed.add_field(
                         name=f"** **",
-                        value=f"**{idx}.** <@!{user.id}>\n<:wallet:1154163630699458660> Wallet: <a:coin:1192540229727440896> {wallet_balance}\n"
+                        value=f"**{idx}.** <@!{user.id}>\n<:wallet:1197271492182937670> Wallet: <a:coin:1192540229727440896> {wallet_balance}\n"
                             f"<:bank:1154163938234208367> Bank: <a:coin:1192540229727440896> {bank_balance}",
                         inline=False
                     )
@@ -842,7 +858,10 @@ class Economy(commands.Cog):
                     await cursor.execute("INSERT INTO inventory (user, item, quantity) VALUES (?, ?, ?)", (ctx.author.id, item, quantity))
                     await conn.commit()
 
-        await ctx.send(f"You have successfully purchased {quantity} {item}(s) for <a:coin:1154168127802843216> {price} coins. Your new wallet balance is <a:coin:1154168127802843216> {new_wallet_balance} coins.")
+        embed = discord.Embed(title="Item Purchased", description=f"You have successfully purchased **{quantity}** **{item}(s)** for <a:coin:1192540229727440896> **{price}**", color=0x2b2d31)
+        embed.add_field(name="Your new wallet balance", value=f"<a:coin:1192540229727440896> **{wallet_balance}**", inline=False)
+        embed.set_thumbnail(url=ctx.author.display_avatar)
+        await ctx.send(embed=embed)
 
     @commands.command(description="See what items you have", extras="+inventory")
     @kanzen_only()
@@ -867,7 +886,7 @@ class Economy(commands.Cog):
                 value=f"You have **{quantity}**",
                 inline=False
             )
-
+        inventory_embed.set_thumbnail(url=ctx.author.display_avatar)
         await ctx.send(embed=inventory_embed)
 
     @commands.command(description="Sell your unwanted items", extras="+sell cookie (amount)")
@@ -907,7 +926,10 @@ class Economy(commands.Cog):
                     await cursor.execute("UPDATE inventory SET quantity = ? WHERE user = ? AND item = ?", (new_quantity, ctx.author.id, item))
                 await conn.commit()
 
-        await ctx.send(f"You have successfully sold {quantity} {item}(s) for <a:coin:1154168127802843216> {sell_price} coins. Your new wallet balance is <a:coin:1154168127802843216> {new_wallet_balance} coins.")
+        embed = discord.Embed(title="Item Sold", description=f"You have successfully sold  **{quantity}** **{item}(s)** for <a:coin:1192540229727440896> **{price}**", color=0x2b2d31)
+        embed.add_field(name="Your new wallet balance", value=f"<a:coin:1192540229727440896> **{wallet_balance}**", inline=False)
+        embed.set_thumbnail(url=ctx.author.display_avatar)
+        await ctx.send(embed=embed)
 
     async def update_job(self, user, job):
         async with self.bot.pool.acquire() as conn:
