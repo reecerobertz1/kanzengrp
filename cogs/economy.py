@@ -900,7 +900,7 @@ class Economy(commands.Cog):
     @commands.command(description="See what is in the shop", extras="+shop")
     @kanzen_only()
     async def shop(self, ctx):
-        await ctx.reply("https://cdn.discordapp.com/attachments/1121841074512605186/1169853368982843422/shop_00000.png?ex=6556e9d9&is=654474d9&hm=63dce218961ab52626ac0dbeb87e68dfd77085fef78b42ddf1a4e68495fb4573&")
+        await ctx.reply("The shop is closed right now for updates. Sorryy LOOOOOOOOOOOOOOOOOOOOOOOOL")
 
     @commands.command(description="Buy items from the shop", extras="+buy cookie (amount)")
     @kanzen_only()
