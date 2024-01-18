@@ -21,6 +21,91 @@ gifs = {
     ]
 }
 
+class tryagain(discord.ui.View):
+    def __init__(self, bot):
+        super().__init__(timeout=None)
+        self.value = None
+        self.bot = bot
+        self.amount = None
+
+    def set_amount(self, amount):
+        self.amount = amount
+
+    async def create_account(self, user):
+        async with self.bot.pool.acquire() as conn:
+            await conn.execute("INSERT INTO bank (user, wallet, bank, maxbank) VALUES (?, 0, 100, 9999999999999999)", (user,))
+            await conn.commit()
+
+    async def update_balance(self, user, wallet_change=0, bank_change=0):
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute("SELECT wallet, bank FROM bank WHERE user = ?", (user,))
+                row = await cursor.fetchone()
+                if row is None:
+                    await self.create_account(user)
+                    await cursor.execute("SELECT wallet, bank FROM bank WHERE user = ?", (user,))
+                    row = await cursor.fetchone()
+                wallet_balance = row[0] + wallet_change
+                bank_balance = row[1] + bank_change
+                await cursor.execute("UPDATE bank SET wallet = ?, bank = ? WHERE user = ?", (wallet_balance, bank_balance, user))
+                await conn.commit()
+                return wallet_balance, bank_balance
+
+    @discord.ui.button(label="Spin Again")
+    async def burger(self, interaction: discord.Interaction, button: discord.ui.Button,):
+        user = interaction.user.id
+        doubled = "https://cdn.discordapp.com/attachments/1184208577120960632/1197220330675126322/double.gif?ex=65ba7952&is=65a80452&hm=c8ff676af6ef8368a3a8e540195f9efc6c0e264ec4f2ecfdfa8eeb95681fe7d4&"
+        tripled = "https://cdn.discordapp.com/attachments/1184208577120960632/1197220403156885504/triple.gif?ex=65ba7963&is=65a80463&hm=40389da7e1bfa5239b80a441f483be2f4f44e718fd095be0b55d1d0654eeb6ba&"
+        gave = "https://cdn.discordapp.com/attachments/1184208577120960632/1197488790252552212/donate.gif?ex=65bb7357&is=65a8fe57&hm=a50ffb7c923c8263582e87f61982979a1d12ef7dde745b61510f6a432871dbf6&"
+        lost = "https://cdn.discordapp.com/attachments/1184208577120960632/1197488816412434482/loose.gif?ex=65bb735e&is=65a8fe5e&hm=098beb449ad5f5fe13fbfa396b2d1a1245f456607f69f02559c7934ef42a886c&"
+        ranwheel = ['triple', 'double', 'loose']
+        wheelran = random.choice(ranwheel)
+        newamount = self.amount
+
+        if wheelran == 'double':
+            newamount *= 2
+            title = 'YOUR MONEY HAS BEEN DOUBLED!'
+            description = f"Your money has been **DOUBLED**! <a:coin:1192540229727440896> {newamount} has been added to your wallet"
+            await self.update_balance(user, newamount)
+            wheel = doubled
+            color = 0x5BD437
+            editedwheel = "https://cdn.discordapp.com/attachments/1184208577120960632/1197220425114075206/double_image_00000.png?ex=65ba7968&is=65a80468&hm=801eb50b3387d076245c7b513375e34e316d4fe4ba89239f4600a8ef21b7db3d&"
+        elif wheelran == 'triple':
+            newamount *= 3
+            title = 'YOUR MONEY HAS BEEN TRIPLED!!!'
+            await self.update_balance(user, newamount)
+            color = 0xd4af37
+            description = f"Your money has been **TRIPLED**! <a:coin:1192540229727440896> {newamount} has been added to your wallet"
+            wheel = tripled
+            editedwheel = "https://cdn.discordapp.com/attachments/1184208577120960632/1197220443891978250/triple_image_00000.png?ex=65ba796d&is=65a8046d&hm=eec1def1122ae9fcabd817fb5368d165ea928953c078d71c7d20496651e0c3e1&"
+        elif wheelran == 'give':
+            wheel = gave
+            title = 'Someone else got rich'
+            color = 0xD11717
+            description = 'You had to give your money to someone else'
+            editedwheel = "https://cdn.discordapp.com/attachments/1184208577120960632/1197489245330350131/donate_image_00000.png?ex=65bb73c4&is=65a8fec4&hm=fd7b1080beecc7a47f9f04b2897fd11da2ac164fdedaff6a6f839ac082c8271d&"
+        elif wheelran == 'loose':
+            wheel = lost
+            title = 'YOU LOST'
+            lostamount = self.amount
+            await self.update_balance(user, -lostamount)
+            description = 'You lost all your money... rip'
+            color = 0xD11717
+            editedwheel = "https://cdn.discordapp.com/attachments/1184208577120960632/1197489178875809872/loose_image_00000.png?ex=65bb73b4&is=65a8feb4&hm=cd100a25d999ea78a0d650188ec67762e52fba10e26b4084992c970dae2addcb&"
+
+        embed = discord.Embed(title=f"You gambled <a:coin:1192540229727440896> {self.amount}", color=0x2b2d31)
+        embed.set_image(url=wheel)
+        embed.set_footer(text="Goodluck!")
+        message = await interaction.response.edit_message(content=None, embed=embed, view=None)
+        await asyncio.sleep(2.4)
+        edited_embed = discord.Embed(title=title, description=description, color=color)
+        edited_embed.set_image(url=editedwheel)
+        edited_embed.set_footer(text="Thank you for playing!")
+        if message:
+            await message.edit(content=None, embed=edited_embed)
+        else:
+            await interaction.followup.send(embed=edited_embed)
+
 class amazon(discord.ui.View):
     def __init__ (self, bot):
         super().__init__(timeout=None)
@@ -1039,6 +1124,96 @@ class Economy(commands.Cog):
 
     @work.error
     async def work_error(self, ctx: commands.Context, error: commands.CommandError):
+        if isinstance(error, commands.CommandOnCooldown):
+            if error.retry_after > 3600:
+                hours = int(error.retry_after // 3600)
+                minutes = int((error.retry_after % 3600) // 60)
+                await ctx.reply(f"You need to wait {hours} hours and {minutes} minutes before working again!")
+            elif error.retry_after > 60:
+                minutes = int(error.retry_after // 60)
+                await ctx.reply(f"You need to wait {minutes} minutes before working again!")
+            else:
+                await ctx.reply(f"You need to wait {int(error.retry_after)} seconds before working again!")
+
+    @commands.command()
+    @kanzen_only()
+    @commands.cooldown(1, 24 * 60 * 60, commands.BucketType.user)
+    async def gamble(self, ctx, amount: str):
+        user = ctx.author.id
+        wallet_balance, _ = await self.get_balance(ctx.author.id)
+
+        try:
+            amount = int(amount)
+        except ValueError:
+            return await ctx.send("Please enter a valid number for the amount.")
+
+        if wallet_balance < amount:
+            return await ctx.send("You don't have enough coins to bet this much")
+
+        doubled = "https://cdn.discordapp.com/attachments/1184208577120960632/1197220330675126322/double.gif?ex=65ba7952&is=65a80452&hm=c8ff676af6ef8368a3a8e540195f9efc6c0e264ec4f2ecfdfa8eeb95681fe7d4&"
+        tripled = "https://cdn.discordapp.com/attachments/1184208577120960632/1197220403156885504/triple.gif?ex=65ba7963&is=65a80463&hm=40389da7e1bfa5239b80a441f483be2f4f44e718fd095be0b55d1d0654eeb6ba&"
+        gave = "https://cdn.discordapp.com/attachments/1184208577120960632/1197488790252552212/donate.gif?ex=65bb7357&is=65a8fe57&hm=a50ffb7c923c8263582e87f61982979a1d12ef7dde745b61510f6a432871dbf6&"
+        lost = "https://cdn.discordapp.com/attachments/1184208577120960632/1197488816412434482/loose.gif?ex=65bb735e&is=65a8fe5e&hm=098beb449ad5f5fe13fbfa396b2d1a1245f456607f69f02559c7934ef42a886c&"
+        nothing = "https://cdn.discordapp.com/attachments/1184208577120960632/1197488820086636544/nothing.gif?ex=65bb735e&is=65a8fe5e&hm=7b913ed495bc4b189c7bb2804196cc517c761f3a4255e2fb8cb6fe699e3fb15f&"
+        ranwheel = ['triple', 'double','nothing', 'loose']
+        wheelran = random.choice(ranwheel)
+        newamount = amount
+
+        if wheelran == 'double':
+            newamount *= 2
+            title = 'YOUR MONEY HAS BEEN DOUBLED!'
+            description = f"Your money has been **DOUBLED**! <a:coin:1192540229727440896> {newamount} has been added to your wallet"
+            await self.update_balance(user, newamount)
+            wheel = doubled
+            view=None
+            color = 0x5BD437
+            editedwheel = "https://cdn.discordapp.com/attachments/1184208577120960632/1197220425114075206/double_image_00000.png?ex=65ba7968&is=65a80468&hm=801eb50b3387d076245c7b513375e34e316d4fe4ba89239f4600a8ef21b7db3d&"
+        elif wheelran == 'triple':
+            newamount *= 3
+            title = 'YOUR MONEY HAS BEEN TRIPLED!!!'
+            await self.update_balance(user, newamount)
+            color = 0xd4af37
+            description = f"Your money has been **TRIPLED**! <a:coin:1192540229727440896> {newamount} has been added to your wallet"
+            wheel = tripled
+            view=None
+            editedwheel = "https://cdn.discordapp.com/attachments/1184208577120960632/1197220443891978250/triple_image_00000.png?ex=65ba796d&is=65a8046d&hm=eec1def1122ae9fcabd817fb5368d165ea928953c078d71c7d20496651e0c3e1&"
+        elif wheelran == 'give':
+            wheel = gave
+            title = 'Someone else got rich'
+            color = 0xD11717
+            view=None
+            description = 'You had to give your money to someone else'
+            editedwheel = "https://cdn.discordapp.com/attachments/1184208577120960632/1197489245330350131/donate_image_00000.png?ex=65bb73c4&is=65a8fec4&hm=fd7b1080beecc7a47f9f04b2897fd11da2ac164fdedaff6a6f839ac082c8271d&"
+        elif wheelran == 'loose':
+            wheel = lost
+            title = 'YOU LOST'
+            lostamount = amount
+            await self.update_balance(user, -lostamount)
+            description = 'You lost all your money... rip'
+            color = 0xD11717
+            view=None
+            editedwheel = "https://cdn.discordapp.com/attachments/1184208577120960632/1197489178875809872/loose_image_00000.png?ex=65bb73b4&is=65a8feb4&hm=cd100a25d999ea78a0d650188ec67762e52fba10e26b4084992c970dae2addcb&"
+        elif wheelran == 'nothing':
+            wheel = nothing
+            title = 'Nothing happened'
+            view = tryagain(bot=self.bot)
+            view.set_amount(amount)
+            description = 'You can keep your bet but you win nothing else'
+            color = 0xD11717
+            editedwheel = "https://cdn.discordapp.com/attachments/1184208577120960632/1197489107526483978/nothing_image_00000.png?ex=65bb73a3&is=65a8fea3&hm=efba6d494aa38301acba36926d41cdccc34176c88ac971a66055ce7dc7248338&"
+
+        embed = discord.Embed(title=f"You gambled <a:coin:1192540229727440896> {amount}", color=0x2b2d31)
+        embed.set_image(url=wheel)
+        embed.set_footer(text="Goodluck!", icon_url=ctx.author.display_avatar)
+        message = await ctx.reply(embed=embed)
+        await asyncio.sleep(2.4)
+        edited_embed = discord.Embed(title=title, description=description, color=color)
+        edited_embed.set_image(url=editedwheel)
+        edited_embed.set_footer(text="Thank you for playing!", icon_url=ctx.author.display_avatar)
+        await message.edit(embed=edited_embed, view=view)
+
+    @gamble.error
+    async def gamble_error(self, ctx: commands.Context, error: commands.CommandError):
         if isinstance(error, commands.CommandOnCooldown):
             if error.retry_after > 3600:
                 hours = int(error.retry_after // 3600)
