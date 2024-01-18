@@ -1135,7 +1135,7 @@ class Economy(commands.Cog):
             else:
                 await ctx.reply(f"You need to wait {int(error.retry_after)} seconds before working again!")
 
-    @commands.command()
+    @commands.command(description="gamble your life savings", extras="+gamble (amount)")
     @kanzen_only()
     @commands.cooldown(1, 24 * 60 * 60, commands.BucketType.user)
     async def gamble(self, ctx, amount: str):
