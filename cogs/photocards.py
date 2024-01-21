@@ -347,6 +347,10 @@ class photocards(commands.Cog):
             "bp26" : 550000,
             "bp27" : 550000,
             "bp28" : 550000,
+            "bp29" : 1500000,
+            "bp30" : 1500000,
+            "bp31" : 1500000,
+            "bp32" : 1500000,
         }
         item_lower = item.lower()
         if item_lower not in shop_items:
@@ -460,6 +464,10 @@ class photocards(commands.Cog):
             "bp26" : 550000,
             "bp27" : 550000,
             "bp28" : 550000,
+            "bp29" : 1500000,
+            "bp30" : 1500000,
+            "bp31" : 1500000,
+            "bp32" : 1500000,
         }
         item_lower = item.lower()
         if item_lower not in shop_items:
