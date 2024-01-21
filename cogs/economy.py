@@ -720,6 +720,13 @@ class Economy(commands.Cog):
         else:
             await ctx.reply(response)
 
+    def is_staff():
+        async def predicate(ctx):
+            role_id = 1135244903165722695
+            role = ctx.guild.get_role(role_id)
+            return role in ctx.author.roles
+        return commands.check(predicate)
+
     @commands.command(description="Remove coins from members", extras="+removecoins @member")
     @is_staff()
     async def removecoins(self, ctx, member: discord.Member, amount: str):
