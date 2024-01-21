@@ -652,7 +652,7 @@ class Economy(commands.Cog):
 
         celeb_name = random.choice(celeb_names)
         celeb_line = random.choice(celeb_lines.get(celeb_name, ["No coins for you."]))
-        earnings = random.randint(100000, 10000000000)
+        earnings = random.randint(1, 10000)
         wallet_balance, _ = await self.update_balance(ctx.author.id, earnings, 0)
         embed=discord.Embed(title=celeb_name, description=celeb_line, color=0x2b2d31)
         embed.set_thumbnail(url=ctx.author.display_avatar)
