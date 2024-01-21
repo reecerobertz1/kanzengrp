@@ -720,6 +720,17 @@ class Economy(commands.Cog):
         else:
             await ctx.reply(response)
 
+    @commands.command(description="Remove coins from members", extras="+removecoins @member")
+    @is_staff()
+    async def removecoins(self, ctx, member: discord.Member, amount: str):
+        amount = int(amount)
+        wallet_balance, _ = await self.get_balance(member.id)
+        coins_to_take = min(amount, wallet_balance)
+        new_wallet_balance = await self.update_balance(member.id, -coins_to_take, 0)
+        author_wallet_balance, _ = await self.get_balance(ctx.author.id)
+        new_author_wallet_balance = await self.update_balance(ctx.author.id, coins_to_take, 0)
+        await ctx.send(f"Removed {coins_to_take} coins from {member.mention}'s wallet.")
+
     @commands.command(description="commit a crime for coins", extras="+crime | shoplifting")
     @commands.cooldown(1, 10, commands.BucketType.user)
     @kanzen_only()
