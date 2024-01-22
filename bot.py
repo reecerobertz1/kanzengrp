@@ -10,7 +10,6 @@ my_guild = discord.Object(id=1121841073673736215)
 extensions = {
     "jishaku",
     "cogs.celebgame",
-    "cogs.custom",
     "cogs.daegu",
     "cogs.eb",
     "cogs.economy",

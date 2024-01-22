@@ -12,29 +12,13 @@ import requests
 from io import BytesIO
 import os
 import textwrap
-from dispie import EmbedCreator
+from discord import app_commands
 
 class misc(commands.Cog):
     """Miscellaneous Commands"""
     def __init__(self, bot):
         self.bot = bot
-        self.db = None
-        self.bot.loop.create_task(self.initialize_database())
-        self.emoji="<:mang:1121909428866793582>"
-
-    async def initialize_database(self):
-        self.db = await asqlite.connect("levels.db")
-        async with self.db.cursor() as cursor:
-            await cursor.execute('''
-                CREATE TABLE IF NOT EXISTS profiles (
-                    user_id INTEGER PRIMARY KEY,
-                    about_me TEXT,
-                    instagram_username TEXT,
-                    pronouns TEXT,
-                    banner_url TEXT,
-                    background_url TEXT
-                )
-            ''')
+        self.emoji = "<:tata:1121909389280944169>"
 
     async def set_afk(self, userid: int, reason: str) -> None:
         query = "INSERT INTO afk (user_id, reason, time) VALUES ($1, $2, $3) ON CONFLICT (user_id) DO UPDATE SET reason = $2, time = $3"
@@ -43,20 +27,62 @@ class misc(commands.Cog):
                 await connection.execute(query, userid, reason, discord.utils.utcnow())
         await self.bot.pool.release(connection)
 
-    @commands.command(aliases=['be', 'embed'], description="Build an embed", extras="aliases +be, +embed")
-    async def buildembed(self, ctx: commands.Context):
-        """Embed Generator With Default Embed And Author Check So Only The Invoker Can Use The Editor"""
-        view = EmbedCreator(bot=self.bot)
-        async def check(interaction: discord.Interaction):
-                if interaction.user.id == ctx.author.id:
-                    return True
-                else:
-                    await interaction.response.send_message(f"Only {ctx.author} can use this interaction!", ephemeral=True)
-                    return False
-        view.interaction_check = check
-        await ctx.send(embed=view.get_default_embed, view=view)
+    @commands.hybrid_command(name="buildembed", aliases=['be', 'embed'], description="Build an embed")
+    @commands.has_permissions(manage_guild=True)
+    async def buildembed(self, ctx: commands.Context, channel: Optional[discord.TextChannel] = None):
+        if channel is None:
+            channel = ctx.channel
 
-    @commands.command(aliases=["hoshiinfo", "about"], description="Information about Hoshi", extras="aliases +hoshiinfo, +about")
+        await ctx.message.delete()
+        async def ask_question(question):
+            message = await ctx.send(question)
+            response = await self.bot.wait_for('message', check=lambda m: m.author == ctx.author)
+            await message.delete()
+            await response.delete()
+            return response.content
+
+        title = await ask_question("What title do you want your embed to have?")
+        description = await ask_question("Okay! What do you want your description to be?")
+        color_input = await ask_question("What color do you want your embed to be? (in hex; e.g., 2B2D31)")
+        if color_input.lower() == 'x':
+            color = 0x60e5fc
+        else:
+            try:
+                color = int(color_input, 16)
+            except ValueError:
+                await ctx.send("Invalid color code. Using default color.")
+                color = 0x60e5fc
+
+        embed = discord.Embed(title=title, description=description, colour=color)
+        thumbnail_url = await ask_question("Enter the thumbnail URL (Type `X` to skip)")
+        if thumbnail_url.lower() != 'x':
+            embed.set_thumbnail(url=thumbnail_url)
+
+        image_url = await ask_question("Enter the image URL (Type `X` to skip)")
+        if image_url.lower() != 'x':
+            embed.set_image(url=image_url)
+
+        footer_input = await ask_question("What should the footer be? (Type `X` to skip)")
+        if footer_input.lower() != 'x':
+            embed.set_footer(text=footer_input)
+
+        fields_completed = False
+        while not fields_completed:
+            field_name = await ask_question("What do you want the name of the field to be? (Type `X` to finish adding fields)")
+            if field_name.lower() == 'x':
+                fields_completed = True
+            else:
+                field_value = await ask_question("What do you want the value of the field to be?")
+                inline_input = await ask_question("Do you want this field to be inline? (yes/no)")
+                if inline_input.lower() == 'yes':
+                    inline = True
+                else:
+                    inline = False
+                embed.add_field(name=field_name, value=field_value, inline=inline)
+
+        message = await channel.send(embed=embed)
+
+    @commands.hybrid_command(name="abouthoshi",aliases=["hoshiinfo", "about"], description="Information about Hoshi")
     async def abouthoshi(self, ctx):
         delta_uptime = datetime.utcnow() - self.bot.launch_time
         hours, remainder = divmod(int(delta_uptime.total_seconds()), 3600)
@@ -78,295 +104,16 @@ class misc(commands.Cog):
         embed.set_field_at(5, name="** **", value=f"**Latency:** {latency}ms", inline=False)
         await message.edit(embed=embed)
 
-    @commands.command(description="Get the server information", extras="+serverinfo")
-    async def serverinfo(self, ctx):
-        async with ctx.typing():
-            embed = discord.Embed(title=f"Server Information for the server {ctx.guild.name}", color=0x2b2d31)
-            embed.set_thumbnail(url=ctx.guild.icon)
-            embed.set_image(url=ctx.guild.banner)
-            embed.add_field(name="Server Name", value=ctx.guild.name, inline=True)
-            embed.add_field(name="Server Owner", value=ctx.guild.owner, inline=True)
-            embed.add_field(name="Member Count", value=ctx.guild.member_count, inline=True)
-            embed.add_field(name="Channel Count", value=len(ctx.guild.channels), inline=True)
-            embed.add_field(name="Role Count", value=len(ctx.guild.roles), inline=True)
-            embed.add_field(name="Boost Count", value=ctx.guild.premium_subscription_count, inline=True)
-            embed.add_field(name="Boost Tier", value=ctx.guild.premium_tier, inline=True)
-            embed.add_field(name="Creation Date", value=ctx.guild.created_at.__format__("%D"), inline=True)
-            embed.set_footer(text=f"Requested by {ctx.author.name}", icon_url=ctx.author.avatar)
-            embed.add_field(name="Server ID", value=ctx.guild.id, inline=True)
-            await ctx.reply(embed=embed)
-
-    @commands.command(description="Get the member count for a server", extras="+membercount")
+    @commands.command(description="Get the member count for a server")
     async def membercount(self, ctx):
         total_members = len(ctx.guild.members)
         bot_count = sum(1 for member in ctx.guild.members if member.bot)
         human_count = total_members - bot_count
-        
         embed = discord.Embed(title=f"Total members in {ctx.guild.name}", color=0x2b2d31)
         embed.add_field(name="Total Members", value=total_members, inline=False)
         embed.add_field(name="Humans", value=human_count, inline=False)
         embed.add_field(name="Bots", value=bot_count, inline=False)
-        
         await ctx.send(embed=embed)
-
-    @commands.command(description="Get the image link for an emoji", extras="+emoji (emoji)")
-    async def emoji(self, ctx, emoji: discord.Emoji):
-        emoji_url = emoji.url
-        await ctx.send(f"Here's the image for the emoji {emoji.name}: {emoji_url}")
-
-    @commands.command(aliases=['pfp', 'icon'], description="Get someone's discord avatar", extras="+avatar (optional @member)")
-    async def avatar(self, ctx, member: discord.Member = None):
-        if member is None:
-            member = ctx.author
-
-        avatar_url = member.display_avatar.url
-        embed = discord.Embed(color=0x2b2d31)
-        embed.set_image(url=avatar_url)
-        button = discord.ui.Button(label="Download", url=avatar_url, emoji="⬇")
-        view = discord.ui.View()
-        view.add_item(button)
-        await ctx.reply(embed=embed, view=view)
-
-    @commands.command(description="See someone's member profile!", extras="+profile (optional @member)")
-    async def profile(self, ctx, user: Optional[discord.Member] = None):
-        async with ctx.typing():
-            if user is None:
-                user = ctx.author
-
-            display = user.display_name
-            sheher = discord.utils.find(lambda r: r.name == 'she/her', ctx.message.guild.roles)
-            theythem = discord.utils.find(lambda r: r.name == 'they/them', ctx.message.guild.roles)
-            shethey = discord.utils.find(lambda r: r.name == 'she/they', ctx.message.guild.roles)
-            hethey = discord.utils.find(lambda r: r.name == 'he/they', ctx.message.guild.roles)
-            hehim = discord.utils.find(lambda r: r.name == 'he/him', ctx.message.guild.roles)
-            any = discord.utils.find(lambda r: r.name == 'any / ask', ctx.message.guild.roles)
-            ae = discord.utils.find(lambda r: r.name == 'after effects', ctx.message.guild.roles)
-            vs = discord.utils.find(lambda r: r.name == 'videostar', ctx.message.guild.roles)
-            am = discord.utils.find(lambda r: r.name == 'alight motion', ctx.message.guild.roles)
-            cutecut = discord.utils.find(lambda r: r.name == 'cute cut', ctx.message.guild.roles)
-            fm = discord.utils.find(lambda r: r.name == 'funimate', ctx.message.guild.roles)
-            cc = discord.utils.find(lambda r: r.name == 'capcut', ctx.message.guild.roles)
-            sony = discord.utils.find(lambda r: r.name == 'sony vegas', ctx.message.guild.roles)
-            lead = discord.utils.find(lambda r: r.name == 'lead', ctx.message.guild.roles)
-            leads = discord.utils.find(lambda r: r.name == 'leads', ctx.message.guild.roles)
-            Hoshi = discord.utils.find(lambda r: r.name == 'Hoshi', ctx.message.guild.roles)
-            zennies = discord.utils.find(lambda r: r.name == 'zennies', ctx.message.guild.roles)
-            staff = discord.utils.find(lambda r: r.name == 'staff', ctx.message.guild.roles)
-            members = discord.utils.find(lambda r: r.name == 'members', ctx.message.guild.roles)
-
-            if ae in user.roles:
-                program = "after effects"
-            elif cutecut in user.roles:
-                program = "cute cut pro"
-            elif sony in user.roles:
-                program = "sony vegas"
-            elif vs in user.roles:
-                program = "videostar"
-            elif cc in user.roles:
-                program = "cap cut"
-            elif fm in user.roles:
-                program = "funimate"
-            elif am in user.roles:
-                program = "alight motion"
-            else:
-                program = "an unspecified editing software"
-
-            if lead in user.roles:
-                title = "a Kanzen lead"
-            elif leads in user.roles:
-                title = "an Aura lead"
-            elif staff in user.roles:
-                title = "a Kanzen staff member"
-            elif zennies in user.roles:
-                title = "a Kanzen member"
-            elif members in user.roles:
-                title = "an Aura member"
-            elif Hoshi in user.roles:
-                title = "Reece's son"
-
-            if sheher in user.roles:
-                prns = "she/her"
-                prn1 = "she uses"
-                prn2 = "her"
-                prn3 = "she is"
-            elif hehim in user.roles:
-                prns = "he/him"
-                prn1 = "he uses"
-                prn2 = "his"
-                prn3 = "he is"
-            elif shethey in user.roles:
-                prns = "she/they"
-                prn1 = "they use"
-                prn2 = "her"
-                prn3 = "they are"
-            elif hethey in user.roles:
-                prns = "he/they"
-                prn1 = "they use"
-                prn2 = "his"
-                prn3 = "they are"
-            elif theythem in user.roles:
-                prns = "they/them"
-                prn1 = "they use"
-                prn2 = "their"
-                prn3 = "they are"
-            elif any in user.roles:
-                prns = "any pronouns"
-                prn1 = "they use"
-                prn2 = "their"
-                prn3 = "they are"
-            else:
-                prns = "not specified"
-                prn1 = "they use"
-                prn2 = "their"
-                prn3 = "they are"
-
-            user_id = ctx.author.id
-            async with self.db.cursor() as cursor:
-                await cursor.execute('SELECT about_me, instagram_username, pronouns, banner_url, background_url FROM profiles WHERE user_id = ?', (user_id,))
-                profile_data = await cursor.fetchone()
-
-            if profile_data:
-                about_me, instagram_username, pronouns, banner_url, background_url = profile_data
-                image = Image.new("RGBA", (1080, 1080), (255, 255, 255, 255))
-
-                if background_url:
-                    background_response = requests.get(background_url)
-                    background_image = Image.open(io.BytesIO(background_response.content))
-                    background_image = background_image.crop((0, 0, 1080, 1080))
-                    background_mask = Image.open('./assets/background_mask.png').convert("L")
-                    background_mask = background_mask.crop((0, 0, 1080, 1080))
-                    masked_background = Image.new("RGBA", (1080, 1080), (255, 255, 255, 255))
-                    masked_background.paste(background_image, (0, 0), background_mask)
-                    image.paste(masked_background, (0, 0))
-
-                if banner_url:
-                    banner_response = requests.get(banner_url)
-                    banner_image = Image.open(io.BytesIO(banner_response.content))
-                    banner_image = banner_image.crop((0, 0, 1080, 390))
-                    banner_mask = Image.open('./assets/banner_mask.png').convert("L")
-                    banner_mask = banner_mask.crop((0, 0, 1080, 390))
-                    masked_banner = Image.new("RGBA", (1080, 390), (255, 255, 255, 255))
-                    masked_banner.paste(banner_image, (0, 0), banner_mask)
-                    image.paste(masked_banner, (0, 0))
-
-                user_avatar_url = ctx.author.display_avatar.url
-                user_avatar_response = requests.get(user_avatar_url)
-                user_avatar_image = Image.open(io.BytesIO(user_avatar_response.content))
-                user_avatar_image = user_avatar_image.resize((265, 265))
-                user_avatar_image = user_avatar_image.convert("RGBA")
-                circle_mask = Image.new("L", (265, 265))
-                draw = ImageDraw.Draw(circle_mask)
-                draw.ellipse((0, 0, 265, 265), fill=255)
-                user_avatar_image.putalpha(circle_mask)
-                image.paste(user_avatar_image, (121, 233), user_avatar_image)
-
-                textbox_path = './assets/textbox.png'
-                textbox_image = Image.open(textbox_path)
-                image.paste(textbox_image, (0, 0), textbox_image)
-
-                draw = ImageDraw.Draw(image)
-                poppins = Font.poppins(size=40)
-                font2 = ImageFont.truetype("./fonts/Montserrat-Bold.ttf", 65)
-                font4 = ImageFont.truetype("./fonts/Montserrat-Bold.ttf", 35)
-
-                about_me_lines = textwrap.wrap(about_me, 47)
-                about_me_text = "\n".join(about_me_lines)
-
-                draw.text((417, 292), display, '#000000', font=font2)
-                draw.text((415, 290), display, '#ffffff', font=font2)
-                draw.text((60, 720), about_me_text, '#ffffff', font=poppins)
-                draw.text((450, 460), f"{prn1} the pronouns {prns}\n{prn3} {title}\n{prn1} {program} to edit", '#ffffff', font=poppins)
-                draw.text((470, 680), "About Me", fill=(255, 255, 255), font=font4)
-                draw.text((640, 410), "Extra Info", fill=(255, 255, 255), font=font4)
-
-                image.save("profile_image.png")
-                if "|" in display:
-                    list = display.split("|")
-                    name1 = list[0]
-                    name = name1.replace(" ", "")
-                    username = list[1]
-                    acc = username.replace(" ", "")
-                    button = discord.ui.Button(label=f"Click here to go to {prn2} Instagram", url=f"https://instagram.com/{acc}")
-                    view = discord.ui.View()
-                    view.add_item(button)
-                    await ctx.send(file=discord.File("profile_image.png"), view=view)
-                else:
-                    await ctx.send("You haven't set up your profile yet!")
-
-    @commands.command(description="Set your profile about me", extras='+aboutme "Hello my name is...')
-    async def aboutme(self, ctx, about_me: str):
-        user_id = ctx.author.id
-        async with self.db.cursor() as cursor:
-            await cursor.execute('SELECT about_me, banner_url, background_url FROM profiles WHERE user_id = ?', (user_id,))
-            existing_profile_data = await cursor.fetchone()
-
-        if existing_profile_data:
-            existing_about_me, banner_url, background_url = existing_profile_data
-            if about_me:
-                existing_about_me = about_me
-            async with self.db.cursor() as cursor:
-                await cursor.execute('''
-                    UPDATE profiles
-                    SET about_me = ?
-                    WHERE user_id = ?
-                ''', (existing_about_me, user_id))
-                await self.db.commit()
-
-            await ctx.send("Your profile information has been updated!")
-        else:
-            async with self.db.cursor() as cursor:
-                await cursor.execute('''
-                    INSERT INTO profiles (user_id, about_me)
-                    VALUES (?, ?)
-                ''', (user_id, about_me))
-                await self.db.commit()
-
-            await ctx.send("Your profile information has been set!")
-
-    @commands.command(description="Set your profile banner", extras="+profilebanner (attatch image)")
-    async def profilebanner(self, ctx):
-        user_id = ctx.author.id
-        if len(ctx.message.attachments) > 0:
-            banner_url = ctx.message.attachments[0].url
-            async with self.db.cursor() as cursor:
-                await cursor.execute('SELECT about_me, instagram_username, pronouns, background_url FROM profiles WHERE user_id = ?', (user_id,))
-                existing_data = await cursor.fetchone()
-
-            if existing_data:
-                about_me, instagram_username, pronouns, background_url = existing_data
-            else:
-                about_me, instagram_username, pronouns, background_url = None, None, None, None
-
-            async with self.db.cursor() as cursor:
-                await cursor.execute('''
-                    INSERT OR REPLACE INTO profiles (user_id, about_me, instagram_username, pronouns, banner_url, background_url)
-                    VALUES (?, ?, ?, ?, ?, ?)
-                ''', (user_id, about_me, instagram_username, pronouns, banner_url, background_url))
-                await self.db.commit()
-            await ctx.send("Your profile banner has been updated!")
-
-
-    @commands.command(description="Set your profile background", extras="+profilebg")
-    async def profilebg(self, ctx):
-        user_id = ctx.author.id
-        if len(ctx.message.attachments) > 0:
-            background_url = ctx.message.attachments[0].url
-            async with self.db.cursor() as cursor:
-                await cursor.execute('SELECT about_me, instagram_username, pronouns, banner_url FROM profiles WHERE user_id = ?', (user_id,))
-                existing_data = await cursor.fetchone()
-
-            if existing_data:
-                about_me, instagram_username, pronouns, banner_url = existing_data
-            else:
-                about_me, instagram_username, pronouns, banner_url = None, None, None, None
-
-            async with self.db.cursor() as cursor:
-                await cursor.execute('''
-                    INSERT OR REPLACE INTO profiles (user_id, about_me, instagram_username, pronouns, banner_url, background_url)
-                    VALUES (?, ?, ?, ?, ?, ?)
-                ''', (user_id, about_me, instagram_username, pronouns, banner_url, background_url))
-                await self.db.commit()
-            await ctx.send("Your profile background has been updated!")
 
     @commands.hybrid_command(name="afk", extras="+afk (reason)", description="set an afk status")
     async def afk(self, ctx, *, reason: str):

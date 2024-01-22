@@ -38,31 +38,6 @@ class editing(commands.Cog):
             json.dump(data, file, indent=4)
         await ctx.reply("Audio added successfully.")
 
-    @commands.group(invoke_without_command=True, description="See the commands for effecrs for each prgram/app", hidden=True)
-    async def effects(self, ctx: commands.Context):
-        embed = discord.Embed(title="Effect Commands", color=0x2B2D31)
-        embed.add_field(name="effects ae", value="Sends effects for After Effects", inline=False)
-        embed.add_field(name="effects vs", value="Sends effects for videostar", inline=False)
-        await ctx.reply(embed=embed)
-
-    @effects.command(description="Use the +effects ae command for ae effects", extras="+effects ae")
-    async def ae(self, ctx):
-        choices = ["4-Color Gradient", "S_HalfTone", "Gradient Ramp", "S_PseudoColor", "S_FlysEyeHex", "S_WipeTiles", "S_EdgeRays", "S_WipeMoire", "S_WipeDots", "S_WipePixelate", "S_WipePlasma", "S_WipeFlux", "S_GlowDist", "S_Glint", "Glow", "Turbulent Displace", "Wave Warp", "BCC lens blur OBS", "Invert", "Exposure", "BCC Cross Glitch", "BCC LED", "Omino Diffuse", "Omino Squares", "Grid"]
-        raneffect = random.choice(choices)
-        await ctx.reply(raneffect)
-
-    @effects.command(description="Use the +effects vs command for vs effects", extras="+effects vs")
-    async def vs(self, ctx):
-        choices = ["Select Shift", "Luma Fade", "Contrast", "Swap Hue", "Delete Color", "neXt-Ray", "Solarize", "Rainbow Halo", "E-Sample", "E-Saber", "E-Glitter", "E-Rays", "E-Anime", "E-Aura", "Frozen", "Zoom Blur", "Lens Blur", "Ring Blur", "Light Rays", "Minimax Hex", "Minimax Spin", "LED Image Circle", "LED Image Square", "LED Reveal", "Color Shadow", "Cosmic Wave", "Hole Wipe 1", "Hole Wipe 2", "Rect Wipe 1", "Rect Wipe 2", "*-Bit Wipe", "Glitch A0", "Glitch A1", "Glitch A2", "Glitch A4", "Glitch A5", "Glitch A6", "Glitch A7", "Glitch A8", "Glitch A9", "Blacken", "Hue Shift", "Color SHift", "Video Smear", "Video Melt", "Bevel Edge", "Halftone", "Block Filter", "Outline", "Scanner 1", "Scanner 2", "Edge", "White Edge", "White Lines"]
-        raneffect = random.choice(choices)
-        await ctx.reply(raneffect)
-
-    @commands.command(aliases=["transitions"],description="Get transitions to use in edits", extras="alias +transitions")
-    async def transition(self, ctx):
-        choices = ["Warp Fisheye", "Zoom in", "Zoom out", "Inside Cube", "Ink Splash", "Split Cube", "Polaroid Pop Up", "CC scale wipe", "3D flip", "3D tunnel", "Tile Scramble", "do something with a cube, dont be lazy", "idfk... look at someone's edits take inspo from them (GIVE THEM IB CREDITS THOUGH)", "rotation", "slide down", "slide right", "slide left", "slide up", "slide somewhere", "3D flip into a cube", "i can't think of anything... do the command again"]
-        raneffect = random.choice(choices)
-        await ctx.reply(raneffect)
-
     @commands.command(aliases=["who2edit"], description="Stuck for who to edit? Use this command", extras="alias +who2edit")
     async def whotoedit(self, ctx):
         """Displays a random transition effect for video editing."""

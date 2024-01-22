@@ -20,8 +20,6 @@ from easy_pil import Font
 from triviastuff.getQuestions import getQuestions
 from triviastuff.checkHandler import buttonHandler
 
-WORDS = ["apple", "banana", "orange", "grape", "strawberry", "melon", "kiwi", "cherry", "peach","computer","python","discord","programming","keyboard","gaming","music","puzzle","chocolate","coffee","internet","book","beach","mountain","travel","camera","science","flower","rainbow","butterfly","vampire","zombie","castle","ocean","space","sunset","moonlight","fireworks","candle","diamond","treasure","magic","wizard","unicorn","mermaid","dragon","superhero","mystery","adventure","fantasy","horror","comedy","romance","dinosaur","jungle","robot","pirate","ninja","samurai","karate","guitar","painting","museum","pizza","sushi","ice cream","cupcake","raincoat","umbrella","piano","guitar","violin","bicycle","skateboard","surfing","sailing","kayaking","volleyball","basketball","soccer","football","tennis","swimming","dancing","singing","writing","drawing","cooking","baking","gardening","reading","shopping","sleeping","cycling","hiking","running","yoga","meditation","relaxing","waterfall","adventure","telescope","spaceship","galaxy","sunrise","marshmallow","telescope","puzzle","rainbow","hotdog"]
-
 class Fun(commands.Cog):
     """Hoshi's fun commands"""
     def __init__(self, bot):
@@ -31,13 +29,6 @@ class Fun(commands.Cog):
         self.server2_log_channel_id = 1122994947444973709
         self.server3_log_channel_id = 1134857444250632343
         self.editorsblock_log_channel_id = 1134857444250632343
-        self.words = ["banana", "noodle", "giraffe", "chicken", "penguin","hamburger", "koala", "panda", "pizza", "unicorn","elephant", "kangaroo", "hippopotamus", "dolphin", "flamingo","chameleon", "jellyfish", "butterfly", "octopus", "toucan","giraffe", "hedgehog", "narwhal", "sloth", "lemur","raccoon", "zebra", "otter", "meerkat", "lemur","tortoise", "koala", "armadillo", "penguin", "seahorse","giraffe", "panda", "kangaroo", "elephant", "chameleon","flamingo", "hippopotamus", "jellyfish", "butterfly", "dolphin","koala", "otter", "toucan", "raccoon", "sloth","penguin", "tortoise", "meerkat", "narwhal", "armadillo","lemur", "chicken", "butterfly", "unicorn", "panda","pizza", "koala", "hamburger", "elephant", "toucan","giraffe", "chameleon", "dolphin", "seahorse", "otter","raccoon", "tortoise", "meerkat", "penguin", "sloth","koala", "unicorn", "narwhal", "jellyfish", "flamingo","lemur", "panda", "koala", "penguin", "unicorn","chicken", "hamburger", "pizza", "toucan", "sloth","giraffe", "dolphin", "armadillo", "seahorse", "butterfly","raccoon", "elephant", "meerkat", "flamingo", "jellyfish","paris", "london", "tokyo", "newyork", "sydney","berlin", "amsterdam", "moscow", "rome", "madrid","bts", "blackpink", "twice", "exo", "redvelvet","nct", "got7", "seventeen", "itzy", "straykids","usa", "canada", "australia", "japan", "france","germany", "italy", "spain", "china", "brazil","india", "russia", "mexico", "southkorea", "uk","thailand", "egypt", "greece", "argentina", "turkey","norway", "sweden", "finland", "denmark", "netherlands"]
-        self.max_attempts = 6
-        self.current_word = ""
-        self.guesses = set()
-        self.attempts = 0
-        self.games = {}
-        self.occupied = []
         self.emoji="<:chimmy2:1148234652448981072>"
 
     def get_random_color(self):
@@ -71,26 +62,6 @@ class Fun(commands.Cog):
             return self.editorsblock_log_channel_id
         else:
             return None
-
-    @commands.hybrid_command(name="dog", description="See photos + gifs of dogs", extras="+dog")
-    async def dog(self, ctx):
-        async with ctx.typing():
-            response = requests.get('https://dog.ceo/api/breeds/image/random')
-            data = response.json()
-            image_url = data['message']
-            await ctx.reply(image_url)
-
-    @commands.hybrid_command(name="cat", description="See photos + gifs of cats", extras="+cat")
-    async def cat(self, ctx):
-        async with ctx.typing():
-            try:
-                response = requests.get('https://api.thecatapi.com/v1/images/search')
-                response.raise_for_status()
-                data = response.json()
-                image_url = data[0]['url']
-                await ctx.reply(image_url)
-            except (requests.exceptions.RequestException, KeyError):
-                await ctx.reply("Sorry, I couldn't fetch a cute cat at the moment. Please try again later.")
 
     @commands.hybrid_command(name="jail", aliases=['prison', 'lockup'],description="Lock someone up in jail", extras="+jail (optional @member) : aliases +prison, +lockup")
     async def jail(self, ctx, member: Optional[discord.Member]):
@@ -134,57 +105,6 @@ class Fun(commands.Cog):
             else:
                 return False
         return commands.check(predicate)
-
-    @commands.command(description="Add your pet to the +pets command", extras="+addpet (attatch image)")
-    @kanzen_only()
-    async def addpet(self, ctx, pet_name):
-        """Adds a pet to the pet data"""
-        if not ctx.message.attachments:
-            await ctx.send("Please attach an image of your pet.")
-            return
-        
-        pet_image = ctx.message.attachments[0].url
-        
-        try:
-            with open("pets.json", "r") as file:
-                pet_data = json.load(file)
-        except FileNotFoundError:
-            pet_data = {}
-
-        if str(ctx.author.id) not in pet_data:
-            pet_data[str(ctx.author.id)] = []
-
-        pet_data[str(ctx.author.id)].append({"name": pet_name, "image": pet_image, "owner_id": str(ctx.author.id)})
-        with open("pets.json", "w") as file:
-            json.dump(pet_data, file, indent=4)
-
-        await ctx.send("Pet added successfully!")
-
-    @commands.command(description="See all of kanzen's pets", extras="+pets")
-    @kanzen_only()
-    async def pets(self, ctx):
-        try:
-            with open("pets.json", "r") as file:
-                pet_data = json.load(file)
-        except (FileNotFoundError, json.JSONDecodeError):
-            pet_data = {}
-        if pet_data:
-            random_user_id = random.choice(list(pet_data.keys()))
-            pets = pet_data[random_user_id]
-            random_pet = random.choice(pets)
-            try:
-                user = await self.bot.fetch_user(int(random_user_id))
-            except discord.NotFound:
-                await ctx.send("Oops! An error occurred while fetching user information.")
-                return
-            
-            pet_name = random_pet["name"]
-            pet_image = random_pet["image"]
-            embed = discord.Embed(title=f"{user.display_name}'s Pet: {pet_name}", description=f"This is {pet_name}! <@{user.id}>'s pet", color=0x2b2d31)
-            embed.set_image(url=pet_image)
-            await ctx.send(embed=embed)
-        else:
-            await ctx.send("No pets have been added yet.")
 
     @commands.hybrid_command(name="ppsize", aliases=['pp'],description="See who has the biggest pp", extras="+ppsize (optional @member) : alias +pp")
     async def ppsize(self, ctx, member: discord.Member = None):
@@ -237,32 +157,6 @@ class Fun(commands.Cog):
             bday = ['https://media.tenor.com/M-34lT1ySIIAAAAd/hb.gif','https://media.tenor.com/CA8wXuq5Ec8AAAAd/happy40th-birthday.gif','https://media.tenor.com/ekHNpcO0QPEAAAAC/happy-birthday.gif','https://media.tenor.com/4DZR7mxre0IAAAAC/birthday-happy-birthday.gif','https://media.tenor.com/21kzclFhTg8AAAAC/happy-birthday-birthday.gif','https://media.tenor.com/9WoGmoTqej4AAAAC/happy-birthday-hbd.gif','https://media.tenor.com/BHTQmBYipVEAAAAC/anyon-birthday.gif','https://media.tenor.com/eCGKnoBDOAQAAAAC/happy-birthday.gif']
             embed.set_image(url=(random.choice(bday)))
             await ctx.reply(embed=embed)
-
-    @commands.hybrid_command(name='roast',description="Roast someone", extras="+roast (optional @member)")
-    async def roast(self, ctx, *, member: discord.Member = None, roast_text: str = None):
-        if member is None:
-            member = ctx.author
-
-        if roast_text is None:
-            roasts = [f"{member.mention}, you're so dumb, you stare at a glass of orange juice because it says 'concentrate'.",f"{member.mention}, I'm not saying I hate you, but I would unplug your life support to charge my phone.",f"{member.mention}, I was going to make a joke about your life, but I see life already beat me to it.",f"{member.mention}, if I had a face like yours, I'd sue my parents.",f"{member.mention}, I envy people who have never met you.",f"{member.mention}, I'm not insulting you, I'm describing you.",f"{member.mention}, I'm sorry, was I meant to be offended? The only thing offending me is your face.",f"{member.mention}, I don't have the time or crayons to explain this to you.",f"{member.mention}, roses are red, violets are blue, I have 5 fingers, and the middle one is for you.",f"{member.mention}, I'm sorry if I hurt your feelings. But I hope you understand that I just don't care."]
-        else:
-            roasts = [f"{member.mention} {roast_text}"]
-
-        roast = random.choice(roasts)
-        await ctx.reply(roast)
-
-    @commands.hybrid_command(name='compliment',description="Give someone a compliment", extras="+compliment (optional @member)")
-    async def compliment(self, ctx, *, member: discord.Member = None, compliment_text: str = None):
-        if member is None:
-            member = ctx.author
-
-        if compliment_text is None:
-            compliments = [f"{member.mention}, you have a beautiful smile!",f"{member.mention}, your kindness is contagious!",f"{member.mention}, you're incredibly smart and talented!",f"{member.mention}, you make the world a better place just by being in it!",f"{member.mention}, your positive attitude is inspiring!",f"{member.mention}, you have a heart of gold!",f"{member.mention}, your creativity knows no bounds!",f"{member.mention}, you always know how to make people feel special!",f"{member.mention}, you're an amazing friend and companion!",f"{member.mention}, your hard work and dedication are truly admirable!",f"{member.mention}, your generosity knows no limits!",f"{member.mention}, you radiate positivity and joy!",f"{member.mention}, you're a beacon of light in everyone's life!",f"{member.mention}, your sense of humor brightens any room!",f"{member.mention}, you're a true inspiration to others!",f"{member.mention}, your compassion for others is unmatched!",f"{member.mention}, your presence brings happiness to those around you!",f"{member.mention}, you're a true blessing to your friends and family!",f"{member.mention}, your smile can make anyone's day better!",f"{member.mention}, you're the epitome of kindness and grace!",f"{member.mention}, your perseverance in the face of challenges is remarkable!",f"{member.mention}, you have a heart full of love and empathy!",f"{member.mention}, your wisdom and insight are greatly appreciated!",f"{member.mention}, you're a role model for all of us!",f"{member.mention}, your friendship means the world to me!",f"{member.mention}, you're a ray of sunshine on a cloudy day!",f"{member.mention}, you're a source of strength and support for others!"]
-        else:
-            compliments = [f"{member.mention} {compliment_text}"]
-
-        compliment = random.choice(compliments)
-        await ctx.reply(compliment)
 
     @commands.hybrid_command(name='8ball',description="Ask 8ball a question", extras="+8ball will i have a good day?")
     async def eight_ball(self, ctx, *, question):
@@ -346,16 +240,6 @@ class Fun(commands.Cog):
     def get_hidden_word(self):
         return "".join(letter if letter in self.guesses else "_" for letter in self.current_word)
 
-    @commands.hybrid_command(name="trivia", description="Play a game of trivia", timeout=3.0, extras="+trivia")
-    async def trivia(self, ctx):
-        
-        try:
-            view = buttonHandler()
-            embed, answer = await getQuestions()
-            message = await ctx.reply(f"Your current score is: **{view.score}**\nYou have ❤**{view.lives}** lives left.", embed=embed, view = view)
-        except asyncio.TimeoutError:
-            await message.edit(content=f"You ran out of time! Your score was {view.score}!", view=None)
-
     def _get_round_avatar(self, avatar: BytesIO) -> Tuple[Image.Image, Image.Image]:
         circle = Image.open('./assets/circle-mask.png').resize((160, 160)).convert('L')
         avatar_image = Image.open(avatar).convert('RGBA')
@@ -390,23 +274,6 @@ class Fun(commands.Cog):
         draw.text((215, 75), f"@{ctx.author.name}", font=poppins_xsmall, fill=0x2D2D2D)
         img.save("tweet.png")
         await ctx.reply(file=discord.File("tweet.png"))
-
-    @commands.hybrid_command(name='scramble',description="Unscramble words given to you by Hoshi", extras="+scramble")
-    async def scramble(self, ctx):
-        word = random.choice(WORDS)
-        scrambled_word = ''.join(random.sample(word, len(word)))
-        await ctx.reply(f"Unscramble the word: **{scrambled_word}**")
-
-        def check(message):
-            return message.author == ctx.author and message.channel == ctx.channel
-        try:
-            response = await self.bot.wait_for('message', check=check, timeout=20.0)
-            if response.content.lower() == word:
-                await ctx.reply(f"Correct! The word is **{word}**.")
-            else:
-                await ctx.reply(f"Sorry, that's incorrect. The correct word is **{word}**.")
-        except asyncio.TimeoutError:
-            await ctx.reply(f"Time's up! The correct word is **{word}**.")
 
 async def setup(bot):
     await bot.add_cog(Fun(bot))

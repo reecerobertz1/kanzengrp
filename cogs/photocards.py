@@ -40,7 +40,7 @@ class photocards(commands.Cog):
     """Commands for the photocards system"""
     def __init__(self, bot):
         self.bot = bot
-        self.emoji = "<:tata:1121909389280944169>"
+        self.emoji = "<:shooky:1121909564799987722>"
 
     def kanzen_only():
         def predicate(ctx: commands.Context):
