@@ -2064,8 +2064,8 @@ class Levels(commands.Cog):
             embed.add_field(name="top 20 role", value="a top 20 role has not been set.\nuse `+levelling setrole <role>` if you want to give a role to members ranked top 20!", inline=False)
         await ctx.send(embed=embed)
 
-    @levelling.command()
-    @commands.has_permissions(administrator=True, hidden=True)
+    @levelling.command(hidden=True)
+    @commands.has_permissions(administrator=True)
     async def activate(self, ctx: commands.Context):
         """Activates levelling system in current guild"""
         await self.change_status(ctx.guild.id, 1)
@@ -2076,8 +2076,8 @@ class Levels(commands.Cog):
         )
         await ctx.reply(embed=embed)
 
-    @levelling.command()
-    @commands.has_permissions(administrator=True, hidden=True)
+    @levelling.command(hidden=True)
+    @commands.has_permissions(administrator=True)
     async def deactivate(self, ctx: commands.Context):
         """Activates levelling system in current guild"""
         await self.change_status(ctx.guild.id, 0)
@@ -2088,8 +2088,8 @@ class Levels(commands.Cog):
         )
         await ctx.reply(embed=embed)
 
-    @levelling.command()
-    @commands.has_permissions(administrator=True, hidden=True)
+    @levelling.command(hidden=True)
+    @commands.has_permissions(administrator=True)
     async def setbronze(self, ctx: commands.Context, role: discord.Role):
         """Sets a role for members ranked Bronze
         
@@ -2116,8 +2116,8 @@ class Levels(commands.Cog):
         )
         await ctx.reply(embed=embed)
 
-    @levelling.command()
-    @commands.has_permissions(administrator=True, hidden=True)
+    @levelling.command(hidden=True)
+    @commands.has_permissions(administrator=True)
     async def setsilver(self, ctx: commands.Context, role: discord.Role):
         """Sets a role for members ranked silver
         
@@ -2134,8 +2134,8 @@ class Levels(commands.Cog):
         )
         await ctx.reply(embed=embed)
 
-    @levelling.command()
-    @commands.has_permissions(administrator=True, hidden=True)
+    @levelling.command(hidden=True)
+    @commands.has_permissions(administrator=True)
     async def setgold(self, ctx: commands.Context, role: discord.Role):
         """Sets a role for members ranked gold
         
@@ -2152,8 +2152,8 @@ class Levels(commands.Cog):
         )
         await ctx.reply(embed=embed)
 
-    @levelling.command()
-    @commands.has_permissions(administrator=True, hidden=True)
+    @levelling.command(hidden=True)
+    @commands.has_permissions(administrator=True)
     async def setdiamond(self, ctx: commands.Context, role: discord.Role):
         """Sets a role for members ranked diamond
         
@@ -2170,8 +2170,8 @@ class Levels(commands.Cog):
         )
         await ctx.reply(embed=embed)
 
-    @levelling.command()
-    @commands.has_permissions(administrator=True, hidden=True)
+    @levelling.command(hidden=True)
+    @commands.has_permissions(administrator=True)
     async def setplat(self, ctx: commands.Context, role: discord.Role):
         """Sets a role for members ranked plat
         
@@ -2188,8 +2188,8 @@ class Levels(commands.Cog):
         )
         await ctx.reply(embed=embed)
 
-    @levelling.command()
-    @commands.has_permissions(administrator=True, hidden=True)
+    @levelling.command(hidden=True)
+    @commands.has_permissions(administrator=True)
     async def setelite(self, ctx: commands.Context, role: discord.Role):
         """Sets a role for members ranked elite
         
