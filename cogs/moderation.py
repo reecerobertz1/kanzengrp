@@ -211,7 +211,7 @@ class Moderation(commands.Cog):
         except discord.Forbidden:
             print(f"Failed to send a warning DM to {member}.")
 
-    @commands.hybrid_command(name="clearwarnings",aliases=['cw'], description="Clear all warnings from a member", extras="+clearwarnings @member : alias +cw")
+    @commands.hybrid_command(name="clearwarnings",aliases=['cw'], description="Clear all warnings from a member", extras="+clearwarnings @member : alias +cw", hidden=True)
     @is_staff()
     async def clearwarnings(self, ctx, member: discord.Member):
         guild_id = ctx.guild.id
@@ -221,33 +221,6 @@ class Moderation(commands.Cog):
             await conn.execute('DELETE FROM warning WHERE member_id = $1 AND guild_id = $2', member_id, guild_id)
 
         await ctx.send(f"Warnings for {member.display_name} have been cleared.")
-
-    @commands.command(hidden=True)
-    async def suggest(self, ctx, *, suggestion):
-        server_id = ctx.guild.id
-
-        if server_id == 1121841073673736215:
-            suggestion_channel_id = 1124038649814724638
-        elif server_id == 957987670787764224:
-            suggestion_channel_id = 1124043648716247061
-        else:
-            await ctx.send("This command is not available in this server.")
-            return
-
-        suggestion_channel = self.bot.get_channel(suggestion_channel_id)
-        if suggestion_channel:
-            embed = discord.Embed(title="New Suggestion", description=suggestion, color=0x2b2d31)
-
-            suggestion_message = await suggestion_channel.send(f"Suggestion made by {ctx.author.mention}", embed=embed)
-            await suggestion_message.add_reaction("<:YES:1137798542640025640>")
-            await suggestion_message.add_reaction("<:NO:1137798539238445127>")
-
-            confirmation_message = await ctx.reply(f"Suggestion has been sent to {suggestion_channel.mention}.")
-            await asyncio.sleep(5)
-            await ctx.message.delete()
-            await confirmation_message.delete()
-        else:
-            await ctx.send("Failed to find the suggestion channel.")
 
     @commands.command(hidden=True)
     async def servericon(self, ctx):
@@ -280,24 +253,6 @@ class Moderation(commands.Cog):
         await member.ban(reason=reason)
         await member.send(f"You have been banned from {member.guild.name} for {reason}")
         await ctx.reply(f'{member.mention} has been banned for: {reason}')
-        
-    @commands.hybrid_command(name="addrole", description="Add a role to a member.", extras="+addrole @member @role")
-    @commands.has_permissions(manage_guild=True)
-    async def _add_role(self, ctx, member: discord.Member, role: discord.Role):
-        if role in member.roles:
-            await ctx.reply(f"{member.mention} already has the role {role.mention}.")
-        else:
-            await member.add_roles(role)
-            await ctx.reply(f"{member.mention} has been given the role {role.mention}.")
-
-    @commands.hybrid_command(name="removerole", description="Remove a role from a member.", extras="+removerole @member @role")
-    @commands.has_permissions(manage_guild=True)
-    async def _remove_role(self, ctx, member: discord.Member, role: discord.Role):
-        if role not in member.roles:
-            await ctx.reply(f"{member.mention} doesn't have the role {role.mention}.")
-        else:
-            await member.remove_roles(role)
-            await ctx.reply(f"{member.mention} no longer has the role {role.mention}.")
         
     @app_commands.command(name='logos', description='Get Kanzen logos')
     @app_commands.guilds(discord.Object(id=1121841073673736215))
@@ -362,7 +317,7 @@ class Moderation(commands.Cog):
             await conn.commit()
             return updated_warnings
 
-    @commands.hybrid_command(name="staffrep", description="add rep to a staff member for helping", extra="+staffrep @member")
+    @commands.hybrid_command(name="staffrep", description="add rep to a staff member for helping", extra="+staffrep @member", hidden=True)
     @commands.has_permissions(administrator=True)
     @commands.has_permissions(manage_guild=True)
     async def staffrep(self, ctx, member: discord.Member, *, helped):
@@ -384,7 +339,7 @@ class Moderation(commands.Cog):
                 await conn.commit()
         await self.bot.pool.release(conn)
 
-    @commands.command(aliases=['rr'], description="Reset the staff rep", extras="alias : +rr")
+    @commands.command(aliases=['rr'], description="Reset the staff rep", extras="alias : +rr", hidden=True)
     @commands.has_permissions(administrator=True)
     @commands.has_permissions(manage_guild=True)
     async def resetrep(self, ctx: commands.Context):
@@ -407,7 +362,7 @@ class Moderation(commands.Cog):
         except asyncio.TimeoutError:
             await message.edit(content="~~are you sure you want to reset the ranks? it's irreversible!~~\nreset has been cancelled!")
 
-    @commands.command()
+    @commands.command(hidden=True)
     async def showrep(self, ctx, member: discord.Member, *, helped=""):
         rep = await self.get_rep(member.id, ctx.guild.id, helped)
         embed = discord.Embed(title=f"Rep for {member.display_name}", color=0x2b2d31)
