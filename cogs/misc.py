@@ -18,7 +18,7 @@ class misc(commands.Cog):
     """Miscellaneous Commands"""
     def __init__(self, bot):
         self.bot = bot
-        self.emoji = "<:tata:1121909389280944169>"
+        self.emoji="<:mang:1121909428866793582>"
 
     async def set_afk(self, userid: int, reason: str) -> None:
         query = "INSERT INTO afk (user_id, reason, time) VALUES ($1, $2, $3) ON CONFLICT (user_id) DO UPDATE SET reason = $2, time = $3"
