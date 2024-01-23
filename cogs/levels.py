@@ -12,6 +12,8 @@ import re
 import asyncio
 from easy_pil import Canvas, Editor, Font
 from PIL import Image, ImageEnhance, ImageFilter, UnidentifiedImageError
+import asqlite
+from discord import ui
 
 class LevelRow(TypedDict):
     member_id: int
@@ -19,6 +21,84 @@ class LevelRow(TypedDict):
     messages: int
     bar_color: str
     format: str
+
+class customise(discord.ui.View):
+    def __init__(self, pool, author_id):
+        super().__init__(timeout=None)
+        self.pool = pool
+        self.author_id = author_id
+        self.value = None
+
+    @discord.ui.button(label="rank color")
+    async def color(self, interaction: discord.Interaction, button: discord.ui.Button):
+        if interaction.user.id != self.author_id:
+            await interaction.response.send_message("You're not able to customise someone elses card.", ephemeral=True)
+            return
+
+        color_modal = color()
+        await color_modal.init_database()
+        await interaction.response.send_modal(color_modal)
+
+    @discord.ui.button(label="format")
+    async def format(self, interaction: discord.Interaction, button: discord.ui.Button):
+        if interaction.user.id != self.author_id:
+            await interaction.response.send_message("You're not able to customise someone elses card.", ephemeral=True)
+            return
+
+        format_modal = format()
+        await format_modal.init_database()
+        await interaction.response.send_modal(format_modal)
+
+    @discord.ui.button(label="help", style=discord.ButtonStyle.blurple)
+    async def help(self, interaction: discord.Interaction, button: discord.ui.Button):
+        embed = discord.Embed(title="", description="<:CF12:1188186414387568691> **balance:**\n<:Empty:1188186122350759996> This command shows you how many coins you have in your\n<:Empty:1188186122350759996> bank and allows you to withdraw inti or deposit coins out of\n<:Empty:1188186122350759996> your bank.\n\n<:CF12:1188186414387568691> **withdraw and deposit:**\n<:Empty:1188186122350759996> To withdraw coins, click the `withdraw` button and enter the\n<:Empty:1188186122350759996> the amount of coins you want to take out of your bank.\n<:Empty:1188186122350759996> To deposit coins, click the `deposit` button and enter the\n<:Empty:1188186122350759996> the amount of coins you want to put into your bank.", color=0x2b2d31)
+        embed.set_author(name=interaction.user.name, icon_url=interaction.user.display_avatar)
+        embed.set_thumbnail(url=interaction.user.display_avatar)
+        await interaction.response.send_message(embed=embed, ephemeral=True)
+
+class color(ui.Modal, title='Rank Color'):
+    color = ui.TextInput(label='What do you want for your rank color?', placeholder="Enter color here.... (#2b2d31)", style=discord.TextStyle.short)
+
+    async def init_database(self):
+        self.pool = await asqlite.create_pool('databases/levels.db')
+        async with self.pool.acquire() as conn:
+            await conn.execute('''CREATE TABLE IF NOT EXISTS levels (member_id BIGINT, guild_id BIGINT, xp INTEGER, messages INTEGER, bar_color TEXT, image TEXT, PRIMARY KEY(member_id, guild_id))''')
+
+    async def on_submit(self, interaction: discord.Interaction):
+        user = interaction.user.id
+        await interaction.response.defer()
+        color = self.color.value
+
+        if not hasattr(self, 'pool'):
+            await self.init_database()
+
+        async with self.pool.acquire() as conn:
+            await conn.execute("""UPDATE levels SET bar_color = ? WHERE member_id = ?""", (color, user))
+            await conn.commit()
+
+        await interaction.followup.send(f"Your rank color has been updated to: {color}", ephemeral=True)
+
+class format(ui.Modal, title='Change Format'):
+    format_input = ui.TextInput(label='What format would you like to use?', placeholder="rank1 / rank2 or rank3...", style=discord.TextStyle.short)
+
+    async def init_database(self):
+        self.pool = await asqlite.create_pool('databases/levels.db')
+        async with self.pool.acquire() as conn:
+            await conn.execute('''CREATE TABLE IF NOT EXISTS levels (member_id BIGINT, guild_id BIGINT, xp INTEGER, messages INTEGER, bar_color TEXT, image TEXT, PRIMARY KEY(member_id, guild_id))''')
+
+    async def on_submit(self, interaction: discord.Interaction):
+        user = interaction.user.id
+        await interaction.response.defer()
+        format_value = self.format_input.value
+
+        if not hasattr(self, 'pool'):
+            await self.init_database()
+
+        async with self.pool.acquire() as conn:
+            await conn.execute("""UPDATE levels SET format = ? WHERE member_id = ?""", (format_value, user))
+            await conn.commit()
+
+        await interaction.followup.send(f"You have changed your rank format to **{format_value}**", ephemeral=True)
 
 class Levels(commands.Cog):
     """Commands for the levelling system"""
@@ -30,6 +110,13 @@ class Levels(commands.Cog):
         self.emoji="<:cooky:1121909627156705280>"
         self.channels = [1064806374992785469, 1112328650298249226, 896882404805971998, 1060656267670061106, 1181419043153002546, 1135247559431032833, 1125053619893440653, 1165791833222291576, 1184208577120960632, 1194618396768223235, 1194641922799706215]
         self.guilds = [896619762354892821, 1121841073673736215, 1194618394985640076]
+        self.pool = None
+        self.bot.loop.create_task(self.init_database())
+
+    async def init_database(self):
+        self.pool = await asqlite.create_pool('databases/levels.db')
+        async with self.pool.acquire() as conn:
+            await conn.execute('''CREATE TABLE IF NOT EXISTS levels (member_id BIGINT, guild_id BIGINT, xp INTEGER, messages INTEGER, bar_color TEXT, image TEXT, PRIMARY KEY(member_id, guild_id))''')
 
     def levels_is_activated():
         async def predicate(ctx: commands.Context):
@@ -2055,13 +2142,8 @@ class Levels(commands.Cog):
         """Group that manages status of the levelling system"""
         status_num = await self.get_levels_status(ctx.guild.id)
         status = self.status_holder[status_num]
-        role_id = await self.get_top_20_role_id(ctx.guild.id)
         embed = discord.Embed(title="level system information", color=0x2B2D31)
         embed.add_field(name="status", value=f"the levelling system is **{status}**", inline=False)
-        if role_id is not None and role_id != "NULL":
-            embed.add_field(name="top 20 role", value=f"members ranked top 20 get the <@&{role_id}> role", inline=False)
-        else:
-            embed.add_field(name="top 20 role", value="a top 20 role has not been set.\nuse `+levelling setrole <role>` if you want to give a role to members ranked top 20!", inline=False)
         await ctx.send(embed=embed)
 
     @levelling.command(hidden=True)
@@ -2245,75 +2327,50 @@ class Levels(commands.Cog):
             response = await self.bot.session.get(avatar_url)
             avatar = BytesIO(await response.read())
             avatar.seek(0)
+            button = discord.ui.Button(label=f"Made for Kanzengrp", url=f"https://instagram.com/kanzengrp")
+            view = customise(pool=self.pool, author_id=ctx.author.id)
+            view.add_item(button)
 
-            if ctx.guild.id == 896619762354892821:
-                button = discord.ui.Button(label=f"Made for Kanzengrp", url=f"https://instagram.com/kanzengrp")
-                view = discord.ui.View()
-                view.add_item(button)
+        if levels:
+            format_from_db = await self.get_rank_format(member.id, ctx.guild.id)
+            format_from_db_lower = format_from_db.lower()
+            if format_from_db_lower == "rank 1":
+                card = await self.generate_card_rank1(str(member), str(member.status), avatar, levels, rank, member)
+            elif format_from_db_lower == "rank1":
+                card = await self.generate_card_rank1(str(member), str(member.status), avatar, levels, rank, member)
+            elif format_from_db_lower == "rank 2":
+                card = await self.generate_card_rank2(str(member), str(member.status), avatar, levels, rank, member)
+            elif format_from_db_lower == "rank2":
+                card = await self.generate_card_rank2(str(member), str(member.status), avatar, levels, rank, member)
+            elif format_from_db_lower == "rank 3":
+                card = await self.generate_card_rank3(str(member), str(member.status), avatar, levels, rank, member)
+            elif format_from_db_lower == "rank3":
+                card = await self.generate_card_rank3(str(member), str(member.status), avatar, levels, rank, member)
+            elif format_from_db_lower == "1":
+                card = await self.generate_card_rank1(str(member), str(member.status), avatar, levels, rank, member)
+            elif format_from_db_lower == "2":
+                card = await self.generate_card_rank2(str(member), str(member.status), avatar, levels, rank, member)
+            elif format_from_db_lower == "3":
+                card = await self.generate_card_rank3(str(member), str(member.status), avatar, levels, rank, member)
             else:
-                view = None
+                card = None
 
-            if levels:
-                format = await self.get_rank_format(member.id, ctx.guild.id)
-                if format == "Rank 1":
-                    card = await self.generate_card_rank1(str(member), str(member.status), avatar, levels, rank, member)
-                elif format == "Rank 2":
-                    card = await self.generate_card_rank2(str(member), str(member.status), avatar, levels, rank, member)
-                elif format == "Rank 3":
-                    card = await self.generate_card_rank3(str(member), str(member.status), avatar, levels, rank, member)
-                else:
-                    card = None
-                if card:
-                    await ctx.reply(file=discord.File(card, 'card.png'), mention_author=False, view=view)
-                else:
-                    await ctx.reply(f"Hey! new update for ranks has been released, you can now choose between 3 different formats for your rank card.\nPlease select a format! to do so do +rank1, +rank2, or +rank3!", mention_author=False)  # Display the unknown format
+            if card:
+                await ctx.reply(file=discord.File(card, 'card.png'), mention_author=False, view=view)
             else:
-                await ctx.reply(f"{member} doesn't have any levels yet!!", mention_author=False)
+                await ctx.reply(f"Hey! new update for ranks has been released, you can now choose between 3 different formats for your rank card.\nPlease select a format! to do so do +rank1, +rank2, or +rank3!", mention_author=False, view=view)
+        else:
+            await ctx.reply(f"{member} doesn't have any levels yet!!", mention_author=False)
 
     async def update_rank_format(self, member_id, guild_id, format):
         async with self.bot.pool.acquire() as conn:
             await conn.execute("UPDATE levels SET format = $1 WHERE member_id = $2 AND guild_id = $3", format, member_id, guild_id)
 
-    @commands.command(description="Change your rank card format to version 1", extras="+rank1")
+    @commands.command(hidden=True)
     async def rank1(self, ctx):
         await self.update_rank_format(ctx.author.id, ctx.guild.id, "Rank 1")
         embed = discord.Embed(title="New format selected!", description="You have selected format **version 1**\n\nIf you want to cusomise this rank card you can with the commands **+rankcolor** and include a hexcode (example: #2b2d31)\n\nYou can also change your background with +rankbg and attach you background image, please do remember that the background image needs to be **1500x500** format so it isn't cropped!", color=0x2b2d31)
         await ctx.reply(embed=embed)
-
-    @commands.command(description="Change your rank card format to version 2", extras="+rank2")
-    async def rank2(self, ctx):
-        await self.update_rank_format(ctx.author.id, ctx.guild.id, "Rank 2")
-        embed = discord.Embed(title="New format selected!", description="You have selected format **version 2**\n\nIf you want to cusomise this rank card you can with the commands **+rankcolor** and include a hexcode (example: #2b2d31)\n\nYou can also change your background with +rankbg and attach you background image, please do remember that the background image needs to be **1080x1080** format so it isn't cropped!", color=0x2b2d31)
-        await ctx.reply(embed=embed)
-
-    @commands.command(description="Change your rank card format to version 3", extras="rank3")
-    async def rank3(self, ctx):
-        await self.update_rank_format(ctx.author.id, ctx.guild.id, "Rank 3")
-        embed = discord.Embed(title="New format selected!", description="You have selected format **version 3**\n\nIf you want to cusomise this rank card you can with the commands **+rankcolor** and include a hexcode (example: #2b2d31)\n\nYou can also change your background with +rankbg and attach you background image, please do remember that the background image needs to be **1080x1500** format so it isn't cropped!", color=0x2b2d31)
-        await ctx.reply(embed=embed)
-
-    @commands.command(description="Change your rank card color with hex codes", extras="+rankcolor #2b2d31")
-    @levels_is_activated()
-    async def rankcolor(self, ctx: commands.Context, color: str):
-        """
-        change the color of your progressbar
-        
-        Parameters
-        ----------
-        color: str
-            the color you want for your progress bar
-        """
-        match = re.search(self.regex_hex, color)
-        if match:
-            await self.set_rank_color(ctx.author.id, ctx.guild.id, color)
-            embed = discord.Embed(
-                title='changed your bar color!',
-                description=f'your new bar color is `{color}`',
-                color=0x2B2D31
-            )
-            await ctx.reply(embed=embed)
-        else:
-            await ctx.reply(f"`{color}` is not a valid hex color")
 
     @commands.command(description="Attatch an image when doing this command!", extras="+rankbg (attatch image)")
     async def rankbg(self, ctx):
