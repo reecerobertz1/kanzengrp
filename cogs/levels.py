@@ -51,7 +51,7 @@ class customise(discord.ui.View):
 
     @discord.ui.button(label="help", style=discord.ButtonStyle.blurple)
     async def help(self, interaction: discord.Interaction, button: discord.ui.Button):
-        embed = discord.Embed(title="", description="<:CF12:1188186414387568691> **balance:**\n<:Empty:1188186122350759996> This command shows you how many coins you have in your\n<:Empty:1188186122350759996> bank and allows you to withdraw inti or deposit coins out of\n<:Empty:1188186122350759996> your bank.\n\n<:CF12:1188186414387568691> **withdraw and deposit:**\n<:Empty:1188186122350759996> To withdraw coins, click the `withdraw` button and enter the\n<:Empty:1188186122350759996> the amount of coins you want to take out of your bank.\n<:Empty:1188186122350759996> To deposit coins, click the `deposit` button and enter the\n<:Empty:1188186122350759996> the amount of coins you want to put into your bank.", color=0x2b2d31)
+        embed = discord.Embed(title="", description="<:CF12:1188186414387568691> **format:**\nThis will allow you to change the size of your rank card. rank 1 is **1500x500** rank 2 is **1080x1080** and rank 3 is **1080x1500**\n\n<:CF12:1188186414387568691> **rank color:**\nThis allows you to change the color of your rank cards text and progress bar. Make sure you enter a valid hex code! To make a hex code color visit this [website](https://htmlcolorcodes.com/color-picker/) and copy the number that begins with a #", color=0x2b2d31)
         embed.set_author(name=interaction.user.name, icon_url=interaction.user.display_avatar)
         embed.set_thumbnail(url=interaction.user.display_avatar)
         await interaction.response.send_message(embed=embed, ephemeral=True)
