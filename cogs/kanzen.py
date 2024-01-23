@@ -67,7 +67,7 @@ class ia(ui.Modal, title='Inactivity Message'):
         embed.set_footer(text=interaction.user.id, icon_url=interaction.user.display_avatar)
         channel = interaction.client.get_channel(1121913672822968330)
         await channel.send(embed=embed)
-        await interaction.followup.send(f'Your inactive message has been sent successfully', ephemeral=True)
+        await interaction.response.send_message(f'Your inactive message has been sent successfully', ephemeral=True)
 
 class feedback(ui.Modal, title='Kanzen Feedback'):
     rate = ui.TextInput(label='Scale of 1-10, how would you rate Kanzen', placeholder="Enter your rating here", style=discord.TextStyle.short)
