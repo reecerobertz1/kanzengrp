@@ -4,6 +4,7 @@ import random
 import aiohttp
 import discord
 from discord.ext import commands
+from discord import ui
 import asqlite
 from utils.views import Paginator
 from easy_pil import Font
@@ -392,6 +393,1142 @@ class walkdog(discord.ui.View):
                     await conn.execute(query, tips, interaction.user.id)
                     await interaction.followup.send(f"you have been tipped <a:coin:1192540229727440896> {tips}")
 
+class jobpick(discord.ui.View):
+    def __init__ (self, bot):
+        super().__init__(timeout=30.0)
+        self.value = None
+        self.bot = bot
+
+    @discord.ui.button(label="mcdonalds")
+    async def mcdonalds(self, interaction: discord.Interaction, button: discord.ui.Button):
+        job = "mcdonalds"
+        query = "UPDATE bank SET job = $1 WHERE user = $2"
+        async with self.bot.pool.acquire() as conn:
+            async with conn.transaction():
+                await conn.execute(query, job, interaction.user.id)
+        await interaction.response.send_message("Congrats on your new job! you now work at mcdonalds\nTo work do `+work`", ephemeral=True)
+
+    @discord.ui.button(label="amazon driver")
+    async def amazon(self, interaction: discord.Interaction, button: discord.ui.Button):
+        job = "amazon"
+        query = "UPDATE bank SET job = $1 WHERE user = $2"
+        async with self.bot.pool.acquire() as conn:
+            async with conn.transaction():
+                await conn.execute(query, job, interaction.user.id)
+        await interaction.response.send_message("Congrats on your new job! you now work at amazon\nTo work do `+work`", ephemeral=True)
+
+    @discord.ui.button(label="dog walker")
+    async def doggy(self, interaction: discord.Interaction, button: discord.ui.Button):
+        job = "dogwalker"
+        query = "UPDATE bank SET job = $1 WHERE user = $2"
+        async with self.bot.pool.acquire() as conn:
+            async with conn.transaction():
+                await conn.execute(query, job, interaction.user.id)
+        await interaction.response.send_message("Congrats on your new job! you now work as a dog walker\nTo work do `+work`", ephemeral=True)
+
+    @discord.ui.button(label="nurse", disabled=True)
+    async def nurse(self, interaction: discord.Interaction, button: discord.ui.Button):
+        job = "nurse"
+        query = "UPDATE bank SET job = $1 WHERE user = $2"
+        async with self.bot.pool.acquire() as conn:
+            async with conn.transaction():
+                await conn.execute(query, job, interaction.user.id)
+        await interaction.response.send_message("Congrats on your new job! you now work as a dog walker\nTo work do `+work`", ephemeral=True)
+
+    @discord.ui.button(label="twitch streamer", disabled=True)
+    async def streamer(self, interaction: discord.Interaction, button: discord.ui.Button):
+        job = "twitch"
+        query = "UPDATE bank SET job = $1 WHERE user = $2"
+        async with self.bot.pool.acquire() as conn:
+            async with conn.transaction():
+                await conn.execute(query, job, interaction.user.id)
+        await interaction.response.send_message("Congrats on your new job! you now work as a dog walker\nTo work do `+work`", ephemeral=True)
+
+    async def on_timeout(self):
+        for child in self.children:
+            if isinstance(child, discord.ui.Button):
+                child.disabled = True
+                child.style = discord.ButtonStyle.red
+        self.stop()
+
+class toolbuy(discord.ui.View):
+    def __init__(self, bot):
+        super().__init__(timeout=30.0)
+        self.value = None
+        self.bot = bot
+
+    @discord.ui.button(label="hunting rifle", emoji="<:rifle:1199405381630308572>", style=discord.ButtonStyle.blurple)
+    async def huntingrife(self, interaction: discord.Interaction, button: discord.ui.Button):
+        item = "<:rifle:1199405381630308572>Hunting rifle"
+        quantity = 1
+
+        price = 100000 * quantity
+        wallet_balance, _ = await self.get_balance(interaction.user.id)
+        if wallet_balance < price:
+            return await interaction.response.send_message("You don't have enough coins to buy this item.", ephemeral=True)
+
+        new_wallet_balance, _ = await self.update_balance(interaction.user.id, -price, 0)
+        await self.buy_item(interaction.user.id, item, quantity)
+
+        await interaction.response.send_message(
+            f"Successfully bought <:rifle:1199405381630308572> hunting rifle for <a:coin:1192540229727440896> **100,000**",
+            ephemeral=True
+        )
+
+    @discord.ui.button(label="knife", emoji="<:knife:1199405378216144947>", style=discord.ButtonStyle.blurple)
+    async def knife(self, interaction: discord.Interaction, button: discord.ui.Button):
+        item = "<:knife:1199405378216144947>knife"
+        quantity = 1
+
+        price = 115000 * quantity
+        wallet_balance, _ = await self.get_balance(interaction.user.id)
+        if wallet_balance < price:
+            return await interaction.response.send_message("You don't have enough coins to buy this item.", ephemeral=True)
+
+        new_wallet_balance, _ = await self.update_balance(interaction.user.id, -price, 0)
+        await self.buy_item(interaction.user.id, item, quantity)
+
+        await interaction.response.send_message(
+            f"Successfully bought <:knife:1199405378216144947> knife for <a:coin:1192540229727440896> **115,000**",
+            ephemeral=True
+        )
+
+    @discord.ui.button(label="fishing rod", emoji="<:frod:1199405376320323664>", style=discord.ButtonStyle.blurple)
+    async def frod(self, interaction: discord.Interaction, button: discord.ui.Button):
+        item = "<:frod:1199405376320323664>fishing rod"
+        quantity = 1
+
+        price = 125000 * quantity
+        wallet_balance, _ = await self.get_balance(interaction.user.id)
+        if wallet_balance < price:
+            return await interaction.response.send_message("You don't have enough coins to buy this item.", ephemeral=True)
+
+        new_wallet_balance, _ = await self.update_balance(interaction.user.id, -price, 0)
+        await self.buy_item(interaction.user.id, item, quantity)
+
+        await interaction.response.send_message(
+            f"Successfully bought <:frod:1199405376320323664> fishing rod for <a:coin:1192540229727440896> **125,000**",
+            ephemeral=True
+        )
+
+    @discord.ui.button(label="pickaxe", emoji="<:paxe:1199405372524478664>", style=discord.ButtonStyle.blurple)
+    async def pickaxe(self, interaction: discord.Interaction, button: discord.ui.Button):
+        item = "<:paxe:1199405372524478664>pickaxe"
+        quantity = 1
+
+        price = 150000 * quantity
+        wallet_balance, _ = await self.get_balance(interaction.user.id)
+        if wallet_balance < price:
+            return await interaction.response.send_message("You don't have enough coins to buy this item.", ephemeral=True)
+
+        new_wallet_balance, _ = await self.update_balance(interaction.user.id, -price, 0)
+        await self.buy_item(interaction.user.id, item, quantity)
+
+        await interaction.response.send_message(
+            f"Successfully bought <:paxe:1199405372524478664> pickaxe for <a:coin:1192540229727440896> **150,000**",
+            ephemeral=True
+        )
+
+    async def buy_item(self, user, item, quantity):
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute("SELECT quantity FROM inventory WHERE user = ? AND item = ?", (user, item))
+                row = await cursor.fetchone()
+
+        if row:
+            async with self.bot.pool.acquire() as conn:
+                async with conn.cursor() as cursor:
+                    new_quantity = row[0] + quantity
+                    await cursor.execute("UPDATE inventory SET quantity = ? WHERE user = ? AND item = ?", (new_quantity, user, item))
+                    await conn.commit()
+        else:
+            async with self.bot.pool.acquire() as conn:
+                async with conn.cursor() as cursor:
+                    await cursor.execute("INSERT INTO inventory (user, item, quantity) VALUES (?, ?, ?)", (user, item, quantity))
+                    await conn.commit()
+
+    async def buy_item(self, user, item, quantity):
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute("SELECT quantity FROM inventory WHERE user = ? AND item = ?", (user, item))
+                row = await cursor.fetchone()
+
+        if row:
+            async with self.bot.pool.acquire() as conn:
+                async with conn.cursor() as cursor:
+                    new_quantity = row[0] + quantity
+                    await cursor.execute("UPDATE inventory SET quantity = ? WHERE user = ? AND item = ?", (new_quantity, user, item))
+                    await conn.commit()
+        else:
+            async with self.bot.pool.acquire() as conn:
+                async with conn.cursor() as cursor:
+                    await cursor.execute("INSERT INTO inventory (user, item, quantity) VALUES (?, ?, ?)", (user, item, quantity))
+                    await conn.commit()
+
+    async def create_account(self, user):
+        async with self.bot.pool.acquire() as conn:
+            await conn.execute("INSERT INTO bank (user, wallet, bank, maxbank) VALUES (?, 0, 100, 9999999999999999)", (user,))
+            await conn.commit()
+
+    async def get_balance(self, user):
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute("SELECT wallet, bank FROM bank WHERE user = ?", (user,))
+                row = await cursor.fetchone()
+                if row is None:
+                    await self.create_account(user)
+                    return 0, 0
+                return row[0], row[1]
+
+    async def update_balance(self, user, wallet_change=0, bank_change=0):
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute("SELECT wallet, bank FROM bank WHERE user = ?", (user,))
+                row = await cursor.fetchone()
+                if row is None:
+                    await self.create_account(user)
+                    await cursor.execute("SELECT wallet, bank FROM bank WHERE user = ?", (user,))
+                    row = await cursor.fetchone()
+                wallet_balance = row[0] + wallet_change
+                bank_balance = row[1] + bank_change
+                await cursor.execute("UPDATE bank SET wallet = ?, bank = ? WHERE user = ?", (wallet_balance, bank_balance, user))
+                await conn.commit()
+                return wallet_balance, bank_balance
+
+class toolsell(discord.ui.View):
+    def __init__(self, bot):
+        super().__init__(timeout=30.0)
+        self.value = None
+        self.bot = bot
+
+    @discord.ui.button(label="Hunting Rifle", emoji="<:rifle:1199405381630308572>", style=discord.ButtonStyle.blurple)
+    async def rifle(self, interaction: discord.Interaction, button: discord.ui.Button):
+        item = "<:rifle:1199405381630308572>Huntingrifle"
+        quantity = 1
+
+        price = 100000 * quantity
+        sell_price = int(price * 0.7)
+
+        wallet_balance, _ = await self.get_balance(interaction.user.id)
+        new_wallet_balance, _ = await self.update_balance(interaction.user.id, sell_price, 0)
+
+        if await self.check_inventory(interaction.user.id, item, quantity):
+            await self.sell_item(interaction.user.id, item, quantity)
+            await interaction.response.send_message(
+                f"Successfully sold <:rifle:1199405381630308572> hunting rifle for <a:coin:1192540229727440896> **{sell_price}**",
+                ephemeral=True
+            )
+        else:
+            await interaction.response.send_message(
+                f"You don't have enough of this item to sell.",
+                ephemeral=True
+            )
+
+    @discord.ui.button(label="Knife", emoji="<:knife:1199405378216144947>", style=discord.ButtonStyle.blurple)
+    async def knife(self, interaction: discord.Interaction, button: discord.ui.Button):
+        item = "<:knife:1199405378216144947>knife"
+        quantity = 1
+
+        price = 115000 * quantity
+        sell_price = int(price * 0.7)
+
+        wallet_balance, _ = await self.get_balance(interaction.user.id)
+        new_wallet_balance, _ = await self.update_balance(interaction.user.id, sell_price, 0)
+
+        if await self.check_inventory(interaction.user.id, item, quantity):
+            await self.sell_item(interaction.user.id, item, quantity)
+            await interaction.response.send_message(
+                f"Successfully sold <:knife:1199405378216144947> knife for <a:coin:1192540229727440896> **{sell_price}**",
+                ephemeral=True
+            )
+        else:
+            await interaction.response.send_message(
+                f"You don't have enough of this item to sell.",
+                ephemeral=True
+            )
+
+    @discord.ui.button(label="Fishing rod", emoji="<:frod:1199405376320323664>", style=discord.ButtonStyle.blurple)
+    async def frod(self, interaction: discord.Interaction, button: discord.ui.Button):
+        item = "<:frod:1199405376320323664>fishing rod"
+        quantity = 1
+
+        price = 125000 * quantity
+        sell_price = int(price * 0.7)
+
+        wallet_balance, _ = await self.get_balance(interaction.user.id)
+        new_wallet_balance, _ = await self.update_balance(interaction.user.id, sell_price, 0)
+
+        if await self.check_inventory(interaction.user.id, item, quantity):
+            await self.sell_item(interaction.user.id, item, quantity)
+            await interaction.response.send_message(
+                f"Successfully sold <:frod:1199405376320323664> fishing rod for <a:coin:1192540229727440896> **{sell_price}**",
+                ephemeral=True
+            )
+        else:
+            await interaction.response.send_message(
+                f"You don't have enough of this item to sell.",
+                ephemeral=True
+            )
+
+    @discord.ui.button(label="Pickaxe", emoji="<:paxe:1199405372524478664>", style=discord.ButtonStyle.blurple)
+    async def paxe(self, interaction: discord.Interaction, button: discord.ui.Button):
+        item = "<:paxe:1199405372524478664>pickaxe"
+        quantity = 1
+
+        price = 150000 * quantity
+        sell_price = int(price * 0.7)
+
+        wallet_balance, _ = await self.get_balance(interaction.user.id)
+        new_wallet_balance, _ = await self.update_balance(interaction.user.id, sell_price, 0)
+
+        if await self.check_inventory(interaction.user.id, item, quantity):
+            await self.sell_item(interaction.user.id, item, quantity)
+            await interaction.response.send_message(
+                f"Successfully sold <:paxe:1199405372524478664> pickaxe for <a:coin:1192540229727440896> **{sell_price}**",
+                ephemeral=True
+            )
+        else:
+            await interaction.response.send_message(
+                f"You don't have enough of this item to sell.",
+                ephemeral=True
+            )
+
+    async def buy_item(self, user, item, quantity):
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute("SELECT quantity FROM inventory WHERE user = ? AND item = ?", (user, item))
+                row = await cursor.fetchone()
+
+        if row:
+            async with self.bot.pool.acquire() as conn:
+                async with conn.cursor() as cursor:
+                    new_quantity = row[0] + quantity
+                    await cursor.execute("UPDATE inventory SET quantity = ? WHERE user = ? AND item = ?", (new_quantity, user, item))
+                    await conn.commit()
+        else:
+            async with self.bot.pool.acquire() as conn:
+                async with conn.cursor() as cursor:
+                    await cursor.execute("INSERT INTO inventory (user, item, quantity) VALUES (?, ?, ?)", (user, item, quantity))
+                    await conn.commit()
+
+    async def sell_item(self, user, item, quantity):
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute("SELECT quantity FROM inventory WHERE user = ? AND item = ?", (user, item))
+                row = await cursor.fetchone()
+
+        if row:
+            async with self.bot.pool.acquire() as conn:
+                async with conn.cursor() as cursor:
+                    new_quantity = row[0] - quantity
+                    if new_quantity <= 0:
+                        await cursor.execute("DELETE FROM inventory WHERE user = ? AND item = ?", (user, item))
+                    else:
+                        await cursor.execute("UPDATE inventory SET quantity = ? WHERE user = ? AND item = ?", (new_quantity, user, item))
+                    await conn.commit()
+
+    async def check_inventory(self, user_id, item, quantity):
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute("SELECT quantity FROM inventory WHERE user = ? AND item = ?", (user_id, item))
+                row = await cursor.fetchone()
+
+        return row and row[0] >= quantity
+
+    async def create_account(self, user):
+        async with self.bot.pool.acquire() as conn:
+            await conn.execute("INSERT INTO bank (user, wallet, bank, maxbank) VALUES (?, 0, 100, 9999999999999999)", (user,))
+            await conn.commit()
+
+    async def get_balance(self, user):
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute("SELECT wallet, bank FROM bank WHERE user = ?", (user,))
+                row = await cursor.fetchone()
+                if row is None:
+                    await self.create_account(user)
+                    return 0, 0
+                return row[0], row[1]
+
+    async def update_balance(self, user, wallet_change=0, bank_change=0):
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute("SELECT wallet, bank FROM bank WHERE user = ?", (user,))
+                row = await cursor.fetchone()
+                if row is None:
+                    await self.create_account(user)
+                    await cursor.execute("SELECT wallet, bank FROM bank WHERE user = ?", (user,))
+                    row = await cursor.fetchone()
+                wallet_balance = row[0] + wallet_change
+                bank_balance = row[1] + bank_change
+                await cursor.execute("UPDATE bank SET wallet = ?, bank = ? WHERE user = ?", (wallet_balance, bank_balance, user))
+                await conn.commit()
+                return wallet_balance, bank_balance
+
+class animalsell(discord.ui.View):
+    def __init__(self, bot):
+        super().__init__(timeout=30.0)
+        self.value = None
+        self.bot = bot
+
+    @discord.ui.button(label="Turkey", emoji="🦃", style=discord.ButtonStyle.red)
+    async def turkey(self, interaction: discord.Interaction, button: discord.ui.Button):
+        item = "🦃turkey"
+        quantity = 1
+
+        price = 50000 * quantity
+        sell_price = int(price * 0.7)
+
+        wallet_balance, _ = await self.get_balance(interaction.user.id)
+        new_wallet_balance, _ = await self.update_balance(interaction.user.id, sell_price, 0)
+
+        if await self.check_inventory(interaction.user.id, item, quantity):
+            await self.sell_item(interaction.user.id, item, quantity)
+            await interaction.response.send_message(
+                f"Successfully sold 🦃 turkey for <a:coin:1192540229727440896> **{sell_price}**",
+                ephemeral=True
+            )
+        else:
+            await interaction.response.send_message(
+                f"You don't have enough of this item to sell.",
+                ephemeral=True
+            )
+
+    @discord.ui.button(label="rabbit", emoji="🐇", style=discord.ButtonStyle.red)
+    async def rabbit(self, interaction: discord.Interaction, button: discord.ui.Button):
+        item = "🐇rabbit"
+        quantity = 1
+
+        price = 35000 * quantity
+        sell_price = int(price * 0.7)
+
+        wallet_balance, _ = await self.get_balance(interaction.user.id)
+        new_wallet_balance, _ = await self.update_balance(interaction.user.id, sell_price, 0)
+
+        if await self.check_inventory(interaction.user.id, item, quantity):
+            await self.sell_item(interaction.user.id, item, quantity)
+            await interaction.response.send_message(
+                f"Successfully sold 🐇 rabbit for <a:coin:1192540229727440896> **{sell_price}**",
+                ephemeral=True
+            )
+        else:
+            await interaction.response.send_message(
+                f"You don't have enough of this item to sell.",
+                ephemeral=True
+            )
+
+    @discord.ui.button(label="moose", emoji="🫎", style=discord.ButtonStyle.red)
+    async def moose(self, interaction: discord.Interaction, button: discord.ui.Button):
+        item = "🫎moose"
+        quantity = 1
+
+        price = 100000 * quantity
+        sell_price = int(price * 0.7)
+
+        wallet_balance, _ = await self.get_balance(interaction.user.id)
+        new_wallet_balance, _ = await self.update_balance(interaction.user.id, sell_price, 0)
+
+        if await self.check_inventory(interaction.user.id, item, quantity):
+            await self.sell_item(interaction.user.id, item, quantity)
+            await interaction.response.send_message(
+                f"Successfully sold 🫎 moose for <a:coin:1192540229727440896> **{sell_price}**",
+                ephemeral=True
+            )
+        else:
+            await interaction.response.send_message(
+                f"You don't have enough of this item to sell.",
+                ephemeral=True
+            )
+
+    @discord.ui.button(label="deer", emoji="🦌", style=discord.ButtonStyle.red)
+    async def deer(self, interaction: discord.Interaction, button: discord.ui.Button):
+        item = "🦌deer"
+        quantity = 1
+
+        price = 100000 * quantity
+        sell_price = int(price * 0.7)
+
+        wallet_balance, _ = await self.get_balance(interaction.user.id)
+        new_wallet_balance, _ = await self.update_balance(interaction.user.id, sell_price, 0)
+
+        if await self.check_inventory(interaction.user.id, item, quantity):
+            await self.sell_item(interaction.user.id, item, quantity)
+            await interaction.response.send_message(
+                f"Successfully sold 🦌 deer for <a:coin:1192540229727440896> **{sell_price}**",
+                ephemeral=True
+            )
+        else:
+            await interaction.response.send_message(
+                f"You don't have enough of this item to sell.",
+                ephemeral=True
+            )
+
+    async def buy_item(self, user, item, quantity):
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute("SELECT quantity FROM inventory WHERE user = ? AND item = ?", (user, item))
+                row = await cursor.fetchone()
+
+        if row:
+            async with self.bot.pool.acquire() as conn:
+                async with conn.cursor() as cursor:
+                    new_quantity = row[0] + quantity
+                    await cursor.execute("UPDATE inventory SET quantity = ? WHERE user = ? AND item = ?", (new_quantity, user, item))
+                    await conn.commit()
+        else:
+            async with self.bot.pool.acquire() as conn:
+                async with conn.cursor() as cursor:
+                    await cursor.execute("INSERT INTO inventory (user, item, quantity) VALUES (?, ?, ?)", (user, item, quantity))
+                    await conn.commit()
+
+    async def sell_item(self, user, item, quantity):
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute("SELECT quantity FROM inventory WHERE user = ? AND item = ?", (user, item))
+                row = await cursor.fetchone()
+
+        if row:
+            async with self.bot.pool.acquire() as conn:
+                async with conn.cursor() as cursor:
+                    new_quantity = row[0] - quantity
+                    if new_quantity <= 0:
+                        await cursor.execute("DELETE FROM inventory WHERE user = ? AND item = ?", (user, item))
+                    else:
+                        await cursor.execute("UPDATE inventory SET quantity = ? WHERE user = ? AND item = ?", (new_quantity, user, item))
+                    await conn.commit()
+
+    async def check_inventory(self, user_id, item, quantity):
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute("SELECT quantity FROM inventory WHERE user = ? AND item = ?", (user_id, item))
+                row = await cursor.fetchone()
+
+        return row and row[0] >= quantity
+
+    async def create_account(self, user):
+        async with self.bot.pool.acquire() as conn:
+            await conn.execute("INSERT INTO bank (user, wallet, bank, maxbank) VALUES (?, 0, 100, 9999999999999999)", (user,))
+            await conn.commit()
+
+    async def get_balance(self, user):
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute("SELECT wallet, bank FROM bank WHERE user = ?", (user,))
+                row = await cursor.fetchone()
+                if row is None:
+                    await self.create_account(user)
+                    return 0, 0
+                return row[0], row[1]
+
+    async def update_balance(self, user, wallet_change=0, bank_change=0):
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute("SELECT wallet, bank FROM bank WHERE user = ?", (user,))
+                row = await cursor.fetchone()
+                if row is None:
+                    await self.create_account(user)
+                    await cursor.execute("SELECT wallet, bank FROM bank WHERE user = ?", (user,))
+                    row = await cursor.fetchone()
+                wallet_balance = row[0] + wallet_change
+                bank_balance = row[1] + bank_change
+                await cursor.execute("UPDATE bank SET wallet = ?, bank = ? WHERE user = ?", (wallet_balance, bank_balance, user))
+                await conn.commit()
+                return wallet_balance, bank_balance
+
+class fishsell(discord.ui.View):
+    def __init__(self, bot):
+        super().__init__(timeout=30.0)
+        self.value = None
+        self.bot = bot
+
+    @discord.ui.button(label="Regular Fish", emoji="🐟", style=discord.ButtonStyle.blurple)
+    async def regular(self, interaction: discord.Interaction, button: discord.ui.Button):
+        item = "🐟regular fish"
+        quantity = 1
+
+        price = 3000 * quantity
+
+        wallet_balance, _ = await self.get_balance(interaction.user.id)
+        new_wallet_balance, _ = await self.update_balance(interaction.user.id, price, 0)
+
+        if await self.check_inventory(interaction.user.id, item, quantity):
+            await self.sell_item(interaction.user.id, item, quantity)
+            await interaction.response.send_message(
+                f"Successfully sold 🐟 regular fish for <a:coin:1192540229727440896> **{price}**",
+                ephemeral=True
+            )
+        else:
+            await interaction.response.send_message(
+                f"You don't have enough of this item to sell.",
+                ephemeral=True
+            )
+
+    @discord.ui.button(label="shrimp", emoji="🦐", style=discord.ButtonStyle.blurple)
+    async def shrimp(self, interaction: discord.Interaction, button: discord.ui.Button):
+        item = "🦐shrimp"
+        quantity = 1
+
+        price = 3150 * quantity
+
+        wallet_balance, _ = await self.get_balance(interaction.user.id)
+        new_wallet_balance, _ = await self.update_balance(interaction.user.id, price, 0)
+
+        if await self.check_inventory(interaction.user.id, item, quantity):
+            await self.sell_item(interaction.user.id, item, quantity)
+            await interaction.response.send_message(
+                f"Successfully sold 🦐 shrimp for <a:coin:1192540229727440896> **{price}**",
+                ephemeral=True
+            )
+        else:
+            await interaction.response.send_message(
+                f"You don't have enough of this item to sell.",
+                ephemeral=True
+            )
+
+    @discord.ui.button(label="crab", emoji="🦀", style=discord.ButtonStyle.blurple)
+    async def crab(self, interaction: discord.Interaction, button: discord.ui.Button):
+        item = "🦀crab"
+        quantity = 1
+
+        price = 5000 * quantity
+
+        wallet_balance, _ = await self.get_balance(interaction.user.id)
+        new_wallet_balance, _ = await self.update_balance(interaction.user.id, price, 0)
+
+        if await self.check_inventory(interaction.user.id, item, quantity):
+            await self.sell_item(interaction.user.id, item, quantity)
+            await interaction.response.send_message(
+                f"Successfully sold 🦀 crab for <a:coin:1192540229727440896> **{price}**",
+                ephemeral=True
+            )
+        else:
+            await interaction.response.send_message(
+                f"You don't have enough of this item to sell.",
+                ephemeral=True
+            )
+
+    @discord.ui.button(label="lobster", emoji="🦞", style=discord.ButtonStyle.blurple)
+    async def lobster(self, interaction: discord.Interaction, button: discord.ui.Button):
+        item = "🦞lobster"
+        quantity = 1
+
+        price = 5250 * quantity
+
+        wallet_balance, _ = await self.get_balance(interaction.user.id)
+        new_wallet_balance, _ = await self.update_balance(interaction.user.id, price, 0)
+
+        if await self.check_inventory(interaction.user.id, item, quantity):
+            await self.sell_item(interaction.user.id, item, quantity)
+            await interaction.response.send_message(
+                f"Successfully sold 🦞 lobster for <a:coin:1192540229727440896> **{price}**",
+                ephemeral=True
+            )
+        else:
+            await interaction.response.send_message(
+                f"You don't have enough of this item to sell.",
+                ephemeral=True
+            )
+
+    @discord.ui.button(label="tropical fish", emoji="🐠", style=discord.ButtonStyle.blurple)
+    async def tfish(self, interaction: discord.Interaction, button: discord.ui.Button):
+        item = "🐠tropical fish"
+        quantity = 1
+
+        price = 7000 * quantity
+
+        wallet_balance, _ = await self.get_balance(interaction.user.id)
+        new_wallet_balance, _ = await self.update_balance(interaction.user.id, price, 0)
+
+        if await self.check_inventory(interaction.user.id, item, quantity):
+            await self.sell_item(interaction.user.id, item, quantity)
+            await interaction.response.send_message(
+                f"Successfully sold 🐠 tropical fish for <a:coin:1192540229727440896> **{price}**",
+                ephemeral=True
+            )
+        else:
+            await interaction.response.send_message(
+                f"You don't have enough of this item to sell.",
+                ephemeral=True
+            )
+
+    @discord.ui.button(label="pufferfish", emoji="🐡", style=discord.ButtonStyle.blurple)
+    async def pfish(self, interaction: discord.Interaction, button: discord.ui.Button):
+        item = "🐡pufferfish"
+        quantity = 1
+
+        price = 7500 * quantity
+
+        wallet_balance, _ = await self.get_balance(interaction.user.id)
+        new_wallet_balance, _ = await self.update_balance(interaction.user.id, price, 0)
+
+        if await self.check_inventory(interaction.user.id, item, quantity):
+            await self.sell_item(interaction.user.id, item, quantity)
+            await interaction.response.send_message(
+                f"Successfully sold 🐡 pufferfish for <a:coin:1192540229727440896> **{price}**",
+                ephemeral=True
+            )
+        else:
+            await interaction.response.send_message(
+                f"You don't have enough of this item to sell.",
+                ephemeral=True
+            )
+
+    @discord.ui.button(label="squid", emoji="🦑", style=discord.ButtonStyle.blurple)
+    async def squid(self, interaction: discord.Interaction, button: discord.ui.Button):
+        item = "🦑squid"
+        quantity = 1
+
+        price = 10000 * quantity
+
+        wallet_balance, _ = await self.get_balance(interaction.user.id)
+        new_wallet_balance, _ = await self.update_balance(interaction.user.id, price, 0)
+
+        if await self.check_inventory(interaction.user.id, item, quantity):
+            await self.sell_item(interaction.user.id, item, quantity)
+            await interaction.response.send_message(
+                f"Successfully sold 🦑 squid for <a:coin:1192540229727440896> **{price}**",
+                ephemeral=True
+            )
+        else:
+            await interaction.response.send_message(
+                f"You don't have enough of this item to sell.",
+                ephemeral=True
+            )
+
+    @discord.ui.button(label="shark", emoji="🦈", style=discord.ButtonStyle.blurple)
+    async def shark(self, interaction: discord.Interaction, button: discord.ui.Button):
+        item = "🦈shark"
+        quantity = 1
+
+        price = 25000 * quantity
+
+        wallet_balance, _ = await self.get_balance(interaction.user.id)
+        new_wallet_balance, _ = await self.update_balance(interaction.user.id, price, 0)
+
+        if await self.check_inventory(interaction.user.id, item, quantity):
+            await self.sell_item(interaction.user.id, item, quantity)
+            await interaction.response.send_message(
+                f"Successfully sold 🦈 shark for <a:coin:1192540229727440896> **{price}**",
+                ephemeral=True
+            )
+        else:
+            await interaction.response.send_message(
+                f"You don't have enough of this item to sell.",
+                ephemeral=True
+            )
+
+    async def buy_item(self, user, item, quantity):
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute("SELECT quantity FROM inventory WHERE user = ? AND item = ?", (user, item))
+                row = await cursor.fetchone()
+
+        if row:
+            async with self.bot.pool.acquire() as conn:
+                async with conn.cursor() as cursor:
+                    new_quantity = row[0] + quantity
+                    await cursor.execute("UPDATE inventory SET quantity = ? WHERE user = ? AND item = ?", (new_quantity, user, item))
+                    await conn.commit()
+        else:
+            async with self.bot.pool.acquire() as conn:
+                async with conn.cursor() as cursor:
+                    await cursor.execute("INSERT INTO inventory (user, item, quantity) VALUES (?, ?, ?)", (user, item, quantity))
+                    await conn.commit()
+
+    async def sell_item(self, user, item, quantity):
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute("SELECT quantity FROM inventory WHERE user = ? AND item = ?", (user, item))
+                row = await cursor.fetchone()
+
+        if row:
+            async with self.bot.pool.acquire() as conn:
+                async with conn.cursor() as cursor:
+                    new_quantity = row[0] - quantity
+                    if new_quantity <= 0:
+                        await cursor.execute("DELETE FROM inventory WHERE user = ? AND item = ?", (user, item))
+                    else:
+                        await cursor.execute("UPDATE inventory SET quantity = ? WHERE user = ? AND item = ?", (new_quantity, user, item))
+                    await conn.commit()
+
+    async def check_inventory(self, user_id, item, quantity):
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute("SELECT quantity FROM inventory WHERE user = ? AND item = ?", (user_id, item))
+                row = await cursor.fetchone()
+
+        return row and row[0] >= quantity
+
+    async def create_account(self, user):
+        async with self.bot.pool.acquire() as conn:
+            await conn.execute("INSERT INTO bank (user, wallet, bank, maxbank) VALUES (?, 0, 100, 9999999999999999)", (user,))
+            await conn.commit()
+
+    async def get_balance(self, user):
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute("SELECT wallet, bank FROM bank WHERE user = ?", (user,))
+                row = await cursor.fetchone()
+                if row is None:
+                    await self.create_account(user)
+                    return 0, 0
+                return row[0], row[1]
+
+    async def update_balance(self, user, wallet_change=0, bank_change=0):
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute("SELECT wallet, bank FROM bank WHERE user = ?", (user,))
+                row = await cursor.fetchone()
+                if row is None:
+                    await self.create_account(user)
+                    await cursor.execute("SELECT wallet, bank FROM bank WHERE user = ?", (user,))
+                    row = await cursor.fetchone()
+                wallet_balance = row[0] + wallet_change
+                bank_balance = row[1] + bank_change
+                await cursor.execute("UPDATE bank SET wallet = ?, bank = ? WHERE user = ?", (wallet_balance, bank_balance, user))
+                await conn.commit()
+                return wallet_balance, bank_balance
+
+class oresell(discord.ui.View):
+    def __init__(self, bot):
+        super().__init__(timeout=30.0)
+        self.value = None
+        self.bot = bot
+
+    @discord.ui.button(label="coal", emoji="<:coal16581529:1199747331143249940>", style=discord.ButtonStyle.green)
+    async def coal(self, interaction: discord.Interaction, button: discord.ui.Button):
+        item = "<:coal16581529:1199747331143249940>coal"
+        quantity = 1
+
+        price = 5000 * quantity
+
+        wallet_balance, _ = await self.get_balance(interaction.user.id)
+        new_wallet_balance, _ = await self.update_balance(interaction.user.id, price, 0)
+
+        if await self.check_inventory(interaction.user.id, item, quantity):
+            await self.sell_item(interaction.user.id, item, quantity)
+            await interaction.response.send_message(
+                f"Successfully sold <:coal16581529:1199747331143249940> coal for <a:coin:1192540229727440896> **{price}**",
+                ephemeral=True
+            )
+        else:
+            await interaction.response.send_message(
+                f"You don't have enough of this item to sell.",
+                ephemeral=True
+            )
+
+    @discord.ui.button(label="quartz", emoji="<:Nether_Quartz_JE2_BE2:1199747191653269595>", style=discord.ButtonStyle.green)
+    async def quartz(self, interaction: discord.Interaction, button: discord.ui.Button):
+        item = "<:Nether_Quartz_JE2_BE2:1199747191653269595>quartz"
+        quantity = 1
+
+        price = 13000 * quantity
+
+        wallet_balance, _ = await self.get_balance(interaction.user.id)
+        new_wallet_balance, _ = await self.update_balance(interaction.user.id, price, 0)
+
+        if await self.check_inventory(interaction.user.id, item, quantity):
+            await self.sell_item(interaction.user.id, item, quantity)
+            await interaction.response.send_message(
+                f"Successfully sold <:Nether_Quartz_JE2_BE2:1199747191653269595> quartz for <a:coin:1192540229727440896> **{price}**",
+                ephemeral=True
+            )
+        else:
+            await interaction.response.send_message(
+                f"You don't have enough of this item to sell.",
+                ephemeral=True
+            )
+
+    @discord.ui.button(label="copper", emoji="<:Raw_Copper_JE3_BE2:1199747183759597570>", style=discord.ButtonStyle.green)
+    async def copper(self, interaction: discord.Interaction, button: discord.ui.Button):
+        item = "<:Raw_Copper_JE3_BE2:1199747183759597570>copper"
+        quantity = 1
+
+        price = 25000 * quantity
+
+        wallet_balance, _ = await self.get_balance(interaction.user.id)
+        new_wallet_balance, _ = await self.update_balance(interaction.user.id, price, 0)
+
+        if await self.check_inventory(interaction.user.id, item, quantity):
+            await self.sell_item(interaction.user.id, item, quantity)
+            await interaction.response.send_message(
+                f"Successfully sold <:Raw_Copper_JE3_BE2:1199747183759597570> copper for <a:coin:1192540229727440896> **{price}**",
+                ephemeral=True
+            )
+        else:
+            await interaction.response.send_message(
+                f"You don't have enough of this item to sell.",
+                ephemeral=True
+            )
+
+    @discord.ui.button(label="redstone", emoji="<:Redstone_Dust_JE2_BE2:1199747189203808366>", style=discord.ButtonStyle.green)
+    async def redstone(self, interaction: discord.Interaction, button: discord.ui.Button):
+        item = "<:Redstone_Dust_JE2_BE2:1199747189203808366>redstone"
+        quantity = 1
+
+        price = 50000 * quantity
+
+        wallet_balance, _ = await self.get_balance(interaction.user.id)
+        new_wallet_balance, _ = await self.update_balance(interaction.user.id, price, 0)
+
+        if await self.check_inventory(interaction.user.id, item, quantity):
+            await self.sell_item(interaction.user.id, item, quantity)
+            await interaction.response.send_message(
+                f"Successfully sold <:Redstone_Dust_JE2_BE2:1199747189203808366> redstone for <a:coin:1192540229727440896> **{price}**",
+                ephemeral=True
+            )
+        else:
+            await interaction.response.send_message(
+                f"You don't have enough of this item to sell.",
+                ephemeral=True
+            )
+
+    @discord.ui.button(label="iron", emoji="<:Iron_Ingot_JE3_BE2:1199747187777749062>", style=discord.ButtonStyle.green)
+    async def iron(self, interaction: discord.Interaction, button: discord.ui.Button):
+        item = "<:Iron_Ingot_JE3_BE2:1199747187777749062>iron"
+        quantity = 1
+
+        price = 75000 * quantity
+
+        wallet_balance, _ = await self.get_balance(interaction.user.id)
+        new_wallet_balance, _ = await self.update_balance(interaction.user.id, price, 0)
+
+        if await self.check_inventory(interaction.user.id, item, quantity):
+            await self.sell_item(interaction.user.id, item, quantity)
+            await interaction.response.send_message(
+                f"Successfully sold <:Iron_Ingot_JE3_BE2:1199747187777749062> iron for <a:coin:1192540229727440896> **{price}**",
+                ephemeral=True
+            )
+        else:
+            await interaction.response.send_message(
+                f"You don't have enough of this item to sell.",
+                ephemeral=True
+            )
+
+    @discord.ui.button(label="gold", emoji="<:Gold_Ingot_JE4_BE2:1199747185529598012>", style=discord.ButtonStyle.green)
+    async def gold(self, interaction: discord.Interaction, button: discord.ui.Button):
+        item = "<:Gold_Ingot_JE4_BE2:1199747185529598012>gold"
+        quantity = 1
+
+        price = 1000000 * quantity
+
+        wallet_balance, _ = await self.get_balance(interaction.user.id)
+        new_wallet_balance, _ = await self.update_balance(interaction.user.id, price, 0)
+
+        if await self.check_inventory(interaction.user.id, item, quantity):
+            await self.sell_item(interaction.user.id, item, quantity)
+            await interaction.response.send_message(
+                f"Successfully sold <:Gold_Ingot_JE4_BE2:1199747185529598012> gold for <a:coin:1192540229727440896> **{price}**",
+                ephemeral=True
+            )
+        else:
+            await interaction.response.send_message(
+                f"You don't have enough of this item to sell.",
+                ephemeral=True
+            )
+
+    @discord.ui.button(label="diamond", emoji="<:Diamond_JE3_BE3:1199747180848758824>", style=discord.ButtonStyle.green)
+    async def diamond(self, interaction: discord.Interaction, button: discord.ui.Button):
+        item = "<:Diamond_JE3_BE3:1199747180848758824>diamond"
+        quantity = 1
+
+        price = 2000000 * quantity
+
+        wallet_balance, _ = await self.get_balance(interaction.user.id)
+        new_wallet_balance, _ = await self.update_balance(interaction.user.id, price, 0)
+
+        if await self.check_inventory(interaction.user.id, item, quantity):
+            await self.sell_item(interaction.user.id, item, quantity)
+            await interaction.response.send_message(
+                f"Successfully sold <:Diamond_JE3_BE3:1199747180848758824> diamond for <a:coin:1192540229727440896> **{price}**",
+                ephemeral=True
+            )
+        else:
+            await interaction.response.send_message(
+                f"You don't have enough of this item to sell.",
+                ephemeral=True
+            )
+
+    @discord.ui.button(label="emerald", emoji="<:Emerald_JE3_BE3:1199747182195130458>", style=discord.ButtonStyle.green)
+    async def emerald(self, interaction: discord.Interaction, button: discord.ui.Button):
+        item = "<:Emerald_JE3_BE3:1199747182195130458>emerald"
+        quantity = 1
+
+        price = 2500000 * quantity
+
+        wallet_balance, _ = await self.get_balance(interaction.user.id)
+        new_wallet_balance, _ = await self.update_balance(interaction.user.id, price, 0)
+
+        if await self.check_inventory(interaction.user.id, item, quantity):
+            await self.sell_item(interaction.user.id, item, quantity)
+            await interaction.response.send_message(
+                f"Successfully sold <:Emerald_JE3_BE3:1199747182195130458> emerald for <a:coin:1192540229727440896> **{price}**",
+                ephemeral=True
+            )
+        else:
+            await interaction.response.send_message(
+                f"You don't have enough of this item to sell.",
+                ephemeral=True
+            )
+
+    async def buy_item(self, user, item, quantity):
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute("SELECT quantity FROM inventory WHERE user = ? AND item = ?", (user, item))
+                row = await cursor.fetchone()
+
+        if row:
+            async with self.bot.pool.acquire() as conn:
+                async with conn.cursor() as cursor:
+                    new_quantity = row[0] + quantity
+                    await cursor.execute("UPDATE inventory SET quantity = ? WHERE user = ? AND item = ?", (new_quantity, user, item))
+                    await conn.commit()
+        else:
+            async with self.bot.pool.acquire() as conn:
+                async with conn.cursor() as cursor:
+                    await cursor.execute("INSERT INTO inventory (user, item, quantity) VALUES (?, ?, ?)", (user, item, quantity))
+                    await conn.commit()
+
+    async def sell_item(self, user, item, quantity):
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute("SELECT quantity FROM inventory WHERE user = ? AND item = ?", (user, item))
+                row = await cursor.fetchone()
+
+        if row:
+            async with self.bot.pool.acquire() as conn:
+                async with conn.cursor() as cursor:
+                    new_quantity = row[0] - quantity
+                    if new_quantity <= 0:
+                        await cursor.execute("DELETE FROM inventory WHERE user = ? AND item = ?", (user, item))
+                    else:
+                        await cursor.execute("UPDATE inventory SET quantity = ? WHERE user = ? AND item = ?", (new_quantity, user, item))
+                    await conn.commit()
+
+    async def check_inventory(self, user_id, item, quantity):
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute("SELECT quantity FROM inventory WHERE user = ? AND item = ?", (user_id, item))
+                row = await cursor.fetchone()
+
+        return row and row[0] >= quantity
+
+    async def create_account(self, user):
+        async with self.bot.pool.acquire() as conn:
+            await conn.execute("INSERT INTO bank (user, wallet, bank, maxbank) VALUES (?, 0, 100, 9999999999999999)", (user,))
+            await conn.commit()
+
+    async def get_balance(self, user):
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute("SELECT wallet, bank FROM bank WHERE user = ?", (user,))
+                row = await cursor.fetchone()
+                if row is None:
+                    await self.create_account(user)
+                    return 0, 0
+                return row[0], row[1]
+
+    async def update_balance(self, user, wallet_change=0, bank_change=0):
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute("SELECT wallet, bank FROM bank WHERE user = ?", (user,))
+                row = await cursor.fetchone()
+                if row is None:
+                    await self.create_account(user)
+                    await cursor.execute("SELECT wallet, bank FROM bank WHERE user = ?", (user,))
+                    row = await cursor.fetchone()
+                wallet_balance = row[0] + wallet_change
+                bank_balance = row[1] + bank_change
+                await cursor.execute("UPDATE bank SET wallet = ?, bank = ? WHERE user = ?", (wallet_balance, bank_balance, user))
+                await conn.commit()
+                return wallet_balance, bank_balance
+
+class balbuttons(discord.ui.View):
+    def __init__(self, pool):
+        super().__init__(timeout=30)
+        self.pool = pool
+        self.value = None
+
+    @discord.ui.button(label="withdraw")
+    async def withdraw(self, interaction: discord.Interaction, button: discord.ui.Button):
+        withdraw_modal = withdraw()
+        await withdraw_modal.init_database()
+        await interaction.response.send_modal(withdraw_modal)
+
+    @discord.ui.button(label="deposit")
+    async def deposit(self, interaction: discord.Interaction, button: discord.ui.Button):
+        deposit_modal = deposit()
+        await deposit_modal.init_database()
+        await interaction.response.send_modal(deposit_modal)
+
+    @discord.ui.button(label="help", style=discord.ButtonStyle.blurple)
+    async def help(self, interaction: discord.Interaction, button: discord.ui.Button):
+        embed = discord.Embed(title="", description="<:CF12:1188186414387568691> **balance:**\n<:Empty:1188186122350759996> This command shows you how many coins you have in your\n<:Empty:1188186122350759996> bank and allows you to withdraw inti or deposit coins out of\n<:Empty:1188186122350759996> your bank.\n\n<:CF12:1188186414387568691> **withdraw and deposit:**\n<:Empty:1188186122350759996> To withdraw coins, click the `withdraw` button and enter the\n<:Empty:1188186122350759996> the amount of coins you want to take out of your bank.\n<:Empty:1188186122350759996> To deposit coins, click the `deposit` button and enter the\n<:Empty:1188186122350759996> the amount of coins you want to put into your bank.", color=0x2b2d31)
+        embed.set_author(name=interaction.user.name, icon_url=interaction.user.display_avatar)
+        embed.set_thumbnail(url=interaction.user.display_avatar)
+        await interaction.response.send_message(embed=embed, ephemeral=True)
+
+    async def on_timeout(self):
+        for child in self.children:
+            if isinstance(child, discord.ui.Button):
+                child.disabled = True
+                child.style = discord.ButtonStyle.red
+        self.stop()
+
+class withdraw(ui.Modal, title='Withdraw Coins'):
+    amount = ui.TextInput(label='How much would you like to withdraw?', placeholder="Enter amount here....", style=discord.TextStyle.short)
+
+    async def init_database(self):
+        self.pool = await asqlite.create_pool('databases/levels.db')
+        async with self.pool.acquire() as conn:
+            await conn.execute('''CREATE TABLE IF NOT EXISTS bank (
+                user INTEGER PRIMARY KEY,
+                wallet INTEGER,
+                bank INTEGER,
+                maxbank INTEGER
+            )''')
+
+    async def on_submit(self, interaction: discord.Interaction):
+        user = interaction.user.id
+        await interaction.response.defer()
+        amount = int(self.amount.value)
+
+        if not hasattr(self, 'pool'):
+            await self.init_database()
+
+        async with self.pool.acquire() as conn:
+            await conn.execute("""UPDATE bank SET wallet = wallet + ?, bank = bank - ? WHERE user = ?""", (amount, amount, user))
+            await conn.commit()
+
+        await interaction.followup.send(f"You have withdrawn <a:coin:1192540229727440896> **{amount}** from your bank", ephemeral=True)
+
+class deposit(ui.Modal, title='Deposit Coins'):
+    amount = ui.TextInput(label='How much would you like to deposit?', placeholder="Enter amount here....", style=discord.TextStyle.short)
+
+    async def init_database(self):
+        self.pool = await asqlite.create_pool('databases/levels.db')
+        async with self.pool.acquire() as conn:
+            await conn.execute('''CREATE TABLE IF NOT EXISTS bank (
+                user INTEGER PRIMARY KEY,
+                wallet INTEGER,
+                bank INTEGER,
+                maxbank INTEGER
+            )''')
+
+    async def on_submit(self, interaction: discord.Interaction):
+        user = interaction.user.id
+        await interaction.response.defer()
+        amount = int(self.amount.value)
+
+        if not hasattr(self, 'pool'):
+            await self.init_database()
+
+        async with self.pool.acquire() as conn:
+            await conn.execute("""UPDATE bank SET wallet = wallet - ?, bank = bank + ? WHERE user = ?""", (amount, amount, user))
+            await conn.commit()
+
+        await interaction.followup.send(f"You have deposited <a:coin:1192540229727440896> **{amount}** from your bank", ephemeral=True)
+
 class Economy(commands.Cog):
     """Commands for the economy system"""
     def __init__(self, bot):
@@ -409,11 +1546,6 @@ class Economy(commands.Cog):
                 bank INTEGER,
                 maxbank INTEGER
             )''')
-
-    @commands.Cog.listener()
-    async def on_ready(self):
-        await self.init_database()
-        print(f'{self.__class__.__name__} Cog is ready')
 
     async def get_balance(self, user):
         async with self.pool.acquire() as conn:
@@ -478,113 +1610,25 @@ class Economy(commands.Cog):
                 return False
         return commands.check(predicate)
 
-    def _get_round_avatar(self, avatar: BytesIO) -> Tuple[Image.Image, Image.Image]:
-        circle = Image.open('./assets/circle-mask.png').resize((35, 35)).convert('L')
-        avatar_image = Image.open(avatar).convert('RGBA')
-        avatar_image = avatar_image.resize((35, 35))
-        return avatar_image, circle
-
     @commands.command(hidden=True)
     async def bankmax(self, ctx: commands.Context, member: discord.Member, amount: int):
         await self.update_max_bank(member.id, amount)
         await ctx.reply("all done!")
 
-    @commands.command(aliases=["bal"], description="Check your bank and wallet balance", extras="alias +bal")
+    @commands.command(aliases=["bal"], description="Check your bank and wallet balance", extras="+balance : alias +bal")
     @kanzen_only()
-    async def balance(self, ctx, user: discord.Member = None, avatar_size: int = 140, image_size: int = 64) -> BytesIO:
+    async def balance(self, ctx, user: discord.Member = None) -> BytesIO:
         async with ctx.typing():
             user = user or ctx.author
             wallet_balance, bank_balance = await self.get_balance(user.id)
-            avatar_url = ctx.author.avatar.url
-            async with self.bot.session.get(avatar_url) as response:
-                if response.status == 200:
-                    avatar_data = await response.read()
-                else:
-                    avatar_data = None
-
-            img = Image.open('./assets/bank_card.png')
-            draw = ImageDraw.Draw(img)
-            if avatar_data:
-                avatar = BytesIO(avatar_data)
-                avatar_paste, circle = self._get_round_avatar(avatar)
-                img.paste(avatar_paste, (35, 250), circle)
-
-            poppins = Font.poppins(size=25)
-            poppins_small = Font.poppins(size=25)
-            display_name_parts = ctx.author.display_name.split('|')
-            display_name = display_name_parts[0].strip() if display_name_parts else ctx.author.display_name
-            draw.text((75, 245), display_name, font=poppins_small)
-            draw.text((75, 115), f'wallet: {str(wallet_balance)}', '#FDCA04', font=poppins)
-            draw.text((75, 165), f'bank: {str(bank_balance)}', font=poppins)
-            coin_img = Image.open('./assets/coin.png')
-            coin_img = coin_img.resize((40, 40))
-            bank_img = Image.open('./assets/bank.png')
-            bank_img = bank_img.resize((40, 40))
-            img.paste(coin_img, (25, 115), coin_img)
-            img.paste(bank_img, (25, 165), bank_img)
-            img.save("bank.png")
-            await ctx.reply(file=discord.File("bank.png"))
-
-    @commands.command(description="Steal coins from other members", extras="+rob @member")
-    @commands.cooldown(1, 3600, commands.BucketType.user) 
-    async def rob(self, ctx, member: discord.Member):
-        titles = ["LOL you stole from someone... naughty naughty", "wow- are you that broke", "well we all need money... mind sharing 🥲"]
-        title = random.choice(titles)
-        amount = random.randint(0, 50000)
-        if amount == 0:
-            await ctx.send("No coins taken, as the random amount was 0.")
-            return
-
-        wallet_balance, bank_balance = await self.get_balance(member.id)
-        bank_to_take = min(amount, bank_balance)
-        new_bank_balance = await self.update_balance(member.id, 0, -bank_to_take)
-        author_wallet_balance, author_bank_balance = await self.get_balance(ctx.author.id)
-        new_author_bank_balance = await self.update_balance(ctx.author.id, 0, bank_to_take)
-        embed = discord.Embed(title=title, description=f"You stole <:coin:1167639638123487232> {amount} from {member.display_name}", color=0x2b2d31)
-        await ctx.send(embed=embed)
-
-    @rob.error
-    async def rob_error(self, ctx, error):
-        if isinstance(error, commands.CommandOnCooldown):
-            remaining = round(error.retry_after)
-            if remaining >= 60:
-                mins = remaining // 60
-                await ctx.send(f"Sorry, you're on a cooldown from using this command. Try again in {mins} minutes.")
-            else:
-                await ctx.send(f"Sorry, you're on a cooldown from using this command. Try again in {remaining} seconds.")
-
-
-    @commands.command(aliases=['dep'], description="Deposite money into your bank", extras="+deposit (amount) : alias +dep")
-    @kanzen_only()
-    async def deposit(self, ctx, amount: int):
-        if amount <= 0:
-            return await ctx.reply("Amount must be greater than 0.")
-        wallet_balance, bank_balance = await self.get_balance(ctx.author.id)
-        if wallet_balance < amount:
-            return await ctx.reply("You don't have enough coins in your wallet.")
-        if bank_balance + amount > 1000000:
-            return await ctx.reply("Your bank is full.")
-        new_wallet_balance, new_bank_balance = await self.update_balance(ctx.author.id, -amount, amount)
-        embed = discord.Embed(title="Deposited Coins <:wallet:1197271492182937670><:arrow10:1197269261211672760><:bank:1197269525138251876>", description=f"You deposited <a:coin:1192540229727440896> **{amount}**", color=0x2b2d31)
-        embed.set_thumbnail(url=ctx.author.display_avatar)
-        embed.add_field(name="<:wallet:1197271492182937670> Wallet Balance", value=f"<a:coin:1192540229727440896> **{new_wallet_balance}**", inline=False)
-        embed.add_field(name="<:bank:1197269525138251876> Bank Balance", value=f"<a:coin:1192540229727440896> **{new_bank_balance}**", inline=False)
-        await ctx.reply(embed=embed)
-
-    @commands.command(description="Withdraw money from your bank", extras="+withdraw (amount)")
-    @kanzen_only()
-    async def withdraw(self, ctx, amount: int):
-        if amount <= 0:
-            return await ctx.send("Amount must be greater than 0.")
-        wallet_balance, bank_balance = await self.get_balance(ctx.author.id)
-        if bank_balance < amount:
-            return await ctx.send("You don't have enough coins in your bank.")
-        new_wallet_balance, new_bank_balance = await self.update_balance(ctx.author.id, amount, -amount)
-        embed = discord.Embed(title="Withdrew Coins <:bank:1197269525138251876><:arrow10:1197269261211672760><:wallet:1197271492182937670>", description=f"You withdrew <a:coin:1192540229727440896> **{amount}**", color=0x2b2d31)
-        embed.set_thumbnail(url=ctx.author.display_avatar)
-        embed.add_field(name="<:wallet:1197271492182937670> Wallet Balance", value=f"<a:coin:1192540229727440896> **{new_wallet_balance}**", inline=False)
-        embed.add_field(name="<:bank:1197269525138251876> Bank Balance", value=f"<a:coin:1192540229727440896> **{new_bank_balance}**", inline=False)
-        await ctx.reply(embed=embed)
+            embed = discord.Embed(color=0x2b2d31)
+            embed.add_field(name="`👛` purse", value=f"<a:coin:1199052296995209237> **{wallet_balance}**", inline=False)
+            embed.add_field(name="`🏦` bank", value=f"<a:coin:1199052296995209237> **{bank_balance}**", inline=False)
+            embed.set_footer(text="Would you like to deposit or withdraw money?")
+            embed.set_author(name=user.name, icon_url=user.display_avatar)
+            embed.set_thumbnail(url=user.display_avatar)
+            view = balbuttons(pool=self.pool)
+            await ctx.send(embed=embed, view=view)
 
     @commands.command(description="Donate to ~~the poor~~ other members", extras="+donate @member (amount)")
     @kanzen_only()
@@ -609,55 +1653,88 @@ class Economy(commands.Cog):
     @kanzen_only()
     async def beg(self, ctx):
         celeb_names = [
-            "Bill Gates",
-            "Elon Musk",
-            "Jeff Bezos",
-            "Oprah Winfrey",
             "Taylor Swift",
             "Dwayne 'The Rock' Johnson",
+            "Ariana Grande",
+            "BTS",
+            "BLACKPINK",
+            "Ed Sheeran",
+            "Beyoncé",
+            "Justin Bieber",
+            "Rihanna",
+            "Lady Gaga",
+            "Katy Perry",
+            "Selena Gomez",
         ]
-
+        earnings = random.randint(1, 500000)
         celeb_lines = {
-            "Bill Gates": [
-                "Oh, you poor thing. Here's some pocket change for you!",
-                "'Another one? Well, alright. Here you go.'",
-                "Bill Gates generously donates some coins to you."
-            ],
-            "Elon Musk": [
-                "'I'll give you some coins, but only because I like rockets.'",
-                "You receive some coins from the richest rocket enthusiast.",
-                "Elon Musk tosses some coins your way with a smile."
-            ],
-            "Jeff Bezos": [
-                "'I could spare a few coins. After all, I'm Jeff Bezos.'",
-                "You get some coins from the ex-Amazon CEO.",
-                "Jeff Bezos donates some of his Amazon money to you."
-            ],
-            "Oprah Winfrey": [
-            "Oprah reaches into her pocket and gives you some coins!",
-            "'You get coins! You get coins! Everybody gets coins!' - Oprah",
-            "You receive a gift of coins from Oprah Winfrey."
-            ],
             "Taylor Swift": [
-                "Taylor Swift hands you some coins with a smile.",
-                "'Coins for the fans!' - Taylor Swift",
-                "You get coins from the pop sensation, Taylor Swift."
+                f"Taylor Swift hands you <a:coin:1192540229727440896> **{earnings}** with a smile.",
+                f"'<a:coin:1192540229727440896> **{earnings}** for the fans!'",
+                f"You get <a:coin:1192540229727440896> **{earnings}** from the pop sensation, Taylor Swift."
             ],
             "Dwayne 'The Rock' Johnson": [
-                "'Can you smell what The Rock is giving?' - Dwayne Johnson",
-                "The Rock shares some of his success with you in coins.",
-                "You receive a 'Rock'-solid amount of coins from Dwayne Johnson."
-            ]
+                f"'Can you smell what The Rock is giving?' <a:coin:1192540229727440896> **{earnings}**",
+                f"The Rock shares some of his success with you in coins. <a:coin:1192540229727440896> **{earnings}**",
+                f"You receive a 'Rock'-solid amount of coins from Dwayne Johnson. <a:coin:1192540229727440896> **{earnings}**"
+            ],
+            "Ariana Grande": [
+                f"Ariana Grande tosses <a:coin:1192540229727440896> **{earnings}** while saying 'Yuh'",
+                f"'Here's a little something for you, sweetener.' <a:coin:1192540229727440896> **{earnings}**",
+                f"You receive <a:coin:1192540229727440896> **{earnings}** from the queen of pop, Ariana Grande."
+            ],
+            "BTS": [
+                f"BTS members dance their way to you and drop <a:coin:1192540229727440896> **{earnings}**!",
+                f"'Bangtan Sonyeondan, giving you some love and <a:coin:1192540229727440896> **{earnings}**.'",
+                f"You get <a:coin:1192540229727440896> **{earnings}** from your favorite kpop idols."
+            ],
+            "BLACKPINK": [
+                f"BLACKPINK members share <a:coin:1192540229727440896> **{earnings}** and say 'Hit you with that ddu-du ddu-du!'",
+                f"'Pretty Savage! Here are <a:coin:1192540229727440896> **{earnings}** for you.'",
+                f"You receive <a:coin:1192540229727440896> **{earnings}** from the queens of K-pop, BLACKPINK."
+            ],
+            "Ed Sheeran": [
+                f"Ed Sheeran strums his guitar and gives you <a:coin:1192540229727440896> **{earnings}**.",
+                f"'Shape of you and <a:coin:1192540229727440896> **{earnings}** for you!'",
+                f"You receive <a:coin:1192540229727440896> **{earnings}** from the talented singer-songwriter, Ed Sheeran."
+            ],
+            "Beyoncé": [
+                f"Beyoncé graciously donates <a:coin:1192540229727440896> **{earnings}** with a smile.",
+                f"'Queen Bey sending you <a:coin:1192540229727440896> **{earnings}**!'",
+                f"You get <a:coin:1192540229727440896> **{earnings}** from the queen herself, Beyoncé."
+            ],
+            "Justin Bieber": [
+                f"Justin Bieber hands you <a:coin:1192540229727440896> **{earnings}** and says 'Never say never!'",
+                f"'Beliebers deserve <a:coin:1192540229727440896> **{earnings}** too.'",
+                f"You receive <a:coin:1192540229727440896> **{earnings}** from the pop sensation, Justin Bieber."
+            ],
+            "Rihanna": [
+                f"Rihanna shares <a:coin:1192540229727440896> **{earnings}** and says 'Shine bright like a diamond!'",
+                f"'Umbrella, ella, ella, here's <a:coin:1192540229727440896> **{earnings}**.'",
+                f"You get <a:coin:1192540229727440896> **{earnings}** from the iconic singer, Rihanna."
+            ],
+            "Lady Gaga": [
+                f"Lady Gaga donates <a:coin:1192540229727440896> **{earnings}** and says 'Just dance!'",
+                f"'Little monsters, here's <a:coin:1192540229727440896> **{earnings}** for you.'",
+                f"You get <a:coin:1192540229727440896> **{earnings}** from the legendary Lady Gaga."
+            ],
+            "Katy Perry": [
+                f"Katy Perry generously donates <a:coin:1192540229727440896> **{earnings}** and says 'Roar for these coins!'",
+                f"'California Gurls, here's <a:coin:1192540229727440896> **{earnings}**' for you.'",
+                f"You get <a:coin:1192540229727440896> **{earnings}** from the pop icon, Katy Perry."
+            ],
+            "Selena Gomez": [
+                f"Selena Gomez smiles and hands you <a:coin:1192540229727440896> **{earnings}**.",
+                f"'Wolves, hands, and <a:coin:1192540229727440896> **{earnings}** for you!'",
+                f"You receive <a:coin:1192540229727440896> **{earnings}** from the talented Selena Gomez."
+            ],
         }
 
         celeb_name = random.choice(celeb_names)
         celeb_line = random.choice(celeb_lines.get(celeb_name, ["No coins for you."]))
-        earnings = random.randint(1, 10000)
         wallet_balance, _ = await self.update_balance(ctx.author.id, earnings, 0)
-        embed=discord.Embed(title=celeb_name, description=celeb_line, color=0x2b2d31)
-        embed.set_thumbnail(url=ctx.author.display_avatar)
-        embed.add_field(name="You received", value=f"<a:coin:1192540229727440896> {earnings}", inline=False)
-        embed.add_field(name="Your new wallet balance", value=f"<a:coin:1192540229727440896> {wallet_balance}", inline=False)
+        embed = discord.Embed(title=celeb_name, description=f"{celeb_line}", color=0x2b2d31)
+        embed.set_author(name=ctx.author.name, icon_url=ctx.author.display_avatar)
         await ctx.reply(embed=embed)
 
     @beg.error
@@ -672,37 +1749,69 @@ class Economy(commands.Cog):
     async def search(self, ctx):
         search_responses = {
             'park': [
-                ("You searched a park and found a squirrel that gave you some coins!", random.randint(1, 500)),
-                ("You explored a park and stumbled upon a hidden treasure!", random.randint(1, 500)),
-                ("You searched a park and found some loose change!", random.randint(1, 500))
+                ("searched a park and found a squirrel that gave you some coins!", random.randint(100, 1500)),
+                ("explored a park and stumbled upon a hidden treasure!", random.randint(100, 1500)),
+                ("searched a park and found some loose change!", random.randint(100, 1500))
             ],
             'alley': [
-                ("You searched an alley and found a wallet with some coins inside!", random.randint(1, 1000)),
-                ("You explored a dark alley and found some discarded coins!", random.randint(1, 1000)),
-                ("You searched an alley and found nothing but trash.", 0)
+                ("searched an alley and found a wallet with some coins inside!", random.randint(100, 2500)),
+                ("explored a dark alley and found some discarded coins!", random.randint(100, 2500)),
+                ("searched an alley and found nothing but trash.", 0)
             ],
             'dumpster': [
-                ("You searched a dumpster and found a valuable item worth some coins!", random.randint(1, 100)),
-                ("You rummaged through a dumpster and found some hidden coins!", random.randint(1, 100)),
-                ("You searched a dumpster and got dirty for no reward.", 0)
+                ("searched a dumpster and found a valuable item worth some coins!", random.randint(100, 1000)),
+                ("rummaged through a dumpster and found some hidden coins!", random.randint(100, 1000)),
+                ("searched a dumpster and got dirty for no reward.", 0)
             ],
             'forest': [
-                ("You ventured into the forest and found a hidden treasure chest!", random.randint(1, 500)),
-                ("You explored the forest and found a friendly forest creature!", random.randint(1, 500)),
-                ("You searched the forest, but it seems there was nothing valuable there today.", 0)
+                ("ventured into the forest and found a hidden treasure chest!", random.randint(100, 1500)),
+                ("explored the forest and found a friendly forest creature!", random.randint(100, 1500)),
+                ("searched the forest, but it seems there was nothing valuable there today.", 0)
             ],
             'cave': [
-                ("You entered a dark cave and found a hidden stash of coins!", random.randint(1, 350)),
-                ("You explored a mysterious cave and found a rare gemstone!", random.randint(1, 350)),
-                ("You searched a cave but found nothing valuable.", 0)
+                ("entered a dark cave and found a hidden stash of coins!", random.randint(100, 3500)),
+                ("explored a mysterious cave and found a rare gemstone!", random.randint(100, 3500)),
+                ("searched a cave but found nothing valuable.", 0)
+            ],
+            'beach': [
+                ("strolled along the beach and discovered buried pirate treasure!", random.randint(100, 2000)),
+                ("searched the shoreline and found a message in a bottle with coins!", random.randint(100, 2000)),
+                ("built sandcastles on the beach and found coins hidden in the sand!", random.randint(100, 2000))
+            ],
+            'city': [
+                ("explored the city streets and found coins dropped by passersby!", random.randint(100, 2500)),
+                ("visited a bustling market and haggled your way into extra coins!", random.randint(100, 2500)),
+                ("searched city landmarks and found coins overlooked by tourists!", random.randint(100, 2500))
+            ],
+            'mountain': [
+                ("climbed a mountain and found a hidden cave with coins inside!", random.randint(100, 3000)),
+                ("explored mountain trails and found coins hidden in the rocks!", random.randint(100, 3000)),
+                ("searched a snowy mountain peak and discovered ancient treasure!", random.randint(100, 3000))
+            ],
+            'hospital': [
+                ("searched a hospital and found coins in a sick person's purse... why are you going through a sick person's purse?", random.randint(100, 500)),
+                ("explored a hospital and found a doctor's stash of coins!", random.randint(100, 500)),
+                ("searched a hospital and found a vending machine that dispenses coins instead of snacks!", random.randint(100, 500))
+            ],
+            'haunted house': [
+                ("entered a haunted house and got scared to death... found no coins. Rest in peace.", 0),
+                ("explored a spooky graveyard and encountered restless spirits... found no coins. Rest in peace.", 0),
+                ("searched a cursed tomb and triggered a trap... found no coins. Rest in peace.", 0)
+            ],
+            'ocean': [
+                ("dived to the bottom of the ocean and got lost... found no coins. Rest in peace.", 0),
+                ("explored a sunken ship and encountered a sea monster... found no coins. Rest in peace.", 0),
+                ("searched a mysterious underwater cave and got trapped... found no coins. Rest in peace.", 0)
             ]
         }
         random_choices = random.sample(list(search_responses.keys()), 3)
         where = discord.Embed(title="Where would you like to search?", description=f"**{' , '.join(random_choices)}**", color=0x2b2d31)
         where.set_thumbnail(url=ctx.author.display_avatar)
         await ctx.reply(embed=where)
+
         def check(msg):
             return msg.author == ctx.author and msg.content.lower() in map(str.lower, random_choices)
+
         try:
             choice_msg = await self.bot.wait_for('message', check=check, timeout=30.0)
             user_choice = choice_msg.content.lower()
@@ -712,13 +1821,11 @@ class Economy(commands.Cog):
         response, earnings = random.choice(search_responses[user_choice])
         if earnings > 0:
             wallet_balance, _ = await self.update_balance(ctx.author.id, earnings, 0)
-            searched = discord.Embed(title=f"You searched {user_choice}", description=response, color=0x2b2d31)
-            searched.add_field(name="You found", value=f"<a:coin:1192540229727440896> **{earnings}**", inline=False)
-            searched.add_field(name="Your new wallet balance", value=f"<a:coin:1192540229727440896> **{wallet_balance}**", inline=False)
-            searched.set_thumbnail(url=ctx.author.display_avatar)
+            searched = discord.Embed(description=f"{ctx.author.name} {response}\nYou found: <a:coin:1192540229727440896> **{earnings}**", color=0x2b2d31)
             await ctx.reply(embed=searched)
         else:
-            await ctx.reply(response)
+            none = discord.Embed(description=response, color=0x2b2d31)
+            await ctx.reply(embed=none)
 
     def is_staff():
         async def predicate(ctx):
@@ -727,7 +1834,7 @@ class Economy(commands.Cog):
             return role in ctx.author.roles
         return commands.check(predicate)
 
-    @commands.command(description="Remove coins from members", extras="+removecoins @member")
+    @commands.command(hidden=True)
     @is_staff()
     async def removecoins(self, ctx, member: discord.Member, amount: str):
         amount = int(amount)
@@ -778,6 +1885,42 @@ class Economy(commands.Cog):
             'identity theft': [
                 ("You successfully stole someone's identity and used it to your advantage.", random.randint(100, 5000)),
                 ("Your attempt at identity theft failed, and you couldn't gain any benefits.", 0)
+            ],
+            'vandalism': [
+                ("You successfully vandalized public property and left your mark.", random.randint(100, 2000)),
+                ("Your attempt at vandalism failed, and you were caught by authorities.", 0)
+            ],
+            'bribery': [
+                ("You successfully bribed someone and got what you wanted.", random.randint(100, 3000)),
+                ("Your attempt at bribery failed, and the person reported you.", 0)
+            ],
+            'kidnapping': [
+                ("You successfully kidnapped someone and demanded a ransom.", random.randint(100, 5000)),
+                ("Your attempt at kidnapping failed, and the person escaped.", 0)
+            ],
+            'assault': [
+                ("You successfully assaulted someone and took their belongings.", random.randint(100, 2000)),
+                ("Your attempt at assault failed, and the person fought back.", 0)
+            ],
+            'smuggling': [
+                ("You successfully smuggled illegal goods and earned a hefty sum.", random.randint(100, 4000)),
+                ("Your smuggling attempt failed, and authorities seized the goods.", 0)
+            ],
+            'counterfeiting': [
+                ("You successfully counterfeited money and added fake coins to your wallet.", random.randint(100, 5000)),
+                ("Your counterfeiting attempt failed, and the fake coins were easily detected.", 0)
+            ],
+            'embezzlement': [
+                ("You successfully embezzled funds and transferred them to your account.", random.randint(100, 8000)),
+                ("Your embezzlement attempt failed, and you were caught by the company.", 0)
+            ],
+            'street racing': [
+                ("You successfully participated in an illegal street race and won some money.", random.randint(100, 3000)),
+                ("Your street racing attempt failed, and you crashed your vehicle.", 0)
+            ],
+            'espionage': [
+                ("You successfully engaged in espionage and obtained valuable secrets.", random.randint(100, 6000)),
+                ("Your espionage attempt failed, and you were exposed as a spy.", 0)
             ]
         }
         random_choices = random.sample(list(crime_responses.keys()), 3)
@@ -895,7 +2038,8 @@ class Economy(commands.Cog):
             await message.edit(embed=leaderboard_embed)
             await message.remove_reaction(str(reaction.emoji), ctx.author)
 
-    async def get_wallet_balance(self, user_id):
+    async def get_wallet_balance(self, user):
+        user_id = user.id
         async with self.pool.acquire() as conn:
             async with conn.cursor() as cursor:
                 await cursor.execute("SELECT wallet FROM bank WHERE user = ?", (user_id,))
@@ -915,56 +2059,167 @@ class Economy(commands.Cog):
                 else:
                     return 0
 
-    @commands.command(description="See what is in the shop", extras="+shop")
+    @commands.command(description="Steal coins from other members", extras="+rob @member")
+    @commands.cooldown(1, 3600, commands.BucketType.user)
     @kanzen_only()
-    async def shop(self, ctx):
-        await ctx.reply("The shop is closed right now for updates. Sorryy LOOOOOOOOOOOOOOOOOOOOOOOOL")
+    async def rob(self, ctx, user: discord.Member = None):
+        inventory = await self.check_inventory(ctx.author.id)
+        knife = "<:knife:1199405378216144947>knife"
 
-    @commands.command(description="Buy items from the shop", extras="+buy cookie (amount)")
-    @kanzen_only()
-    async def buy(self, ctx, item: str, quantity: int = 1):
-        shop_items = {
-            "Cookie": 10,
-            "Soda": 15,
-            "Pizza": 25,
-            "Laptop": 500,
-            "Fishing_rod": 250,
-            "Gaming PC": 5000,
-            "Car": 1000000,
-        }
+        if knife.lower() in (item.lower() for item in inventory):
+            user = user or ctx.author
+            titles = ["LOL you stole from someone... naughty naughty", "wow- are you that broke", "well we all need money... mind sharing "]
+            title = random.choice(titles)
+            amount = random.randint(1, 50000)
 
-        item = item.capitalize()
+            bank_balance = await self.get_bank_balance(user.id)
+            bank_to_take = min(+amount, bank_balance)
 
-        if item not in shop_items:
-            return await ctx.send("Item not found in the shop.")
-
-        price = shop_items[item] * quantity
-        wallet_balance, _ = await self.get_balance(ctx.author.id)
-        if wallet_balance < price:
-            return await ctx.send("You don't have enough coins to buy this item.")
-
-        new_wallet_balance, _ = await self.update_balance(ctx.author.id, -price, 0)
-        async with self.pool.acquire() as conn:
-            async with conn.cursor() as cursor:
-                await cursor.execute("SELECT quantity FROM inventory WHERE user = ? AND item = ?", (ctx.author.id, item))
-                row = await cursor.fetchone()
-
-        if row:
             async with self.pool.acquire() as conn:
                 async with conn.cursor() as cursor:
-                    new_quantity = row[0] + quantity
-                    await cursor.execute("UPDATE inventory SET quantity = ? WHERE user = ? AND item = ?", (new_quantity, ctx.author.id, item))
+                    await cursor.execute("UPDATE bank SET bank = bank - ? WHERE user = ?", (bank_to_take, user.id))
+                    await cursor.execute("UPDATE bank SET bank = bank + ? WHERE user = ?", (bank_to_take, ctx.author.id))
                     await conn.commit()
+
+            embed = discord.Embed(title=title, description=f"You stole <:coin:1167639638123487232> {bank_to_take} from {user.display_name}", color=0x2b2d31)
+            await ctx.send(embed=embed)
         else:
-            async with self.pool.acquire() as conn:
-                async with conn.cursor() as cursor:
-                    await cursor.execute("INSERT INTO inventory (user, item, quantity) VALUES (?, ?, ?)", (ctx.author.id, item, quantity))
-                    await conn.commit()
+            await ctx.reply("Hey you cannot rob this person without a threat... Buy a knife from the shop")
 
-        embed = discord.Embed(title="Item Purchased", description=f"You have successfully purchased **{quantity}** **{item}(s)** for <a:coin:1192540229727440896> **{price}**", color=0x2b2d31)
-        embed.add_field(name="Your new wallet balance", value=f"<a:coin:1192540229727440896> **{wallet_balance}**", inline=False)
-        embed.set_thumbnail(url=ctx.author.display_avatar)
-        await ctx.send(embed=embed)
+    @rob.error
+    async def rob_error(self, ctx, error):
+        if isinstance(error, commands.CommandOnCooldown):
+            remaining = round(error.retry_after)
+            if remaining >= 60:
+                mins = remaining // 60
+                await ctx.send(f"Sorry, you're on a cooldown from using this command. Try again in {mins} minutes.")
+            else:
+                await ctx.send(f"Sorry, you're on a cooldown from using this command. Try again in {remaining} seconds.")
+
+    @commands.command()
+    @kanzen_only()
+    async def shop(self, ctx, user: discord.Member = None):
+        user = user or ctx.author
+        wallet_balance = await self.get_wallet_balance(user)
+        categories = [
+            "tools"
+        ]
+        emojis = [
+            "⚒️"
+        ]
+        descriptions = [
+            "Includes all the tools you need!"
+        ]
+        tool_buy_view = toolbuy(bot=self.bot)
+        dropdown = discord.ui.Select(
+            placeholder="Select a category",
+            options=[discord.SelectOption(label=category, emoji=emoji, description=description) for category, emoji, description in zip(categories, emojis, descriptions)]
+        )
+
+        tools = discord.Embed(title="Hoshi's Shop", description="> Welcome to the shop, Here you can find all sorts of items to buy\n> Use the dropdown menu below to select a category\n\n**__Categories:__**\n`⚒️` [**tools**](https://instagram.com/kanzengrp/)\n<:1166196258499727480:1188190249768210582> Includes all the tools you need!", color=0x2b2d31)
+        tools.set_thumbnail(url=ctx.guild.icon)
+        view = discord.ui.View()
+        view.add_item(dropdown)
+        message = await ctx.send(embed=tools, view=view)
+
+        async def dropdown_callback(interaction: discord.Interaction):
+            selected_category = interaction.data["values"][0]
+            for item in view.children:
+                if not isinstance(item, discord.ui.Select):
+                    view.remove_item(item)
+
+            if selected_category == categories[0]:
+                for item in tool_buy_view.children:
+                    view.add_item(item)
+                embed = discord.Embed(title="Hoshi's Shop - Tools", description=f"> Use the buttons below to buy the items you want\n\n<a:coin:1192540229727440896> **{wallet_balance}**", color=0x2b2d31)
+                embed.set_image(url="https://cdn.discordapp.com/attachments/1111567760745574401/1199316979991982170/shop_tools_00000.png?ex=65c219fa&is=65afa4fa&hm=f6aeffe9777e3defafa21d14b62cd39924f75bc4e6a7caa51a6ef7095c6fa91f&")
+                embed.set_thumbnail(url=ctx.guild.icon)
+                embed.set_footer(text="• Use the buttons below to buy an item (clicking it twice will give you another)", icon_url=ctx.author.avatar)
+            else:
+                embed = discord.Embed(title="Invalid category", description="Please select a valid category from the dropdown menu.")
+
+            await interaction.response.edit_message(embed=embed, view=view)
+
+        dropdown.callback = dropdown_callback
+
+    @commands.command()
+    @kanzen_only()
+    async def sell(self, ctx, user: discord.Member = None):
+        user = user or ctx.author
+        wallet_balance = await self.get_wallet_balance(user)
+        categories = [
+            "tools",
+            "animals",
+            "fish",
+            "mining ores"
+        ]
+        emojis = [
+            "⚒️",
+            "🦌",
+            "🐠",
+            "<:Emerald_JE3_BE3:1199747182195130458>"
+        ]
+        descriptions = [
+            "Sell the tools you no longer need!",
+            "Sell the animals you got from hunting",
+            "Sell the fish you got from fishing",
+            "Sell the ores you got from mining"
+        ]
+        tool_sell_view = toolsell(bot=self.bot)
+        animal_sell_view = animalsell(bot=self.bot)
+        fish_sell_view = fishsell(bot=self.bot)
+        ores_sell_view = oresell(bot=self.bot)
+        dropdown = discord.ui.Select(
+            placeholder="Select a category",
+            options=[discord.SelectOption(label=category, emoji=emoji, description=description) for category, emoji, description in zip(categories, emojis, descriptions)]
+        )
+
+        tools = discord.Embed(title="Sell Items", description="> Want to sell some items? Well you came to the right place!\n> Use the dropdown menu below to select a category\n\n**__Categories:__**\n`⚒️` [**tools**](https://instagram.com/kanzengrp/)\n<:1166196258499727480:1188190249768210582> Includes all the tools you need!", color=0x2b2d31)
+        tools.set_thumbnail(url=ctx.guild.icon)
+        view = discord.ui.View()
+        view.add_item(dropdown)
+        message = await ctx.send(embed=tools, view=view)
+
+        async def dropdown_callback(interaction: discord.Interaction):
+            selected_category = interaction.data["values"][0]
+            for item in view.children:
+                if not isinstance(item, discord.ui.Select):
+                    view.remove_item(item)
+
+            if selected_category == categories[0]:
+                for item in tool_sell_view.children:
+                    view.add_item(item)
+                embed = discord.Embed(title="Sell Items - Tools", description=f"> Use the buttons below to sell the items you don't want", color=0x2b2d31)
+                embed.set_image(url="https://cdn.discordapp.com/attachments/1111567760745574401/1199699889110646894/shop_tools_00000.png?ex=65c37e96&is=65b10996&hm=f690dcb564c714b8940599f25bdc6223f94778c4c2ad0aa51a44d2026f51c1ea&")
+                embed.set_thumbnail(url=ctx.guild.icon)
+                embed.set_footer(text="• Use the buttons below to sell an item (you can click an item again to sell another)", icon_url=ctx.author.avatar)
+            elif selected_category == categories[1]:
+                for item in animal_sell_view.children:
+                    view.add_item(item)
+                embed = discord.Embed(title="Sell Items - Animals", description=f"> Use the buttons below to sell the items you don't want", color=0x2b2d31)
+                embed.set_image(url="https://cdn.discordapp.com/attachments/1111567760745574401/1199699514299256892/shop_tools_00000.png?ex=65c37e3d&is=65b1093d&hm=f1a8625582c0ad1289f239b783f4fe27d4ef4793481914ad480d14147e77f2d9&")
+                embed.set_thumbnail(url=ctx.guild.icon)
+                embed.set_footer(text="• Use the buttons below to sell an item (you can click an item again to sell another)", icon_url=ctx.author.avatar)
+            elif selected_category == categories[2]:
+                for item in fish_sell_view.children:
+                    view.add_item(item)
+                embed = discord.Embed(title="Sell Items - Fish", description=f"> Use the buttons below to sell the items you don't want", color=0x2b2d31)
+                embed.set_image(url="https://cdn.discordapp.com/attachments/1111567760745574401/1199741155412295720/shop_tools_00000.png?ex=65c3a505&is=65b13005&hm=5573e72ecc09593214a467a43526c20b920eec2161c00971e607ceb8a8cc628f&")
+                embed.set_thumbnail(url=ctx.guild.icon)
+                embed.set_footer(text="• Use the buttons below to sell an item (you can click an item again to sell another)", icon_url=ctx.author.avatar)
+            elif selected_category == categories[3]:
+                for item in ores_sell_view.children:
+                    view.add_item(item)
+                embed = discord.Embed(title="Sell Items - Ores", description=f"> Use the buttons below to sell the items you don't want", color=0x2b2d31)
+                embed.set_image(url="https://cdn.discordapp.com/attachments/1111567760745574401/1199747757611688037/shop_tools_00000.png?ex=65c3ab2b&is=65b1362b&hm=0183ca16615099687d5a69c0d54da1320914fce6ffeb8cddb4e0d0e3f4122f68&")
+                embed.set_thumbnail(url=ctx.guild.icon)
+                embed.set_footer(text="• Use the buttons below to sell an item (you can click an item again to sell another)", icon_url=ctx.author.avatar)
+            else:
+                embed = discord.Embed(title="Invalid category", description="Please select a valid category from the dropdown menu.")
+
+            await interaction.response.edit_message(embed=embed, view=view)
+
+        dropdown.callback = dropdown_callback
 
     @commands.command(description="See what items you have", extras="+inventory")
     @kanzen_only()
@@ -992,52 +2247,6 @@ class Economy(commands.Cog):
         inventory_embed.set_thumbnail(url=ctx.author.display_avatar)
         await ctx.send(embed=inventory_embed)
 
-    @commands.command(description="Sell your unwanted items", extras="+sell cookie (amount)")
-    @kanzen_only()
-    async def sell(self, ctx, item: str, quantity: int = 1):
-        shop_items = {
-            "Cookie": 10,
-            "Soda": 15,
-            "Pizza": 25,
-            "Laptop": 500,
-            "Gaming PC": 5000,
-            "Car": 100000,
-        }
-
-        item = item.capitalize()
-
-        if item not in shop_items:
-            return await ctx.send("Item not found in the shop.")
-
-        price = shop_items[item] * quantity
-        async with self.pool.acquire() as conn:
-            async with conn.cursor() as cursor:
-                await cursor.execute("SELECT quantity FROM inventory WHERE user = ? AND item = ?", (ctx.author.id, item))
-                row = await cursor.fetchone()
-
-        if not row or row[0] < quantity:
-            return await ctx.send("You don't have enough of this item to sell.")
-        sell_price = int(price * 0.7)
-        wallet_balance, _ = await self.get_balance(ctx.author.id)
-        new_wallet_balance, _ = await self.update_balance(ctx.author.id, sell_price, 0)
-        async with self.pool.acquire() as conn:
-            async with conn.cursor() as cursor:
-                new_quantity = row[0] - quantity
-                if new_quantity <= 0:
-                    await cursor.execute("DELETE FROM inventory WHERE user = ? AND item = ?", (ctx.author.id, item))
-                else:
-                    await cursor.execute("UPDATE inventory SET quantity = ? WHERE user = ? AND item = ?", (new_quantity, ctx.author.id, item))
-                await conn.commit()
-
-        embed = discord.Embed(title="Item Sold", description=f"You have successfully sold  **{quantity}** **{item}(s)** for <a:coin:1192540229727440896> **{price}**", color=0x2b2d31)
-        embed.add_field(name="Your new wallet balance", value=f"<a:coin:1192540229727440896> **{wallet_balance}**", inline=False)
-        embed.set_thumbnail(url=ctx.author.display_avatar)
-        await ctx.send(embed=embed)
-
-    async def update_job(self, user, job):
-        async with self.bot.pool.acquire() as conn:
-            await conn.execute("UPDATE bank SET job = $1 WHERE user = $2", job, user)
-
     async def get_job_role(self, user):
         async with self.bot.pool.acquire() as conn:
             async with conn.transaction():
@@ -1064,7 +2273,7 @@ class Economy(commands.Cog):
             amazon = "✅"
         else:
             amazon = ""
-        if role == "dog":
+        if role == "dogwalker":
             dog = "✅"
         else:
             dog = ""
@@ -1074,31 +2283,9 @@ class Economy(commands.Cog):
             mod = ""
         embed = discord.Embed(title="Kanzen Jobs", description=f"If a job is marked with ✅, that is the job you have selected.\n\n<:CF12:1188186414387568691> [**Mcdonalds worker**](https://instagram.com/kanzengrp) {mcdonalds}\n<:Empty:1188186122350759996> Flip Burgers and make fries\n<:Empty:1188186122350759996> Salary **5,354** per shift\n<:Empty:1188186122350759996> `+apply mcdonalds`\n\n<:CF12:1188186414387568691> [**Twitch Streamer**](https://instagram.com/kanzengrp) {twitch}\n<:Empty:1188186122350759996> Play video games on stream\n<:Empty:1188186122350759996> Salary **7,645** per shift\n<:Empty:1188186122350759996> `COMING SOON`\n\n<:CF12:1188186414387568691> [**Amazon Delivery Driver**](https://instagram.com/kanzengrp) {amazon}\n<:Empty:1188186122350759996> Deliver packages to customers\n<:Empty:1188186122350759996> Salary **2,435** per shift\n<:Empty:1188186122350759996> `+apply amazon`\n\n<:CF12:1188186414387568691> [**Dog Walker**](https://instagram.com/kanzengrp) {dog}\n<:Empty:1188186122350759996> Walk dogs for people in Kanzen's town\n<:Empty:1188186122350759996> Salary **1,766** per shift\n<:Empty:1188186122350759996> `+apply dogwalker`\n\n<:CF12:1188186414387568691> [**Discord Moderator**](https://instagram.com/kanzengrp) {mod}\n<:Empty:1188186122350759996> Deal with shitty people and Discord kittens\n<:Empty:1188186122350759996> Salary **6,454** per shift\n<:Empty:1188186122350759996> `COMING SOON`", color=0x2b2d31)
         embed.set_thumbnail(url=ctx.author.avatar)
-        embed.set_footer(text="• Do +apply (job title) to apply for a job", icon_url=ctx.guild.icon)
-        await ctx.reply(embed=embed)
-
-    @commands.group(invoke_without_command=True, description="Apply for one of our jobs", extras="+apply (job name)")
-    @kanzen_only()
-    async def apply(self, ctx: commands.Context):
-        await ctx.reply("Please do the command again and say what job role you'd like to apply for\nExample: `+apply`")
-
-    @apply.command(hidden=True)
-    @kanzen_only()
-    async def amazon(self, ctx):
-        await self.update_job(ctx.author.id, "amazon")
-        await ctx.reply("Thank you for applying for the position `amazon`\nTo do a shift please do `+work `")
-
-    @apply.command(hidden=True)
-    @kanzen_only()
-    async def mcdonalds(self, ctx):
-        await self.update_job(ctx.author.id, "mcdonalds")
-        await ctx.reply("Thank you for applying for the position `mcdonalds`\nTo do a shift please do `+work`")
-
-    @apply.command(hidden=True)
-    @kanzen_only()
-    async def dogwalker(self, ctx):
-        await self.update_job(ctx.author.id, "dogwalker")
-        await ctx.reply("Thank you for applying for the position `dogwalker`\nTo do a shift please do `+work`")
+        embed.set_footer(text="• To apply for a job click the buttons below!", icon_url=ctx.guild.icon)
+        view=jobpick(bot=self.bot)
+        await ctx.reply(embed=embed, view=view)
 
     @commands.command(description="Work a shift", extras="+work (twitch/dogwalker/mcdonalds/moderator)")
     @kanzen_only()
@@ -1242,6 +2429,150 @@ class Economy(commands.Cog):
                 await ctx.reply(f"You need to wait {minutes} minutes before working again!")
             else:
                 await ctx.reply(f"You need to wait {int(error.retry_after)} seconds before working again!")
+
+    @commands.command(description="Go hunting for animals and sell them for profit", extras="+hunt")
+    @commands.cooldown(1, 3 * 60 * 60, commands.BucketType.user)
+    async def hunt(self, ctx):
+        inventory = await self.check_inventory(ctx.author.id)
+        rifle = "<:rifle:1199405381630308572>Hunting rifle"
+
+        if rifle.lower() in (item.lower() for item in inventory):
+            animals = ['🫎moose', '🐇rabbit', '🦌deer', '🦃turkey']
+            animal = random.choice(animals)
+            item = f"{animal}"
+            quantity = 1
+            await self.buy_item(ctx.author.id, item, quantity)
+
+            await ctx.reply(f"You went hunting with a rifle and brought back a **{animal}**")
+        else:
+            await ctx.reply("Hey! You can't go hunting without a <:rifle:1199405381630308572> hunting rifle!\nGo to the shop to buy one.")
+
+    async def buy_item(self, user, item, quantity):
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute("SELECT quantity FROM inventory WHERE user = ? AND item = ?", (user, item))
+                row = await cursor.fetchone()
+
+        if row:
+            async with self.bot.pool.acquire() as conn:
+                async with conn.cursor() as cursor:
+                    new_quantity = row[0] + quantity
+                    await cursor.execute("UPDATE inventory SET quantity = ? WHERE user = ? AND item = ?", (new_quantity, user, item))
+                    await conn.commit()
+        else:
+            async with self.bot.pool.acquire() as conn:
+                async with conn.cursor() as cursor:
+                    await cursor.execute("INSERT INTO inventory (user, item, quantity) VALUES (?, ?, ?)", (user, item, quantity))
+                    await conn.commit()
+
+    @hunt.error
+    async def hunt_error(self, ctx: commands.Context, error: commands.CommandError):
+        if isinstance(error, commands.CommandOnCooldown):
+            if error.retry_after > 3600:
+                hours = int(error.retry_after // 3600)
+                minutes = int((error.retry_after % 3600) // 60)
+                await ctx.reply(f"You need to wait {hours} hours and {minutes} minutes before hunting again!")
+            elif error.retry_after > 60:
+                minutes = int(error.retry_after // 60)
+                await ctx.reply(f"You need to wait {minutes} minutes before hunting again!")
+            else:
+                await ctx.reply(f"You need to wait {int(error.retry_after)} seconds before hunting again!")
+
+    @commands.command(description="Go fishing for fish and sell them for profit", extras="+fish")
+    @commands.cooldown(1, 1 * 60 * 60, commands.BucketType.user)
+    async def fish(self, ctx):
+        inventory = await self.check_inventory(ctx.author.id)
+        rifle = "<:frod:1199405376320323664>fishing rod"
+
+        if rifle.lower() in (item.lower() for item in inventory):
+            animals = ['🦈shark', '🐡pufferfish', '🦑squid', '🐟regular fish', '🐠tropical fish', '🦀crab', '🦐shrimp', '🦞lobster']
+            animal = random.choice(animals)
+            item = f"{animal}"
+            quantity = 1
+            await self.buy_item(ctx.author.id, item, quantity)
+
+            await ctx.reply(f"You went fishing and caught a **{animal}**")
+        else:
+            await ctx.reply("Hey! You can't go fishing without a <:frod:1199405376320323664> fishing rod!\nGo to the shop to buy one.")
+
+    async def buy_item(self, user, item, quantity):
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute("SELECT quantity FROM inventory WHERE user = ? AND item = ?", (user, item))
+                row = await cursor.fetchone()
+
+        if row:
+            async with self.bot.pool.acquire() as conn:
+                async with conn.cursor() as cursor:
+                    new_quantity = row[0] + quantity
+                    await cursor.execute("UPDATE inventory SET quantity = ? WHERE user = ? AND item = ?", (new_quantity, user, item))
+                    await conn.commit()
+        else:
+            async with self.bot.pool.acquire() as conn:
+                async with conn.cursor() as cursor:
+                    await cursor.execute("INSERT INTO inventory (user, item, quantity) VALUES (?, ?, ?)", (user, item, quantity))
+                    await conn.commit()
+
+    @fish.error
+    async def fish_error(self, ctx: commands.Context, error: commands.CommandError):
+        if isinstance(error, commands.CommandOnCooldown):
+            if error.retry_after > 3600:
+                hours = int(error.retry_after // 3600)
+                minutes = int((error.retry_after % 3600) // 60)
+                await ctx.reply(f"You need to wait {hours} hours and {minutes} minutes before fishing again!")
+            elif error.retry_after > 60:
+                minutes = int(error.retry_after // 60)
+                await ctx.reply(f"You need to wait {minutes} minutes before fishing again!")
+            else:
+                await ctx.reply(f"You need to wait {int(error.retry_after)} seconds before fishing again!")
+
+    @commands.command(description="Go mining for min and sell them for profit", extras="+mine")
+    @commands.cooldown(1, 1 * 60 * 60, commands.BucketType.user)
+    async def mine(self, ctx):
+        inventory = await self.check_inventory(ctx.author.id)
+        rifle = "<:paxe:1199405372524478664>pickaxe"
+
+        if rifle.lower() in (item.lower() for item in inventory):
+            animals = ['<:coal16581529:1199747331143249940>coal', '<:Nether_Quartz_JE2_BE2:1199747191653269595>quartz', '<:Raw_Copper_JE3_BE2:1199747183759597570>copper', '<:Redstone_Dust_JE2_BE2:1199747189203808366>redstone', '<:Iron_Ingot_JE3_BE2:1199747187777749062>iron', '<:Gold_Ingot_JE4_BE2:1199747185529598012>gold', '<:Diamond_JE3_BE3:1199747180848758824>diamond', '<:Emerald_JE3_BE3:1199747182195130458>emerald']
+            animal = random.choice(animals)
+            item = f"{animal}"
+            quantity = 1
+            await self.buy_item(ctx.author.id, item, quantity)
+
+            await ctx.reply(f"You went mining and caught a **{animal}**")
+        else:
+            await ctx.reply("Hey! You can't go mining without a <:paxe:1199405372524478664> pickaxe!\nGo to the shop to buy one.")
+
+    async def buy_item(self, user, item, quantity):
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute("SELECT quantity FROM inventory WHERE user = ? AND item = ?", (user, item))
+                row = await cursor.fetchone()
+
+        if row:
+            async with self.bot.pool.acquire() as conn:
+                async with conn.cursor() as cursor:
+                    new_quantity = row[0] + quantity
+                    await cursor.execute("UPDATE inventory SET quantity = ? WHERE user = ? AND item = ?", (new_quantity, user, item))
+                    await conn.commit()
+        else:
+            async with self.bot.pool.acquire() as conn:
+                async with conn.cursor() as cursor:
+                    await cursor.execute("INSERT INTO inventory (user, item, quantity) VALUES (?, ?, ?)", (user, item, quantity))
+                    await conn.commit()
+
+    @mine.error
+    async def mine_error(self, ctx: commands.Context, error: commands.CommandError):
+        if isinstance(error, commands.CommandOnCooldown):
+            if error.retry_after > 3600:
+                hours = int(error.retry_after // 3600)
+                minutes = int((error.retry_after % 3600) // 60)
+                await ctx.reply(f"You need to wait {hours} hours and {minutes} minutes before mining again!")
+            elif error.retry_after > 60:
+                minutes = int(error.retry_after // 60)
+                await ctx.reply(f"You need to wait {minutes} minutes before mining again!")
+            else:
+                await ctx.reply(f"You need to wait {int(error.retry_after)} seconds before mining again!")
 
 async def setup(bot):
     await bot.add_cog(Economy(bot))
