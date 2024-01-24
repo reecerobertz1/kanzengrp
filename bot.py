@@ -22,7 +22,6 @@ extensions = {
     "cogs.misc",
     "cogs.moderation",
     "cogs.other",
-    "cogs.photocards",
     "cogs.tof",
     "cogs.welcandbye"
 }
@@ -69,7 +68,6 @@ class LalisaBot(commands.Bot):
             await conn.execute('''CREATE TABLE IF NOT EXISTS warning (member_id INTEGER, guild_id INTEGER ,reasons TEXT, warnings INTEGER)''')
             await conn.execute('''CREATE TABLE IF NOT EXISTS afk (user_id bigint PRIMARY KEY , reason text , time timestamp with time zone)''')
             await conn.execute('''CREATE TABLE IF NOT EXISTS staffrep(member_id INTEGER, helped INTEGER, count INTEGER, guild_id INTEGER)''')
-            await conn.execute('''CREATE TABLE IF NOT EXISTS photocards (user_id BIGINT, photocards TEXT)''')
             await conn.commit()
 
         if not hasattr(self, "tree"):
