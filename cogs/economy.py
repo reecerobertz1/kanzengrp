@@ -1666,7 +1666,7 @@ class Economy(commands.Cog):
             "Katy Perry",
             "Selena Gomez",
         ]
-        earnings = random.randint(1, 500000)
+        earnings = random.randint(1, 25000)
         celeb_lines = {
             "Taylor Swift": [
                 f"Taylor Swift hands you <a:coin:1192540229727440896> **{earnings}** with a smile.",
@@ -2096,7 +2096,7 @@ class Economy(commands.Cog):
             else:
                 await ctx.send(f"Sorry, you're on a cooldown from using this command. Try again in {remaining} seconds.")
 
-    @commands.command()
+    @commands.command(description="Visit the store to see what we have in stock", extras="+shop")
     @kanzen_only()
     async def shop(self, ctx, user: discord.Member = None):
         user = user or ctx.author
@@ -2142,7 +2142,7 @@ class Economy(commands.Cog):
 
         dropdown.callback = dropdown_callback
 
-    @commands.command()
+    @commands.command(description="Sell your useless/unwanted items", extras="+sell")
     @kanzen_only()
     async def sell(self, ctx, user: discord.Member = None):
         user = user or ctx.author
