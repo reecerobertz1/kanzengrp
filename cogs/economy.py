@@ -2174,7 +2174,7 @@ class Economy(commands.Cog):
             options=[discord.SelectOption(label=category, emoji=emoji, description=description) for category, emoji, description in zip(categories, emojis, descriptions)]
         )
 
-        tools = discord.Embed(title="Sell Items", description="> Want to sell some items? Well you came to the right place!\n> Use the dropdown menu below to select a category\n\n**__Categories:__**\n`⚒️` [**tools**](https://instagram.com/kanzengrp/)\n<:1166196258499727480:1188190249768210582> Includes all the tools you need!", color=0x2b2d31)
+        tools = discord.Embed(title="Sell Items", description="> Want to sell some items? Well you came to the right place!\n> Use the dropdown menu below to select a category\n\n**__Categories:__**\n`⚒️` [**tools**](https://instagram.com/kanzengrp/)\n<:1166196258499727480:1188190249768210582> Includes all the tools you need!\n`🦌` [**animals**](https://instagram.com/kanzengrp/)\n<:1166196258499727480:1188190249768210582> Sell the animals you got from hunting!\n`🐠` [**fish**](https://instagram.com/kanzengrp/)\n<:1166196258499727480:1188190249768210582> Sell the fish you got from fishing!\n`💎` [**minging ores**](https://instagram.com/kanzengrp/)\n<:1166196258499727480:1188190249768210582> Sell the ores you got from mining!", color=0x2b2d31)
         tools.set_thumbnail(url=ctx.guild.icon)
         view = discord.ui.View()
         view.add_item(dropdown)
@@ -2443,7 +2443,7 @@ class Economy(commands.Cog):
             quantity = 1
             await self.buy_item(ctx.author.id, item, quantity)
 
-            await ctx.reply(f"You went hunting with a rifle and brought back a **{animal}**")
+            await ctx.reply(f"You went hunting and brought back a **{animal}**")
         else:
             await ctx.reply("Hey! You can't go hunting without a <:rifle:1199405381630308572> hunting rifle!\nGo to the shop to buy one.")
 
@@ -2539,7 +2539,7 @@ class Economy(commands.Cog):
             quantity = 1
             await self.buy_item(ctx.author.id, item, quantity)
 
-            await ctx.reply(f"You went mining and caught a **{animal}**")
+            await ctx.reply(f"You went mining and found **{animal}**")
         else:
             await ctx.reply("Hey! You can't go mining without a <:paxe:1199405372524478664> pickaxe!\nGo to the shop to buy one.")
 
