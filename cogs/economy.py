@@ -1310,7 +1310,7 @@ class oresell(discord.ui.View):
         item = "<:Gold_Ingot_JE4_BE2:1199747185529598012>gold"
         quantity = 1
 
-        price = 1000000 * quantity
+        price = 100000 * quantity
 
         wallet_balance, _ = await self.get_balance(interaction.user.id)
         new_wallet_balance, _ = await self.update_balance(interaction.user.id, price, 0)
@@ -1332,7 +1332,7 @@ class oresell(discord.ui.View):
         item = "<:Diamond_JE3_BE3:1199747180848758824>diamond"
         quantity = 1
 
-        price = 2000000 * quantity
+        price = 200000 * quantity
 
         wallet_balance, _ = await self.get_balance(interaction.user.id)
         new_wallet_balance, _ = await self.update_balance(interaction.user.id, price, 0)
@@ -1354,7 +1354,7 @@ class oresell(discord.ui.View):
         item = "<:Emerald_JE3_BE3:1199747182195130458>emerald"
         quantity = 1
 
-        price = 2500000 * quantity
+        price = 250000 * quantity
 
         wallet_balance, _ = await self.get_balance(interaction.user.id)
         new_wallet_balance, _ = await self.update_balance(interaction.user.id, price, 0)
