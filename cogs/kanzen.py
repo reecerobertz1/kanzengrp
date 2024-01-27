@@ -93,10 +93,10 @@ class kanzen(commands.Cog):
     @commands.has_permissions(manage_guild=True)
     async def info(self, ctx):
         await ctx.message.delete()
-        embed = discord.Embed(title="Welcome!", description="> Thank you for joining Kanzengrp! We hope you have a good time!\n> If you ever need any help feel free to ping @lead or @staff\n> \n> To get the logos press the logos button below! And if you need\n> to send an inactivity message, you can click the inactive button!", color=0x2b2d31)
+        embed = discord.Embed(title="Welcome!", description="> Thank you for joining [Kanzengrp](https://instagram.com/kanzengrp/) We hope you have a good time!\n> If you ever need any help, ping <@&1121842279351590973> or <@&1135244903165722695>\n>\n> To get the logos press the logos button below!\n> And if you need to send an inactivity message, you can click\n> the inactive button!", color=0x2b2d31, url="https://instagram.com/kanzengrp/")
 
         embed.set_author(name="Kanzengrp", icon_url=ctx.guild.icon)
-        embed2 = discord.Embed(description='**Group Rules**\n<a:Arrow_1:1145603161701224528> always watermark the logos\n<a:Arrow_1:1145603161701224528> do not share the logos link outside the server!\n<a:Arrow_1:1145603161701224528> make sure you are following [@remqsi](https://www.instagram.com/remqsi/) + [@kanzengrp](https://www.instagram.com/kanzengrp/)\n<a:Arrow_1:1145603161701224528> if you do ever decide to leave the grp, or move accounts. please let lead or staff know!\n\n**Chat Rules**\n<a:Arrow_1:1145603161701224528> please be as active as possible!\n<a:Arrow_1:1145603161701224528> no using any slurs / words that can be offensive!\n<a:Arrow_1:1145603161701224528> please set your nickname as "your name | username"\n<a:Arrow_1:1145603161701224528> no impersonation as other editors\n<a:Arrow_1:1145603161701224528> no trash talking other editors and groups!\n<a:Arrow_1:1145603161701224528> any rules above broken, you will receive a warning/get kicked', color=0x141414)
+        embed2 = discord.Embed(description='`✿`︱**__Chat Rules__**\n<a:Arrow_1:1145603161701224528> always watermark the logos\n<a:Arrow_1:1145603161701224528> do not share the logos link outside the server!\n<a:Arrow_1:1145603161701224528> make sure you are following [@remqsi](https://instagram.com/kanzengrp/) + [@kanzengrp](https://instagram.com/kanzengrp/)\n<a:Arrow_1:1145603161701224528> if you do ever decide to leave the grp, or move accounts please let lead or staff know!\n\n`✿`︱**__Chat Rules__**\n<a:Arrow_1:1145603161701224528> please be as active as possible!\n<a:Arrow_1:1145603161701224528> no using any slurs / words that can be offensive!\n<a:Arrow_1:1145603161701224528> please set your nickname as "your name | username"\n<a:Arrow_1:1145603161701224528> no impersonation as other editors\n<a:Arrow_1:1145603161701224528> no trash talking other editors and groups!\n<a:Arrow_1:1145603161701224528> any rules above broken, you will receive a warning/get kicked', color=0x141414)
         embed2.set_image(url="https://cdn.discordapp.com/attachments/849724031723634688/1184214617791135764/banner_welc_00000.png?ex=658b28ce&is=6578b3ce&hm=ced47c472a4fa18f179bbb7d836ed5873001ccfebb47f3d79d0b5f51df743ff0&")
         view = infobuttons()
         ttbutton = discord.ui.Button(label=f"Tiktok", url=f"https://www.tiktok.com/@kanzengrp?_t=8hBEO47Fw37&_r=1", emoji="<:tiktok:1171995663890911273>")
@@ -106,7 +106,6 @@ class kanzen(commands.Cog):
         button_view.add_item(ttbutton)
         button_view.add_item(igbutton)
         button_view.add_item(card)
-        await ctx.send("https://cdn.discordapp.com/attachments/1184208577120960632/1190790957520666696/welc_banner_00000.png?ex=65a31580&is=6590a080&hm=7113e30bd8fa8da9982d2772e9a4848b47959263935497b5e0d15ddb82a7949a&")
         message = await ctx.send(embed=embed, view=button_view)
         await ctx.send(embed=embed2, view=view)
 
