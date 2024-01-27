@@ -22,6 +22,96 @@ gifs = {
     ]
 }
 
+class lottobuy(discord.ui.View):
+    def __init__(self, bot):
+        super().__init__(timeout=30.0)
+        self.value = None
+        self.bot = bot
+
+    @discord.ui.button(label="lotto ticket", emoji="<:lotto:1200784688533487806>", style=discord.ButtonStyle.blurple)
+    async def huntingrife(self, interaction: discord.Interaction, button: discord.ui.Button):
+        item = "<:lotto:1200784688533487806>lotto ticket"
+        quantity = 1
+
+        price = 300000 * quantity
+        wallet_balance, _ = await self.get_balance(interaction.user.id)
+        if wallet_balance < price:
+            return await interaction.response.send_message("You don't have enough coins to buy this item.", ephemeral=True)
+
+        new_wallet_balance, _ = await self.update_balance(interaction.user.id, -price, 0)
+        await self.buy_item(interaction.user.id, item, quantity)
+
+        await interaction.response.send_message(
+            f"Successfully bought <:lotto:1200784688533487806> lotto ticket for <a:coin:1192540229727440896> **300,000**",
+            ephemeral=True
+        )
+
+    async def buy_item(self, user, item, quantity):
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute("SELECT quantity FROM inventory WHERE user = ? AND item = ?", (user, item))
+                row = await cursor.fetchone()
+
+        if row:
+            async with self.bot.pool.acquire() as conn:
+                async with conn.cursor() as cursor:
+                    new_quantity = row[0] + quantity
+                    await cursor.execute("UPDATE inventory SET quantity = ? WHERE user = ? AND item = ?", (new_quantity, user, item))
+                    await conn.commit()
+        else:
+            async with self.bot.pool.acquire() as conn:
+                async with conn.cursor() as cursor:
+                    await cursor.execute("INSERT INTO inventory (user, item, quantity) VALUES (?, ?, ?)", (user, item, quantity))
+                    await conn.commit()
+
+    async def buy_item(self, user, item, quantity):
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute("SELECT quantity FROM inventory WHERE user = ? AND item = ?", (user, item))
+                row = await cursor.fetchone()
+
+        if row:
+            async with self.bot.pool.acquire() as conn:
+                async with conn.cursor() as cursor:
+                    new_quantity = row[0] + quantity
+                    await cursor.execute("UPDATE inventory SET quantity = ? WHERE user = ? AND item = ?", (new_quantity, user, item))
+                    await conn.commit()
+        else:
+            async with self.bot.pool.acquire() as conn:
+                async with conn.cursor() as cursor:
+                    await cursor.execute("INSERT INTO inventory (user, item, quantity) VALUES (?, ?, ?)", (user, item, quantity))
+                    await conn.commit()
+
+    async def create_account(self, user):
+        async with self.bot.pool.acquire() as conn:
+            await conn.execute("INSERT INTO bank (user, wallet, bank, maxbank) VALUES (?, 0, 100, 9999999999999999)", (user,))
+            await conn.commit()
+
+    async def get_balance(self, user):
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute("SELECT wallet, bank FROM bank WHERE user = ?", (user,))
+                row = await cursor.fetchone()
+                if row is None:
+                    await self.create_account(user)
+                    return 0, 0
+                return row[0], row[1]
+
+    async def update_balance(self, user, wallet_change=0, bank_change=0):
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute("SELECT wallet, bank FROM bank WHERE user = ?", (user,))
+                row = await cursor.fetchone()
+                if row is None:
+                    await self.create_account(user)
+                    await cursor.execute("SELECT wallet, bank FROM bank WHERE user = ?", (user,))
+                    row = await cursor.fetchone()
+                wallet_balance = row[0] + wallet_change
+                bank_balance = row[1] + bank_change
+                await cursor.execute("UPDATE bank SET wallet = ?, bank = ? WHERE user = ?", (wallet_balance, bank_balance, user))
+                await conn.commit()
+                return wallet_balance, bank_balance
+
 class tryagain(discord.ui.View):
     def __init__(self, bot):
         super().__init__(timeout=None)
@@ -2096,27 +2186,31 @@ class Economy(commands.Cog):
             else:
                 await ctx.send(f"Sorry, you're on a cooldown from using this command. Try again in {remaining} seconds.")
 
-    @commands.command(description="Visit the store to see what we have in stock", extras="+shop")
+    @commands.command()
     @kanzen_only()
     async def shop(self, ctx, user: discord.Member = None):
         user = user or ctx.author
         wallet_balance = await self.get_wallet_balance(user)
         categories = [
-            "tools"
+            "tools",
+            "lottery"
         ]
         emojis = [
-            "⚒️"
+            "⚒️",
+            "🎟️"
         ]
         descriptions = [
-            "Includes all the tools you need!"
+            "Includes all the tools you need!",
+            "Buy lottery tickets or scratch cards"
         ]
         tool_buy_view = toolbuy(bot=self.bot)
+        lotto_buy_view = lottobuy(bot=self.bot)
         dropdown = discord.ui.Select(
             placeholder="Select a category",
             options=[discord.SelectOption(label=category, emoji=emoji, description=description) for category, emoji, description in zip(categories, emojis, descriptions)]
         )
 
-        tools = discord.Embed(title="Hoshi's Shop", description="> Welcome to the shop, Here you can find all sorts of items to buy\n> Use the dropdown menu below to select a category\n\n**__Categories:__**\n`⚒️` [**tools**](https://instagram.com/kanzengrp/)\n<:1166196258499727480:1188190249768210582> Includes all the tools you need!", color=0x2b2d31)
+        tools = discord.Embed(title="Hoshi's Shop", description="> Welcome to the shop, Here you can find all sorts of items to buy\n> Use the dropdown menu below to select a category\n\n**__Categories:__**\n`⚒️` [**tools**](https://instagram.com/kanzengrp/)\n<:1166196258499727480:1188190249768210582> Includes all the tools you need!\n`🎟️` [**lottery**](https://instagram.com/kanzengrp/)\n<:1166196258499727480:1188190249768210582> Buy lottery tickets and scratch cards!", color=0x2b2d31)
         tools.set_thumbnail(url=ctx.guild.icon)
         view = discord.ui.View()
         view.add_item(dropdown)
@@ -2133,6 +2227,13 @@ class Economy(commands.Cog):
                     view.add_item(item)
                 embed = discord.Embed(title="Hoshi's Shop - Tools", description=f"> Use the buttons below to buy the items you want\n\n<a:coin:1192540229727440896> **{wallet_balance}**", color=0x2b2d31)
                 embed.set_image(url="https://cdn.discordapp.com/attachments/1111567760745574401/1199316979991982170/shop_tools_00000.png?ex=65c219fa&is=65afa4fa&hm=f6aeffe9777e3defafa21d14b62cd39924f75bc4e6a7caa51a6ef7095c6fa91f&")
+                embed.set_thumbnail(url=ctx.guild.icon)
+                embed.set_footer(text="• Use the buttons below to buy an item (clicking it twice will give you another)", icon_url=ctx.author.avatar)
+            elif selected_category == categories[1]:
+                for item in lotto_buy_view.children:
+                    view.add_item(item)
+                embed = discord.Embed(title="Hoshi's Shop - Lottery", description=f"> Use the buttons below to buy the items you want\n\n<a:coin:1192540229727440896> **{wallet_balance}**", color=0x2b2d31)
+                embed.set_image(url="https://cdn.discordapp.com/attachments/1111567760745574401/1200795101954326588/shop_tools_00000.png?ex=65c77a96&is=65b50596&hm=a600fc3f07511dbd6c89281bae4e9663ee0da4051301d7f260b77fd2f9b805b9&")
                 embed.set_thumbnail(url=ctx.guild.icon)
                 embed.set_footer(text="• Use the buttons below to buy an item (clicking it twice will give you another)", icon_url=ctx.author.avatar)
             else:
@@ -2573,6 +2674,62 @@ class Economy(commands.Cog):
                 await ctx.reply(f"You need to wait {minutes} minutes before mining again!")
             else:
                 await ctx.reply(f"You need to wait {int(error.retry_after)} seconds before mining again!")
+
+    @commands.group(invoke_without_command=True, hidden=True)
+    async def use(self, ctx):
+        embed = discord.Embed(title="+use command", description="This is a group command that allows you to use certain things from your inventory", color=0x2b2d31)
+        embed.add_field(name="+use lotto", value="use a lotto ticket to see if it's a winner")
+        await ctx.reply(embed=embed)
+
+    @use.command()
+    @commands.cooldown(1, 10 * 60, commands.BucketType.user)
+    async def lotto(self, ctx):
+        inventory = await self.check_inventory(ctx.author.id)
+        ticket = "<:lotto:1200784688533487806>lotto ticket"
+        numbers = ['11, 13, 24, 32, 40, 41']
+        rannumbers = random.choice(numbers)
+        earnings = random.randint(350000, 600000)
+        if ticket.lower() in (item.lower() for item in inventory):
+            winning_numbers = ['11, 13, 24, 32, 40, 41']
+            win = random.choice(winning_numbers)
+            if rannumbers == win:
+                response = f"🎉 Congrats! you won the lottery\nYou won <a:coin:1192540229727440896>**{earnings}**"
+                wallet_balance, _ = await self.update_balance(ctx.author.id, earnings, 0)
+                await self.sell_item(item=ticket, user=ctx.author.id, quantity=1)
+            else:
+                response = "Sorry but you did not win the lottery this time... Maybe next time"
+            await ctx.reply(f"The numbers were **{win}**\nYou had **{rannumbers}**\n{response}")
+        else:
+            await ctx.reply("I couldn't find a lotto ticket in your inventory")
+
+    async def sell_item(self, user, item, quantity):
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute("SELECT quantity FROM inventory WHERE user = ? AND item = ?", (user, item))
+                row = await cursor.fetchone()
+
+        if row:
+            async with self.bot.pool.acquire() as conn:
+                async with conn.cursor() as cursor:
+                    new_quantity = row[0] - quantity
+                    if new_quantity <= 0:
+                        await cursor.execute("DELETE FROM inventory WHERE user = ? AND item = ?", (user, item))
+                    else:
+                        await cursor.execute("UPDATE inventory SET quantity = ? WHERE user = ? AND item = ?", (new_quantity, user, item))
+                    await conn.commit()
+
+    @lotto.error
+    async def lotto_error(self, ctx: commands.Context, error: commands.CommandError):
+        if isinstance(error, commands.CommandOnCooldown):
+            if error.retry_after > 3600:
+                hours = int(error.retry_after // 3600)
+                minutes = int((error.retry_after % 3600) // 60)
+                await ctx.reply(f"You need to wait {hours} hours and {minutes} minutes before using this item again!")
+            elif error.retry_after > 60:
+                minutes = int(error.retry_after // 60)
+                await ctx.reply(f"You need to wait {minutes} minutes before using this item again!")
+            else:
+                await ctx.reply(f"You need to wait {int(error.retry_after)} seconds before using this item again!")
 
 async def setup(bot):
     await bot.add_cog(Economy(bot))
