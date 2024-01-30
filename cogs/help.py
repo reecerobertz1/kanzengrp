@@ -45,6 +45,8 @@ class Help(commands.Cog):
         embed.set_footer(text="• Use the dropdown menu to select a category", icon_url=self.bot.user.display_avatar.url)
         embed.set_thumbnail(url=ctx.guild.icon)
         view = View().add_item(HelpSelect(self.bot))
+        donatebutton = discord.ui.Button(label=f"Donate to support hoshi development", url=f"https://www.paypal.me/lovinasbutera", emoji="<:payapl:1201895220065865798>")
+        view.add_item(donatebutton)
         await ctx.reply(embed=embed, view=view)
 
 async def setup(bot):
