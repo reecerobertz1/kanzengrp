@@ -2588,5 +2588,28 @@ class Levels(commands.Cog):
 
         await ctx.send(f"Member with ID {member_id} has been removed from the database.")
 
+    @commands.command(hidden=True)
+    @levels_is_activated()
+    async def rankcolor(self, ctx: commands.Context, color: str):
+        """
+        change the color of your progressbar
+        
+        Parameters
+        ----------
+        color: str
+            the color you want for your progress bar
+        """
+        match = re.search(self.regex_hex, color)
+        if match:
+            await self.set_rank_color(ctx.author.id, ctx.guild.id, color)
+            embed = discord.Embed(
+                title='changed your bar color!',
+                description=f'your new bar color is `{color}`',
+                color=0x2B2D31
+            )
+            await ctx.reply(embed=embed)
+        else:
+            await ctx.reply(f"`{color}` is not a valid hex color")
+
 async def setup(bot):
     await bot.add_cog(Levels(bot))
