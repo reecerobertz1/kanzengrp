@@ -13,12 +13,25 @@ class infobuttons(discord.ui.View):
         super().__init__(timeout=None)
         self.value = None
 
-    @discord.ui.button(label="Logos")
+    @discord.ui.button(label="Kanzen Logos", emoji="<:K_:1185337075541741668>")
     async def logos(self, interaction: discord.Interaction, button: discord.ui.Button):
-        view = getlogos()
+        view = kanzenlogos()
         logos = discord.Embed(title="<a:kanzenflower:1128154723262943282> Kanzen Logos!", description="<a:Arrow_1:1145603161701224528> Please make sure you watermark the logos!\n<a:Arrow_1:1145603161701224528> Use the watermark on every edit\n<a:Arrow_1:1145603161701224528> Do not share this link with anyone outside the group!", color=0x2b2d31)
         logos.set_footer(text="Made us some logos? send them to Reece!")
         logos.set_image(url="https://cdn.discordapp.com/attachments/849724031723634688/1145605654539669565/new_banner_00000.png")
+        await interaction.user.send(embed=logos, view=view)
+        channel = interaction.client.get_channel(1122627075682078720)
+        log = discord.Embed(title="Logo button has been used!", description=f"`{interaction.user.display_name}` has used the logos button", color=0x2b2d31)
+        log.set_footer(text=f"id: {interaction.user.id}", icon_url=interaction.user.display_avatar)
+        await channel.send(embed=log)
+        await interaction.response.send_message(f'I have sent you the logos! Check your DMs', ephemeral=True)
+
+    @discord.ui.button(label="Daegu Logos", emoji="<:members:1206420076731830322>")
+    async def logos(self, interaction: discord.Interaction, button: discord.ui.Button):
+        view = daegulogos()
+        logos = discord.Embed(title="<:members:1206420076731830322> Daegu Logos!", description="<a:Arrow_1:1145603161701224528> Please make sure you watermark the logos!\n<a:Arrow_1:1145603161701224528> Use the watermark on every edit\n<a:Arrow_1:1145603161701224528> Do not share this link with anyone outside the group!", color=0x2b2d31)
+        logos.set_footer(text="Enjoy the Daegu logos!")
+        logos.set_image(url="https://cdn.discordapp.com/attachments/1184208577120960632/1206421686040141874/daegu_banner_00002.png?ex=65dbf2c0&is=65c97dc0&hm=bdf3f3f1c3eb76d5eaf553423de00bfb9860bb35a96a7aae9046d156a51e5faf&")
         await interaction.user.send(embed=logos, view=view)
         channel = interaction.client.get_channel(1122627075682078720)
         log = discord.Embed(title="Logo button has been used!", description=f"`{interaction.user.display_name}` has used the logos button", color=0x2b2d31)
@@ -49,7 +62,7 @@ class infobuttons(discord.ui.View):
     async def inactive(self, interaction: discord.Interaction, button: discord.Button):
         await interaction.response.send_modal(ia())
 
-class getlogos(discord.ui.View):
+class kanzenlogos(discord.ui.View):
     def __init__ (self):
         super().__init__(timeout=None)
         self.value = None
@@ -58,6 +71,15 @@ class getlogos(discord.ui.View):
     async def logos(self, interaction: discord.Interaction, button: discord.Button):
         await interaction.response.send_message("Here are the logos!\n[click here](<https://mega.nz/folder/to0R2DBZ#CIRQ7BwDCqPc2jLurLRSWQ>)")
         await interaction.followup.send("#𝗞𝗮𝗻𝘇𝗲𝗻𝗴𝗿𝗽")
+
+class daegulogos(discord.ui.View):
+    def __init__ (self):
+        super().__init__(timeout=None)
+        self.value = None
+
+    @discord.ui.button(label="Get logos!")
+    async def logos(self, interaction: discord.Interaction, button: discord.Button):
+        await interaction.response.send_message("Here are the logos!\n[click here](<https://mega.nz/folder/4QZWTBjR#ZmyJUH2HHj8lFrwkY1BrPw>)")
 
 class ia(ui.Modal, title='Inactivity Message'):
     instagram = ui.TextInput(label='Instagram username', placeholder="Enter your Instagram username here...", style=discord.TextStyle.short)
