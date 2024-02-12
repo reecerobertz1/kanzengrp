@@ -8,7 +8,12 @@ from discord import ui
 from discord.utils import get
 from discord.ui import View, Select
 import asqlite
+from typing import TypedDict, List
 
+class RepRow(TypedDict):
+    count: int
+    helped: str
+    
 class ga(discord.ui.View):
     def __init__(self):
         super().__init__(timeout=None)
@@ -362,13 +367,31 @@ class Moderation(commands.Cog):
         except asyncio.TimeoutError:
             await message.edit(content="~~are you sure you want to reset the ranks? it's irreversible!~~\nreset has been cancelled!")
 
-    @commands.command(hidden=True)
-    async def showrep(self, ctx, member: discord.Member, *, helped=""):
-        rep = await self.get_rep(member.id, ctx.guild.id, helped)
-        embed = discord.Embed(title=f"Rep for {member.display_name}", color=0x2b2d31)
-        embed.add_field(name="Amount of rep:", value=rep[0], inline=False)
-        embed.add_field(name="Last helped with:", value=rep[1], inline=False)
-        await ctx.reply(embed=embed)
+    async def get_leaderboard_stats(self) -> List[RepRow]:
+        query = '''SELECT * FROM staffrep ORDER BY count DESC'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query)
+                rows = await cursor.fetchall()
+        return rows
+
+    @app_commands.command(description="See the staff rep leaderboard")
+    async def staffrep_leaderboard(self, interaction: discord.Interaction):
+        rows = await self.get_leaderboard_stats()
+        
+        if not rows:
+            await interaction.response.send_message("The leaderboard is empty.")
+            return
+        
+        description = ""
+        
+        for i, row in enumerate(rows, start=1):
+            description += f"**{i}.** <@!{row['member_id']}> - {row['count']} rep\n**last helped with:** {row['helped']}\n\n"
+        
+        embed = discord.Embed(title="Staff Rep Leaderboard", description=description, color=0x2b2d31)
+        embed.set_thumbnail(url=interaction.guild.icon.url)
+        
+        await interaction.response.send_message(embed=embed)
 
 async def setup(bot):
     await bot.add_cog(Moderation(bot))
