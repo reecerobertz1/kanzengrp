@@ -14,7 +14,7 @@ class infobuttons(discord.ui.View):
         self.value = None
 
     @discord.ui.button(label="Kanzen Logos", emoji="<:K_:1185337075541741668>")
-    async def logos(self, interaction: discord.Interaction, button: discord.ui.Button):
+    async def klogos(self, interaction: discord.Interaction, button: discord.ui.Button):
         view = kanzenlogos()
         logos = discord.Embed(title="<a:kanzenflower:1128154723262943282> Kanzen Logos!", description="<a:Arrow_1:1145603161701224528> Please make sure you watermark the logos!\n<a:Arrow_1:1145603161701224528> Use the watermark on every edit\n<a:Arrow_1:1145603161701224528> Do not share this link with anyone outside the group!", color=0x2b2d31)
         logos.set_footer(text="Made us some logos? send them to Reece!")
@@ -27,7 +27,7 @@ class infobuttons(discord.ui.View):
         await interaction.response.send_message(f'I have sent you the logos! Check your DMs', ephemeral=True)
 
     @discord.ui.button(label="Daegu Logos", emoji="<:members:1206420076731830322>")
-    async def logos(self, interaction: discord.Interaction, button: discord.ui.Button):
+    async def dlogos(self, interaction: discord.Interaction, button: discord.ui.Button):
         view = daegulogos()
         logos = discord.Embed(title="<:members:1206420076731830322> Daegu Logos!", description="<a:Arrow_1:1145603161701224528> Please make sure you watermark the logos!\n<a:Arrow_1:1145603161701224528> Use the watermark on every edit\n<a:Arrow_1:1145603161701224528> Do not share this link with anyone outside the group!", color=0x2b2d31)
         logos.set_footer(text="Enjoy the Daegu logos!")
