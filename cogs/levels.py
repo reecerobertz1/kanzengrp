@@ -816,7 +816,7 @@ class levels(commands.Cog):
         return rows
     
     async def set_rank_color(self, member_id: int, guild_id: int, color: str) -> None:
-        query = '''UPDATE levels SET color = ? WHERE member_id = ? AND guild_id = ?'''
+        query = '''UPDATE levels SET bar_color = ? WHERE member_id = ? AND guild_id = ?'''
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cursor:
                 await cursor.execute(query, color, member_id, guild_id)
