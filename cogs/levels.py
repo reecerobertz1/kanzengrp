@@ -16,7 +16,7 @@ class LevelRow(TypedDict):
     member_id: int
     xp: int
     messages: int
-    color: str
+    bar_color: str
     image: str
 
 class levels(commands.Cog):
@@ -624,7 +624,7 @@ class levels(commands.Cog):
         bg_frosted = Image.composite(bg_blurred, Image.new("RGBA", bg.size, "white"), inverted_mask)
         bg_frosted.putalpha(inverted_mask)
         bg_rgb = bg.convert("RGB")
-        bar, mask = self._make_progress_bar(percentage, levels['color'])
+        bar, mask = self._make_progress_bar(percentage, levels['bar_color'])
         avatar_paste, circle = self.get_avatar(avatar)
         card.paste(bg_rgb, (0, 0))
         card.paste(bg_frosted, (0, 0), bg_frosted)
@@ -754,13 +754,13 @@ class levels(commands.Cog):
         shadow_draw.text((12, 327), name, "#242424", font=Kotohogi3)
         shadow_blurred = shadow_text.filter(ImageFilter.GaussianBlur(radius=0.5))
         card.paste(shadow_blurred, (0, 0), shadow_blurred)
-        draw.text((10, 325), name, fill=levels['color'], font=Kotohogi3)
+        draw.text((10, 325), name, fill=levels['bar_color'], font=Kotohogi3)
         draw.text((275, 620), f'{xp_have}/{xp_need}', '#ffffff', font=Kotohogi2)
         draw.text((76, 115), f'LVL','#ffffff', font=Kotohogi4)
         draw.text((185, 680), f'Messages', '#ffffff', font=Kotohogi3)
-        draw.text((70, 680), f'#{str(rank)}', fill=levels['color'], font=Kotohogi3)
-        draw.text((89, 165), f'{level}', fill=levels['color'], font=Kotohogi4)
-        draw.text((365, 680), f'{levels["messages"]}', fill=levels['color'], font=Kotohogi3)
+        draw.text((70, 680), f'#{str(rank)}', fill=levels['bar_color'], font=Kotohogi3)
+        draw.text((89, 165), f'{level}', fill=levels['bar_color'], font=Kotohogi4)
+        draw.text((365, 680), f'{levels["messages"]}', fill=levels['bar_color'], font=Kotohogi3)
         buffer = BytesIO()
         card.save(buffer, 'png')
         buffer.seek(0)
