@@ -25,7 +25,7 @@ class levels(commands.Cog):
         self.bot = bot
         self.status_holder = {0: "disabled", 1: "enabled"}
         self.pool = None
-        self.channels = [1184208577120960632]
+        self.channels = [1125053619893440653, 1165791833222291576, 1181419043153002546, 1135247559431032833, 1184208577120960632, 1198665603897118720]
         self.guilds = [1121841073673736215]
         self.cd_mapping = commands.CooldownMapping.from_cooldown(1, 60, commands.BucketType.user)
 
