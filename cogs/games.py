@@ -5,6 +5,7 @@ import discord
 from discord.ext import commands
 from discord.ui import View, Button
 from typing import List
+from discord import app_commands
 
 class TicTacToeButton(discord.ui.Button['TicTacToe']):
     def __init__(self, x: int, y: int, player1, player2):
@@ -192,7 +193,7 @@ class Games(commands.Cog):
 
         await ctx.send(embed=discord.Embed(title="Stats", description=f" {p1.member.mention}\n**HP:** `{p1.hp}`\n**Defense**: `{p1.defense}`\n \n {p2.member.mention}\n**HP**: `{p2.hp}`\n**Defense**: `{p2.defense}`", color=0x2b2d31))
 
-    @commands.hybrid_command(aliases=["battle"], description="Fight other members to the death", extras="+fight @member : alias +battle")
+    @commands.hybrid_command(description="Fight other members to the death", extras="+fight @member : alias +battle")
     async def fight(self, ctx, opponent: discord.Member):
         if ctx.channel.id in self.occupied:
             await ctx.reply("This battlefield is occupied")
@@ -251,26 +252,23 @@ class Games(commands.Cog):
         if case == 6:
             await ctx.send(f'RIP {loser.member.mention} you will not be missed....  because {winner.member.mention} has won the battle')
 
-    @commands.command(aliases=['ttt'], description="Starts a tic-tac-toe game with another member.", extras="+tictactoe @member : alias +ttt")
-    async def tictactoe(self, ctx: commands.Context):
-        mention = ctx.message.mentions
+    @app_commands.command(description="Starts a tic-tac-toe game with another member.", extras="+tictactoe @member : alias +ttt")
+    async def tictactoe(self, interaction: discord.Interaction, member: discord.Member):
+        member = member
 
-        if not mention:
-            await ctx.reply("You need to mention someone before playing.")
-            return
-        elif len(mention) > 1:
-            await ctx.reply("Please mention only one member to play with.")
+        if member == None:
+            await interaction.response.send_message("You need to mention someone before playing.", ephemeral=True)
             return
 
-        player1 = ctx.author
-        player2 = mention[0]
+        player1 = interaction.user
+        player2 = member
 
         if player2.bot:
-            await ctx.reply("You cannot play with a bot.")
+            await interaction.response.send_message("You cannot play with a bot.", ephemeral=True)
             return
 
         embed = discord.Embed(title="🎮 TicTacToe Game", description=f"{player1.mention} vs {player2.mention}", color=0x2b2d31)
-        message = await ctx.send(embed=embed, view=TicTacToe(player1, player2))
+        message = await interaction.response.send_message(embed=embed, view=TicTacToe(player1, player2))
 
 async def setup(bot):
     await bot.add_cog(Games(bot))
