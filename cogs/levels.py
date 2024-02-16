@@ -46,7 +46,7 @@ class levels(commands.Cog):
             await self.bot.pool.release(conn)
 
     async def add_member(self, member_id: int, guild_id: int, xp = 5) -> None:
-        query = '''INSERT INTO levels (member_id, guild_id, xp , messages, color) VALUES (?, ?, ?, ?, ?)'''
+        query = '''INSERT INTO levels (member_id, guild_id, xp , messages, bar_color) VALUES (?, ?, ?, ?, ?)'''
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cursor:
                 await cursor.execute(query, (member_id, guild_id, xp, 1, '#793e79'))
