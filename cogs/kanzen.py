@@ -13,7 +13,7 @@ class infobuttons(discord.ui.View):
         super().__init__(timeout=None)
         self.value = None
 
-    @discord.ui.button(label="Kanzen Logos", emoji="<:K_:1185337075541741668>")
+    @discord.ui.button(label="Logos")
     async def klogos(self, interaction: discord.Interaction, button: discord.ui.Button):
         view = kanzenlogos()
         logos = discord.Embed(title="<a:kanzenflower:1128154723262943282> Kanzen Logos!", description="<a:Arrow_1:1145603161701224528> Please make sure you watermark the logos!\n<a:Arrow_1:1145603161701224528> Use the watermark on every edit\n<a:Arrow_1:1145603161701224528> Do not share this link with anyone outside the group!", color=0x2b2d31)
@@ -22,19 +22,6 @@ class infobuttons(discord.ui.View):
         await interaction.user.send(embed=logos, view=view)
         channel = interaction.client.get_channel(1122627075682078720)
         log = discord.Embed(title="Logo button has been used!", description=f"`{interaction.user.display_name}` has used the **kanzen** logos button", color=0x2b2d31)
-        log.set_footer(text=f"id: {interaction.user.id}", icon_url=interaction.user.display_avatar)
-        await channel.send(embed=log)
-        await interaction.response.send_message(f'I have sent you the logos! Check your DMs', ephemeral=True)
-
-    @discord.ui.button(label="Daegu Logos", emoji="<:members:1206420076731830322>")
-    async def dlogos(self, interaction: discord.Interaction, button: discord.ui.Button):
-        view = daegulogos()
-        logos = discord.Embed(title="<:members:1206420076731830322> Daegu Logos!", description="<a:Arrow_1:1145603161701224528> Please make sure you watermark the logos!\n<a:Arrow_1:1145603161701224528> Use the watermark on every edit\n<a:Arrow_1:1145603161701224528> Do not share this link with anyone outside the group!", color=0x2b2d31)
-        logos.set_footer(text="Enjoy the Daegu logos!")
-        logos.set_image(url="https://cdn.discordapp.com/attachments/1184208577120960632/1206421686040141874/daegu_banner_00002.png?ex=65dbf2c0&is=65c97dc0&hm=bdf3f3f1c3eb76d5eaf553423de00bfb9860bb35a96a7aae9046d156a51e5faf&")
-        await interaction.user.send(embed=logos, view=view)
-        channel = interaction.client.get_channel(1122627075682078720)
-        log = discord.Embed(title="Logo button has been used!", description=f"`{interaction.user.display_name}` has used the **daegu** logos button", color=0x2b2d31)
         log.set_footer(text=f"id: {interaction.user.id}", icon_url=interaction.user.display_avatar)
         await channel.send(embed=log)
         await interaction.response.send_message(f'I have sent you the logos! Check your DMs', ephemeral=True)
@@ -115,20 +102,12 @@ class kanzen(commands.Cog):
     @commands.has_permissions(manage_guild=True)
     async def info(self, ctx):
         await ctx.message.delete()
-        embed = discord.Embed(title="Welcome!", description="> Thank you for joining [Kanzengrp](https://instagram.com/kanzengrp/) We hope you have a good time!\n> If you ever need any help, ping <@&1121842279351590973> or <@&1135244903165722695>\n> \n> To get the logos press the logos button below!\n> And if you need to send an inactivity message, you can click\n> the inactive button!", color=0x2b2d31, url="https://instagram.com/kanzengrp/")
-
+        embed = discord.Embed(description="### **[Welcome*!*](https://instagram.com/kanzengrp/)**\nThank you for joining. We hope you enjoy your time here!\n<:1166196254141861979:1208228728472076308> Make sure to be following [@kanzengrp](https://instagram.com/kanzengrp/) + [@remqsi](https://instagram.com/remqsi/)\n<:1166196254141861979:1208228728472076308> If you ever decide to leave kanzengrp please DM and let us know\n<:1166196254141861979:1208228728472076308> Always watermark the logos\n<:1166196254141861979:1208228728472076308> Do not share the logos link outside the server!\n<:1166196258499727480:1208228386842087554> And please remain as active as possible!")
         embed.set_author(name="Kanzengrp", icon_url=ctx.guild.icon)
-        embed2 = discord.Embed(description='`✿`︱**__Group Rules__**\n<a:Arrow_1:1145603161701224528> always watermark the logos\n<a:Arrow_1:1145603161701224528> do not share the logos link outside the server!\n<a:Arrow_1:1145603161701224528> make sure you are following [@remqsi](https://instagram.com/kanzengrp/) + [@kanzengrp](https://instagram.com/kanzengrp/)\n<a:Arrow_1:1145603161701224528> if you do ever decide to leave the grp, or move accounts please let lead or staff know!\n\n`✿`︱**__Chat Rules__**\n<a:Arrow_1:1145603161701224528> please be as active as possible!\n<a:Arrow_1:1145603161701224528> no using any slurs / words that can be offensive!\n<a:Arrow_1:1145603161701224528> make sure to have your age roles from <id:customize>!\n<a:Arrow_1:1145603161701224528> please do not use bots outside of spam channels!\n<a:Arrow_1:1145603161701224528> please set your nickname as "your name | username"\n<a:Arrow_1:1145603161701224528> no impersonation as other editors\n<a:Arrow_1:1145603161701224528> no trash talking other editors and groups!\n<a:Arrow_1:1145603161701224528> any rules above broken, you will receive a warning/get kicked', color=0xe7e3e2)
-        embed2.set_image(url="https://cdn.discordapp.com/attachments/1111567760745574401/1200841499781369967/banner_welc_00000___00000.png?ex=65c7a5cc&is=65b530cc&hm=7c6190b7e08e5b8d9cec02f34612f381c647b1045fd9062c9b946339671fe4a2&")
+        embed2 = discord.Embed(description='### | `✿` __**Chat Rules**__\n<a:Arrow_1:1145603161701224528> No using any slurs / words that can be offensive (instant ban)\n<a:Arrow_1:1145603161701224528> Make sure to have your age roles from ⁠<id:customize>\n<a:Arrow_1:1145603161701224528> Please do not use bots outside of spam channels!\n<a:Arrow_1:1145603161701224528> Please set your nickname as "your name | username"\n<a:Arrow_1:1145603161701224528> No impersonation as other editors\n<a:Arrow_1:1145603161701224528> No trash talking other editors and groups!\n<a:Arrow_1:1145603161701224528> Any rules above broken, you will receive a warning/get kicked', color=0xe7e3e2)
+        embed2.set_image(url="https://cdn.discordapp.com/attachments/1184208577120960632/1208238170446241842/welc_banner_00000.png?ex=65e28e7b&is=65d0197b&hm=6b49f32da0368e84e7c14c89cd0313f831723f44289064a1aff6b831843ec078&")
         view = infobuttons()
-        ttbutton = discord.ui.Button(label=f"Tiktok", url=f"https://www.tiktok.com/@kanzengrp?_t=8hBEO47Fw37&_r=1", emoji="<:tiktok:1171995663890911273>")
-        igbutton = discord.ui.Button(label=f"Instagram", url=f"https://www.instagram.com/kanzengrp/", emoji="<:insta:1171995666382336040>")
-        card = discord.ui.Button(label=f"Carrd", url=f"https://kanzengrp.carrd.co", emoji="<:carrd:1173159791988838430>")
-        button_view = discord.ui.View()
-        button_view.add_item(ttbutton)
-        button_view.add_item(igbutton)
-        button_view.add_item(card)
-        message = await ctx.send(embed=embed, view=button_view)
+        message = await ctx.send(embed=embed)
         await ctx.send(embed=embed2, view=view)
 
     def is_booster():
