@@ -21,7 +21,7 @@ class infobuttons(discord.ui.View):
         logos.set_image(url="https://cdn.discordapp.com/attachments/849724031723634688/1145605654539669565/new_banner_00000.png")
         await interaction.user.send(embed=logos, view=view)
         channel = interaction.client.get_channel(1122627075682078720)
-        log = discord.Embed(title="Logo button has been used!", description=f"`{interaction.user.display_name}` has used the **kanzen** logos button", color=0x2b2d31)
+        log = discord.Embed(title="Logo button has been used!", description=f"`{interaction.user.display_name}` has used the logos button", color=0x2b2d31)
         log.set_footer(text=f"id: {interaction.user.id}", icon_url=interaction.user.display_avatar)
         await channel.send(embed=log)
         await interaction.response.send_message(f'I have sent you the logos! Check your DMs', ephemeral=True)
