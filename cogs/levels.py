@@ -561,7 +561,7 @@ class levels(commands.Cog):
                 xp_progress_need = self.human_format(xp_progress_need)
 
             else:
-                xp_progress_need = f"{xp_progress_need} XP"
+                xp_progress_need = f"{xp_progress_need}"
 
             if xp_progress_have > 999:
                 xp_progress_have = self.human_format(xp_progress_have)
