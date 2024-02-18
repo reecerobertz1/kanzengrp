@@ -207,9 +207,9 @@ class other(commands.Cog):
             else:
                 await warning.send(embed=warningembed)
         if "MessageType.premium_guild" in str(message.type):
-            embed = discord.Embed(title=f"Thank you for boosting! {message.author.display_name}!", description="<a:Arrow_1:1145603161701224528> dm staff or lead for your custom role\n<a:Arrow_1:1145603161701224528> go into [#booster-perks](https://discord.com/channels/1121841073673736215/1164318431462563951) to claim the perks\n<a:Arrow_1:1145603161701224528> we really appreciate your support!", color=0x2b2d31)
+            embed = discord.Embed(title=f"KANZEN BOOST", description="<:CF10:1208857270109077614> Thank you for boosting reeceroberts\n<:CF10:1208857270109077614> Do `+perks` to claim our booster perks\n<:CF10:1208857270109077614> Dm staff or lead to get your custom role", color=0x2b2d31)
             embed.set_author(name=message.author.display_name, icon_url=message.author.display_avatar)
-            embed.set_footer(text=f"We are up to {message.guild.premium_subscription_count} boosts!")
+            embed.set_footer(text=f"We are now tat {message.guild.premium_subscription_count} boosts! thank you for the support")
             if message.guild.id == 1121841073673736215:
                 await message.channel.send(f"{message.author.mention}", embed=embed)
             else:
