@@ -13,7 +13,7 @@ class Paginator(ui.View):
 
         super().__init__(timeout=90)
 
-    @ui.button(emoji='<')
+    @ui.button(label='<')
     async def previous_embed(self, interaction: Interaction, _):
         self._queue.rotate(1)
         if self._index == 1:
@@ -24,7 +24,7 @@ class Paginator(ui.View):
         embed.set_footer(text=f"Page {self._index} / {self._len}")
         await interaction.response.edit_message(embed=embed)
 
-    @ui.button(emoji='>')
+    @ui.button(label='>')
     async def next_embed(self, interaction: Interaction, _):
         self._queue.rotate(-1)
         if self._index == self._len:
