@@ -393,7 +393,7 @@ class Moderation(commands.Cog):
         
         await interaction.response.send_message(embed=embed)
 
-    async def get_rep_count(self, member_id):
+    async def get_rep_count(self, member_id, guild_id, helped):
         async with self.pool.acquire() as conn:
             async with conn.cursor() as cursor:
                 await cursor.execute("SELECT count FROM staffrep WHERE member_id = ?", (member_id,))
