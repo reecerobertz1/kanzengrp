@@ -396,7 +396,7 @@ class Moderation(commands.Cog):
     async def get_rep_count(self, member_id, guild_id, helped):
         async with self.pool.acquire() as conn:
             async with conn.cursor() as cursor:
-                await cursor.execute("SELECT count FROM staffrep WHERE member_id = ?", (member_id,))
+                await cursor.execute("SELECT count FROM staffrep WHERE member_id = ?", (member_id, guild_id, helped))
                 row = await cursor.fetchone()
                 if row is None:
                     await self.add_rep(member_id)
@@ -405,9 +405,8 @@ class Moderation(commands.Cog):
 
     @commands.hybrid_command(name="addrep", description="add rep to a staff member for helping")
     async def addrep(self, ctx,member: discord.Member, *, helped):
-        rep = await self.get_rep_count(member.id)
         await self.update_rep(member.id, ctx.guild.id, helped)
-        embed = discord.Embed(title="You got Staff Rep!", description=f"{ctx.author.name} has given you **1 rep** for helping them!\n\nYou got rep for {helped}\n\nYou now have **{rep} rep**! Well done", color=0x2b2d31)
+        embed = discord.Embed(title="You got Staff Rep!", description=f"{ctx.author.name} has given you **1 rep** for helping them!\n\nYou got rep for {helped}", color=0x2b2d31)
         embed.set_thumbnail(url=ctx.guild.icon)
         await ctx.reply(f"Successfully added rep for {member.display_name}\n**{helped}**")
         await member.send(embed=embed)
