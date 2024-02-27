@@ -164,7 +164,7 @@ class other(commands.Cog):
         if message.content.lower() == "nani":
             await message.channel.send("i woke up in a new 🔥bugatti🔥")
         if message.content.lower() == "spotify ads":
-            await message.channel.send("follow 0470pm for free spotify premium")
+            await message.channel.send("follow 94zwld for free spotify premium")
         if message.content.lower() == "jess":
             await message.channel.send("https://media0.giphy.com/media/DWPCBPJPBLRsSG0LI2/giphy.gif?cid=ad7b17ba5hahdaf6h1wgccgl9loldyoowq0u3d0c68fisadd&ep=v1_gifs_search&rid=giphy.gif&ct=g")
         if message.content.lower() == "kira":
@@ -172,7 +172,7 @@ class other(commands.Cog):
         if message.content.lower() == "kelly":
             await message.channel.send("Jungkook is so jungkook and no one will ever jungkook like jungkook <:boobs:1142888878999613520>")
         if message.content.lower() == "kio":
-            await message.channel.send("im working hard and also hard at work for you baby 😘 😏 <a:twerk:1149342332634804314>")
+            await message.channel.send("Hey it’s kio, just checking in! have you eaten yet?")
         if message.content.lower() == "marie":
             await message.channel.send("peepee and kaka in peepeekakaland")
         blocked_words = ["nigga", "n i g g a", "niga", "n i g a", "n1ga", "n 1 g a", "n1gger", "nigger", "n1ger", "n i g e r", "n i g a", "n 1 g a", "n 1 g e r", "retard", "r e t a r d", "r3tard", "r 3 t a r d", "batty boy", "bender", "ching chong", "chink", "chinkie", "chinky", "cotton picker", "cracker", "cripple", "curry muncher", "dyke", "eskimo", "fag", "faggot", "gimp", "golliwogg", "nazi","nigglet", "fagg0t", "niglet", "osama bin laden", "retarted", "shemale", "tranie", "trannie", "tranny", "trany", "yellow people"]
