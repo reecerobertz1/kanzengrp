@@ -13,7 +13,38 @@ from typing import TypedDict, List
 class RepRow(TypedDict):
     count: int
     helped: str
-    
+
+class reportmemberbutton(discord.ui.View):
+    def __init__(self):
+        super().__init__(timeout=None)
+        self.value = None
+
+    @discord.ui.button(label="Report Member", style=discord.ButtonStyle.red)
+    async def link(self, interaction: discord.Interaction, button: discord.Button):
+        await interaction.response.send_modal(reportmember())
+
+class reportmember(ui.Modal, title='Report Member'):
+    def __init__(self):
+        super().__init__()
+        self.value = None
+
+    notified = ui.TextInput(label='Who are you reporting', placeholder="Enter their name + instagram name (if you know it)", style=discord.TextStyle.short)
+    command = ui.TextInput(label='Why are you reporting this member?', placeholder="Provide detailed info for effective resolution.", style=discord.TextStyle.long)
+    bug = ui.TextInput(label='Do you have screenshots?', placeholder="Yes/No, if yes we will DM you", style=discord.TextStyle.long)
+
+    async def on_submit(self, interaction: discord.Interaction):
+        await interaction.response.defer()
+        embed = discord.Embed(title="`❗`Report a member", color=0x2b2d31)
+        embed.add_field(name='Who are you reporting', value=f'{self.notified.value}', inline=False)
+        embed.add_field(name='Why are you reporting this member?', value=f'{self.command.value}', inline=False)
+        embed.add_field(name='Do you have screenshots?', value=f'{self.bug.value}', inline=False)
+        embed.set_footer(text=f"{interaction.user.name} | {interaction.user.id}", icon_url=interaction.user.display_avatar)
+        timestamp = datetime.utcnow()
+        embed.timestamp = timestamp
+        channel = interaction.client.get_channel(1212159111475503144)
+        await channel.send("<@&1135244903165722695>", embed=embed)
+        await interaction.followup.send(f'Your report was sent successfully', ephemeral=True)
+
 class ga(discord.ui.View):
     def __init__(self):
         super().__init__(timeout=None)
@@ -410,6 +441,14 @@ class Moderation(commands.Cog):
         embed.set_thumbnail(url=ctx.guild.icon)
         await ctx.reply(f"Successfully added rep for {member.display_name}\n**{helped}**")
         await member.send(embed=embed)
+
+    @app_commands.command(name="reportmember", description="See one of our members breaking our rules? you can report them here")
+    async def reportmember(self, interaction: discord.Interaction):
+        embed = discord.Embed(title="`❗`Report a member", description="- **__How to report a Member:__**\n - Click the Report button below to access our report form.\n - Provide detailed information to assist us in addressing the issue effectively.\n - Note: Incidents originating outside our server are not within our jurisdiction unless they originated within Kanzen and transitioned to private communication.\n - Screenshots can be sent to a staff member or Reece for further review.\n - Thank you for helping us maintain a safe environment.", color=0x2b2d31)
+        embed.set_thumbnail(url=interaction.guild.icon)
+        embed.set_footer(text="Please wait for Hoshi to confirm your report has been sent before sending another!", icon_url=interaction.user.avatar)
+        view = reportmemberbutton()
+        await interaction.response.send_message(embed=embed, view=view, ephemeral=True)
 
 async def setup(bot):
     await bot.add_cog(Moderation(bot))
