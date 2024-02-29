@@ -1024,5 +1024,14 @@ class levels(commands.Cog):
     async def on_guild_join(self, guild: discord.Guild):
         await self.register_guild(guild.id)
 
+    @commands.command(hidden=True)
+    async def delete(self, ctx, member_id: int):
+        guild_id = ctx.guild.id
+
+        async with self.bot.pool.acquire() as conn:
+            await conn.execute('DELETE FROM levels WHERE member_id = $1 AND guild_id = $2', member_id, guild_id)
+
+        await ctx.send(f"<@{member_id}'s levels have been removed!")
+
 async def setup(bot):
     await bot.add_cog(levels(bot))
