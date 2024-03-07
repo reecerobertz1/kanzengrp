@@ -34,18 +34,18 @@ class welcandleave(commands.Cog):
             await member.add_roles(main)
             await member.add_roles(ranks)
             await member.add_roles(extra)
-            """EDITORS BLOCK SERVER"""
+            """KANZEN FORMS SERVER"""
         elif member.guild.id == self.editors_block_id:
             member_count = len(member.guild.members) 
-            embed = discord.Embed(color=0x2b2d31, description=f"<a:arrowlightpink:1141452054716489789> [read infortmation](https://discord.com/channels/1131003330810871979/1131005271502753812)\n<a:arrowlightpink:1141452054716489789> [apply here](https://discord.com/channels/1131003330810871979/1133771634793250847)")
+            embed = discord.Embed(color=0x2b2d31, description=f"### 🌕 Welcome to Kanzen Forms\n<:1166196254141861979:1215213912623161364> Please read out [information](https://discord.com/channels/1131003330810871979/1131005271502753812)\n<:1166196254141861979:1215213912623161364> Apply for kanzengrp [here](https://discord.com/channels/1131003330810871979/1214940420946272316)\n<:1166196258499727480:1215213896256724992> Get roles in <id:customize>")
             role = member.guild.get_role(1131016147282710679)  
             channel = self.bot.get_channel(self.editors_block_channel)
             timestamp = datetime.datetime.utcnow()
             embed.timestamp = timestamp
-            embed.set_footer(text=f"Member Count: {member_count}")  
+            embed.set_footer(text=f"Thank you for joining! We are at {member_count} members!")  
             embed.set_author(name=f"{member.display_name}", icon_url=member.display_avatar.url)
             embed.set_thumbnail(url=member.display_avatar.url)
-            await channel.send(f'Welcome {member.mention} <@&1131005057417105418>', embed=embed)
+            await channel.send(f'{member.mention} <@&1131005057417105418>', embed=embed)
             await member.add_roles(role)
 
     @commands.Cog.listener()
