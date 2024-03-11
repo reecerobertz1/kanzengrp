@@ -798,6 +798,20 @@ class levels(commands.Cog):
             custom_x = 25
             custom_y = 335
             card.paste(special_role_img, (custom_x, custom_y), special_role_img)
+        ew_winner_role_id = 1216869981464035439
+        has_ew_winner_role = any(role.id == ew_winner_role_id for role in user.roles)
+        if has_ew_winner_role:
+            ew_winner_role_img = Image.open('./assets/editwars badge.png')
+            ew_winner_role_img = ew_winner_role_img.resize((85, 85))
+            custom_x = 20
+            custom_y = 505
+            card.paste(ew_winner_role_img, (custom_x, custom_y), ew_winner_role_img)
+        else:
+            special_role_img = Image.open('./assets/emptry badge.png')
+            special_role_img = special_role_img.resize((65, 65))
+            custom_x = 25
+            custom_y = 505
+            card.paste(special_role_img, (custom_x, custom_y), special_role_img)
         draw = ImageDraw.Draw(card, 'RGBA')
         shadow_text = Image.new("RGBA", card.size, (36, 36, 36, 0))
         shadow_draw = ImageDraw.Draw(shadow_text)
