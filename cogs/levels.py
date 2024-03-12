@@ -626,14 +626,14 @@ class levels(commands.Cog):
         bg_frosted = Image.composite(bg_blurred, Image.new("RGBA", bg.size, "white"), inverted_mask)
         bg_frosted.putalpha(inverted_mask)
         bg_rgb = bg.convert("RGB")
-        bar, mask = self._make_progress_bar(percentage, levels['bar_color'])
+        bar, mask = self._make_progress_bar(percentage, levels['color'])
         avatar_paste, circle = self.get_avatar(avatar)
         card.paste(bg_rgb, (0, 0))
         card.paste(bg_frosted, (0, 0), bg_frosted)
         card.paste(bar, (25, 21), mask)
         card.paste(avatar_paste, (35, 31), circle)
         Kotohogi4 = ImageFont.truetype("./fonts/IntegralCF-Regular.otf", size=45)
-        Kotohogi3 = ImageFont.truetype("./fonts/IntegralCF-Regular.otf", size=27)
+        Kotohogi3 = ImageFont.truetype("./fonts/IntegralCF-Regular.otf", size=25)
         Kotohogi2 = ImageFont.truetype("./fonts/IntegralCF-Regular.otf", size=20)
         rankboxes = Image.open('./assets/rankboxes.png')
         rankboxes = rankboxes.resize((750, 750))
@@ -691,22 +691,8 @@ class levels(commands.Cog):
         if has_lead_role:
             special_role_img = Image.open('./assets/lead.png')
             special_role_img = special_role_img.resize((65, 65))
-            custom_x = 100
+            custom_x = 25
             custom_y = 445
-            card.paste(special_role_img, (custom_x, custom_y), special_role_img)
-        else:
-            special_role_img = Image.open('./assets/emptry badge.png')
-            special_role_img = special_role_img.resize((65, 65))
-            custom_x = 100
-            custom_y = 445
-            card.paste(special_role_img, (custom_x, custom_y), special_role_img)
-        hstaff_id = 1178924350523588618
-        has_hstaff_role = any(role.id == hstaff_id for role in user.roles)
-        if has_hstaff_role:
-            special_role_img = Image.open('./assets/hstaff.png')
-            special_role_img = special_role_img.resize((80, 80))
-            custom_x = 17
-            custom_y = 440
             card.paste(special_role_img, (custom_x, custom_y), special_role_img)
         else:
             special_role_img = Image.open('./assets/emptry badge.png')
@@ -714,18 +700,32 @@ class levels(commands.Cog):
             custom_x = 25
             custom_y = 445
             card.paste(special_role_img, (custom_x, custom_y), special_role_img)
+        hstaff_id = 1178924350523588618
+        has_hstaff_role = any(role.id == hstaff_id for role in user.roles)
+        if has_hstaff_role:
+            special_role_img = Image.open('./assets/hstaff.png')
+            special_role_img = special_role_img.resize((80, 80))
+            custom_x = 157
+            custom_y = 387
+            card.paste(special_role_img, (custom_x, custom_y), special_role_img)
+        else:
+            special_role_img = Image.open('./assets/emptry badge.png')
+            special_role_img = special_role_img.resize((65, 65))
+            custom_x = 165
+            custom_y = 390
+            card.paste(special_role_img, (custom_x, custom_y), special_role_img)
         staff_role_id = 1135244903165722695
         has_staff_role = any(role.id == staff_role_id for role in user.roles)
         if has_staff_role:
             staff_role_img = Image.open('./assets/staff.png')
             staff_role_img = staff_role_img.resize((65, 65))
-            custom_x = 165
+            custom_x = 25
             custom_y = 397
             card.paste(staff_role_img, (custom_x, custom_y), staff_role_img)
         else:
             special_role_img = Image.open('./assets/emptry badge.png')
             special_role_img = special_role_img.resize((65, 65))
-            custom_x = 165
+            custom_x = 25
             custom_y = 390
             card.paste(special_role_img, (custom_x, custom_y), special_role_img)
         mods_id = 1179249792925306931
@@ -747,27 +747,27 @@ class levels(commands.Cog):
         if devs_role:
             devs_img = Image.open('./assets/devs.png')
             devs_img = devs_img.resize((55, 55))
-            custom_x = 35
-            custom_y = 397
+            custom_x = 175
+            custom_y = 342
             card.paste(devs_img, (custom_x, custom_y), devs_img)
         else:
             special_role_img = Image.open('./assets/emptry badge.png')
             special_role_img = special_role_img.resize((65, 65))
-            custom_x = 25
-            custom_y = 390
+            custom_x = 165
+            custom_y = 335
             card.paste(special_role_img, (custom_x, custom_y), special_role_img)
         booster_role_id = 1128460924886458489
         has_booster_role = any(role.id == booster_role_id for role in user.roles)
         if has_booster_role:
             booster_role_img = Image.open('./assets/booster.png')
             booster_role_img = booster_role_img.resize((65, 65))
-            custom_x = 165
+            custom_x = 95
             custom_y = 335
             card.paste(booster_role_img, (custom_x, custom_y), booster_role_img)
         else:
             special_role_img = Image.open('./assets/emptry badge.png')
             special_role_img = special_role_img.resize((65, 65))
-            custom_x = 165
+            custom_x = 95
             custom_y = 335
             card.paste(special_role_img, (custom_x, custom_y), special_role_img)
         top20_role_id = 1189632052727906376
@@ -775,14 +775,14 @@ class levels(commands.Cog):
         if has_top20_role:
             top20_role_img = Image.open('./assets/top20.png')
             top20_role_img = top20_role_img.resize((65, 65))
-            custom_x = 95
-            custom_y = 335
+            custom_x = 25
+            custom_y = 515
             card.paste(top20_role_img, (custom_x, custom_y), top20_role_img)
         else:
             special_role_img = Image.open('./assets/emptry badge.png')
             special_role_img = special_role_img.resize((65, 65))
-            custom_x = 100
-            custom_y = 335
+            custom_x = 25
+            custom_y = 515
             card.paste(special_role_img, (custom_x, custom_y), special_role_img)
         zennies_role_id = 1121842393994494082
         has_zennies_role = any(role.id == zennies_role_id for role in user.roles)
@@ -803,14 +803,28 @@ class levels(commands.Cog):
         if has_ew_winner_role:
             ew_winner_role_img = Image.open('./assets/editwars badge.png')
             ew_winner_role_img = ew_winner_role_img.resize((85, 85))
-            custom_x = 20
+            custom_x = 165
             custom_y = 505
             card.paste(ew_winner_role_img, (custom_x, custom_y), ew_winner_role_img)
         else:
             special_role_img = Image.open('./assets/emptry badge.png')
             special_role_img = special_role_img.resize((65, 65))
-            custom_x = 25
+            custom_x = 165
+            custom_y = 515
+            card.paste(special_role_img, (custom_x, custom_y), special_role_img)
+        reeces_family_role_id = 1193494182401163334
+        has_reeces_family_role = any(role.id == reeces_family_role_id for role in user.roles)
+        if has_reeces_family_role:
+            reeces_family_role_img = Image.open('./assets/reeces family.png')
+            reeces_family_role_img = reeces_family_role_img.resize((85, 85))
+            custom_x = 95
             custom_y = 505
+            card.paste(reeces_family_role_img, (custom_x, custom_y), reeces_family_role_img)
+        else:
+            special_role_img = Image.open('./assets/emptry badge.png')
+            special_role_img = special_role_img.resize((65, 65))
+            custom_x = 95
+            custom_y = 515
             card.paste(special_role_img, (custom_x, custom_y), special_role_img)
         draw = ImageDraw.Draw(card, 'RGBA')
         shadow_text = Image.new("RGBA", card.size, (36, 36, 36, 0))
@@ -818,12 +832,12 @@ class levels(commands.Cog):
         shadow_draw.text((17, 287), name, "#242424", font=Kotohogi3)
         shadow_blurred = shadow_text.filter(ImageFilter.GaussianBlur(radius=0.5))
         card.paste(shadow_blurred, (0, 0), shadow_blurred)
-        draw.text((15, 285), name, fill=levels['bar_color'], font=Kotohogi3)
+        draw.text((15, 285), name, fill=levels['color'], font=Kotohogi3)
         draw.text((135, 692), f'LVL','#ffffff', font=Kotohogi2)
-        draw.text((275, 692), f'MSGS', '#ffffff', font=Kotohogi2)
-        draw.text((85, 686), f'#{str(rank)}', fill=levels['bar_color'], font=Kotohogi3)
-        draw.text((182, 686), f'{level}', fill=levels['bar_color'], font=Kotohogi3)
-        draw.text((350, 686), f'{levels["messages"]}', fill=levels['bar_color'], font=Kotohogi3)
+        draw.text((270, 692), f'MSGS', '#ffffff', font=Kotohogi2)
+        draw.text((85, 688), f'#{str(rank)}', fill=levels['color'], font=Kotohogi3)
+        draw.text((182, 688), f'{level}', fill=levels['color'], font=Kotohogi3)
+        draw.text((340, 688), f'{levels["messages"]}', fill=levels['color'], font=Kotohogi3)
         buffer = BytesIO()
         card.save(buffer, 'png')
         buffer.seek(0)
