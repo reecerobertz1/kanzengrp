@@ -159,24 +159,39 @@ class Moderation(commands.Cog):
             await conn.execute("INSERT INTO warning (member_id, guild_id, reasons, warnings) VALUES ($1, $2, $3, $4)", member_id, guild_id, reason, change)
             await conn.commit()
 
-    async def view_warnings(self, ctx, member: discord.Member):
-        guild_id = ctx.guild.id
-        member_id = member.id
+    async def get_warn_leaderboard_stats(self) -> List[RepRow]:
+        query = '''SELECT * FROM warning ORDER BY warnings DESC'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query)
+                rows = await cursor.fetchall()
+        return rows
 
-        async with self.pool.acquire() as conn:
-            warning = await conn.fetchrow('SELECT reasons FROM warning WHERE member_id = $1 AND guild_id = $2', member_id, guild_id)
-
-        if warning:
-            embed = discord.Embed(
-                title=f"Warnings for {member.display_name}",
-                color=0x2b2d31,
-                timestamp=datetime.utcnow()
-            )
-
-            embed.add_field(name="Warning", value=warning['reasons'], inline=False)
-            await ctx.send(embed=embed)
-        else:
-            await ctx.send(f"{member.display_name} has no warnings.")
+    @app_commands.command(description="See the warnings leaderboard")
+    async def warnings(self, interaction: discord.Interaction):
+        rows = await self.get_warn_leaderboard_stats()
+        
+        if not rows:
+            await interaction.response.send_message("The leaderboard is empty.")
+            return
+        
+        description = ""
+        
+        for i, row in enumerate(rows, start=1):
+            if i == 1:
+                i = "🥇"
+            if i == 2:
+                i = "🥈"
+            if i == 3:
+                i = "🥉"
+            else:
+                i = i
+            description += f"**{i}.** <@!{row['member_id']}>\n> **{row['warnings']} warnings**\n> reason: {row['reasons']}\n\n"
+        
+        embed = discord.Embed(title="Warnings Leaderboard", description=description, color=0x2b2d31)
+        embed.set_thumbnail(url=interaction.guild.icon.url)
+        
+        await interaction.response.send_message(embed=embed)
 
     async def update_warnings(self, conn, member_id, guild_id, reason, change=1):
         async with self.pool.acquire() as conn:
@@ -258,23 +273,23 @@ class Moderation(commands.Cog):
 
         await ctx.send(f"Warnings for {member.display_name} have been cleared.")
 
-    @commands.command(hidden=True)
-    async def servericon(self, ctx):
+    @app_commands.command(description="Get the server icon")
+    async def servericon(self, interaction: discord.Interaction):
         embed = discord.Embed(color=0x2b2d31)
-        embed.set_image(url=ctx.guild.icon)
-        if ctx.guild.icon:
-         await ctx.reply(embed=embed)
+        embed.set_image(url=interaction.guild.icon)
+        if interaction.guild.icon:
+         await interaction.response.send_message(embed=embed)
         else:
-         await ctx.reply("Sorry, i can't find the server icon")
+         await interaction.response.send_message("Sorry, i can't find the server icon")
 
-    @commands.command(hidden=True)
-    async def serverbanner(self, ctx):
+    @app_commands.command(description="Get the server banner")
+    async def serverbanner(self, interaction: discord.Interaction):
         embed = discord.Embed(color=0x2b2d31)
-        embed.set_image(url=ctx.guild.banner)
-        if ctx.guild.banner:
-         await ctx.reply(embed=embed)
+        embed.set_image(url=interaction.guild.banner)
+        if interaction.guild.banner:
+         await interaction.response.send_message(embed=embed)
         else:
-         await ctx.reply("Sorry, i can't find the server banner")
+         await interaction.response.send_message("Sorry, i can't find the server banner")
 
     @commands.hybrid_command(name="kick", description="Kick a member from the server.", extras="+kick @member (reason)")
     @commands.has_permissions(manage_guild=True)
@@ -324,7 +339,7 @@ class Moderation(commands.Cog):
         await member.send(message)
         await ctx.send(f"i have successfully messaged {member.mention}\n{message}")        
 
-    async def get_rep(self, member_id, guild_id, helped):
+    async def get_rep(self, member_id):
         async with self.pool.acquire() as conn:
             async with conn.cursor() as cursor:
                 await cursor.execute("SELECT count, helped FROM staffrep WHERE member_id = ?", (member_id,))
@@ -339,64 +354,61 @@ class Moderation(commands.Cog):
             await conn.execute("INSERT INTO staffrep (member_id, guild_id, helped, count) VALUES ($1, $2, $3, $4)", member_id, guild_id, helped, change)
             await conn.commit()
 
-    async def update_rep(self, member_id, guild_id, helped, change=1):
+    async def update_rep_reece(self, member_id, guild_id, helped, giver, change=3):
         async with self.pool.acquire() as conn:
             existing_warnings = await conn.fetchone('SELECT count FROM staffrep WHERE member_id = $1 AND guild_id = $2', member_id, guild_id)
             if existing_warnings:
                 current_warnings = existing_warnings['count']
                 updated_warnings = current_warnings + change
                 await conn.execute('UPDATE staffrep SET helped = $1, count = $2 WHERE member_id = $3 AND guild_id = $4',
-                                helped, updated_warnings, member_id, guild_id)
+                                f"{helped}\n> **Added by:** <@{giver}>", updated_warnings, member_id, guild_id)
             else:
                 updated_warnings = change
                 await self.add_rep(member_id, guild_id, helped, updated_warnings)
             await conn.commit()
             return updated_warnings
 
-    @commands.hybrid_command(name="staffrep", description="add rep to a staff member for helping", extra="+staffrep @member", hidden=True)
+    async def update_rep(self, member_id, guild_id, helped, giver, change=1):
+        async with self.pool.acquire() as conn:
+            existing_warnings = await conn.fetchone('SELECT count FROM staffrep WHERE member_id = $1 AND guild_id = $2', member_id, guild_id)
+            if existing_warnings:
+                current_warnings = existing_warnings['count']
+                updated_warnings = current_warnings + change
+                await conn.execute('UPDATE staffrep SET helped = $1, count = $2 WHERE member_id = $3 AND guild_id = $4',
+                                f"{helped}\n> **Added by:** <@{giver}>", updated_warnings, member_id, guild_id)
+            else:
+                updated_warnings = change
+                await self.add_rep(member_id, guild_id, helped, updated_warnings)
+            await conn.commit()
+            return updated_warnings
+
+    @commands.hybrid_command(name="addrep", description="add rep to a staff member for helping", extra="+addrep @member", hidden=True)
     @commands.has_permissions(administrator=True)
     @commands.has_permissions(manage_guild=True)
-    async def staffrep(self, ctx, member: discord.Member, *, helped):
-        await self.update_rep(member.id, ctx.guild.id, helped)
+    async def addrep(self, ctx, member: discord.Member, *, helped):
+        await self.update_rep_reece(member.id, ctx.guild.id, helped, giver=ctx.author.id)
+        rep = await self.get_rep_count(member.id)
+        embed = discord.Embed(title="You got Staff Rep!", description=f"{ctx.author.name} has given you **3 rep** for helping them!\n\nYou got rep for {helped}\n\nYou now have **{rep} rep**! Well done", color=0x2b2d31)
+        embed.set_thumbnail(url=ctx.guild.icon)
         await ctx.reply(f"Successfully added rep for {member.display_name}\n**{helped}**")
+        await member.send(embed=embed)
+
+    @commands.hybrid_command(name="supportstaff", description="add rep to a staff member for helping", extra="+supportstaff @member", hidden=True)
+    async def supportstaff(self, ctx, member: discord.Member, *, helped):
+        await self.update_rep(member.id, ctx.guild.id, helped, giver=ctx.author.id)
+        rep = await self.get_rep_count(member.id)
+        embed = discord.Embed(title="You got Staff Rep!", description=f"{ctx.author.name} has given you **1 rep** for helping them!\n\nYou got rep for {helped}\n\nYou now have **{rep} rep**! Well done", color=0x2b2d31)
+        embed.set_thumbnail(url=ctx.guild.icon)
+        await ctx.reply(f"Successfully added rep for {member.display_name}\n**{helped}**")
+        await member.send(embed=embed)
 
     async def reset_staffrep(self, guild_id: int) -> None:
-        """Resets the levels for a guild
-        
-        Parameters
-        ----------
-        guild_id: int
-            ID of guild to reset levels in
-        """
         query = '''UPDATE staffrep SET count = 0, helped = NULL WHERE guild_id = $1'''
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cursor:
                 await cursor.execute(query, guild_id)
                 await conn.commit()
         await self.bot.pool.release(conn)
-
-    @commands.command(aliases=['rr'], description="Reset the staff rep", extras="alias : +rr", hidden=True)
-    @commands.has_permissions(administrator=True)
-    @commands.has_permissions(manage_guild=True)
-    async def resetrep(self, ctx: commands.Context):
-        """Wipes all XP from the database"""
-        message = await ctx.reply("are you sure you want to reset the staff rep? it's irreversible!")
-        await message.add_reaction('👍')
-
-        def check(reaction, user):
-            return user == ctx.author and str(reaction) == '👍'
-
-        try:
-            reaction, user = await self.bot.wait_for('reaction_add', timeout=15.0, check=check)
-            await self.reset_staffrep(ctx.guild.id)
-            embed = discord.Embed(
-                title='success!',
-                description=f'reps have been erased.',
-                color=0x2B2D31
-            )
-            return await message.edit(content=None, embed=embed)
-        except asyncio.TimeoutError:
-            await message.edit(content="~~are you sure you want to reset the ranks? it's irreversible!~~\nreset has been cancelled!")
 
     async def get_leaderboard_stats(self) -> List[RepRow]:
         query = '''SELECT * FROM staffrep ORDER BY count DESC'''
@@ -406,8 +418,15 @@ class Moderation(commands.Cog):
                 rows = await cursor.fetchall()
         return rows
 
+    @app_commands.command(description="Reset the staff rep")
+    @app_commands.checks.has_permissions(manage_guild=True)
+    async def resetrep(self, interaction: discord.Interaction):
+        await self.reset_staffrep(interaction.guild_id)
+        embed = discord.Embed(title='success!',description=f'reps have been erased.',color=0x2B2D31)
+        await interaction.response.send_message(embed=embed)
+
     @app_commands.command(description="See the staff rep leaderboard")
-    async def staffrep_leaderboard(self, interaction: discord.Interaction):
+    async def toprep(self, interaction: discord.Interaction):
         rows = await self.get_leaderboard_stats()
         
         if not rows:
@@ -417,30 +436,30 @@ class Moderation(commands.Cog):
         description = ""
         
         for i, row in enumerate(rows, start=1):
-            description += f"**{i}.** <@!{row['member_id']}> - {row['count']} rep\n**last helped with:** {row['helped']}\n\n"
+            if i == 1:
+                i = "🥇"
+            if i == 2:
+                i = "🥈"
+            if i == 3:
+                i = "🥉"
+            else:
+                i = i
+            description += f"**{i}.** <@!{row['member_id']}>\n> **{row['count']} rep**\n> **task:** {row['helped']}\n\n"
         
         embed = discord.Embed(title="Staff Rep Leaderboard", description=description, color=0x2b2d31)
         embed.set_thumbnail(url=interaction.guild.icon.url)
         
         await interaction.response.send_message(embed=embed)
 
-    async def get_rep_count(self, member_id, guild_id, helped):
+    async def get_rep_count(self, member_id):
         async with self.pool.acquire() as conn:
             async with conn.cursor() as cursor:
-                await cursor.execute("SELECT count FROM staffrep WHERE member_id = ?", (member_id, guild_id, helped))
+                await cursor.execute("SELECT count FROM staffrep WHERE member_id = ?", (member_id,))
                 row = await cursor.fetchone()
                 if row is None:
                     await self.add_rep(member_id)
                     return 0, 0
                 return row[0]
-
-    @commands.hybrid_command(name="addrep", description="add rep to a staff member for helping")
-    async def addrep(self, ctx,member: discord.Member, *, helped):
-        await self.update_rep(member.id, ctx.guild.id, helped)
-        embed = discord.Embed(title="You got Staff Rep!", description=f"{ctx.author.name} has given you **1 rep** for helping them!\n\nYou got rep for {helped}", color=0x2b2d31)
-        embed.set_thumbnail(url=ctx.guild.icon)
-        await ctx.reply(f"Successfully added rep for {member.display_name}\n**{helped}**")
-        await member.send(embed=embed)
 
     @app_commands.command(name="reportmember", description="See one of our members breaking our rules? you can report them here")
     async def reportmember(self, interaction: discord.Interaction):
