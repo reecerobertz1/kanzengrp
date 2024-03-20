@@ -9,8 +9,6 @@ my_guild = discord.Object(id=1121841073673736215)
 
 extensions = {
     "jishaku",
-    "cogs.celebgame",
-    "cogs.daegu",
     "cogs.eb",
     "cogs.economy",
     "cogs.editing",
@@ -22,7 +20,6 @@ extensions = {
     "cogs.misc",
     "cogs.moderation",
     "cogs.other",
-    "cogs.tof",
     "cogs.welcandbye"
 }
 class LalisaBot(commands.Bot):
