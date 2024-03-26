@@ -366,5 +366,18 @@ class Forms(commands.Cog):
         await self.clear_database()
         await ctx.send("The database has been cleared.")
 
+    @commands.command()
+    async def partners(self, ctx):
+        aster = discord.ui.View()
+        astersite = discord.ui.Button(label="Website", url="https://grpaster.com")
+        asterinsta = discord.ui.Button(label="Instagram", url="https://instagram.com/grpaster")
+        aster.add_item(astersite)
+        aster.add_item(asterinsta)
+        await ctx.send("discord.gg/grpaster", view=aster)
+        hsgrp = discord.ui.View()
+        hsgrpinsta = discord.ui.Button(label="Instagram", url="https://instagram.com/heartstoppergrp?igshid=MzRlODBiNWFlZA==")
+        hsgrp.add_item(hsgrpinsta)
+        await ctx.send("https://discord.gg/XVpKTcJhf8", view=hsgrp)
+
 async def setup(bot):
     await bot.add_cog(Forms(bot))
