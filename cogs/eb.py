@@ -378,6 +378,8 @@ class Forms(commands.Cog):
         hsgrpinsta = discord.ui.Button(label="Instagram", url="https://instagram.com/heartstoppergrp?igshid=MzRlODBiNWFlZA==")
         hsgrp.add_item(hsgrpinsta)
         await ctx.send("https://discord.gg/XVpKTcJhf8", view=hsgrp)
+        embed= discord.Embed(description="Want to partner with us? read our partner info in <#1131005271502753812>", color=0x2b2d31)
+        await ctx.send(embed=embed)
 
 async def setup(bot):
     await bot.add_cog(Forms(bot))
