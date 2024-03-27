@@ -20,7 +20,7 @@ class welcandleave(commands.Cog):
             embed = discord.Embed(title='<a:kanzenflower:1128154723262943282> Welcome to Kanzen!', color=0x2b2d31, description=f"Welcome to kanzen {member.name}!\n<a:Arrow_1:1145603161701224528> Read our [information](https://discord.com/channels/1121841073673736215/1148042725950767138)\n<a:Arrow_1:1145603161701224528> Logos and hashtag are [here](https://discord.com/channels/1121841073673736215/1148042725950767138)")
             embed.set_footer(text='Need help? ping @lead or @staff', icon_url=member.display_avatar.url)
             channel = self.bot.get_channel(self.kanzen_welcome)
-            channel2 = self.bot.get_channel(1125053619893440653)
+            channel2 = self.bot.get_channel(1220487352733138954)
             role = discord.utils.get(member.guild.roles, id=1121842393994494082)
             bronze = discord.utils.get(member.guild.roles, id=1187508597761003572)
             main = discord.utils.get(member.guild.roles, id=1187909432168955905)
