@@ -973,16 +973,16 @@ class levels(commands.Cog):
     async def on_message(self, message: discord.Message) -> None:
         await self.handle_message(message)
 
-    @app_commands.command(description="Get anywhere from 50xp - 250xp everyday!")
-    @app_commands.checks.dynamic_cooldown(kanzen_cooldown)
-    async def daily(self, interaction: discord.Interaction):
-        xp = randint(50, 250)
-        levels = await self.get_member_levels(interaction.user.id)
-        if levels is not None:
-            await self.add_xp(interaction.user.id, xp, levels)
-        else:
-            await self.add_member(interaction.user.id, xp)
-        await interaction.response.send_message(f"You claimed your daily xp! you got **{xp}xp**")
+    #@app_commands.command(description="Get anywhere from 50xp - 250xp everyday!")
+    #@app_commands.checks.dynamic_cooldown(kanzen_cooldown)
+    #async def daily(self, interaction: discord.Interaction):
+    #    xp = randint(50, 250)
+    #    levels = await self.get_member_levels(interaction.user.id)
+    #    if levels is not None:
+    #        await self.add_xp(interaction.user.id, xp, levels)
+    #    else:
+    #        await self.add_member(interaction.user.id, xp)
+    #    await interaction.response.send_message(f"You claimed your daily xp! you got **{xp}xp**")
 
     @app_commands.command(name="setbronze", description="Set bronze role")
     @app_commands.checks.has_permissions(manage_guild=True)
@@ -1062,6 +1062,15 @@ class levels(commands.Cog):
     @commands.Cog.listener()
     async def on_guild_join(self, guild: discord.Guild):
         await self.register_guild(guild.id)
+
+    @commands.command(hidden=True)
+    async def delete(self, ctx, member_id: int):
+        guild_id = ctx.guild.id
+
+        async with self.bot.pool.acquire() as conn:
+            await conn.execute('DELETE FROM levels WHERE member_id = $1 AND guild_id = $2', member_id, guild_id)
+
+        await ctx.send(f"<@{member_id}'s levels have been removed!")
 
 async def setup(bot):
     await bot.add_cog(levels(bot))
