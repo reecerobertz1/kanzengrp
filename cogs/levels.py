@@ -849,7 +849,7 @@ class levels(commands.Cog):
             await self.bot.pool.release(conn)
 
     async def get_leaderboard_stats(self) -> List[LevelRow]:
-        query = '''SELECT * FROM levelling ORDER BY xp DESC'''
+        query = '''SELECT * FROM levels ORDER BY xp DESC'''
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cursor:
                 await cursor.execute(query)
