@@ -3,7 +3,7 @@ import re
 import discord
 from discord.ext import commands
 from random import randint
-from typing import Optional, TypedDict, Union, Tuple
+from typing import List, Optional, TypedDict, Union, Tuple
 from PIL import Image, ImageDraw, ImageFont, ImageFilter, ImageEnhance
 from io import BytesIO
 import functools
@@ -847,6 +847,14 @@ class levels(commands.Cog):
                 await cursor.execute(query, (levels['xp'] - xp, member_id, ))
                 await conn.commit()
             await self.bot.pool.release(conn)
+
+    async def get_leaderboard_stats(self) -> List[LevelRow]:
+        query = '''SELECT * FROM levelling ORDER BY xp DESC'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query)
+                rows = await cursor.fetchall()
+        return rows
 
     async def set_rank_color(self, member_id: int, color: str) -> None:
         query = '''UPDATE levels SET color = ? WHERE member_id = ?'''
