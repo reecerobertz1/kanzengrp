@@ -340,6 +340,7 @@ class Forms(commands.Cog):
         return [member[0] for member in members]
 
     @commands.command()
+    @commands.has_permissions(manage_guild=True)
     async def accepted(self, ctx):
         accepted_members = await self.get_accepted_members()
         if accepted_members:
@@ -362,11 +363,13 @@ class Forms(commands.Cog):
                 await conn.commit()
 
     @commands.command()
+    @commands.has_permissions(manage_guild=True)
     async def clearapps(self, ctx):
         await self.clear_database()
         await ctx.send("The database has been cleared.")
 
     @commands.command()
+    @commands.has_permissions(manage_guild=True)
     async def partners(self, ctx):
         aster = discord.ui.View()
         astersite = discord.ui.Button(label="Website", url="https://grpaster.com")
@@ -380,6 +383,23 @@ class Forms(commands.Cog):
         await ctx.send("https://discord.gg/XVpKTcJhf8", view=hsgrp)
         embed= discord.Embed(description="Want to partner with us? read our partner info in <#1131005271502753812>", color=0x2b2d31)
         await ctx.send(embed=embed)
+
+    @commands.command()
+    @commands.has_permissions(manage_guild=True)
+    async def bp(self, ctx):
+        link = discord.ui.View()
+        megalink = discord.ui.Button(label="Click here to get the resources", url="https://mega.nz/folder/B0EXESbB")
+        link.add_item(megalink)
+        embed = discord.Embed(color=0x2b2d31)
+        embed.set_image(url="https://cdn.discordapp.com/attachments/1214944837451780116/1223588936706953286/bc60109af32c0520fc17f8dffbdd75e922b31527r1-736-916v2_hq.jpg?ex=661a66ff&is=6607f1ff&hm=5a4670c879ff1e1bb3a3dd08c85c115de97c1e03a21a9390720a613aa2cc3fd8&")
+        embed2 = discord.Embed(description="> `🚀` **__Booster Perks__**"
+        "\n\nThank you so much for boosting!"
+        "\n\nMore may be added later on "
+        "\n\nPlease do not send this to anyone..."
+        "\n\nIf the link no longer works, Please Reece !!", color=0x2b2d31)
+        await ctx.send(embed=embed)
+        await ctx.send(embed=embed2, view=link)
+        await ctx.send("Key: `UpSW3UlHZne2ADMwiQoUzA`")
 
 async def setup(bot):
     await bot.add_cog(Forms(bot))
