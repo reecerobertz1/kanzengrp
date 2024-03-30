@@ -396,7 +396,7 @@ class Forms(commands.Cog):
         "\n\nThank you so much for boosting!"
         "\n\nMore may be added later on "
         "\n\nPlease do not send this to anyone..."
-        "\n\nIf the link no longer works pls dm Reece!", color=0x2b2d31)
+        "\n\nIf the link no longer works pls dm Reece !!", color=0x2b2d31)
         await ctx.send("<@&1136803676854431745>",embed=embed)
         await ctx.send(embed=embed2, view=link)
         await ctx.send("Key: `UpSW3UlHZne2ADMwiQoUzA`")
