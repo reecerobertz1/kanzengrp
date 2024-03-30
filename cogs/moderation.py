@@ -41,7 +41,7 @@ class reportmember(ui.Modal, title='Report Member'):
         embed.set_footer(text=f"{interaction.user.name} | {interaction.user.id}", icon_url=interaction.user.display_avatar)
         timestamp = datetime.utcnow()
         embed.timestamp = timestamp
-        channel = interaction.client.get_channel(1212159111475503144)
+        channel = interaction.client.get_channel(1178952898273628200)
         await channel.send("<@&1135244903165722695>", embed=embed)
         await interaction.followup.send(f'Your report was sent successfully', ephemeral=True)
 

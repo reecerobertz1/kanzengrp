@@ -240,7 +240,7 @@ class appeal(ui.Modal, title='Ban Appeal'):
         embed.set_footer(text=f"sent from: {interaction.user.name}", icon_url=interaction.user.avatar)
         embed.set_thumbnail(url=interaction.user.display_avatar)
         embed.add_field(name="Discord ID:", value=interaction.user.id, inline=False)
-        channel = interaction.client.get_channel(1195668564057804830)
+        channel = interaction.client.get_channel(1178952898273628200)
         view = approveordecline(self.bot, self.one.value, self.two.value, self.three.value)
         await channel.send(embed=embed, view=view)
         await interaction.followup.send(f'Your appeal has been sent. We will let you know if it was approved or not', ephemeral=True)
