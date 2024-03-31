@@ -28,15 +28,7 @@ class infobuttons(discord.ui.View):
 
     @discord.ui.button(label="Kanzen Ranked")
     async def ranks(self, interaction: discord.Interaction, button: discord.ui.Button):
-        embed = discord.Embed(title="Kanzen Ranked", description="Here are the ranked roles we have in kanzen. These ranks will allow you to unlock new logos made for each rank and you can show off your rank to all your followers on instagram/tiktok\n\n**These ranks are:**", color=0x2b2d31)
-        embed.add_field(name="** **", value="<:bronze:1210030033494876231> <@&1187508597761003572> **default**\n<:purplebar:1188201890882785330><:PU:1187799226042830978><:PU:1187799226042830978><:PU:1187799226042830978><:PU:1187799226042830978><:PU:1187799226042830978>", inline=True)
-        embed.add_field(name="** **", value="<:silver:1210030031150260254> <@&1187508615364477039> **top 35**\n<:purplebar:1188201890882785330><:purplebar:1188201890882785330><:PU:1187799226042830978><:PU:1187799226042830978><:PU:1187799226042830978><:PU:1187799226042830978>", inline=True)
-        embed.add_field(name="** **", value="<:gold:1210030026746109952> <@&1187540222708297748> **top 20**\n<:purplebar:1188201890882785330><:purplebar:1188201890882785330><:purplebar:1188201890882785330><:PU:1187799226042830978><:PU:1187799226042830978><:PU:1187799226042830978>", inline=True)
-        embed.add_field(name="** **", value="<:diamond:1210030028738396160> <@&1187540240836087858> **top 15**\n<:purplebar:1188201890882785330><:purplebar:1188201890882785330><:purplebar:1188201890882785330><:purplebar:1188201890882785330><:PU:1187799226042830978><:PU:1187799226042830978>", inline=True)
-        embed.add_field(name="** **", value="<:plat:1210030021968924763> <@&1187540267696398427> **top 5**\n<:purplebar:1188201890882785330><:purplebar:1188201890882785330><:purplebar:1188201890882785330><:purplebar:1188201890882785330><:purplebar:1188201890882785330><:PU:1187799226042830978>", inline=True)
-        embed.add_field(name="** **", value="<:elite:1210030024908996648> <@&1187540294221172786> **top 3**\n<:purplebar:1188201890882785330><:purplebar:1188201890882785330><:purplebar:1188201890882785330><:purplebar:1188201890882785330><:purplebar:1188201890882785330><:purplebar:1188201890882785330>", inline=True)
-        embed.set_thumbnail(url=interaction.user.display_avatar)
-        await interaction.response.send_message(embed=embed, ephemeral=True)
+        await interaction.response.send_message("https://cdn.discordapp.com/attachments/1181419043153002546/1216065287120748714/ranked_badges_00000.png?ex=661ab78d&is=6608428d&hm=13dad2c986b6354387a6f119079e76418faccfdfaf7ad82f87f42cc992fa1667&", ephemeral=True)
 
     @discord.ui.button(label="Booster Perks")
     async def bp(self, interaction: discord.Interaction, button: discord.ui.Button):
