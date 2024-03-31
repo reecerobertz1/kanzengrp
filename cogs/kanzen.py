@@ -40,10 +40,7 @@ class infobuttons(discord.ui.View):
 
     @discord.ui.button(label="Booster Perks")
     async def bp(self, interaction: discord.Interaction, button: discord.ui.Button):
-        embed = discord.Embed(description="# Kanzen Perks\nWhen boosting our server, you will unlock unlock our booster perks! You can have a custom role which will need to be made be a staff member/lead. Do the command `+perks` to get our booster perks, and dm a staff member/lead for your custom role", color=0x2b2d31)
-        embed.set_footer(text="You need to boost our server for these perks")
-        embed.set_image(url="https://cdn.discordapp.com/attachments/849724031723634688/1187178633090056283/Boosting_Perks_00000.png?ex=6595f142&is=65837c42&hm=ab27244f34b778ee73b0ed14838cb2b6028e4962320eb146512181963b4b11c2&")
-        await interaction.response.send_message(embed=embed, ephemeral=True)
+        await interaction.response.send_message("https://cdn.discordapp.com/attachments/1198665603897118720/1223868316771160074/image.png?ex=661b6b31&is=6608f631&hm=5cf4e9697bcbaea6aa1c585a42db671f664d37c2e7a1daa4b6d0924748a06186&", ephemeral=True)
 
     @discord.ui.button(label="Inactivity")
     async def inactive(self, interaction: discord.Interaction, button: discord.Button):
@@ -120,10 +117,8 @@ class kanzen(commands.Cog):
     @commands.command()
     @is_booster()
     async def perks(self, ctx):
-        embed = discord.Embed(title="Kanzen Booster Perks", description="<a:Arrow_1:1145603161701224528> Remqsi's colouring packs 1 & 2\n<a:Arrow_1:1145603161701224528> BTS Photos\n<a:Arrow_1:1145603161701224528> Enhypen Photos\n<a:Arrow_1:1145603161701224528> Blackpink Photos\n<a:Arrow_1:1145603161701224528> Break your heart project file\n<a:Arrow_1:1145603161701224528> Lisa candy project file", color=0x2b2d31)
-        embed.set_thumbnail(url=ctx.author.avatar)
-        embed.set_footer(text="Thank you for your support", icon_url=ctx.author.avatar)
-        await ctx.author.send("https://mega.nz/folder/N1tgSLqD#DZ73U23GXk1LqyZKUpdNww", embed=embed)
+        await ctx.author.send("https://mega.nz/folder/BwcTiSKS#oB8-ffeutzGzFLSFi81l5Q")
+        await ctx.author.send("https://cdn.discordapp.com/attachments/1198665603897118720/1223868316771160074/image.png?ex=661b6b31&is=6608f631&hm=5cf4e9697bcbaea6aa1c585a42db671f664d37c2e7a1daa4b6d0924748a06186&")
         await ctx.reply("Check dms! i have sent you our perks")
 
     @commands.command()
