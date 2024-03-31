@@ -325,14 +325,6 @@ class Moderation(commands.Cog):
             return await ctx.send(f"Failed to create the emoji. Error: {e}")
         
         await ctx.send(f"Emoji {emoji} has been added!")
-
-    @commands.command(description="Report a bug report to the Hoshi dev", extras="+report")
-    async def report(self, ctx):
-        embed = discord.Embed(title="Bug Report", description="<a:Arrow_1:1145603161701224528> Please click the button and fill out the form that appears on your screen!\n<a:Arrow_1:1145603161701224528> Your bug report will send to the developer of Hoshi\n<a:Arrow_1:1145603161701224528> You can be notified when the issue has been resolved!", color=0x2b2d31)
-        embed.set_footer(text="Click the button below to send a bug report", icon_url=ctx.author.avatar)
-        embed.set_thumbnail(url=self.bot.user.display_avatar.url)
-        view = ReportView(bot=self.bot)
-        await ctx.reply(embed=embed, view=view)
         
     @commands.hybrid_command(name="dm", aliases=["message"], description="Dm a user through hoshi", extras="+dm @member (message) : alias +message")
     async def dm(self, ctx, member: discord.Member, *, message: str):

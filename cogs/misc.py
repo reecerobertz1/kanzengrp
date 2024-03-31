@@ -104,7 +104,7 @@ class misc(commands.Cog):
     async def report(self, interaction: discord.Interaction, command_name: str, problem: str):
         embed=discord.Embed(title="Bug Report", description=f"**Command:** {command_name}\n**Bug:** {problem}", color=0x2b2d31)
         embed.set_footer(text=f"Bug found by {interaction.user.name} | {interaction.user.id}", icon_url=interaction.user.avatar)
-        channel =  interaction.client.get_channel(1206681906947559444)
+        channel =  interaction.client.get_channel(1198665603897118720)
         await channel.send("<@609515684740988959>",embed=embed)
         await interaction.response.send_message("Your bug report has been sent!")
 
@@ -112,7 +112,7 @@ class misc(commands.Cog):
     async def request(self, interaction: discord.Interaction, idea: str):
         embed=discord.Embed(title="Request", description=idea, color=0x2b2d31)
         embed.set_footer(text=f"Requested by {interaction.user.name} | {interaction.user.id}", icon_url=interaction.user.avatar)
-        channel =  interaction.client.get_channel(1206681942334898267)
+        channel =  interaction.client.get_channel(1198665603897118720)
         await channel.send("<@609515684740988959>",embed=embed)
         await interaction.response.send_message("Your request has been sent!")
 
