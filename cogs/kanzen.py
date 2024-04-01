@@ -133,7 +133,7 @@ class kanzen(commands.Cog):
         "\n\n<a:Arrow_1:1145603161701224528>  Using one of our logos and the hashtag under you post will get you **500xp** towards your levels"
         "\n\n<a:Arrow_1:1145603161701224528> Please bare in mind that you do need to use both the logos and hashtag to receive xp! you can no longer use just the hashtag or logos for xp"
         "\n\n<a:Arrow_1:1145603161701224528> Your edit needs to be from this month only, so say its December, you need your edits to be from this month only, they cant be from November or even older, ones January 1st starts, edits from December are no longer allowed", color=0x2b2d31)
-        embed.set_image(url="https://cdn.discordapp.com/attachments/1198665603897118720/1224406335320227911/welc_banner_00000_1_00000.png?ex=661d6042&is=660aeb42&hm=a5d99768023455fa271403191432e4f966e310073eb1d9ee20fa889401975d8b&")
+        embed.set_image(url="https://cdn.discordapp.com/attachments/1198665603897118720/1224407264002183279/welc_banner_00000_1_00000.png?ex=661d6120&is=660aec20&hm=140f45cedbf4a3c5fbacdee15d344b1299ec5501f89906e5043403b9e31deeee&")
         await ctx.send(embed=embed)
 
     @app_commands.command(name="feedback", description="give feedback")
