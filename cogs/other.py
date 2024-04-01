@@ -207,9 +207,11 @@ class other(commands.Cog):
             else:
                 await warning.send(embed=warningembed)
         if "MessageType.premium_guild" in str(message.type):
-            embed = discord.Embed(title=f"Thank you for boosting! {message.author.display_name}!", description="<a:Arrow_1:1145603161701224528> dm staff or lead for your custom role\n<a:Arrow_1:1145603161701224528> do `+perks` to claim the perks\n<a:Arrow_1:1145603161701224528> we really appreciate your support!", color=0x2b2d31)
-            embed.set_author(name=message.author.display_name, icon_url=message.author.display_avatar)
-            embed.set_footer(text=f"We are up to {message.guild.premium_subscription_count} boosts!")
+            embed = discord.Embed(description="> `💫` **Thank you for boosting**!"
+            "\n<a:Arrow_1:1145603161701224528> Thank you for boosting!"
+            "\n<a:Arrow_1:1145603161701224528> Dm Reece or staff for your role!"
+            "\n<a:Arrow_1:1145603161701224528> Do `+perks` to claim our perks", color=0x2b2d31)
+            embed.set_footer(text=f"We now have {message.guild.premium_subscription_count} boosts!", icon_url=message.guild.icon)
             embed.set_thumbnail(url=message.author.display_avatar)
             if message.guild.id == 1121841073673736215:
                 await message.channel.send(f"{message.author.mention}", embed=embed)
