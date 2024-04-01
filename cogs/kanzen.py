@@ -96,7 +96,7 @@ class kanzen(commands.Cog):
                               "\n<:1166196254141861979:1208228728472076308> Make sure to be following [@kanzengrp](https://instagram.com/kanzengrp/) + [@remqsi](https://instagram.com/remqsi/)"
                               "\n<:1166196254141861979:1208228728472076308> If you ever decide to leave kanzengrp please DM and let us know"
                               "\n<:1166196254141861979:1208228728472076308> Always watermark the logos"
-                              "\nDo not share the logos link outside the server!"
+                              "\n<:1166196254141861979:1208228728472076308> Do not share the logos link outside the server!"
                               "\n<:1166196258499727480:1208228386842087554> And please remain as active as possible!", color=0x2b2d31)
         embed.set_author(name="Kanzengrp", icon_url=ctx.guild.icon)
         embed2 = discord.Embed(description='### | `✿` __**Chat Rules**__'
