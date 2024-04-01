@@ -100,7 +100,7 @@ class kanzen(commands.Cog):
                               "\n<:1166196258499727480:1208228386842087554> And please remain as active as possible!", color=0x2b2d31)
         embed.set_author(name="Kanzengrp", icon_url=ctx.guild.icon)
         embed2 = discord.Embed(description='### | `✿` __**Chat Rules**__'
-                               '\n<a:Arrow_1:1145603161701224528> Do not send nsfw content or speak sexually with other members'
+                               '\n<a:Arrow_1:1145603161701224528> Do not send nsfw content or speak sexually with others'
                                "\n<a:Arrow_1:1145603161701224528> No using any slurs / words that can be offensive (instant ban)"
                                "\n<a:Arrow_1:1145603161701224528> Make sure to have your age roles from ⁠<id:customize>"
                                "\n<a:Arrow_1:1145603161701224528> Please do not use bots outside of spam channels!"
