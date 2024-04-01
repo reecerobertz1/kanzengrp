@@ -129,7 +129,7 @@ class kanzen(commands.Cog):
 
     @commands.command()
     async def xplol(self, ctx):
-        embed1 = discord.Embed(title="Logo & Hashtag rep", description="Using one of our logos and the hashtag under you post will get you **1,000xp** towards your levels", color=0x2b2d31)
+        embed1 = discord.Embed(title="Logo & Hashtag rep", description="Using one of our logos and the hashtag under you post will get you **500xp** towards your levels", color=0x2b2d31)
         embed1.set_thumbnail(url="https://cdn.discordapp.com/attachments/1157492645086646384/1185339757656555631/K_00000-min.png?ex=658f40ac&is=657ccbac&hm=c5243f72aebf161710ea63ec97a155b700495fce7152e790137e1ed46130a8a2&")
         embed1.set_footer(text="Send your edits below to receive your xp!")
         embed2 = discord.Embed(description="<a:arrow:1185338703204331622> Please bare in mind that you do need to use both the logos and hashtag to receive xp! you can no longer use just the hashtag or logos for xp", color=0x2b2d31)
