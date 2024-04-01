@@ -129,16 +129,12 @@ class kanzen(commands.Cog):
 
     @commands.command()
     async def xplol(self, ctx):
-        embed1 = discord.Embed(title="Logo & Hashtag rep", description="Using one of our logos and the hashtag under you post will get you **500xp** towards your levels", color=0x2b2d31)
-        embed1.set_thumbnail(url="https://cdn.discordapp.com/attachments/1157492645086646384/1185339757656555631/K_00000-min.png?ex=658f40ac&is=657ccbac&hm=c5243f72aebf161710ea63ec97a155b700495fce7152e790137e1ed46130a8a2&")
-        embed1.set_footer(text="Send your edits below to receive your xp!")
-        embed2 = discord.Embed(description="<a:Arrow_1:1145603161701224528> Please bare in mind that you do need to use both the logos and hashtag to receive xp! you can no longer use just the hashtag or logos for xp", color=0x2b2d31)
-        embed2.set_thumbnail(url="https://cdn.discordapp.com/attachments/1157492645086646384/1185340989905322025/fghjfghjjgjfghjghj.png?ex=658f41d2&is=657cccd2&hm=9770aede5cbbc4369d63c6f5964050d28cba908fd5e7095cef48bb945f517d18&")
-        embed3 = discord.Embed(description="<a:Arrow_1:1145603161701224528> Your edit needs to be from this month only, so say its December, you need your edits to be from this month only, they cant be from November or even older, ones January 1st starts, edits from December are no longer allowed", color=0x2b2d31)
-        embed3.set_thumbnail(url="https://cdn.discordapp.com/attachments/1157492645086646384/1185340989905322025/fghjfghjjgjfghjghj.png?ex=658f41d2&is=657cccd2&hm=9770aede5cbbc4369d63c6f5964050d28cba908fd5e7095cef48bb945f517d18&")
-        await ctx.send(embed=embed1)
-        await ctx.send(embed=embed2)
-        await ctx.send(embed=embed3)
+        embed = discord.Embed(description="> `✨` **__Logo and Hashtag rep__**"
+        "\n\n<a:Arrow_1:1145603161701224528>  Using one of our logos and the hashtag under you post will get you **500xp** towards your levels"
+        "\n\n<a:Arrow_1:1145603161701224528> Please bare in mind that you do need to use both the logos and hashtag to receive xp! you can no longer use just the hashtag or logos for xp"
+        "\n\n<a:Arrow_1:1145603161701224528> Your edit needs to be from this month only, so say its December, you need your edits to be from this month only, they cant be from November or even older, ones January 1st starts, edits from December are no longer allowed", color=0x2b2d31)
+        embed.set_image(url="https://cdn.discordapp.com/attachments/1198665603897118720/1224406335320227911/welc_banner_00000_1_00000.png?ex=661d6042&is=660aeb42&hm=a5d99768023455fa271403191432e4f966e310073eb1d9ee20fa889401975d8b&")
+        await ctx.send(embed=embed)
 
     @app_commands.command(name="feedback", description="give feedback")
     async def feedback(self, interaction: discord.Interaction):
