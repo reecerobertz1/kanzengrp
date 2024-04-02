@@ -102,7 +102,6 @@ class kanzen(commands.Cog):
         "\n<a:Arrow_1:1145603161701224528> No trash talking other members or groups"
         "\n<a:Arrow_1:1145603161701224528> Breaking rules leads to warning/kick", color=0x2b2d31)
         view = infobuttons()
-        message = await ctx.send(embed=embed)
         await ctx.send(embed=embed)
         await ctx.send(embed=embed1, view=view)
 
