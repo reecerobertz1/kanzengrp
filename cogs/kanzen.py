@@ -94,13 +94,13 @@ class kanzen(commands.Cog):
         embed = discord.Embed(color=0x2b2d31)
         embed.set_image(url="https://cdn.discordapp.com/attachments/1184208577120960632/1224699045834919978/welc_banner_00000.png?ex=661e70de&is=660bfbde&hm=e0fd22d8e884fda1ec8e4257378cc7177c4e89ca3de21fbc7f1b9251ea9199c0&")
         embed1 = discord.Embed(title="> __Kanzen Rules__", description="<a:Arrow_1:1145603161701224528> No NSFW content or sexual discussions"
-        "<a:Arrow_1:1145603161701224528> No offensive slurs (instant ban)"
-        "<a:Arrow_1:1145603161701224528> Must have age roles from ⁠⁠<id:customize>"
-        "<a:Arrow_1:1145603161701224528> Only use bots in designated channels"
-        '<a:Arrow_1:1145603161701224528> Set nickname as "your name | username"'
-        "<a:Arrow_1:1145603161701224528> No impersonating other editors / members"
-        "<a:Arrow_1:1145603161701224528> No trash talking other members or groups"
-        "<a:Arrow_1:1145603161701224528> Breaking rules leads to warning/kick", color=0x2b2d31)
+        "\n<a:Arrow_1:1145603161701224528> No offensive slurs (instant ban)"
+        "\n<a:Arrow_1:1145603161701224528> Must have age roles from ⁠⁠<id:customize>"
+        "\n<a:Arrow_1:1145603161701224528> Only use bots in designated channels"
+        '\n<a:Arrow_1:1145603161701224528> Set nickname as "your name | username"'
+        "\n<a:Arrow_1:1145603161701224528> No impersonating other editors / members"
+        "\n<a:Arrow_1:1145603161701224528> No trash talking other members or groups"
+        "\n<a:Arrow_1:1145603161701224528> Breaking rules leads to warning/kick", color=0x2b2d31)
         view = infobuttons()
         message = await ctx.send(embed=embed)
         await ctx.send(embed=embed)
