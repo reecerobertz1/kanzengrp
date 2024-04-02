@@ -91,27 +91,20 @@ class kanzen(commands.Cog):
     @commands.has_permissions(manage_guild=True)
     async def info(self, ctx):
         await ctx.message.delete()
-        embed = discord.Embed(description="### **[Welcome*!*](https://instagram.com/kanzengrp/)**"
-                              "\nThank you for joining. We hope you enjoy your time here!"
-                              "\n<:1166196254141861979:1208228728472076308> Make sure to be following [@kanzengrp](https://instagram.com/kanzengrp/) + [@remqsi](https://instagram.com/remqsi/)"
-                              "\n<:1166196254141861979:1208228728472076308> If you ever decide to leave kanzengrp please DM and let us know"
-                              "\n<:1166196254141861979:1208228728472076308> Always watermark the logos"
-                              "\n<:1166196254141861979:1208228728472076308> Do not share the logos link outside the server!"
-                              "\n<:1166196258499727480:1208228386842087554> And please remain as active as possible!", color=0x2b2d31)
-        embed.set_author(name="Kanzengrp", icon_url=ctx.guild.icon)
-        embed2 = discord.Embed(description='### | `✿` __**Chat Rules**__'
-                               '\n<a:Arrow_1:1145603161701224528> Do not send nsfw content or speak sexually with others'
-                               "\n<a:Arrow_1:1145603161701224528> No using any slurs / words that can be offensive (instant ban)"
-                               "\n<a:Arrow_1:1145603161701224528> Make sure to have your age roles from ⁠<id:customize>"
-                               "\n<a:Arrow_1:1145603161701224528> Please do not use bots outside of spam channels!"
-                               '\n<a:Arrow_1:1145603161701224528> Please set your nickname as "your name | username"'
-                               "\n<a:Arrow_1:1145603161701224528> No impersonation as other editors or members"
-                               "\n<a:Arrow_1:1145603161701224528> No trash talking other editors and groups!"
-                               '\n<a:Arrow_1:1145603161701224528> Any rules above broken, you will receive a warning/get kicked', color=0x2b2d31)
-        embed2.set_image(url="https://cdn.discordapp.com/attachments/1184208577120960632/1208238170446241842/welc_banner_00000.png?ex=65e28e7b&is=65d0197b&hm=6b49f32da0368e84e7c14c89cd0313f831723f44289064a1aff6b831843ec078&")
+        embed = discord.Embed(color=0x2b2d31)
+        embed.set_image(url="https://cdn.discordapp.com/attachments/1184208577120960632/1224699045834919978/welc_banner_00000.png?ex=661e70de&is=660bfbde&hm=e0fd22d8e884fda1ec8e4257378cc7177c4e89ca3de21fbc7f1b9251ea9199c0&")
+        embed1 = discord.Embed(title="> __Kanzen Rules__", description="<a:Arrow_1:1145603161701224528> No NSFW content or sexual discussions"
+        "<a:Arrow_1:1145603161701224528> No offensive slurs (instant ban)"
+        "<a:Arrow_1:1145603161701224528> Must have age roles from ⁠⁠<id:customize>"
+        "<a:Arrow_1:1145603161701224528> Only use bots in designated channels"
+        '<a:Arrow_1:1145603161701224528> Set nickname as "your name | username"'
+        "<a:Arrow_1:1145603161701224528> No impersonating other editors / members"
+        "<a:Arrow_1:1145603161701224528> No trash talking other members or groups"
+        "<a:Arrow_1:1145603161701224528> Breaking rules leads to warning/kick", color=0x2b2d31)
         view = infobuttons()
         message = await ctx.send(embed=embed)
-        await ctx.send(embed=embed2, view=view)
+        await ctx.send(embed=embed)
+        await ctx.send(embed=embed1, view=view)
 
     def is_booster():
         async def predicate(ctx):
