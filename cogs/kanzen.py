@@ -63,7 +63,7 @@ class ia(ui.Modal, title='Inactivity Message'):
     async def on_submit(self, interaction: discord.Interaction):
         embed = discord.Embed(description=f"Instagram - [{self.instagram.value}](https://instagram.com/{self.instagram.value})\nDiscord - {interaction.user.display_name}\nReason - {self.reason.value}", color=0x2b2d31)
         embed.set_footer(text=interaction.user.id, icon_url=interaction.user.display_avatar)
-        channel = interaction.client.get_channel(1121913672822968330)
+        channel = interaction.client.get_channel(1220525020682522777)
         await channel.send(embed=embed)
         await interaction.response.send_message(f'Your inactive message has been sent successfully', ephemeral=True)
 
