@@ -396,7 +396,7 @@ class Forms(commands.Cog):
         lyrainsta = discord.ui.Button(label="Instagram", url="https://www.instagram.com/gplyra/")
         lyatiktok = discord.ui.Button(label="TikTok", url="www.tiktok.com/@grplyra")
         lyragrps.add_item(lyrainsta)
-        lyragrps.add_item(lyrainsta)
+        lyragrps.add_item(lyatiktok)
         await ctx.send("https://discord.gg/uCPhm6PECW", view=lyragrps)
         embed= discord.Embed(description="Want to partner with us? read our partner info in <#1131005271502753812>", color=0x2b2d31)
         await ctx.send(embed=embed)
