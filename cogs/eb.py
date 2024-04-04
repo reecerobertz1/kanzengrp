@@ -394,7 +394,7 @@ class Forms(commands.Cog):
         await ctx.send("https://discord.gg/XVpKTcJhf8", view=hsgrp)
         lyragrps = lyragrp()
         lyrainsta = discord.ui.Button(label="Instagram", url="https://www.instagram.com/gplyra/")
-        lyatiktok = discord.ui.Button(label="TikTok", url="www.tiktok.com/@grplyra")
+        lyatiktok = discord.ui.Button(label="TikTok", url="https://www.tiktok.com/@grplyra")
         lyragrps.add_item(lyrainsta)
         lyragrps.add_item(lyatiktok)
         await ctx.send("https://discord.gg/uCPhm6PECW", view=lyragrps)
