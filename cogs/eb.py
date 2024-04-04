@@ -398,6 +398,8 @@ class Forms(commands.Cog):
         lyragrps.add_item(lyrainsta)
         lyragrps.add_item(lyrainsta)
         await ctx.send("https://discord.gg/uCPhm6PECW", view=lyragrps)
+        embed= discord.Embed(description="Want to partner with us? read our partner info in <#1131005271502753812>", color=0x2b2d31)
+        await ctx.send(embed=embed)
 
     @commands.command()
     @commands.has_permissions(manage_guild=True)
