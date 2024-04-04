@@ -50,7 +50,7 @@ class acceptordecline(discord.ui.View):
         if interaction.user.id == 603077306956644353:
             await self.update_nani_row(member.id, 1)
             await interaction.response.send_message(f"You have voted to accept {self.member}, if you change your mind you can click the decline button", ephemeral=True) 
-        if interaction.user.id == 1085643520435556452:
+        if interaction.user.id == 1169110493303164930:
             await self.update_adil_row(member.id, 1)
             await interaction.response.send_message(f"You have voted to accept {self.member}, if you change your mind you can click the decline button", ephemeral=True) 
         if interaction.user.id == 705866935178362901:
@@ -74,19 +74,21 @@ class acceptordecline(discord.ui.View):
         if interaction.user.id == 764293346364620810:
             await self.update_riri_row(member.id, 1)
             await interaction.response.send_message(f"You have voted to accept {self.member}, if you change your mind you can click the decline button", ephemeral=True) 
-        if accepts == 1:
+        if accepts == 3:
+            message_id = interaction.message.id
+            message = await interaction.channel.fetch_message(message_id)
             accept_embed = discord.Embed(description=f"> `🌠` __**Welcome to kanzengrp**__"
-            "\n- You have been accepted into kanzengrp!"
-            "\n - Click the **Join now** button to join our members server"
-            "\n - If you have any questions feel free to ping @staff or @lead"
-            "\n\nThank you for joining kanzengrp!", color=0x2b2d31)
+                "\n- You have been accepted into kanzengrp!"
+                "\n - Click the **Join now** button to join our members server"
+                "\n - If you have any questions feel free to ping @staff or @lead"
+                "\n\nThank you for joining kanzengrp!", color=0x2b2d31)
             accept_embed.set_thumbnail(url=interaction.guild.icon)
             await self.update_accepted_status(member.id)
             button = discord.ui.Button(label="Click to join!", url=f"{link}")
             view = discord.ui.View()
             view.add_item(button)
             await member.send(embed=accept_embed, view=view)
-            await interaction.response.edit_message(content="ACCEPTED", view=None)
+            await message.edit(content="ACCEPTED", view=None)
             embed = discord.Embed(description=f"> `💫` **__{self.member} was accepted__**\nTheir instagram is {self.instagram}", color=0x2b2d31)
             embed.set_thumbnail(url=member.avatar)
             button2 = discord.ui.Button(label=f"Follow {self.instagram}", url=f"https://instagram.com/{self.instagram}/", emoji="🌕")
@@ -113,7 +115,7 @@ class acceptordecline(discord.ui.View):
         if interaction.user.id == 603077306956644353:
             await self.update_nani_row(member.id, 2)
             await interaction.response.send_message(f"You have voted to decline {self.member}, if you change your mind you can click the decline button", ephemeral=True) 
-        if interaction.user.id == 1085643520435556452:
+        if interaction.user.id == 1169110493303164930:
             await self.update_adil_row(member.id, 2)
             await interaction.response.send_message(f"You have voted to decline {self.member}, if you change your mind you can click the decline button", ephemeral=True) 
         if interaction.user.id == 705866935178362901:
@@ -138,11 +140,13 @@ class acceptordecline(discord.ui.View):
             await self.update_riri_row(member.id, 2)
             await interaction.response.send_message(f"You have voted to decline {self.member}, if you change your mind you can click the decline button", ephemeral=True) 
         if declines == 3:
+            message_id = interaction.message.id
+            message = await interaction.channel.fetch_message(message_id)
             accept_embed = discord.Embed(description=f"> `🌠` __**Your application has been declned**__"
             f"\n- You **{attempts}** application attempts left", color=0x2b2d31)
             accept_embed.set_thumbnail(url=interaction.guild.icon)
             await member.send(embed=accept_embed)
-            await interaction.response.edit_message(content="# DECLINED", view=None)
+            await message.edit(content="# DECLINED", view=None)
 
     async def count_accepted(self, member_id: int) -> int:
         query = '''SELECT reece, nani, adil, kelly, luki, josh, kio, mari, marie, riri FROM apps WHERE member_id = ?'''
