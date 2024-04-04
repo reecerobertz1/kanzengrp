@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
-from discord import app_commands, ui
+from discord import ui
 
 class lyragrp(discord.ui.View):
     def __init__(self):
@@ -25,10 +25,10 @@ class acceptordecline(discord.ui.View):
     @discord.ui.button(label="Accept", style=discord.ButtonStyle.blurple)
     async def accept(self, interaction: discord.Interaction, button: discord.Button):
         member = self.member
-        member_id = member.id
         guild_id = 1121841073673736215
         channel_id = 1148042725950767138
         guild = interaction.client.get_guild(guild_id)
+        accepts = await self.count_accepted(member.id)
         if not guild:
             await interaction.response.send_message("Guild not found.", ephemeral=True)
             return
@@ -44,21 +44,56 @@ class acceptordecline(discord.ui.View):
             await interaction.response.send_message(f"Failed to create invite.\n{e}", ephemeral=True)
             return
 
-        accept_embed = discord.Embed(description=f"## __Welcome to Kanzengrp!__\nYou have been accepted from our applications!", color=0x2b2d31)
-        accept_embed.set_thumbnail(url=interaction.guild.icon)
-        await self.update_accepted_status(member.id)
-        button = discord.ui.Button(label="Click to join!", url=f"{link}")
-        view = discord.ui.View()
-        view.add_item(button)
-        await member.send(embed=accept_embed, view=view)
-        await interaction.response.edit_message(content="ACCEPTED", view=None)
-        embed = discord.Embed(description=f"## {self.member} was accepted\nTheir instagram is {self.instagram}", color=0x2b2d31)
-        embed.set_thumbnail(url=member.avatar)
-        button2 = discord.ui.Button(label=f"Follow {self.instagram}", url=f"https://instagram.com/{self.instagram}/")
-        view2 = discord.ui.View()
-        view2.add_item(button2)
-        channel = interaction.client.get_channel(1131006361921130526)
-        await channel.send(embed=embed, view=view2)
+        if interaction.user.id == 609515684740988959:
+            await self.update_reece_row(member.id, 1)
+            await interaction.response.send_message(f"You have voted to accept {self.member}, if you change your mind you can click the decline button", ephemeral=True)  
+        if interaction.user.id == 603077306956644353:
+            await self.update_nani_row(member.id, 1)
+            await interaction.response.send_message(f"You have voted to accept {self.member}, if you change your mind you can click the decline button", ephemeral=True) 
+        if interaction.user.id == 1085643520435556452:
+            await self.update_adil_row(member.id, 1)
+            await interaction.response.send_message(f"You have voted to accept {self.member}, if you change your mind you can click the decline button", ephemeral=True) 
+        if interaction.user.id == 705866935178362901:
+            await self.update_kelly_row(member.id, 1)
+            await interaction.response.send_message(f"You have voted to accept {self.member}, if you change your mind you can click the decline button", ephemeral=True) 
+        if interaction.user.id == 758834972446031912:
+            await self.update_luki_row(member.id, 1)
+            await interaction.response.send_message(f"You have voted to accept {self.member}, if you change your mind you can click the decline button", ephemeral=True) 
+        if interaction.user.id == 1111564587024789504:
+            await self.update_josh_row(member.id, 1)
+            await interaction.response.send_message(f"You have voted to accept {self.member}, if you change your mind you can click the decline button", ephemeral=True) 
+        if interaction.user.id == 497548184298586133:
+            await self.update_kio_row(member.id, 1)
+            await interaction.response.send_message(f"You have voted to accept {self.member}, if you change your mind you can click the decline button", ephemeral=True) 
+        if interaction.user.id == 891348311544590376:
+            await self.update_mari_row(member.id, 1)
+            await interaction.response.send_message(f"You have voted to accept {self.member}, if you change your mind you can click the decline button", ephemeral=True) 
+        if interaction.user.id == 751895538646909038:
+            await self.update_marie_row(member.id, 1)
+            await interaction.response.send_message(f"You have voted to accept {self.member}, if you change your mind you can click the decline button", ephemeral=True) 
+        if interaction.user.id == 764293346364620810:
+            await self.update_riri_row(member.id, 1)
+            await interaction.response.send_message(f"You have voted to accept {self.member}, if you change your mind you can click the decline button", ephemeral=True) 
+        if accepts == 1:
+            accept_embed = discord.Embed(description=f"> `🌠` __**Welcome to kanzengrp**__"
+            "\n- You have been accepted into kanzengrp!"
+            "\n - Click the **Join now** button to join our members server"
+            "\n - If you have any questions feel free to ping @staff or @lead"
+            "\n\nThank you for joining kanzengrp!", color=0x2b2d31)
+            accept_embed.set_thumbnail(url=interaction.guild.icon)
+            await self.update_accepted_status(member.id)
+            button = discord.ui.Button(label="Click to join!", url=f"{link}")
+            view = discord.ui.View()
+            view.add_item(button)
+            await member.send(embed=accept_embed, view=view)
+            await interaction.response.edit_message(content="ACCEPTED", view=None)
+            embed = discord.Embed(description=f"> `💫` **__{self.member} was accepted__**\nTheir instagram is {self.instagram}", color=0x2b2d31)
+            embed.set_thumbnail(url=member.avatar)
+            button2 = discord.ui.Button(label=f"Follow {self.instagram}", url=f"https://instagram.com/{self.instagram}/", emoji="🌕")
+            view2 = discord.ui.View()
+            view2.add_item(button2)
+            channel = interaction.client.get_channel(1131006361921130526)
+            await channel.send(embed=embed, view=view2)
 
     async def update_accepted_status(self, member_id: int, status="yes"):
         query = '''UPDATE apps SET accepted = ? WHERE member_id = ?'''
@@ -70,17 +105,138 @@ class acceptordecline(discord.ui.View):
     @discord.ui.button(label="Decline", style=discord.ButtonStyle.red)
     async def decline(self, interaction: discord.Interaction, button: discord.Button):
         member = self.member
-        member_id = member.id
-        apps = await self.get_apps(member.id)
-        if apps == 1:
-            appcount = "You have **1** application left, you can apply one more time!"
-        else:
-            appcount = "You cannot apply anymore times, you have used both your applications"
-        declineembed = discord.Embed(description=f"## __Your application has been declined!__\nYou have been declined from our applications...\n{appcount}", color=0x2b2d31)
-        declineembed.set_thumbnail(url=interaction.guild.icon)
-        await self.update_applied(member.id, "false")
-        await member.send(embed=declineembed)
-        await interaction.response.edit_message(content="# DECLINED", view=None)
+        declines = await self.count_declined(member.id)
+        attempts = await self.get_apps(member.id)
+        if interaction.user.id == 609515684740988959:
+            await self.update_reece_row(member.id, 2)
+            await interaction.response.send_message(f"You have voted to decline {self.member}, if you change your mind you can click the decline button", ephemeral=True)  
+        if interaction.user.id == 603077306956644353:
+            await self.update_nani_row(member.id, 2)
+            await interaction.response.send_message(f"You have voted to decline {self.member}, if you change your mind you can click the decline button", ephemeral=True) 
+        if interaction.user.id == 1085643520435556452:
+            await self.update_adil_row(member.id, 2)
+            await interaction.response.send_message(f"You have voted to decline {self.member}, if you change your mind you can click the decline button", ephemeral=True) 
+        if interaction.user.id == 705866935178362901:
+            await self.update_kelly_row(member.id, 2)
+            await interaction.response.send_message(f"You have voted to decline {self.member}, if you change your mind you can click the decline button", ephemeral=True) 
+        if interaction.user.id == 758834972446031912:
+            await self.update_luki_row(member.id, 2)
+            await interaction.response.send_message(f"You have voted to decline {self.member}, if you change your mind you can click the decline button", ephemeral=True) 
+        if interaction.user.id == 1111564587024789504:
+            await self.update_josh_row(member.id, 2)
+            await interaction.response.send_message(f"You have voted to decline {self.member}, if you change your mind you can click the decline button", ephemeral=True) 
+        if interaction.user.id == 497548184298586133:
+            await self.update_kio_row(member.id, 2)
+            await interaction.response.send_message(f"You have voted to decline {self.member}, if you change your mind you can click the decline button", ephemeral=True) 
+        if interaction.user.id == 891348311544590376:
+            await self.update_mari_row(member.id, 2)
+            await interaction.response.send_message(f"You have voted to decline {self.member}, if you change your mind you can click the decline button", ephemeral=True) 
+        if interaction.user.id == 751895538646909038:
+            await self.update_marie_row(member.id, 2)
+            await interaction.response.send_message(f"You have voted to decline {self.member}, if you change your mind you can click the decline button", ephemeral=True) 
+        if interaction.user.id == 764293346364620810:
+            await self.update_riri_row(member.id, 2)
+            await interaction.response.send_message(f"You have voted to decline {self.member}, if you change your mind you can click the decline button", ephemeral=True) 
+        if declines == 3:
+            accept_embed = discord.Embed(description=f"> `🌠` __**Your application has been declned**__"
+            f"\n- You **{attempts}** application attempts left", color=0x2b2d31)
+            accept_embed.set_thumbnail(url=interaction.guild.icon)
+            await member.send(embed=accept_embed)
+            await interaction.response.edit_message(content="# DECLINED", view=None)
+
+    async def count_accepted(self, member_id: int) -> int:
+        query = '''SELECT reece, nani, adil, kelly, luki, josh, kio, mari, marie, riri FROM apps WHERE member_id = ?'''
+        total_accepted = 0
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, (member_id,))
+                rows = await cursor.fetchall()
+                if rows:
+                    row = rows[0]
+                    total_accepted = sum(1 for value in row if value == 1)
+            return total_accepted
+
+    async def count_declined(self, member_id: int) -> int:
+        query = '''SELECT reece, nani, adil, kelly, luki, josh, kio, mari, marie, riri FROM apps WHERE member_id = ?'''
+        total_declined = 0
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, (member_id,))
+                rows = await cursor.fetchall()
+                if rows:
+                    row = rows[0]
+                    total_declined = sum(1 for value in row if value == 2)
+            return total_declined
+
+    async def update_reece_row(self, member_id: int, value: int) -> None:
+        query = '''UPDATE apps SET reece = ? WHERE member_id = ?'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, (value, member_id))
+                await conn.commit()
+
+    async def update_nani_row(self, member_id: int, value: int) -> None:
+        query = '''UPDATE apps SET nani = ? WHERE member_id = ?'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, (value, member_id))
+                await conn.commit()
+
+    async def update_adil_row(self, member_id: int, value: int) -> None:
+        query = '''UPDATE apps SET adil = ? WHERE member_id = ?'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, (value, member_id))
+                await conn.commit()
+
+    async def update_kelly_row(self, member_id: int, value: int) -> None:
+        query = '''UPDATE apps SET kelly = ? WHERE member_id = ?'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, (value, member_id))
+                await conn.commit()
+
+    async def update_luki_row(self, member_id: int, value: int) -> None:
+        query = '''UPDATE apps SET luki = ? WHERE member_id = ?'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, (value, member_id))
+                await conn.commit()
+
+    async def update_josh_row(self, member_id: int, value: int) -> None:
+        query = '''UPDATE apps SET josh = ? WHERE member_id = ?'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, (value, member_id))
+                await conn.commit()
+
+    async def update_kio_row(self, member_id: int, value: int) -> None:
+        query = '''UPDATE apps SET kio = ? WHERE member_id = ?'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, (value, member_id))
+                await conn.commit()
+
+    async def update_mari_row(self, member_id: int, value: int) -> None:
+        query = '''UPDATE apps SET mari = ? WHERE member_id = ?'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, (value, member_id))
+                await conn.commit()
+
+    async def update_marie_row(self, member_id: int, value: int) -> None:
+        query = '''UPDATE apps SET marie = ? WHERE member_id = ?'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, (value, member_id))
+                await conn.commit()
+
+    async def update_riri_row(self, member_id: int, value: int) -> None:
+        query = '''UPDATE apps SET riri = ? WHERE member_id = ?'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, (value, member_id))
+                await conn.commit()
 
     async def update_applied(self, member_id: int, text: str):
         query = '''UPDATE apps SET applied = ? WHERE member_id = ?'''
@@ -104,16 +260,28 @@ class applicationsview(discord.ui.View):
 
     @discord.ui.button(label="Apply", style=discord.ButtonStyle.blurple)
     async def apply(self, interaction: discord.Interaction, button: discord.Button):
+        user = interaction.user
         await self.add_member(interaction.user.id)
         apps = await self.get_apps(interaction.user.id)
         applied = await self.get_applied(interaction.user.id)
         accepted = await self.get_accepted(interaction.user.id)
+        booster_role_id = 1136803676854431745
+        has_booster_role = any(role.id == booster_role_id for role in user.roles)
+
         if accepted == "yes":
-            await interaction.response.send_message("You have been accepted! Please check your dms from Hoshi if you haven't already", ephemeral=True)
+            await interaction.response.send_message("You have been accepted! Please check your DMs from Hoshi if you haven't already", ephemeral=True)
+            return
+
         if applied == "true":
-            await interaction.response.send_message("You have already applied... please wait for a response before applying again", ephemeral=True)
+            await interaction.response.send_message("You have already applied. Please wait for a response before applying again.", ephemeral=True)
+            return
+
         if apps == 0:
-            await interaction.response.send_message("You cannot apply anymore since you have no applications left...", ephemeral=True)
+            await interaction.response.send_message("You cannot apply anymore since you have no applications left.", ephemeral=True)
+            return
+
+        if has_booster_role:
+            await interaction.response.send_modal(apply(bot=self.bot))
         else:
             await interaction.response.send_modal(apply(bot=self.bot))
 
@@ -121,12 +289,17 @@ class applicationsview(discord.ui.View):
     async def check(self, interaction: discord.Interaction, button: discord.Button):
         apps = await self.get_apps(interaction.user.id)
         await self.add_member(interaction.user.id)
+        user = interaction.user
+        booster_role_id = 1136803676854431745
+        has_booster_role = any(role.id == booster_role_id for role in user.roles)
         if apps == 0:
             attempts = "You have **0** attempts left"
         elif apps:
             attempts = f"You have **{apps}** application attempts left!"
         else:
             attempts = "Please try again... An error occurred"
+        if has_booster_role:
+            attempts = "You are a booster of the server... You have unlimited attempts!"
         await interaction.response.send_message(attempts, ephemeral=True)
 
     async def get_applied(self, member_id: int) -> str:
@@ -251,16 +424,16 @@ class apply(ui.Modal, title="Apply for Kanzengrp"):
         self.bot = bot
 
     instagram = ui.TextInput(label="What is your Instagram username?", placeholder="Enter your username here...", style=discord.TextStyle.short)
-    activity = ui.TextInput(label="How active will you be in kanzengrp?", placeholder="On a scale of 1-10", style=discord.TextStyle.short)
     pastmember = ui.TextInput(label="Where you a past member?", placeholder="Yes or No", style=discord.TextStyle.short)
     edit = ui.TextInput(label="The link to the edit you're applying with", placeholder="Paste link here", style=discord.TextStyle.short)
     other = ui.TextInput(label="Anything else you want us to know?", placeholder="Anything else?", style=discord.TextStyle.long)
+    shiton = ui.TextInput(label="Would you like any criticism?", placeholder="Yes or No", style=discord.TextStyle.short)
     async def on_submit(self, interaction: discord.Interaction):
         await interaction.response.defer()
-        embed = discord.Embed(description=f"`☄️` Kanzen Forms\nSent from [**{self.instagram.value}**](https://instagram.com{self.instagram.value})\n\nHow active will they be?\n> {self.activity.value}\n\nWere they a past member?\n> {self.pastmember.value}\n\nThe edit they applied with\n> {self.edit.value}\n\nAnything Else?\n> {self.other.value}", color=0x2b2d31)
+        embed = discord.Embed(description=f"`☄️` Kanzen Forms\nSent from [**{self.instagram.value}**](https://instagram.com{self.instagram.value})\n\nWere they a past member?\n> {self.pastmember.value}\n\nThe edit they applied with\n> {self.edit.value}\n\nAnything Else?\n> {self.other.value}\n\nAny criticism?\n> {self.shiton.value}", color=0x2b2d31)
         embed.set_thumbnail(url=interaction.guild.icon)
         embed.set_footer(text=f"Sent from {interaction.user.name} | {interaction.user.id}")
-        channel=interaction.client.get_channel(1131006328207327294)
+        channel=interaction.client.get_channel(1222674203447267399)
         await channel.send(embed=embed, view = acceptordecline(bot=self.bot, member=interaction.user, instagram=self.instagram.value))
         await self.add_member(interaction.user.id)
         await self.update_applied(interaction.user.id, "true")
@@ -352,7 +525,6 @@ class Forms(commands.Cog):
         return [member[0] for member in members]
 
     @commands.command()
-    @commands.has_permissions(manage_guild=True)
     async def accepted(self, ctx):
         accepted_members = await self.get_accepted_members()
         if accepted_members:
@@ -375,10 +547,24 @@ class Forms(commands.Cog):
                 await conn.commit()
 
     @commands.command()
-    @commands.has_permissions(manage_guild=True)
     async def clearapps(self, ctx):
         await self.clear_database()
         await ctx.send("The database has been cleared.")
+
+    @commands.command()
+    async def staffinfo(self, ctx):
+        embed = discord.Embed(description="> `💫` **__Staff Information__**"
+"\n\n<a:Arrow_1:1145603161701224528> To accept a form, you just need to click the **Vote Accept** button"
+"\n\n<a:Arrow_1:1145603161701224528> Voting accept will add one vote to a members form, but voting to decline will subtract one vote"
+"\n\n<a:Arrow_1:1145603161701224528> A form needs **3** accept votes before being accepted (the form should be updated with the amount of votes)"
+"\n\n<a:Arrow_1:1145603161701224528> To clearly see what forms you have voted on or not voted on, feel free to leave a reaction on the form, so you don't get confused"
+"\n\n<a:Arrow_1:1145603161701224528> If you want to discuss someone's edits, you can always create a thread on the form (look at the image below to see how to make one if you don't know)"
+"\n\n<a:Arrow_1:1145603161701224528> If someone has mentioned that they would like criticism, pls make sure you do (ask someone else for help if you don't know what to put)"
+"\n\n<a:Arrow_1:1145603161701224528> If you don't see the **decline** button, it is because the member has one more application left, the decline button will be replaced with a **reapp** button"
+"\n\n<a:Arrow_1:1145603161701224528> If the buttons do not work (says interaction failed) please do tell Reece, we can then keep track of votes manually and accept them via commands", color=0x2b2d31)
+        embed.set_thumbnail(url=ctx.guild.icon)
+        embed.set_image(url="https://cdn.discordapp.com/attachments/1184208577120960632/1221859377200496781/image.png?ex=66141c38&is=6601a738&hm=0338ddd0f1acf13e40359e9a5d0fbdbce75f611fe30a3e21f1fd81cf72edfcd9&")
+        await ctx.reply(embed=embed)
 
     @commands.command()
     async def partners(self, ctx):
