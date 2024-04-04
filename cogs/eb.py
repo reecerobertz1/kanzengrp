@@ -2,6 +2,18 @@ import discord
 from discord.ext import commands
 from discord import app_commands, ui
 
+class lyragrp(discord.ui.View):
+    def __init__(self):
+        super().__init__(timeout=None)
+        self.value=None
+
+    @discord.ui.button(label="Info", style=discord.ButtonStyle.blurple, emoji="<:1817bunnylove:1135527331398692975>")
+    async def info(self, interaction: discord.Interaction, button: discord.Button):
+        embed = discord.Embed(title="GRP LYRA",description="- led by [lyrinari](https://www.instagram.com/lyrinari/), [hiraeyq](https://www.instagram.com/hiraeyq/), [.denisaur.](https://www.instagram.com/_.denisaur._/) & [kazuhqra](https://www.instagram.com/kazuhqra/)\n- multi-fandom" ,color=0xfebcbe)
+        embed.set_image(url="https://cdn.discordapp.com/attachments/1221580405921284317/1225300494621343776/form_gfx_w_grains.png?ex=6620a102&is=660e2c02&hm=d8b1ada951fd18e3836895d778d0323a1a60ff0ae729ff612cc9fb38751d5eba&")
+        embed.set_thumbnail(url="https://cdn.discordapp.com/icons/1134736053803159592/a_479bb36059893c697962d64e636728c8.gif?size=1024&width=0&height=307")
+        await interaction.response.send_message(embed=embed, ephemeral=True)
+
 class acceptordecline(discord.ui.View):
     def __init__(self, bot, member, instagram):
         super().__init__(timeout=None)
@@ -369,7 +381,6 @@ class Forms(commands.Cog):
         await ctx.send("The database has been cleared.")
 
     @commands.command()
-    @commands.has_permissions(manage_guild=True)
     async def partners(self, ctx):
         aster = discord.ui.View()
         astersite = discord.ui.Button(label="Website", url="https://grpaster.com")
@@ -381,8 +392,12 @@ class Forms(commands.Cog):
         hsgrpinsta = discord.ui.Button(label="Instagram", url="https://instagram.com/heartstoppergrp?igshid=MzRlODBiNWFlZA==")
         hsgrp.add_item(hsgrpinsta)
         await ctx.send("https://discord.gg/XVpKTcJhf8", view=hsgrp)
-        embed= discord.Embed(description="Want to partner with us? read our partner info in <#1131005271502753812>", color=0x2b2d31)
-        await ctx.send(embed=embed)
+        lyragrps = lyragrp()
+        lyrainsta = discord.ui.Button(label="Instagram", url="https://www.instagram.com/gplyra/")
+        lyatiktok = discord.ui.Button(label="TikTok", url="www.tiktok.com/@grplyra")
+        lyragrps.add_item(lyrainsta)
+        lyragrps.add_item(lyrainsta)
+        await ctx.send("https://discord.gg/uCPhm6PECW", view=lyragrps)
 
     @commands.command()
     @commands.has_permissions(manage_guild=True)
