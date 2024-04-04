@@ -467,7 +467,7 @@ class levels(commands.Cog):
 
     async def set_silver_role(self, role_id: int) -> None:
         role_id = "NULL" if role_id == 0 else role_id
-        query = '''UPDATE setup SET silver_role_id = ? WHERE  = ?'''
+        query = '''UPDATE setup SET silver_role_id = ?'''
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cursor:
                 await cursor.execute(query, role_id, )
@@ -476,7 +476,7 @@ class levels(commands.Cog):
 
     async def set_gold_role(self, role_id: int) -> None:
         role_id = "NULL" if role_id == 0 else role_id
-        query = '''UPDATE setup SET gold_role_id = ? WHERE  = ?'''
+        query = '''UPDATE setup SET gold_role_id = ?'''
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cursor:
                 await cursor.execute(query, role_id, )
@@ -485,7 +485,7 @@ class levels(commands.Cog):
 
     async def set_diamond_role(self, role_id: int) -> None:
         role_id = "NULL" if role_id == 0 else role_id
-        query = '''UPDATE setup SET diamond_role_id = ? WHERE  = ?'''
+        query = '''UPDATE setup SET diamond_role_id = ?'''
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cursor:
                 await cursor.execute(query, role_id, )
@@ -494,7 +494,7 @@ class levels(commands.Cog):
 
     async def set_plat_role(self, role_id: int) -> None:
         role_id = "NULL" if role_id == 0 else role_id
-        query = '''UPDATE setup SET plat_role_id = ? WHERE  = ?'''
+        query = '''UPDATE setup SET plat_role_id = ?'''
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cursor:
                 await cursor.execute(query, role_id, )
@@ -503,7 +503,7 @@ class levels(commands.Cog):
 
     async def set_elite_role(self, role_id: int) -> None:
         role_id = "NULL" if role_id == 0 else role_id
-        query = '''UPDATE setup SET elite_role_id = ? WHERE  = ?'''
+        query = '''UPDATE setup SET elite_role_id = ?'''
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cursor:
                 await cursor.execute(query, role_id, )
@@ -512,7 +512,7 @@ class levels(commands.Cog):
 
     async def set_bronze_role(self, role_id: int) -> None:
         role_id = "NULL" if role_id == 0 else role_id
-        query = '''UPDATE setup SET bronze_role_id = ? WHERE  = ?'''
+        query = '''UPDATE setup SET bronze_role_id = ?'''
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cursor:
                 await cursor.execute(query, role_id, )
