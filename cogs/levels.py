@@ -394,7 +394,7 @@ class levels(commands.Cog):
             await self.level_handler(message, retry_after, xp_to_add)
 
     async def get_bronze_role_id(self) -> Union[int, None]:
-        query = '''SELECT bronze_role_id FROM setup WHERE  = ?'''
+        query = '''SELECT bronze_role_id FROM setup'''
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cursor:
                 await cursor.execute(query, )
@@ -406,7 +406,7 @@ class levels(commands.Cog):
             return None
         
     async def get_gold_role_id(self) -> Union[int, None]:
-        query = '''SELECT gold_role_id FROM setup WHERE  = ?'''
+        query = '''SELECT gold_role_id FROM setup'''
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cursor:
                 await cursor.execute(query, )
@@ -418,7 +418,7 @@ class levels(commands.Cog):
             return None
         
     async def get_diamond_role_id(self) -> Union[int, None]:
-        query = '''SELECT diamond_role_id FROM setup WHERE  = ?'''
+        query = '''SELECT diamond_role_id FROM setup'''
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cursor:
                 await cursor.execute(query, )
@@ -430,7 +430,7 @@ class levels(commands.Cog):
             return None
 
     async def get_plat_role_id(self) -> Union[int, None]:
-        query = '''SELECT plat_role_id FROM setup WHERE  = ?'''
+        query = '''SELECT plat_role_id FROM setup'''
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cursor:
                 await cursor.execute(query, )
@@ -442,7 +442,7 @@ class levels(commands.Cog):
             return None
 
     async def get_elite_role_id(self) -> Union[int, None]:
-        query = '''SELECT elite_role_id FROM setup WHERE  = ?'''
+        query = '''SELECT elite_role_id FROM setup'''
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cursor:
                 await cursor.execute(query, )
@@ -454,7 +454,7 @@ class levels(commands.Cog):
             return None
 
     async def get_silver_role_id(self) -> Union[int, None]:
-        query = '''SELECT silver_role_id FROM setup WHERE  = ?'''
+        query = '''SELECT silver_role_id FROM setup'''
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cursor:
                 await cursor.execute(query, )
