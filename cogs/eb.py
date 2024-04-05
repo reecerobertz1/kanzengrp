@@ -577,7 +577,7 @@ class Forms(commands.Cog):
         asterinsta = discord.ui.Button(label="Instagram", url="https://instagram.com/grpaster")
         aster.add_item(astersite)
         aster.add_item(asterinsta)
-        await ctx.send("discord.gg/grpaster", view=aster)
+        await ctx.send("https://discord.gg/aster-hiraya-day-748021504830341330", view=aster)
         hsgrp = discord.ui.View()
         hsgrpinsta = discord.ui.Button(label="Instagram", url="https://instagram.com/heartstoppergrp?igshid=MzRlODBiNWFlZA==")
         hsgrp.add_item(hsgrpinsta)
