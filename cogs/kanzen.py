@@ -26,10 +26,6 @@ class infobuttons(discord.ui.View):
         await channel.send(embed=log)
         await interaction.response.send_message(f'I have sent you the logos! Check your DMs', ephemeral=True)
 
-    @discord.ui.button(label="Kanzen Ranked")
-    async def ranks(self, interaction: discord.Interaction, button: discord.ui.Button):
-        await interaction.response.send_message("https://cdn.discordapp.com/attachments/1181419043153002546/1216065287120748714/ranked_badges_00000.png?ex=661ab78d&is=6608428d&hm=13dad2c986b6354387a6f119079e76418faccfdfaf7ad82f87f42cc992fa1667&", ephemeral=True)
-
     @discord.ui.button(label="Booster Perks")
     async def bp(self, interaction: discord.Interaction, button: discord.ui.Button):
         await interaction.response.send_message("https://cdn.discordapp.com/attachments/1198665603897118720/1223868316771160074/image.png?ex=661b6b31&is=6608f631&hm=5cf4e9697bcbaea6aa1c585a42db671f664d37c2e7a1daa4b6d0924748a06186&", ephemeral=True)
