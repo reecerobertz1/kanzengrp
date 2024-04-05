@@ -20,7 +20,8 @@ extensions = {
     "cogs.misc",
     "cogs.moderation",
     "cogs.other",
-    "cogs.welcandbye"
+    "cogs.welcandbye",
+    "cogs.countryvia"
 }
 class LalisaBot(commands.Bot):
     session: aiohttp.ClientSession
