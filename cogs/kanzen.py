@@ -28,7 +28,7 @@ class infobuttons(discord.ui.View):
 
     @discord.ui.button(label="Booster Perks")
     async def bp(self, interaction: discord.Interaction, button: discord.ui.Button):
-        await interaction.response.send_message("https://cdn.discordapp.com/attachments/1198665603897118720/1223868316771160074/image.png?ex=661b6b31&is=6608f631&hm=5cf4e9697bcbaea6aa1c585a42db671f664d37c2e7a1daa4b6d0924748a06186&", ephemeral=True)
+        await interaction.response.send_message("https://cdn.discordapp.com/attachments/1198665603897118720/1225863428967764091/image.png?ex=6622ad48&is=66103848&hm=273b466a3de5ff272322d458ef9dc6f6da5e3ac53435b8d1121aa431309fe86a&", ephemeral=True)
 
     @discord.ui.button(label="Inactivity")
     async def inactive(self, interaction: discord.Interaction, button: discord.Button):
