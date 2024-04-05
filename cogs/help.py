@@ -35,24 +35,21 @@ class Help(commands.Cog):
             "Moderation",
             "Miscellaneous",
             "Fun commands",
-            "Editing Commands",
-            "Economy Commands"
+            "Editing Commands"
         ]
         descriptions = [
             "Commands for the levelling system",
             "Moderation commands to help you with your server",
             "Miscellaneous commands",
             "Fun commands for you to play with",
-            "Commands to help you with editing",
-            "Commands for the economy system"
+            "Commands to help you with editing"
         ]
         emojis = [
             "<:cooky:1121909627156705280>",
             "<:rj:1121909526300479658>",
             "<:tata:1121909389280944169>",
             "<:chimmy2:1148234652448981072>",
-            "<:mang:1121909428866793582>",
-            "<:shooky:1121909564799987722>"
+            "<:mang:1121909428866793582>"
         ]
         animal_sell_view = animalsell(bot=self.bot)
         dropdown = discord.ui.Select(
