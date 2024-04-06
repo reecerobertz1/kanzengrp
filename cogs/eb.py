@@ -2,6 +2,18 @@ import discord
 from discord.ext import commands
 from discord import ui
 
+class musuemview(discord.ui.View):
+    def __init__(self):
+        super().__init__(timeout=None)
+        self.value=None
+
+    @discord.ui.button(label="Info", style=discord.ButtonStyle.blurple, emoji="<a:blackbut:1173677079905194014>")
+    async def info(self, interaction: discord.Interaction, button: discord.Button):
+        embed = discord.Embed(title="MUSEUMSOC",description="- led by [icidqve](https://www.instagram.com/icidqve?igsh=MWl0ZTFrNjFramdhZw==)\n- Multi Fandom" ,color=0x2b2d31)
+        embed.set_image(url="https://cdn.discordapp.com/attachments/1226151638201536703/1226240519395475556/00947474-35ED-4029-89B6-CE11D90E7F10.jpg?ex=66240c7a&is=6611977a&hm=d0ece9f89da039032a3e2b8ac8f5832bcc9c103db138d612df014401441dd4c1&")
+        embed.set_thumbnail(url="https://cdn.discordapp.com/icons/1137730730261237970/83e98bfd3cf4b8fd708a4c7412d52de3.webp?size=1024&format=webp&width=0&height=307")
+        await interaction.response.send_message(embed=embed, ephemeral=True)
+
 class lyragrp(discord.ui.View):
     def __init__(self):
         super().__init__(timeout=None)
@@ -588,6 +600,10 @@ class Forms(commands.Cog):
         lyragrps.add_item(lyrainsta)
         lyragrps.add_item(lyatiktok)
         await ctx.send("https://discord.gg/uCPhm6PECW", view=lyragrps)
+        musuem = musuemview()
+        museuminsta = discord.ui.Button(label="Instagram", url="https://www.instagram.com/museumsoc?igsh=MTFvb2VkcWxyZmVicA==")
+        musuem.add_item(museuminsta)
+        await ctx.send("https://discord.gg/S6r49qzmdT", view=musuem)
         embed= discord.Embed(description="Want to partner with us? read our partner info in <#1131005271502753812>", color=0x2b2d31)
         await ctx.send(embed=embed)
 
