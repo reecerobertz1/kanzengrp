@@ -5,6 +5,7 @@ import random
 from typing import List, TypedDict, Optional
 import asyncio
 from requests.exceptions import Timeout
+from datetime import datetime, timedelta, timezone
 
 class LevelRow(TypedDict):
     member_id: int
@@ -40,7 +41,7 @@ class countryvia(commands.Cog):
             players = [ctx.author]
 
         correct_guesses = 0
-        for _ in range(count):
+        for i in range(1, count + 1):
             flag_url, country_name = await self.fetch_flag()
 
             if flag_url:
@@ -51,12 +52,18 @@ class countryvia(commands.Cog):
                     psdonate = discord.ui.Button(label="Donate here", url="https://oc-palestine.carrd.co/", emoji="🇵🇸")
                     view.add_item(psdonate)
                 else:
+                    timeout_time = datetime.now(timezone.utc) + timedelta(seconds=30)
+                    timeout_str = f"<t:{int(timeout_time.timestamp())}:R>"
                     view = None
                     flag_url = flag_url
-                    description = "Guess the country's flag!"
+                    description = f"Guess the country's flag!\nFlag Timeout: {timeout_str}"
+
                 embed = discord.Embed(description=description, color=0x2b2d31)
                 embed.set_image(url=flag_url)
+                embed.set_footer(text=f"Flag: {i}/{count}", icon_url=ctx.author.avatar)
+                
                 await ctx.reply(embed=embed, view=view)
+                
                 try:
                     guess = await self.bot.wait_for(
                         "message",
@@ -68,12 +75,12 @@ class countryvia(commands.Cog):
                 else:
                     if guess.content.lower() == country_name.lower():
                         correct_guesses += 1
-                        await ctx.reply(f"Correct!")
+                        await ctx.reply("Correct!")
                     else:
                         await ctx.reply("Incorrect! The correct answer was: " + country_name)
             else:
                 await ctx.reply("Failed to fetch flag.")
-        embed=discord.Embed(title="Game Over", description=f"You got **{correct_guesses}/{count}** correct", color=0x2b2d31)
+        embed = discord.Embed(title="Game Over", description=f"You got **{correct_guesses}/{count}** correct", color=0x2b2d31)
         embed.set_thumbnail(url=ctx.author.avatar)
         await ctx.reply(embed=embed)
 
