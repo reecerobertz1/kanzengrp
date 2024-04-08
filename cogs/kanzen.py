@@ -8,6 +8,31 @@ from discord.ui import View, Select
 from typing import List, Optional
 from discord import ui
 
+class staffguide(discord.ui.View):
+    def __init__ (self):
+        super().__init__(timeout=None)
+        self.value = None
+
+    @discord.ui.button(label="Applications")
+    async def staffguide(self, interaction: discord.Interaction, button: discord.Button):
+        embed = discord.Embed(description="> `🌌` **__Application help__**"
+"\nFirst please make sure you join our public server, as this is where we do all our recruits, click the button at the bottom to join Kanzen Public"
+
+"\n\n- A member will send an application in <#1222674203447267399>"
+"\n- Their application will have 2 buttons **accept** and **decline**"
+"\n- You can use these buttons to vote whether a member should be accepted or declined"
+"\n- Each member needs **4** accepts/declines before getting a response"
+"\n- A member is able to DM you for criticism if they got declined, so be prepared"
+
+"\n\n> `💫` **__What we do/don't look for__**"
+"\n- Our main things we look for in edits is **smooth** and **creative** edits"
+"\n- We sometimes do accept velocity edits, but it is very very rare"
+"\n- Please do be very strict when it comes to accepting"
+"\n- If a member doesn't have a consistent edit style, it does not matter, if they're good... they're good"
+"\n- If a member has used an edit **over 3 months old** decline it and let them know to use a more recent edit", color=0x2b2d31)
+        embed.set_thumbnail(url=interaction.guild.icon)
+        await interaction.response.send_message(embed=embed, ephemeral=True)
+
 class infobuttons(discord.ui.View):
     def __init__ (self):
         super().__init__(timeout=None)
@@ -127,6 +152,23 @@ class kanzen(commands.Cog):
     @app_commands.command(name="feedback", description="give feedback")
     async def feedback(self, interaction: discord.Interaction):
         await interaction.response.send_modal(feedback())
+
+    @commands.command()
+    async def staffguide(self, ctx):
+        staff = discord.Embed(description="> **__Staff__**"
+"\nAs a staff member you can host events such as game nights, movie nights or anything else you can think off, except a group collab or edit wars. You also need to help out with applications when we have a recruit"
+"\n\nIf you happen to see anyone breaking our rules, you should either tell them to stop whatever it is they're doing, or give them a warning via Hoshi. The warning command is </warn:1182987258056409230>. If a member has 2 warnings, they're instantly banned from Kanzengrp. If the command does not work, you can give them a warning by just saying it and letting us know in <#1178952898273628200>"
+"\n\nIf you have anymore questions on what you can do as a staff member, feel free to ping Reece!", color=0x2b2d31)
+        staff.set_thumbnail(url=ctx.guild.icon)
+        await ctx.send(embed=staff)
+        mods = discord.Embed(description="> **__Moderator__**"
+"\nAs a moderator you can do everything a staff member can do. But you're able to ban and kick members yourself. Also make sure members are following the server rules!"
+"\n\n- Make sure members have their age roles (the correct ones)"
+"\n- If a member doesn't have their nickname as **name | instagram** ask them to change it, or do it yourself"
+"\n- If members are sending NSFW content in the server or using words that can be offensive (slurs, sexist comments, homophobia etc), instantly kick them from the server"
+"\n- If any other rules such as, trash talk, impersonating people, not using the right channels for things you can use our warn command </warn:1182987258056409230>", color=0x2b2d31)
+        mods.set_thumbnail(url=ctx.guild.icon)
+        await ctx.send(embed=mods, view=staffguide())
 
 async def setup(bot):
     await bot.add_cog(kanzen(bot))
