@@ -456,10 +456,9 @@ class apply(ui.Modal, title="Apply for Kanzengrp"):
     pastmember = ui.TextInput(label="Where you a past member?", placeholder="Yes or No", style=discord.TextStyle.short)
     edit = ui.TextInput(label="The link to the edit you're applying with", placeholder="Paste link here", style=discord.TextStyle.short)
     other = ui.TextInput(label="Anything else you want us to know?", placeholder="Anything else?", style=discord.TextStyle.long)
-    shiton = ui.TextInput(label="Would you like any criticism?", placeholder="Yes or No", style=discord.TextStyle.short)
     async def on_submit(self, interaction: discord.Interaction):
         await interaction.response.defer()
-        embed = discord.Embed(description=f"`☄️` Kanzen Forms\nSent from [**{self.instagram.value}**](https://instagram.com{self.instagram.value})\n\nWere they a past member?\n> {self.pastmember.value}\n\nThe edit they applied with\n> {self.edit.value}\n\nAnything Else?\n> {self.other.value}\n\nAny criticism?\n> {self.shiton.value}", color=0x2b2d31)
+        embed = discord.Embed(description=f"`☄️` Kanzen Forms\nSent from [**{self.instagram.value}**](https://instagram.com{self.instagram.value})\n\nWere they a past member?\n> {self.pastmember.value}\n\nThe edit they applied with\n> {self.edit.value}\n\nAnything Else?\n> {self.other.value}", color=0x2b2d31)
         embed.set_thumbnail(url=interaction.guild.icon)
         embed.set_footer(text=f"Sent from {interaction.user.name} | {interaction.user.id}")
         channel=interaction.client.get_channel(1222674203447267399)
