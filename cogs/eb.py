@@ -85,7 +85,10 @@ class acceptordecline(discord.ui.View):
             await interaction.response.send_message(f"You have voted to accept {self.member}, if you change your mind you can click the decline button", ephemeral=True) 
         if interaction.user.id == 764293346364620810:
             await self.update_riri_row(member.id, 1)
-            await interaction.response.send_message(f"You have voted to accept {self.member}, if you change your mind you can click the decline button", ephemeral=True) 
+            await interaction.response.send_message(f"You have voted to accept {self.member}, if you change your mind you can click the decline button", ephemeral=True)
+        if interaction.user.id == 887365538232270959:
+            await self.update_kai_row(member.id, 1)
+            await interaction.response.send_message(f"You have voted to accept {self.member}, if you change your mind you can click the decline button", ephemeral=True)
         if accepts == 3:
             message_id = interaction.message.id
             message = await interaction.channel.fetch_message(message_id)
@@ -150,7 +153,10 @@ class acceptordecline(discord.ui.View):
             await interaction.response.send_message(f"You have voted to decline {self.member}, if you change your mind you can click the decline button", ephemeral=True) 
         if interaction.user.id == 764293346364620810:
             await self.update_riri_row(member.id, 2)
-            await interaction.response.send_message(f"You have voted to decline {self.member}, if you change your mind you can click the decline button", ephemeral=True) 
+            await interaction.response.send_message(f"You have voted to decline {self.member}, if you change your mind you can click the decline button", ephemeral=True)
+        if interaction.user.id == 887365538232270959:
+            await self.update_kai_row(member.id, 2)
+            await interaction.response.send_message(f"You have voted to accept {self.member}, if you change your mind you can click the decline button", ephemeral=True) 
         if declines == 3:
             message_id = interaction.message.id
             message = await interaction.channel.fetch_message(message_id)
@@ -186,6 +192,13 @@ class acceptordecline(discord.ui.View):
 
     async def update_reece_row(self, member_id: int, value: int) -> None:
         query = '''UPDATE apps SET reece = ? WHERE member_id = ?'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, (value, member_id))
+                await conn.commit()
+
+    async def update_kai_row(self, member_id: int, value: int) -> None:
+        query = '''UPDATE apps SET kai = ? WHERE member_id = ?'''
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cursor:
                 await cursor.execute(query, (value, member_id))
@@ -623,6 +636,43 @@ class Forms(commands.Cog):
         await ctx.send("<@&1136803676854431745>",embed=embed)
         await ctx.send(embed=embed2, view=link)
         await ctx.send("Key: `UpSW3UlHZne2ADMwiQoUzA`")
+
+    async def get_voting_counts(self) -> dict:
+        query = '''SELECT reece, nani, adil, kelly, luki, josh, kio, mari, marie, riri, kai FROM apps'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query)
+                rows = await cursor.fetchall()
+
+        voting_counts = {}
+        for row in rows:
+            for index, value in enumerate(row):
+                member_name = ['reece', 'nani', 'adil', 'kelly', 'luki', 'josh', 'kio', 'mari', 'marie', 'riri', 'kai'][index]
+                if isinstance(value, int):
+                    accepts = 1 if value == 1 else 0
+                    declines = 1 if value == 2 else 0
+                else:
+                    accepts = 0
+                    declines = 0
+                voting_counts[member_name] = {'total_votes': accepts + declines, 'accepts': accepts, 'declines': declines}
+
+        return voting_counts
+
+    @commands.command()
+    async def staffvotes(self, ctx):
+        voting_counts = await self.get_voting_counts()
+
+        if not voting_counts:
+            await ctx.send("No votes found.")
+            return
+
+        result_message = ""
+        for member_name, counts in voting_counts.items():
+            result_message += f"**{member_name.capitalize()}**\n"
+            result_message += f"Voted - **{counts['total_votes']}** times | **{counts['accepts']}** accepts - **{counts['declines']}** declines\n\n"
+        embed = discord.Embed(title="> `🌙` Staff app votes", description=f"{result_message}", color=0x2b2d31)
+        embed.set_thumbnail(url=ctx.guild.icon)
+        await ctx.send(embed=embed)
 
 async def setup(bot):
     await bot.add_cog(Forms(bot))
