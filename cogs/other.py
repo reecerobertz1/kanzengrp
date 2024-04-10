@@ -164,7 +164,7 @@ class other(commands.Cog):
         if message.content.lower() == "nani":
             await message.channel.send("i woke up in a new 🔥bugatti🔥")
         if message.content.lower() == "spotify ads":
-            await message.channel.send("follow i1chae_ for free spotify premium")
+            await message.channel.send("follow i1chae_ for more scrumptious Le sserafim edits")
         if message.content.lower() == "kelly":
             await message.channel.send("Jungkook is so jungkook and no one will ever jungkook like jungkook <:boobs:1142888878999613520>")
         if message.content.lower() == "kio":
