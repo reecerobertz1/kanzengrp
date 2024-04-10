@@ -158,6 +158,7 @@ class acceptordecline(discord.ui.View):
             await self.update_kai_row(member.id, 2)
             await interaction.response.send_message(f"You have voted to accept {self.member}, if you change your mind you can click the decline button", ephemeral=True) 
         if declines == 3:
+            await self.update_applied(member.id, "false")
             message_id = interaction.message.id
             message = await interaction.channel.fetch_message(message_id)
             accept_embed = discord.Embed(description=f"> `🌠` __**Your application has been declned**__"
