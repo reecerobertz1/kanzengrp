@@ -547,9 +547,11 @@ class Forms(commands.Cog):
         "\n<a:Arrow_1:1227576761722732647> Once you have applied twice you can no longer apply"
         "\n<a:Arrow_1:1227576761722732647> Apply with an edit that is no longer than **3 months** old"
         "\n<a:Arrow_1:1227576761722732647> Applications will close on <t:1714431600:D> | <t:1714431600:R> "
-        "\n<a:Arrow_1:1227576761722732647>  Make sure you followed the rules on our recruit post", color=0x2b2d31)
+        "\n<a:Arrow_1:1227576761722732647> Make sure you followed the rules on our recruit post", color=0x2b2d31)
         embed.set_thumbnail(url=ctx.guild.icon)
-        await ctx.send(embed=embed, view=applicationsview(bot=self.bot))
+        view = applicationsview(bot=self.bot)
+        rctpost = discord.ui.button(label="Recruit post | follow rules", url="https://www.instagram.com/kanzengrp")
+        await ctx.send(embed=embed, view=view)
 
     async def get_accepted_members(self):
         query = '''SELECT member_id FROM apps WHERE accepted LIKE '%yes%' '''
