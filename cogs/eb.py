@@ -550,7 +550,7 @@ class Forms(commands.Cog):
         "\n<a:Arrow_1:1227576761722732647> Make sure you followed the rules on our recruit post", color=0x2b2d31)
         embed.set_thumbnail(url=ctx.guild.icon)
         view = applicationsview(bot=self.bot)
-        rctpost = discord.ui.button(label="Recruit post | follow rules", url="https://www.instagram.com/kanzengrp")
+        rctpost = discord.ui.Button(label="Recruit post | follow rules", url="https://www.instagram.com/kanzengrp")
         view.add_item(rctpost)
         await ctx.send(embed=embed, view=view)
 
