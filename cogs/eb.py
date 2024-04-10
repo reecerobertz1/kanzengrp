@@ -540,7 +540,14 @@ class Forms(commands.Cog):
     @commands.has_permissions(manage_guild=True)
     async def apps(self, ctx):
         await ctx.message.delete()
-        embed = discord.Embed(description="### `☄️` __Application Information__\n<a:purplearrow:1214948087861084171> Click the `Apply` button and fill out the form, then submit\n<a:purplearrow:1214948087861084171> You will get a dm from Hoshi saying if you got accepted or not\n<a:purplearrow:1214948087861084171> You only get 2 applications, so use them wisely\n<a:purplearrow:1214948087861084171> Click the `Check` button to see how many times you've applied\n<a:purplearrow:1214948087861084171> Once you have applied twice, you no longer can app again\n<a:purplearrow:1214948087861084171> Please be patient with us! you will get a response soon", color=0x2b2d31)
+        embed = discord.Embed(description="<a:Arrow_1:1227576761722732647> Click the `Apply` button to apply for our grp"
+        "\n<a:Arrow_1:1227576761722732647> Hoshi will dm you saying if you got accepted or declined"
+        "\n<a:Arrow_1:1227576761722732647> You only get **2** attempts or unlimited if you boost"
+        "\n<a:Arrow_1:1227576761722732647> The `check` button will show you how many attempts you have"
+        "\n<a:Arrow_1:1227576761722732647> Once you have applied twice you can no longer apply"
+        "\n<a:Arrow_1:1227576761722732647> Apply with an edit that is no longer than **3 months** old"
+        "\n<a:Arrow_1:1227576761722732647> Applications will close on <t:1714431600:D> | <t:1714431600:R> "
+        "\n<a:Arrow_1:1227576761722732647>  Make sure you followed the rules on our recruit post", color=0x2b2d31)
         embed.set_thumbnail(url=ctx.guild.icon)
         await ctx.send(embed=embed, view=applicationsview(bot=self.bot))
 
