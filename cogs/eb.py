@@ -551,6 +551,7 @@ class Forms(commands.Cog):
         embed.set_thumbnail(url=ctx.guild.icon)
         view = applicationsview(bot=self.bot)
         rctpost = discord.ui.button(label="Recruit post | follow rules", url="https://www.instagram.com/kanzengrp")
+        view.add_item(rctpost)
         await ctx.send(embed=embed, view=view)
 
     async def get_accepted_members(self):
