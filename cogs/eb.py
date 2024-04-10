@@ -540,7 +540,7 @@ class Forms(commands.Cog):
     @commands.has_permissions(manage_guild=True)
     async def apps(self, ctx):
         await ctx.message.delete()
-        embed = discord.Embed(description="<a:Arrow_1:1227576761722732647> Click the `Apply` button to apply for our grp"
+        embed = discord.Embed(title="> `☄️` **__Application Information__**",description="<a:Arrow_1:1227576761722732647> Click the `Apply` button to apply for our grp"
         "\n<a:Arrow_1:1227576761722732647> Hoshi will dm you saying if you got accepted or declined"
         "\n<a:Arrow_1:1227576761722732647> You only get **2** attempts or unlimited if you boost"
         "\n<a:Arrow_1:1227576761722732647> The `check` button will show you how many attempts you have"
