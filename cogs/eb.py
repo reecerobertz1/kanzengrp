@@ -684,6 +684,13 @@ class Forms(commands.Cog):
         embed.set_thumbnail(url=ctx.guild.icon)
         await ctx.send(embed=embed)
 
+    async def update_applied(self, member_id: int, text: str):
+        query = '''UPDATE apps SET applied = ? WHERE member_id = ?'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, (text, member_id))
+                await conn.commit()
+
     @commands.command()
     async def fix(self, ctx, member: discord.Member):
         await self.update_applied(member.id, "false")
