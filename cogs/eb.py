@@ -684,5 +684,10 @@ class Forms(commands.Cog):
         embed.set_thumbnail(url=ctx.guild.icon)
         await ctx.send(embed=embed)
 
+    @commands.command()
+    async def fix(self, ctx, member: discord.Member):
+        await self.update_applied(member.id, "false")
+        await ctx.reply(f"Updated applied status for {member.mention}")
+
 async def setup(bot):
     await bot.add_cog(Forms(bot))
