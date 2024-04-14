@@ -117,7 +117,7 @@ class staffapps(ui.Modal, title='Staff apps'):
     why = ui.TextInput(label="Why should i add you?", placeholder="Tell me here", style=discord.TextStyle.long)
     active = ui.TextInput(label="How active are you? scale of 1-10", placeholder="Tell me here", style=discord.TextStyle.short)
     async def on_submit(self, interaction: discord.Interaction):
-        embed = discord.Embed(description=f"> `🪐` **__Staff Application__**\n\n**Sent from**: <@{interaction.user.id}>\n\n**Experience**\n{self.experience.value}\n\n**Why**\n{self.why.value}\n\n**Active**: {self.active.value}", color=0x2b2d31)
+        embed = discord.Embed(description=f"> `🪐` **__Staff Application__**\n\n**Sent from**: <@{interaction.user.id}>\n\n**Role** - {self.role.value}\n\n**Experience**\n{self.experience.value}\n\n**Why**\n{self.why.value}\n\n**Active**: {self.active.value}", color=0x2b2d31)
         embed.set_footer(text=interaction.user.id, icon_url=interaction.user.display_avatar)
         embed.set_thumbnail(url=interaction.user.display_avatar)
         channel = interaction.client.get_channel(1228842574866022533)
