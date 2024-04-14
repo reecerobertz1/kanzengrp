@@ -196,7 +196,7 @@ class kanzen(commands.Cog):
     async def staffapps(self, ctx):
         embed=discord.Embed(title="> `🪐` **__Staff Apps__**", description="Before applying here is a little bit of information you need to know", color=0x2b2d31)
         embed.add_field(name="__Head Staff__:", value="• Work closely with <@603077306956644353> and manage all team roles (admins, mods, staff, zennies)."
-        "\n• Choose one person for the head staff role who has good experience and leadership skills."
+        "\n• I will only choose one person for the head staff role who has good experience and leadership skills."
         "\n• Keep the staff team running well and encourage them to be active."
         "\n• Stay active in the server yourself."
         "\n• And everything else from the other roles", inline=False)
