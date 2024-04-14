@@ -2,6 +2,18 @@ import discord
 from discord.ext import commands
 from discord import ui
 
+class sserafimsview(discord.ui.View):
+    def __init__(self):
+        super().__init__(timeout=None)
+        self.value=None
+
+    @discord.ui.button(label="Info", style=discord.ButtonStyle.blurple, emoji="<a:whiteheart:1162101392605974661>")
+    async def info(self, interaction: discord.Interaction, button: discord.Button):
+        embed = discord.Embed(title="> sserafim unit",description="☆ lead by [lqvenx](https://instagram.com/lqvenx/) and [prdchwn](https://instagram.com/prdchwn/)\n☆ accept **ANY** style or fandom\n☆ est 2023" ,color=0x2b2d31)
+        embed.set_image(url="https://media.discordapp.net/attachments/1077844218657112106/1152694949977018489/IMG_7033.png?ex=662d58d4&is=661ae3d4&hm=80ca947f5f9bc250ace9398b61091484e28edda9a0ddc1e2e23b0af4d88d6d5d&format=webp&quality=lossless&")
+        embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/1113419928545001534/1229110766129643632/IMG_5993.jpg?ex=662e7d9a&is=661c089a&hm=65ed6c4a7b7b9244856630df153ba01a9b2996c791b74bbf72ae6ac9886dc85f&")
+        await interaction.response.send_message(embed=embed, ephemeral=True)
+
 class musuemview(discord.ui.View):
     def __init__(self):
         super().__init__(timeout=None)
@@ -627,6 +639,10 @@ class Forms(commands.Cog):
         museuminsta = discord.ui.Button(label="Instagram", url="https://www.instagram.com/museumsoc?igsh=MTFvb2VkcWxyZmVicA==")
         musuem.add_item(museuminsta)
         await ctx.send("https://discord.gg/S6r49qzmdT", view=musuem)
+        sserafims = sserafimsview()
+        sserafiminsta = discord.ui.Button(label="Instagram", url="https://instagram.com/sserafimunit")
+        sserafims.add_item(sserafiminsta)
+        await ctx.send("https://discord.gg/znZFjgJT", view=sserafims)
         embed= discord.Embed(description="Want to partner with us? read our partner info in <#1131005271502753812>", color=0x2b2d31)
         await ctx.send(embed=embed)
 
