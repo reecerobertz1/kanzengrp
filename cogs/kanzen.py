@@ -8,6 +8,15 @@ from discord.ui import View, Select
 from typing import List, Optional
 from discord import ui
 
+class staffappsbutton(discord.ui.View):
+    def __init__ (self):
+        super().__init__(timeout=None)
+        self.value = None
+
+    @discord.ui.button(label="Apply here")
+    async def inactive(self, interaction: discord.Interaction, button: discord.Button):
+        await interaction.response.send_modal(staffapps())
+
 class staffguide(discord.ui.View):
     def __init__ (self):
         super().__init__(timeout=None)
@@ -102,6 +111,19 @@ class feedback(ui.Modal, title='Kanzen Feedback'):
         await channel.send(embed=embed)
         await interaction.followup.send(f"Thank you {interaction.user.display_name} your feedback has been sent!", ephemeral=True)
 
+class staffapps(ui.Modal, title='Staff apps'):
+    role = ui.TextInput(label='What role are you applying for?', placeholder="Enter the role here: head staff, mod, staff", style=discord.TextStyle.short)
+    experience  = ui.TextInput(label='What experience do you have?', placeholder="Tell me here", style=discord.TextStyle.long)
+    why = ui.TextInput(label="Why should i add you?", placeholder="Tell me here", style=discord.TextStyle.long)
+    active = ui.TextInput(label="How active are you? scale of 1-10", placeholder="Tell me here", style=discord.TextStyle.short)
+    async def on_submit(self, interaction: discord.Interaction):
+        embed = discord.Embed(description=f"> `🪐` **__Staff Application__**\n\n**Sent from**: <@{interaction.user.id}>\n\n**Experience**\n{self.experience.value}\n\n**Why**\n{self.why.value}\n\n**Active**: {self.active.value}", color=0x2b2d31)
+        embed.set_footer(text=interaction.user.id, icon_url=interaction.user.display_avatar)
+        embed.set_thumbnail(url=interaction.user.display_avatar)
+        channel = interaction.client.get_channel(1228842574866022533)
+        await channel.send(embed=embed)
+        await interaction.response.send_message(f'Your staff application for {self.role.value} has been sent successfully', ephemeral=True)
+
 class kanzen(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -169,6 +191,26 @@ class kanzen(commands.Cog):
 "\n- If any other rules such as, trash talk, impersonating people, not using the right channels for things you can use our warn command </warn:1182987258056409230>", color=0x2b2d31)
         mods.set_thumbnail(url=ctx.guild.icon)
         await ctx.send(embed=mods, view=staffguide())
+
+    @commands.command()
+    async def staffapps(self, ctx):
+        embed=discord.Embed(title="> `🪐` **__Staff Apps__**", description="Before applying here is a little bit of information you need to know", color=0x2b2d31)
+        embed.add_field(name="__Head Staff__:", value="• Work closely with <@603077306956644353> and manage all team roles (admins, mods, staff, zennies)."
+        "\n• Choose one person for the head staff role who has good experience and leadership skills."
+        "\n• Keep the staff team running well and encourage them to be active."
+        "\n• Stay active in the server yourself."
+        "\n• And everything else from the other roles", inline=False)
+        embed.add_field(name="__Moderator__:", value="• Basic moderator role: moderate messages, nicknames, and profile pics."
+        "\n• Issue warnings with /warning for rule-breaking; report to head staff or Reece."
+        "\n• if they break the first 2 rules of our server, you can kick or ban without permission."
+        "\n• And anything else from staff", inline=False)
+        embed.add_field(name="__Staff__:", value="• Plan events (game / movie nights or editing challenges)"
+        "\n• Help members when they need it"
+        "\n• Help out with normal stuff within the server (sorting channels, roles, members)"
+        "\n• Review apps when we have a recruit"
+        "\n• When we have collabs you can help host one of them", inline=False)
+        embed.set_thumbnail(url=ctx.guild.icon)
+        await ctx.reply(embed=embed, view=staffappsbutton())
 
 async def setup(bot):
     await bot.add_cog(kanzen(bot))
