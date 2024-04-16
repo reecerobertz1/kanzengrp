@@ -169,6 +169,8 @@ class other(commands.Cog):
             await message.channel.send("Jungkook is so jungkook and no one will ever jungkook like jungkook <:boobs:1142888878999613520>")
         if message.content.lower() == "kio":
             await message.channel.send("if lost, please return to <@609515684740988959>")
+        if message.content.lower() == "cc":
+            await message.channel.send("cece is the most sane diluc stan... *not*")
         blocked_words = ["nigga", "n i g g a", "niga", "n i g a", "n1ga", "n 1 g a", "n1gger", "nigger", "n1ger", "n i g e r", "n i g a", "n 1 g a", "n 1 g e r", "retard", "r e t a r d", "r3tard", "r 3 t a r d", "batty boy", "bender", "ching chong", "chink", "chinkie", "chinky", "cotton picker", "cracker", "cripple", "curry muncher", "dyke", "eskimo", "fag", "faggot", "gimp", "golliwogg", "nazi","nigglet", "fagg0t", "niglet", "osama bin laden", "retarted", "shemale", "tranie", "trannie", "tranny", "trany", "yellow people"]
         lower_content = message.content.lower()
         if any(word in lower_content for word in blocked_words):
