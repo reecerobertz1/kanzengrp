@@ -948,9 +948,10 @@ class levels(commands.Cog):
                     await conn.commit()
                 await self.bot.pool.release(conn)
         else:
+            new_mora = levels['mora'] + amount if levels['mora'] is not None else amount
             async with self.bot.pool.acquire() as conn:
                 async with conn.cursor() as cursor:
-                    await cursor.execute(query, (levels['mora'] + amount, member_id, ))
+                    await cursor.execute(query, (new_mora, member_id, ))
                     await conn.commit()
                 await self.bot.pool.release(conn)
 
@@ -966,9 +967,10 @@ class levels(commands.Cog):
                     await conn.commit()
                 await self.bot.pool.release(conn)
         else:
+            new_stardust = levels['stardust'] + amount if levels['stardust'] is not None else amount
             async with self.bot.pool.acquire() as conn:
                 async with conn.cursor() as cursor:
-                    await cursor.execute(query, (levels['stardust'] + amount, member_id, ))
+                    await cursor.execute(query, (new_stardust, member_id, ))
                     await conn.commit()
                 await self.bot.pool.release(conn)
 
