@@ -11,6 +11,7 @@ from discord import app_commands
 from PIL import Image, ImageFilter, ImageOps
 import requests
 from utils.views import Paginator
+from easy_pil import Font
 
 class LevelRow(TypedDict):
     member_id: int
@@ -18,6 +19,260 @@ class LevelRow(TypedDict):
     messages: int
     color: str
     image: str
+    mora: int
+    stardust: int
+    memberlvl: int
+    decor: str
+
+class roleshop(discord.ui.View):
+    def __init__(self, bot):
+        super().__init__(timeout=None)
+        self.value = None
+        self.bot = bot
+
+    @discord.ui.button(label="Click to unlock custom roles", emoji="🌙")
+    async def one(self, interaction: discord.Interaction, button: discord.Button):
+        price = 60
+        levels = await self.get_member_levels(interaction.user.id)
+        
+        if levels and levels['stardust'] >= 60:
+            await self.update_roles(interaction.user.id, "yes")
+            await self.remove_stardust(interaction.user.id, amount=price)
+            await interaction.response.send_message(f"You have bought **Custom Roles** for **<:stardust:1230256970859155486>{price} Stardust**", ephemeral=True)
+        else:
+            await interaction.response.send_message("You do not have enough <:stardust:1230256970859155486>Stardust to complete this purchase")
+
+    async def update_roles(self, member_id: int, text: str):
+        query = '''UPDATE levels SET roles = ? WHERE member_id = ?'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, (text, member_id))
+                await conn.commit()
+
+    async def remove_stardust(self, member_id: int, amount: int) -> None:
+        query = '''UPDATE levels SET stardust = ? WHERE member_id = ?'''
+        levels = await self.get_member_levels(member_id)
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, (levels['stardust'] - amount, member_id, ))
+                await conn.commit()
+            await self.bot.pool.release(conn)
+
+    async def get_member_levels(self, member_id: int) -> Optional[LevelRow]:
+        query = '''SELECT * from levels WHERE member_id = ?'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, (member_id, ))
+                row = await cursor.fetchone()
+                if row:
+                    return row
+                else:
+                    return None
+
+class carddecorshop(discord.ui.View):
+    def __init__(self, bot):
+        super().__init__(timeout=None)
+        self.value = None
+        self.bot = bot
+
+    @discord.ui.button(emoji="<:number1:1209947396637728808>")
+    async def one(self, interaction: discord.Interaction, button: discord.Button):
+        price = 15
+        id = "1"
+        levels = await self.get_member_levels(interaction.user.id)
+        
+        if levels['stardust'] >= price:
+            await self.update_decor(interaction.user.id, id)
+            await self.remove_stardust(interaction.user.id, amount=price)
+            await interaction.response.send_message(f"You have bought **decor {id}** for **<:stardust:1230256970859155486>{price} Stardust**", ephemeral=True)
+        else:
+            await interaction.response.send_message("You do not have enough <:stardust:1230256970859155486>Stardust to complete this purchase")
+
+    @discord.ui.button(emoji="<:number2:1209947399053901824>")
+    async def two(self, interaction: discord.Interaction, button: discord.Button):
+        price = 30
+        id = "2"
+        levels = await self.get_member_levels(interaction.user.id)
+        
+        if levels['stardust'] >= price:
+            await self.update_decor(interaction.user.id, id)
+            await self.remove_stardust(interaction.user.id, amount=price)
+            await interaction.response.send_message(f"You have bought **decor {id}** for **<:stardust:1230256970859155486>{price} Stardust**", ephemeral=True)
+        else:
+            await interaction.response.send_message("You do not have enough <:stardust:1230256970859155486>Stardust to complete this purchase")
+
+    @discord.ui.button(emoji="<:number3:1209947401100595310>")
+    async def three(self, interaction: discord.Interaction, button: discord.Button):
+        price = 60
+        id = "3"
+        levels = await self.get_member_levels(interaction.user.id)
+        
+        if levels['stardust'] >= price:
+            await self.update_decor(interaction.user.id, id)
+            await self.remove_stardust(interaction.user.id, amount=price)
+            await interaction.response.send_message(f"You have bought **decor {id}** for **<:stardust:1230256970859155486>{price} Stardust**", ephemeral=True)
+        else:
+            await interaction.response.send_message("You do not have enough <:stardust:1230256970859155486>Stardust to complete this purchase")
+
+    @discord.ui.button(emoji="<:number4:1209947403432624138>")
+    async def four(self, interaction: discord.Interaction, button: discord.Button):
+        price = 80
+        id = "4"
+        levels = await self.get_member_levels(interaction.user.id)
+        
+        if levels['stardust'] >= price:
+            await self.update_decor(interaction.user.id, id)
+            await self.remove_stardust(interaction.user.id, amount=price)
+            await interaction.response.send_message(f"You have bought **decor {id}** for **<:stardust:1230256970859155486>{price} Stardust**", ephemeral=True)
+        else:
+            await interaction.response.send_message("You do not have enough <:stardust:1230256970859155486>Stardust to complete this purchase")
+
+    async def get_member_levels(self, member_id: int) -> Optional[LevelRow]:
+        query = '''SELECT * from levels WHERE member_id = ?'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, (member_id, ))
+                row = await cursor.fetchone()
+                if row:
+                    return row
+                else:
+                    return None
+
+    async def update_decor(self, member_id: int, id: str) -> None:
+        query = '''UPDATE levels SET decor = ? WHERE member_id = ?'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, (id, member_id, ))
+                await conn.commit()
+            await self.bot.pool.release(conn)
+
+    async def remove_stardust(self, member_id: int, amount: int) -> None:
+        query = '''UPDATE levels SET stardust = ? WHERE member_id = ?'''
+        levels = await self.get_member_levels(member_id)
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, (levels['stardust'] - amount, member_id, ))
+                await conn.commit()
+            await self.bot.pool.release(conn)
+
+class stardustshop(discord.ui.View):
+    def __init__(self, bot):
+        super().__init__(timeout=None)
+        self.value = None
+        self.bot = bot
+
+    @discord.ui.button(label="5", emoji="<:stardust:1230256970859155486>")
+    async def five(self, interaction: discord.Interaction, button: discord.Button):
+        amount = 5
+        price = 15
+        levels = await self.get_member_levels(interaction.user.id)
+        
+        if levels and levels['mora'] >= 15:
+            await self.update_stardust(interaction.user.id, amount)
+            await self.remove_mora(interaction.user.id, amount=price)
+            await interaction.response.send_message(f"You have bought **<:stardust:1230256970859155486>{amount} Stardust** for **<:mora:1230914532675813508>{price} Mora**", ephemeral=True)
+        else:
+            await interaction.response.send_message("You do not have enough <:mora:1230914532675813508>Mora to complete this purchase")
+
+    @discord.ui.button(label="10", emoji="<:stardust:1230256970859155486>")
+    async def ten(self, interaction: discord.Interaction, button: discord.Button):
+        amount = 10
+        price = 30
+        levels = await self.get_member_levels(interaction.user.id)
+        
+        if levels and levels['mora'] >= 30:
+            await self.update_stardust(interaction.user.id, amount)
+            await self.remove_mora(interaction.user.id, amount=price)
+            await interaction.response.send_message(f"You have bought **<:stardust:1230256970859155486>{amount} Stardust** for **<:mora:1230914532675813508>{price} Mora**", ephemeral=True)
+        else:
+            await interaction.response.send_message("You do not have enough <:mora:1230914532675813508>Mora to complete this purchase")
+
+    @discord.ui.button(label="20", emoji="<:stardust:1230256970859155486>")
+    async def twenty(self, interaction: discord.Interaction, button: discord.Button):
+        amount = 20
+        price = 60
+        levels = await self.get_member_levels(interaction.user.id)
+        
+        if levels and levels['mora'] >= 60:
+            await self.update_stardust(interaction.user.id, amount)
+            await self.remove_mora(interaction.user.id, amount=price)
+            await interaction.response.send_message(f"You have bought **<:stardust:1230256970859155486>{amount} Stardust** for **<:mora:1230914532675813508>{price} Mora**", ephemeral=True)
+        else:
+            await interaction.response.send_message("You do not have enough <:mora:1230914532675813508>Mora to complete this purchase")
+
+    @discord.ui.button(label="40", emoji="<:stardust:1230256970859155486>")
+    async def fourty(self, interaction: discord.Interaction, button: discord.Button):
+        amount = 40
+        price = 120
+        levels = await self.get_member_levels(interaction.user.id)
+        
+        if levels and levels['mora'] >= 120:
+            await self.update_stardust(interaction.user.id, amount)
+            await self.remove_mora(interaction.user.id, amount=price)
+            await interaction.response.send_message(f"You have bought **<:stardust:1230256970859155486>{amount} Stardust** for **<:mora:1230914532675813508>{price} Mora**", ephemeral=True)
+        else:
+            await interaction.response.send_message("You do not have enough <:mora:1230914532675813508>Mora to complete this purchase")
+
+    @discord.ui.button(label="80", emoji="<:stardust:1230256970859155486>")
+    async def eighty(self, interaction: discord.Interaction, button: discord.Button):
+        amount = 80
+        price = 240
+        levels = await self.get_member_levels(interaction.user.id)
+        
+        if levels and levels['mora'] >= 240:
+            await self.update_stardust(interaction.user.id, amount)
+            await self.remove_mora(interaction.user.id, amount=price)
+            await interaction.response.send_message(f"You have bought **<:stardust:1230256970859155486>{amount} Stardust** for **<:mora:1230914532675813508>{price} Mora**", ephemeral=True)
+        else:
+            await interaction.response.send_message("You do not have enough <:mora:1230914532675813508>Mora to complete this purchase")
+
+    @discord.ui.button(label="160", emoji="<:stardust:1230256970859155486>")
+    async def hunderedsixty(self, interaction: discord.Interaction, button: discord.Button):
+        amount = 160
+        price = 480
+        levels = await self.get_member_levels(interaction.user.id)
+        
+        if levels and levels['mora'] >= 480:
+            await self.update_stardust(interaction.user.id, amount)
+            await self.remove_mora(interaction.user.id, amount=price)
+            await interaction.response.send_message(f"You have bought **<:stardust:1230256970859155486>{amount} Stardust** for **<:mora:1230914532675813508>{price} Mora**", ephemeral=True)
+        else:
+            await interaction.response.send_message("You do not have enough <:mora:1230914532675813508>Mora to complete this purchase")
+
+    async def update_stardust(self, member_id: int, amount: int) -> None:
+        query = '''UPDATE levels SET stardust = ? WHERE member_id = ?'''
+        levels = await self.get_member_levels(member_id)
+        
+        if levels is None or levels['stardust'] is None:
+            starting_stardust = 0
+        else:
+            starting_stardust = levels['stardust']
+        
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, (starting_stardust + amount, member_id,))
+                await conn.commit()
+            await self.bot.pool.release(conn)
+
+    async def remove_mora(self, member_id: int, amount: int) -> None:
+        query = '''UPDATE levels SET mora = ? WHERE member_id = ?'''
+        levels = await self.get_member_levels(member_id)
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, (levels['mora'] - amount, member_id, ))
+                await conn.commit()
+            await self.bot.pool.release(conn)
+
+    async def get_member_levels(self, member_id: int) -> Optional[LevelRow]:
+        query = '''SELECT * from levels WHERE member_id = ?'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, (member_id, ))
+                row = await cursor.fetchone()
+                if row:
+                    return row
+                else:
+                    return None
 
 class levels(commands.Cog):
     def __init__(self, bot):
@@ -37,11 +292,11 @@ class levels(commands.Cog):
         
         return commands.Cooldown(1, 86400)
 
-    async def add_member(self, member_id: int, xp = 5) -> None:
-        query = '''INSERT INTO levels (member_id, xp , messages, color) VALUES (?, ?, ?, ?)'''
+    async def add_member(self, member_id: int, xp=5, mora=5) -> None:
+        query = '''INSERT INTO levels (member_id, xp, messages, color, mora) VALUES (?, ?, ?, ?, ?)'''
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cursor:
-                await cursor.execute(query, (member_id, xp, 1, '#793e79'))
+                await cursor.execute(query, (member_id, xp, 1, '#793e79', mora))
                 await conn.commit()
             await self.bot.pool.release(conn)
 
@@ -61,158 +316,28 @@ class levels(commands.Cog):
                 await conn.commit()
             await self.bot.pool.release(conn)
 
-    async def check_levels(self, message: discord.Message, xp: int, xp_to_add: int) -> None:
-        new_xp = xp + xp_to_add
-        lvl = 0
-        while True:
-            if xp < ((50*(lvl**2))+(50*(lvl-1))):
-                break
-            lvl += 1
-        next_level_xp = ((50*(lvl**2))+(50*(lvl-1)))
-        if new_xp > next_level_xp:
-            await message.channel.send(f"Yay! {message.author.mention} you just reached **level {lvl+1}**")
-
-    async def level_handler(self, message: discord.Message, retry_after: Optional[commands.CooldownMapping], xp: int) -> None:
-        member_id = message.author.id
+    async def update_mora(self, member_id: int) -> None:
+        query = '''UPDATE levels SET mora = ? WHERE member_id = ?'''
         levels = await self.get_member_levels(member_id)
-        if levels == None:
-            await self.add_member(member_id)
-        else:
-            if retry_after:
-                await self.update_messages(member_id, levels)
-            else:
-                await self.update_xp(member_id, levels, xp)
-                await self.check_levels(message, levels['xp'], xp)
-                silver = await self.get_silver_role_id()
-                if silver is not None:
-                    await self.silver_role_handler(message.author, silver)
-                gold = await self.get_gold_role_id()
-                if gold is not None:
-                    await self.gold_role_handler(message.author, gold)
-                diamond = await self.get_diamond_role_id()
-                if diamond is not None:
-                    await self.diamond_role_handler(message.author, diamond)
-                plat = await self.get_plat_role_id()
-                if plat is not None:
-                    await self.plat_role_handler(message.author, plat)
-                elite = await self.get_elite_role_id()
-                if elite is not None:
-                    await self.elite_role_handler(message.author, elite)
-
-    async def _check_silver(self, member_id: int) -> bool:
-        rank = await self.get_rank(member_id, )
-        return rank < 36
-    
-    async def _check_gold(self, member_id: int) -> bool:
-        rank = await self.get_rank(member_id, )
-        return rank < 21
-    
-    async def _check_diamond(self, member_id: int) -> bool:
-        rank = await self.get_rank(member_id, )
-        return rank < 16
-
-    async def _check_plat(self, member_id: int) -> bool:
-        rank = await self.get_rank(member_id, )
-        return rank < 6
-    
-    async def _check_elite(self, member_id: int) -> bool:
-        rank = await self.get_rank(member_id, )
-        return rank < 4
-
-    async def _get_silver_movedown(self, member_ids: list) -> int:
-        t = tuple(member_ids)
-        query = "SELECT member_id FROM levels WHERE xp = (SELECT MIN(xp) FROM levels WHERE member_id IN {})".format(t)
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cursor:
-                await cursor.execute(query)
-                member_id = await cursor.fetchone()
+                await cursor.execute(query, (levels['mora'] + 5, member_id, ))
+                await conn.commit()
             await self.bot.pool.release(conn)
-        return member_id[0]
-    
-    async def _get_gold_movedown(self, member_ids: list) -> int:
-        t = tuple(member_ids)
-        query = "SELECT member_id FROM levels WHERE xp = (SELECT MIN(xp) FROM levels WHERE member_id IN {})".format(t)
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cursor:
-                await cursor.execute(query)
-                member_id = await cursor.fetchone()
-            await self.bot.pool.release(conn)
-        return member_id[0]
-    
-    async def _get_diamond_movedown(self, member_ids: list) -> int:
-        t = tuple(member_ids)
-        query = "SELECT member_id FROM levels WHERE xp = (SELECT MIN(xp) FROM levels WHERE member_id IN {})".format(t)
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cursor:
-                await cursor.execute(query)
-                member_id = await cursor.fetchone()
-            await self.bot.pool.release(conn)
-        return member_id[0]
 
-    async def _get_plat_movedown(self, member_ids: list) -> int:
-        t = tuple(member_ids)
-        query = "SELECT member_id FROM levels WHERE xp = (SELECT MIN(xp) FROM levels WHERE member_id IN {})".format(t)
+    async def remove_mora(self, member_id: int) -> None:
+        query = '''UPDATE levels SET mora = ? WHERE member_id = ?'''
+        levels = await self.get_member_levels(member_id)
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cursor:
-                await cursor.execute(query)
-                member_id = await cursor.fetchone()
+                await cursor.execute(query, (levels['mora'] - 5, member_id, ))
+                await conn.commit()
             await self.bot.pool.release(conn)
-        return member_id[0]
 
-    async def _get_elite_movedown(self, member_ids: list) -> int:
-        t = tuple(member_ids)
-        query = "SELECT member_id FROM levels WHERE xp = (SELECT MIN(xp) FROM levels WHERE member_id IN {})".format(t)
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cursor:
-                await cursor.execute(query)
-                member_id = await cursor.fetchone()
-            await self.bot.pool.release(conn)
-        return member_id[0]
-
-    async def _get_silver(self) -> int:
-        query = '''SELECT member_id FROM levels WHERE ORDER BY xp LIMIT 35'''
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cursor:
-                await cursor.execute(query, )
-                member_ids = await cursor.fetchall()
-            await self.bot.pool.release(conn)
-        return member_ids[-1][0]
-
-    async def _get_gold(self) -> int:
-        query = '''SELECT member_id FROM levels WHERE ORDER BY xp LIMIT 20'''
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cursor:
-                await cursor.execute(query, )
-                member_ids = await cursor.fetchall()
-            await self.bot.pool.release(conn)
-        return member_ids[-1][0]
-
-    async def _get_diamond(self) -> int:
-        query = '''SELECT member_id FROM levels WHERE ORDER BY xp LIMIT 15'''
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cursor:
-                await cursor.execute(query, )
-                member_ids = await cursor.fetchall()
-            await self.bot.pool.release(conn)
-        return member_ids[-1][0]
-
-    async def _get_plat(self) -> int:
-        query = '''SELECT member_id FROM levels WHERE ORDER BY xp LIMIT 5'''
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cursor:
-                await cursor.execute(query, )
-                member_ids = await cursor.fetchall()
-            await self.bot.pool.release(conn)
-        return member_ids[-1][0]
-
-    async def _get_elite(self) -> int:
-        query = '''SELECT member_id FROM levels WHERE ORDER BY xp LIMIT 3'''
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cursor:
-                await cursor.execute(query, )
-                member_ids = await cursor.fetchall()
-            await self.bot.pool.release(conn)
-        return member_ids[-1][0]
+    @commands.command()
+    async def removedust(self, ctx):
+        await self.remove_mora(ctx.author.id)
+        await ctx.reply("mk")
 
     async def get_member_levels(self, member_id: int) -> Optional[LevelRow]:
         query = '''SELECT * from levels WHERE member_id = ?'''
@@ -225,6 +350,31 @@ class levels(commands.Cog):
                 else:
                     return None
 
+    async def check_levels(self, message: discord.Message, xp: int, xp_to_add: int) -> None:
+        levels = await self.get_member_levels(message.author.id)
+        new_xp = xp + xp_to_add
+        lvl = 0
+        while True:
+            if xp < ((50*(lvl**2))+(50*(lvl-1))):
+                break
+            lvl += 1
+        next_level_xp = ((50*(lvl**2))+(50*(lvl-1)))
+        if new_xp > next_level_xp:
+            await message.channel.send(f"Yay! {message.author.mention} you just reached **level {lvl+1}**. You also found **<:mora:1230914532675813508>5 Mora**!\nyou now have <:mora:1230914532675813508>**{levels['mora'] + 5} Mora**")
+            await self.update_mora(message.author.id)
+
+    async def level_handler(self, message: discord.Message, retry_after: Optional[commands.CooldownMapping], xp: int) -> None:
+        member_id = message.author.id
+        levels = await self.get_member_levels(member_id)
+        if levels == None:
+            await self.add_member(member_id)
+        else:
+            if retry_after:
+                await self.update_messages(member_id, levels)
+            else:
+                await self.update_xp(member_id, levels, xp)
+                await self.check_levels(message, levels['xp'], xp)
+
     async def get_staffrep(self, member_id: int) -> Optional[LevelRow]:
         query = '''SELECT count FROM staffrep WHERE member_id = ?'''
         async with self.bot.pool.acquire() as conn:
@@ -235,141 +385,6 @@ class levels(commands.Cog):
                     return row
                 else:
                     return None
-
-    async def silver_role_handler(self, member: discord.Member, guild: discord.Guild, role_id: int) -> None:
-        check = await self._check_silver(member.id)
-        if check is True:
-            role = member.get_role(role_id)
-            if role is None:
-                role = guild.get_role(role_id)
-                await member.add_roles(role, reason=f'{str(member)} made it to silver rank!')
-                if len(role.members) > 36:
-                    mem_ids = []
-                    for member in role.members:
-                        mem_ids.append(member.id)
-                    member_movedown_id = await self._get_silver_movedown(mem_ids)
-                    remove_member = guild.get_member(member_movedown_id)
-                    if remove_member is None:
-                        remove_member = await guild.fetch_member(member_movedown_id)
-                    await remove_member.remove_roles(role, reason=f'{str(remove_member)} dropped out of silver rank!')
-                    
-        if check is False:
-            role = member.get_role(role_id)
-            if role is not None: 
-                await member.remove_roles(role, reason=f'{str(member)} dropped out of silver rank!')
-                add_mem_id = await self._get_silver(guild.id)
-                add_member = guild.get_member(add_mem_id)
-                if add_member is None:
-                    add_member = await guild.fetch_member(add_mem_id)
-                await add_member.add_roles(role, reason=f'{str(add_member)} made it to silver rank!')
-
-    async def gold_role_handler(self, member: discord.Member, guild: discord.Guild, role_id: int) -> None:
-        check = await self._check_gold(member.id)
-        if check is True:
-            role = member.get_role(role_id)
-            if role is None:
-                role = guild.get_role(role_id)
-                await member.add_roles(role, reason=f'{str(member)} made it to gold rank!')
-                if len(role.members) > 21:
-                    mem_ids = []
-                    for member in role.members:
-                        mem_ids.append(member.id)
-                    member_movedown_id = await self._get_gold_movedown(mem_ids)
-                    remove_member = guild.get_member(member_movedown_id)
-                    if remove_member is None:
-                        remove_member = await guild.fetch_member(member_movedown_id)
-                    await remove_member.remove_roles(role, reason=f'{str(remove_member)} dropped out of gold rank!')
-                    
-        if check is False:
-            role = member.get_role(role_id)
-            if role is not None: 
-                await member.remove_roles(role, reason=f'{str(member)} dropped out of gold rank!')
-                add_mem_id = await self._get_gold(guild.id)
-                add_member = guild.get_member(add_mem_id)
-                if add_member is None:
-                    add_member = await guild.fetch_member(add_mem_id)
-                await add_member.add_roles(role, reason=f'{str(add_member)} made it to gold rank!')
-
-    async def diamond_role_handler(self, member: discord.Member, guild: discord.Guild, role_id: int) -> None:
-        check = await self._check_diamond(member.id)
-        if check is True:
-            role = member.get_role(role_id)
-            if role is None:
-                role = guild.get_role(role_id)
-                await member.add_roles(role, reason=f'{str(member)} made it to diamond rank!')
-                if len(role.members) > 16:
-                    mem_ids = []
-                    for member in role.members:
-                        mem_ids.append(member.id)
-                    member_movedown_id = await self._get_diamond_movedown(mem_ids)
-                    remove_member = guild.get_member(member_movedown_id)
-                    if remove_member is None:
-                        remove_member = await guild.fetch_member(member_movedown_id)
-                    await remove_member.remove_roles(role, reason=f'{str(remove_member)} dropped out of diamond rank!')
-                    
-        if check is False:
-            role = member.get_role(role_id)
-            if role is not None: 
-                await member.remove_roles(role, reason=f'{str(member)} dropped out of diamond rank!')
-                add_mem_id = await self._get_diamond(guild.id)
-                add_member = guild.get_member(add_mem_id)
-                if add_member is None:
-                    add_member = await guild.fetch_member(add_mem_id)
-                await add_member.add_roles(role, reason=f'{str(add_member)} made it to diamond rank!')
-
-    async def plat_role_handler(self, member: discord.Member, guild: discord.Guild, role_id: int) -> None:
-        check = await self._check_plat(member.id)
-        if check is True:
-            role = member.get_role(role_id)
-            if role is None:
-                role = guild.get_role(role_id)
-                await member.add_roles(role, reason=f'{str(member)} made it to plat rank!')
-                if len(role.members) > 6:
-                    mem_ids = []
-                    for member in role.members:
-                        mem_ids.append(member.id)
-                    member_movedown_id = await self._get_plat_movedown(mem_ids)
-                    remove_member = guild.get_member(member_movedown_id)
-                    if remove_member is None:
-                        remove_member = await guild.fetch_member(member_movedown_id)
-                    await remove_member.remove_roles(role, reason=f'{str(remove_member)} dropped out of plat rank!')
-                    
-        if check is False:
-            role = member.get_role(role_id)
-            if role is not None: 
-                await member.remove_roles(role, reason=f'{str(member)} dropped out of plat rank!')
-                add_mem_id = await self._get_plat(guild.id)
-                add_member = guild.get_member(add_mem_id)
-                if add_member is None:
-                    add_member = await guild.fetch_member(add_mem_id)
-                await add_member.add_roles(role, reason=f'{str(add_member)} made it to plat rank!')
-
-    async def elite_role_handler(self, member: discord.Member, guild: discord.Guild, role_id: int) -> None:
-        check = await self._check_elite(member.id)
-        if check is True:
-            role = member.get_role(role_id)
-            if role is None:
-                role = guild.get_role(role_id)
-                await member.add_roles(role, reason=f'{str(member)} made it to elite rank!')
-                if len(role.members) > 4:
-                    mem_ids = []
-                    for member in role.members:
-                        mem_ids.append(member.id)
-                    member_movedown_id = await self._get_elite_movedown(mem_ids)
-                    remove_member = guild.get_member(member_movedown_id)
-                    if remove_member is None:
-                        remove_member = await guild.fetch_member(member_movedown_id)
-                    await remove_member.remove_roles(role, reason=f'{str(remove_member)} dropped out of elite rank!')
-                    
-        if check is False:
-            role = member.get_role(role_id)
-            if role is not None: 
-                await member.remove_roles(role, reason=f'{str(member)} dropped out of elite rank!')
-                add_mem_id = await self._get_elite(guild.id)
-                add_member = guild.get_member(add_mem_id)
-                if add_member is None:
-                    add_member = await guild.fetch_member(add_mem_id)
-                await add_member.add_roles(role, reason=f'{str(add_member)} made it to elite rank!')
 
     async def handle_message(self, message: discord.Message) -> None:
         if message.author.bot:
@@ -392,132 +407,6 @@ class levels(commands.Cog):
             retry_after = bucket.update_rate_limit()
             xp_to_add = randint(5, 15)
             await self.level_handler(message, retry_after, xp_to_add)
-
-    async def get_bronze_role_id(self) -> Union[int, None]:
-        query = '''SELECT bronze_role_id FROM setup'''
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cursor:
-                await cursor.execute(query, )
-                role_id = await cursor.fetchone()
-            await self.bot.pool.release(conn)
-        if role_id is not None:
-            return role_id[0]
-        else:
-            return None
-        
-    async def get_gold_role_id(self) -> Union[int, None]:
-        query = '''SELECT gold_role_id FROM setup'''
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cursor:
-                await cursor.execute(query, )
-                role_id = await cursor.fetchone()
-            await self.bot.pool.release(conn)
-        if role_id is not None:
-            return role_id[0]
-        else:
-            return None
-        
-    async def get_diamond_role_id(self) -> Union[int, None]:
-        query = '''SELECT diamond_role_id FROM setup'''
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cursor:
-                await cursor.execute(query, )
-                role_id = await cursor.fetchone()
-            await self.bot.pool.release(conn)
-        if role_id is not None:
-            return role_id[0]
-        else:
-            return None
-
-    async def get_plat_role_id(self) -> Union[int, None]:
-        query = '''SELECT plat_role_id FROM setup'''
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cursor:
-                await cursor.execute(query, )
-                role_id = await cursor.fetchone()
-            await self.bot.pool.release(conn)
-        if role_id is not None:
-            return role_id[0]
-        else:
-            return None
-
-    async def get_elite_role_id(self) -> Union[int, None]:
-        query = '''SELECT elite_role_id FROM setup'''
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cursor:
-                await cursor.execute(query, )
-                role_id = await cursor.fetchone()
-            await self.bot.pool.release(conn)
-        if role_id is not None:
-            return role_id[0]
-        else:
-            return None
-
-    async def get_silver_role_id(self) -> Union[int, None]:
-        query = '''SELECT silver_role_id FROM setup'''
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cursor:
-                await cursor.execute(query, )
-                role_id = await cursor.fetchone()
-            await self.bot.pool.release(conn)
-        if role_id is not None:
-            return role_id[0]
-        else:
-            return None
-
-    async def set_silver_role(self, role_id: int) -> None:
-        role_id = "NULL" if role_id == 0 else role_id
-        query = '''UPDATE setup SET silver_role_id = ?'''
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cursor:
-                await cursor.execute(query, role_id, )
-                await conn.commit()
-            await self.bot.pool.release(conn)
-
-    async def set_gold_role(self, role_id: int) -> None:
-        role_id = "NULL" if role_id == 0 else role_id
-        query = '''UPDATE setup SET gold_role_id = ?'''
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cursor:
-                await cursor.execute(query, role_id, )
-                await conn.commit()
-            await self.bot.pool.release(conn)
-
-    async def set_diamond_role(self, role_id: int) -> None:
-        role_id = "NULL" if role_id == 0 else role_id
-        query = '''UPDATE setup SET diamond_role_id = ?'''
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cursor:
-                await cursor.execute(query, role_id, )
-                await conn.commit()
-            await self.bot.pool.release(conn)
-
-    async def set_plat_role(self, role_id: int) -> None:
-        role_id = "NULL" if role_id == 0 else role_id
-        query = '''UPDATE setup SET plat_role_id = ?'''
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cursor:
-                await cursor.execute(query, role_id, )
-                await conn.commit()
-            await self.bot.pool.release(conn)
-
-    async def set_elite_role(self, role_id: int) -> None:
-        role_id = "NULL" if role_id == 0 else role_id
-        query = '''UPDATE setup SET elite_role_id = ?'''
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cursor:
-                await cursor.execute(query, role_id, )
-                await conn.commit()
-            await self.bot.pool.release(conn)
-
-    async def set_bronze_role(self, role_id: int) -> None:
-        role_id = "NULL" if role_id == 0 else role_id
-        query = '''UPDATE setup SET bronze_role_id = ?'''
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cursor:
-                await cursor.execute(query, role_id, )
-                await conn.commit()
-            await self.bot.pool.release(conn)
 
     def human_format(self, number: int) -> str:
         number = float('{:.3g}'.format(number))
@@ -630,10 +519,14 @@ class levels(commands.Cog):
         card.paste(bg_frosted, (0, 0), bg_frosted)
         card.paste(bar, (7, 7), mask)
         card.paste(avatar_paste, (18, 17), circle)
-        Kotohogi3 = ImageFont.truetype("./fonts/IntegralCF-Regular.otf", size=33)
+        zhcn = ImageFont.truetype("./fonts/zhcn.ttf", size=33)
         rankboxes = Image.open('./assets/rankboxes.png')
         rankboxes = rankboxes.resize((750, 750))
         card.paste(rankboxes, (0, 0), rankboxes)
+        if levels["decor"]:
+            rankdecor = Image.open(f'./assets/{levels["decor"]}.png')
+            rankdecor = rankdecor.resize((750, 750))
+            card.paste(rankdecor, (0, 0), rankdecor)
         lead_role_id = 1121842279351590973
         has_lead_role = any(role.id == lead_role_id for role in user.roles)
         hstaff_id = 1178924350523588618
@@ -646,7 +539,12 @@ class levels(commands.Cog):
         devs_role = any(role.id == devs_id for role in user.roles)
         zennies_role_id = 1121842393994494082
         has_zennies_role = any(role.id == zennies_role_id for role in user.roles)
-
+        moraicon = Image.open('./assets/mora.png')
+        moraicon = moraicon.resize((60, 60))
+        card.paste(moraicon, (32, 512), moraicon)
+        stardusticon = Image.open('./assets/stardust.png')
+        stardusticon = stardusticon.resize((50, 50))
+        card.paste(stardusticon, (170, 517), stardusticon)
         # server thing badges
         if has_lead_role:
             special_role_img = Image.open('./assets/lead.png')
@@ -745,13 +643,20 @@ class levels(commands.Cog):
         draw = ImageDraw.Draw(card, 'RGBA')
         shadow_text = Image.new("RGBA", card.size, (36, 36, 36, 0))
         shadow_draw = ImageDraw.Draw(shadow_text)
-        shadow_draw.text((227, 27), user.name, "#242424", font=Kotohogi3)
+        shadow_draw.text((227, 27), user.name, "#242424", font=zhcn)
         shadow_blurred = shadow_text.filter(ImageFilter.GaussianBlur(radius=0.5))
         card.paste(shadow_blurred, (0, 0), shadow_blurred)
-        draw.text((225, 25), user.name, fill=levels['color'], font=Kotohogi3)
-        draw.text((80, 585), f'#{str(rank)}', fill=levels['color'], font=Kotohogi3)
-        draw.text((213, 585), f'{level}', fill=levels['color'], font=Kotohogi3)
-        draw.text((335, 585), f'{levels["messages"]}', fill=levels['color'], font=Kotohogi3)
+        stardust = levels["stardust"]
+        if stardust == None:
+            stardust = "0"
+        else:
+            stardust = stardust
+        draw.text((85, 522), f'{levels["mora"]}', fill=levels['color'], font=zhcn)
+        draw.text((220, 522), f'{stardust}', fill=levels['color'], font=zhcn)
+        draw.text((225, 25), user.name, fill=levels['color'], font=zhcn)
+        draw.text((80, 590), f'#{str(rank)}', fill=levels['color'], font=zhcn)
+        draw.text((213, 590), f'{level}', fill=levels['color'], font=zhcn)
+        draw.text((335, 590), f'{levels["messages"]}', fill=levels['color'], font=zhcn)
         buffer = BytesIO()
         card.save(buffer, 'png')
         buffer.seek(0)
@@ -797,14 +702,6 @@ class levels(commands.Cog):
                 await cursor.execute(query, (levels['xp'] - xp, member_id, ))
                 await conn.commit()
             await self.bot.pool.release(conn)
-
-    async def get_leaderboard_stats(self) -> List[LevelRow]:
-        query = '''SELECT * FROM levels ORDER BY xp DESC'''
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cursor:
-                await cursor.execute(query)
-                rows = await cursor.fetchall()
-        return rows
 
     async def set_rank_color(self, member_id: int, color: str) -> None:
         query = '''UPDATE levels SET color = ? WHERE member_id = ?'''
@@ -858,6 +755,14 @@ class levels(commands.Cog):
                 await interaction.response.send_message(embed=embed)
         else:
             await interaction.response.send_message(f"{str(member)} doesn't have any xp yet!")
+
+    async def get_leaderboard_stats(self) -> List[LevelRow]:
+        query = '''SELECT * FROM levels ORDER BY xp DESC'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query)
+                rows = await cursor.fetchall()
+        return rows
 
     @app_commands.command(description="See the level leaderboard")
     async def leaderboard(self, interaction: discord.Interaction):
@@ -923,103 +828,141 @@ class levels(commands.Cog):
     async def on_message(self, message: discord.Message) -> None:
         await self.handle_message(message)
 
-    #@app_commands.command(description="Get anywhere from 50xp - 250xp everyday!")
-    #@app_commands.checks.dynamic_cooldown(kanzen_cooldown)
-    #async def daily(self, interaction: discord.Interaction):
-    #    xp = randint(50, 250)
-    #    levels = await self.get_member_levels(interaction.user.id)
-    #    if levels is not None:
-    #        await self.add_xp(interaction.user.id, xp, levels)
-    #    else:
-    #        await self.add_member(interaction.user.id, xp)
-    #    await interaction.response.send_message(f"You claimed your daily xp! you got **{xp}xp**")
-
-    @app_commands.command(name="setbronze", description="Set bronze role")
-    @app_commands.checks.has_permissions(manage_guild=True)
-    async def setbronze(self, interaction: discord.Interaction, role: discord.Role):
-        bronze_role_id = role.id
-        await self.set_bronze_role(bronze_role_id)
-        for member in interaction.guild.members:
-            if member.bot:
-                continue
-            try:
-                await member.add_roles(role, reason=f'Setting Bronze role for all human members.')
-            except Exception as e:
-                print(f"Error adding Bronze role to {member}: {e}")
-
-        embed = discord.Embed(
-            title='Bronze role has been set!',
-            description=f'Bronze role has been set for all human members to {role.mention}!',
-            color=0x2B2D31
-        )
-        await interaction.response.send_message(embed=embed)
-
-    @app_commands.command(name="setsilver", description="Set silver role")
-    @app_commands.checks.has_permissions(manage_guild=True)
-    async def setsilver(self, interaction: discord.Interaction, role: discord.Role):
-        await self.set_silver_role(role.id)
-        embed = discord.Embed(
-            title='silver role has been set!',
-            description=f'members ranked silver will receive the {role.mention} role!',
-            color=0x2B2D31
-        )
-        await interaction.response.send_message(embed=embed)
-
-    @app_commands.command(name="setgold", description="Set gold role")
-    @app_commands.checks.has_permissions(manage_guild=True)
-    async def setgold(self, interaction: discord.Interaction, role: discord.Role):
-        await self.set_gold_role(role.id)
-        embed = discord.Embed(
-            title='gold role has been set!',
-            description=f'members ranked gold will receive the {role.mention} role!',
-            color=0x2B2D31
-        )
-        await interaction.response.send_message(embed=embed)
-
-    @app_commands.command(name="setdiamond", description="Set diamond role")
-    @app_commands.checks.has_permissions(manage_guild=True)
-    async def setdiamond(self, interaction: discord.Interaction, role: discord.Role):
-        await self.set_diamond_role(role.id)
-        embed = discord.Embed(
-            title='diamond role has been set!',
-            description=f'members ranked diamond will receive the {role.mention} role!',
-            color=0x2B2D31
-        )
-        await interaction.response.send_message(embed=embed)
-
-    @app_commands.command(name="setplatinum", description="Set platinum role")
-    @app_commands.checks.has_permissions(manage_guild=True)
-    async def setplat(self, interaction: discord.Interaction, role: discord.Role):
-        await self.set_plat_role(role.id)
-        embed = discord.Embed(
-            title='plat role has been set!',
-            description=f'members ranked plat will receive the {role.mention} role!',
-            color=0x2B2D31
-        )
-        await interaction.response.send_message(embed=embed)
-
-    @app_commands.command(name="setelite", description="Set elite role")
-    @app_commands.checks.has_permissions(manage_guild=True)
-    async def setelite(self, interaction: discord.Interaction, role: discord.Role):
-        await self.set_elite_role(role.id)
-        embed = discord.Embed(
-            title='elite role has been set!',
-            description=f'members ranked elite will receive the {role.mention} role!',
-            color=0x2B2D31
-        )
-        await interaction.response.send_message(embed=embed)
-
-    @commands.Cog.listener()
-    async def on_guild_join(self, guild: discord.Guild):
-        await self.register_guild(guild.id)
-
-    @commands.command(hidden=True)
-    async def delete(self, ctx, member_id: int):
-
+    async def get_wallet_balance(self, user):
+        user_id = user.id
         async with self.bot.pool.acquire() as conn:
-            await conn.execute('DELETE FROM levels WHERE member_id = $1', member_id)
+            async with conn.cursor() as cursor:
+                await cursor.execute("SELECT mora FROM levels WHERE member_id = ?", (user_id,))
+                row = await cursor.fetchone()
+                if row:
+                    return row[0]
+                else:
+                    return 0
 
-        await ctx.send(f"<@{member_id}'s levels have been removed!")
+    async def get_stardust_balance(self, user):
+        user_id = user.id
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute("SELECT stardust FROM levels WHERE member_id = ?", (user_id,))
+                row = await cursor.fetchone()
+                if row:
+                    return row[0]
+                else:
+                    return 0
+
+    @app_commands.command()
+    async def shop(self, interaction: discord.Interaction):
+        user = interaction.user
+        wallet_balance = await self.get_wallet_balance(user)
+        stardust = await self.get_stardust_balance(user)
+        
+        categories = [
+            "stardust",
+            "rank card decorations",
+            "custom roles"
+        ]
+        emojis = [
+            "<:stardust:1230256970859155486>",
+            "🎉",
+            "🌙"
+        ]
+        descriptions = [
+            "Exchange Mora for stardust",
+            "Decorate your rank cards more with our card decorations",
+            "Unlock the ability to make your own custom roles!"
+        ]
+        tool_buy_view = stardustshop(bot=self.bot)
+        lotto_buy_view = carddecorshop(bot=self.bot)
+        roles_buy_view = roleshop(bot=self.bot)
+        dropdown = discord.ui.Select(
+            placeholder="Select a category",
+            options=[discord.SelectOption(label=category, emoji=emoji, description=description) for category, emoji, description in zip(categories, emojis, descriptions)]
+        )
+        if stardust == None:
+            stardust = "0"
+        else:
+            stardust = stardust
+        tools = discord.Embed(title="Hoshi's Shop", description=f"> Welcome to the shop, Here you can find all sorts of items to buy"
+                              "\n> Use the dropdown menu below to select a category"
+                              "\n\n**__Categories:__**"
+                              "\n<:1166196258499727480:1208228386842087554><:stardust:1230256970859155486> [**Stardust**](https://instagram.com/kanzengrp/)"
+                              "\n<:Empty:1207651048710479892> Exchange Mora for stardust"
+                              "\n<:1166196258499727480:1208228386842087554>🎉 [**Rank card decor**](https://instagram.com/kanzengrp/)"
+                              "\n<:Empty:1207651048710479892> Decorate your rank cards more with our card decorations"
+                              "\n<:1166196258499727480:1208228386842087554>🌙 [**Custom Roles**](https://instagram.com/kanzengrp/)"
+                              "\n<:Empty:1207651048710479892> Unlock the ability to make your own custom roles!"
+                              f"\n\n<:mora:1230914532675813508>**{wallet_balance} Mora**"
+                              f"\n<:stardust:1230256970859155486>**{stardust} Stardust**", color=0x2b2d31)
+        tools.set_thumbnail(url=interaction.guild.icon)
+        
+        view = discord.ui.View()
+        view.add_item(dropdown)
+        
+        async def dropdown_callback(interaction: discord.Interaction):
+            selected_category = interaction.data["values"][0]
+            
+            for item in view.children:
+                if not isinstance(item, discord.ui.Select):
+                    view.remove_item(item)
+            
+            if selected_category == categories[0]:
+                for item in tool_buy_view.children:
+                    view.add_item(item)
+                embed = discord.Embed(title="Stardust", description=f"> Use the buttons below to buy the items you want\n\n<:mora:1230914532675813508>**{wallet_balance} Mora**\n<:stardust:1230256970859155486>**{stardust} Stardust**", color=0x2b2d31)
+                embed.set_thumbnail(url=interaction.guild.icon)
+                embed.set_image(url="https://cdn.discordapp.com/attachments/1184208577120960632/1230994171079299143/Comp_1_00000.png?ex=663557a9&is=6622e2a9&hm=804e7422f3aa99537f28f0fe99fcb5a7fe158762cae9cf638c663f9ac0d82eab&")
+                embed.set_footer(text="• Use the buttons below to buy an item (clicking it twice will give you another)", icon_url=interaction.user.avatar)
+            
+            elif selected_category == categories[1]:
+                for item in lotto_buy_view.children:
+                    view.add_item(item)
+                embed = discord.Embed(title="Rank Decorations", description=f"> Use the buttons below to buy the items you want\n\n<:mora:1230914532675813508>**{wallet_balance} Mora**\n<:stardust:1230256970859155486>**{stardust} Stardust**", color=0x2b2d31)
+                embed.set_thumbnail(url=interaction.guild.icon)
+                embed.set_image(url="https://cdn.discordapp.com/attachments/1184208577120960632/1231425914412470282/rank_decor_shop_00000.png?ex=6636e9c0&is=662474c0&hm=ae4b5a5e88d202eb901bb7d901aad79e6773dbbc0f938dfe56790a9c4d514882&")
+                embed.set_footer(text="• Use the buttons below to buy an item (clicking it twice will give you another)", icon_url=interaction.user.avatar)
+
+            elif selected_category == categories[2]:
+                # for item in roles_buy_view.children:
+                    # view.add_item(item)
+                embed = discord.Embed(title="Custom Roles", description=f"> ~~Unlock the ability to create custom roles!~~\n~~Costs <:stardust:1230256970859155486>**60 Stardust**~~\n\n > **Custom roles are currently disabled, we will provide an update when they are released!**\n\n<:mora:1230914532675813508>**{wallet_balance} Mora**\n<:stardust:1230256970859155486>**{stardust} Stardust**", color=0x2b2d31)
+                embed.set_thumbnail(url=interaction.guild.icon)
+                embed.set_footer(text="• Use the buttons below to buy an item (clicking it twice will give you another)", icon_url=interaction.user.avatar)
+            
+            else:
+                embed = discord.Embed(title="Invalid category", description="Please select a valid category from the dropdown menu.")
+
+            await interaction.response.edit_message(embed=embed, view=view)
+        
+        dropdown.callback = dropdown_callback
+        message = await interaction.response.send_message(embed=tools, view=view)
+
+    async def add_mora(self, member_id: int, amount: int) -> None:
+        query = '''UPDATE levels SET mora = ? WHERE member_id = ?'''
+        levels = await self.get_member_levels(member_id)
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, (levels['mora'] + amount, member_id, ))
+                await conn.commit()
+            await self.bot.pool.release(conn)
+
+    async def add_stardust(self, member_id: int, amount: int) -> None:
+        query = '''UPDATE levels SET stardust = ? WHERE member_id = ?'''
+        levels = await self.get_member_levels(member_id)
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, (levels['stardust'] + amount, member_id, ))
+                await conn.commit()
+            await self.bot.pool.release(conn)
+
+    @app_commands.command(name="addmora", description="Add mora to a zennie")
+    async def addmora(self, interaction: discord.Interaction, member: discord.Member, amount: int):
+        await self.add_mora(member.id, amount)
+        await interaction.response.send_message(f"Added <:mora:1230914532675813508> **{amount}** Mora to {member.mention}")
+
+    @app_commands.command(name="addstardust", description="Add stardust to a zennie")
+    async def addstardust(self, interaction: discord.Interaction, member: discord.Member, amount: int):
+        await self.add_stardust(member.id, amount)
+        await interaction.response.send_message(f"Added <:stardust:1230256970859155486> **{amount}** Stardust to {member.mention}")
 
 async def setup(bot):
     await bot.add_cog(levels(bot))
