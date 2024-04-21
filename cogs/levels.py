@@ -939,30 +939,49 @@ class levels(commands.Cog):
     async def add_mora(self, member_id: int, amount: int) -> None:
         query = '''UPDATE levels SET mora = ? WHERE member_id = ?'''
         levels = await self.get_member_levels(member_id)
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cursor:
-                await cursor.execute(query, (levels['mora'] + amount, member_id, ))
-                await conn.commit()
-            await self.bot.pool.release(conn)
+        
+        if levels is None:
+            query = '''INSERT INTO levels (member_id, mora) VALUES (?, ?)'''
+            async with self.bot.pool.acquire() as conn:
+                async with conn.cursor() as cursor:
+                    await cursor.execute(query, (member_id, amount))
+                    await conn.commit()
+                await self.bot.pool.release(conn)
+        else:
+            async with self.bot.pool.acquire() as conn:
+                async with conn.cursor() as cursor:
+                    await cursor.execute(query, (levels['mora'] + amount, member_id))
+                    await conn.commit()
+                await self.bot.pool.release(conn)
+
+    @app_commands.command(name="addmora", description="Add mora to a zennie")
+    async def addmora(self, interaction: discord.Interaction, member: discord.Member, amount: int):
+        await self.add_mora(member.id, amount)
+        await interaction.response.send_message(f"Added <:mora:1230914532675813508> **{amount}** Mora to {member.mention}")
 
     async def add_stardust(self, member_id: int, amount: int) -> None:
         query = '''UPDATE levels SET stardust = ? WHERE member_id = ?'''
         levels = await self.get_member_levels(member_id)
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cursor:
-                await cursor.execute(query, (levels['stardust'] + amount, member_id, ))
-                await conn.commit()
-            await self.bot.pool.release(conn)
-
-    @app_commands.command(name="addmora", description="Add mora to a zennie")
-    async def addmora(self, interaction: discord.Interaction, member: discord.Member, amount: int):
-        await self.update_mora(member.id, amount)
-        await interaction.response.send_message(f"Added <:mora:1230914532675813508> **{amount}** Mora to {member.mention}")
+        
+        if levels is None:
+            query = '''INSERT INTO levels (member_id, stardust) VALUES (?, ?)'''
+            async with self.bot.pool.acquire() as conn:
+                async with conn.cursor() as cursor:
+                    await cursor.execute(query, (member_id, amount))
+                    await conn.commit()
+                await self.bot.pool.release(conn)
+        else:
+            async with self.bot.pool.acquire() as conn:
+                async with conn.cursor() as cursor:
+                    await cursor.execute(query, (levels['stardust'] + amount, member_id))
+                    await conn.commit()
+                await self.bot.pool.release(conn)
 
     @app_commands.command(name="addstardust", description="Add stardust to a zennie")
     async def addstardust(self, interaction: discord.Interaction, member: discord.Member, amount: int):
         await self.add_stardust(member.id, amount)
         await interaction.response.send_message(f"Added <:stardust:1230256970859155486> **{amount}** Stardust to {member.mention}")
+
 
 async def setup(bot):
     await bot.add_cog(levels(bot))
