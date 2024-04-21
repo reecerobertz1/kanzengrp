@@ -956,7 +956,7 @@ class levels(commands.Cog):
 
     @app_commands.command(name="addmora", description="Add mora to a zennie")
     async def addmora(self, interaction: discord.Interaction, member: discord.Member, amount: int):
-        await self.add_mora(member.id, amount)
+        await self.update_mora(member.id, amount)
         await interaction.response.send_message(f"Added <:mora:1230914532675813508> **{amount}** Mora to {member.mention}")
 
     @app_commands.command(name="addstardust", description="Add stardust to a zennie")
