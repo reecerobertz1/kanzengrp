@@ -92,7 +92,7 @@ class acceptordecline(discord.ui.View):
         if interaction.user.id == 705866935178362901:
             await self.update_kelly_row(member.id, 1)
             await interaction.response.send_message(f"You have voted to accept {self.member}, if you change your mind you can click the decline button", ephemeral=True) 
-        if interaction.user.id == 758834972446031912:
+        if interaction.user.id == 695197958940917830:
             await self.update_luki_row(member.id, 1)
             await interaction.response.send_message(f"You have voted to accept {self.member}, if you change your mind you can click the decline button", ephemeral=True) 
         if interaction.user.id == 1111564587024789504:
@@ -160,7 +160,7 @@ class acceptordecline(discord.ui.View):
         if interaction.user.id == 705866935178362901:
             await self.update_kelly_row(member.id, 2)
             await interaction.response.send_message(f"You have voted to decline {self.member}, if you change your mind you can click the decline button", ephemeral=True) 
-        if interaction.user.id == 758834972446031912:
+        if interaction.user.id == 695197958940917830:
             await self.update_luki_row(member.id, 2)
             await interaction.response.send_message(f"You have voted to decline {self.member}, if you change your mind you can click the decline button", ephemeral=True) 
         if interaction.user.id == 1111564587024789504:
