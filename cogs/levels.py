@@ -778,7 +778,7 @@ class levels(commands.Cog):
                 if xp < ((50*(lvl**2))+(50*(lvl-1))):
                     break
                 lvl += 1
-            description += f"**{i}.** <@!{row['member_id']}>\n<:Empty:1188186122350759996><:1166196258499727480:1188190249768210582>**level {lvl} | {row['messages']} {msg}**\n\n"
+            description += f"**{i}.** <@!{row['member_id']}>\n<:Empty:1188186122350759996><:1166196258499727480:1188190249768210582>**level {lvl} | {row['messages']} {msg}**\n<:Empty:1188186122350759996><:1166196258499727480:1188190249768210582><:stardust:1230256970859155486>**{row['stardust']}** |<:mora:1230914532675813508>**{row['mora']}**\n\n"
             if i % per_page == 0 or i == len(rows):
                 embed = discord.Embed(title=f"{interaction.guild.name}'s leaderboard", description=description, color=0x2b2d31)
                 embed.set_thumbnail(url=interaction.guild.icon.url)
