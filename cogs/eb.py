@@ -657,7 +657,7 @@ class Forms(commands.Cog):
         await ctx.send("https://discord.gg/49Dg4a5mGa", view=sserafims)
         astral = astralview()
         astralinsta = discord.ui.Button(label="ʚ Instagram ⋆", url="https://www.instagram.com/group.astral/")
-        astraltt = discord.ui.Button(label="ʚ TikTok ⋆ Instagram", url="https://www.tiktok.com/@grp.astral?lang=en")
+        astraltt = discord.ui.Button(label="ʚ TikTok ⋆", url="https://www.tiktok.com/@grp.astral?lang=en")
         astral.add_item(astralinsta)
         astral.add_item(astraltt)
         await ctx.send("https://discord.gg/groupastral", view=astral)
