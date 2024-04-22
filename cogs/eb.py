@@ -2,6 +2,18 @@ import discord
 from discord.ext import commands
 from discord import ui
 
+class astralview(discord.ui.View):
+    def __init__(self):
+        super().__init__(timeout=None)
+        self.value=None
+
+    @discord.ui.button(label="Info", style=discord.ButtonStyle.blurple, emoji="<:pompom_gift:1227494821778690118>")
+    async def info(self, interaction: discord.Interaction, button: discord.Button):
+        embed = discord.Embed(title="ʚ ASTRAL GROUP ! ˎˊ-",description=" ⋆ Led by [@kaeretto](https://www.instagram.com/kaeretto/) +  [@scaraurmom](https://www.instagram.com/scaraurmom/)\n⋆ Co-Led by [@lucimitsu](https://www.instagram.com/lucimitsu/)" ,color=0xd1b9b9)
+        embed.set_image(url="https://cdn.discordapp.com/attachments/1232001860005658638/1232027952036708595/astral_partner_banner_00000.png?ex=66391a71&is=6626a571&hm=587755fb2b32b4a2d1eca786ca2e416baaf8753611e3605ae4225e53db1b0d02&")
+        embed.set_thumbnail(url="https://cdn.discordapp.com/icons/1115953206497906728/a_59364fbacef12f477f5c3c1cb432cb7b.gif?size=1024&width=0&height=307")
+        await interaction.response.send_message(embed=embed, ephemeral=True)
+
 class sserafimsview(discord.ui.View):
     def __init__(self):
         super().__init__(timeout=None)
@@ -624,7 +636,7 @@ class Forms(commands.Cog):
         asterinsta = discord.ui.Button(label="Instagram", url="https://instagram.com/grpaster")
         aster.add_item(astersite)
         aster.add_item(asterinsta)
-        await ctx.send("https://discord.gg/aster-hiraya-day-748021504830341330", view=aster)
+        await ctx.send("https://discord.gg/grpaster", view=aster)
         hsgrp = discord.ui.View()
         hsgrpinsta = discord.ui.Button(label="Instagram", url="https://instagram.com/heartstoppergrp?igshid=MzRlODBiNWFlZA==")
         hsgrp.add_item(hsgrpinsta)
@@ -642,7 +654,13 @@ class Forms(commands.Cog):
         sserafims = sserafimsview()
         sserafiminsta = discord.ui.Button(label="Instagram", url="https://instagram.com/sserafimunit")
         sserafims.add_item(sserafiminsta)
-        await ctx.send("https://discord.gg/znZFjgJT", view=sserafims)
+        await ctx.send("https://discord.gg/49Dg4a5mGa", view=sserafims)
+        astral = astralview()
+        astralinsta = discord.ui.Button(label="ʚ Instagram ⋆", url="https://www.instagram.com/group.astral/")
+        astraltt = discord.ui.Button(label="ʚ TikTok ⋆ Instagram", url="https://www.tiktok.com/@grp.astral?lang=en")
+        astral.add_item(astralinsta)
+        astral.add_item(astraltt)
+        await ctx.send("https://discord.gg/groupastral", view=astral)
         embed= discord.Embed(description="Want to partner with us? read our partner info in <#1131005271502753812>", color=0x2b2d31)
         await ctx.send(embed=embed)
 
