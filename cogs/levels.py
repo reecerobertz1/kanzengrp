@@ -358,9 +358,20 @@ class levels(commands.Cog):
             if xp < ((50*(lvl**2))+(50*(lvl-1))):
                 break
             lvl += 1
+
         next_level_xp = ((50*(lvl**2))+(50*(lvl-1)))
         if new_xp > next_level_xp:
-            await message.channel.send(f"Yay! {message.author.mention} you just reached **level {lvl+1}**. You also found **<:mora:1230914532675813508>5 Mora**!\nyou now have <:mora:1230914532675813508>**{levels['mora'] + 5} Mora**")
+            current_memberlvl = levels['memberlvl'] or 0
+            new_memberlvl = current_memberlvl + 1
+
+            query = '''UPDATE levels SET memberlvl = ? WHERE member_id = ?'''
+            async with self.bot.pool.acquire() as conn:
+                async with conn.cursor() as cursor:
+                    await cursor.execute(query, (new_memberlvl, message.author.id,))
+                    await conn.commit()
+                await self.bot.pool.release(conn)
+
+            await message.channel.send(f"Yay! {message.author.mention} you just reached **level {lvl+1}**\nYou also found **<:mora:1230914532675813508>5 Mora**! You now have <:mora:1230914532675813508>**{levels['mora'] + 5} Mora**")
             await self.update_mora(message.author.id)
 
     async def level_handler(self, message: discord.Message, retry_after: Optional[commands.CooldownMapping], xp: int) -> None:
@@ -520,6 +531,7 @@ class levels(commands.Cog):
         card.paste(bar, (7, 7), mask)
         card.paste(avatar_paste, (18, 17), circle)
         zhcn = ImageFont.truetype("./fonts/zhcn.ttf", size=33)
+        zhcn2 = ImageFont.truetype("./fonts/zhcn.ttf", size=27)
         rankboxes = Image.open('./assets/rankboxes.png')
         rankboxes = rankboxes.resize((750, 750))
         card.paste(rankboxes, (0, 0), rankboxes)
@@ -545,6 +557,9 @@ class levels(commands.Cog):
         stardusticon = Image.open('./assets/stardust.png')
         stardusticon = stardusticon.resize((50, 50))
         card.paste(stardusticon, (170, 517), stardusticon)
+        mbmerlvl = Image.open('./assets/memberlvl.png')
+        mbmerlvl = mbmerlvl.resize((50, 50))
+        card.paste(mbmerlvl, (306, 519), mbmerlvl)
         # server thing badges
         if has_lead_role:
             special_role_img = Image.open('./assets/lead.png')
@@ -641,19 +656,28 @@ class levels(commands.Cog):
             custom_y = 657
             card.paste(special_role_img, (custom_x, custom_y), special_role_img)
         draw = ImageDraw.Draw(card, 'RGBA')
-        shadow_text = Image.new("RGBA", card.size, (36, 36, 36, 0))
-        shadow_draw = ImageDraw.Draw(shadow_text)
-        shadow_draw.text((227, 27), user.name, "#242424", font=zhcn)
-        shadow_blurred = shadow_text.filter(ImageFilter.GaussianBlur(radius=0.5))
-        card.paste(shadow_blurred, (0, 0), shadow_blurred)
         stardust = levels["stardust"]
+        mora = levels["mora"]
+        memberlvl = levels["memberlvl"]
         if stardust == None:
             stardust = "0"
         else:
             stardust = stardust
-        draw.text((85, 522), f'{levels["mora"]}', fill=levels['color'], font=zhcn)
+
+        if mora == None:
+            mora = "0"
+        else:
+            mora = mora
+
+        if memberlvl == None:
+            memberlvl = "0"
+        else:
+            memberlvl = memberlvl
+        draw.text((225, 65), f'{xp_have} | {xp_need}', fill=levels['color'], font=zhcn2)
+        draw.text((360, 522), f'{memberlvl}', fill=levels['color'], font=zhcn)
+        draw.text((85, 522), f'{mora}', fill=levels['color'], font=zhcn)
         draw.text((220, 522), f'{stardust}', fill=levels['color'], font=zhcn)
-        draw.text((225, 25), user.name, fill=levels['color'], font=zhcn)
+        draw.text((225, 25), f"{user.display_name}", fill=levels['color'], font=zhcn)
         draw.text((80, 590), f'#{str(rank)}', fill=levels['color'], font=zhcn)
         draw.text((213, 590), f'{level}', fill=levels['color'], font=zhcn)
         draw.text((335, 590), f'{levels["messages"]}', fill=levels['color'], font=zhcn)
