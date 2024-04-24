@@ -1008,5 +1008,67 @@ class levels(commands.Cog):
         await self.add_stardust(member.id, amount)
         await interaction.response.send_message(f"Added <:stardust:1230256970859155486> **{amount}** Stardust to {member.mention}")
 
+    @commands.command()
+    @commands.cooldown(1, 86400, commands.BucketType.user)
+    async def daily(self, ctx):
+
+        async with ctx.typing():
+            levels = await self.get_member_levels(ctx.author.id)
+            mora = random.randint(20, 50)
+            stardust = random.randint(2, 5)
+            xp = random.randint(50, 200)
+            await self.add_mora(ctx.author.id, mora)
+            await self.add_stardust(ctx.author.id, stardust)
+            await self.add_xp(ctx.author.id, xp, levels)
+            card = await self.get_daily_image(mora, xp, stardust, levels, member=ctx.author)
+            await ctx.reply(file=discord.File(card, 'card.png'))
+
+    @daily.error
+    async def daily_error(self, ctx: commands.Context, error: commands.CommandError):
+        if isinstance(error, commands.CommandOnCooldown):
+            if error.retry_after > 3600:
+                hours = error.retry_after / 3600
+                await ctx.reply(f"You already opened your daily chest! Try again in {int(hours)} hours")
+            elif error.retry_after > 60:
+                minutes = error.retry_after / 60
+                await ctx.reply(f"You already opened your daily chest! Try again in {int(minutes)} minutes")
+            else:
+                await ctx.reply(f"You already opened your daily chest! Try again in {int(error.retry_after)} seconds")
+
+    async def get_daily_image(self, mora, xp, stardust, levels: LevelRow, member: discord.Member) -> BytesIO:
+        card_generator = functools.partial(self.daily_image, mora=mora, xp=xp, stardust=stardust, levels=levels)
+        card = await self.bot.loop.run_in_executor(None, card_generator)
+        return card
+
+    def daily_image(self, mora, xp, stardust, levels: LevelRow) -> BytesIO:
+        card = Image.new('RGBA', size=(750, 750), color='grey')
+        if levels['image'] is not None:
+            bg = self._get_bg_image(levels['image'])
+            left = (bg.width - min(bg.width, bg.height)) // 2
+            top = (bg.height - min(bg.width, bg.height)) // 2
+            right = left + min(bg.width, bg.height)
+            bottom = top + min(bg.width, bg.height)
+            bg = bg.crop((left, top, right, bottom))
+        else:
+            bg = Image.open("./assets/rankcard.png")
+        bg = bg.resize((750, 750))
+        dark = ImageEnhance.Brightness(bg)
+        bg_dark = dark.enhance(0.8)
+        card.paste(bg_dark)
+        zhcn = ImageFont.truetype("./fonts/zhcn.ttf", size=28)
+        ugh = Image.open('./assets/ugh.png')
+        ugh = ugh.resize((750, 750))
+        card.paste(ugh, (0, 0), ugh)
+
+        draw = ImageDraw.Draw(card, 'RGBA')
+        draw.text((135, 607), f"{mora}", fill=levels['color'], font=zhcn)
+        draw.text((582, 607), f"{xp}", fill=levels['color'], font=zhcn)
+        draw.text((367, 630), f"{stardust}", fill=levels['color'], font=zhcn)
+
+        buffer = BytesIO()
+        card.save(buffer, 'png')
+        buffer.seek(0)
+        return buffer
+
 async def setup(bot):
     await bot.add_cog(levels(bot))
