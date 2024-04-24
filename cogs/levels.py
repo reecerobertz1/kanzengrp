@@ -1,4 +1,5 @@
 import math
+import random
 import re
 import discord
 from discord.ext import commands
@@ -1011,6 +1012,7 @@ class levels(commands.Cog):
     @commands.command()
     @commands.cooldown(1, 86400, commands.BucketType.user)
     async def daily(self, ctx):
+        import random
 
         async with ctx.typing():
             levels = await self.get_member_levels(ctx.author.id)
