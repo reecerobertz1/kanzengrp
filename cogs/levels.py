@@ -42,6 +42,47 @@ class investigate(discord.ui.View):
         await self.update_stardust(interaction.user.id, stardust)
         await interaction.response.edit_message(content=f"{interaction.user.mention}",embed=embed, view=None)
 
+    async def update_stardust(self, member_id: int, amount: int) -> None:
+        query = '''UPDATE levels SET stardust = ? WHERE member_id = ?'''
+        levels = await self.get_member_levels(member_id)
+        
+        if levels is None or levels['stardust'] is None:
+            starting_stardust = 0
+        else:
+            starting_stardust = levels['stardust']
+        
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, (starting_stardust + amount, member_id,))
+                await conn.commit()
+            await self.bot.pool.release(conn)
+
+    async def update_mora(self, member_id: int, amount: int) -> None:
+        query = '''UPDATE levels SET mora = ? WHERE member_id = ?'''
+        levels = await self.get_member_levels(member_id)
+        
+        if levels is None or levels['mora'] is None:
+            starting_mora = 0
+        else:
+            starting_mora = levels['mora']
+        
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, (starting_mora + amount, member_id,))
+                await conn.commit()
+            await self.bot.pool.release(conn)
+
+    async def get_member_levels(self, member_id: int) -> Optional[LevelRow]:
+        query = '''SELECT * from levels WHERE member_id = ?'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, (member_id, ))
+                row = await cursor.fetchone()
+                if row:
+                    return row
+                else:
+                    return None
+
 class roleshop(discord.ui.View):
     def __init__(self, bot):
         super().__init__(timeout=None)
