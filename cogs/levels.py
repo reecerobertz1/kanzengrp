@@ -1,3 +1,4 @@
+import asyncio
 import math
 import random
 import re
@@ -24,6 +25,22 @@ class LevelRow(TypedDict):
     stardust: int
     memberlvl: int
     decor: str
+
+class investigate(discord.ui.View):
+    def __init__(self, bot):
+        super().__init__(timeout=None)
+        self.value = None
+        self.bot = bot
+
+    @discord.ui.button(label="Investigate")
+    async def one(self, interaction: discord.Interaction, button: discord.Button):
+        mora = random.randint(5, 50)
+        stardust = random.randint(1, 10)
+        embed=discord.Embed(title="Mora & Stardust found", description=f"{interaction.user.name} found\n<:mora:1230914532675813508> **{mora}** <:stardust:1230256970859155486> **{stardust}**", color=0x2b2d31)
+        embed.set_thumbnail(url=interaction.user.display_avatar)
+        await self.update_mora(interaction.user.id, mora)
+        await self.update_stardust(interaction.user.id, stardust)
+        await interaction.response.edit_message(content=f"{interaction.user.mention}",embed=embed, view=None)
 
 class roleshop(discord.ui.View):
     def __init__(self, bot):
@@ -284,6 +301,7 @@ class levels(commands.Cog):
         self.channels = [1184208577120960632, 1214944837451780116, 1181419043153002546, 1220487352733138954, 1220488547203547267, 1133767338588639323, 1214940039335641089, 1229142761827995831]
         self.guilds = [1121841073673736215]
         self.cd_mapping = commands.CooldownMapping.from_cooldown(1, 60, commands.BucketType.user)
+        self.bot.loop.create_task(self.send_message())
 
     def kanzen_cooldown(interaction: discord.Interaction) -> Optional[app_commands.Cooldown]:
 
@@ -1071,6 +1089,17 @@ class levels(commands.Cog):
         card.save(buffer, 'png')
         buffer.seek(0)
         return buffer
+
+    async def send_message(self):
+        await self.bot.wait_until_ready()
+        channel = self.bot.get_channel(1220487352733138954)
+        while not self.bot.is_closed():
+            choices = ["What's this? click the button to investigate!", "Hello... i found something for you"]
+            message = random.choice(choices)
+            embed = discord.Embed(description=message, color=0x2b2d31)
+            embed.set_footer(text="First come first serve")
+            await channel.send(embed=embed, view=investigate(bot=self.bot))
+            await asyncio.sleep(7200)
 
 async def setup(bot):
     await bot.add_cog(levels(bot))
