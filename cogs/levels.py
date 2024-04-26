@@ -342,7 +342,7 @@ class levels(commands.Cog):
         self.channels = [1184208577120960632, 1214944837451780116, 1181419043153002546, 1220487352733138954, 1220488547203547267, 1133767338588639323, 1214940039335641089, 1229142761827995831]
         self.guilds = [1121841073673736215]
         self.cd_mapping = commands.CooldownMapping.from_cooldown(1, 60, commands.BucketType.user)
-        self.bot.loop.create_task(self.send_message())
+        self.bot.loop.create_task(self.loot_drops())
 
     def kanzen_cooldown(interaction: discord.Interaction) -> Optional[app_commands.Cooldown]:
 
@@ -1131,7 +1131,7 @@ class levels(commands.Cog):
         buffer.seek(0)
         return buffer
 
-    async def send_message(self):
+    async def loot_drops(self):
         await self.bot.wait_until_ready()
         channel = self.bot.get_channel(1220487352733138954)
         while not self.bot.is_closed():
