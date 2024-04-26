@@ -342,6 +342,7 @@ class levels(commands.Cog):
         self.channels = [1184208577120960632, 1214944837451780116, 1181419043153002546, 1220487352733138954, 1220488547203547267, 1133767338588639323, 1214940039335641089, 1229142761827995831]
         self.guilds = [1121841073673736215]
         self.cd_mapping = commands.CooldownMapping.from_cooldown(1, 60, commands.BucketType.user)
+        self.bot.loop.create_task(self.send_message())
 
     def kanzen_cooldown(interaction: discord.Interaction) -> Optional[app_commands.Cooldown]:
 
@@ -1129,6 +1130,17 @@ class levels(commands.Cog):
         card.save(buffer, 'png')
         buffer.seek(0)
         return buffer
+
+    async def send_message(self):
+        await self.bot.wait_until_ready()
+        channel = self.bot.get_channel(1220487352733138954)
+        while not self.bot.is_closed():
+            choices = ["What's this? click the button to investigate!", "Hello... i found something for you"]
+            message = random.choice(choices)
+            embed = discord.Embed(description=message, color=0x2b2d31)
+            embed.set_footer(text="First come first serve")
+            await channel.send(embed=embed, view=investigate(bot=self.bot))
+            await asyncio.sleep(7200)
 
 async def setup(bot):
     await bot.add_cog(levels(bot))
