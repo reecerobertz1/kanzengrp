@@ -214,6 +214,92 @@ class carddecorshop(discord.ui.View):
                 await conn.commit()
             await self.bot.pool.release(conn)
 
+class carddecorshopbooster(discord.ui.View):
+    def __init__(self, bot):
+        super().__init__(timeout=30)
+        self.value = None
+        self.bot = bot
+
+    @discord.ui.button(emoji="<:number1:1209947396637728808>")
+    async def one(self, interaction: discord.Interaction, button: discord.Button):
+        price = 6
+        id = "1"
+        levels = await self.get_member_levels(interaction.user.id)
+        
+        if levels['stardust'] >= price:
+            await self.update_decor(interaction.user.id, id)
+            await self.remove_stardust(interaction.user.id, amount=price)
+            await interaction.response.send_message(f"You have bought **decor {id}** for **<:stardust:1230256970859155486>{price} Stardust**", ephemeral=True)
+        else:
+            await interaction.response.send_message("You do not have enough <:stardust:1230256970859155486>Stardust to complete this purchase")
+
+    @discord.ui.button(emoji="<:number2:1209947399053901824>")
+    async def two(self, interaction: discord.Interaction, button: discord.Button):
+        price = 12
+        id = "2"
+        levels = await self.get_member_levels(interaction.user.id)
+        
+        if levels['stardust'] >= price:
+            await self.update_decor(interaction.user.id, id)
+            await self.remove_stardust(interaction.user.id, amount=price)
+            await interaction.response.send_message(f"You have bought **decor {id}** for **<:stardust:1230256970859155486>{price} Stardust**", ephemeral=True)
+        else:
+            await interaction.response.send_message("You do not have enough <:stardust:1230256970859155486>Stardust to complete this purchase")
+
+    @discord.ui.button(emoji="<:number3:1209947401100595310>")
+    async def three(self, interaction: discord.Interaction, button: discord.Button):
+        price = 24
+        id = "3"
+        levels = await self.get_member_levels(interaction.user.id)
+        
+        if levels['stardust'] >= price:
+            await self.update_decor(interaction.user.id, id)
+            await self.remove_stardust(interaction.user.id, amount=price)
+            await interaction.response.send_message(f"You have bought **decor {id}** for **<:stardust:1230256970859155486>{price} Stardust**", ephemeral=True)
+        else:
+            await interaction.response.send_message("You do not have enough <:stardust:1230256970859155486>Stardust to complete this purchase")
+
+    @discord.ui.button(emoji="<:number4:1209947403432624138>")
+    async def four(self, interaction: discord.Interaction, button: discord.Button):
+        price = 32
+        id = "4"
+        levels = await self.get_member_levels(interaction.user.id)
+        
+        if levels['stardust'] >= price:
+            await self.update_decor(interaction.user.id, id)
+            await self.remove_stardust(interaction.user.id, amount=price)
+            await interaction.response.send_message(f"You have bought **decor {id}** for **<:stardust:1230256970859155486>{price} Stardust**", ephemeral=True)
+        else:
+            await interaction.response.send_message("You do not have enough <:stardust:1230256970859155486>Stardust to complete this purchase")
+
+    async def get_member_levels(self, member_id: int) -> Optional[LevelRow]:
+        query = '''SELECT * from levels WHERE member_id = ?'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, (member_id, ))
+                row = await cursor.fetchone()
+                if row:
+                    return row
+                else:
+                    return None
+
+    async def update_decor(self, member_id: int, id: str) -> None:
+        query = '''UPDATE levels SET decor = ? WHERE member_id = ?'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, (id, member_id, ))
+                await conn.commit()
+            await self.bot.pool.release(conn)
+
+    async def remove_stardust(self, member_id: int, amount: int) -> None:
+        query = '''UPDATE levels SET stardust = ? WHERE member_id = ?'''
+        levels = await self.get_member_levels(member_id)
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, (levels['stardust'] - amount, member_id, ))
+                await conn.commit()
+            await self.bot.pool.release(conn)
+
 class stardustshop(discord.ui.View):
     def __init__(self, bot):
         super().__init__(timeout=None)
@@ -955,8 +1041,13 @@ class levels(commands.Cog):
             "Decorate your rank cards more with our card decorations",
             "Unlock the ability to make your own custom roles!"
         ]
+        booster_role_id = 1128460924886458489
+        has_booster_role = any(role.id == booster_role_id for role in user.roles)
         tool_buy_view = stardustshop(bot=self.bot)
-        lotto_buy_view = carddecorshop(bot=self.bot)
+        if has_booster_role:
+            lotto_buy_view = carddecorshopbooster(bot=self.bot)
+        else:
+            lotto_buy_view = carddecorshop(bot=self.bot)
         roles_buy_view = roleshop(bot=self.bot)
         dropdown = discord.ui.Select(
             placeholder="Select a category",
@@ -1002,7 +1093,13 @@ class levels(commands.Cog):
                     view.add_item(item)
                 embed = discord.Embed(title="Rank Decorations", description=f"> Use the buttons below to buy the items you want\n\n<:mora:1230914532675813508>**{wallet_balance} Mora**\n<:stardust:1230256970859155486>**{stardust} Stardust**", color=0x2b2d31)
                 embed.set_thumbnail(url=interaction.guild.icon)
-                embed.set_image(url="https://cdn.discordapp.com/attachments/1184208577120960632/1231425914412470282/rank_decor_shop_00000.png?ex=6636e9c0&is=662474c0&hm=ae4b5a5e88d202eb901bb7d901aad79e6773dbbc0f938dfe56790a9c4d514882&")
+                booster_role_id = 1128460924886458489
+                has_booster_role = any(role.id == booster_role_id for role in user.roles)
+                if has_booster_role:
+                    image = "https://cdn.discordapp.com/attachments/1184208577120960632/1233830446467649587/rank_decor_shop_00000.png?ex=662e85a5&is=662d3425&hm=2d967585935043f8c7eb3a70cc55901b3962755cf99d0fb43b2f3f65c38cae8c&"
+                else:
+                    image = "https://cdn.discordapp.com/attachments/1184208577120960632/1232391470695059557/rank_decor_shop_00000.png?ex=662de6bf&is=662c953f&hm=ee4ef00b8772a4cc5b23280ceb83e5ece5b0084545fce0023b60192e932a1d7b&"
+                embed.set_image(url=image)
                 embed.set_footer(text="• Use the buttons below to buy an item (clicking it twice will give you another)", icon_url=interaction.user.avatar)
 
             elif selected_category == categories[2]:
