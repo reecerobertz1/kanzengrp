@@ -212,5 +212,21 @@ class kanzen(commands.Cog):
         embed.set_thumbnail(url=ctx.guild.icon)
         await ctx.reply(embed=embed, view=staffappsbutton())
 
+    @app_commands.command(name="submit", description="Submit your rank decorations!")
+    async def submit(self, interaction: discord.Interaction, image: discord.Attachment):
+        if not image.content_type.split("/")[0] == "image":
+            await interaction.response.send_message("Please attach a valid image (PNG, JPG, JPEG, GIF).")
+            return
+
+        embed = discord.Embed(title="Rank decor competition", description="Voting will end on <t:1715554800:D> | <t:1715554800:R>", color=0x2b2d31)
+        embed.set_image(url=image.url)
+        embed.set_footer(text="Use the reaction below to vote!", icon_url=interaction.guild.icon)
+
+        channel = interaction.client.get_channel(1234482913408716821)
+        message = await channel.send(embed=embed)
+
+        await interaction.response.send_message(f"Thank you {interaction.user.name} you have submitted your rank decor!", ephemeral=True)
+        await message.add_reaction("<:LIKE:1146004608154607627>")
+
 async def setup(bot):
     await bot.add_cog(kanzen(bot))
