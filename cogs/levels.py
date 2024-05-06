@@ -1201,13 +1201,12 @@ class levels(commands.Cog):
 
     def daily_image(self, member, mora, xp, stardust, levels: LevelRow) -> BytesIO:
         card = Image.new('RGBA', size=(750, 750), color='grey')
-        if levels['image'] is not None:
-            bg = self._get_bg_image(member.guild.icon)
-            left = (bg.width - min(bg.width, bg.height)) // 2
-            top = (bg.height - min(bg.width, bg.height)) // 2
-            right = left + min(bg.width, bg.height)
-            bottom = top + min(bg.width, bg.height)
-            bg = bg.crop((left, top, right, bottom))
+        bg = self._get_bg_image(member.guild.icon)
+        left = (bg.width - min(bg.width, bg.height)) // 2
+        top = (bg.height - min(bg.width, bg.height)) // 2
+        right = left + min(bg.width, bg.height)
+        bottom = top + min(bg.width, bg.height)
+        bg = bg.crop((left, top, right, bottom))
         bg = bg.resize((750, 750))
         dark = ImageEnhance.Brightness(bg)
         bg_dark = dark.enhance(0.8)
