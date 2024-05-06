@@ -1232,5 +1232,22 @@ class levels(commands.Cog):
             await conn.execute('DELETE FROM levels WHERE member_id = $1', member_id)
         await ctx.send(f"<@{member_id}'s levels have been removed!")
 
+    async def add_msg(self, member_id: int, messages: int, levels: Optional[LevelRow]) -> None:
+        if levels:
+            query = '''UPDATE levels SET messages = ? WHERE member_id = ?'''
+            async with self.bot.pool.acquire() as conn:
+                async with conn.cursor() as cursor:
+                    await cursor.execute(query, (levels['messages'] + messages, member_id, ))
+                    await conn.commit()
+                await self.bot.pool.release(conn)
+        else:
+            await self.add_member(member_id, messages)
+
+    @commands.command()
+    async def addmsg(self, ctx, member: discord.Member, messages: int):
+        levels = await self.get_member_levels(member.id)
+        await self.add_msg(member.id, messages, levels)
+        await ctx.reply(f"Added **{messages}** messages to {member.mention}")
+
 async def setup(bot):
     await bot.add_cog(levels(bot))
