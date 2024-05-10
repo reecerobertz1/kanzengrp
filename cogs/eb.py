@@ -26,18 +26,6 @@ class sserafimsview(discord.ui.View):
         embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/1113419928545001534/1229110766129643632/IMG_5993.jpg?ex=662e7d9a&is=661c089a&hm=65ed6c4a7b7b9244856630df153ba01a9b2996c791b74bbf72ae6ac9886dc85f&")
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
-class musuemview(discord.ui.View):
-    def __init__(self):
-        super().__init__(timeout=None)
-        self.value=None
-
-    @discord.ui.button(label="Info", style=discord.ButtonStyle.blurple, emoji="<a:blackbut:1173677079905194014>")
-    async def info(self, interaction: discord.Interaction, button: discord.Button):
-        embed = discord.Embed(title="MUSEUMSOC",description="- led by [icidqve](https://www.instagram.com/icidqve?igsh=MWl0ZTFrNjFramdhZw==)\n- Multi Fandom" ,color=0x2b2d31)
-        embed.set_image(url="https://cdn.discordapp.com/attachments/1226151638201536703/1226240519395475556/00947474-35ED-4029-89B6-CE11D90E7F10.jpg?ex=66240c7a&is=6611977a&hm=d0ece9f89da039032a3e2b8ac8f5832bcc9c103db138d612df014401441dd4c1&")
-        embed.set_thumbnail(url="https://cdn.discordapp.com/icons/1137730730261237970/83e98bfd3cf4b8fd708a4c7412d52de3.webp?size=1024&format=webp&width=0&height=307")
-        await interaction.response.send_message(embed=embed, ephemeral=True)
-
 class lyragrp(discord.ui.View):
     def __init__(self):
         super().__init__(timeout=None)
@@ -45,7 +33,7 @@ class lyragrp(discord.ui.View):
 
     @discord.ui.button(label="Info", style=discord.ButtonStyle.blurple, emoji="<:1817bunnylove:1135527331398692975>")
     async def info(self, interaction: discord.Interaction, button: discord.Button):
-        embed = discord.Embed(title="GRP LYRA",description="- led by [lyrinari](https://www.instagram.com/lyrinari/), [hiraeyq](https://www.instagram.com/hiraeyq/), [.denisaur.](https://www.instagram.com/_.denisaur._/) & [kazuhqra](https://www.instagram.com/kazuhqra/)\n- multi-fandom" ,color=0xfebcbe)
+        embed = discord.Embed(title="GRP LYRA",description="- led by [lyrinari](https://www.instagram.com/lyrinari/), [hiraeyq](https://www.instagram.com/hiraeyq/), [.denisaur.](https://www.instagram.com/_.denisaur._/) & [kazuhqra](https://www.instagram.com/kazuhqra/)\n- co lead [luno1rs](https://www.instagram.com/luno1rs/)\n- multi-fandom" ,color=0xfebcbe)
         embed.set_image(url="https://cdn.discordapp.com/attachments/1221580405921284317/1225300494621343776/form_gfx_w_grains.png?ex=6620a102&is=660e2c02&hm=d8b1ada951fd18e3836895d778d0323a1a60ff0ae729ff612cc9fb38751d5eba&")
         embed.set_thumbnail(url="https://cdn.discordapp.com/icons/1134736053803159592/a_479bb36059893c697962d64e636728c8.gif?size=1024&width=0&height=307")
         await interaction.response.send_message(embed=embed, ephemeral=True)
@@ -647,10 +635,6 @@ class Forms(commands.Cog):
         lyragrps.add_item(lyrainsta)
         lyragrps.add_item(lyatiktok)
         await ctx.send("https://discord.gg/uCPhm6PECW", view=lyragrps)
-        musuem = musuemview()
-        museuminsta = discord.ui.Button(label="Instagram", url="https://www.instagram.com/museumsoc?igsh=MTFvb2VkcWxyZmVicA==")
-        musuem.add_item(museuminsta)
-        await ctx.send("https://discord.gg/S6r49qzmdT", view=musuem)
         sserafims = sserafimsview()
         sserafiminsta = discord.ui.Button(label="Instagram", url="https://instagram.com/sserafimunit")
         sserafims.add_item(sserafiminsta)
