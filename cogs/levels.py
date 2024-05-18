@@ -1249,5 +1249,14 @@ class levels(commands.Cog):
         await self.add_msg(member.id, messages, levels)
         await ctx.reply(f"Added **{messages}** messages to {member.mention}")
 
+    @app_commands.command(name="resetbg", description="Reset your ranks background")
+    async def resetbg(self, interaction: discord.Interaction):
+        member_id = interaction.user.id
+        async with self.bot.pool.acquire() as conn:
+            query = "UPDATE levels SET image = NULL WHERE member_id = ?"
+            await conn.execute(query, (member_id))
+            await conn.commit()
+        await interaction.response.send_message("Okay! I have reset your rank background")
+
 async def setup(bot):
     await bot.add_cog(levels(bot))
