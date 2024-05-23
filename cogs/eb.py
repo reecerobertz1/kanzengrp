@@ -71,37 +71,31 @@ class acceptordecline(discord.ui.View):
         if interaction.user.id == 609515684740988959:
             await self.update_reece_row(member.id, 1)
             await interaction.response.send_message(f"You have voted to accept {self.member}, if you change your mind you can click the decline button", ephemeral=True)  
-        if interaction.user.id == 603077306956644353:
+        if interaction.user.id == 695197958940917830:
             await self.update_nani_row(member.id, 1)
             await interaction.response.send_message(f"You have voted to accept {self.member}, if you change your mind you can click the decline button", ephemeral=True) 
-        if interaction.user.id == 1169110493303164930:
+        if interaction.user.id == 1111564587024789504:
             await self.update_adil_row(member.id, 1)
             await interaction.response.send_message(f"You have voted to accept {self.member}, if you change your mind you can click the decline button", ephemeral=True) 
-        if interaction.user.id == 705866935178362901:
+        if interaction.user.id == 603077306956644353:
             await self.update_kelly_row(member.id, 1)
             await interaction.response.send_message(f"You have voted to accept {self.member}, if you change your mind you can click the decline button", ephemeral=True) 
-        if interaction.user.id == 695197958940917830:
+        if interaction.user.id == 751895538646909038:
             await self.update_luki_row(member.id, 1)
             await interaction.response.send_message(f"You have voted to accept {self.member}, if you change your mind you can click the decline button", ephemeral=True) 
-        if interaction.user.id == 1111564587024789504:
+        if interaction.user.id == 705866935178362901:
             await self.update_josh_row(member.id, 1)
             await interaction.response.send_message(f"You have voted to accept {self.member}, if you change your mind you can click the decline button", ephemeral=True) 
-        if interaction.user.id == 497548184298586133:
+        if interaction.user.id == 1077841960691322921:
             await self.update_kio_row(member.id, 1)
             await interaction.response.send_message(f"You have voted to accept {self.member}, if you change your mind you can click the decline button", ephemeral=True) 
-        if interaction.user.id == 891348311544590376:
+        if interaction.user.id == 615769749980315648:
             await self.update_mari_row(member.id, 1)
             await interaction.response.send_message(f"You have voted to accept {self.member}, if you change your mind you can click the decline button", ephemeral=True) 
-        if interaction.user.id == 751895538646909038:
+        if interaction.user.id == 776321079231643659:
             await self.update_marie_row(member.id, 1)
-            await interaction.response.send_message(f"You have voted to accept {self.member}, if you change your mind you can click the decline button", ephemeral=True) 
-        if interaction.user.id == 764293346364620810:
-            await self.update_riri_row(member.id, 1)
             await interaction.response.send_message(f"You have voted to accept {self.member}, if you change your mind you can click the decline button", ephemeral=True)
-        if interaction.user.id == 887365538232270959:
-            await self.update_kai_row(member.id, 1)
-            await interaction.response.send_message(f"You have voted to accept {self.member}, if you change your mind you can click the decline button", ephemeral=True)
-        if accepts == 3:
+        if accepts == 0:
             message_id = interaction.message.id
             message = await interaction.channel.fetch_message(message_id)
             accept_embed = discord.Embed(description=f"> `🌠` __**Welcome to kanzengrp**__"
@@ -138,39 +132,42 @@ class acceptordecline(discord.ui.View):
         attempts = await self.get_apps(member.id)
         if interaction.user.id == 609515684740988959:
             await self.update_reece_row(member.id, 2)
-            await interaction.response.send_message(f"You have voted to decline {self.member}, if you change your mind you can click the decline button", ephemeral=True)  
-        if interaction.user.id == 603077306956644353:
-            await self.update_nani_row(member.id, 2)
-            await interaction.response.send_message(f"You have voted to decline {self.member}, if you change your mind you can click the decline button", ephemeral=True) 
-        if interaction.user.id == 1169110493303164930:
-            await self.update_adil_row(member.id, 2)
-            await interaction.response.send_message(f"You have voted to decline {self.member}, if you change your mind you can click the decline button", ephemeral=True) 
-        if interaction.user.id == 705866935178362901:
-            await self.update_kelly_row(member.id, 2)
-            await interaction.response.send_message(f"You have voted to decline {self.member}, if you change your mind you can click the decline button", ephemeral=True) 
+            await interaction.response.send_message(f"You have voted to decline {self.member}, if you change your mind you can click the accept button", ephemeral=True)  
         if interaction.user.id == 695197958940917830:
-            await self.update_luki_row(member.id, 2)
-            await interaction.response.send_message(f"You have voted to decline {self.member}, if you change your mind you can click the decline button", ephemeral=True) 
+            await self.update_nani_row(member.id, 2)
+            await interaction.response.send_message(f"You have voted to decline {self.member}, if you change your mind you can click the accept button", ephemeral=True) 
         if interaction.user.id == 1111564587024789504:
-            await self.update_josh_row(member.id, 2)
-            await interaction.response.send_message(f"You have voted to decline {self.member}, if you change your mind you can click the decline button", ephemeral=True) 
-        if interaction.user.id == 497548184298586133:
-            await self.update_kio_row(member.id, 2)
-            await interaction.response.send_message(f"You have voted to decline {self.member}, if you change your mind you can click the decline button", ephemeral=True) 
-        if interaction.user.id == 891348311544590376:
-            await self.update_mari_row(member.id, 2)
-            await interaction.response.send_message(f"You have voted to decline {self.member}, if you change your mind you can click the decline button", ephemeral=True) 
+            await self.update_adil_row(member.id, 2)
+            await interaction.response.send_message(f"You have voted to decline {self.member}, if you change your mind you can click the accept button", ephemeral=True) 
+        if interaction.user.id == 603077306956644353:
+            await self.update_kelly_row(member.id, 2)
+            await interaction.response.send_message(f"You have voted to decline {self.member}, if you change your mind you can click the accept button", ephemeral=True) 
         if interaction.user.id == 751895538646909038:
+            await self.update_luki_row(member.id, 2)
+            await interaction.response.send_message(f"You have voted to decline {self.member}, if you change your mind you can click the accept button", ephemeral=True) 
+        if interaction.user.id == 705866935178362901:
+            await self.update_josh_row(member.id, 2)
+            await interaction.response.send_message(f"You have voted to decline {self.member}, if you change your mind you can click the accept button", ephemeral=True) 
+        if interaction.user.id == 1077841960691322921:
+            await self.update_kio_row(member.id, 2)
+            await interaction.response.send_message(f"You have voted to decline {self.member}, if you change your mind you can click the accept button", ephemeral=True) 
+        if interaction.user.id == 615769749980315648:
+            await self.update_mari_row(member.id, 2)
+            await interaction.response.send_message(f"You have voted to decline {self.member}, if you change your mind you can click the accept button", ephemeral=True) 
+        if interaction.user.id == 776321079231643659:
             await self.update_marie_row(member.id, 2)
-            await interaction.response.send_message(f"You have voted to decline {self.member}, if you change your mind you can click the decline button", ephemeral=True) 
-        if interaction.user.id == 764293346364620810:
-            await self.update_riri_row(member.id, 2)
-            await interaction.response.send_message(f"You have voted to decline {self.member}, if you change your mind you can click the decline button", ephemeral=True)
-        if interaction.user.id == 887365538232270959:
-            await self.update_kai_row(member.id, 2)
-            await interaction.response.send_message(f"You have voted to accept {self.member}, if you change your mind you can click the decline button", ephemeral=True) 
-        if declines == 3:
+            await interaction.response.send_message(f"You have voted to decline {self.member}, if you change your mind you can click the accept button", ephemeral=True) 
+        if declines == 0:
             await self.update_applied(member.id, "false")
+            await self.update_adil_row(member.id, "0")
+            await self.update_reece_row(member.id, "0")
+            await self.update_nani_row(member.id, "0")
+            await self.update_kelly_row(member.id, "0")
+            await self.update_luki_row(member.id, "0")
+            await self.update_josh_row(member.id, "0")
+            await self.update_kio_row(member.id, "0")
+            await self.update_mari_row(member.id, "0")
+            await self.update_marie_row(member.id, "0")
             message_id = interaction.message.id
             message = await interaction.channel.fetch_message(message_id)
             accept_embed = discord.Embed(description=f"> `🌠` __**Your application has been declned**__"
@@ -553,19 +550,17 @@ class Forms(commands.Cog):
     @commands.has_permissions(manage_guild=True)
     async def apps(self, ctx):
         await ctx.message.delete()
-        embed = discord.Embed(title="> `☄️` **__Application Information__**",description="<a:Arrow_1:1227576761722732647> Click the `Apply` button to apply for our grp"
+        embed = discord.Embed(title="> `☄️` **__Application Information__**",description="<a:Arrow_1:1227576761722732647> Make sure to follow [remqsi](https://instagram.com/remqsi) & [kanzengrp](https://instagram.com/kanzengrp)"
+        "\n<a:Arrow_1:1227576761722732647> Click the `Apply` button to apply for our grp"
         "\n<a:Arrow_1:1227576761722732647> Hoshi will dm you saying if you got accepted or declined"
-        "\n<a:Arrow_1:1227576761722732647> You only get **2** attempts or unlimited if you boost"
+        "\n<a:Arrow_1:1227576761722732647> You only get **2** attempts to apply"
         "\n<a:Arrow_1:1227576761722732647> The `check` button will show you how many attempts you have"
         "\n<a:Arrow_1:1227576761722732647> Once you have applied twice you can no longer apply"
         "\n<a:Arrow_1:1227576761722732647> Apply with an edit that is no longer than **3 months** old"
-        "\n<a:Arrow_1:1227576761722732647> Applications will close on <t:1714431600:D> | <t:1714431600:R> "
-        "\n<a:Arrow_1:1227576761722732647> Make sure you followed the rules on our recruit post", color=0x2b2d31)
+        "\n<a:Arrow_1:1227576761722732647> Applications will close on <t:1716678000:D> | <t:1716678000:R> ", color=0x2b2d31)
         embed.set_thumbnail(url=ctx.guild.icon)
         view = applicationsview(bot=self.bot)
-        rctpost = discord.ui.Button(label="Recruit post | follow rules", url="https://www.instagram.com/kanzengrp")
-        view.add_item(rctpost)
-        await ctx.send(embed=embed, view=view)
+        await ctx.send("Random pickup! come join @everyone", embed=embed, view=view)
 
     async def get_accepted_members(self):
         query = '''SELECT member_id FROM apps WHERE accepted LIKE '%yes%' '''
