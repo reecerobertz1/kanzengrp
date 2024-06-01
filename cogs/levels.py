@@ -179,7 +179,7 @@ class carddecorshop(discord.ui.View):
     @discord.ui.button(label="clear decor", style=discord.ButtonStyle.red)
     async def clear(self, interaction: discord.Interaction, button: discord.Button):
         price = 0
-        id = "None"
+        id = "none"
         levels = await self.get_member_levels(interaction.user.id)
         
         if levels['stardust'] >= price:
@@ -437,7 +437,7 @@ class carddecorshopbooster(discord.ui.View):
     @discord.ui.button(label="clear decor", style=discord.ButtonStyle.red)
     async def clear(self, interaction: discord.Interaction, button: discord.Button):
         price = 0
-        id = "None"
+        id = "none"
         levels = await self.get_member_levels(interaction.user.id)
         
         if levels['stardust'] >= price:
