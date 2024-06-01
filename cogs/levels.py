@@ -130,13 +130,68 @@ class roleshop(discord.ui.View):
 
 class carddecorshop(discord.ui.View):
     def __init__(self, bot):
-        super().__init__(timeout=None)
+        super().__init__(timeout=30)
         self.value = None
         self.bot = bot
 
-    @discord.ui.button(emoji="<:number1:1209947396637728808>")
+    @discord.ui.button(label="credit", style=discord.ButtonStyle.blurple)
+    async def credit(self, interaction: discord.Interaction, button: discord.Button):
+        embed = discord.Embed(description="""decor 1. <@1111564587024789504>
+        <:1166196258499727480:1208228386842087554> instagram: [sxtqrn](https://instagram.com/sxtqrn)
+                              
+        decor 2. <@751895538646909038>
+        <:1166196258499727480:1208228386842087554> instagram: [lushsfx](https://instagram.com/lushsfx)
+                              
+        decor 3. <@982720510003658784>
+        <:1166196258499727480:1208228386842087554> instagram: [hrts4h0bi](https://instagram.com/hrts4h0bi)
+                              
+        decor 4. <@609515684740988959>
+        <:1166196258499727480:1208228386842087554> instagram: [remqsi](https://instagram.com/remqsi)
+                              
+        decor 5. <@695197958940917830>
+        <:1166196258499727480:1208228386842087554> instagram: [luno1rs](https://instagram.com/luno1rs)
+                              
+        decor 6. <@609515684740988959>
+        <:1166196258499727480:1208228386842087554> instagram: [remqsi](https://instagram.com/remqsi)
+                              
+        decor 7. <@541538705106534423>
+        <:1166196258499727480:1208228386842087554> instagram: [dtqwn](https://instagram.com/dtqwn)
+                              
+        decor 8. <@695197958940917830>
+        <:1166196258499727480:1208228386842087554> instagram: [luno1rs](https://instagram.com/luno1rs)
+                              
+        decor 9. <@695197958940917830>
+        <:1166196258499727480:1208228386842087554> instagram: [luno1rs](https://instagram.com/luno1rs)
+                              
+        decor 10. <@834786195526778903>
+        <:1166196258499727480:1208228386842087554> instagram: [kxpjm](https://instagram.com/kxpjm)
+                              
+        decor 11. <@609515684740988959>
+        <:1166196258499727480:1208228386842087554> instagram: [remqsi](https://instagram.com/remqsi)
+                              
+        decor 12. <@609515684740988959>
+        <:1166196258499727480:1208228386842087554> instagram: [remqsi](https://instagram.com/remqsi)
+                              
+        decor 13. <@834786195526778903>
+        <:1166196258499727480:1208228386842087554> instagram: [kxpjm](https://instagram.com/kxpjm)""", color=0x2b2d31)
+        await interaction.response.send_message(embed=embed, ephemeral=True)
+
+    @discord.ui.button(label="clear decor", style=discord.ButtonStyle.red)
+    async def clear(self, interaction: discord.Interaction, button: discord.Button):
+        price = 0
+        id = "None"
+        levels = await self.get_member_levels(interaction.user.id)
+        
+        if levels['stardust'] >= price:
+            await self.update_decor(interaction.user.id, id)
+            await self.remove_stardust(interaction.user.id, amount=price)
+            await interaction.response.send_message(f"You have removed your rankc ard decoration!", ephemeral=True)
+        else:
+            await interaction.response.send_message("You do not have enough <:stardust:1230256970859155486>Stardust to complete this purchase")
+
+    @discord.ui.button(label="1")
     async def one(self, interaction: discord.Interaction, button: discord.Button):
-        price = 15
+        price = 100
         id = "1"
         levels = await self.get_member_levels(interaction.user.id)
         
@@ -147,9 +202,9 @@ class carddecorshop(discord.ui.View):
         else:
             await interaction.response.send_message("You do not have enough <:stardust:1230256970859155486>Stardust to complete this purchase")
 
-    @discord.ui.button(emoji="<:number2:1209947399053901824>")
+    @discord.ui.button(label="2")
     async def two(self, interaction: discord.Interaction, button: discord.Button):
-        price = 30
+        price = 100
         id = "2"
         levels = await self.get_member_levels(interaction.user.id)
         
@@ -160,9 +215,9 @@ class carddecorshop(discord.ui.View):
         else:
             await interaction.response.send_message("You do not have enough <:stardust:1230256970859155486>Stardust to complete this purchase")
 
-    @discord.ui.button(emoji="<:number3:1209947401100595310>")
+    @discord.ui.button(label="3")
     async def three(self, interaction: discord.Interaction, button: discord.Button):
-        price = 60
+        price = 100
         id = "3"
         levels = await self.get_member_levels(interaction.user.id)
         
@@ -173,10 +228,127 @@ class carddecorshop(discord.ui.View):
         else:
             await interaction.response.send_message("You do not have enough <:stardust:1230256970859155486>Stardust to complete this purchase")
 
-    @discord.ui.button(emoji="<:number4:1209947403432624138>")
+    @discord.ui.button(label="4")
     async def four(self, interaction: discord.Interaction, button: discord.Button):
-        price = 80
+        price = 100
         id = "4"
+        levels = await self.get_member_levels(interaction.user.id)
+        
+        if levels['stardust'] >= price:
+            await self.update_decor(interaction.user.id, id)
+            await self.remove_stardust(interaction.user.id, amount=price)
+            await interaction.response.send_message(f"You have bought **decor {id}** for **<:stardust:1230256970859155486>{price} Stardust**", ephemeral=True)
+        else:
+            await interaction.response.send_message("You do not have enough <:stardust:1230256970859155486>Stardust to complete this purchase")
+
+    @discord.ui.button(label="5")
+    async def five(self, interaction: discord.Interaction, button: discord.Button):
+        price = 100
+        id = "5"
+        levels = await self.get_member_levels(interaction.user.id)
+        
+        if levels['stardust'] >= price:
+            await self.update_decor(interaction.user.id, id)
+            await self.remove_stardust(interaction.user.id, amount=price)
+            await interaction.response.send_message(f"You have bought **decor {id}** for **<:stardust:1230256970859155486>{price} Stardust**", ephemeral=True)
+        else:
+            await interaction.response.send_message("You do not have enough <:stardust:1230256970859155486>Stardust to complete this purchase")
+
+    @discord.ui.button(label="6")
+    async def six(self, interaction: discord.Interaction, button: discord.Button):
+        price = 100
+        id = "6"
+        levels = await self.get_member_levels(interaction.user.id)
+        
+        if levels['stardust'] >= price:
+            await self.update_decor(interaction.user.id, id)
+            await self.remove_stardust(interaction.user.id, amount=price)
+            await interaction.response.send_message(f"You have bought **decor {id}** for **<:stardust:1230256970859155486>{price} Stardust**", ephemeral=True)
+        else:
+            await interaction.response.send_message("You do not have enough <:stardust:1230256970859155486>Stardust to complete this purchase")
+
+    @discord.ui.button(label="7")
+    async def seven(self, interaction: discord.Interaction, button: discord.Button):
+        price = 100
+        id = "7"
+        levels = await self.get_member_levels(interaction.user.id)
+        
+        if levels['stardust'] >= price:
+            await self.update_decor(interaction.user.id, id)
+            await self.remove_stardust(interaction.user.id, amount=price)
+            await interaction.response.send_message(f"You have bought **decor {id}** for **<:stardust:1230256970859155486>{price} Stardust**", ephemeral=True)
+        else:
+            await interaction.response.send_message("You do not have enough <:stardust:1230256970859155486>Stardust to complete this purchase")
+
+    @discord.ui.button(label="8")
+    async def eight(self, interaction: discord.Interaction, button: discord.Button):
+        price = 100
+        id = "8"
+        levels = await self.get_member_levels(interaction.user.id)
+        
+        if levels['stardust'] >= price:
+            await self.update_decor(interaction.user.id, id)
+            await self.remove_stardust(interaction.user.id, amount=price)
+            await interaction.response.send_message(f"You have bought **decor {id}** for **<:stardust:1230256970859155486>{price} Stardust**", ephemeral=True)
+        else:
+            await interaction.response.send_message("You do not have enough <:stardust:1230256970859155486>Stardust to complete this purchase")
+
+    @discord.ui.button(label="9")
+    async def nine(self, interaction: discord.Interaction, button: discord.Button):
+        price = 100
+        id = "9"
+        levels = await self.get_member_levels(interaction.user.id)
+        
+        if levels['stardust'] >= price:
+            await self.update_decor(interaction.user.id, id)
+            await self.remove_stardust(interaction.user.id, amount=price)
+            await interaction.response.send_message(f"You have bought **decor {id}** for **<:stardust:1230256970859155486>{price} Stardust**", ephemeral=True)
+        else:
+            await interaction.response.send_message("You do not have enough <:stardust:1230256970859155486>Stardust to complete this purchase")
+
+    @discord.ui.button(label="10")
+    async def ten(self, interaction: discord.Interaction, button: discord.Button):
+        price = 100
+        id = "10"
+        levels = await self.get_member_levels(interaction.user.id)
+        
+        if levels['stardust'] >= price:
+            await self.update_decor(interaction.user.id, id)
+            await self.remove_stardust(interaction.user.id, amount=price)
+            await interaction.response.send_message(f"You have bought **decor {id}** for **<:stardust:1230256970859155486>{price} Stardust**", ephemeral=True)
+        else:
+            await interaction.response.send_message("You do not have enough <:stardust:1230256970859155486>Stardust to complete this purchase")
+
+    @discord.ui.button(label="11")
+    async def eleven(self, interaction: discord.Interaction, button: discord.Button):
+        price = 100
+        id = "11"
+        levels = await self.get_member_levels(interaction.user.id)
+        
+        if levels['stardust'] >= price:
+            await self.update_decor(interaction.user.id, id)
+            await self.remove_stardust(interaction.user.id, amount=price)
+            await interaction.response.send_message(f"You have bought **decor {id}** for **<:stardust:1230256970859155486>{price} Stardust**", ephemeral=True)
+        else:
+            await interaction.response.send_message("You do not have enough <:stardust:1230256970859155486>Stardust to complete this purchase")
+
+    @discord.ui.button(label="12")
+    async def twelve(self, interaction: discord.Interaction, button: discord.Button):
+        price = 100
+        id = "12"
+        levels = await self.get_member_levels(interaction.user.id)
+        
+        if levels['stardust'] >= price:
+            await self.update_decor(interaction.user.id, id)
+            await self.remove_stardust(interaction.user.id, amount=price)
+            await interaction.response.send_message(f"You have bought **decor {id}** for **<:stardust:1230256970859155486>{price} Stardust**", ephemeral=True)
+        else:
+            await interaction.response.send_message("You do not have enough <:stardust:1230256970859155486>Stardust to complete this purchase")
+
+    @discord.ui.button(label="13")
+    async def thirteen(self, interaction: discord.Interaction, button: discord.Button):
+        price = 100
+        id = "13"
         levels = await self.get_member_levels(interaction.user.id)
         
         if levels['stardust'] >= price:
@@ -220,9 +392,64 @@ class carddecorshopbooster(discord.ui.View):
         self.value = None
         self.bot = bot
 
-    @discord.ui.button(emoji="<:number1:1209947396637728808>")
+    @discord.ui.button(label="credit", style=discord.ButtonStyle.blurple)
+    async def credit(self, interaction: discord.Interaction, button: discord.Button):
+        embed = discord.Embed(description="""decor 1. <@1111564587024789504>
+        <:1166196258499727480:1208228386842087554> instagram: [sxtqrn](https://instagram.com/sxtqrn)
+                              
+        decor 2. <@751895538646909038>
+        <:1166196258499727480:1208228386842087554> instagram: [lushsfx](https://instagram.com/lushsfx)
+                              
+        decor 3. <@982720510003658784>
+        <:1166196258499727480:1208228386842087554> instagram: [hrts4h0bi](https://instagram.com/hrts4h0bi)
+                              
+        decor 4. <@609515684740988959>
+        <:1166196258499727480:1208228386842087554> instagram: [remqsi](https://instagram.com/remqsi)
+                              
+        decor 5. <@695197958940917830>
+        <:1166196258499727480:1208228386842087554> instagram: [luno1rs](https://instagram.com/luno1rs)
+                              
+        decor 6. <@609515684740988959>
+        <:1166196258499727480:1208228386842087554> instagram: [remqsi](https://instagram.com/remqsi)
+                              
+        decor 7. <@541538705106534423>
+        <:1166196258499727480:1208228386842087554> instagram: [dtqwn](https://instagram.com/dtqwn)
+                              
+        decor 8. <@695197958940917830>
+        <:1166196258499727480:1208228386842087554> instagram: [luno1rs](https://instagram.com/luno1rs)
+                              
+        decor 9. <@695197958940917830>
+        <:1166196258499727480:1208228386842087554> instagram: [luno1rs](https://instagram.com/luno1rs)
+                              
+        decor 10. <@834786195526778903>
+        <:1166196258499727480:1208228386842087554> instagram: [kxpjm](https://instagram.com/kxpjm)
+                              
+        decor 11. <@609515684740988959>
+        <:1166196258499727480:1208228386842087554> instagram: [remqsi](https://instagram.com/remqsi)
+                              
+        decor 12. <@609515684740988959>
+        <:1166196258499727480:1208228386842087554> instagram: [remqsi](https://instagram.com/remqsi)
+                              
+        decor 13. <@834786195526778903>
+        <:1166196258499727480:1208228386842087554> instagram: [kxpjm](https://instagram.com/kxpjm)""", color=0x2b2d31)
+        await interaction.response.send_message(embed=embed, ephemeral=True)
+
+    @discord.ui.button(label="clear decor", style=discord.ButtonStyle.red)
+    async def clear(self, interaction: discord.Interaction, button: discord.Button):
+        price = 0
+        id = "None"
+        levels = await self.get_member_levels(interaction.user.id)
+        
+        if levels['stardust'] >= price:
+            await self.update_decor(interaction.user.id, id)
+            await self.remove_stardust(interaction.user.id, amount=price)
+            await interaction.response.send_message(f"You have removed your rankc ard decoration!", ephemeral=True)
+        else:
+            await interaction.response.send_message("You do not have enough <:stardust:1230256970859155486>Stardust to complete this purchase")
+
+    @discord.ui.button(label="1")
     async def one(self, interaction: discord.Interaction, button: discord.Button):
-        price = 6
+        price = 60
         id = "1"
         levels = await self.get_member_levels(interaction.user.id)
         
@@ -233,9 +460,9 @@ class carddecorshopbooster(discord.ui.View):
         else:
             await interaction.response.send_message("You do not have enough <:stardust:1230256970859155486>Stardust to complete this purchase")
 
-    @discord.ui.button(emoji="<:number2:1209947399053901824>")
+    @discord.ui.button(label="2")
     async def two(self, interaction: discord.Interaction, button: discord.Button):
-        price = 12
+        price = 60
         id = "2"
         levels = await self.get_member_levels(interaction.user.id)
         
@@ -246,9 +473,9 @@ class carddecorshopbooster(discord.ui.View):
         else:
             await interaction.response.send_message("You do not have enough <:stardust:1230256970859155486>Stardust to complete this purchase")
 
-    @discord.ui.button(emoji="<:number3:1209947401100595310>")
+    @discord.ui.button(label="3")
     async def three(self, interaction: discord.Interaction, button: discord.Button):
-        price = 24
+        price = 60
         id = "3"
         levels = await self.get_member_levels(interaction.user.id)
         
@@ -259,10 +486,127 @@ class carddecorshopbooster(discord.ui.View):
         else:
             await interaction.response.send_message("You do not have enough <:stardust:1230256970859155486>Stardust to complete this purchase")
 
-    @discord.ui.button(emoji="<:number4:1209947403432624138>")
+    @discord.ui.button(label="4")
     async def four(self, interaction: discord.Interaction, button: discord.Button):
-        price = 32
+        price = 60
         id = "4"
+        levels = await self.get_member_levels(interaction.user.id)
+        
+        if levels['stardust'] >= price:
+            await self.update_decor(interaction.user.id, id)
+            await self.remove_stardust(interaction.user.id, amount=price)
+            await interaction.response.send_message(f"You have bought **decor {id}** for **<:stardust:1230256970859155486>{price} Stardust**", ephemeral=True)
+        else:
+            await interaction.response.send_message("You do not have enough <:stardust:1230256970859155486>Stardust to complete this purchase")
+
+    @discord.ui.button(label="5")
+    async def five(self, interaction: discord.Interaction, button: discord.Button):
+        price = 60
+        id = "5"
+        levels = await self.get_member_levels(interaction.user.id)
+        
+        if levels['stardust'] >= price:
+            await self.update_decor(interaction.user.id, id)
+            await self.remove_stardust(interaction.user.id, amount=price)
+            await interaction.response.send_message(f"You have bought **decor {id}** for **<:stardust:1230256970859155486>{price} Stardust**", ephemeral=True)
+        else:
+            await interaction.response.send_message("You do not have enough <:stardust:1230256970859155486>Stardust to complete this purchase")
+
+    @discord.ui.button(label="6")
+    async def six(self, interaction: discord.Interaction, button: discord.Button):
+        price = 60
+        id = "6"
+        levels = await self.get_member_levels(interaction.user.id)
+        
+        if levels['stardust'] >= price:
+            await self.update_decor(interaction.user.id, id)
+            await self.remove_stardust(interaction.user.id, amount=price)
+            await interaction.response.send_message(f"You have bought **decor {id}** for **<:stardust:1230256970859155486>{price} Stardust**", ephemeral=True)
+        else:
+            await interaction.response.send_message("You do not have enough <:stardust:1230256970859155486>Stardust to complete this purchase")
+
+    @discord.ui.button(label="7")
+    async def seven(self, interaction: discord.Interaction, button: discord.Button):
+        price = 60
+        id = "7"
+        levels = await self.get_member_levels(interaction.user.id)
+        
+        if levels['stardust'] >= price:
+            await self.update_decor(interaction.user.id, id)
+            await self.remove_stardust(interaction.user.id, amount=price)
+            await interaction.response.send_message(f"You have bought **decor {id}** for **<:stardust:1230256970859155486>{price} Stardust**", ephemeral=True)
+        else:
+            await interaction.response.send_message("You do not have enough <:stardust:1230256970859155486>Stardust to complete this purchase")
+
+    @discord.ui.button(label="8")
+    async def eight(self, interaction: discord.Interaction, button: discord.Button):
+        price = 60
+        id = "8"
+        levels = await self.get_member_levels(interaction.user.id)
+        
+        if levels['stardust'] >= price:
+            await self.update_decor(interaction.user.id, id)
+            await self.remove_stardust(interaction.user.id, amount=price)
+            await interaction.response.send_message(f"You have bought **decor {id}** for **<:stardust:1230256970859155486>{price} Stardust**", ephemeral=True)
+        else:
+            await interaction.response.send_message("You do not have enough <:stardust:1230256970859155486>Stardust to complete this purchase")
+
+    @discord.ui.button(label="9")
+    async def nine(self, interaction: discord.Interaction, button: discord.Button):
+        price = 60
+        id = "9"
+        levels = await self.get_member_levels(interaction.user.id)
+        
+        if levels['stardust'] >= price:
+            await self.update_decor(interaction.user.id, id)
+            await self.remove_stardust(interaction.user.id, amount=price)
+            await interaction.response.send_message(f"You have bought **decor {id}** for **<:stardust:1230256970859155486>{price} Stardust**", ephemeral=True)
+        else:
+            await interaction.response.send_message("You do not have enough <:stardust:1230256970859155486>Stardust to complete this purchase")
+
+    @discord.ui.button(label="10")
+    async def ten(self, interaction: discord.Interaction, button: discord.Button):
+        price = 60
+        id = "10"
+        levels = await self.get_member_levels(interaction.user.id)
+        
+        if levels['stardust'] >= price:
+            await self.update_decor(interaction.user.id, id)
+            await self.remove_stardust(interaction.user.id, amount=price)
+            await interaction.response.send_message(f"You have bought **decor {id}** for **<:stardust:1230256970859155486>{price} Stardust**", ephemeral=True)
+        else:
+            await interaction.response.send_message("You do not have enough <:stardust:1230256970859155486>Stardust to complete this purchase")
+
+    @discord.ui.button(label="11")
+    async def eleven(self, interaction: discord.Interaction, button: discord.Button):
+        price = 60
+        id = "11"
+        levels = await self.get_member_levels(interaction.user.id)
+        
+        if levels['stardust'] >= price:
+            await self.update_decor(interaction.user.id, id)
+            await self.remove_stardust(interaction.user.id, amount=price)
+            await interaction.response.send_message(f"You have bought **decor {id}** for **<:stardust:1230256970859155486>{price} Stardust**", ephemeral=True)
+        else:
+            await interaction.response.send_message("You do not have enough <:stardust:1230256970859155486>Stardust to complete this purchase")
+
+    @discord.ui.button(label="12")
+    async def twelve(self, interaction: discord.Interaction, button: discord.Button):
+        price = 60
+        id = "12"
+        levels = await self.get_member_levels(interaction.user.id)
+        
+        if levels['stardust'] >= price:
+            await self.update_decor(interaction.user.id, id)
+            await self.remove_stardust(interaction.user.id, amount=price)
+            await interaction.response.send_message(f"You have bought **decor {id}** for **<:stardust:1230256970859155486>{price} Stardust**", ephemeral=True)
+        else:
+            await interaction.response.send_message("You do not have enough <:stardust:1230256970859155486>Stardust to complete this purchase")
+
+    @discord.ui.button(label="13")
+    async def thirteen(self, interaction: discord.Interaction, button: discord.Button):
+        price = 60
+        id = "13"
         levels = await self.get_member_levels(interaction.user.id)
         
         if levels['stardust'] >= price:
@@ -1021,7 +1365,7 @@ class levels(commands.Cog):
                 else:
                     return 0
 
-    @app_commands.command()
+    @app_commands.command(name="shop", description="Come spend your mora and stardust here!")
     async def shop(self, interaction: discord.Interaction):
         user = interaction.user
         wallet_balance = await self.get_wallet_balance(user)
@@ -1042,7 +1386,7 @@ class levels(commands.Cog):
             "Decorate your rank cards more with our card decorations",
             "Unlock the ability to make your own custom roles!"
         ]
-        booster_role_id = 1128460924886458489
+        booster_role_id = 1135244903165722695
         has_booster_role = any(role.id == booster_role_id for role in user.roles)
         tool_buy_view = stardustshop(bot=self.bot)
         if has_booster_role:
@@ -1070,7 +1414,6 @@ class levels(commands.Cog):
                               f"\n\n<:mora:1230914532675813508>**{wallet_balance} Mora**"
                               f"\n<:stardust:1230256970859155486>**{stardust} Stardust**", color=0x2b2d31)
         tools.set_thumbnail(url=interaction.guild.icon)
-        
         view = discord.ui.View()
         view.add_item(dropdown)
         
@@ -1084,25 +1427,16 @@ class levels(commands.Cog):
             if selected_category == categories[0]:
                 for item in tool_buy_view.children:
                     view.add_item(item)
-                embed = discord.Embed(title="Stardust", description=f"> Use the buttons below to buy the items you want\n\n<:mora:1230914532675813508>**{wallet_balance} Mora**\n<:stardust:1230256970859155486>**{stardust} Stardust**", color=0x2b2d31)
+                embed = discord.Embed(title="Stardust", description=f"Stardust can be used to purchase rank card decorations!\nClick the rank card decorations category to purchase one\n\n<:mora:1230914532675813508>**{wallet_balance} Mora**\n<:stardust:1230256970859155486>**{stardust} Stardust**", color=0x2b2d31)
                 embed.set_thumbnail(url=interaction.guild.icon)
-                embed.set_image(url="https://cdn.discordapp.com/attachments/1184208577120960632/1230994171079299143/Comp_1_00000.png?ex=663557a9&is=6622e2a9&hm=804e7422f3aa99537f28f0fe99fcb5a7fe158762cae9cf638c663f9ac0d82eab&")
-                embed.set_footer(text="• Use the buttons below to buy an item (clicking it twice will give you another)", icon_url=interaction.user.avatar)
-            
+                embed.set_image(url="https://cdn.discordapp.com/attachments/1184208577120960632/1230994171079299143/Comp_1_00000.png?ex=663557a9&is=6622e2a9&hm=804e7422f3aa99537f28f0fe99fcb5a7fe158762cae9cf638c663f9ac0d82eab&")            
             elif selected_category == categories[1]:
                 for item in lotto_buy_view.children:
                     view.add_item(item)
-                embed = discord.Embed(title="Rank Decorations", description=f"> Use the buttons below to buy the items you want\n\n<:mora:1230914532675813508>**{wallet_balance} Mora**\n<:stardust:1230256970859155486>**{stardust} Stardust**", color=0x2b2d31)
+                embed = discord.Embed(title="Rank Decorations", description=f"Customise your rank card more with our new decorations!\n\n<:mora:1230914532675813508>**{wallet_balance} Mora**\n<:stardust:1230256970859155486>**{stardust} Stardust**", color=0x2b2d31)
                 embed.set_thumbnail(url=interaction.guild.icon)
-                booster_role_id = 1128460924886458489
-                has_booster_role = any(role.id == booster_role_id for role in user.roles)
-                if has_booster_role:
-                    image = "https://cdn.discordapp.com/attachments/1184208577120960632/1233830446467649587/rank_decor_shop_00000.png?ex=662e85a5&is=662d3425&hm=2d967585935043f8c7eb3a70cc55901b3962755cf99d0fb43b2f3f65c38cae8c&"
-                else:
-                    image = "https://cdn.discordapp.com/attachments/1184208577120960632/1232391470695059557/rank_decor_shop_00000.png?ex=662de6bf&is=662c953f&hm=ee4ef00b8772a4cc5b23280ceb83e5ece5b0084545fce0023b60192e932a1d7b&"
+                image = "https://cdn.discordapp.com/attachments/1184208577120960632/1246561968689516544/shops_3_00000.png?ex=665cd6cd&is=665b854d&hm=d2ede46b31010bcfca7ae128d414e1c41bbeb992135cf0ff5c4daffdf708ddd6&"
                 embed.set_image(url=image)
-                embed.set_footer(text="• Use the buttons below to buy an item (clicking it twice will give you another)", icon_url=interaction.user.avatar)
-
             elif selected_category == categories[2]:
                 # for item in roles_buy_view.children:
                     # view.add_item(item)
