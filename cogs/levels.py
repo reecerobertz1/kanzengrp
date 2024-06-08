@@ -1338,6 +1338,8 @@ class levels(commands.Cog):
     async def rankbg(self, interaction: discord.Interaction, image: Optional[discord.Attachment] = None):
         image_data = None
 
+        await interaction.response.defer(ephemeral=True)  # Defer the interaction
+
         if image:
             if image.url.startswith("https://") or image.url.startswith("http://"):
                 try:
@@ -1346,11 +1348,11 @@ class levels(commands.Cog):
                             image_data = BytesIO(await resp.read())
                             image_data.seek(0)
                         else:
-                            return await interaction.response.send_message("Invalid image.", ephemeral=True)
+                            return await interaction.followup.send("Invalid image.", ephemeral=True)
                 except:
-                    return await interaction.response.send_message("Couldn't get the image from the link you provided.", ephemeral=True)
+                    return await interaction.followup.send("Couldn't get the image from the link you provided.", ephemeral=True)
             else:
-                return await interaction.response.send_message("You need to use a https or http URL", ephemeral=True)
+                return await interaction.followup.send("You need to use a https or http URL", ephemeral=True)
         else:
             if interaction.data.get('attachments'):
                 to_edit = interaction.data['attachments'][0]
@@ -1359,17 +1361,17 @@ class levels(commands.Cog):
                         image_data = BytesIO(await resp.read())
                         image_data.seek(0)
                 else:
-                    return await interaction.response.send_message("Invalid image.", ephemeral=True)
+                    return await interaction.followup.send("Invalid image.", ephemeral=True)
             else:
-                return await interaction.response.send_message("You need to upload an image attachment or add an image URL", ephemeral=True)
+                return await interaction.followup.send("You need to upload an image attachment or add an image URL", ephemeral=True)
 
         try:
             b_img = Image.open(image_data)
         except UnidentifiedImageError:
-            return await interaction.response.send_message("Invalid image.", ephemeral=True)
-        
+            return await interaction.followup.send("Invalid image.", ephemeral=True)
+
         await self.set_card_image(image_data, interaction.user.id, interaction.guild.id)
-        await interaction.response.send_message("Successfully changed your rank card image!", ephemeral=True)
+        await interaction.followup.send("Successfully changed your rank card image!", ephemeral=True)
 
     @app_commands.command(name="reset", description="Resets everyone's xp")
     @app_commands.checks.has_permissions(manage_guild=True)
