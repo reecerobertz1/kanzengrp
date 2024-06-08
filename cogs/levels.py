@@ -10,10 +10,11 @@ from PIL import Image, ImageDraw, ImageFont, ImageFilter, ImageEnhance
 from io import BytesIO
 import functools
 from discord import app_commands
-from PIL import Image, ImageFilter, ImageOps
+from PIL import Image, ImageFilter, ImageOps, UnidentifiedImageError
 import requests
 from utils.views import Paginator
 from easy_pil import Font
+from colorthief import ColorThief
 
 class LevelRow(TypedDict):
     member_id: int
@@ -986,17 +987,31 @@ class levels(commands.Cog):
         avatar_image = avatar_image.resize((190, 190))
         return avatar_image, circle
 
-    def _get_bg_image(self, url: str):
-            """Gets background image"""
-            image = requests.get(url, stream=True)
-            b_img = Image.open(BytesIO(image.content))
-            return b_img
+    async def set_card_image(self, image: BytesIO, member_id: int, guild_id: int, colorchange: Optional[bool] = False) -> None:
+        query = "UPDATE levels SET image = $1, color = $2 WHERE member_id = $3"
+        bytes_data = image.getvalue()
+        image.seek(0)
+        ct = ColorThief(image)
+        pb_colors = ct.get_palette(2, 2)
+        pb_primary = '#%02x%02x%02x' % pb_colors[0]
+        pb_accent = '#%02x%02x%02x' % pb_colors[1]
+        if colorchange == False:
+            async with self.bot.pool.acquire() as connection:
+                async with connection.transaction():
+                    await connection.execute(query, bytes_data, pb_primary, member_id)
+            await self.bot.pool.release(connection)
+        else:
+            new_query = "UPDATE levels SET image = $1, accent_color = $4, color = $5 WHERE member_id = $2"
+            async with self.bot.pool.acquire() as connection:
+                async with connection.transaction():
+                    await connection.execute(new_query, bytes_data, member_id, pb_accent, pb_primary)
+            await self.bot.pool.release(connection)
 
     def get_card(self, name: str, status: str, avatar: BytesIO, levels: LevelRow, rank: int, user: discord.User) -> BytesIO:
         percentage, xp_have, xp_need, level = self.xp_calculations(levels)
         card = Image.new('RGBA', size=(750, 750), color='grey')
         if levels['image'] is not None:
-            bg = self._get_bg_image(levels['image'])
+            bg = Image.open(BytesIO(levels["image"]))
             left = (bg.width - min(bg.width, bg.height)) // 2
             top = (bg.height - min(bg.width, bg.height)) // 2
             right = left + min(bg.width, bg.height)
@@ -1319,19 +1334,42 @@ class levels(commands.Cog):
         else:
             await interaction.response.send_message(f"`{color}` is not a valid hex color")
 
-    @app_commands.command(name="rankbg", description="Attach an image when using this command!")
-    async def rankbg(self, interaction: discord.Interaction, image: discord.Attachment):
-        if not image.content_type.split("/")[0] == "image":
-            await interaction.response.send_message("Please attach a valid image (PNG, JPG, JPEG, GIF).")
-            return
-        member_id = interaction.user.id
-        async with self.bot.pool.acquire() as conn:
-            query = "UPDATE levels SET image = ? WHERE member_id = ?"
-            await conn.execute(query, (image.url, member_id))
-            await conn.commit()
-        embed = discord.Embed(title="Rank background has been updated!", color=0x2b2d31)
-        embed.set_image(url=image.url)
-        await interaction.response.send_message(embed=embed)
+    @app_commands.command(name="rankbg", description="Upload an image when using this command!")
+    async def rankbg(self, interaction: discord.Interaction, image: Optional[discord.Attachment] = None):
+        image_data = None
+
+        if image:
+            if image.url.startswith("https://") or image.url.startswith("http://"):
+                try:
+                    async with self.bot.session.get(image.url) as resp:
+                        if resp.headers.get('content-type').split("/")[0] == "image" and not resp.headers.get('content-type').split("/")[1] == "gif":
+                            image_data = BytesIO(await resp.read())
+                            image_data.seek(0)
+                        else:
+                            return await interaction.response.send_message("Invalid image.", ephemeral=True)
+                except:
+                    return await interaction.response.send_message("Couldn't get the image from the link you provided.", ephemeral=True)
+            else:
+                return await interaction.response.send_message("You need to use a https or http URL", ephemeral=True)
+        else:
+            if interaction.data.get('attachments'):
+                to_edit = interaction.data['attachments'][0]
+                if to_edit['content_type'].split("/")[0] == "image" and not to_edit['content_type'].split("/")[1] == "gif":
+                    async with self.bot.session.get(to_edit['url']) as resp:
+                        image_data = BytesIO(await resp.read())
+                        image_data.seek(0)
+                else:
+                    return await interaction.response.send_message("Invalid image.", ephemeral=True)
+            else:
+                return await interaction.response.send_message("You need to upload an image attachment or add an image URL", ephemeral=True)
+
+        try:
+            b_img = Image.open(image_data)
+        except UnidentifiedImageError:
+            return await interaction.response.send_message("Invalid image.", ephemeral=True)
+        
+        await self.set_card_image(image_data, interaction.user.id, interaction.guild.id)
+        await interaction.response.send_message("Successfully changed your rank card image!", ephemeral=True)
 
     @app_commands.command(name="reset", description="Resets everyone's xp")
     @app_commands.checks.has_permissions(manage_guild=True)
