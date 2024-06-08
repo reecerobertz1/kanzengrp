@@ -14,7 +14,6 @@ from PIL import Image, ImageFilter, ImageOps, UnidentifiedImageError
 import requests
 from utils.views import Paginator
 from easy_pil import Font
-from colorthief import ColorThief
 
 class LevelRow(TypedDict):
     member_id: int
@@ -991,20 +990,16 @@ class levels(commands.Cog):
         query = "UPDATE levels SET image = $1, color = $2 WHERE member_id = $3"
         bytes_data = image.getvalue()
         image.seek(0)
-        ct = ColorThief(image)
-        pb_colors = ct.get_palette(2, 2)
-        pb_primary = '#%02x%02x%02x' % pb_colors[0]
-        pb_accent = '#%02x%02x%02x' % pb_colors[1]
         if colorchange == False:
             async with self.bot.pool.acquire() as connection:
                 async with connection.transaction():
-                    await connection.execute(query, bytes_data, pb_primary, member_id)
+                    await connection.execute(query, bytes_data, member_id)
             await self.bot.pool.release(connection)
         else:
             new_query = "UPDATE levels SET image = $1, accent_color = $4, color = $5 WHERE member_id = $2"
             async with self.bot.pool.acquire() as connection:
                 async with connection.transaction():
-                    await connection.execute(new_query, bytes_data, member_id, pb_accent, pb_primary)
+                    await connection.execute(new_query, bytes_data, member_id)
             await self.bot.pool.release(connection)
 
     def get_card(self, name: str, status: str, avatar: BytesIO, levels: LevelRow, rank: int, user: discord.User) -> BytesIO:
