@@ -461,5 +461,15 @@ class Moderation(commands.Cog):
         view = reportmemberbutton()
         await interaction.response.send_message(embed=embed, view=view, ephemeral=True)
 
+    async def delete_rep(self, member_id):
+        async with self.pool.acquire() as conn:
+            await conn.execute("DELETE FROM staffrep WHERE member_id = ?", member_id)
+            await conn.commit()
+
+    @commands.command()
+    async def delrep(self, ctx, member: discord.Member):
+        await self.delete_rep(member.id)
+        await ctx.reply(f'Okay! I have deleted <@{member.id}> from the staff rep database')
+
 async def setup(bot):
     await bot.add_cog(Moderation(bot))
