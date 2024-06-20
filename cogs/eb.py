@@ -14,7 +14,6 @@ class alterview(discord.ui.View):
 "\nour website [press here](https://linktr.ee/alterunit)" ,color=0x2b2d31)
         embed.set_image(url="https://media.discordapp.net/attachments/1123274753009000458/1186415654430060624/partner_tn.gif?ex=6652fcee&is=6651ab6e&hm=32a302eb24f03496db35087e6039fb3d924909022e92eec06e004081ceae0c25&")
         embed.set_thumbnail(url="https://cdn.discordapp.com/icons/1173176423268220998/8829e815ef76f0d064ceafeb5fec4995.webp?size=1024&format=webp&width=0&height=307")
-        embed.set_footer(text="'Est 2023 | Multifandom")
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
 class astralview(discord.ui.View):
@@ -26,6 +25,7 @@ class astralview(discord.ui.View):
     async def info(self, interaction: discord.Interaction, button: discord.Button):
         embed = discord.Embed(title="ʚ __ASTRAL GROUP !__ ˎˊ-",description=" ✧.*\n⋆ Led by [@kaeretto](https://www.instagram.com/kaeretto/) ✧˚  [@scaraurmom](https://www.instagram.com/scaraurmom/) ✧˚ [@lucimitsu](https://www.instagram.com/lucimitsu/) ✧˚ [@maiizze](https://www.instagram.com/maiizze/)\n\nʚ ig ⋆ [Astral Grp](https://www.instagram.com/group.astral/)  ˎˊ-\nʚ tt ⋆ [Astral Grp](https://www.tiktok.com/@grp.astral?lang=en)\nʚ server ⋆ [here!](https://discord.gg/groupastral)" ,color=0xd1b9b9)
         embed.set_image(url="https://media.discordapp.net/attachments/1147430827202973717/1221265888741818490/astral_partner_banner_00000.jpg?ex=66757cbd&is=66742b3d&hm=32ffabf8f94aa4a9703e81745c142948fb496b485e8f4abf6d8805ac330c627c&=&format=webp&width=1440&height=480")
+        embed.set_footer(text="'Est 2023 | Multifandom")
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
 class sserafimsview(discord.ui.View):
