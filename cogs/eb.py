@@ -14,6 +14,7 @@ class alterview(discord.ui.View):
 "\nour website [press here](https://linktr.ee/alterunit)" ,color=0x2b2d31)
         embed.set_image(url="https://media.discordapp.net/attachments/1123274753009000458/1186415654430060624/partner_tn.gif?ex=6652fcee&is=6651ab6e&hm=32a302eb24f03496db35087e6039fb3d924909022e92eec06e004081ceae0c25&")
         embed.set_thumbnail(url="https://cdn.discordapp.com/icons/1173176423268220998/8829e815ef76f0d064ceafeb5fec4995.webp?size=1024&format=webp&width=0&height=307")
+        embed.set_footer(text="'Est 2023 | Multifandom")
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
 class astralview(discord.ui.View):
