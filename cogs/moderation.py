@@ -467,9 +467,9 @@ class Moderation(commands.Cog):
             await conn.commit()
 
     @commands.command()
-    async def delrep(self, ctx, member: discord.Member):
-        await self.delete_rep(member.id)
-        await ctx.reply(f'Okay! I have deleted <@{member.id}> from the staff rep database')
+    async def delrep(self, ctx, id: str):
+        await self.delete_rep(member_id=id)
+        await ctx.reply(f'Okay! I have deleted <@{id}> from the staff rep database')
 
 async def setup(bot):
     await bot.add_cog(Moderation(bot))
