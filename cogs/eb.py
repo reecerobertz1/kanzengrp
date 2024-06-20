@@ -23,7 +23,7 @@ class astralview(discord.ui.View):
 
     @discord.ui.button(label="Info", style=discord.ButtonStyle.blurple, emoji="<:pompom_gift:1227494821778690118>")
     async def info(self, interaction: discord.Interaction, button: discord.Button):
-        embed = discord.Embed(title="ʚ __ASTRAL GROUP !__ ˎˊ-",description=" ✧.*\n⋆ Led by [@kaeretto](https://www.instagram.com/kaeretto/) ✧˚  [@scaraurmom](https://www.instagram.com/scaraurmom/) ✧˚ [@lucimitsu](https://www.instagram.com/lucimitsu/) ✧˚ [@maiizze](https://www.instagram.com/maiizze/)\nʚ ig ⋆ [Astral Grp](https://www.instagram.com/group.astral/)  ˎˊ-\nʚ tt ⋆ [Astral Grp](https://www.tiktok.com/@grp.astral?lang=en)\nʚ server ⋆ [here!](https://discord.gg/groupastral)" ,color=0xd1b9b9)
+        embed = discord.Embed(title="ʚ __ASTRAL GROUP !__ ˎˊ-",description=" ✧.*\n⋆ Led by [@kaeretto](https://www.instagram.com/kaeretto/) ✧˚  [@scaraurmom](https://www.instagram.com/scaraurmom/) ✧˚ [@lucimitsu](https://www.instagram.com/lucimitsu/) ✧˚ [@maiizze](https://www.instagram.com/maiizze/)\n\nʚ ig ⋆ [Astral Grp](https://www.instagram.com/group.astral/)  ˎˊ-\nʚ tt ⋆ [Astral Grp](https://www.tiktok.com/@grp.astral?lang=en)\nʚ server ⋆ [here!](https://discord.gg/groupastral)" ,color=0xd1b9b9)
         embed.set_image(url="https://media.discordapp.net/attachments/1147430827202973717/1221265888741818490/astral_partner_banner_00000.jpg?ex=66757cbd&is=66742b3d&hm=32ffabf8f94aa4a9703e81745c142948fb496b485e8f4abf6d8805ac330c627c&=&format=webp&width=1440&height=480")
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
