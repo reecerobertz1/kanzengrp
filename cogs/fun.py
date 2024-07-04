@@ -26,9 +26,6 @@ class Fun(commands.Cog):
         self.bot = bot
         self.gif_cache = {}
         self.server1_log_channel_id = 1122627075682078720
-        self.server2_log_channel_id = 1122994947444973709
-        self.server3_log_channel_id = 1134857444250632343
-        self.editorsblock_log_channel_id = 1134857444250632343
         self.emoji="<:chimmy2:1148234652448981072>"
 
     def get_random_color(self):
