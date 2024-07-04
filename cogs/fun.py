@@ -52,16 +52,8 @@ class Fun(commands.Cog):
                     await log_channel.send(embed=embed)
 
     def get_log_channel_id(self, guild_id):
-        if guild_id == 1121841073673736215:
+        if guild_id == 1131003330810871979:
             return self.server1_log_channel_id
-        elif guild_id == 957987670787764224:
-            return self.server2_log_channel_id
-        elif guild_id == 1131003330810871979:
-            return self.server3_log_channel_id
-        elif guild_id == 1131003330810871979:
-            return self.editorsblock_log_channel_id
-        else:
-            return None
 
     @app_commands.command(name="jail", description="Lock someone up in jail")
     async def jail(self, interaction: discord.Interaction, member: Optional[discord.Member]):

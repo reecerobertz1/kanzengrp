@@ -78,15 +78,6 @@ class kanzenlogos(discord.ui.View):
         await interaction.response.send_message("Here are the logos!\n[click here](<https://mega.nz/folder/ZtVyULzT#MRTZmGasmhFQHipvBKH00g>)")
         await interaction.followup.send("#𝗞𝗮𝗻𝘇𝗲𝗻𝗴𝗿𝗽")
 
-class daegulogos(discord.ui.View):
-    def __init__ (self):
-        super().__init__(timeout=None)
-        self.value = None
-
-    @discord.ui.button(label="Get logos!")
-    async def logos(self, interaction: discord.Interaction, button: discord.Button):
-        await interaction.response.send_message("Here are the logos!\n[click here](<https://mega.nz/folder/4QZWTBjR#ZmyJUH2HHj8lFrwkY1BrPw>)")
-
 class ia(ui.Modal, title='Inactivity Message'):
     instagram = ui.TextInput(label='Instagram username', placeholder="Enter your Instagram username here...", style=discord.TextStyle.short)
     reason = ui.TextInput(label='Inactivity Reason', placeholder="", style=discord.TextStyle.long)

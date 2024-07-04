@@ -129,7 +129,7 @@ class acceptordecline(discord.ui.View):
             button2 = discord.ui.Button(label=f"Follow {self.instagram}", url=f"https://instagram.com/{self.instagram}/", emoji="🌕")
             view2 = discord.ui.View()
             view2.add_item(button2)
-            channel = interaction.client.get_channel(1131006361921130526)
+            channel = interaction.client.get_channel(1258432622585974837)
             await channel.send(embed=embed, view=view2)
 
     async def update_accepted_status(self, member_id: int, status="yes"):
@@ -485,7 +485,7 @@ class apply(ui.Modal, title="Apply for Kanzengrp"):
         embed = discord.Embed(description=f"`☄️` Kanzen Forms\nSent from [**{self.instagram.value}**](https://instagram.com{self.instagram.value})\n\nWere they a past member?\n> {self.pastmember.value}\n\nThe edit they applied with\n> {self.edit.value}\n\nAnything Else?\n> {self.other.value}", color=0x2b2d31)
         embed.set_thumbnail(url=interaction.guild.icon)
         embed.set_footer(text=f"Sent from {interaction.user.name} | {interaction.user.id}")
-        channel=interaction.client.get_channel(1222674203447267399)
+        channel=interaction.client.get_channel(1258432608329797754)
         await channel.send(embed=embed, view = acceptordecline(bot=self.bot, member=interaction.user, instagram=self.instagram.value))
         await self.add_member(interaction.user.id)
         await self.update_applied(interaction.user.id, "true")
