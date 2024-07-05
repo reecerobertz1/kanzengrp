@@ -2,20 +2,6 @@ import discord
 from discord.ext import commands
 from discord import ui
 
-class alterview(discord.ui.View):
-    def __init__(self):
-        super().__init__(timeout=None)
-        self.value=None
-
-    @discord.ui.button(label="Info", style=discord.ButtonStyle.blurple, emoji="<a:3strs:1096801735072305252>")
-    async def info(self, interaction: discord.Interaction, button: discord.Button):
-        embed = discord.Embed(title="﹒✿﹒ alter unit!",description="> owned by [@afterthxts](https://www.instagram.com/afterthxts?igshid=OGQ5ZDc2ODk2ZA%3D%3D&utm_source=qr)"
-"\nig account [@joinalters](https://www.instagram.com/joinalters) | disc srvr [press here](https://discord.com/invite/HRwKzKTNx3)"
-"\nour website [press here](https://linktr.ee/alterunit)" ,color=0x2b2d31)
-        embed.set_image(url="https://media.discordapp.net/attachments/1123274753009000458/1186415654430060624/partner_tn.gif?ex=6652fcee&is=6651ab6e&hm=32a302eb24f03496db35087e6039fb3d924909022e92eec06e004081ceae0c25&")
-        embed.set_thumbnail(url="https://cdn.discordapp.com/icons/1173176423268220998/8829e815ef76f0d064ceafeb5fec4995.webp?size=1024&format=webp&width=0&height=307")
-        await interaction.response.send_message(embed=embed, ephemeral=True)
-
 class astralview(discord.ui.View):
     def __init__(self):
         super().__init__(timeout=None)
@@ -47,7 +33,7 @@ class lyragrp(discord.ui.View):
 
     @discord.ui.button(label="Info", style=discord.ButtonStyle.blurple, emoji="<:1817bunnylove:1135527331398692975>")
     async def info(self, interaction: discord.Interaction, button: discord.Button):
-        embed = discord.Embed(title="GRP LYRA",description="- led by [lyrinari](https://www.instagram.com/lyrinari/), [hiraeyq](https://www.instagram.com/hiraeyq/), [.denisaur.](https://www.instagram.com/_.denisaur._/) & [kazuhqra](https://www.instagram.com/kazuhqra/)\n- co lead [luno1rs](https://www.instagram.com/luno1rs/)\n- multi-fandom" ,color=0xfebcbe)
+        embed = discord.Embed(title="GRP LYRA",description="- led by [lyrinari](https://www.instagram.com/lyrinari/), [hiraeyq](https://www.instagram.com/hiraeyq/), [.denisaur.](https://www.instagram.com/_.denisaur._/) & [kazuhqra](https://www.instagram.com/kazuhqra/)\n- co leads [luno1rs](https://www.instagram.com/luno1rs/) & [remqsi](https://www.instagram.com/remqsi/)\n- multi-fandom" ,color=0xfebcbe)
         embed.set_image(url="https://cdn.discordapp.com/attachments/1221580405921284317/1225300494621343776/form_gfx_w_grains.png?ex=6620a102&is=660e2c02&hm=d8b1ada951fd18e3836895d778d0323a1a60ff0ae729ff612cc9fb38751d5eba&")
         embed.set_thumbnail(url="https://cdn.discordapp.com/icons/1134736053803159592/a_479bb36059893c697962d64e636728c8.gif?size=1024&width=0&height=307")
         await interaction.response.send_message(embed=embed, ephemeral=True)
@@ -650,14 +636,6 @@ class Forms(commands.Cog):
         astral.add_item(astralinsta)
         astral.add_item(astraltt)
         await ctx.send("https://discord.gg/groupastral", view=astral)
-        alter = alterview()
-        alterinsta = discord.ui.Button(label="Instagram", url="https://www.instagram.com/joinalters")
-        altertt = discord.ui.Button(label="TikTok", url="https://discord.com/invite/HRwKzKTNx3")
-        altersite = discord.ui.Button(label="Website", url="https://linktr.ee/alterunit")
-        alter.add_item(alterinsta)
-        alter.add_item(altertt)
-        alter.add_item(altersite)
-        await ctx.send("https://discord.com/invite/HRwKzKTNx3", view=alter)
         embed= discord.Embed(description="Want to partner with us? read our partner info in <#1131005271502753812>", color=0x2b2d31)
         await ctx.send(embed=embed)
 
