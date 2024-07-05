@@ -1241,7 +1241,13 @@ class levels(commands.Cog):
 
     @app_commands.command(name="rank", description="Check your rank")
     async def rank(self, interaction: discord.Interaction, member: Optional[discord.Member] = None):
+        zennie_role_id = 1219759999656530130
         member = member or interaction.user
+        
+        if zennie_role_id not in [role.id for role in member.roles]:
+            await interaction.response.send_message("Sorry, you cannot use this command.", ephemeral=True)
+            return
+
         levels = await self.get_member_levels(member.id)
         rank = await self.get_rank(member.id)
         avatar_url = member.display_avatar.replace(static_format='png', size=256).url
@@ -1294,6 +1300,12 @@ class levels(commands.Cog):
 
     @app_commands.command(description="See the level leaderboard")
     async def leaderboard(self, interaction: discord.Interaction):
+        zennie_role_id = 1219759999656530130
+        member = interaction.user
+        
+        if zennie_role_id not in [role.id for role in member.roles]:
+            await interaction.response.send_message("Sorry, you cannot use this command.", ephemeral=True)
+            return
         embeds = []
         description = ""
         rows = await self.get_leaderboard_stats()
@@ -1301,8 +1313,6 @@ class levels(commands.Cog):
         for i, row in enumerate(rows, start=1):
             msg = "messages" if row['messages'] != 1 else "message"
             xp = row["xp"]
-            if xp is None:
-                xp = 0
             lvl = 0
             while True:
                 if xp < ((50*(lvl**2))+(50*(lvl-1))):
@@ -1322,6 +1332,12 @@ class levels(commands.Cog):
 
     @app_commands.command(name="rankcolor", description="Change your rank card color with hex codes")
     async def rankcolor(self, interaction: discord.Interaction, color: str):
+        zennie_role_id = 1219759999656530130
+        member = interaction.user
+        
+        if zennie_role_id not in [role.id for role in member.roles]:
+            await interaction.response.send_message("Sorry, you cannot use this command.", ephemeral=True)
+            return
         match = re.search(self.regex_hex, color)
         if match:
             await self.set_rank_color(interaction.user.id, color)
@@ -1336,9 +1352,13 @@ class levels(commands.Cog):
 
     @app_commands.command(name="rankbg", description="Upload an image when using this command!")
     async def rankbg(self, interaction: discord.Interaction, image: Optional[discord.Attachment] = None):
+        zennie_role_id = 1219759999656530130
+        member = interaction.user
+        
+        if zennie_role_id not in [role.id for role in member.roles]:
+            await interaction.response.send_message("Sorry, you cannot use this command.", ephemeral=True)
+            return
         image_data = None
-
-        await interaction.response.defer(ephemeral=True)  # Defer the interaction
 
         if image:
             if image.url.startswith("https://") or image.url.startswith("http://"):
@@ -1348,11 +1368,11 @@ class levels(commands.Cog):
                             image_data = BytesIO(await resp.read())
                             image_data.seek(0)
                         else:
-                            return await interaction.followup.send("Invalid image.", ephemeral=True)
+                            return await interaction.response.send_message("Invalid image.", ephemeral=True)
                 except:
-                    return await interaction.followup.send("Couldn't get the image from the link you provided.", ephemeral=True)
+                    return await interaction.response.send_message("Couldn't get the image from the link you provided.", ephemeral=True)
             else:
-                return await interaction.followup.send("You need to use a https or http URL", ephemeral=True)
+                return await interaction.response.send_message("You need to use a https or http URL", ephemeral=True)
         else:
             if interaction.data.get('attachments'):
                 to_edit = interaction.data['attachments'][0]
@@ -1361,17 +1381,17 @@ class levels(commands.Cog):
                         image_data = BytesIO(await resp.read())
                         image_data.seek(0)
                 else:
-                    return await interaction.followup.send("Invalid image.", ephemeral=True)
+                    return await interaction.response.send_message("Invalid image.", ephemeral=True)
             else:
-                return await interaction.followup.send("You need to upload an image attachment or add an image URL", ephemeral=True)
+                return await interaction.response.send_message("You need to upload an image attachment or add an image URL", ephemeral=True)
 
         try:
             b_img = Image.open(image_data)
         except UnidentifiedImageError:
-            return await interaction.followup.send("Invalid image.", ephemeral=True)
-
+            return await interaction.response.send_message("Invalid image.", ephemeral=True)
+        
         await self.set_card_image(image_data, interaction.user.id, interaction.guild.id)
-        await interaction.followup.send("Successfully changed your rank card image!", ephemeral=True)
+        await interaction.response.send_message("Successfully changed your rank card image!", ephemeral=True)
 
     @app_commands.command(name="reset", description="Resets everyone's xp")
     @app_commands.checks.has_permissions(manage_guild=True)
@@ -1407,6 +1427,12 @@ class levels(commands.Cog):
 
     @app_commands.command(name="shop", description="Come spend your mora and stardust here!")
     async def shop(self, interaction: discord.Interaction):
+        zennie_role_id = 1219759999656530130
+        member = interaction.user
+        
+        if zennie_role_id not in [role.id for role in member.roles]:
+            await interaction.response.send_message("Sorry, you cannot use this command.", ephemeral=True)
+            return
         user = interaction.user
         wallet_balance = await self.get_wallet_balance(user)
         stardust = await self.get_stardust_balance(user)
@@ -1543,17 +1569,26 @@ class levels(commands.Cog):
     @commands.command()
     @commands.cooldown(1, 86400, commands.BucketType.user)
     async def daily(self, ctx):
-        async with ctx.typing():
-            levels = await self.get_member_levels(ctx.author.id)
-            mora = random.randint(20, 50)
-            stardust = random.randint(2, 5)
-            xp = random.randint(50, 200)
-            await self.add_mora(ctx.author.id, mora)
-            await self.add_stardust(ctx.author.id, stardust)
-            await self.add_xp(ctx.author.id, xp, levels)
-            embed = discord.Embed(title="<:luxchest:1249334141925986304> Daily Chest!", description=f"You obtained:\n<:xp:1232541996019617912> **{xp}xp**\n<:mora:1230914532675813508> **{mora} mora**\n<:stardust:1230256970859155486> **{stardust} stardust**", colour=0x2b2d31)
-            embed.set_thumbnail(url=ctx.author.avatar)
-            await ctx.reply(embed=embed)
+        if ctx.guild.id == 1157492644402970744:
+            zennie_role_id = 1219759999656530130
+            member = ctx.author
+            
+            if zennie_role_id not in [role.id for role in member.roles]:
+                await ctx.reply("Sorry, you cannot use this command.", ephemeral=True)
+                return
+            async with ctx.typing():
+                levels = await self.get_member_levels(ctx.author.id)
+                mora = random.randint(20, 50)
+                stardust = random.randint(2, 5)
+                xp = random.randint(50, 200)
+                await self.add_mora(ctx.author.id, mora)
+                await self.add_stardust(ctx.author.id, stardust)
+                await self.add_xp(ctx.author.id, xp, levels)
+                embed = discord.Embed(title="<:luxchest:1249334141925986304> Daily Chest!", description=f"You obtained:\n<:xp:1232541996019617912> **{xp}xp**\n<:mora:1230914532675813508> **{mora} mora**\n<:stardust:1230256970859155486> **{stardust} stardust**", colour=0x2b2d31)
+                embed.set_thumbnail(url=ctx.author.avatar)
+                await ctx.reply(embed=embed)
+        else:
+            await ctx.reply(f"This command cannot be used outside of Kanzen's server")
 
     @daily.error
     async def daily_error(self, ctx: commands.Context, error: commands.CommandError):
