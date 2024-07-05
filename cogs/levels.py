@@ -1043,17 +1043,17 @@ class levels(commands.Cog):
             rankdecor = Image.open(f'./assets/{levels["decor"]}.png')
             rankdecor = rankdecor.resize((750, 750))
             card.paste(rankdecor, (0, 0), rankdecor)
-        lead_role_id = 1121842279351590973
+        lead_role_id = 1131006052209541212
         has_lead_role = any(role.id == lead_role_id for role in user.roles)
-        hstaff_id = 1178924350523588618
+        hstaff_id = 1131709630117060629
         has_hstaff_role = any(role.id == hstaff_id for role in user.roles)
-        staff_role_id = 1135244903165722695
+        staff_role_id = 1131006067564875806
         has_staff_role = any(role.id == staff_role_id for role in user.roles)
         mods_id = 1179249792925306931
         mods_role = any(role.id == mods_id for role in user.roles)
         devs_id = 1179255802003988573
         devs_role = any(role.id == devs_id for role in user.roles)
-        zennies_role_id = 1121842393994494082
+        zennies_role_id = 1215364922700206141
         has_zennies_role = any(role.id == zennies_role_id for role in user.roles)
         moraicon = Image.open('./assets/mora.png')
         moraicon = moraicon.resize((60, 60))
