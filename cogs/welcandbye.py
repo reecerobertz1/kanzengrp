@@ -20,7 +20,7 @@ class welcandleave(commands.Cog):
             channel = self.bot.get_channel(self.kanzen_welcome)
             embed.set_thumbnail(url=member.display_avatar.url)
             embed.set_image(url="https://cdn.discordapp.com/attachments/1254095017878753281/1258717183203344435/welcome_image_00000.png?ex=66890f3a&is=6687bdba&hm=aa21f03c690969b974af3ed268705cb0a81ba4a5d94af30fc36495d9a34a6eb7&")
-            await channel.send(f'{member.mention} <@&1131005057417105418>', embed=embed)
+            await channel.send(f'{member.mention}', embed=embed)
             await member.add_roles(role)
 
     @commands.Cog.listener()
