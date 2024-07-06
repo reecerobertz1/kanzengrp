@@ -47,12 +47,12 @@ class infobuttons(discord.ui.View):
         super().__init__(timeout=None)
         self.value = None
 
-    @discord.ui.button(label="Logos")
+    @discord.ui.button(label="Logos", style=discord.ButtonStyle.green)
     async def klogos(self, interaction: discord.Interaction, button: discord.ui.Button):
         view = kanzenlogos()
         logos = discord.Embed(title="<a:kanzenflower:1128154723262943282> Kanzen Logos!", description="<a:Arrow_1:1145603161701224528> Please make sure you watermark the logos!\n<a:Arrow_1:1145603161701224528> Use the watermark on every edit\n<a:Arrow_1:1145603161701224528> Do not share this link with anyone outside the group!", color=0x2b2d31)
         logos.set_footer(text="Made us some logos? send them to Reece!")
-        logos.set_image(url="https://cdn.discordapp.com/attachments/849724031723634688/1145605654539669565/new_banner_00000.png")
+        logos.set_image(url="https://cdn.discordapp.com/attachments/1254095017878753281/1258717183203344435/welcome_image_00000.png?ex=668a60ba&is=66890f3a&hm=6b65e388432dd19b7b5bceb55f3c6f21c88f6d41f824a68130123a78c9b714d0&")
         await interaction.user.send(embed=logos, view=view)
         channel = interaction.client.get_channel(1122627075682078720)
         log = discord.Embed(title="Logo button has been used!", description=f"`{interaction.user.display_name}` has used the logos button", color=0x2b2d31)
@@ -126,15 +126,15 @@ class kanzen(commands.Cog):
     async def info(self, ctx):
         await ctx.message.delete()
         embed = discord.Embed(color=0x2b2d31)
-        embed.set_image(url="https://cdn.discordapp.com/attachments/1184208577120960632/1224699045834919978/welc_banner_00000.png?ex=661e70de&is=660bfbde&hm=e0fd22d8e884fda1ec8e4257378cc7177c4e89ca3de21fbc7f1b9251ea9199c0&")
-        embed1 = discord.Embed(title="> __Kanzen Rules__", description="<a:Arrow_1:1145603161701224528> No NSFW content or sexual discussions"
-        "\n<a:Arrow_1:1145603161701224528> No offensive slurs (instant ban)"
-        "\n<a:Arrow_1:1145603161701224528> Must have age roles from ⁠⁠<id:customize>"
-        "\n<a:Arrow_1:1145603161701224528> Only use bots in designated channels"
-        '\n<a:Arrow_1:1145603161701224528> Set nickname as "your name | username"'
-        "\n<a:Arrow_1:1145603161701224528> No impersonating other editors / members"
-        "\n<a:Arrow_1:1145603161701224528> No trash talking other members or groups"
-        "\n<a:Arrow_1:1145603161701224528> Breaking rules leads to warning/kick", color=0x2b2d31)
+        embed.set_image(url="https://cdn.discordapp.com/attachments/1254095017878753281/1259113824137515098/welc_banner_00000_1_00000.png?ex=668a80a0&is=66892f20&hm=03d999d21143ad70b156894c8f8337f8af200a4d2e11223219102746175e95e7&")
+        embed1 = discord.Embed(title="> __Kanzen Rules__", description="<a:Arrow_1:1145603161701224528> No NSFW content or sexual discussions in chat."
+        "\n<a:Arrow_1:1145603161701224528> No offensive slurs (instant ban)."
+        "\n<a:Arrow_1:1145603161701224528> Must have age roles from ⁠<id:customize>."
+        "\n<a:Arrow_1:1145603161701224528> Only use bots in their designated channels."
+        '\n<a:Arrow_1:1145603161701224528> Set nickname as "your name | username".'
+        "\n<a:Arrow_1:1145603161701224528> No impersonating other editors / members."
+        "\n<a:Arrow_1:1145603161701224528> No trash talking other members or groups."
+        "\n<a:Arrow_1:1145603161701224528> Breaking rules leads to warning/kick.", color=0x2b2d31)
         view = infobuttons()
         await ctx.send(embed=embed)
         await ctx.send(embed=embed1, view=view)
