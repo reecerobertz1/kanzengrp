@@ -161,8 +161,6 @@ class other(commands.Cog):
             await message.channel.send("<@609515684740988959> is the sexiest")
         if message.content.lower() == "nani":
             await message.channel.send("i woke up in a new 🔥bugatti🔥")
-        if message.content.lower() == "kelly":
-            await message.channel.send("Jungkook is so jungkook and no one will ever jungkook like jungkook <:boobs:1142888878999613520>")
         if message.content.lower() == "cc":
             await message.channel.send("cece is the most sane diluc stan... *not*")
         if message.content.lower() == "marie":
@@ -209,7 +207,7 @@ class other(commands.Cog):
             "\n<a:Arrow_1:1145603161701224528> Do `+perks` to claim our perks", color=0x2b2d31)
             embed.set_footer(text=f"We now have {message.guild.premium_subscription_count} boosts!", icon_url=message.guild.icon)
             embed.set_thumbnail(url=message.author.display_avatar)
-            if message.guild.id == 1121841073673736215:
+            if message.guild.id == 1214943234711617568:
                 await message.channel.send(f"{message.author.mention}", embed=embed)
             else:
                 pass
