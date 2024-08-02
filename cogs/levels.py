@@ -770,8 +770,8 @@ class levels(commands.Cog):
         self.bot = bot
         self.status_holder = {0: "disabled", 1: "enabled"}
         self.pool = None
-        self.channels = [1229142761827995831, 1258432608329797754, 1133767338588639323, 1214940039335641089, 1131018131813441696, 1258438702057783427, 1184208577120960632]
-        self.guilds = [1131003330810871979, 1121841073673736215]
+        self.channels = [1134736054637838490]
+        self.guilds = [1134736053803159592]
         self.cd_mapping = commands.CooldownMapping.from_cooldown(1, 60, commands.BucketType.user)
 
     def kanzen_cooldown(interaction: discord.Interaction) -> Optional[app_commands.Cooldown]:
@@ -894,8 +894,8 @@ class levels(commands.Cog):
         if message.channel.id not in self.channels:
             return
 
-        zennie_role_id = 1121842393994494082
-        forms_zennie_role_id = 1215364922700206141
+        zennie_role_id = 1134797882420117544
+        forms_zennie_role_id = 1134797882420117544
         zennie_role = message.guild.get_role(zennie_role_id)
         if zennie_role and zennie_role in message.author.roles:
             bucket = self.cd_mapping.get_bucket(message)
