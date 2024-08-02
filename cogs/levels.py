@@ -1053,7 +1053,7 @@ class levels(commands.Cog):
         mods_role = any(role.id == mods_id for role in user.roles)
         devs_id = 1179255802003988573
         devs_role = any(role.id == devs_id for role in user.roles)
-        zennies_role_id = 1215364922700206141
+        zennies_role_id = 1134797882420117544
         has_zennies_role = any(role.id == zennies_role_id for role in user.roles)
         moraicon = Image.open('./assets/mora.png')
         moraicon = moraicon.resize((60, 60))
@@ -1241,7 +1241,7 @@ class levels(commands.Cog):
 
     @app_commands.command(name="rank", description="Check your rank")
     async def rank(self, interaction: discord.Interaction, member: Optional[discord.Member] = None):
-        zennie_role_id = 1215364922700206141
+        zennie_role_id = 1134797882420117544
         member = member or interaction.user
         
         if zennie_role_id not in [role.id for role in member.roles]:
@@ -1300,7 +1300,7 @@ class levels(commands.Cog):
 
     @app_commands.command(description="See the level leaderboard")
     async def leaderboard(self, interaction: discord.Interaction):
-        zennie_role_id = 1215364922700206141
+        zennie_role_id = 1134797882420117544
         member = interaction.user
         
         if zennie_role_id not in [role.id for role in member.roles]:
@@ -1334,7 +1334,7 @@ class levels(commands.Cog):
 
     @app_commands.command(name="rankcolor", description="Change your rank card color with hex codes")
     async def rankcolor(self, interaction: discord.Interaction, color: str):
-        zennie_role_id = 1215364922700206141
+        zennie_role_id = 1134797882420117544
         member = interaction.user
         
         if zennie_role_id not in [role.id for role in member.roles]:
@@ -1354,7 +1354,7 @@ class levels(commands.Cog):
 
     @app_commands.command(name="rankbg", description="Upload an image when using this command!")
     async def rankbg(self, interaction: discord.Interaction, image: Optional[discord.Attachment] = None):
-        zennie_role_id = 1215364922700206141
+        zennie_role_id = 1134797882420117544
         member = interaction.user
         
         if zennie_role_id not in [role.id for role in member.roles]:
@@ -1429,7 +1429,7 @@ class levels(commands.Cog):
 
     @app_commands.command(name="shop", description="Come spend your mora and stardust here!")
     async def shop(self, interaction: discord.Interaction):
-        zennie_role_id = 1215364922700206141
+        zennie_role_id = 1134797882420117544
         member = interaction.user
         
         if zennie_role_id not in [role.id for role in member.roles]:
@@ -1572,7 +1572,7 @@ class levels(commands.Cog):
     @commands.cooldown(1, 86400, commands.BucketType.user)
     async def daily(self, ctx):
         if ctx.guild.id == 1131003330810871979:
-            zennie_role_id = 1215364922700206141
+            zennie_role_id = 1134797882420117544
             member = ctx.author
             
             if zennie_role_id not in [role.id for role in member.roles]:
