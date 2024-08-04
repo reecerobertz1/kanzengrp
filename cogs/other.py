@@ -7,99 +7,6 @@ import datetime
 import humanize
 from discord import ui
 
-class banappeal(discord.ui.View):
-    def __init__ (self, bot):
-        super().__init__(timeout=None)
-        self.value = None
-        self.bot = bot
-
-    @discord.ui.button(label="Appeal Ban", style=discord.ButtonStyle.green)
-    async def appeal(self, interaction: discord.Interaction, button: discord.ui.Button):
-        await interaction.response.send_modal(appeal(bot=self.bot))
-
-class approveordecline(discord.ui.View):
-    def __init__ (self, bot, one, two, three):
-        super().__init__(timeout=None)
-        self.value = None
-        self.bot = bot
-        self.guild_id = 1121841073673736215
-        self.one = one
-        self.two = two
-        self.three = three
-
-    async def create_invite(self, guild_id):
-        try:
-            guild = self.bot.get_guild(guild_id)
-            if guild is None:
-                raise ValueError("Invalid server ID")
-
-            invite = await guild.text_channels[0].create_invite(max_uses=1, unique=True)
-            return invite.url
-        except Exception as e:
-            print(f"Failed to create invite: {e}")
-            return None
-
-    @discord.ui.button(label="Approve", style=discord.ButtonStyle.green)
-    async def Approve(self, interaction: discord.Interaction, button: discord.ui.Button):
-        await interaction.response.defer()
-        message_id = interaction.message.id
-        msg = await interaction.channel.fetch_message(message_id)
-        if msg.embeds:
-            embed = msg.embeds[0]
-            user_id_field = next((field for field in embed.fields if field.name == 'Discord ID:'), None)
-            if user_id_field:
-                user_id = user_id_field.value.strip()
-                try:
-                    user = await self.bot.fetch_user(int(user_id))
-                except discord.errors.NotFound:
-                    await interaction.followup.send("Failed to find the user associated with the appeal. The user might not exist or has left Discord.", ephemeral=True)
-                    return
-                if user:
-                    invite_url = await self.create_invite(self.guild_id)
-                    embed.add_field(name="Status", value=":white_check_mark: Approve")
-                    await msg.edit(embed=embed, view=None)
-                    resolvedembed = discord.Embed(title="Your ban appeal has been approved!", description=f"Please do not continue the behaviour you did before being banned, your appeal will not be approved again...\n[click here to rejoin kanzen]({invite_url})", color=0x42FF00)
-                    resolvedembed.set_thumbnail(url=self.bot.user.display_avatar.url)
-                    await user.send(embed=resolvedembed)
-                    await interaction.followup.send("The ban appeal has been approved, and a message with a new server link has been sent to the user.", ephemeral=True)
-                else:
-                    await interaction.followup.send("Failed to find the user associated with the appeal.", ephemeral=True)
-            else:
-                await interaction.followup.send("Invalid embed format. Please make sure the embed contains a field with the name 'Discord ID:'.", ephemeral=True)
-        else:
-            await interaction.followup.send("No embeds found in the original message.", ephemeral=True)
-
-    @discord.ui.button(label="Decline", style=discord.ButtonStyle.red)
-    async def Decline(self, interaction: discord.Interaction, button: discord.ui.Button):
-        await interaction.response.defer()
-        message_id = interaction.message.id
-        msg = await interaction.channel.fetch_message(message_id)
-        if msg.embeds:
-            embed = msg.embeds[0]
-            user_id_field = next((field for field in embed.fields if field.name == 'Discord ID:'), None)
-            if user_id_field:
-                user_id = user_id_field.value.strip()
-                try:
-                    user = await self.bot.fetch_user(int(user_id))
-                except discord.errors.NotFound:
-                    await interaction.followup.send("Failed to find the user associated with the appeal. The user might not exist or has left Discord.", ephemeral=True)
-                    return
-                if user:
-                    invite_url = await self.create_invite(self.guild_id)
-                    embed.add_field(name="Status", value=":x: Declined")
-                    await msg.edit(embed=embed, view=None)
-                    resolvedembed = discord.Embed(title="Your ban appeal has been declined!", description=f"Your ban appeal has been declined, this means you will no longer be able to join kanzen ever again so good job!", color=0x42FF00)
-                    resolvedembed.set_thumbnail(url=self.bot.user.display_avatar.url)
-                    await user.send(embed=resolvedembed)
-                    await interaction.followup.send("The ban appeal has been declined, and a message has been sent to the user.", ephemeral=True)
-                else:
-                    await interaction.followup.send("Failed to find the user associated with the appeal.", ephemeral=True)
-            else:
-                await interaction.followup.send("Invalid embed format. Please make sure the embed contains a field with the name 'Discord ID:'.", ephemeral=True)
-        else:
-            await interaction.followup.send("No embeds found in the original message.", ephemeral=True)
-
-
 class AFK(TypedDict):
     user_id: int
     reason: str
@@ -127,84 +34,27 @@ class other(commands.Cog):
                 async with connection.cursor() as cursor:
                     await cursor.execute(query, userid)
 
-    async def add_warning(self, member_id, guild_id, reason, change):
-        async with self.bot.pool.acquire() as conn:
-            await conn.execute("INSERT INTO warning (member_id, guild_id, reasons, warnings) VALUES ($1, $2, $3, $4)", member_id, guild_id, reason, change)
-            await conn.commit()
-
-    async def update_warns(self, member_id, guild_id, reason, change=1):
-        async with self.bot.pool.acquire() as conn:
-            existing_warnings = await conn.fetchone('SELECT warnings FROM warning WHERE member_id = $1 AND guild_id = $2', member_id, guild_id)
-            if existing_warnings:
-                current_warnings = existing_warnings['warnings']
-                updated_warnings = current_warnings + change
-                await conn.execute('UPDATE warning SET reasons = $1, warnings = $2 WHERE member_id = $3 AND guild_id = $4',
-                                reason, updated_warnings, member_id, guild_id)
-            else:
-                updated_warnings = change
-                await self.add_warning(member_id, guild_id, reason, updated_warnings)
-            await conn.commit()
-            return updated_warnings
-
-    async def get_warnings(self, member_id):
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cursor:
-                await cursor.execute("SELECT warnings FROM warning WHERE member_id = $1", member_id)
-                row = await cursor.fetchone()
-                return row['warnings'] if row else 0
-
     @commands.Cog.listener()
     async def on_message(self, message):
         if message.author.bot:
             return
         if message.content.lower() == "reece":
             await message.channel.send("<@609515684740988959> is the sexiest")
-        if message.content.lower() == "nani":
-            await message.channel.send("i woke up in a new 🔥bugatti🔥")
+        if message.content.lower() == "rinaya":
+            await message.channel.send("#1 ranwan lover")
         if message.content.lower() == "cc":
             await message.channel.send("cece is the most sane diluc stan... *not*")
-        if message.content.lower() == "marie":
-            await message.channel.send("you deserve all the love and good things in the world pooks")
-        if message.content.lower() == "chae":
-            await message.channel.send("please return any pots and pans to her please!!")
-        blocked_words = ["nigga", "n i g g a", "niga", "n i g a", "n1ga", "n 1 g a", "n1gger", "nigger", "n1ger", "n i g e r", "n i g a", "n 1 g a", "n 1 g e r", "retard", "r e t a r d", "r3tard", "r 3 t a r d", "batty boy", "bender", "ching chong", "chink", "chinkie", "chinky", "cotton picker", "cracker", "cripple", "curry muncher", "dyke", "eskimo", "fag", "faggot", "gimp", "golliwogg", "nazi","nigglet", "fagg0t", "niglet", "osama bin laden", "retarted", "shemale", "tranie", "trannie", "tranny", "trany", "yellow people"]
-        lower_content = message.content.lower()
-        if any(word in lower_content for word in blocked_words):
-            await message.delete()
-            member_id = message.author.id
-            count = await self.get_warnings(member_id)
-            for blocked_word in blocked_words:
-                lower_content = lower_content.replace(blocked_word, f"**__{blocked_word}__**")
-
-            description = lower_content
-            warningembed = discord.Embed(title="Word Blocked", description=description, color=0xD11717)
-            warningembed.set_footer(text=f"sent from {message.author.display_name} | {message.author.id}", icon_url=message.author.display_avatar)
-            warningembed.set_thumbnail(url=message.author.display_avatar)
-            member = message.author
-            memberembed = discord.Embed(title="You have received a warning", description=f"<:CF12:1188186414387568691> You have gotten this warning for saying:\n**{description}**\n\n<:CF12:1188186414387568691> You now have **{count}** warnings. If you get to **3** warnings you will instantly be banned from our group", color=0x2b2d31, url="https://instagram.com/kanzengrp/")
-            memberembed.set_thumbnail(url=message.guild.icon)
-            await message.author.send(embed=memberembed)
-            warning = message.guild.get_channel(1178952898273628200)
-            member_id = message.author.id
-            reason = blocked_word
-            guild_id = message.guild.id
-            await self.update_warns(member_id, guild_id, reason, change=1)
-            count = await self.get_warnings(member_id)
-            if count == 2:
-                member = message.author
-                await member.ban(reason="Reached 2 warnings")
-                banembed = discord.Embed(title="You have been banned from Kanzengrp", description=f"You have been banned from Kanzengrp for getting **2 warnings**\nYou received your last warning for saying {', '.join(['**'+word+'**' for word in blocked_words])}. If you would like to appeal your ban, click the button below but it may not be accepted.", color=0x2b2d31, url="https://instagram.com/kanzengrp/")
-                banembed.set_thumbnail(url=message.guild.icon)
-                view = banappeal(bot=self.bot)
-                await member.send(embed=banembed, view=view)
-                await warning.send(f"# Member **{member.display_name}** has been banned due to reaching 3 warnings.")
-            else:
-                await warning.send(embed=warningembed)
+        if message.content.lower() == "aspenola":
+            await message.channel.send("aspen is streaming lower one's eyes")
+        if message.content.lower() == "kim":
+            await message.channel.send("mizukis lover")
+        if message.content.lower() == "denise":
+            await message.channel.send("https://tenor.com/qIoidKLXAGv.gif")
         if "MessageType.premium_guild" in str(message.type):
             embed = discord.Embed(description="> `💫` **Thank you for boosting**!"
             "\n<a:Arrow_1:1145603161701224528> Thank you for boosting!"
             "\n<a:Arrow_1:1145603161701224528> Dm Reece or staff for your role!"
-            "\n<a:Arrow_1:1145603161701224528> Do `+perks` to claim our perks", color=0x2b2d31)
+            "\n<a:Arrow_1:1145603161701224528> Check <#1139466056361062410> to claim our perks", color=0xFEBCBE)
             embed.set_footer(text=f"We now have {message.guild.premium_subscription_count} boosts!", icon_url=message.guild.icon)
             embed.set_thumbnail(url=message.author.display_avatar)
             if message.guild.id == 1131003330810871979:
@@ -220,26 +70,6 @@ class other(commands.Cog):
                 afk_mention = await self.check_afk(mention.id)
                 if afk_mention is not None:
                     await message.reply(f"**{mention.name}** went AFK **{afk_mention['reason']}**")
-
-class appeal(ui.Modal, title='Ban Appeal'):
-    def __init__(self, bot, **kwargs):
-        super().__init__(**kwargs)
-        self.bot = bot
-        self.value = None
-
-    one = ui.TextInput(label='whats your instagram username?', placeholder="enter your instagram username", style=discord.TextStyle.long)
-    two = ui.TextInput(label='why did you get banned?', placeholder="tell us why you was banned...", style=discord.TextStyle.long)
-    three = ui.TextInput(label='why should we approve your appeal?', placeholder="tell us why here...", style=discord.TextStyle.long)
-    async def on_submit(self, interaction: discord.Interaction):
-        await interaction.response.defer()
-        embed = discord.Embed(title='Ban Appeal',description=f"**what's their instagram:**\n{self.one.value}\n\n**why did they get banned:**\n{self.two.value}\n\n**why should we approve their appeal?:**\n{self.three.value}" ,color=0x2b2d31)
-        embed.set_footer(text=f"sent from: {interaction.user.name}", icon_url=interaction.user.avatar)
-        embed.set_thumbnail(url=interaction.user.display_avatar)
-        embed.add_field(name="Discord ID:", value=interaction.user.id, inline=False)
-        channel = interaction.client.get_channel(1178952898273628200)
-        view = approveordecline(self.bot, self.one.value, self.two.value, self.three.value)
-        await channel.send(embed=embed, view=view)
-        await interaction.followup.send(f'Your appeal has been sent. We will let you know if it was approved or not', ephemeral=True)
 
 async def setup(bot):
     await bot.add_cog(other(bot))
