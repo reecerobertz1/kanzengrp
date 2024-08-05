@@ -15,7 +15,7 @@ class welcandleave(commands.Cog):
     @commands.Cog.listener()
     async def on_member_join(self ,member: discord.Member):
         if member.guild.id == self.kanzen_id:
-            embed = discord.Embed(title="Welcome to lyra!", color=0xFEF7E5, description=f"• Read the rules in <#1134744553425993799>\n• Get some roles in <#1134771998896181289>\nChat to members in <#1134742133421658193> \n• Get to know our <#1207118201897492480> and <#1134802970031161355>")
+            embed = discord.Embed(title="Welcome to lyra!", color=0xFEF7E5, description=f"• Read our [rules](https://discord.com/channels/1134736053803159592/1134744553425993799) and get some [roles](https://discord.com/channels/1134736053803159592/1134771998896181289)\n• Chat with other members [here](https://discord.com/channels/1134736053803159592/1134742133421658193)\n• Get to know our [leads](https://discord.com/channels/1134736053803159592/1207118201897492480) & [staff](https://discord.com/channels/1134736053803159592/1134802970031161355)")
             role = member.guild.get_role(1134797836135964723)  
             channel = self.bot.get_channel(self.kanzen_welcome)
             embed.set_thumbnail(url=member.display_avatar.url)
@@ -26,7 +26,7 @@ class welcandleave(commands.Cog):
     @commands.Cog.listener()
     async def on_member_remove(self, member: discord.Member):
         if member.guild.id == self.kanzen_id:
-            embed = discord.Embed(title=f"Thank you for joining lyra", color=0x5e9d5e, description="We hope to see you again soon")
+            embed = discord.Embed(title=f"Thank you for joining lyra", color=0xFEF7E5, description="We hope to see you again soon")
             embed.set_thumbnail(url=member.display_avatar.url)
             channel = self.bot.get_channel(self.kanzen_welcome)
             await channel.send(f'{member.mention}', embed=embed)
