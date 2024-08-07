@@ -56,7 +56,7 @@ class other(commands.Cog):
             "please be sure to give credits when due!", color=0xFEBCBE)
             embed.set_footer(text=f"We now have {message.guild.premium_subscription_count} boosts!", icon_url=message.guild.icon)
             embed.set_thumbnail(url=message.author.display_avatar)
-            if message.guild.id == 1131003330810871979:
+            if message.guild.id == 1134736053803159592:
                 await message.channel.send(f"{message.author.mention}", embed=embed)
             else:
                 pass
