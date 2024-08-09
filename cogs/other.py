@@ -51,7 +51,7 @@ class other(commands.Cog):
         if message.content.lower() == "denise":
             await message.channel.send("https://tenor.com/qIoidKLXAGv.gif")
         if "MessageType.premium_guild" in str(message.type):
-            embed = discord.Embed(description="\n• thank you for boosting ✧.*lyra!"
+            embed = discord.Embed(title="Thank you for boosting!", description="\n• thank you for boosting ✧.*lyra!"
             "\n• you can claim your perks over at <#1139466056361062410>!"
             "\n• please be sure to give credits when due!", color=0xFEBCBE)
             embed.set_footer(text=f"We now have {message.guild.premium_subscription_count} boosts!", icon_url=message.guild.icon)
