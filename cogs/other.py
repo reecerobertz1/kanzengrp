@@ -50,6 +50,8 @@ class other(commands.Cog):
             await message.channel.send("mizukis lover")
         if message.content.lower() == "denise":
             await message.channel.send("https://tenor.com/qIoidKLXAGv.gif")
+        if message.content.lower() == "lyra":
+            await message.channel.send("<:ilyrayou:1270405427989057576>")
         if "MessageType.premium_guild" in str(message.type):
             embed = discord.Embed(title="Thank you for boosting!", description="\n• thank you for boosting ✧.*lyra!"
             "\n• you can claim your perks over at <#1139466056361062410>!"
