@@ -57,7 +57,6 @@ class welcandleave(commands.Cog):
             channel = self.bot.get_channel(self.kanzen_welcome)
             await channel.send(f'{member.mention}', embed=embed)
         elif member.guild.id == stored_guild_id:
-            await self.delete_rank(userid=member.id)
             embed = discord.Embed(title="Member left!", color=0x2b2d31, description=f"{member.mention} has left the discord.")
             embed.set_thumbnail(url=member.display_avatar.url)
             embed.set_footer(text='i hope to see you again!', icon_url='https://cdn.discordapp.com/attachments/799984745772875786/800015677653909504/yaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.png')
