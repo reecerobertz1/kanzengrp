@@ -360,9 +360,9 @@ class chromalevels(commands.Cog):
     @kanzen_only()
     async def multiadd(self, ctx: commands.Context, members: commands.Greedy[discord.Member], amount: int):
         zennie_role_id = 739513680860938290
-        member = ctx.author
+        author = ctx.author
         
-        if zennie_role_id not in [role.id for role in member.roles]:
+        if zennie_role_id not in [role.id for role in author.roles]:
             await ctx.reply("Sorry, this is a staff only command", ephemeral=True)
             return
         
@@ -385,9 +385,9 @@ class chromalevels(commands.Cog):
     @kanzen_only()
     async def add(self, ctx: commands.Context, member: discord.Member, amount: int):
         zennie_role_id = 739513680860938290
-        member = ctx.author
+        author = ctx.author
         
-        if zennie_role_id not in [role.id for role in member.roles]:
+        if zennie_role_id not in [role.id for role in author.roles]:
             await ctx.reply("Sorry, this is a staff only command", ephemeral=True)
             return
         
@@ -404,9 +404,9 @@ class chromalevels(commands.Cog):
     @kanzen_only()
     async def remove(self, ctx: commands.Context, member: discord.Member, amount: int):
         zennie_role_id = 739513680860938290
-        member = ctx.author
+        author = ctx.author
         
-        if zennie_role_id not in [role.id for role in member.roles]:
+        if zennie_role_id not in [role.id for role in author.roles]:
             await ctx.reply("Sorry, this is a staff only command", ephemeral=True)
             return
         
@@ -523,9 +523,9 @@ class chromalevels(commands.Cog):
     @commands.command(name="reset", description="Resets everyone's xp")
     async def reset(self, ctx):
         zennie_role_id = 739513680860938290
-        member = ctx.author
+        author = ctx.author
         
-        if zennie_role_id not in [role.id for role in member.roles]:
+        if zennie_role_id not in [role.id for role in author.roles]:
             await ctx.reply("Sorry, this is a staff only command", ephemeral=True)
             return
         await self.reset_levels()
