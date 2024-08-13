@@ -1568,42 +1568,6 @@ class levels(commands.Cog):
         await self.add_stardust(member.id, amount)
         await interaction.response.send_message(f"Added <:stardust:1230256970859155486> **{amount}** Stardust to {member.mention}")
 
-    @commands.command()
-    @commands.cooldown(1, 86400, commands.BucketType.user)
-    async def daily(self, ctx):
-        if ctx.guild.id == 1131003330810871979:
-            zennie_role_id = 1134797882420117544
-            member = ctx.author
-            
-            if zennie_role_id not in [role.id for role in member.roles]:
-                await ctx.reply("Sorry, you cannot use this command.", ephemeral=True)
-                return
-            async with ctx.typing():
-                levels = await self.get_member_levels(ctx.author.id)
-                mora = random.randint(20, 50)
-                stardust = random.randint(2, 5)
-                xp = random.randint(50, 200)
-                await self.add_mora(ctx.author.id, mora)
-                await self.add_stardust(ctx.author.id, stardust)
-                await self.add_xp(ctx.author.id, xp, levels)
-                embed = discord.Embed(title="<:luxchest:1249334141925986304> Daily Chest!", description=f"You obtained:\n<:xp:1232541996019617912> **{xp}xp**\n<:mora:1230914532675813508> **{mora} mora**\n<:stardust:1230256970859155486> **{stardust} stardust**", colour=0x2b2d31)
-                embed.set_thumbnail(url=ctx.author.avatar)
-                await ctx.reply(embed=embed)
-        else:
-            await ctx.reply(f"This command cannot be used outside of Kanzen's server")
-
-    @daily.error
-    async def daily_error(self, ctx: commands.Context, error: commands.CommandError):
-        if isinstance(error, commands.CommandOnCooldown):
-            if error.retry_after > 3600:
-                hours = error.retry_after / 3600
-                await ctx.reply(f"You already opened your daily chest! Try again in {int(hours)} hours")
-            elif error.retry_after > 60:
-                minutes = error.retry_after / 60
-                await ctx.reply(f"You already opened your daily chest! Try again in {int(minutes)} minutes")
-            else:
-                await ctx.reply(f"You already opened your daily chest! Try again in {int(error.retry_after)} seconds")
-
     @commands.command(hidden=True)
     async def delete(self, ctx, member_id: int):
         async with self.bot.pool.acquire() as conn:

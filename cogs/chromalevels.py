@@ -538,7 +538,7 @@ class chromalevels(commands.Cog):
     @commands.command()
     @kanzen_only()
     @commands.dynamic_cooldown(kanzen_cooldown, commands.BucketType.user)
-    async def dailyxp(self, ctx: commands.Context):
+    async def daily(self, ctx: commands.Context):
         """Command to claim daily xp"""
         xp = randint(100, 300)
         levels = await self.get_member_levels(ctx.author.id)
@@ -548,7 +548,7 @@ class chromalevels(commands.Cog):
             await self.add_member(ctx.member.id, xp)
         await ctx.reply(f"You claimed your daily xp! you got **{xp}xp**")
         
-    @dailyxp.error
+    @daily.error
     async def daily_error(self, ctx: commands.Context, error: commands.CommandError):
         if isinstance(error, commands.CommandOnCooldown):
             if error.retry_after > 3600:
