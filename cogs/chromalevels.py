@@ -12,7 +12,7 @@ import functools
 from discord import app_commands
 from PIL import Image, ImageFilter, ImageOps, UnidentifiedImageError
 import requests
-from stuff.views import Paginator
+from utils.views import Paginator
 from colorthief import ColorThief
 
 class LevelRow(TypedDict):
