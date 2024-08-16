@@ -39,7 +39,7 @@ class reportmember(ui.Modal, title='Report'):
         else:
             description=f"reported member:\n{self.reported.value}\n\nwhy was they reported?\n{self.why.value}"
         embed = discord.Embed(description=description, color=0x2b2d31)
-        embed.set_thumbnail(interaction.guild.icon)
+        embed.set_thumbnail(url=interaction.guild.icon)
         channel = interaction.client.get_channel(1274063410463641642)
         await channel.send("<@&739513680860938290>", embed=embed)
         await interaction.response.send_message(f'Your report has been sent!\nThank you for helping us make Chroma a better place!', ephemeral=True)
