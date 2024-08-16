@@ -31,7 +31,7 @@ class infoview(discord.ui.View):
 class reportmember(ui.Modal, title='Report'):
     reported = ui.TextInput(label='Who are you reporting?', placeholder="Enter instagram + discord user", style=discord.TextStyle.short)
     why  = ui.TextInput(label='Why are you reporting them?', placeholder="Tell us here", style=discord.TextStyle.long)
-    dm = ui.TextInput(label="Can we dm you for me info?", placeholder="yes or no", style=discord.TextStyle.short, required=False)
+    dm = ui.TextInput(label="Can we dm you for more info?", placeholder="yes or no", style=discord.TextStyle.short, required=False)
     user = ui.TextInput(label="Instagram / discord username", placeholder="Leave blank to stay anonymous", style=discord.TextStyle.short, required=False)
     async def on_submit(self, interaction: discord.Interaction):
         if self.user.value:
