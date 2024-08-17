@@ -28,8 +28,8 @@ class chromalevels(commands.Cog):
         self.bot = bot
         self.status_holder = {0: "disabled", 1: "enabled"}
         self.pool = None
-        self.channels = [694010549532360726, 725664181428420638]
-        self.guilds = [694010548605550675]
+        self.channels = [694010549532360726, 725664181428420638, 1157492645086646384]
+        self.guilds = [694010548605550675, 1157492644402970744]
         self.cd_mapping = commands.CooldownMapping.from_cooldown(1, 60, commands.BucketType.user)
 
     def kanzen_only():
