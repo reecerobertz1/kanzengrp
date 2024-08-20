@@ -36,25 +36,25 @@ class investigate(discord.ui.View):
     @discord.ui.button(label="Investigate")
     async def one(self, interaction: discord.Interaction, button: discord.Button):
         mora = random.randint(5, 50)
-        stardust = random.randint(1, 10)
-        embed=discord.Embed(title="Mora & Stardust found", description=f"{interaction.user.name} found\n<:mora:1230914532675813508> **{mora}** <:stardust:1230256970859155486> **{stardust}**", color=0x2b2d31)
+        primogems = random.randint(1, 10)
+        embed=discord.Embed(title="Mora & primogems found", description=f"{interaction.user.name} found\n<:mora:1261680092535455844> **{mora}** <:primo:1261680094141747321> **{primogems}**", color=0xFEBCBE)
         embed.set_thumbnail(url=interaction.user.display_avatar)
         await self.update_mora(interaction.user.id, mora)
-        await self.update_stardust(interaction.user.id, stardust)
+        await self.update_primogems(interaction.user.id, primogems)
         await interaction.response.edit_message(content=f"{interaction.user.mention}",embed=embed, view=None)
 
-    async def update_stardust(self, member_id: int, amount: int) -> None:
-        query = '''UPDATE levels SET stardust = ? WHERE member_id = ?'''
+    async def update_primogems(self, member_id: int, amount: int) -> None:
+        query = '''UPDATE levels SET primogems = ? WHERE member_id = ?'''
         levels = await self.get_member_levels(member_id)
         
         if levels is None or levels['stardust'] is None:
-            starting_stardust = 0
+            starting_primogems = 0
         else:
-            starting_stardust = levels['stardust']
+            starting_primogems = levels['stardust']
         
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cursor:
-                await cursor.execute(query, (starting_stardust + amount, member_id,))
+                await cursor.execute(query, (starting_primogems + amount, member_id,))
                 await conn.commit()
             await self.bot.pool.release(conn)
 
@@ -86,7 +86,7 @@ class investigate(discord.ui.View):
 
 class roleshop(discord.ui.View):
     def __init__(self, bot):
-        super().__init__(timeout=None)
+        super().__init__(timeout=180)
         self.value = None
         self.bot = bot
 
@@ -97,10 +97,10 @@ class roleshop(discord.ui.View):
         
         if levels and levels['stardust'] >= 60:
             await self.update_roles(interaction.user.id, "yes")
-            await self.remove_stardust(interaction.user.id, amount=price)
-            await interaction.response.send_message(f"You have bought **Custom Roles** for **<:stardust:1230256970859155486>{price} Stardust**", ephemeral=True)
+            await self.remove_primogems(interaction.user.id, amount=price)
+            await interaction.response.send_message(f"You have bought **Custom Roles** for **<:primo:1261680094141747321>{price} primogems**", ephemeral=True)
         else:
-            await interaction.response.send_message("You do not have enough <:stardust:1230256970859155486>Stardust to complete this purchase")
+            await interaction.response.send_message("You do not have enough <:primo:1261680094141747321>primogems to complete this purchase")
 
     async def update_roles(self, member_id: int, text: str):
         query = '''UPDATE levels SET roles = ? WHERE member_id = ?'''
@@ -109,8 +109,8 @@ class roleshop(discord.ui.View):
                 await cursor.execute(query, (text, member_id))
                 await conn.commit()
 
-    async def remove_stardust(self, member_id: int, amount: int) -> None:
-        query = '''UPDATE levels SET stardust = ? WHERE member_id = ?'''
+    async def remove_primogems(self, member_id: int, amount: int) -> None:
+        query = '''UPDATE levels SET primogems = ? WHERE member_id = ?'''
         levels = await self.get_member_levels(member_id)
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cursor:
@@ -131,64 +131,64 @@ class roleshop(discord.ui.View):
 
 class carddecorshop(discord.ui.View):
     def __init__(self, bot):
-        super().__init__(timeout=30)
+        super().__init__(timeout=180)
         self.value = None
         self.bot = bot
 
     @discord.ui.button(label="credit", style=discord.ButtonStyle.blurple)
     async def credit(self, interaction: discord.Interaction, button: discord.Button):
         embed = discord.Embed(description="""decor 1. <@1111564587024789504>
-        <:1166196258499727480:1208228386842087554> instagram: [sxtqrn](https://instagram.com/sxtqrn)
+        <:1166196258499727480:1215213896256724992> instagram: [sxtqrn](https://instagram.com/sxtqrn)
                               
         decor 2. <@751895538646909038>
-        <:1166196258499727480:1208228386842087554> instagram: [lushsfx](https://instagram.com/lushsfx)
+        <:1166196258499727480:1215213896256724992> instagram: [lushsfx](https://instagram.com/lushsfx)
                               
         decor 3. <@982720510003658784>
-        <:1166196258499727480:1208228386842087554> instagram: [hrts4h0bi](https://instagram.com/hrts4h0bi)
+        <:1166196258499727480:1215213896256724992> instagram: [hrts4h0bi](https://instagram.com/hrts4h0bi)
                               
         decor 4. <@609515684740988959>
-        <:1166196258499727480:1208228386842087554> instagram: [remqsi](https://instagram.com/remqsi)
+        <:1166196258499727480:1215213896256724992> instagram: [remqsi](https://instagram.com/remqsi)
                               
         decor 5. <@695197958940917830>
-        <:1166196258499727480:1208228386842087554> instagram: [luno1rs](https://instagram.com/luno1rs)
+        <:1166196258499727480:1215213896256724992> instagram: [luno1rs](https://instagram.com/luno1rs)
                               
         decor 6. <@609515684740988959>
-        <:1166196258499727480:1208228386842087554> instagram: [remqsi](https://instagram.com/remqsi)
+        <:1166196258499727480:1215213896256724992> instagram: [remqsi](https://instagram.com/remqsi)
                               
         decor 7. <@541538705106534423>
-        <:1166196258499727480:1208228386842087554> instagram: [dtqwn](https://instagram.com/dtqwn)
+        <:1166196258499727480:1215213896256724992> instagram: [dtqwn](https://instagram.com/dtqwn)
                               
         decor 8. <@695197958940917830>
-        <:1166196258499727480:1208228386842087554> instagram: [luno1rs](https://instagram.com/luno1rs)
+        <:1166196258499727480:1215213896256724992> instagram: [luno1rs](https://instagram.com/luno1rs)
                               
         decor 9. <@695197958940917830>
-        <:1166196258499727480:1208228386842087554> instagram: [luno1rs](https://instagram.com/luno1rs)
+        <:1166196258499727480:1215213896256724992> instagram: [luno1rs](https://instagram.com/luno1rs)
                               
         decor 10. <@834786195526778903>
-        <:1166196258499727480:1208228386842087554> instagram: [kxpjm](https://instagram.com/kxpjm)
+        <:1166196258499727480:1215213896256724992> instagram: [kxpjm](https://instagram.com/kxpjm)
                               
         decor 11. <@609515684740988959>
-        <:1166196258499727480:1208228386842087554> instagram: [remqsi](https://instagram.com/remqsi)
+        <:1166196258499727480:1215213896256724992> instagram: [remqsi](https://instagram.com/remqsi)
                               
         decor 12. <@609515684740988959>
-        <:1166196258499727480:1208228386842087554> instagram: [remqsi](https://instagram.com/remqsi)
+        <:1166196258499727480:1215213896256724992> instagram: [remqsi](https://instagram.com/remqsi)
                               
         decor 13. <@834786195526778903>
-        <:1166196258499727480:1208228386842087554> instagram: [kxpjm](https://instagram.com/kxpjm)""", color=0x2b2d31)
+        <:1166196258499727480:1215213896256724992> instagram: [kxpjm](https://instagram.com/kxpjm)""", color=0xFEBCBE)
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
     @discord.ui.button(label="clear decor", style=discord.ButtonStyle.red)
     async def clear(self, interaction: discord.Interaction, button: discord.Button):
         price = 0
-        id = "none"
+        id = "None"
         levels = await self.get_member_levels(interaction.user.id)
         
         if levels['stardust'] >= price:
             await self.update_decor(interaction.user.id, id)
-            await self.remove_stardust(interaction.user.id, amount=price)
+            await self.remove_primogems(interaction.user.id, amount=price)
             await interaction.response.send_message(f"You have removed your rankc ard decoration!", ephemeral=True)
         else:
-            await interaction.response.send_message("You do not have enough <:stardust:1230256970859155486>Stardust to complete this purchase")
+            await interaction.response.send_message("You do not have enough <:primo:1261680094141747321>primogems to complete this purchase")
 
     @discord.ui.button(label="1")
     async def one(self, interaction: discord.Interaction, button: discord.Button):
@@ -198,10 +198,10 @@ class carddecorshop(discord.ui.View):
         
         if levels['stardust'] >= price:
             await self.update_decor(interaction.user.id, id)
-            await self.remove_stardust(interaction.user.id, amount=price)
-            await interaction.response.send_message(f"You have bought **decor {id}** for **<:stardust:1230256970859155486>{price} Stardust**", ephemeral=True)
+            await self.remove_primogems(interaction.user.id, amount=price)
+            await interaction.response.send_message(f"You have bought **decor {id}** for **<:primo:1261680094141747321>{price} primogems**", ephemeral=True)
         else:
-            await interaction.response.send_message("You do not have enough <:stardust:1230256970859155486>Stardust to complete this purchase")
+            await interaction.response.send_message("You do not have enough <:primo:1261680094141747321>primogems to complete this purchase")
 
     @discord.ui.button(label="2")
     async def two(self, interaction: discord.Interaction, button: discord.Button):
@@ -211,10 +211,10 @@ class carddecorshop(discord.ui.View):
         
         if levels['stardust'] >= price:
             await self.update_decor(interaction.user.id, id)
-            await self.remove_stardust(interaction.user.id, amount=price)
-            await interaction.response.send_message(f"You have bought **decor {id}** for **<:stardust:1230256970859155486>{price} Stardust**", ephemeral=True)
+            await self.remove_primogems(interaction.user.id, amount=price)
+            await interaction.response.send_message(f"You have bought **decor {id}** for **<:primo:1261680094141747321>{price} primogems**", ephemeral=True)
         else:
-            await interaction.response.send_message("You do not have enough <:stardust:1230256970859155486>Stardust to complete this purchase")
+            await interaction.response.send_message("You do not have enough <:primo:1261680094141747321>primogems to complete this purchase")
 
     @discord.ui.button(label="3")
     async def three(self, interaction: discord.Interaction, button: discord.Button):
@@ -224,10 +224,10 @@ class carddecorshop(discord.ui.View):
         
         if levels['stardust'] >= price:
             await self.update_decor(interaction.user.id, id)
-            await self.remove_stardust(interaction.user.id, amount=price)
-            await interaction.response.send_message(f"You have bought **decor {id}** for **<:stardust:1230256970859155486>{price} Stardust**", ephemeral=True)
+            await self.remove_primogems(interaction.user.id, amount=price)
+            await interaction.response.send_message(f"You have bought **decor {id}** for **<:primo:1261680094141747321>{price} primogems**", ephemeral=True)
         else:
-            await interaction.response.send_message("You do not have enough <:stardust:1230256970859155486>Stardust to complete this purchase")
+            await interaction.response.send_message("You do not have enough <:primo:1261680094141747321>primogems to complete this purchase")
 
     @discord.ui.button(label="4")
     async def four(self, interaction: discord.Interaction, button: discord.Button):
@@ -237,10 +237,10 @@ class carddecorshop(discord.ui.View):
         
         if levels['stardust'] >= price:
             await self.update_decor(interaction.user.id, id)
-            await self.remove_stardust(interaction.user.id, amount=price)
-            await interaction.response.send_message(f"You have bought **decor {id}** for **<:stardust:1230256970859155486>{price} Stardust**", ephemeral=True)
+            await self.remove_primogems(interaction.user.id, amount=price)
+            await interaction.response.send_message(f"You have bought **decor {id}** for **<:primo:1261680094141747321>{price} primogems**", ephemeral=True)
         else:
-            await interaction.response.send_message("You do not have enough <:stardust:1230256970859155486>Stardust to complete this purchase")
+            await interaction.response.send_message("You do not have enough <:primo:1261680094141747321>primogems to complete this purchase")
 
     @discord.ui.button(label="5")
     async def five(self, interaction: discord.Interaction, button: discord.Button):
@@ -250,10 +250,10 @@ class carddecorshop(discord.ui.View):
         
         if levels['stardust'] >= price:
             await self.update_decor(interaction.user.id, id)
-            await self.remove_stardust(interaction.user.id, amount=price)
-            await interaction.response.send_message(f"You have bought **decor {id}** for **<:stardust:1230256970859155486>{price} Stardust**", ephemeral=True)
+            await self.remove_primogems(interaction.user.id, amount=price)
+            await interaction.response.send_message(f"You have bought **decor {id}** for **<:primo:1261680094141747321>{price} primogems**", ephemeral=True)
         else:
-            await interaction.response.send_message("You do not have enough <:stardust:1230256970859155486>Stardust to complete this purchase")
+            await interaction.response.send_message("You do not have enough <:primo:1261680094141747321>primogems to complete this purchase")
 
     @discord.ui.button(label="6")
     async def six(self, interaction: discord.Interaction, button: discord.Button):
@@ -263,10 +263,10 @@ class carddecorshop(discord.ui.View):
         
         if levels['stardust'] >= price:
             await self.update_decor(interaction.user.id, id)
-            await self.remove_stardust(interaction.user.id, amount=price)
-            await interaction.response.send_message(f"You have bought **decor {id}** for **<:stardust:1230256970859155486>{price} Stardust**", ephemeral=True)
+            await self.remove_primogems(interaction.user.id, amount=price)
+            await interaction.response.send_message(f"You have bought **decor {id}** for **<:primo:1261680094141747321>{price} primogems**", ephemeral=True)
         else:
-            await interaction.response.send_message("You do not have enough <:stardust:1230256970859155486>Stardust to complete this purchase")
+            await interaction.response.send_message("You do not have enough <:primo:1261680094141747321>primogems to complete this purchase")
 
     @discord.ui.button(label="7")
     async def seven(self, interaction: discord.Interaction, button: discord.Button):
@@ -276,10 +276,10 @@ class carddecorshop(discord.ui.View):
         
         if levels['stardust'] >= price:
             await self.update_decor(interaction.user.id, id)
-            await self.remove_stardust(interaction.user.id, amount=price)
-            await interaction.response.send_message(f"You have bought **decor {id}** for **<:stardust:1230256970859155486>{price} Stardust**", ephemeral=True)
+            await self.remove_primogems(interaction.user.id, amount=price)
+            await interaction.response.send_message(f"You have bought **decor {id}** for **<:primo:1261680094141747321>{price} primogems**", ephemeral=True)
         else:
-            await interaction.response.send_message("You do not have enough <:stardust:1230256970859155486>Stardust to complete this purchase")
+            await interaction.response.send_message("You do not have enough <:primo:1261680094141747321>primogems to complete this purchase")
 
     @discord.ui.button(label="8")
     async def eight(self, interaction: discord.Interaction, button: discord.Button):
@@ -289,10 +289,10 @@ class carddecorshop(discord.ui.View):
         
         if levels['stardust'] >= price:
             await self.update_decor(interaction.user.id, id)
-            await self.remove_stardust(interaction.user.id, amount=price)
-            await interaction.response.send_message(f"You have bought **decor {id}** for **<:stardust:1230256970859155486>{price} Stardust**", ephemeral=True)
+            await self.remove_primogems(interaction.user.id, amount=price)
+            await interaction.response.send_message(f"You have bought **decor {id}** for **<:primo:1261680094141747321>{price} primogems**", ephemeral=True)
         else:
-            await interaction.response.send_message("You do not have enough <:stardust:1230256970859155486>Stardust to complete this purchase")
+            await interaction.response.send_message("You do not have enough <:primo:1261680094141747321>primogems to complete this purchase")
 
     @discord.ui.button(label="9")
     async def nine(self, interaction: discord.Interaction, button: discord.Button):
@@ -302,10 +302,10 @@ class carddecorshop(discord.ui.View):
         
         if levels['stardust'] >= price:
             await self.update_decor(interaction.user.id, id)
-            await self.remove_stardust(interaction.user.id, amount=price)
-            await interaction.response.send_message(f"You have bought **decor {id}** for **<:stardust:1230256970859155486>{price} Stardust**", ephemeral=True)
+            await self.remove_primogems(interaction.user.id, amount=price)
+            await interaction.response.send_message(f"You have bought **decor {id}** for **<:primo:1261680094141747321>{price} primogems**", ephemeral=True)
         else:
-            await interaction.response.send_message("You do not have enough <:stardust:1230256970859155486>Stardust to complete this purchase")
+            await interaction.response.send_message("You do not have enough <:primo:1261680094141747321>primogems to complete this purchase")
 
     @discord.ui.button(label="10")
     async def ten(self, interaction: discord.Interaction, button: discord.Button):
@@ -315,10 +315,10 @@ class carddecorshop(discord.ui.View):
         
         if levels['stardust'] >= price:
             await self.update_decor(interaction.user.id, id)
-            await self.remove_stardust(interaction.user.id, amount=price)
-            await interaction.response.send_message(f"You have bought **decor {id}** for **<:stardust:1230256970859155486>{price} Stardust**", ephemeral=True)
+            await self.remove_primogems(interaction.user.id, amount=price)
+            await interaction.response.send_message(f"You have bought **decor {id}** for **<:primo:1261680094141747321>{price} primogems**", ephemeral=True)
         else:
-            await interaction.response.send_message("You do not have enough <:stardust:1230256970859155486>Stardust to complete this purchase")
+            await interaction.response.send_message("You do not have enough <:primo:1261680094141747321>primogems to complete this purchase")
 
     @discord.ui.button(label="11")
     async def eleven(self, interaction: discord.Interaction, button: discord.Button):
@@ -328,10 +328,10 @@ class carddecorshop(discord.ui.View):
         
         if levels['stardust'] >= price:
             await self.update_decor(interaction.user.id, id)
-            await self.remove_stardust(interaction.user.id, amount=price)
-            await interaction.response.send_message(f"You have bought **decor {id}** for **<:stardust:1230256970859155486>{price} Stardust**", ephemeral=True)
+            await self.remove_primogems(interaction.user.id, amount=price)
+            await interaction.response.send_message(f"You have bought **decor {id}** for **<:primo:1261680094141747321>{price} primogems**", ephemeral=True)
         else:
-            await interaction.response.send_message("You do not have enough <:stardust:1230256970859155486>Stardust to complete this purchase")
+            await interaction.response.send_message("You do not have enough <:primo:1261680094141747321>primogems to complete this purchase")
 
     @discord.ui.button(label="12")
     async def twelve(self, interaction: discord.Interaction, button: discord.Button):
@@ -341,10 +341,10 @@ class carddecorshop(discord.ui.View):
         
         if levels['stardust'] >= price:
             await self.update_decor(interaction.user.id, id)
-            await self.remove_stardust(interaction.user.id, amount=price)
-            await interaction.response.send_message(f"You have bought **decor {id}** for **<:stardust:1230256970859155486>{price} Stardust**", ephemeral=True)
+            await self.remove_primogems(interaction.user.id, amount=price)
+            await interaction.response.send_message(f"You have bought **decor {id}** for **<:primo:1261680094141747321>{price} primogems**", ephemeral=True)
         else:
-            await interaction.response.send_message("You do not have enough <:stardust:1230256970859155486>Stardust to complete this purchase")
+            await interaction.response.send_message("You do not have enough <:primo:1261680094141747321>primogems to complete this purchase")
 
     @discord.ui.button(label="13")
     async def thirteen(self, interaction: discord.Interaction, button: discord.Button):
@@ -354,10 +354,10 @@ class carddecorshop(discord.ui.View):
         
         if levels['stardust'] >= price:
             await self.update_decor(interaction.user.id, id)
-            await self.remove_stardust(interaction.user.id, amount=price)
-            await interaction.response.send_message(f"You have bought **decor {id}** for **<:stardust:1230256970859155486>{price} Stardust**", ephemeral=True)
+            await self.remove_primogems(interaction.user.id, amount=price)
+            await interaction.response.send_message(f"You have bought **decor {id}** for **<:primo:1261680094141747321>{price} primogems**", ephemeral=True)
         else:
-            await interaction.response.send_message("You do not have enough <:stardust:1230256970859155486>Stardust to complete this purchase")
+            await interaction.response.send_message("You do not have enough <:primo:1261680094141747321>primogems to complete this purchase")
 
     async def get_member_levels(self, member_id: int) -> Optional[LevelRow]:
         query = '''SELECT * from levels WHERE member_id = ?'''
@@ -378,8 +378,8 @@ class carddecorshop(discord.ui.View):
                 await conn.commit()
             await self.bot.pool.release(conn)
 
-    async def remove_stardust(self, member_id: int, amount: int) -> None:
-        query = '''UPDATE levels SET stardust = ? WHERE member_id = ?'''
+    async def remove_primogems(self, member_id: int, amount: int) -> None:
+        query = '''UPDATE levels SET primogems = ? WHERE member_id = ?'''
         levels = await self.get_member_levels(member_id)
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cursor:
@@ -389,64 +389,64 @@ class carddecorshop(discord.ui.View):
 
 class carddecorshopbooster(discord.ui.View):
     def __init__(self, bot):
-        super().__init__(timeout=30)
+        super().__init__(timeout=180)
         self.value = None
         self.bot = bot
 
     @discord.ui.button(label="credit", style=discord.ButtonStyle.blurple)
     async def credit(self, interaction: discord.Interaction, button: discord.Button):
         embed = discord.Embed(description="""decor 1. <@1111564587024789504>
-        <:1166196258499727480:1208228386842087554> instagram: [sxtqrn](https://instagram.com/sxtqrn)
+        <:1166196258499727480:1215213896256724992> instagram: [sxtqrn](https://instagram.com/sxtqrn)
                               
         decor 2. <@751895538646909038>
-        <:1166196258499727480:1208228386842087554> instagram: [lushsfx](https://instagram.com/lushsfx)
+        <:1166196258499727480:1215213896256724992> instagram: [lushsfx](https://instagram.com/lushsfx)
                               
         decor 3. <@982720510003658784>
-        <:1166196258499727480:1208228386842087554> instagram: [hrts4h0bi](https://instagram.com/hrts4h0bi)
+        <:1166196258499727480:1215213896256724992> instagram: [hrts4h0bi](https://instagram.com/hrts4h0bi)
                               
         decor 4. <@609515684740988959>
-        <:1166196258499727480:1208228386842087554> instagram: [remqsi](https://instagram.com/remqsi)
+        <:1166196258499727480:1215213896256724992> instagram: [remqsi](https://instagram.com/remqsi)
                               
         decor 5. <@695197958940917830>
-        <:1166196258499727480:1208228386842087554> instagram: [luno1rs](https://instagram.com/luno1rs)
+        <:1166196258499727480:1215213896256724992> instagram: [luno1rs](https://instagram.com/luno1rs)
                               
         decor 6. <@609515684740988959>
-        <:1166196258499727480:1208228386842087554> instagram: [remqsi](https://instagram.com/remqsi)
+        <:1166196258499727480:1215213896256724992> instagram: [remqsi](https://instagram.com/remqsi)
                               
         decor 7. <@541538705106534423>
-        <:1166196258499727480:1208228386842087554> instagram: [dtqwn](https://instagram.com/dtqwn)
+        <:1166196258499727480:1215213896256724992> instagram: [dtqwn](https://instagram.com/dtqwn)
                               
         decor 8. <@695197958940917830>
-        <:1166196258499727480:1208228386842087554> instagram: [luno1rs](https://instagram.com/luno1rs)
+        <:1166196258499727480:1215213896256724992> instagram: [luno1rs](https://instagram.com/luno1rs)
                               
         decor 9. <@695197958940917830>
-        <:1166196258499727480:1208228386842087554> instagram: [luno1rs](https://instagram.com/luno1rs)
+        <:1166196258499727480:1215213896256724992> instagram: [luno1rs](https://instagram.com/luno1rs)
                               
         decor 10. <@834786195526778903>
-        <:1166196258499727480:1208228386842087554> instagram: [kxpjm](https://instagram.com/kxpjm)
+        <:1166196258499727480:1215213896256724992> instagram: [kxpjm](https://instagram.com/kxpjm)
                               
         decor 11. <@609515684740988959>
-        <:1166196258499727480:1208228386842087554> instagram: [remqsi](https://instagram.com/remqsi)
+        <:1166196258499727480:1215213896256724992> instagram: [remqsi](https://instagram.com/remqsi)
                               
         decor 12. <@609515684740988959>
-        <:1166196258499727480:1208228386842087554> instagram: [remqsi](https://instagram.com/remqsi)
+        <:1166196258499727480:1215213896256724992> instagram: [remqsi](https://instagram.com/remqsi)
                               
         decor 13. <@834786195526778903>
-        <:1166196258499727480:1208228386842087554> instagram: [kxpjm](https://instagram.com/kxpjm)""", color=0x2b2d31)
+        <:1166196258499727480:1215213896256724992> instagram: [kxpjm](https://instagram.com/kxpjm)""", color=0xFEBCBE)
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
     @discord.ui.button(label="clear decor", style=discord.ButtonStyle.red)
     async def clear(self, interaction: discord.Interaction, button: discord.Button):
         price = 0
-        id = "none"
+        id = "None"
         levels = await self.get_member_levels(interaction.user.id)
         
         if levels['stardust'] >= price:
             await self.update_decor(interaction.user.id, id)
-            await self.remove_stardust(interaction.user.id, amount=price)
-            await interaction.response.send_message(f"You have removed your rankc ard decoration!", ephemeral=True)
+            await self.remove_primogems(interaction.user.id, amount=price)
+            await interaction.response.send_message(f"You have removed your rank card decoration!", ephemeral=True)
         else:
-            await interaction.response.send_message("You do not have enough <:stardust:1230256970859155486>Stardust to complete this purchase")
+            await interaction.response.send_message("You do not have enough <:primo:1261680094141747321>primogems to complete this purchase")
 
     @discord.ui.button(label="1")
     async def one(self, interaction: discord.Interaction, button: discord.Button):
@@ -456,10 +456,10 @@ class carddecorshopbooster(discord.ui.View):
         
         if levels['stardust'] >= price:
             await self.update_decor(interaction.user.id, id)
-            await self.remove_stardust(interaction.user.id, amount=price)
-            await interaction.response.send_message(f"You have bought **decor {id}** for **<:stardust:1230256970859155486>{price} Stardust**", ephemeral=True)
+            await self.remove_primogems(interaction.user.id, amount=price)
+            await interaction.response.send_message(f"You have bought **decor {id}** for **<:primo:1261680094141747321>{price} primogems**", ephemeral=True)
         else:
-            await interaction.response.send_message("You do not have enough <:stardust:1230256970859155486>Stardust to complete this purchase")
+            await interaction.response.send_message("You do not have enough <:primo:1261680094141747321>primogems to complete this purchase")
 
     @discord.ui.button(label="2")
     async def two(self, interaction: discord.Interaction, button: discord.Button):
@@ -469,10 +469,10 @@ class carddecorshopbooster(discord.ui.View):
         
         if levels['stardust'] >= price:
             await self.update_decor(interaction.user.id, id)
-            await self.remove_stardust(interaction.user.id, amount=price)
-            await interaction.response.send_message(f"You have bought **decor {id}** for **<:stardust:1230256970859155486>{price} Stardust**", ephemeral=True)
+            await self.remove_primogems(interaction.user.id, amount=price)
+            await interaction.response.send_message(f"You have bought **decor {id}** for **<:primo:1261680094141747321>{price} primogems**", ephemeral=True)
         else:
-            await interaction.response.send_message("You do not have enough <:stardust:1230256970859155486>Stardust to complete this purchase")
+            await interaction.response.send_message("You do not have enough <:primo:1261680094141747321>primogems to complete this purchase")
 
     @discord.ui.button(label="3")
     async def three(self, interaction: discord.Interaction, button: discord.Button):
@@ -482,10 +482,10 @@ class carddecorshopbooster(discord.ui.View):
         
         if levels['stardust'] >= price:
             await self.update_decor(interaction.user.id, id)
-            await self.remove_stardust(interaction.user.id, amount=price)
-            await interaction.response.send_message(f"You have bought **decor {id}** for **<:stardust:1230256970859155486>{price} Stardust**", ephemeral=True)
+            await self.remove_primogems(interaction.user.id, amount=price)
+            await interaction.response.send_message(f"You have bought **decor {id}** for **<:primo:1261680094141747321>{price} primogems**", ephemeral=True)
         else:
-            await interaction.response.send_message("You do not have enough <:stardust:1230256970859155486>Stardust to complete this purchase")
+            await interaction.response.send_message("You do not have enough <:primo:1261680094141747321>primogems to complete this purchase")
 
     @discord.ui.button(label="4")
     async def four(self, interaction: discord.Interaction, button: discord.Button):
@@ -495,10 +495,10 @@ class carddecorshopbooster(discord.ui.View):
         
         if levels['stardust'] >= price:
             await self.update_decor(interaction.user.id, id)
-            await self.remove_stardust(interaction.user.id, amount=price)
-            await interaction.response.send_message(f"You have bought **decor {id}** for **<:stardust:1230256970859155486>{price} Stardust**", ephemeral=True)
+            await self.remove_primogems(interaction.user.id, amount=price)
+            await interaction.response.send_message(f"You have bought **decor {id}** for **<:primo:1261680094141747321>{price} primogems**", ephemeral=True)
         else:
-            await interaction.response.send_message("You do not have enough <:stardust:1230256970859155486>Stardust to complete this purchase")
+            await interaction.response.send_message("You do not have enough <:primo:1261680094141747321>primogems to complete this purchase")
 
     @discord.ui.button(label="5")
     async def five(self, interaction: discord.Interaction, button: discord.Button):
@@ -508,10 +508,10 @@ class carddecorshopbooster(discord.ui.View):
         
         if levels['stardust'] >= price:
             await self.update_decor(interaction.user.id, id)
-            await self.remove_stardust(interaction.user.id, amount=price)
-            await interaction.response.send_message(f"You have bought **decor {id}** for **<:stardust:1230256970859155486>{price} Stardust**", ephemeral=True)
+            await self.remove_primogems(interaction.user.id, amount=price)
+            await interaction.response.send_message(f"You have bought **decor {id}** for **<:primo:1261680094141747321>{price} primogems**", ephemeral=True)
         else:
-            await interaction.response.send_message("You do not have enough <:stardust:1230256970859155486>Stardust to complete this purchase")
+            await interaction.response.send_message("You do not have enough <:primo:1261680094141747321>primogems to complete this purchase")
 
     @discord.ui.button(label="6")
     async def six(self, interaction: discord.Interaction, button: discord.Button):
@@ -521,10 +521,10 @@ class carddecorshopbooster(discord.ui.View):
         
         if levels['stardust'] >= price:
             await self.update_decor(interaction.user.id, id)
-            await self.remove_stardust(interaction.user.id, amount=price)
-            await interaction.response.send_message(f"You have bought **decor {id}** for **<:stardust:1230256970859155486>{price} Stardust**", ephemeral=True)
+            await self.remove_primogems(interaction.user.id, amount=price)
+            await interaction.response.send_message(f"You have bought **decor {id}** for **<:primo:1261680094141747321>{price} primogems**", ephemeral=True)
         else:
-            await interaction.response.send_message("You do not have enough <:stardust:1230256970859155486>Stardust to complete this purchase")
+            await interaction.response.send_message("You do not have enough <:primo:1261680094141747321>primogems to complete this purchase")
 
     @discord.ui.button(label="7")
     async def seven(self, interaction: discord.Interaction, button: discord.Button):
@@ -534,10 +534,10 @@ class carddecorshopbooster(discord.ui.View):
         
         if levels['stardust'] >= price:
             await self.update_decor(interaction.user.id, id)
-            await self.remove_stardust(interaction.user.id, amount=price)
-            await interaction.response.send_message(f"You have bought **decor {id}** for **<:stardust:1230256970859155486>{price} Stardust**", ephemeral=True)
+            await self.remove_primogems(interaction.user.id, amount=price)
+            await interaction.response.send_message(f"You have bought **decor {id}** for **<:primo:1261680094141747321>{price} primogems**", ephemeral=True)
         else:
-            await interaction.response.send_message("You do not have enough <:stardust:1230256970859155486>Stardust to complete this purchase")
+            await interaction.response.send_message("You do not have enough <:primo:1261680094141747321>primogems to complete this purchase")
 
     @discord.ui.button(label="8")
     async def eight(self, interaction: discord.Interaction, button: discord.Button):
@@ -547,10 +547,10 @@ class carddecorshopbooster(discord.ui.View):
         
         if levels['stardust'] >= price:
             await self.update_decor(interaction.user.id, id)
-            await self.remove_stardust(interaction.user.id, amount=price)
-            await interaction.response.send_message(f"You have bought **decor {id}** for **<:stardust:1230256970859155486>{price} Stardust**", ephemeral=True)
+            await self.remove_primogems(interaction.user.id, amount=price)
+            await interaction.response.send_message(f"You have bought **decor {id}** for **<:primo:1261680094141747321>{price} primogems**", ephemeral=True)
         else:
-            await interaction.response.send_message("You do not have enough <:stardust:1230256970859155486>Stardust to complete this purchase")
+            await interaction.response.send_message("You do not have enough <:primo:1261680094141747321>primogems to complete this purchase")
 
     @discord.ui.button(label="9")
     async def nine(self, interaction: discord.Interaction, button: discord.Button):
@@ -560,10 +560,10 @@ class carddecorshopbooster(discord.ui.View):
         
         if levels['stardust'] >= price:
             await self.update_decor(interaction.user.id, id)
-            await self.remove_stardust(interaction.user.id, amount=price)
-            await interaction.response.send_message(f"You have bought **decor {id}** for **<:stardust:1230256970859155486>{price} Stardust**", ephemeral=True)
+            await self.remove_primogems(interaction.user.id, amount=price)
+            await interaction.response.send_message(f"You have bought **decor {id}** for **<:primo:1261680094141747321>{price} primogems**", ephemeral=True)
         else:
-            await interaction.response.send_message("You do not have enough <:stardust:1230256970859155486>Stardust to complete this purchase")
+            await interaction.response.send_message("You do not have enough <:primo:1261680094141747321>primogems to complete this purchase")
 
     @discord.ui.button(label="10")
     async def ten(self, interaction: discord.Interaction, button: discord.Button):
@@ -573,10 +573,10 @@ class carddecorshopbooster(discord.ui.View):
         
         if levels['stardust'] >= price:
             await self.update_decor(interaction.user.id, id)
-            await self.remove_stardust(interaction.user.id, amount=price)
-            await interaction.response.send_message(f"You have bought **decor {id}** for **<:stardust:1230256970859155486>{price} Stardust**", ephemeral=True)
+            await self.remove_primogems(interaction.user.id, amount=price)
+            await interaction.response.send_message(f"You have bought **decor {id}** for **<:primo:1261680094141747321>{price} primogems**", ephemeral=True)
         else:
-            await interaction.response.send_message("You do not have enough <:stardust:1230256970859155486>Stardust to complete this purchase")
+            await interaction.response.send_message("You do not have enough <:primo:1261680094141747321>primogems to complete this purchase")
 
     @discord.ui.button(label="11")
     async def eleven(self, interaction: discord.Interaction, button: discord.Button):
@@ -586,10 +586,10 @@ class carddecorshopbooster(discord.ui.View):
         
         if levels['stardust'] >= price:
             await self.update_decor(interaction.user.id, id)
-            await self.remove_stardust(interaction.user.id, amount=price)
-            await interaction.response.send_message(f"You have bought **decor {id}** for **<:stardust:1230256970859155486>{price} Stardust**", ephemeral=True)
+            await self.remove_primogems(interaction.user.id, amount=price)
+            await interaction.response.send_message(f"You have bought **decor {id}** for **<:primo:1261680094141747321>{price} primogems**", ephemeral=True)
         else:
-            await interaction.response.send_message("You do not have enough <:stardust:1230256970859155486>Stardust to complete this purchase")
+            await interaction.response.send_message("You do not have enough <:primo:1261680094141747321>primogems to complete this purchase")
 
     @discord.ui.button(label="12")
     async def twelve(self, interaction: discord.Interaction, button: discord.Button):
@@ -599,10 +599,10 @@ class carddecorshopbooster(discord.ui.View):
         
         if levels['stardust'] >= price:
             await self.update_decor(interaction.user.id, id)
-            await self.remove_stardust(interaction.user.id, amount=price)
-            await interaction.response.send_message(f"You have bought **decor {id}** for **<:stardust:1230256970859155486>{price} Stardust**", ephemeral=True)
+            await self.remove_primogems(interaction.user.id, amount=price)
+            await interaction.response.send_message(f"You have bought **decor {id}** for **<:primo:1261680094141747321>{price} primogems**", ephemeral=True)
         else:
-            await interaction.response.send_message("You do not have enough <:stardust:1230256970859155486>Stardust to complete this purchase")
+            await interaction.response.send_message("You do not have enough <:primo:1261680094141747321>primogems to complete this purchase")
 
     @discord.ui.button(label="13")
     async def thirteen(self, interaction: discord.Interaction, button: discord.Button):
@@ -612,10 +612,10 @@ class carddecorshopbooster(discord.ui.View):
         
         if levels['stardust'] >= price:
             await self.update_decor(interaction.user.id, id)
-            await self.remove_stardust(interaction.user.id, amount=price)
-            await interaction.response.send_message(f"You have bought **decor {id}** for **<:stardust:1230256970859155486>{price} Stardust**", ephemeral=True)
+            await self.remove_primogems(interaction.user.id, amount=price)
+            await interaction.response.send_message(f"You have bought **decor {id}** for **<:primo:1261680094141747321>{price} primogems**", ephemeral=True)
         else:
-            await interaction.response.send_message("You do not have enough <:stardust:1230256970859155486>Stardust to complete this purchase")
+            await interaction.response.send_message("You do not have enough <:primo:1261680094141747321>primogems to complete this purchase")
 
     async def get_member_levels(self, member_id: int) -> Optional[LevelRow]:
         query = '''SELECT * from levels WHERE member_id = ?'''
@@ -636,8 +636,8 @@ class carddecorshopbooster(discord.ui.View):
                 await conn.commit()
             await self.bot.pool.release(conn)
 
-    async def remove_stardust(self, member_id: int, amount: int) -> None:
-        query = '''UPDATE levels SET stardust = ? WHERE member_id = ?'''
+    async def remove_primogems(self, member_id: int, amount: int) -> None:
+        query = '''UPDATE levels SET primogems = ? WHERE member_id = ?'''
         levels = await self.get_member_levels(member_id)
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cursor:
@@ -645,102 +645,102 @@ class carddecorshopbooster(discord.ui.View):
                 await conn.commit()
             await self.bot.pool.release(conn)
 
-class stardustshop(discord.ui.View):
+class primogemsshop(discord.ui.View):
     def __init__(self, bot):
-        super().__init__(timeout=None)
+        super().__init__(timeout=180)
         self.value = None
         self.bot = bot
 
-    @discord.ui.button(label="5", emoji="<:stardust:1230256970859155486>")
+    @discord.ui.button(label="5", emoji="<:primo:1261680094141747321>")
     async def five(self, interaction: discord.Interaction, button: discord.Button):
         amount = 5
         price = 15
         levels = await self.get_member_levels(interaction.user.id)
         
         if levels and levels['mora'] >= 15:
-            await self.update_stardust(interaction.user.id, amount)
+            await self.update_primogems(interaction.user.id, amount)
             await self.remove_mora(interaction.user.id, amount=price)
-            await interaction.response.send_message(f"You have bought **<:stardust:1230256970859155486>{amount} Stardust** for **<:mora:1230914532675813508>{price} Mora**", ephemeral=True)
+            await interaction.response.send_message(f"You have bought **<:primo:1261680094141747321>{amount} primogems** for **<:mora:1261680092535455844>{price} Mora**", ephemeral=True)
         else:
-            await interaction.response.send_message("You do not have enough <:mora:1230914532675813508>Mora to complete this purchase")
+            await interaction.response.send_message("You do not have enough <:mora:1261680092535455844>Mora to complete this purchase")
 
-    @discord.ui.button(label="10", emoji="<:stardust:1230256970859155486>")
+    @discord.ui.button(label="10", emoji="<:primo:1261680094141747321>")
     async def ten(self, interaction: discord.Interaction, button: discord.Button):
         amount = 10
         price = 30
         levels = await self.get_member_levels(interaction.user.id)
         
         if levels and levels['mora'] >= 30:
-            await self.update_stardust(interaction.user.id, amount)
+            await self.update_primogems(interaction.user.id, amount)
             await self.remove_mora(interaction.user.id, amount=price)
-            await interaction.response.send_message(f"You have bought **<:stardust:1230256970859155486>{amount} Stardust** for **<:mora:1230914532675813508>{price} Mora**", ephemeral=True)
+            await interaction.response.send_message(f"You have bought **<:primo:1261680094141747321>{amount} primogems** for **<:mora:1261680092535455844>{price} Mora**", ephemeral=True)
         else:
-            await interaction.response.send_message("You do not have enough <:mora:1230914532675813508>Mora to complete this purchase")
+            await interaction.response.send_message("You do not have enough <:mora:1261680092535455844>Mora to complete this purchase")
 
-    @discord.ui.button(label="20", emoji="<:stardust:1230256970859155486>")
+    @discord.ui.button(label="20", emoji="<:primo:1261680094141747321>")
     async def twenty(self, interaction: discord.Interaction, button: discord.Button):
         amount = 20
         price = 60
         levels = await self.get_member_levels(interaction.user.id)
         
         if levels and levels['mora'] >= 60:
-            await self.update_stardust(interaction.user.id, amount)
+            await self.update_primogems(interaction.user.id, amount)
             await self.remove_mora(interaction.user.id, amount=price)
-            await interaction.response.send_message(f"You have bought **<:stardust:1230256970859155486>{amount} Stardust** for **<:mora:1230914532675813508>{price} Mora**", ephemeral=True)
+            await interaction.response.send_message(f"You have bought **<:primo:1261680094141747321>{amount} primogems** for **<:mora:1261680092535455844>{price} Mora**", ephemeral=True)
         else:
-            await interaction.response.send_message("You do not have enough <:mora:1230914532675813508>Mora to complete this purchase")
+            await interaction.response.send_message("You do not have enough <:mora:1261680092535455844>Mora to complete this purchase")
 
-    @discord.ui.button(label="40", emoji="<:stardust:1230256970859155486>")
+    @discord.ui.button(label="40", emoji="<:primo:1261680094141747321>")
     async def fourty(self, interaction: discord.Interaction, button: discord.Button):
         amount = 40
         price = 120
         levels = await self.get_member_levels(interaction.user.id)
         
         if levels and levels['mora'] >= 120:
-            await self.update_stardust(interaction.user.id, amount)
+            await self.update_primogems(interaction.user.id, amount)
             await self.remove_mora(interaction.user.id, amount=price)
-            await interaction.response.send_message(f"You have bought **<:stardust:1230256970859155486>{amount} Stardust** for **<:mora:1230914532675813508>{price} Mora**", ephemeral=True)
+            await interaction.response.send_message(f"You have bought **<:primo:1261680094141747321>{amount} primogems** for **<:mora:1261680092535455844>{price} Mora**", ephemeral=True)
         else:
-            await interaction.response.send_message("You do not have enough <:mora:1230914532675813508>Mora to complete this purchase")
+            await interaction.response.send_message("You do not have enough <:mora:1261680092535455844>Mora to complete this purchase")
 
-    @discord.ui.button(label="80", emoji="<:stardust:1230256970859155486>")
+    @discord.ui.button(label="80", emoji="<:primo:1261680094141747321>")
     async def eighty(self, interaction: discord.Interaction, button: discord.Button):
         amount = 80
         price = 240
         levels = await self.get_member_levels(interaction.user.id)
         
         if levels and levels['mora'] >= 240:
-            await self.update_stardust(interaction.user.id, amount)
+            await self.update_primogems(interaction.user.id, amount)
             await self.remove_mora(interaction.user.id, amount=price)
-            await interaction.response.send_message(f"You have bought **<:stardust:1230256970859155486>{amount} Stardust** for **<:mora:1230914532675813508>{price} Mora**", ephemeral=True)
+            await interaction.response.send_message(f"You have bought **<:primo:1261680094141747321>{amount} primogems** for **<:mora:1261680092535455844>{price} Mora**", ephemeral=True)
         else:
-            await interaction.response.send_message("You do not have enough <:mora:1230914532675813508>Mora to complete this purchase")
+            await interaction.response.send_message("You do not have enough <:mora:1261680092535455844>Mora to complete this purchase")
 
-    @discord.ui.button(label="160", emoji="<:stardust:1230256970859155486>")
+    @discord.ui.button(label="160", emoji="<:primo:1261680094141747321>")
     async def hunderedsixty(self, interaction: discord.Interaction, button: discord.Button):
         amount = 160
         price = 480
         levels = await self.get_member_levels(interaction.user.id)
         
         if levels and levels['mora'] >= 480:
-            await self.update_stardust(interaction.user.id, amount)
+            await self.update_primogems(interaction.user.id, amount)
             await self.remove_mora(interaction.user.id, amount=price)
-            await interaction.response.send_message(f"You have bought **<:stardust:1230256970859155486>{amount} Stardust** for **<:mora:1230914532675813508>{price} Mora**", ephemeral=True)
+            await interaction.response.send_message(f"You have bought **<:primo:1261680094141747321>{amount} primogems** for **<:mora:1261680092535455844>{price} Mora**", ephemeral=True)
         else:
-            await interaction.response.send_message("You do not have enough <:mora:1230914532675813508>Mora to complete this purchase")
+            await interaction.response.send_message("You do not have enough <:mora:1261680092535455844>Mora to complete this purchase")
 
-    async def update_stardust(self, member_id: int, amount: int) -> None:
+    async def update_primogems(self, member_id: int, amount: int) -> None:
         query = '''UPDATE levels SET stardust = ? WHERE member_id = ?'''
         levels = await self.get_member_levels(member_id)
         
         if levels is None or levels['stardust'] is None:
-            starting_stardust = 0
+            starting_primogems = 0
         else:
-            starting_stardust = levels['stardust']
+            starting_primogems = levels['stardust']
         
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cursor:
-                await cursor.execute(query, (starting_stardust + amount, member_id,))
+                await cursor.execute(query, (starting_primogems + amount, member_id,))
                 await conn.commit()
             await self.bot.pool.release(conn)
 
@@ -770,23 +770,15 @@ class levels(commands.Cog):
         self.bot = bot
         self.status_holder = {0: "disabled", 1: "enabled"}
         self.pool = None
-        self.channels = [1134736054637838490]
+        self.channels = [1170067469134733322, 1134736054637838490]
         self.guilds = [1134736053803159592]
         self.cd_mapping = commands.CooldownMapping.from_cooldown(1, 60, commands.BucketType.user)
-
-    def kanzen_cooldown(interaction: discord.Interaction) -> Optional[app_commands.Cooldown]:
-
-        role = interaction.guild.get_role(1128460924886458489)
-        if role in interaction.user.roles:
-            return commands.Cooldown(1, 43200)
-        
-        return commands.Cooldown(1, 86400)
 
     async def add_member(self, member_id: int, xp=5, mora=5) -> None:
         query = '''INSERT INTO levels (member_id, xp, messages, color, mora) VALUES (?, ?, ?, ?, ?)'''
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cursor:
-                await cursor.execute(query, (member_id, xp, 1, '#793e79', mora))
+                await cursor.execute(query, (member_id, xp, 1, '#c45a72', mora))
                 await conn.commit()
             await self.bot.pool.release(conn)
 
@@ -861,13 +853,25 @@ class levels(commands.Cog):
                     await conn.commit()
                 await self.bot.pool.release(conn)
 
-            await message.channel.send(f"Yay! {message.author.mention} you just reached **level {lvl+1}**\nYou also found **<:mora:1230914532675813508>5 Mora**! You now have <:mora:1230914532675813508>**{levels['mora'] + 5} Mora**")
+            if lvl == 1:
+                stella = "Stella"
+            else:
+                stella = "Stellas"
+
+            embed = discord.Embed(description=f"{message.author.name} you just reached **{lvl}** {stella}!", colour=0xFEBCBE)
+            
+            if lvl == 1:
+                role = message.guild.get_role(1147592763924295681)
+                if role:
+                    await message.author.add_roles(role, reason=f"{message.author.name} reached 1 stella")
+            channel = message.guild.get_channel(1135027269853778020)
+            await channel.send(message.author.mention, embed=embed)
             await self.update_mora(message.author.id)
 
     async def level_handler(self, message: discord.Message, retry_after: Optional[commands.CooldownMapping], xp: int) -> None:
         member_id = message.author.id
         levels = await self.get_member_levels(member_id)
-        if levels == None:
+        if levels is None:
             await self.add_member(member_id)
         else:
             if retry_after:
@@ -876,17 +880,6 @@ class levels(commands.Cog):
                 await self.update_xp(member_id, levels, xp)
                 await self.check_levels(message, levels['xp'], xp)
 
-    async def get_staffrep(self, member_id: int) -> Optional[LevelRow]:
-        query = '''SELECT count FROM staffrep WHERE member_id = ?'''
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cursor:
-                await cursor.execute(query, (member_id, ))
-                row = await cursor.fetchone()
-                if row:
-                    return row
-                else:
-                    return None
-
     async def handle_message(self, message: discord.Message) -> None:
         if message.author.bot:
             return
@@ -894,7 +887,7 @@ class levels(commands.Cog):
         if message.channel.id not in self.channels:
             return
 
-        zennie_role_id = 1134797882420117544
+        zennie_role_id = 1121842393994494082
         forms_zennie_role_id = 1134797882420117544
         zennie_role = message.guild.get_role(zennie_role_id)
         if zennie_role and zennie_role in message.author.roles:
@@ -955,31 +948,21 @@ class levels(commands.Cog):
 
         return percentage, xp_progress_have, xp_progress_need, lvl
 
-    def _make_progress_bar(self, progress, color, circle_size=210, bar_thickness=13):
-        upscale_factor = 4
-        upscale_circle_size = circle_size * upscale_factor
-        upscale_bar_thickness = bar_thickness * upscale_factor
-        arc = Image.new('RGBA', (upscale_circle_size, upscale_circle_size), (0, 0, 0, 0))
-        draw = ImageDraw.Draw(arc)
-        start_angle = -math.pi / 2
-        end_angle = start_angle + math.pi * 2 * progress
-        if progress == 1.0:
-            end_angle = -math.pi / 2
-        draw.arc([upscale_bar_thickness // 2, upscale_bar_thickness // 2,
-                upscale_circle_size - upscale_bar_thickness // 2, 
-                upscale_circle_size - upscale_bar_thickness // 2],
-                start=math.degrees(start_angle), end=math.degrees(end_angle), 
-                fill=color, width=upscale_bar_thickness)
-        mask = Image.new('L', (upscale_circle_size, upscale_circle_size), 0)
+    def _make_progress_bar(self, progress, color):
+        width = 1500  # Width of the progress bar
+        height = 15  # Height of the progress bar
+        radius = 0  # Radius of the rounded corners
+        progress_bar = Image.new('RGBA', (width, height), (0, 0, 0, 0))
+        draw = ImageDraw.Draw(progress_bar)
+        draw.rectangle([(0, 0), (width, height)], fill=(195, 195, 195, 255))
+        bg_width = int(width * 1)
+        progress_width = int(width * progress)
+        draw.rounded_rectangle([(0, 0), (bg_width, height)], fill=(195, 195, 195, 255), width=1, radius=radius)
+        draw.rounded_rectangle([(0, 0), (progress_width, height)], fill=color, width=1, radius=radius)
+        mask = Image.new('L', (width, height), 0)
         mask_draw = ImageDraw.Draw(mask)
-        mask_draw.arc([upscale_bar_thickness // 2, upscale_bar_thickness // 2,
-                    upscale_circle_size - upscale_bar_thickness // 2, 
-                    upscale_circle_size - upscale_bar_thickness // 2],
-                    start=math.degrees(start_angle), end=math.degrees(end_angle), 
-                    fill=255, width=upscale_bar_thickness)
-        arc = arc.resize((circle_size, circle_size), Image.ANTIALIAS)
-        mask = mask.resize((circle_size, circle_size), Image.ANTIALIAS)
-        return arc, mask
+        mask_draw.rounded_rectangle([(0, 0), (bg_width, height)], fill=255, width=0, radius=radius)
+        return progress_bar, mask
 
     def get_avatar(self, avatar: BytesIO) -> Tuple[Image.Image, Image.Image]:
         circle = Image.open('./assets/circle-mask.png').resize((190, 190)).convert('L')
@@ -1007,192 +990,98 @@ class levels(commands.Cog):
                     await connection.execute(new_query, bytes_data, member_id, pb_accent, pb_primary)
             await self.bot.pool.release(connection)
 
-    def get_card(self, name: str, status: str, avatar: BytesIO, levels: LevelRow, rank: int, user: discord.User) -> BytesIO:
+    def _get_bg_image(self, url: str):
+            """Gets background image"""
+            image = requests.get(url, stream=True)
+            b_img = Image.open(BytesIO(image.content))
+            return b_img
+
+    def get_card(self, name: str, status: str, avatar: BytesIO, levels: LevelRow, rank: int, user: discord.User, guild: discord.Guild) -> BytesIO:
         percentage, xp_have, xp_need, level = self.xp_calculations(levels)
-        card = Image.new('RGBA', size=(750, 750), color='grey')
+        card = Image.new('RGBA', size=(1500, 500), color='grey')
+        
         if levels['image'] is not None:
             bg = Image.open(BytesIO(levels["image"]))
-            left = (bg.width - min(bg.width, bg.height)) // 2
-            top = (bg.height - min(bg.width, bg.height)) // 2
-            right = left + min(bg.width, bg.height)
-            bottom = top + min(bg.width, bg.height)
-            bg = bg.crop((left, top, right, bottom))
         else:
             bg = Image.open("./assets/rankcard.png")
-        bg = bg.resize((750, 750))
+
+        bg_aspect_ratio = bg.width / bg.height
+        target_aspect_ratio = 1500 / 500
+        
+        if bg_aspect_ratio > target_aspect_ratio:
+            new_width = int(bg.height * target_aspect_ratio)
+            left = (bg.width - new_width) // 2
+            right = left + new_width
+            top = 0
+            bottom = bg.height
+        else:
+            new_height = int(bg.width / target_aspect_ratio)
+            top = (bg.height - new_height) // 2
+            bottom = top + new_height
+            left = 0
+            right = bg.width
+        
+        bg = bg.crop((left, top, right, bottom))
+        bg = bg.resize((1500, 500))
         dark = ImageEnhance.Brightness(bg)
         bg_dark = dark.enhance(0.8)
         bg_blurred = bg_dark.filter(ImageFilter.GaussianBlur(radius=20))
-        mask = Image.open("./assets/boxmask.png").resize((750, 750)).convert("L")
+        mask = Image.open("./assets/boxmasklyra.png").resize((1500, 500)).convert("L")
         inverted_mask = ImageOps.invert(mask)
         bg_frosted = Image.composite(bg_blurred, Image.new("RGBA", bg.size, "white"), inverted_mask)
         bg_frosted.putalpha(inverted_mask)
-        bg_rgb = bg.convert("RGB")
-        bar, mask = self._make_progress_bar(percentage, levels['color'])
+        bar, mask_bar = self._make_progress_bar(percentage, levels['color'])
         avatar_paste, circle = self.get_avatar(avatar)
-        card.paste(bg_rgb, (0, 0))
+        card.paste(bg, (0, 0))
         card.paste(bg_frosted, (0, 0), bg_frosted)
-        card.paste(bar, (7, 7), mask)
+        card.paste(bar, (0, 485), mask_bar)
         card.paste(avatar_paste, (18, 17), circle)
-        zhcn = ImageFont.truetype("./fonts/zhcn.ttf", size=33)
-        zhcn2 = ImageFont.truetype("./fonts/zhcn.ttf", size=27)
+        zhcn = ImageFont.truetype("./fonts/zhcn.ttf", size=36)
+        zhcn2 = ImageFont.truetype("./fonts/zhcn.ttf", size=25)
+        rankdecor = Image.open(f'./assets/{levels["decor"]}.png')
+        rankdecor = rankdecor.resize((750, 750))
+        card.paste(rankdecor, (0, 0), rankdecor)
         rankboxes = Image.open('./assets/rankboxes.png')
         rankboxes = rankboxes.resize((750, 750))
         card.paste(rankboxes, (0, 0), rankboxes)
-        if levels["decor"]:
-            rankdecor = Image.open(f'./assets/{levels["decor"]}.png')
-            rankdecor = rankdecor.resize((750, 750))
-            card.paste(rankdecor, (0, 0), rankdecor)
-        lead_role_id = 1131006052209541212
-        has_lead_role = any(role.id == lead_role_id for role in user.roles)
-        hstaff_id = 1131709630117060629
-        has_hstaff_role = any(role.id == hstaff_id for role in user.roles)
-        staff_role_id = 1131006067564875806
-        has_staff_role = any(role.id == staff_role_id for role in user.roles)
-        mods_id = 1179249792925306931
-        mods_role = any(role.id == mods_id for role in user.roles)
-        devs_id = 1179255802003988573
-        devs_role = any(role.id == devs_id for role in user.roles)
-        zennies_role_id = 1134797882420117544
-        has_zennies_role = any(role.id == zennies_role_id for role in user.roles)
         moraicon = Image.open('./assets/mora.png')
-        moraicon = moraicon.resize((60, 60))
-        card.paste(moraicon, (32, 512), moraicon)
-        stardusticon = Image.open('./assets/stardust.png')
-        stardusticon = stardusticon.resize((50, 50))
-        card.paste(stardusticon, (170, 517), stardusticon)
-        mbmerlvl = Image.open('./assets/memberlvl.png')
-        mbmerlvl = mbmerlvl.resize((50, 50))
-        card.paste(mbmerlvl, (306, 519), mbmerlvl)
-        # server thing badges
-        if has_lead_role:
-            special_role_img = Image.open('./assets/lead.png')
-            special_role_img = special_role_img.resize((85, 85))
-            custom_x = 135
-            custom_y = 135
-            card.paste(special_role_img, (custom_x, custom_y), special_role_img)
-        elif has_hstaff_role:
-            special_role_img = Image.open('./assets/hstaff.png')
-            special_role_img = special_role_img.resize((85, 85))
-            custom_x = 135
-            custom_y = 135
-            card.paste(special_role_img, (custom_x, custom_y), special_role_img)
-        elif mods_role:
-            mods_img = Image.open('./assets/mods.png')
-            mods_img = mods_img.resize((85, 85))
-            custom_x = 135
-            custom_y = 135
-            card.paste(mods_img, (custom_x, custom_y), mods_img)
-        elif has_staff_role:
-            staff_role_img = Image.open('./assets/staff.png')
-            staff_role_img = staff_role_img.resize((85, 85))
-            custom_x = 135
-            custom_y = 135
-            card.paste(staff_role_img, (custom_x, custom_y), staff_role_img)
-        elif devs_role:
-            devs_img = Image.open('./assets/devs.png')
-            devs_img = devs_img.resize((85, 85))
-            custom_x = 135
-            custom_y = 135
-            card.paste(devs_img, (custom_x, custom_y), devs_img)
-        elif has_zennies_role:
-            zennies_role_img = Image.open('./assets/zennies.png')
-            zennies_role_img = zennies_role_img.resize((85, 85))
-            custom_x = 135
-            custom_y = 135
-            card.paste(zennies_role_img, (custom_x, custom_y), zennies_role_img)
-
-        # other badges
-        booster_role_id = 1128460924886458489
-        has_booster_role = any(role.id == booster_role_id for role in user.roles)
-        if has_booster_role:
-            booster_role_img = Image.open('./assets/booster.png')
-            booster_role_img = booster_role_img.resize((65, 65))
-            custom_x = 115
-            custom_y = 656
-            card.paste(booster_role_img, (custom_x, custom_y), booster_role_img)
-        else:
-            special_role_img = Image.open('./assets/emptry badge.png')
-            special_role_img = special_role_img.resize((65, 65))
-            custom_x = 115
-            custom_y = 657
-            card.paste(special_role_img, (custom_x, custom_y), special_role_img)
-        top20_role_id = 1189632052727906376
-        has_top20_role = any(role.id == top20_role_id for role in user.roles)
-        if has_top20_role:
-            top20_role_img = Image.open('./assets/top20.png')
-            top20_role_img = top20_role_img.resize((65, 65))
-            custom_x = 185
-            custom_y = 657
-            card.paste(top20_role_img, (custom_x, custom_y), top20_role_img)
-        else:
-            special_role_img = Image.open('./assets/emptry badge.png')
-            special_role_img = special_role_img.resize((65, 65))
-            custom_x = 185
-            custom_y = 657
-            card.paste(special_role_img, (custom_x, custom_y), special_role_img)
-        ew_winner_role_id = 1216869981464035439
-        has_ew_winner_role = any(role.id == ew_winner_role_id for role in user.roles)
-        if has_ew_winner_role:
-            ew_winner_role_img = Image.open('./assets/editwars badge.png')
-            ew_winner_role_img = ew_winner_role_img.resize((85, 85))
-            custom_x = 245
-            custom_y = 647
-            card.paste(ew_winner_role_img, (custom_x, custom_y), ew_winner_role_img)
-        else:
-            special_role_img = Image.open('./assets/emptry badge.png')
-            special_role_img = special_role_img.resize((65, 65))
-            custom_x = 255
-            custom_y = 657
-            card.paste(special_role_img, (custom_x, custom_y), special_role_img)
-        reeces_family_role_id = 1193494182401163334
-        has_reeces_family_role = any(role.id == reeces_family_role_id for role in user.roles)
-        if has_reeces_family_role:
-            reeces_family_role_img = Image.open('./assets/reeces family.png')
-            reeces_family_role_img = reeces_family_role_img.resize((85, 85))
-            custom_x = 45
-            custom_y = 647
-            card.paste(reeces_family_role_img, (custom_x, custom_y), reeces_family_role_img)
-        else:
-            special_role_img = Image.open('./assets/emptry badge.png')
-            special_role_img = special_role_img.resize((65, 65))
-            custom_x = 45
-            custom_y = 657
-            card.paste(special_role_img, (custom_x, custom_y), special_role_img)
+        moraicon = moraicon.resize((100, 100))
+        card.paste(moraicon, (925, 380), moraicon)
+        primogemsicon = Image.open('./assets/primogems.png')
+        primogemsicon = primogemsicon.resize((90, 90))
+        card.paste(primogemsicon, (1100, 385), primogemsicon)
         draw = ImageDraw.Draw(card, 'RGBA')
-        stardust = levels["stardust"]
+        primogems = levels["primogems"]
         mora = levels["mora"]
-        memberlvl = levels["memberlvl"]
-        if stardust == None:
-            stardust = "0"
+        if primogems is None:
+            primogems = "0"
         else:
-            stardust = stardust
+            primogems = primogems
 
-        if mora == None:
+        if mora is None:
             mora = "0"
         else:
             mora = mora
-
-        if memberlvl == None:
-            memberlvl = "0"
-        else:
-            memberlvl = memberlvl
-        draw.text((225, 65), f'{xp_have} | {xp_need}', fill=levels['color'], font=zhcn2)
-        draw.text((360, 522), f'{memberlvl}', fill=levels['color'], font=zhcn)
-        draw.text((85, 522), f'{mora}', fill=levels['color'], font=zhcn)
-        draw.text((220, 522), f'{stardust}', fill=levels['color'], font=zhcn)
+        message = levels["messages"]
+        messages = self.human_format(message)
+        draw.text((100, 345), f'{xp_have} | {xp_need}', fill=levels['color'], font=zhcn)
+        draw.text((1020, 410), f'{mora}', fill=levels['color'], font=zhcn)
+        draw.text((1190, 410), f'{primogems}', fill=levels['color'], font=zhcn)
+        draw.text((100, 345), f'{xp_have} | {xp_need}', fill=levels['color'], font=zhcn)
         draw.text((225, 25), f"{user.display_name}", fill=levels['color'], font=zhcn)
-        draw.text((80, 590), f'#{str(rank)}', fill=levels['color'], font=zhcn)
-        draw.text((213, 590), f'{level}', fill=levels['color'], font=zhcn)
-        draw.text((335, 590), f'{levels["messages"]}', fill=levels['color'], font=zhcn)
+        draw.text((225, 65), f"lyra levels", fill=levels['color'], font=zhcn2)
+        draw.text((300, 410), f'rank | {str(rank)}', fill=levels['color'], font=zhcn)
+        draw.text((100, 410), f'level | {level-1}', fill=levels['color'], font=zhcn)
+        draw.text((500, 410), f'{messages} messages', fill=levels['color'], font=zhcn)
         buffer = BytesIO()
         card.save(buffer, 'png')
         buffer.seek(0)
         return buffer
 
     async def generate_card_rank1(self, name: str, status: str, avatar: BytesIO, levels: LevelRow, rank: int, member: discord.Member) -> BytesIO:
+        guild = member.guild
         card_generator = functools.partial(self.get_card, name, status, avatar, levels, rank)
-        card = await self.bot.loop.run_in_executor(None, self.get_card, str(member), str(member.status), avatar, levels, rank, member)
+        card = await self.bot.loop.run_in_executor(None, self.get_card, str(member), str(member.status), avatar, levels, rank, member, guild)
         return card
 
     async def get_rank(self, member_id: int) -> int:
@@ -1214,12 +1103,14 @@ class levels(commands.Cog):
 
     async def add_xp(self, member_id: int, xp: int, levels: Optional[LevelRow]) -> None:
         if levels:
+            current_xp = levels['xp']
+            new_xp = current_xp + xp
+
             query = '''UPDATE levels SET xp = ? WHERE member_id = ?'''
             async with self.bot.pool.acquire() as conn:
                 async with conn.cursor() as cursor:
-                    await cursor.execute(query, (levels['xp'] + xp, member_id, ))
+                    await cursor.execute(query, (new_xp, member_id))
                     await conn.commit()
-                await self.bot.pool.release(conn)
         else:
             await self.add_member(member_id, xp)
 
@@ -1271,21 +1162,33 @@ class levels(commands.Cog):
     @app_commands.command(name="add", description="Add xp to someone", extras="+add @member amount")
     @app_commands.checks.has_permissions(manage_guild=True)
     async def add(self, interaction: discord.Interaction, member: discord.Member, amount: int):
+        zennie_role_id = 1261435772775563315
+        member = interaction.user
+        
+        if zennie_role_id not in [role.id for role in member.roles]:
+            await interaction.response.send_message("Sorry, this is a staff only command", ephemeral=True)
+            return
         levels = await self.get_member_levels(member.id)
         await self.add_xp(member.id, amount, levels)
-        embed = discord.Embed(title='xp added!',description=f'gave `{amount}xp` to {str(member)}',color=0x2b2d31)
+        embed = discord.Embed(title='xp added!',description=f'gave `{amount}xp` to {str(member)}',color=0xFEBCBE)
         await interaction.response.send_message(embed=embed)
 
     @app_commands.command(name="remove", description="Remove xp from someone", extras="+remove @member amount")
     @app_commands.checks.has_permissions(manage_guild=True)
     async def remove(self, interaction: discord.Interaction, member: discord.Member, amount: int):
+        zennie_role_id = 1261435772775563315
+        member = interaction.user
+        
+        if zennie_role_id not in [role.id for role in member.roles]:
+            await interaction.response.send_message("Sorry, this is a staff only command", ephemeral=True)
+            return
         levels = await self.get_member_levels(member.id)
         if levels:
             if amount > levels['xp']:
                 await interaction.response.send_message("you can't take away more xp than the user already has!")
             else:
                 await self.remove_xp(member.id, amount, levels)
-                embed = discord.Embed(title='xp removed!',description=f'removed `{amount}xp` from {str(member)}',color=0x2b2d31)
+                embed = discord.Embed(title='xp removed!',description=f'removed `{amount}xp` from {str(member)}',color=0xFEBCBE)
                 await interaction.response.send_message(embed=embed)
         else:
             await interaction.response.send_message(f"{str(member)} doesn't have any xp yet!")
@@ -1304,7 +1207,7 @@ class levels(commands.Cog):
         member = interaction.user
         
         if zennie_role_id not in [role.id for role in member.roles]:
-            await interaction.response.send_message("Sorry, you cannot use this command.", ephemeral=True)
+            await interaction.response.send_message("Sorry, you currently aren't a member of lyra. This command is for lyre's only!", ephemeral=True)
             return
         embeds = []
         description = ""
@@ -1313,16 +1216,14 @@ class levels(commands.Cog):
         for i, row in enumerate(rows, start=1):
             msg = "messages" if row['messages'] != 1 else "message"
             xp = row["xp"]
-            if xp is None:
-                xp = 0
             lvl = 0
             while True:
                 if xp < ((50*(lvl**2))+(50*(lvl-1))):
                     break
                 lvl += 1
-            description += f"**{i}.** <@!{row['member_id']}>\n<:Empty:1188186122350759996><:1166196258499727480:1188190249768210582>**level {lvl} | {row['messages']} {msg}**\n<:Empty:1188186122350759996><:1166196258499727480:1188190249768210582><:stardust:1230256970859155486>**{row['stardust']}** |<:mora:1230914532675813508>**{row['mora']}**\n\n"
+            description += f"**{i}.** <@!{row['member_id']}>\n<:Empty:1188186122350759996><:1166196258499727480:1188190249768210582>**level {lvl-1} | {row['messages']} {msg}**\n<:Empty:1188186122350759996><:1166196258499727480:1188190249768210582><:primogems:1269649520560439359>**{row['primogems']}** |<:mora:1269649518878654556>**{row['mora']}**\n\n"
             if i % per_page == 0 or i == len(rows):
-                embed = discord.Embed(title=f"{interaction.guild.name}'s leaderboard", description=description, color=0x2b2d31)
+                embed = discord.Embed(title=f"{interaction.guild.name}'s leaderboard", description=description, color=0xFEBCBE)
                 embed.set_thumbnail(url=interaction.guild.icon.url)
                 embeds.append(embed)
                 description = ""
@@ -1346,11 +1247,11 @@ class levels(commands.Cog):
             embed = discord.Embed(
                 title='changed your bar color!',
                 description=f'your new bar color is `{color}`',
-                color=0x2B2D31
+                color=0xFEBCBE
             )
             await interaction.response.send_message(embed=embed)
         else:
-            await interaction.response.send_message(f"`{color}` is not a valid hex color")
+            await interaction.response.send_message(f"`{color}` is not a valid hex color. You may need to add a #")
 
     @app_commands.command(name="rankbg", description="Upload an image when using this command!")
     async def rankbg(self, interaction: discord.Interaction, image: Optional[discord.Attachment] = None):
@@ -1396,8 +1297,13 @@ class levels(commands.Cog):
         await interaction.response.send_message("Successfully changed your rank card image!", ephemeral=True)
 
     @app_commands.command(name="reset", description="Resets everyone's xp")
-    @app_commands.checks.has_permissions(manage_guild=True)
     async def reset(self, interaction: discord.Interaction):
+        zennie_role_id = 1261435772775563315
+        member = interaction.user
+        
+        if zennie_role_id not in [role.id for role in member.roles]:
+            await interaction.response.send_message("Sorry, this is a staff only command", ephemeral=True)
+            return
         await self.reset_levels()
         await interaction.response.send_message("All levels have been reset! All members are back to level 1 with 0 messages")
 
@@ -1416,7 +1322,7 @@ class levels(commands.Cog):
                 else:
                     return 0
 
-    async def get_stardust_balance(self, user):
+    async def get_primogems_balance(self, user):
         user_id = user.id
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cursor:
@@ -1427,98 +1333,9 @@ class levels(commands.Cog):
                 else:
                     return 0
 
-    @app_commands.command(name="shop", description="Come spend your mora and stardust here!")
+    @app_commands.command(name="shop", description="Come spend your mora and primogems here!")
     async def shop(self, interaction: discord.Interaction):
-        zennie_role_id = 1134797882420117544
-        member = interaction.user
-        
-        if zennie_role_id not in [role.id for role in member.roles]:
-            await interaction.response.send_message("Sorry, you cannot use this command.", ephemeral=True)
-            return
-        user = interaction.user
-        wallet_balance = await self.get_wallet_balance(user)
-        stardust = await self.get_stardust_balance(user)
-        
-        categories = [
-            "stardust",
-            "rank card decorations",
-            "custom roles"
-        ]
-        emojis = [
-            "<:stardust:1230256970859155486>",
-            "🎉",
-            "🌙"
-        ]
-        descriptions = [
-            "Exchange Mora for stardust",
-            "Decorate your rank cards more with our card decorations",
-            "Unlock the ability to make your own custom roles!"
-        ]
-        booster_role_id = 1135244903165722695
-        has_booster_role = any(role.id == booster_role_id for role in user.roles)
-        tool_buy_view = stardustshop(bot=self.bot)
-        if has_booster_role:
-            lotto_buy_view = carddecorshopbooster(bot=self.bot)
-        else:
-            lotto_buy_view = carddecorshop(bot=self.bot)
-        roles_buy_view = roleshop(bot=self.bot)
-        dropdown = discord.ui.Select(
-            placeholder="Select a category",
-            options=[discord.SelectOption(label=category, emoji=emoji, description=description) for category, emoji, description in zip(categories, emojis, descriptions)]
-        )
-        if stardust == None:
-            stardust = "0"
-        else:
-            stardust = stardust
-        tools = discord.Embed(title="Hoshi's Shop", description=f"> Welcome to the shop, Here you can find all sorts of items to buy"
-                              "\n> Use the dropdown menu below to select a category"
-                              "\n\n**__Categories:__**"
-                              "\n<:1166196258499727480:1208228386842087554><:stardust:1230256970859155486> [**Stardust**](https://instagram.com/kanzengrp/)"
-                              "\n<:Empty:1207651048710479892> Exchange Mora for stardust"
-                              "\n<:1166196258499727480:1208228386842087554>🎉 [**Rank card decor**](https://instagram.com/kanzengrp/)"
-                              "\n<:Empty:1207651048710479892> Decorate your rank cards more with our card decorations"
-                              "\n<:1166196258499727480:1208228386842087554>🌙 [**Custom Roles**](https://instagram.com/kanzengrp/)"
-                              "\n<:Empty:1207651048710479892> Unlock the ability to make your own custom roles!"
-                              f"\n\n<:mora:1230914532675813508>**{wallet_balance} Mora**"
-                              f"\n<:stardust:1230256970859155486>**{stardust} Stardust**", color=0x2b2d31)
-        tools.set_thumbnail(url=interaction.guild.icon)
-        view = discord.ui.View()
-        view.add_item(dropdown)
-        
-        async def dropdown_callback(interaction: discord.Interaction):
-            selected_category = interaction.data["values"][0]
-            
-            for item in view.children:
-                if not isinstance(item, discord.ui.Select):
-                    view.remove_item(item)
-            
-            if selected_category == categories[0]:
-                for item in tool_buy_view.children:
-                    view.add_item(item)
-                embed = discord.Embed(title="Stardust", description=f"Stardust can be used to purchase rank card decorations!\nClick the rank card decorations category to purchase one\n\n<:mora:1230914532675813508>**{wallet_balance} Mora**\n<:stardust:1230256970859155486>**{stardust} Stardust**", color=0x2b2d31)
-                embed.set_thumbnail(url=interaction.guild.icon)
-                embed.set_image(url="https://cdn.discordapp.com/attachments/1184208577120960632/1230994171079299143/Comp_1_00000.png?ex=663557a9&is=6622e2a9&hm=804e7422f3aa99537f28f0fe99fcb5a7fe158762cae9cf638c663f9ac0d82eab&")            
-            elif selected_category == categories[1]:
-                for item in lotto_buy_view.children:
-                    view.add_item(item)
-                embed = discord.Embed(title="Rank Decorations", description=f"Customise your rank card more with our new decorations!\n\n<:mora:1230914532675813508>**{wallet_balance} Mora**\n<:stardust:1230256970859155486>**{stardust} Stardust**", color=0x2b2d31)
-                embed.set_thumbnail(url=interaction.guild.icon)
-                image = "https://cdn.discordapp.com/attachments/1184208577120960632/1246561968689516544/shops_3_00000.png?ex=665cd6cd&is=665b854d&hm=d2ede46b31010bcfca7ae128d414e1c41bbeb992135cf0ff5c4daffdf708ddd6&"
-                embed.set_image(url=image)
-            elif selected_category == categories[2]:
-                # for item in roles_buy_view.children:
-                    # view.add_item(item)
-                embed = discord.Embed(title="Custom Roles", description=f"> ~~Unlock the ability to create custom roles!~~\n~~Costs <:stardust:1230256970859155486>**60 Stardust**~~\n\n > **Custom roles are currently disabled, we will provide an update when they are released!**\n\n<:mora:1230914532675813508>**{wallet_balance} Mora**\n<:stardust:1230256970859155486>**{stardust} Stardust**", color=0x2b2d31)
-                embed.set_thumbnail(url=interaction.guild.icon)
-                embed.set_footer(text="• Use the buttons below to buy an item (clicking it twice will give you another)", icon_url=interaction.user.avatar)
-            
-            else:
-                embed = discord.Embed(title="Invalid category", description="Please select a valid category from the dropdown menu.")
-
-            await interaction.response.edit_message(embed=embed, view=view)
-        
-        dropdown.callback = dropdown_callback
-        message = await interaction.response.send_message(embed=tools, view=view)
+        await interaction.response.send_message("The shop is coming soon! Save up your mora and primogems")
 
     async def add_mora(self, member_id: int, amount: int) -> None:
         query = '''UPDATE levels SET mora = ? WHERE member_id = ?'''
@@ -1539,7 +1356,7 @@ class levels(commands.Cog):
                     await conn.commit()
                 await self.bot.pool.release(conn)
 
-    async def add_stardust(self, member_id: int, amount: int) -> None:
+    async def add_primogems(self, member_id: int, amount: int) -> None:
         query = '''UPDATE levels SET stardust = ? WHERE member_id = ?'''
         levels = await self.get_member_levels(member_id)
         
@@ -1551,28 +1368,75 @@ class levels(commands.Cog):
                     await conn.commit()
                 await self.bot.pool.release(conn)
         else:
-            new_stardust = levels['stardust'] + amount if levels['stardust'] is not None else amount
+            new_primogems = levels['stardust'] + amount if levels['stardust'] is not None else amount
             async with self.bot.pool.acquire() as conn:
                 async with conn.cursor() as cursor:
-                    await cursor.execute(query, (new_stardust, member_id, ))
+                    await cursor.execute(query, (new_primogems, member_id, ))
                     await conn.commit()
                 await self.bot.pool.release(conn)
 
     @app_commands.command(name="addmora", description="Add mora to a zennie")
     async def addmora(self, interaction: discord.Interaction, member: discord.Member, amount: int):
         await self.add_mora(member.id, amount)
-        await interaction.response.send_message(f"Added <:mora:1230914532675813508> **{amount}** Mora to {member.mention}")
+        await interaction.response.send_message(f"Added <:mora:1261680092535455844> **{amount}** Mora to {member.mention}")
 
-    @app_commands.command(name="addstardust", description="Add stardust to a zennie")
-    async def addstardust(self, interaction: discord.Interaction, member: discord.Member, amount: int):
-        await self.add_stardust(member.id, amount)
-        await interaction.response.send_message(f"Added <:stardust:1230256970859155486> **{amount}** Stardust to {member.mention}")
+    @app_commands.command(name="addprimogems", description="Add primogems to a zennie")
+    async def addprimogems(self, interaction: discord.Interaction, member: discord.Member, amount: int):
+        await self.add_primogems(member.id, amount)
+        await interaction.response.send_message(f"Added <:primo:1261680094141747321> **{amount}** primogems to {member.mention}")
 
-    @commands.command(hidden=True)
-    async def delete(self, ctx, member_id: int):
-        async with self.bot.pool.acquire() as conn:
-            await conn.execute('DELETE FROM levels WHERE member_id = $1', member_id)
-        await ctx.send(f"<@{member_id}'s levels have been removed!")
+    @commands.command()
+    @commands.cooldown(1, 86400, commands.BucketType.user)
+    async def daily(self, ctx):
+        if ctx.guild.id == 1131003330810871979:
+            zennie_role_id = 1134797882420117544
+            member = ctx.author
+            
+            if zennie_role_id not in [role.id for role in member.roles]:
+                await ctx.reply("Sorry, you cannot use this command.", ephemeral=True)
+                return
+            async with ctx.typing():
+                levels = await self.get_member_levels(ctx.author.id)
+                mora = random.randint(20, 50)
+                primogems = random.randint(2, 5)
+                xp = random.randint(50, 200)
+                await self.add_mora(ctx.author.id, mora)
+                await self.add_primogems(ctx.author.id, primogems)
+                await self.add_xp(ctx.author.id, xp, levels)
+                embed = discord.Embed(title="<:luxchest:1261682568172933161> Daily Chest!", description=f"You obtained:\n<:xp:1261682363772043355> **{xp}xp**\n<:mora:1261680092535455844> **{mora} mora**\n<:primo:1261680094141747321> **{primogems} primogems**", colour=0xFEBCBE)
+                embed.set_thumbnail(url=ctx.author.avatar)
+                await ctx.reply(embed=embed)
+        else:
+            await ctx.reply(f"This command can only be used in Kanzen's public server!")
+
+    @daily.error
+    async def daily_error(self, ctx: commands.Context, error: commands.CommandError):
+        if isinstance(error, commands.CommandOnCooldown):
+            if error.retry_after > 3600:
+                hours = error.retry_after / 3600
+                await ctx.reply(f"You already opened your daily chest! Try again in {int(hours)} hours")
+            elif error.retry_after > 60:
+                minutes = error.retry_after / 60
+                await ctx.reply(f"You already opened your daily chest! Try again in {int(minutes)} minutes")
+            else:
+                await ctx.reply(f"You already opened your daily chest! Try again in {int(error.retry_after)} seconds")
+
+    async def add_msg(self, member_id: int, messages: int, levels: Optional[LevelRow]) -> None:
+        if levels:
+            query = '''UPDATE levels SET messages = ? WHERE member_id = ?'''
+            async with self.bot.pool.acquire() as conn:
+                async with conn.cursor() as cursor:
+                    await cursor.execute(query, (levels['messages'] + messages, member_id, ))
+                    await conn.commit()
+                await self.bot.pool.release(conn)
+        else:
+            await self.add_member(member_id, messages)
+
+    @commands.command()
+    async def addmsg(self, ctx, member: discord.Member, messages: int):
+        levels = await self.get_member_levels(member.id)
+        await self.add_msg(member.id, messages, levels)
+        await ctx.reply(f"Added **{messages}** messages to {member.mention}")
 
     @app_commands.command(name="resetbg", description="Reset your ranks background")
     async def resetbg(self, interaction: discord.Interaction):
@@ -1582,6 +1446,54 @@ class levels(commands.Cog):
             await conn.execute(query, (member_id))
             await conn.commit()
         await interaction.response.send_message("Okay! I have reset your rank background")
+
+    async def check_prizes(self, member_id: int, prize: str):
+        query = f'''SELECT {prize} FROM inventory WHERE member_id = ?'''
+        async with self.bot.pool.aquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, (member_id, prize))
+                await conn.commit()
+            await self.bot.pool.release(conn)
+
+    async def get_prizes(self, member_id: int) -> list:
+        query = '''SELECT * FROM inventory WHERE member_id = ?'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, (member_id,))
+                row = await cursor.fetchone()
+                if row is None:
+                    return None
+                
+                prizes = []
+                for prize_name in row.keys()[2:]:
+                    if row[prize_name] == 1:
+                        prizes.append(prize_name)
+        return prizes
+
+    @app_commands.command(name="equip", description="Equip rank decorations from our battle pass!")
+    async def equip(self, interaction: discord.Interaction):
+        prizes = await self.get_prizes(interaction.user.id)
+        if prizes:
+            prizes_text = "\n•".join(prizes)
+            embed = discord.Embed(title="Your rank decorations", description=prizes_text, color=0xFEBCBE)
+            embed.set_thumbnail(url=interaction.user.avatar)
+            await interaction.response.send_message(embed=embed)
+        else:
+            await interaction.response.send_message("You haven't unlocked any prizes yet!")
+
+    @app_commands.command(name="addstella", description="Add stellas to someone")
+    @app_commands.guilds(discord.Object(id=1134736053803159592))
+    async def addstella(self, interaction: discord.Interaction, member: discord.Member, stellas: int):
+        zennie_role_id = 1261435772775563315
+        if zennie_role_id not in [role.id for role in interaction.user.roles]:
+            await interaction.response.send_message("Sorry, this is a staff only command", ephemeral=True)
+            return
+        amount = int(stellas) * 100
+        levels = await self.get_member_levels(member.id)
+        await self.add_xp(member.id, amount, levels)
+        
+        embed = discord.Embed(title='Stella added!', description=f'I have added **{stellas}** stella(s) to {member.name}', color=0xFEBCBE)
+        await interaction.response.send_message(embed=embed)
 
 async def setup(bot):
     await bot.add_cog(levels(bot))
