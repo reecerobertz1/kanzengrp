@@ -1385,42 +1385,6 @@ class levels(commands.Cog):
         await self.add_primogems(member.id, amount)
         await interaction.response.send_message(f"Added <:primo:1261680094141747321> **{amount}** primogems to {member.mention}")
 
-    @commands.command()
-    @commands.cooldown(1, 86400, commands.BucketType.user)
-    async def daily(self, ctx):
-        if ctx.guild.id == 1131003330810871979:
-            zennie_role_id = 1134797882420117544
-            member = ctx.author
-            
-            if zennie_role_id not in [role.id for role in member.roles]:
-                await ctx.reply("Sorry, you cannot use this command.", ephemeral=True)
-                return
-            async with ctx.typing():
-                levels = await self.get_member_levels(ctx.author.id)
-                mora = random.randint(20, 50)
-                primogems = random.randint(2, 5)
-                xp = random.randint(50, 200)
-                await self.add_mora(ctx.author.id, mora)
-                await self.add_primogems(ctx.author.id, primogems)
-                await self.add_xp(ctx.author.id, xp, levels)
-                embed = discord.Embed(title="<:luxchest:1261682568172933161> Daily Chest!", description=f"You obtained:\n<:xp:1261682363772043355> **{xp}xp**\n<:mora:1261680092535455844> **{mora} mora**\n<:primo:1261680094141747321> **{primogems} primogems**", colour=0xFEBCBE)
-                embed.set_thumbnail(url=ctx.author.avatar)
-                await ctx.reply(embed=embed)
-        else:
-            await ctx.reply(f"This command can only be used in Kanzen's public server!")
-
-    @daily.error
-    async def daily_error(self, ctx: commands.Context, error: commands.CommandError):
-        if isinstance(error, commands.CommandOnCooldown):
-            if error.retry_after > 3600:
-                hours = error.retry_after / 3600
-                await ctx.reply(f"You already opened your daily chest! Try again in {int(hours)} hours")
-            elif error.retry_after > 60:
-                minutes = error.retry_after / 60
-                await ctx.reply(f"You already opened your daily chest! Try again in {int(minutes)} minutes")
-            else:
-                await ctx.reply(f"You already opened your daily chest! Try again in {int(error.retry_after)} seconds")
-
     async def add_msg(self, member_id: int, messages: int, levels: Optional[LevelRow]) -> None:
         if levels:
             query = '''UPDATE levels SET messages = ? WHERE member_id = ?'''
