@@ -1396,12 +1396,6 @@ class levels(commands.Cog):
         else:
             await self.add_member(member_id, messages)
 
-    @commands.command()
-    async def addmsg(self, ctx, member: discord.Member, messages: int):
-        levels = await self.get_member_levels(member.id)
-        await self.add_msg(member.id, messages, levels)
-        await ctx.reply(f"Added **{messages}** messages to {member.mention}")
-
     @app_commands.command(name="resetbg", description="Reset your ranks background")
     async def resetbg(self, interaction: discord.Interaction):
         member_id = interaction.user.id
