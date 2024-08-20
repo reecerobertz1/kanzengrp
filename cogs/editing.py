@@ -111,10 +111,10 @@ class editing(commands.Cog):
 
     @commands.group(aliases=['edits'],description="See edits added by other members", extras="aliases +edits")
     async def edit(self, ctx):
-        with open("./json files/edits.json", "r") as f:
-            audios = json.load(f)
-            choice = random.choice(audios)
-            await ctx.reply(f"Add your edits with `+addedit`\n[here is the edit]({choice})")
+        #with open("./json files/edits.json", "r") as f:
+            #audios = json.load(f)
+            #choice = random.choice(audios)
+            await ctx.reply(f"This command has been disabled and is under development again!")
 
     @commands.command(description="Add a soft audio", extras="+addsoft (soundcloud link)")
     async def addsoft(self, ctx, link):
@@ -161,24 +161,24 @@ class editing(commands.Cog):
 
     @audio.command(description="Use the command +audio soft for soft audios", extras="+audio soft")
     async def soft(self, ctx):
-        with open("./json files/softaudios.json", "r") as f:
-            audios = json.load(f)
-            choice = random.choice(audios)
-            await ctx.reply(f"Add a soft audio with `+addsoft`\n[here is the audio]({choice})")
+        #with open("./json files/softaudios.json", "r") as f:
+            #audios = json.load(f)
+            #choice = random.choice(audios)
+            await ctx.reply(f"This command has been disabled and is under development again!")
 
     @audio.command(description="Use the command +audio hot for hot audios", extras="+audio hot")
     async def hot(self, ctx):
-        with open("./json files/hotaudios.json", "r") as f:
-            audios = json.load(f)
-            choice = random.choice(audios)
-            await ctx.reply(f"Add a hot audio with `+addhot`\n[here is the audio]({choice})")
+        #with open("./json files/hotaudios.json", "r") as f:
+            #audios = json.load(f)
+            #choice = random.choice(audios)
+            await ctx.reply(f"This command has been disabled and is under development again!")
 
     @audio.command(description="Use the command +audio collab for collab audios", extras="+audio collab")
     async def collab(self, ctx):
-        with open("./json files/collabaudios.json", "r") as f:
-            audios = json.load(f)
-            choice = random.choice(audios)
-            await ctx.reply(f"Add a collab audio with `+addcollab`\n[here is the audio]({choice})")
+        #with open("./json files/collabaudios.json", "r") as f:
+            #audios = json.load(f)
+            #choice = random.choice(audios)
+            await ctx.reply(f"This command has been disabled and is under development again!")
 
 async def setup(bot):
     await bot.add_cog(editing(bot))
