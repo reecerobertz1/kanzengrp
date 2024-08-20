@@ -1051,7 +1051,7 @@ class levels(commands.Cog):
         primogemsicon = primogemsicon.resize((90, 90))
         card.paste(primogemsicon, (1100, 385), primogemsicon)
         draw = ImageDraw.Draw(card, 'RGBA')
-        primogems = levels["primogems"]
+        primogems = levels["stardust"]
         mora = levels["mora"]
         if primogems is None:
             primogems = "0"
