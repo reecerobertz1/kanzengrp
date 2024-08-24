@@ -85,7 +85,7 @@ class editing(commands.Cog):
         x = 0
 
         for color_hex in group:
-            color = tuple(int(color_hex.lstrip('#')[i:i + 2], 16) for i in (0, 2, 4))
+            color = tuple(int(color_hex.lstrip('')[i:i + 2], 16) for i in (0, 2, 4))
             draw.rectangle([x, 0, x + square_size, square_size], fill=color)
 
             hex_code = color_hex.upper()
@@ -94,7 +94,7 @@ class editing(commands.Cog):
             text_y = square_size - text_height
 
             brightness = self.calculate_brightness(color)
-            text_color = "#272727" if brightness > 0.5 else "#ffffff"
+            text_color = "272727" if brightness > 0.5 else "ffffff"
             
             draw.text((text_x, text_y), hex_code, fill=text_color, font=font1)
             x += square_size + padding
@@ -111,10 +111,10 @@ class editing(commands.Cog):
 
     @commands.group(aliases=['edits'],description="See edits added by other members", extras="aliases +edits")
     async def edit(self, ctx):
-        #with open("./json files/edits.json", "r") as f:
-            #audios = json.load(f)
-            #choice = random.choice(audios)
-            await ctx.reply(f"This command has been disabled and is under development again!")
+        with open("./json files/edits.json", "r") as f:
+            audios = json.load(f)
+            choice = random.choice(audios)
+            await ctx.reply(f"Please make sure to give credits!\n{choice}")
 
     @commands.command(description="Add a soft audio", extras="+addsoft (soundcloud link)")
     async def addsoft(self, ctx, link):
@@ -122,7 +122,7 @@ class editing(commands.Cog):
 
         view = discord.ui.View()
         view.add_item(button)
-        log = self.bot.get_channel(1122627075682078720)
+        log = self.bot.get_channel(1011212849965715528)
         embed = discord.Embed(title="Added soft audio", description=f"`{ctx.author.display_name}` has added a soft audio!", color=0x2b2d31)
         embed.set_footer(text=f"id: {ctx.author.id}", icon_url=ctx.author.display_avatar)
         await self._add_audio(ctx, "./json files/softaudios.json", link)
@@ -134,7 +134,7 @@ class editing(commands.Cog):
 
         view = discord.ui.View()
         view.add_item(button)
-        log = self.bot.get_channel(1122627075682078720)
+        log = self.bot.get_channel(1011212849965715528)
         embed = discord.Embed(title="Added hot audio", description=f"`{ctx.author.display_name}` has added a hot audio!", color=0x2b2d31)
         embed.set_footer(text=f"id: {ctx.author.id}", icon_url=ctx.author.display_avatar)
         await self._add_audio(ctx, "./json files/hotaudios.json", link)
@@ -146,7 +146,7 @@ class editing(commands.Cog):
 
         view = discord.ui.View()
         view.add_item(button)
-        log = self.bot.get_channel(1122627075682078720)
+        log = self.bot.get_channel(1011212849965715528)
         embed = discord.Embed(title="Added collab audio", description=f"`{ctx.author.display_name}` has added a collab audio!", color=0x2b2d31)
         embed.set_footer(text=f"id: {ctx.author.id}", icon_url=ctx.author.display_avatar)
         await self._add_audio(ctx, "./json files/collabaudios.json", link)
@@ -155,30 +155,31 @@ class editing(commands.Cog):
     @commands.group(invoke_without_command=True, description="See the command categories for audios", hidden=True)
     async def audio(self, ctx: commands.Context):
         embed = discord.Embed(title="Audio Commands", color=0x2B2D31)
-        embed.add_field(name="audio soft", value="Sends a soft audio", inline=False)
-        embed.add_field(name="audio hot", value="Sends a hot audio", inline=False)
+        embed.add_field(name="soft audios", value="• **+audiosoft** sends a soft audio\n• **+addsoft** adds a soft audio", inline=False)
+        embed.add_field(name="hot audios", value="• **+audio hot** sends a hot audio\n• **+addhot** adds a hot audio", inline=False)
+        embed.add_field(name="collab audios", value="• **+audio collab** sends a collab audio\n• **+addcollab** adds a collab audio", inline=False)
         await ctx.reply(embed=embed)
 
     @audio.command(description="Use the command +audio soft for soft audios", extras="+audio soft")
     async def soft(self, ctx):
-        #with open("./json files/softaudios.json", "r") as f:
-            #audios = json.load(f)
-            #choice = random.choice(audios)
-            await ctx.reply(f"This command has been disabled and is under development again!")
+        with open("./json files/softaudios.json", "r") as f:
+            audios = json.load(f)
+            choice = random.choice(audios)
+            await ctx.reply(f"Please make sure to give credits!\n{choice}")
 
     @audio.command(description="Use the command +audio hot for hot audios", extras="+audio hot")
     async def hot(self, ctx):
-        #with open("./json files/hotaudios.json", "r") as f:
-            #audios = json.load(f)
-            #choice = random.choice(audios)
-            await ctx.reply(f"This command has been disabled and is under development again!")
+        with open("./json files/hotaudios.json", "r") as f:
+            audios = json.load(f)
+            choice = random.choice(audios)
+            await ctx.reply(f"Please make sure to give credits!\n{choice}")
 
     @audio.command(description="Use the command +audio collab for collab audios", extras="+audio collab")
     async def collab(self, ctx):
-        #with open("./json files/collabaudios.json", "r") as f:
-            #audios = json.load(f)
-            #choice = random.choice(audios)
-            await ctx.reply(f"This command has been disabled and is under development again!")
+        with open("./json files/collabaudios.json", "r") as f:
+            audios = json.load(f)
+            choice = random.choice(audios)
+            await ctx.reply(f"Please make sure to give credits!\n{choice}")
 
 async def setup(bot):
     await bot.add_cog(editing(bot))
