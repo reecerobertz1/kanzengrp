@@ -28,7 +28,7 @@ class levels(commands.Cog):
         self.bot = bot
         self.status_holder = {0: "disabled", 1: "enabled"}
         self.pool = None
-        self.channels = [1170067469134733322, 1134736054637838490]
+        self.channels = [1134742133421658193, 1140616319801237515, 1197155970988646431, 1140180038902354001]
         self.guilds = [1134736053803159592]
         self.cd_mapping = commands.CooldownMapping.from_cooldown(1, 60, commands.BucketType.user)
 
@@ -122,7 +122,7 @@ class levels(commands.Cog):
         if message.channel.id not in self.channels:
             return
 
-        zennie_role_id = 1121842393994494082
+        zennie_role_id = 1134797882420117544
         forms_zennie_role_id = 1134797882420117544
         zennie_role = message.guild.get_role(zennie_role_id)
         if zennie_role and zennie_role in message.author.roles:
