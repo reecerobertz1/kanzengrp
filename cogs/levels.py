@@ -373,7 +373,6 @@ class levels(commands.Cog):
             await interaction.response.send_message(f"{member} hasn't gotten levels yet!")
 
     @app_commands.command(name="add", description="Add xp to someone", extras="+add @member amount")
-    @app_commands.checks.has_permissions(manage_guild=True)
     async def add(self, interaction: discord.Interaction, member: discord.Member, amount: int):
         zennie_role_id = 1261435772775563315
         
@@ -387,7 +386,6 @@ class levels(commands.Cog):
         await interaction.response.send_message(embed=embed)
 
     @app_commands.command(name="remove", description="Remove xp from someone", extras="+remove @member amount")
-    @app_commands.checks.has_permissions(manage_guild=True)
     async def remove(self, interaction: discord.Interaction, member: discord.Member, amount: int):
         zennie_role_id = 1261435772775563315
         member = interaction.user
