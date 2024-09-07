@@ -14,7 +14,7 @@ class infoview(discord.ui.View):
         logos.set_footer(text="Made us some logos? send them to Reece or Alisha!")
         logos.set_image(url=interaction.guild.banner)
         await interaction.user.send("key: `chUZuZ7Eu0mqLOM5rxRsQw`\nhttps://mega.nz/folder/xOk1SApA", embed=logos)
-        channel = interaction.client.get_channel(1069358104740900985)
+        channel = interaction.client.get_channel(1011212849965715528)
         log = discord.Embed(title="Logo button has been used!", description=f"`{interaction.user.display_name}` has used the logos button", color=0x2b2d31)
         log.set_footer(text=f"id: {interaction.user.id}", icon_url=interaction.user.display_avatar)
         await channel.send(embed=log)
@@ -82,7 +82,7 @@ class kanzen(commands.Cog, name="kanzen", description="Includes the commands ass
                             "\n• No trash talking of other groups or editors."
                             "\n• Respect the server and use channels correctly."
                             "\n-# **Note:** Breaking any of the rules will lead to a warning / kick or ban!", inline=False)
-        embed2 = discord.Embed(title="Reporting Members", description="• If you see someone breaking our rules, report them below.\n• You can stay anonymous by leaving your username blank.\n• Click the `Report Member` button to report a chroma member.\n-# We may DM you for more information if we need more.", color=0x2b2d31)
+        embed2 = discord.Embed(title="Reporting Members", description="• If you see someone breaking our rules, report them below.\n• You can stay anonymous by leaving your username blank.\n• Click the `Report Member` button to report a chroma member.\n-#**Note:** We may DM you for more information if we need more.", color=0x2b2d31)
         view=infoview(bot=self.bot)
         await ctx.send(embed=embed)
         await ctx.send(embed=embed2, view=view)

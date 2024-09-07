@@ -32,6 +32,28 @@ class levels(commands.Cog):
         self.guilds = [1134736053803159592]
         self.cd_mapping = commands.CooldownMapping.from_cooldown(1, 60, commands.BucketType.user)
 
+    def kanzen_only():
+        def predicate(ctx: commands.Context):
+            if ctx.guild.id == 1134736053803159592:
+                return True
+            else:
+                return False
+        return commands.check(predicate)
+    
+    def kanzen_cooldown(message: discord.Message):
+        if message.author.id == 609515684740988959:
+            return None
+        
+        role = message.guild.get_role(1134797882420117544)
+        if role in message.author.roles:
+            return commands.Cooldown(1, 86400)
+        
+        booster = message.guild.get_role(1134793235408093254)
+        if booster in message.author.roles:
+            return commands.Cooldown(1, 43200)
+        
+        return commands.Cooldown(1, 86400)
+
     async def add_member(self, member_id: int, xp=5) -> None:
         query = '''INSERT INTO levels (member_id, xp, messages, color) VALUES (?, ?, ?, ?)'''
         async with self.bot.pool.acquire() as conn:
@@ -521,6 +543,56 @@ class levels(commands.Cog):
     @commands.Cog.listener()
     async def on_message(self, message: discord.Message) -> None:
         await self.handle_message(message)
+
+    @commands.command()
+    @commands.dynamic_cooldown(kanzen_cooldown, commands.BucketType.user)
+    async def dailies(self, ctx: commands.Context):
+        zennie_role_id = 1134797882420117544
+        zennie_role2_id = 1219759999656530130
+        member = ctx.author
+        
+        if not any(role.id in [zennie_role_id, zennie_role2_id] for role in member.roles):
+            await ctx.reply("Sorry, this is a members only command", ephemeral=True)
+            return
+        
+        emojis = ["<:alhaithamuwu:1257829394995609722>", "<:dilucuwu:1215001949905223721>", "<:arleuwu:1236642544176205866>", "<:danhengiluwu:1236710497454264441>", "<:nilouuwu:1236642546269028443>", "<:xiaouwu:1214631450411016222>", "<:mizookuwu:1263923282072305674>", "<:bambyuwu:1258626994657300531>", "<:asmouwu:1281673436917399652>", "<:sigeuwu:1258217110752989184>", "<:scarauwu:1214787080262262826>", "<:neuviuwu:1259239904240468079>", "<:furinauwu:1269018189614809129>", "<:zhongliuwu:1215001895060512798>", "<:kazuhauwu:1215001799321321532>", "<:kaeyauwu:1258217332975730769>", "<:jiyanuwu:1258215228953591828>", "<:beeluwu:1281673450695557140>", "<:belphieuwu:1281673463517548584>", "<:leviuwu:1281673478831079556>", "<:luciuwu:1281673492449726535>", "<:lukeuwu:1281673507079717007>", "<:mammonuwu:1281673523122933770>", "<:moranuwu:1275808002229801010>"," <:satanuwu:1281673538390200461>", "<:rafayeluwu:1268323216904949820>", "<:ittouwu:1215041496584036455>", "<:eulauwu:1263578777422790687>", "<:chuwanninguwu:1258217513842376714>", "<:childeuwu:1236695748301688953>", "<:aventurineuwu:1236710521114202112>", "<:alhaithamuwu:1257830193750347918>", "<:solomonuwu:1281673568467292191>", "<:simeonuwu:1281673552931721246>", "<:sukunauwu:1268322507929157764>", "<:sylusuwu:1268323281010688154>", "<:tighnariuwu:1261061785406935153>", "<:vashuwu:1261060609278083183>", "<:ventiuwu:1215001849183076432>", "<:wriouwu:1258217203627462769>", "<:wukonguwu:1265138917670387794>", "<:yaeuwu:1258217291477422091>", "<:yejunuwu:1258217244966654013>", "<:yoiuwu:1259241806969704560>", "<:yanfeiuwu:1268323149741690890>"]
+        emoji = random.choice(emojis)
+        xp = randint(250, 500)
+        levels = await self.get_member_levels(ctx.author.id)
+        if levels is not None:
+            await self.add_xp(ctx.author.id, xp, levels)
+        else:
+            await self.add_member(ctx.member.id, xp)
+        await ctx.reply(f"{emoji} Yay! You have claimed your daily xp! you got `{xp}xp`")
+        
+    @dailies.error
+    async def daily_error(self, ctx: commands.Context, error: commands.CommandError):
+        if isinstance(error, commands.CommandOnCooldown):
+            if error.retry_after > 3600:
+                hours = error.retry_after / 3600
+                await ctx.reply(f"You need to wait {int(hours)} hours before claiming daily XP again!")
+            elif error.retry_after > 60:
+                minutes = error.retry_after / 60
+                await ctx.reply(f"You need to wait {int(minutes)} minutes before claiming daily XP again!")
+            else:
+                await ctx.reply(f"You need to wait {int(error.retry_after)} seconds before claiming daily XP again!")
+
+    async def add_msg(self, member_id: int, messages: int, levels: Optional[LevelRow]) -> None:
+        if levels:
+            query = '''UPDATE levels SET messages = ? WHERE member_id = ?'''
+            async with self.bot.pool.acquire() as conn:
+                async with conn.cursor() as cursor:
+                    await cursor.execute(query, (levels['messages'] + messages, member_id, ))
+                    await conn.commit()
+                await self.bot.pool.release(conn)
+        else:
+            await self.add_member(member_id, messages)
+
+    @commands.command()
+    async def lyraaddmsg(self, ctx, member: discord.Member, messages: int):
+        levels = await self.get_member_levels(member.id)
+        await self.add_msg(member.id, messages, levels)
+        await ctx.reply(f"Added **{messages}** messages to {member.mention}")
 
 async def setup(bot):
     await bot.add_cog(levels(bot))
