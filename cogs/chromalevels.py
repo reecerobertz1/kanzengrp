@@ -540,7 +540,7 @@ class chromalevels(commands.Cog):
     @commands.dynamic_cooldown(kanzen_cooldown, commands.BucketType.user)
     async def daily(self, ctx: commands.Context):
         """Command to claim daily xp"""
-        xp = randint(100, 300)
+        xp = randint(150, 300)
         levels = await self.get_member_levels(ctx.author.id)
         if levels is not None:
             await self.add_xp(ctx.author.id, xp, levels)
