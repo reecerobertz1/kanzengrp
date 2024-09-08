@@ -55,10 +55,17 @@ class levels(commands.Cog):
         return commands.Cooldown(1, 86400)
 
     async def add_member(self, member_id: int, xp=5) -> None:
-        query = '''INSERT INTO levels (member_id, xp, messages, color) VALUES (?, ?, ?, ?)'''
+        query_check = '''SELECT 1 FROM levels WHERE member_id = ?'''
+        query_insert = '''INSERT INTO levels (member_id, xp, messages, color) VALUES (?, ?, ?, ?)'''
+        query_update = '''UPDATE levels SET xp = xp + ?, messages = messages + 1 WHERE member_id = ?'''
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cursor:
-                await cursor.execute(query, (member_id, xp, 1, '#c45a72'))
+                await cursor.execute(query_check, (member_id,))
+                exists = await cursor.fetchone()
+                if exists:
+                    await cursor.execute(query_update, (xp, member_id))
+                else:
+                    await cursor.execute(query_insert, (member_id, xp, 1, '#c45a72'))
                 await conn.commit()
             await self.bot.pool.release(conn)
 
