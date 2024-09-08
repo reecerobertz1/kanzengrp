@@ -449,7 +449,7 @@ class chromalevels(commands.Cog):
                 if xp < ((50*(lvl**2))+(50*(lvl-1))):
                     break
                 lvl += 1
-            description += f"**{i}.** <@!{row['member_id']}>\n{row['xp']} xp | {row['messages']} {msg} | level {lvl}\n\n"
+            description += f"**{i}.** <@!{row['member_id']}>\n{row['xp']} xp | {row['messages']} {msg} | level {lvl-1}\n\n"
             if i % per_page == 0 or i == len(rows):
                 embed = discord.Embed(title="leaderboard", description=description, color=0x2b2d31)
                 embed.set_thumbnail(url=ctx.guild.icon.url)
