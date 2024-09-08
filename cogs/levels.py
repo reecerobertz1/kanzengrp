@@ -576,7 +576,7 @@ class levels(commands.Cog):
                 role = ctx.guild.get_role(1147592763924295681)
                 if role:
                     await ctx.author.add_roles(role, reason=f"{ctx.author.name} reached 1 stella")
-            channel = ctx.guild.get_channel(1170067469134733322)
+            channel = ctx.guild.get_channel(1135027269853778020)
             await channel.send(ctx.author.mention, embed=embed)
         else:
             await self.add_member(member.id, xp)
