@@ -13,18 +13,6 @@ class editing(commands.Cog):
         self.bot = bot
         self.emoji = "<:koya:1121909483698925618>"
 
-    def get_edits_data(self):
-        try:
-            with open("./json files/edits.json", "r") as file:
-                data = json.load(file)
-        except FileNotFoundError:
-            data = []
-        return data
-
-    def save_edits_data(self, data):
-        with open("./json files/edits.json", "w") as file:
-            json.dump(data, file, indent=4)
-
     async def _add_audio(self, ctx, filename, link):
         audio_data = link
         try:
@@ -85,7 +73,7 @@ class editing(commands.Cog):
         x = 0
 
         for color_hex in group:
-            color = tuple(int(color_hex.lstrip('')[i:i + 2], 16) for i in (0, 2, 4))
+            color = tuple(int(color_hex.lstrip('#')[i:i + 2], 16) for i in (0, 2, 4))
             draw.rectangle([x, 0, x + square_size, square_size], fill=color)
 
             hex_code = color_hex.upper()
@@ -94,27 +82,13 @@ class editing(commands.Cog):
             text_y = square_size - text_height
 
             brightness = self.calculate_brightness(color)
-            text_color = "272727" if brightness > 0.5 else "ffffff"
+            text_color = "#272727" if brightness > 0.5 else "#ffffff"
             
             draw.text((text_x, text_y), hex_code, fill=text_color, font=font1)
             x += square_size + padding
 
         image.save("color_palette.png")
         await ctx.send(file=discord.File("color_palette.png"))
-
-    @commands.command(description="Add your own edits to Hoshi", extras="+addedit (streamable link)")
-    async def addedit(self, ctx, link):
-        data = self.get_edits_data()
-        data.append(link)
-        self.save_edits_data(data)
-        await ctx.reply("Your edit added successfully.")
-
-    @commands.group(aliases=['edits'],description="See edits added by other members", extras="aliases +edits")
-    async def edit(self, ctx):
-        with open("./json files/edits.json", "r") as f:
-            audios = json.load(f)
-            choice = random.choice(audios)
-            await ctx.reply(f"Please make sure to give credits!\n{choice}")
 
     @commands.command(description="Add a soft audio", extras="+addsoft (soundcloud link)")
     async def addsoft(self, ctx, link):
