@@ -35,7 +35,12 @@ class embedview(discord.ui.View):
     async def q7(self, interaction: discord.Interaction, button: discord.Button):
         await interaction.response.send_modal(q7(self.embed_message))
 
-    @discord.ui.button(label="Send", style=discord.ButtonStyle.green)
+    @discord.ui.button(label="Embed", emoji="<:trash:1284281733000204288>", style=discord.ButtonStyle.red)
+    async def clear(self, interaction: discord.Interaction, button: discord.Button):
+        embed = discord.Embed(description="Embed has been cleared!")
+        await interaction.response.edit_message(embed=embed)
+
+    @discord.ui.button(label="Send", emoji="<:check_white:1284282565645176892>",style=discord.ButtonStyle.green)
     async def q0(self, interaction: discord.Interaction, button: discord.Button):
         await interaction.response.send_modal(q0(self.embed_message))
 
@@ -190,19 +195,15 @@ class q6(ui.Modal, title='Set Footer'):
     def __init__(self, embed_message):
         super().__init__()
         self.embed_message = embed_message
-        self.Footer_input = ui.TextInput(
-            label='Footer',
-            style=discord.TextStyle.short,
-            required=False,
-            min_length=1,
-            max_length=256
-        )
+        self.Footer_input = ui.TextInput(label='Footer', style=discord.TextStyle.short, required=False, min_length=1, max_length=256)
+        self.Footer_Icon_input = ui.TextInput(label='Footer', style=discord.TextStyle.short, required=False)
         self.add_item(self.Footer_input)
+        self.add_item(self.Footer_Icon_input)
 
     async def on_submit(self, interaction: discord.Interaction):
         try:
             if self.Footer_input.value:
-                self.embed_message.set_footer(text=self.Footer_input.value)
+                self.embed_message.set_footer(icon_url=self.Footer_Icon_input.value, text=self.Footer_input.value)
             else:
                 self.embed_message.set_footer(text=None)
 
@@ -248,8 +249,8 @@ class welcnbye(commands.Cog):
             embed = discord.Embed(description="Create an embed by using the buttons below!\n\n__Information:__\n• Imput the text you want to have in your embeds in the modals!\n• Leave the modal empty to clear the section\n• `Set color` uses hex codes (default: #2b2d31)\n• The embeds need at least 1 thing, you can't clear everything!\n• Get the ID of the channel you want to send it in\n• Image and thumbnails use Image links!\n-# Need any help? Ping <@609515684740988959>", color=0x2b2d31)
             embed.set_author(name="Hoshi Embed Maker", icon_url=ctx.guild.icon.url)
             embed.set_thumbnail(url=self.bot.user.display_avatar.url)
-            await ctx.send(embed=embed)
-            await ctx.send(view=embedview(embed))
+            view = embedview(embed)
+            await ctx.send(embed=embed, view=view)
         except Exception as e:
             print(f"Error in embed command: {e}")
 
