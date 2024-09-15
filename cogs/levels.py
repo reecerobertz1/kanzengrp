@@ -406,11 +406,16 @@ class levels(commands.Cog):
     async def add(self, interaction: discord.Interaction, member: discord.Member, amount: int):
         zennie_role_id = 1261435772775563315
         if zennie_role_id not in [role.id for role in interaction.user.roles]:
-            await interaction.response.send_message("Sorry, this is a staff only command", ephemeral=True)
+            await interaction.response.send_message("Sorry, this is a staff-only command", ephemeral=True)
             return
 
         levels = await self.get_member_levels(member.id)
-        current_xp = levels["xp"]
+        if levels is None:
+            await self.add_member(member.id, amount)
+            current_xp = amount
+        else:
+            current_xp = levels["xp"]
+
         new_xp = current_xp + amount
         await self.add_xp(member.id, amount, levels)
         lvl = 0
@@ -427,13 +432,12 @@ class levels(commands.Cog):
         stella = "Stella" if final_lvl == 1 else "Stellas"
         embed = discord.Embed(description=f"{member.name} you just reached **{final_lvl - 1}** {stella}!", colour=0xFEBCBE)
         embed.set_footer(text=f"This XP was added by {interaction.user.name}")
-        channel = interaction.guild.get_channel(1135027269853778020)
+        channel = interaction.guild.get_channel(1170067469134733322)
         await channel.send(member.mention, embed=embed)
         if final_lvl >= 1:
             role = interaction.guild.get_role(1147592763924295681)
             if role and not any(r.id == role.id for r in member.roles):
                 await member.add_roles(role, reason=f"{member.name} reached 1 Stella or higher")
-
         embed = discord.Embed(title='XP Added!', description=f'Gave `{amount} XP` to {str(member)}', color=0xFEBCBE)
         await interaction.response.send_message(embed=embed)
 
