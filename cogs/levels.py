@@ -432,7 +432,7 @@ class levels(commands.Cog):
         stella = "Stella" if final_lvl == 1 else "Stellas"
         embed = discord.Embed(description=f"{member.name} you just reached **{final_lvl - 1}** {stella}!", colour=0xFEBCBE)
         embed.set_footer(text=f"This XP was added by {interaction.user.name}")
-        channel = interaction.guild.get_channel(1170067469134733322)
+        channel = interaction.guild.get_channel(1135027269853778020)
         await channel.send(member.mention, embed=embed)
         if final_lvl >= 1:
             role = interaction.guild.get_role(1147592763924295681)
