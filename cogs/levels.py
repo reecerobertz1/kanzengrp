@@ -440,9 +440,8 @@ class levels(commands.Cog):
     @app_commands.command(name="remove", description="Remove xp from someone", extras="+remove @member amount")
     async def remove(self, interaction: discord.Interaction, member: discord.Member, amount: int):
         zennie_role_id = 1261435772775563315
-        member = interaction.user
         
-        if zennie_role_id not in [role.id for role in member.roles]:
+        if zennie_role_id not in [role.id for role in interaction.user.roles]:
             await interaction.response.send_message("Sorry, this is a staff only command", ephemeral=True)
             return
         levels = await self.get_member_levels(member.id)
