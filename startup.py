@@ -151,11 +151,32 @@ class ThumbnailModal(ui.Modal, title="Edit Thumbnail"):
         await self.embed_message.edit(embed=embed)
         await interaction.response.send_message("Thumbnail updated!", ephemeral=True)
 
+class addbutton(ui.Modal, title="Add Button"):
+    def __init__(self, original_message: discord.Message):
+        super().__init__()
+        self.original_message = original_message
+        self.name = ui.TextInput(label="The button label", style=discord.TextStyle.short, required=True)
+        self.link = ui.TextInput(label="The button URL", style=discord.TextStyle.short, required=True)
+        self.add_item(self.name)
+        self.add_item(self.link)
+
+    async def on_submit(self, interaction: discord.Interaction):
+        message = self.original_message
+        view = ui.View()
+        addedbutton = discord.ui.Button(label=self.name.value, url=self.link.value)
+        view.add_item(addedbutton)
+        await message.edit(view=view)
+        await interaction.response.send_message("Button added!", ephemeral=True)
+
 @bot.tree.context_menu(name="Edit Embed")
 async def edit_embed(interaction: discord.Interaction, message: discord.Message):
     embed = discord.Embed(title="Edit Embed", description="Select a section to edit", color=0x2b2d31)
-    view = EditEmbedView(message)  # Pass the message with the embed to the view
+    view = EditEmbedView(message)
     await interaction.response.send_message(embed=embed, view=view, ephemeral=True)
+
+@bot.tree.context_menu(name="Add Button")
+async def add_button(interaction: discord.Interaction, message: discord.Message):
+    await interaction.response.send_modal(addbutton(original_message=message))
 
 async def main():
     logger = logging.getLogger('discord')
