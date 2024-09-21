@@ -52,14 +52,41 @@ class other(commands.Cog):
             await message.channel.send("https://tenor.com/qIoidKLXAGv.gif")
         if message.content.lower() == "lyra":
             await message.channel.send("<:ilyrayou:1270405427989057576>")
-        if "MessageType.premium_guild" in str(message.type):
-            embed = discord.Embed(title="Thank you for boosting!", description="\n• thank you for boosting ✧.*lyra!"
-            "\n• you can claim your perks over at <#1139466056361062410>!"
-            "\n• please be sure to give credits when due!", color=0xFEBCBE)
-            embed.set_footer(text=f"We now have {message.guild.premium_subscription_count} boosts!", icon_url=message.guild.icon)
-            embed.set_thumbnail(url=message.author.display_avatar)
+        if message.type == discord.MessageType.premium_guild_subscription:
+            embed = discord.Embed(
+                title="Thank you for boosting",
+                description=(
+                    "\nthank you for boosting ✧.*lyra!"
+                    "\nyou can claim your perks over at <#1139466056361062410>!"
+                    "please be sure to give credits when due!"
+                ),
+                color=0xFEBCBE
+            )
+            embed.set_footer(
+                text=f"We now have {message.guild.premium_subscription_count} boosts!",
+                icon_url=message.guild.icon.url if message.guild.icon else None
+            )
+            embed.set_thumbnail(url=message.author.display_avatar.url)
+            
+            chromaembed = discord.Embed(
+                title="Thank you for boosting",
+                description=(
+                    f"Thank you {message.author.name} for boosting!\n"
+                    "・Your support is greatly appreciated\n"
+                    "・Head to <#865516313065947136> to claim our perks"
+                ),
+                color=0x2b2d31
+            )
+            chromaembed.set_footer(
+                text=f"We now have {message.guild.premium_subscription_count} boosts!",
+                icon_url=message.guild.icon.url if message.guild.icon else None
+            )
+            chromaembed.set_thumbnail(url=message.author.display_avatar.url)
+
             if message.guild.id == 1134736053803159592:
                 await message.channel.send(f"{message.author.mention}", embed=embed)
+            elif message.guild.id == 835495688832811039:
+                await message.channel.send(f"{message.author.mention}", embed=chromaembed)
             else:
                 pass
         afk = await self.check_afk(message.author.id)
