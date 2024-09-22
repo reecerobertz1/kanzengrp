@@ -37,7 +37,7 @@ class welcandleave(commands.Cog):
         elif member.guild.id == scout_guild_id:
             guild = self.bot.get_guild(694010548605550675)
             guild2 = self.bot.get_guild(835495688832811039)
-            embed2 = discord.Embed(title="welcome!", color=0x303136, description=f"{member.mention} has joined the server!\n• read our <#1283439723053977730>!\n• get editing help in <#862656708059594782>\n• talk to other editors <#836647673595428925>")
+            embed2 = discord.Embed(title="welcome!", color=0x303136, description=f"{member.mention} has joined the server!\n• read our <#1283439723053977730>!\n• get editing help in <#1020005171645915196>\n• talk to other editors <#836647673595428925>")
             embed2.set_footer(text='thanks for wanting to join chroma! <3', icon_url=member.display_avatar.url)
             embed2.set_thumbnail(url=member.display_avatar.url)
             channel2 = self.bot.get_channel(836251337649160256)
