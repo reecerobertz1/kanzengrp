@@ -24,7 +24,8 @@ extensions = {
     "cogs.countryvia",
     "cogs.chromalevels",
     "cogs.starboard",
-    "cogs.be"
+    "cogs.be",
+    "cogs.survey"
 }
 class LalisaBot(commands.Bot):
     session: aiohttp.ClientSession
