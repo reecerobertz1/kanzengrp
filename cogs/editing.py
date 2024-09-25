@@ -1,9 +1,13 @@
+import functools
 from io import BytesIO
 import json
 import random
+from typing import Union
+import aiohttp
 import discord
 from discord.ext import commands
 from PIL import Image, ImageDraw, ImageFont
+from colorthief import ColorThief
 
 JSON_FILE_PATH = "./json files/colors.json"
 
@@ -154,6 +158,135 @@ class editing(commands.Cog):
             audios = json.load(f)
             choice = random.choice(audios)
             await ctx.reply(f"Please make sure to give credits!\n{choice}")
+
+    @commands.command()
+    async def transition(self, ctx):
+        transitions = ["cc flo motion + tile rotation",
+                       "s_flyseyehex rotation",
+                       "zoom in",
+                       "rotation",
+                       "warp",
+                       "middle tile rotation",
+                       "zoom out",
+                       "skew",
+                       "timeslice slide",
+                       "butterfly overlay",
+                       "fisheye warp",
+                       "2 split cube",
+                       "3 split cube",
+                       "split slide rotation",
+                       "y rotation",
+                       "x rotation",
+                       "vr rotate sphere",
+                       "cube expand w something on the inside",
+                       "scale stretch",
+                       "do something w a cube, dont be lazy",
+                       "do something 3d",
+                       "shatter",
+                       "inside cube rotation",
+                       "card wipe",
+                       "cube split",
+                       "tile rotation",
+                       "wipe rings (+turb)",
+                       "hexagon tile spin",
+                       "zoom in + rotation",
+                       "zoom out + rotation",
+                       "mirror stretch",
+                       "3D tunnel",
+                       "torn paper transition",
+                       "wipe overlay",
+                       "3D flip",
+                       "slide + rotation",
+                       "vr reorient",
+                       "cube rotatiton",
+                       "s_warpcornerpin",
+                       "s_wipeblobs",
+                       "s_flyseyehex corner spin",
+                       "s_flyseyerect anchored point rotation",
+                       "stretch slide",
+                       "cc scale wipe",
+                       "s_warppuddle",
+                       "vortex spin",
+                       "cube shatter",
+                       "warp squeeze",
+                       "ink splash",
+                       "polariod transition",
+                       "text morph",
+                       "Instagram feed",
+                       "Pinterest feed",
+                       "Game themed transition",
+                       "TV damage transition",
+                       "Comic book style",
+                       "Food themed transition"]
+        transition = random.choice(transitions)
+        embed = discord.Embed(description=transition, color=0x2b2d31)
+        await ctx.reply(embed=embed)
+
+    @commands.command()
+    async def theme(self, ctx):
+        themes = ['Game theme', 'Horror movie theme', 'Arcade theme', 'Comic book theme', 'Symphony theme', 'Food themed']
+        theme = random.choice(themes)
+        embed = discord.Embed(description=theme, color=0x2b2d31)
+        if theme == "Symphony theme":
+                    embed.set_image(url="https://cdn.discordapp.com/attachments/849724031723634688/1288433068297949194/ezgif-4-74099fde38.png?ex=66f52a4d&is=66f3d8cd&hm=210cc74380e1fdf772ce2e196e79c85446b336727375f93c2ca88d6d327cf9b2&")
+        await ctx.reply(embed=embed)
+
+    def get_palette(self, image: BytesIO) -> BytesIO:
+        temp_img = Image.open(image)
+        if temp_img.width > 256 or temp_img.height > 256:
+            temp_img.thumbnail((256, 256))
+            image = BytesIO()
+            temp_img.save(image, 'PNG')
+            image.seek(0)
+        zhcn = ImageFont.truetype("./fonts/zhcn.ttf", size=20)
+        s = 200
+        ct = ColorThief(image)
+        colors = ct.get_palette(4, 1)
+        img = Image.new('RGB', (s*len(colors), 225), (255, 255, 255))
+        for i, color in enumerate(colors):
+            hex_c = self.rgb_to_hex(color).upper()
+            col = Image.new('RGB', (s, s+25), color)
+            img.paste(col, (i*s, 0))
+            drw = ImageDraw.Draw(img, 'RGBA')
+            drw.rectangle(((i*s, s), ((i+1)*s, s+25)), (0, 0, 0, 65))
+            drw.text(((i+0.5)*s, s), f"{hex_c.upper()}", color, font=zhcn, anchor="ma")
+        buf = BytesIO()
+        img.save(buf, 'PNG')
+        buf.seek(0)
+
+        return buf
+
+    def rgb_to_hex(self, rgb):
+        return '#{:02x}{:02x}{:02x}'.format(rgb[0], rgb[1], rgb[2])
+
+    @commands.command(aliases=["makepalette", "generatepalette", "gp", "mp"])
+    async def getpalette(self, ctx, image_source: Union[discord.Member, str]=None):
+        async with ctx.typing():
+            if image_source != None:
+                if type(image_source) == str:
+                    if image_source.startswith("https://") or image_source.startswith("http://"):
+                        async with aiohttp.ClientSession() as session:
+                            async with session.get(image_source) as resp:
+                                image = BytesIO(await resp.read())
+                                image.seek(0)
+                    else:
+                        return await ctx.send("You need to use a https or http URL")
+                else:
+                    to_edit = image_source.display_avatar.with_size(256)
+                    image = BytesIO(await to_edit.read())
+                    image.seek(0)
+            else:
+                if ctx.message.attachments:
+                    to_edit = ctx.message.attachments[0]
+                    image = BytesIO(await to_edit.read())
+                    image.seek(0)
+                else:
+                    to_edit = ctx.author.display_avatar.with_size(256)
+                    image = BytesIO(await to_edit.read())
+                    image.seek(0)
+            palette_gen = functools.partial(self.get_palette, image)
+            palette = await self.bot.loop.run_in_executor(None, palette_gen)
+            await ctx.send(file=discord.File(fp=palette, filename="palette.png"))
 
 async def setup(bot):
     await bot.add_cog(editing(bot))
