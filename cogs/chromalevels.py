@@ -577,5 +577,14 @@ class chromalevels(commands.Cog):
         await self.add_msg(member.id, messages, levels)
         await ctx.reply(f"Added **{messages}** messages to {member.mention}")
 
+    @commands.command(hidden=True)
+    async def removedata(self, ctx, member_id: int):
+        guild_id = ctx.guild.id
+
+        async with self.bot.pool.acquire() as conn:
+            await conn.execute('DELETE FROM chromalevels WHERE member_id = $1', member_id)
+
+        await ctx.send(f"<@{member_id}>'s levels have been removed!")
+
 async def setup(bot):
     await bot.add_cog(chromalevels(bot))
