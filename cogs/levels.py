@@ -655,13 +655,13 @@ class levels(commands.Cog):
         await ctx.reply(f"Added **{messages}** messages to {member.mention}")
 
     @commands.command(hidden=True)
-    async def deletedata(self, ctx, members: commands.Greedy[discord.Member]):
-        async with self.bot.pool.acquire() as conn:
-            for member in members:
-                if isinstance(member, discord.Member):
-                    await conn.execute('DELETE FROM levels WHERE member_id = $1', member.id)
+    async def dd(self, ctx, member_id: int):
+        guild_id = ctx.guild.id
 
-        await ctx.send(f"{', '.join(str(member) for member in members if isinstance(member, discord.Member))} levels have been removed!")
+        async with self.bot.pool.acquire() as conn:
+            await conn.execute('DELETE FROM levels WHERE member_id = $1', member_id)
+
+        await ctx.send(f"<@{member_id}>'s levels have been removed!")
 
 async def setup(bot):
     await bot.add_cog(levels(bot))
