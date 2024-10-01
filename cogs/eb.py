@@ -388,5 +388,17 @@ class Forms(commands.Cog):
                 await cursor.execute(query)
                 await conn.commit()
 
+    @commands.command()
+    async def addattempt(self, ctx, member: discord.Member):
+        await self.add_attempt(member.id)
+        await ctx.reply(f"I have added 1 attempt for {member.mention}")
+
+    async def add_attempt(self, member_id: int) -> None:
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                query = '''UPDATE recruit SET attempts = attempts + 1 WHERE member_id = ? AND attempts > 0'''
+                await cursor.execute(query, (member_id,))
+                await conn.commit()
+
 async def setup(bot):
     await bot.add_cog(Forms(bot))
