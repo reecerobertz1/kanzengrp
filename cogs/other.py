@@ -38,6 +38,8 @@ class other(commands.Cog):
     async def on_message(self, message):
         if message.author.bot:
             return
+        if message.content.lower() == "chroma":
+            await message.channel.send(f"<:ilovechroma:1280229204826263704> **{message.author.name}** loves chroma\n-# <:reply:1290714885792989238> we love you too! **<3**")
         if message.content.lower() == "reece":
             await message.channel.send("<@609515684740988959> is the sexiest")
         if message.content.lower() == "rinaya":
