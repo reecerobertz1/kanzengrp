@@ -54,6 +54,10 @@ class other(commands.Cog):
             await message.channel.send("https://tenor.com/qIoidKLXAGv.gif")
         if message.content.lower() == "lyra":
             await message.channel.send("<:ilyrayou:1270405427989057576>")
+        if message.content.lower() == "Hoshi! come here, your dad wants you":
+            await message.channel.send("Hi!! i'm here")
+        if message.content.lower() == "Good boy":
+            await message.channel.send("Thank you dad!!")
         if message.type == discord.MessageType.premium_guild_subscription:
             embed = discord.Embed(
                 title="Thank you for boosting",
