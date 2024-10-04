@@ -39,7 +39,7 @@ class welcandleave(commands.Cog):
             embed.set_thumbnail(url=member.display_avatar.url)
             await channel.send(f'{member.mention}', embed=embed)
             channel2 = self.bot.get_channel(694010549532360726)
-            await channel2.send(f"{member.mention} welcome to chroma!\n• get roles in <id:customize>\n・ Our logos are in <#725373131220320347>\n・ Introduce yourself in <#727875317439528982>\n・ Also please set your server nickname as `Name | Username`\nAny questions, ping staff or leads <a:3b56330f710c3a978f27c9cc7e099180:836940737123057705>")
+            await channel2.send(f"{member.mention} welcome to chroma!\n・ get roles in <id:customize>\n・ Our logos are in <#725373131220320347>\n・ Introduce yourself in <#727875317439528982>\n・ Also please set your server nickname as `Name | Username`\nAny questions, ping staff or leads <a:3b56330f710c3a978f27c9cc7e099180:836940737123057705>")
             await self.add_member(member.id)
 
         # CHROMA COMMUNITY WELCOME EMBED
