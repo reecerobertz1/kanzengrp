@@ -20,12 +20,11 @@ class StaffApps(discord.ui.Modal, title="Chroma Staff Application - Helper"):
 		embed.add_field(name="Why should we pick you?", value=self.why.value)
 		embed.add_field(name="What kind of previous experience do you have?", value=self.experience.value, inline=False)
 		embed.add_field(name="What kind of activities and/or events would you initiate in Chroma?", value=self.events.value, inline=False)
-		embed.set_thumbnail(url="https://rqinflow.com/static/chroma-pfp-animation.gif")
 		if self.other.value:
 			embed.add_field(name="Anything else you want us to know?", value=self.other.value, inline=False)
 		embed.set_thumbnail(url=interaction.user.avatar)
 		embed.set_footer(text=f"Sent from {interaction.user.name}")
-		await interaction.client.get_channel(1098242178947481741).send(embed=embed)
+		await interaction.client.get_channel(1098242178947481741).send(f"{interaction.user.mention}", embed=embed)
 		await interaction.followup.send(f"<:check:1291748345194348594>**{interaction.user.name}**, I have sent your application!\n-# <:reply:1290714885792989238> If you think you have made a mistake, or wish to remove your application. Please ping a lead!", ephemeral=True)
 
 class staffapps(commands.Cog):
