@@ -586,14 +586,5 @@ class chromalevels(commands.Cog):
 
         await ctx.send(f"<@{member_id}>'s levels have been removed!")
 
-    @commands.command(hidden=True)
-    async def removedata(self, ctx, members: commands.Greedy[discord.Member]):
-        async with self.bot.pool.acquire() as conn:
-            for member in members:
-                if isinstance(member, discord.Member):
-                    await conn.execute('DELETE FROM chromalevels WHERE member_id = $1', member.id)
-
-        await ctx.send(f"{', '.join(str(member) for member in members if isinstance(member, discord.Member))} levels have been removed!")
-
 async def setup(bot):
     await bot.add_cog(chromalevels(bot))
