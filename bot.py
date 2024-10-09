@@ -68,6 +68,7 @@ class LalisaBot(commands.Bot):
             await conn.execute('''CREATE TABLE IF NOT EXISTS warning (member_id INTEGER, guild_id INTEGER ,reasons TEXT, warnings INTEGER)''')
             await conn.execute('''CREATE TABLE IF NOT EXISTS staffrep(member_id INTEGER, helped INTEGER, count INTEGER, guild_id INTEGER)''')
             await conn.execute('''CREATE TABLE IF NOT EXISTS recruit (member_id INTEGER, attempts INTEGER, reviewed INTEGER, accepted INTEGER, applied INTEGER)''')
+            await conn.execute('''CREATE TABLE IF NOT EXISTS inventory (guild_id INTEGER, member_id INTEGER, rank_decors INTEGER, selected INTEGER, candy INTEGER)''')
             await conn.commit()
 
         if not hasattr(self, "tree"):
