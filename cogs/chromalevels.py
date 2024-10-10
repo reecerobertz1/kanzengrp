@@ -356,10 +356,10 @@ class chromalevels(commands.Cog):
         buffer.seek(0)
         return buffer
 
-    async def generate_card_rank1(self, name: str, status: str, avatar: BytesIO, levels: LevelRow, rank: int, member: discord.Member) -> BytesIO:
+    async def generate_card_rank1(self, name: str, status: str, avatar: BytesIO, levels: LevelRow, rank: int, member: discord.Member, event: EventRow) -> BytesIO:
         guild = member.guild
-        card_generator = functools.partial(self.get_card, name, status, avatar, levels, rank)
-        card = await self.bot.loop.run_in_executor(None, self.get_card, str(member), str(member.status), avatar, levels, rank, member, guild)
+        card_generator = functools.partial(self.get_card, name, status, avatar, levels, rank, event)
+        card = await self.bot.loop.run_in_executor(None, self.get_card, str(member), str(member.status), avatar, levels, rank, member, guild, event)
         return card
 
     async def get_rank(self, member_id: int) -> int:
@@ -414,6 +414,7 @@ class chromalevels(commands.Cog):
         async with ctx.typing():
             """makes a rank card"""
             member = member or ctx.author
+            event = await self.get_event_details(member.id)
             levels = await self.get_member_levels(member.id)
             rank = await self.get_rank(member.id)
             avatar_url = member.display_avatar.replace(static_format='png', size=256).url
@@ -421,7 +422,7 @@ class chromalevels(commands.Cog):
             avatar = BytesIO(await response.read())
             avatar.seek(0)
             if levels:
-                card = await self.generate_card_rank1(str(member), str(member.status), avatar, levels, rank, member)
+                card = await self.generate_card_rank1(str(member), str(member.status), avatar, levels, rank, member, event)
                 await ctx.reply(file=discord.File(card, 'card.png'), mention_author=False)
             else:
                 await ctx.reply(f"{member} doesn't have any levels yet!!", mention_author=False)
