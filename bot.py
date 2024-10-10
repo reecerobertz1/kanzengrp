@@ -26,7 +26,8 @@ extensions = {
     "cogs.starboard",
     "cogs.be",
     "cogs.survey",
-    "cogs.staffapps"
+    "cogs.staffapps",
+    "cogs.event"
 }
 class LalisaBot(commands.Bot):
     session: aiohttp.ClientSession
