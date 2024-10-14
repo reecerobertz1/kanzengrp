@@ -398,11 +398,11 @@ class chromalevels(commands.Cog):
             await self.bot.pool.release(conn)
 
     @commands.command(description="Check your rank")
-    @kanzen_only()
     async def rank(self, ctx: commands.Context, member: Optional[discord.Member]):
         async with ctx.typing():
             """makes a rank card"""
             member = member or ctx.author
+            event = await self.get_event_details(member.id)
             levels = await self.get_member_levels(member.id)
             rank = await self.get_rank(member.id)
             avatar_url = member.display_avatar.replace(static_format='png', size=256).url
@@ -410,7 +410,7 @@ class chromalevels(commands.Cog):
             avatar = BytesIO(await response.read())
             avatar.seek(0)
             if levels:
-                card = await self.generate_card_rank1(str(member), str(member.status), avatar, levels, rank, member)
+                card = await self.generate_card_rank1(str(member), str(member.status), avatar, levels, rank, member, event)
                 await ctx.reply(file=discord.File(card, 'card.png'), mention_author=False)
             else:
                 await ctx.reply(f"{member} doesn't have any levels yet!!", mention_author=False)
