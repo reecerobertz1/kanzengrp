@@ -398,6 +398,7 @@ class chromalevels(commands.Cog):
             await self.bot.pool.release(conn)
 
     @commands.command(description="Check your rank")
+    @kanzen_only()
     async def rank(self, ctx: commands.Context, member: Optional[discord.Member]):
         async with ctx.typing():
             """makes a rank card"""
