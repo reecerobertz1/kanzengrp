@@ -22,7 +22,7 @@ class confirmclear(discord.ui.View):
     @discord.ui.button(label="Yes")
     async def yes(self, interaction: discord.Interaction, button: discord.Button):
         embed = discord.Embed(description=f"Okay your equipped rank decoration has been cleared", color=0x2b2d31)
-        await self.update_selected(interaction.user.id, number=0)
+        await self.update_selected(interaction.user.id, number=None)
         await interaction.response.edit_message(embed=embed, view=None)
 
     @discord.ui.button(label="No")
@@ -118,7 +118,7 @@ class confirm(discord.ui.View):
                 await cursor.execute(query, (updated_rank_decors, member_id))
                 await conn.commit()
 
-class shop(discord.ui.View):
+class shop1(discord.ui.View):
     def __init__ (self, bot):
         super().__init__(timeout=None)
         self.value = None
@@ -165,6 +165,143 @@ class shop(discord.ui.View):
         price = "4"
         embed = discord.Embed(description="Are you sure you'd like to purchase this rank decoration?", color=0x2b2d31)
         await interaction.response.send_message(embed=embed, ephemeral=True, view=confirm(bot=self.bot, number=number, price=price))
+
+    @discord.ui.button(label="Next Page")
+    async def next(self, interaction: discord.Interaction, button: discord.Button):
+        candy = await self.candy(interaction.user.id)
+        embed = discord.Embed(title="Event Shop",description=f"Welcome to our __limited time__ event shop!\n• You are able to purchase rank decorations to decorate your rank cards\n• In the image below you can preview all the different designs and their prices!\n• Use the buttons below to purchase your rank decorations with candy\n• Once purchased, you will keep them __forever__!\n\n🍬**{candy}**\nEvent ends: <t:1730478420:D>" ,color=0x2b2d31)
+        embed.set_image(url="https://cdn.discordapp.com/attachments/849724031723634688/1295394092234309632/shop_view_00000.png?ex=670e7d42&is=670d2bc2&hm=d14543036a44976241ccbb9b8ec6941d3790d34ed5ea3034951f52576bc3720a&")
+        await interaction.response.edit_message(embed=embed, view=shop2(bot=self.bot))
+
+    async def candy(self, member_id: int) -> int:
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute("SELECT candy FROM inventory WHERE member_id = ?", (member_id,))
+                result = await cursor.fetchone()
+                if result:
+                    return result[0]
+                return 0
+
+class shop2(discord.ui.View):
+    def __init__ (self, bot):
+        super().__init__(timeout=None)
+        self.value = None
+        self.bot = bot
+
+    @discord.ui.button(label="7")
+    async def one(self, interaction: discord.Interaction, button: discord.Button):
+        number = "7"
+        price = "4"
+        embed = discord.Embed(description="Are you sure you'd like to purchase this rank decoration?", color=0x2b2d31)
+        await interaction.response.send_message(embed=embed, ephemeral=True, view=confirm(bot=self.bot, number=number, price=price))
+
+    @discord.ui.button(label="8")
+    async def two(self, interaction: discord.Interaction, button: discord.Button):
+        number = "8"
+        price = "4"
+        embed = discord.Embed(description="Are you sure you'd like to purchase this rank decoration?", color=0x2b2d31)
+        await interaction.response.send_message(embed=embed, ephemeral=True, view=confirm(bot=self.bot, number=number, price=price))
+
+    @discord.ui.button(label="9")
+    async def three(self, interaction: discord.Interaction, button: discord.Button):
+        number = "9"
+        price = "4"
+        embed = discord.Embed(description="Are you sure you'd like to purchase this rank decoration?", color=0x2b2d31)
+        await interaction.response.send_message(embed=embed, ephemeral=True, view=confirm(bot=self.bot, number=number, price=price))
+
+    @discord.ui.button(label="10")
+    async def four(self, interaction: discord.Interaction, button: discord.Button):
+        number = "10"
+        price = "4"
+        embed = discord.Embed(description="Are you sure you'd like to purchase this rank decoration?", color=0x2b2d31)
+        await interaction.response.send_message(embed=embed, ephemeral=True, view=confirm(bot=self.bot, number=number, price=price))
+
+    @discord.ui.button(label="11")
+    async def five(self, interaction: discord.Interaction, button: discord.Button):
+        number = "11"
+        price = "4"
+        embed = discord.Embed(description="Are you sure you'd like to purchase this rank decoration?", color=0x2b2d31)
+        await interaction.response.send_message(embed=embed, ephemeral=True, view=confirm(bot=self.bot, number=number, price=price))
+
+    @discord.ui.button(label="12")
+    async def six(self, interaction: discord.Interaction, button: discord.Button):
+        number = "12"
+        price = "4"
+        embed = discord.Embed(description="Are you sure you'd like to purchase this rank decoration?", color=0x2b2d31)
+        await interaction.response.send_message(embed=embed, ephemeral=True, view=confirm(bot=self.bot, number=number, price=price))
+
+    @discord.ui.button(label="Previous Page")
+    async def last(self, interaction: discord.Interaction, button: discord.Button):
+        candy = await self.candy(interaction.user.id)
+        embed = discord.Embed(title="Event Shop",description=f"Welcome to our __limited time__ event shop!\n• You are able to purchase rank decorations to decorate your rank cards\n• In the image below you can preview all the different designs and their prices!\n• Use the buttons below to purchase your rank decorations with candy\n• Once purchased, you will keep them __forever__!\n\n🍬**{candy}**\nEvent ends: <t:1730478420:D>" ,color=0x2b2d31)
+        embed.set_image(url="https://cdn.discordapp.com/attachments/849724031723634688/1295392795326156932/shop_view_00000.png?ex=670e7c0d&is=670d2a8d&hm=bdc38d5f5ad66da268987f79f2cf5b4b30cfcbff56ebcd2024c3ae0c7d33a00e&")
+        await interaction.response.edit_message(embed=embed, view=shop1(bot=self.bot))
+
+    @discord.ui.button(label="Next Page")
+    async def next(self, interaction: discord.Interaction, button: discord.Button):
+        candy = await self.candy(interaction.user.id)
+        embed = discord.Embed(title="Event Shop",description=f"Welcome to our __limited time__ event shop!\n• You are able to purchase rank decorations to decorate your rank cards\n• In the image below you can preview all the different designs and their prices!\n• Use the buttons below to purchase your rank decorations with candy\n• Once purchased, you will keep them __forever__!\n\n🍬**{candy}**\nEvent ends: <t:1730478420:D>" ,color=0x2b2d31)
+        embed.set_image(url="https://cdn.discordapp.com/attachments/1248039148888129647/1295404920467619890/shop_view_00000.png?ex=670e8758&is=670d35d8&hm=48ba1f4cb487d2b5f36cc3d8bc6858c90d907a8e4aae435c5a4d27df9474e36c&")
+        await interaction.response.edit_message(embed=embed, view=shop3(bot=self.bot))
+
+    async def candy(self, member_id: int) -> int:
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute("SELECT candy FROM inventory WHERE member_id = ?", (member_id,))
+                result = await cursor.fetchone()
+                if result:
+                    return result[0]
+                return 0
+
+class shop3(discord.ui.View):
+    def __init__ (self, bot):
+        super().__init__(timeout=None)
+        self.value = None
+        self.bot = bot
+
+    @discord.ui.button(label="13")
+    async def one(self, interaction: discord.Interaction, button: discord.Button):
+        number = "13"
+        price = "4"
+        embed = discord.Embed(description="Are you sure you'd like to purchase this rank decoration?", color=0x2b2d31)
+        await interaction.response.send_message(embed=embed, ephemeral=True, view=confirm(bot=self.bot, number=number, price=price))
+
+    @discord.ui.button(label="14")
+    async def two(self, interaction: discord.Interaction, button: discord.Button):
+        number = "14"
+        price = "4"
+        embed = discord.Embed(description="Are you sure you'd like to purchase this rank decoration?", color=0x2b2d31)
+        await interaction.response.send_message(embed=embed, ephemeral=True, view=confirm(bot=self.bot, number=number, price=price))
+
+    @discord.ui.button(label="15")
+    async def three(self, interaction: discord.Interaction, button: discord.Button):
+        number = "15"
+        price = "4"
+        embed = discord.Embed(description="Are you sure you'd like to purchase this rank decoration?", color=0x2b2d31)
+        await interaction.response.send_message(embed=embed, ephemeral=True, view=confirm(bot=self.bot, number=number, price=price))
+
+    @discord.ui.button(label="16")
+    async def four(self, interaction: discord.Interaction, button: discord.Button):
+        number = "16"
+        price = "4"
+        embed = discord.Embed(description="Are you sure you'd like to purchase this rank decoration?", color=0x2b2d31)
+        await interaction.response.send_message(embed=embed, ephemeral=True, view=confirm(bot=self.bot, number=number, price=price))
+
+    @discord.ui.button(label="Previous Page")
+    async def last(self, interaction: discord.Interaction, button: discord.Button):
+        candy = await self.candy(interaction.user.id)
+        embed = discord.Embed(title="Event Shop",description=f"Welcome to our __limited time__ event shop!\n• You are able to purchase rank decorations to decorate your rank cards\n• In the image below you can preview all the different designs and their prices!\n• Use the buttons below to purchase your rank decorations with candy\n• Once purchased, you will keep them __forever__!\n\n🍬**{candy}**\nEvent ends: <t:1730478420:D>" ,color=0x2b2d31)
+        embed.set_image(url="https://cdn.discordapp.com/attachments/849724031723634688/1295394092234309632/shop_view_00000.png?ex=670e7d42&is=670d2bc2&hm=d14543036a44976241ccbb9b8ec6941d3790d34ed5ea3034951f52576bc3720a&")
+        await interaction.response.edit_message(embed=embed, view=shop2(bot=self.bot))
+
+    async def candy(self, member_id: int) -> int:
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute("SELECT candy FROM inventory WHERE member_id = ?", (member_id,))
+                result = await cursor.fetchone()
+                if result:
+                    return result[0]
+                return 0
 
 class event(commands.Cog):
     def __init__(self, bot):
@@ -221,8 +358,8 @@ class event(commands.Cog):
     async def shop(self, ctx):
         candy = await self.candy(ctx.author.id)
         embed = discord.Embed(title="Event Shop",description=f"Welcome to our __limited time__ event shop!\n• You are able to purchase rank decorations to decorate your rank cards\n• In the image below you can preview all the different designs and their prices!\n• Use the buttons below to purchase your rank decorations with candy\n• Once purchased, you will keep them __forever__!\n\n🍬**{candy}**\nEvent ends: <t:1730478420:D>" ,color=0x2b2d31)
-        embed.set_image(url="https://cdn.discordapp.com/attachments/1248039148888129647/1293604902160957471/shop_view_00000.png?ex=6707faf2&is=6706a972&hm=7b0cf9d6f9c98625229ac79621090a5fc196d8f4867e603573c91f0d1213ebd3&")
-        await ctx.reply(embed=embed, view=shop(bot=self.bot))
+        embed.set_image(url="https://cdn.discordapp.com/attachments/849724031723634688/1295392795326156932/shop_view_00000.png?ex=670e7c0d&is=670d2a8d&hm=bdc38d5f5ad66da268987f79f2cf5b4b30cfcbff56ebcd2024c3ae0c7d33a00e&")
+        await ctx.reply(embed=embed, view=shop1(bot=self.bot))
 
     @commands.command()
     async def equip(self, ctx, number: Optional[int]):

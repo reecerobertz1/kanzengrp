@@ -22,6 +22,12 @@ class LevelRow(TypedDict):
     color: str
     image: str
 
+class EventRow(TypedDict):
+    member_id: int
+    rank_decors: int
+    selected: int
+    candy: int
+
 class chromalevels(commands.Cog):
     def __init__(self, bot):
         self.regex_hex = "^#(?:[0-9a-fA-F]{3}){1,2}$"
@@ -89,6 +95,17 @@ class chromalevels(commands.Cog):
                 else:
                     return None
 
+    async def get_event_details(self, member_id: int) -> Optional[LevelRow]:
+        query = '''SELECT * from inventory WHERE member_id = ?'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, (member_id, ))
+                row = await cursor.fetchone()
+                if row:
+                    return row
+                else:
+                    return None
+
     async def check_levels(self, message: discord.Message, xp: int, xp_to_add: int) -> None:
         levels = await self.get_member_levels(message.author.id)
         new_xp = xp + xp_to_add
@@ -100,7 +117,39 @@ class chromalevels(commands.Cog):
 
         next_level_xp = ((50*(lvl**2))+(50*(lvl-1)))
         if new_xp > next_level_xp:
-            await message.channel.send(f"Yay! {message.author.mention} you just reached **level {lvl}**")
+            await self.add_member_event(message.author.id)
+            await self.update_candy(message.author.id)
+            await message.channel.send(f"Yay! {message.author.mention} you just reached **level {lvl}**\nYou also found🍬 **2**")
+
+    async def add_member_event(self, member_id: int) -> None:
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute("SELECT 1 FROM inventory WHERE member_id = ?", (member_id,))
+                existing_member = await cursor.fetchone()
+                if existing_member is not None:
+                    return
+                
+                query = '''INSERT INTO inventory(member_id, rank_decors, selected, candy) VALUES (?, ?, ?, ?)'''
+                await cursor.execute(query, (member_id, 0, 0, 2))
+                await conn.commit()
+
+    async def candy(self, member_id: int) -> int:
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute("SELECT candy FROM inventory WHERE member_id = ?", (member_id,))
+                result = await cursor.fetchone()
+                if result:
+                    return result[0]
+                return 0
+
+    async def update_candy(self, member_id: int) -> None:
+        query = '''UPDATE inventory SET candy = ? WHERE member_id = ?'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                candy = await self.candy(member_id)
+                await cursor.execute(query, (candy + 2, member_id, ))
+                await conn.commit()
+            await self.bot.pool.release(conn)
 
     async def level_handler(self, message: discord.Message, retry_after: Optional[commands.CooldownMapping], xp: int) -> None:
         member_id = message.author.id
@@ -230,7 +279,7 @@ class chromalevels(commands.Cog):
             b_img = Image.open(BytesIO(image.content))
             return b_img
 
-    def get_card(self, name: str, status: str, avatar: BytesIO, levels: LevelRow, rank: int, user: discord.User, guild: discord.Guild) -> BytesIO:
+    def get_card(self, name: str, status: str, avatar: BytesIO, levels: LevelRow, rank: int, user: discord.User, guild: discord.Guild, event: EventRow) -> BytesIO:
         percentage, xp_have, xp_need, level = self.xp_calculations(levels)
         card = Image.new('RGBA', size=(1500, 500), color='grey')
         
@@ -275,21 +324,31 @@ class chromalevels(commands.Cog):
         draw = ImageDraw.Draw(card, 'RGBA')
         message = levels["messages"]
         messages = self.human_format(message)
+
+        if event is None or event["selected"] == 0 or event["selected"] is None:
+            rankdecor = Image.open(f'./assets/0.png')
+        else:
+            rankdecor = Image.open(f'./assets/{event["selected"]}.png')
+
+        rankdecor = rankdecor.resize((1500, 500))
+        card.paste(rankdecor, (0, 0), rankdecor)
+        
         draw.text((100, 345), f'{xp_have} | {xp_need}', fill=levels['color'], font=zhcn)
-        draw.text((225, 25), f"{user.display_name}", fill=levels['color'], font=zhcn)
+        draw.text((225, 25), f"{user.name}", fill=levels['color'], font=zhcn)
         draw.text((225, 65), f"chroma levels", fill=levels['color'], font=zhcn2)
         draw.text((300, 407), f'rank | {str(rank)}', fill=levels['color'], font=zhcn)
         draw.text((100, 407), f'level | {level-1}', fill=levels['color'], font=zhcn)
         draw.text((500, 407), f'{messages} messages', fill=levels['color'], font=zhcn)
+        
         buffer = BytesIO()
         card.save(buffer, 'png')
         buffer.seek(0)
         return buffer
 
-    async def generate_card_rank1(self, name: str, status: str, avatar: BytesIO, levels: LevelRow, rank: int, member: discord.Member) -> BytesIO:
+    async def generate_card_rank1(self, name: str, status: str, avatar: BytesIO, levels: LevelRow, rank: int, member: discord.Member, event: EventRow) -> BytesIO:
         guild = member.guild
-        card_generator = functools.partial(self.get_card, name, status, avatar, levels, rank)
-        card = await self.bot.loop.run_in_executor(None, self.get_card, str(member), str(member.status), avatar, levels, rank, member, guild)
+        card_generator = functools.partial(self.get_card, name, status, avatar, levels, rank, event)
+        card = await self.bot.loop.run_in_executor(None, self.get_card, str(member), str(member.status), avatar, levels, rank, member, guild, event)
         return card
 
     async def get_rank(self, member_id: int) -> int:
