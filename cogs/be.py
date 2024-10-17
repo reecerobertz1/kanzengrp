@@ -245,14 +245,11 @@ class welcnbye(commands.Cog):
 
     @commands.command()
     async def embed(self, ctx):
-        try:
-            embed = discord.Embed(description="Create an embed by using the buttons below!\n\n__Information:__\n• Imput the text you want to have in your embeds in the modals!\n• Leave the modal empty to clear the section\n• `Set color` uses hex codes (default: #2b2d31)\n• The embeds need at least 1 thing, you can't clear everything!\n• Get the ID of the channel you want to send it in\n• Image and thumbnails use Image links!\n-# Need any help? Ping <@609515684740988959>", color=0x2b2d31)
-            embed.set_author(name="Hoshi Embed Maker", icon_url=ctx.guild.icon.url)
-            embed.set_thumbnail(url=self.bot.user.display_avatar.url)
-            view = embedview(embed)
-            await ctx.send(embed=embed, view=view)
-        except Exception as e:
-            print(f"Error in embed command: {e}")
+        embed = discord.Embed(description="Create an embed by using the buttons below!\n\n__Information:__\n• Imput the text you want to have in your embeds in the modals!\n• Leave the modal empty to clear the section\n• `Set color` uses hex codes (default: #2b2d31)\n• The embeds need at least 1 thing, you can't clear everything!\n• Get the ID of the channel you want to send it in\n• Image and thumbnails use Image links!\n-# Need any help? Ping <@609515684740988959>", color=0x2b2d31)
+        embed.set_author(name="Hoshi Embed Maker", icon_url=ctx.guild.icon.url)
+        embed.set_thumbnail(url=self.bot.user.display_avatar.url)
+        view = embedview(embed)
+        await ctx.send(embed=embed, view=view)
 
 async def setup(bot):
     await bot.add_cog(welcnbye(bot))
