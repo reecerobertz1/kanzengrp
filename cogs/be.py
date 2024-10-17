@@ -40,7 +40,7 @@ class embedview(discord.ui.View):
         embed = discord.Embed(description="Embed has been cleared!")
         await interaction.response.edit_message(embed=embed)
 
-    @discord.ui.button(label="Send", emoji="<:check_white:1284282565645176892>",style=discord.ButtonStyle.green)
+    @discord.ui.button(label="Send", emoji="<:check:1291748345194348594>",style=discord.ButtonStyle.green)
     async def q0(self, interaction: discord.Interaction, button: discord.Button):
         await interaction.response.send_modal(q0(self.embed_message))
 
@@ -115,7 +115,7 @@ class q2(ui.Modal, title='Set Title'):
             if self.title_input.value:
                 self.embed_message.title = self.title_input.value
             else:
-                self.embed_message.title = ""  # Set to empty string instead of None
+                self.embed_message.title = ""
 
             await interaction.message.edit(embed=self.embed_message)
             await interaction.response.send_message(f"Embed title updated.", ephemeral=True)
