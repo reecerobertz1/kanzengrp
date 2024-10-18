@@ -2,6 +2,36 @@ import discord
 from discord.ext import commands
 from typing import Optional
 
+class pickup(discord.ui.View):
+    def __init__ (self, bot):
+        super().__init__(timeout=None)
+        self.value = None
+        self.bot = bot
+
+    @discord.ui.button(label="Pick up")
+    async def pick(self, interaction: discord.Interaction, button: discord.Button):
+        embed = discord.Embed(description=f"**{interaction.user.name}** Has picked up the candy!", color=0x2b2d31)
+        await self.update_candy(member_id=interaction.user.id)
+        await interaction.response.edit_message(embed=embed, view=None)
+
+    async def update_candy(self, member_id: int) -> None:
+        query = '''UPDATE inventory SET candy = ? WHERE member_id = ?'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                candy = await self.candy(member_id)
+                await cursor.execute(query, (candy + 2, member_id, ))
+                await conn.commit()
+            await self.bot.pool.release(conn)
+
+    async def candy(self, member_id: int) -> int:
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute("SELECT candy FROM inventory WHERE member_id = ?", (member_id,))
+                result = await cursor.fetchone()
+                if result:
+                    return result[0]
+                return 0
+
 class clear(discord.ui.View):
     def __init__ (self, bot):
         super().__init__(timeout=None)
@@ -384,6 +414,11 @@ class event(commands.Cog):
     async def addcandy(self, ctx, member: discord.Member):
         await self.update_candy(member.id)
         await ctx.reply("yup")
+
+    @commands.command()
+    async def drop(self, ctx):
+        embed = discord.Embed(title="Dropped Candy!", description=f"**{ctx.author.name}** has dropped 🍬**2**\nQuick pick it up before someone steals it")
+        await ctx.send(embed=embed, view=pickup(bot=self.bot))
 
 async def setup(bot):
     await bot.add_cog(event(bot))
