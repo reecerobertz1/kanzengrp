@@ -337,6 +337,13 @@ class event(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
+    def is_staff():
+        async def predicate(ctx):
+            role_id = 753678720119603341
+            role = ctx.guild.get_role(role_id)
+            return role in ctx.author.roles
+        return commands.check(predicate)
+
     async def candy(self, member_id: int) -> int:
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cursor:
@@ -416,6 +423,7 @@ class event(commands.Cog):
         await ctx.reply("yup")
 
     @commands.command()
+    @is_staff()
     async def drop(self, ctx):
         embed = discord.Embed(title="Dropped Candy!", description=f"**{ctx.author.name}** has dropped 🍬**2**\nQuick pick it up before someone steals it")
         await ctx.send(embed=embed, view=pickup(bot=self.bot))
