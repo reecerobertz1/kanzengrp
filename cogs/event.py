@@ -394,7 +394,7 @@ class event(commands.Cog):
     @commands.command()
     async def shop(self, ctx):
         candy = await self.candy(ctx.author.id)
-        embed = discord.Embed(title="Event Shop",description=f"Welcome to our __limited time__ event shop!\n• You are able to purchase rank decorations to decorate your rank cards\n• In the image below you can preview all the different designs and their prices!\n• Use the buttons below to purchase your rank decorations with candy\n• Once purchased, you will keep them __forever__!\n\n🍬**{candy}**\nEvent ends: <t:1730478420:D>" ,color=0x2b2d31)
+        embed = discord.Embed(title="Event Shop",description=f"Welcome to our __limited time__ event shop!\n• You are able to purchase rank decorations to decorate your rank cards\n• In the image below you can preview all the different designs and their prices!\n• Use the buttons below to purchase your rank decorations with candy\n• Once purchased, you will keep them __forever__!\n\n🍬**{candy}**\nEvent ends: <t:1730937600:D>" ,color=0x2b2d31)
         embed.set_image(url="https://cdn.discordapp.com/attachments/849724031723634688/1295392795326156932/shop_view_00000.png?ex=670e7c0d&is=670d2a8d&hm=bdc38d5f5ad66da268987f79f2cf5b4b30cfcbff56ebcd2024c3ae0c7d33a00e&")
         await ctx.reply(embed=embed, view=shop1(bot=self.bot))
 
