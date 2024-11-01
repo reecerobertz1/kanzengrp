@@ -121,6 +121,11 @@ class chromalevels(commands.Cog):
             await self.update_candy(message.author.id)
             await message.channel.send(f"Yay! {message.author.mention} you just reached **level {lvl}**\nYou also found🍬 **2**")
 
+            if lvl == 2:
+                role = message.guild.get_role(1301132850825007234)
+                if role:
+                    await message.author.add_roles(role, reason=f"{message.author.name} reached level 2")
+
     async def add_member_event(self, member_id: int) -> None:
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cursor:
@@ -420,25 +425,48 @@ class chromalevels(commands.Cog):
     @kanzen_only()
     async def multiadd(self, ctx: commands.Context, members: commands.Greedy[discord.Member], amount: int):
         zennie_role_id = 739513680860938290
+        level_role_id = 1301132850825007234
         author = ctx.author
-        
         if zennie_role_id not in [role.id for role in author.roles]:
             await ctx.reply("Sorry, this is a staff only command", ephemeral=True)
             return
-        
         if not members:
             await ctx.send("You must mention at least one member to add XP to.")
             return
-        description = f'Gave `{amount}xp` to {", ".join(str(member) for member in members if isinstance(member, discord.Member))}'
+        
+        description = f'Gave `{amount} XP` to {", ".join(str(member) for member in members if isinstance(member, discord.Member))}'
         embed = discord.Embed(
-            title='xp added!',
+            title='XP Added!',
             description=description,
             color=0x2B2D31
         )
         for member in members:
             if isinstance(member, discord.Member):
                 levels = await self.get_member_levels(member.id)
+                if levels is None:
+                    await self.add_member(member.id, amount)
+                    current_xp = amount
+                else:
+                    current_xp = levels["xp"]
+
+                new_xp = current_xp + amount
                 await self.add_xp(member.id, amount, levels)
+                lvl = 0
+                while True:
+                    xp_needed_for_next_level = ((50 * (lvl ** 2)) + (50 * (lvl - 1)))
+                    if current_xp < xp_needed_for_next_level:
+                        break
+                    lvl += 1
+
+                final_lvl = lvl
+                while new_xp >= ((50 * (final_lvl ** 2)) + (50 * (final_lvl - 1))):
+                    final_lvl += 1
+
+                if final_lvl >= 2:
+                    role = ctx.guild.get_role(level_role_id)
+                    if role and not any(r.id == role.id for r in member.roles):
+                        await member.add_roles(role, reason=f"{member.name} reached level 2 or higher")
+        
         await ctx.reply(embed=embed)
 
     @commands.command(aliases=['give', 'a'], extras={"examples": ["xp add <@609515684740988959> 1000", "xp give candysnowy 1000"]})
@@ -450,14 +478,32 @@ class chromalevels(commands.Cog):
         if zennie_role_id not in [role.id for role in author.roles]:
             await ctx.reply("Sorry, this is a staff only command", ephemeral=True)
             return
-        
+
         levels = await self.get_member_levels(member.id)
+        if levels is None:
+            await self.add_member(member.id, amount)
+            current_xp = amount
+        else:
+            current_xp = levels["xp"]
+
+        new_xp = current_xp + amount
         await self.add_xp(member.id, amount, levels)
-        embed = discord.Embed(
-            title='xp added!',
-            description=f'gave `{amount}xp` to {str(member)}',
-            color=0x2B2D31
-        )
+        lvl = 0
+        while True:
+            xp_needed_for_next_level = ((50 * (lvl ** 2)) + (50 * (lvl - 1)))
+            if current_xp < xp_needed_for_next_level:
+                break
+            lvl += 1
+
+        final_lvl = lvl
+        while new_xp >= ((50 * (final_lvl ** 2)) + (50 * (final_lvl - 1))):
+            final_lvl += 1
+
+        if final_lvl >= 2:
+            role = ctx.guild.get_role(1147592763924295681)
+            if role and not any(r.id == role.id for r in member.roles):
+                await member.add_roles(role, reason=f"{member.name} reached level 2 or higher")
+        embed = discord.Embed(title='XP Added!', description=f'Gave `{amount} XP` to {str(member)}', color=0xFEBCBE)
         await ctx.reply(embed=embed)
 
     @commands.command(aliases=['take', 'r'], extras={"examples": ["xp remove <@609515684740988959> 1000", "xp take candysnowy 1000"]})
@@ -599,14 +645,30 @@ class chromalevels(commands.Cog):
     @kanzen_only()
     @commands.dynamic_cooldown(kanzen_cooldown, commands.BucketType.user)
     async def daily(self, ctx: commands.Context):
-        """Command to claim daily xp"""
-        xp = randint(150, 300)
+        member = ctx.author
+        emojis = ["<:alhaithamuwu:1257829394995609722>", "<:dilucuwu:1215001949905223721>", "<:arleuwu:1236642544176205866>", "<:danhengiluwu:1236710497454264441>", "<:nilouuwu:1236642546269028443>", "<:xiaouwu:1214631450411016222>", "<:mizookuwu:1263923282072305674>", "<:bambyuwu:1258626994657300531>", "<:asmouwu:1281673436917399652>", "<:sigeuwu:1258217110752989184>", "<:scarauwu:1214787080262262826>", "<:neuviuwu:1259239904240468079>", "<:furinauwu:1269018189614809129>", "<:zhongliuwu:1215001895060512798>", "<:kazuhauwu:1215001799321321532>", "<:kaeyauwu:1258217332975730769>", "<:jiyanuwu:1258215228953591828>", "<:beeluwu:1281673450695557140>", "<:belphieuwu:1281673463517548584>", "<:leviuwu:1281673478831079556>", "<:luciuwu:1281673492449726535>", "<:lukeuwu:1281673507079717007>", "<:mammonuwu:1281673523122933770>", "<:moranuwu:1275808002229801010>"," <:satanuwu:1281673538390200461>", "<:rafayeluwu:1268323216904949820>", "<:ittouwu:1215041496584036455>", "<:eulauwu:1263578777422790687>", "<:chuwanninguwu:1258217513842376714>", "<:childeuwu:1236695748301688953>", "<:aventurineuwu:1236710521114202112>", "<:alhaithamuwu:1257830193750347918>", "<:solomonuwu:1281673568467292191>", "<:simeonuwu:1281673552931721246>", "<:sukunauwu:1268322507929157764>", "<:sylusuwu:1268323281010688154>", "<:tighnariuwu:1261061785406935153>", "<:vashuwu:1261060609278083183>", "<:ventiuwu:1215001849183076432>", "<:wriouwu:1258217203627462769>", "<:wukonguwu:1265138917670387794>", "<:yaeuwu:1258217291477422091>", "<:yejunuwu:1258217244966654013>", "<:yoiuwu:1259241806969704560>", "<:yanfeiuwu:1268323149741690890>"]
+        emoji = random.choice(emojis)
+        xp = randint(250, 500)
         levels = await self.get_member_levels(ctx.author.id)
-        if levels is not None:
-            await self.add_xp(ctx.author.id, xp, levels)
+        new_xp = levels["xp"] + xp
+        lvl = 0
+        while True:
+            if levels["xp"] < ((50*(lvl**2))+(50*(lvl-1))):
+                break
+            lvl += 1
+        next_level_xp = ((50*(lvl**2))+(50*(lvl-1)))
+        if new_xp > next_level_xp:
+
+            embed = discord.Embed(description=f"{ctx.author.name} you just reached **level {lvl}**", colour=0x2b2d31)
+            await self.add_xp(member.id, xp, levels)
+            if lvl >= 2:
+                role = ctx.guild.get_role(1301132850825007234)
+                if role:
+                    await ctx.author.add_roles(role, reason=f"{ctx.author.name} reached level 2 or higher")
+            await ctx.reply(embed=embed)
         else:
-            await self.add_member(ctx.member.id, xp)
-        await ctx.reply(f"You claimed your daily xp! you got **{xp}xp**")
+            await self.add_member(member.id, xp)
+        await ctx.reply(f"{emoji} Yay! You have claimed your daily xp! you got `{xp}xp`")
         
     @daily.error
     async def daily_error(self, ctx: commands.Context, error: commands.CommandError):
