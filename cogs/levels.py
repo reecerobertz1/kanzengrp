@@ -630,8 +630,8 @@ class levels(commands.Cog):
     async def daily_error(self, interaction: discord.Interaction, error: Exception):
         if isinstance(error, CommandOnCooldown):
             remaining_time = datetime.timedelta(seconds=error.retry_after)
-            hours, remainder = divmod(remaining_time.seconds, 3600)
-            minutes, seconds = divmod(remainder, 60)
+            remainder = divmod(remaining_time.seconds, 3600)
+            seconds = divmod(remainder, 60)
             await interaction.response.send_message(f"Slow down! you're on cooldown for **{seconds} seconds**.")
         else:
             await interaction.response.send_message("An unexpected error occurred. Please try again later.",ephemeral=True)
@@ -667,8 +667,8 @@ class levels(commands.Cog):
     async def daily_error(self, interaction: discord.Interaction, error: Exception):
         if isinstance(error, CommandOnCooldown):
             remaining_time = datetime.timedelta(seconds=error.retry_after)
-            hours, remainder = divmod(remaining_time.seconds, 3600)
-            minutes, seconds = divmod(remainder, 60)
+            remainder = divmod(remaining_time.seconds, 3600)
+            seconds = divmod(remainder, 60)
             await interaction.response.send_message(f"Slow down! you're on cooldown for **{seconds} seconds**.")
         else:
             await interaction.response.send_message("An unexpected error occurred. Please try again later.",ephemeral=True)
@@ -804,8 +804,8 @@ class levels(commands.Cog):
     async def daily_error(self, interaction: discord.Interaction, error: Exception):
         if isinstance(error, CommandOnCooldown):
             remaining_time = datetime.timedelta(seconds=error.retry_after)
-            hours, remainder = divmod(remaining_time.seconds, 3600)
-            minutes, seconds = divmod(remainder, 60)
+            remainder = divmod(remaining_time.seconds, 3600)
+            seconds = divmod(remainder, 60)
             await interaction.response.send_message(f"Slow down! you're on cooldown for **{seconds} seconds**.")
         else:
             await interaction.response.send_message("An unexpected error occurred. Please try again later.",ephemeral=True)
