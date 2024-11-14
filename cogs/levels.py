@@ -12,7 +12,7 @@ from PIL import Image
 from utils.views import Paginator
 from colorthief import ColorThief
 from discord.app_commands import CommandOnCooldown
-import datetime
+from datetime import datetime
 
 class LevelRow(TypedDict):
     member_id: int
@@ -406,6 +406,40 @@ class levels(commands.Cog):
         retry_after = bucket.update_rate_limit()
         
         await self.level_handler(message, retry_after, xp_to_add)
+
+    @commands.Cog.listener()
+    async def on_voice_state_update(self, member: discord.Member, before: discord.VoiceState, after: discord.VoiceState):
+        if member.bot:
+            return
+        
+        guild_id = member.guild.id
+        if before.channel is None and after.channel is not None:
+            self.voice_times[member.id] = datetime.utcnow()
+        elif before.channel is not None and after.channel is None:
+            join_time = self.voice_times.pop(member.id, None)
+            if join_time:
+                time_spent = datetime.utcnow() - join_time
+                seconds_spent = time_spent.total_seconds()
+                xp_to_add = await self.get_voicexp(guild_id)
+                xp_earned = (seconds_spent // 1) * xp_to_add
+                
+                if xp_earned > 0:
+                    levels = await self.get_level_row(member.id, member.guild.id)
+                    await self.add_xp(member.id, guild_id, int(xp_earned), levels)
+                    await self.check_levels(member, xp_to_add=int(xp_earned), xp=levels["xp"])
+
+    async def get_voicexp(self, guild_id: int) -> int:
+        query = '''SELECT voicexp FROM settings WHERE guild_id = ?'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, guild_id)
+                status = await cursor.fetchone()
+            await self.bot.pool.release(conn)
+        if status is not None:
+            return status[0]
+        else:
+            await self.add_server(guild_id)
+            return 1
 
     async def get_chatxp(self, guild_id: int) -> int:
         query = '''SELECT chatxp FROM settings WHERE guild_id = ?'''
