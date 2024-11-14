@@ -54,13 +54,10 @@ class LalisaBot(commands.Bot):
         self.pool = await asqlite.create_pool('databases/levels.db')
 
         async with self.pool.acquire() as conn:
-            await conn.execute('''CREATE TABLE IF NOT EXISTS levels (member_id BIGINT, xp INTEGER, messages INTEGER, image TEXT, color TEXT, stardust INTEGER, memberlvl INTEGER, mora INTEGER, decor TEXT, roles TEXT, PRIMARY KEY(member_id))''')
-            await conn.execute('''CREATE TABLE IF NOT EXISTS chromalevels (member_id BIGINT, xp INTEGER, messages INTEGER, image TEXT, color TEXT, PRIMARY KEY(member_id))''')
-            await conn.execute('''CREATE TABLE IF NOT EXISTS setup (guild_id BIGINT PRIMARY KEY, activated BOOL, top_20_role_id BIGINT, bronze_role_id BIGINT, silver_role_id BIGINT, gold_role_id BIGINT, diamond_role_id BIGINT, plat_role_id BIGINT, elite_role_id BIGINT)''')
-            await conn.execute('''CREATE TABLE IF NOT EXISTS warning (member_id INTEGER, guild_id INTEGER ,reasons TEXT, warnings INTEGER)''')
-            await conn.execute('''CREATE TABLE IF NOT EXISTS staffrep(member_id INTEGER, helped INTEGER, count INTEGER, guild_id INTEGER)''')
-            await conn.execute('''CREATE TABLE IF NOT EXISTS recruit (member_id INTEGER, attempts INTEGER, reviewed INTEGER, accepted INTEGER, applied INTEGER)''')
-            await conn.execute('''CREATE TABLE IF NOT EXISTS inventory (guild_id INTEGER, member_id INTEGER, rank_decors INTEGER, selected INTEGER, candy INTEGER)''')
+            await conn.execute('''CREATE TABLE IF NOT EXISTS levelling (guild_id BIGINT, member_id BIGINT, xp INTEGER, messages INTEGER, color TEXT, image TEXT, decor TEXT, PRIMARY KEY(guild_id, member_id))''')
+            await conn.execute('''CREATE TABLE IF NOT EXISTS decors (member_id BIGINT, unlocked INTEGER, selected INTEGER, currency INTEGER, PRIMARY KEY(member_id))''')
+            await conn.execute('''CREATE TABLE IF NOT EXISTS settings (guild_id BIGINT, chatxp INTEGER, voicexp INTEGER, dailyxp TEXT, top20 INTEGER, reprole INTEGER, channels TEXT, voicechannels TEXT, levels INTEGER, PRIMARY KEY(guild_id))''')
+            await conn.execute('''CREATE TABLE IF NOT EXISTS chromies (guild_id INTEGER, member_id INTEGER, inactive INTEGER, iamsgs INTEGER, PRIMARY KEY (guild_id, member_id))''')
             await conn.commit()
 
         if not hasattr(self, "tree"):
