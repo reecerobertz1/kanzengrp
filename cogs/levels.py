@@ -628,13 +628,22 @@ class levels(commands.Cog):
 
     @rank.error
     async def rank_error(self, interaction: discord.Interaction, error: Exception):
-        if isinstance(error, CommandOnCooldown):
-            remaining_time = datetime.timedelta(seconds=error.retry_after)
-            remainder = divmod(remaining_time.seconds, 60)
-            seconds = divmod(remainder, 60)
-            await interaction.response.send_message(f"Slow down! you're on cooldown for **{seconds} seconds**.")
-        else:
-            await interaction.response.send_message("An unexpected error occurred. Please try again later.",ephemeral=True)
+        try:
+            if isinstance(error, CommandOnCooldown):
+                remaining_time = int(error.retry_after)
+                await interaction.response.send_message(
+                    f"Slow down! You're on cooldown for **{remaining_time} seconds**.",
+                    ephemeral=True
+                )
+            else:
+                print(f"Error in 'rank' command: {error}")
+                if not interaction.response.is_done():
+                    await interaction.response.send_message(
+                        "An unexpected error occurred. Please try again later.",
+                        ephemeral=True
+                    )
+        except discord.InteractionResponded:
+            pass
 
     @app_commands.command(description="See the level leaderboard")
     @app_commands.checks.cooldown(1, 20)
@@ -664,11 +673,11 @@ class levels(commands.Cog):
             await interaction.response.send_message(embed=embed)
 
     @leaderboard.error
-    async def leaderboard_error(self, interaction: discord.Interaction, error: Exception):
+    async def daily_error(self, interaction: discord.Interaction, error: Exception):
         if isinstance(error, CommandOnCooldown):
             remaining_time = datetime.timedelta(seconds=error.retry_after)
-            remainder = divmod(remaining_time.seconds, 60)
-            seconds = divmod(remainder, 60)
+            hours, remainder = divmod(remaining_time.seconds, 3600)
+            minutes, seconds = divmod(remainder, 60)
             await interaction.response.send_message(f"Slow down! you're on cooldown for **{seconds} seconds**.")
         else:
             await interaction.response.send_message("An unexpected error occurred. Please try again later.",ephemeral=True)
