@@ -10,7 +10,6 @@ my_guild = discord.Object(id=1121841073673736215)
 extensions = {
     "jishaku",
     "cogs.eb",
-    "cogs.economy",
     "cogs.editing",
     "cogs.fun",
     "cogs.games",
@@ -26,8 +25,7 @@ extensions = {
     "cogs.starboard",
     "cogs.be",
     "cogs.survey",
-    "cogs.staffapps",
-    "cogs.event"
+    "cogs.staffapps"
 }
 class LalisaBot(commands.Bot):
     session: aiohttp.ClientSession
