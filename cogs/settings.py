@@ -13,7 +13,6 @@ class settings(TypedDict):
     top20: int
     reprole: int
     channels: str
-    voicechannels: str
 
 class channelselect(discord.ui.View):
     def __init__(self, bot):
