@@ -450,7 +450,6 @@ class settingselect(discord.ui.View):
         guild = interaction.guild
         group = "Chroma" if guild.id == 694010548605550675 else "Lyra"
         textchannels = await self.get_textchannels(interaction.guild.id)
-        voice= await self.get_voicechannels(interaction.guild.id)
         embed = discord.Embed(title=f"<:settings:1304222799639871530> {group}'s Channels",description=f"<:bulletpoint:1304247536021667871> Text Channels:\n{textchannels}",color=0x2b2d31)
         await interaction.response.edit_message(embed=embed, view=channelselect(bot=self.bot))
 
