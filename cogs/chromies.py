@@ -1,6 +1,8 @@
+from typing import Optional
 import discord
 from discord.ext import commands
 from discord import ui
+from config import logos
 
 class infoview(discord.ui.View):
     def __init__(self, bot):
@@ -13,7 +15,7 @@ class infoview(discord.ui.View):
         logos = discord.Embed(title="<a:bun:1098764398962671677> Chroma Logos!", description="˃ Please make sure you watermark the logos!\n˃ Use the watermark on every edit\n˃ Do not share this link with anyone outside the group!", color=0x2b2d31)
         logos.set_footer(text="Made us some logos? send them to Reece or Alisha!")
         logos.set_image(url=interaction.guild.banner)
-        await interaction.user.send("key: `chUZuZ7Eu0mqLOM5rxRsQw`\nhttps://mega.nz/folder/xOk1SApA", embed=logos)
+        await interaction.user.send({logos}, embed=logos)
         channel = interaction.client.get_channel(1011212849965715528)
         log = discord.Embed(title="Logo button has been used!", description=f"`{interaction.user.display_name}` has used the logos button", color=0x2b2d31)
         log.set_footer(text=f"id: {interaction.user.id}", icon_url=interaction.user.display_avatar)
@@ -22,7 +24,38 @@ class infoview(discord.ui.View):
 
     @discord.ui.button(label="Inactive")
     async def inactive(self, interaction: discord.Interaction, button: discord.Button):
-        await interaction.response.send_modal(ia(bot=self.bot))
+        iamsgs = await self.get_iamsgs(guild_id=interaction.guild.id, member_id=interaction.user.id)
+        is_inactive = await self.get_inactive(guild_id=interaction.guild.id, member_id=interaction.user.id)
+        if iamsgs == 0:
+            await interaction.response.send_message(f"You are no longer able to send inactive messages due to you being inactive for 3 months in a row!\nIf it is an urgent matter, please reach out to a member of staff or leads.", ephemeral=True)
+        if is_inactive == 1:
+            await interaction.response.send_message(f"You have already sent an inactive message this month!\nAll inactivity messages reset on the 1st of each month along with the level resets. Please send another then when you need one.", ephemeral=True)
+        else:
+            await interaction.response.send_modal(ia(bot=self.bot))
+
+    async def get_inactive(self, member_id: int, guild_id: int) -> Optional[int]:
+        query = '''SELECT inactive FROM chromies WHERE member_id = ? AND guild_id = ?'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, (member_id, guild_id))
+                result = await cursor.fetchone()
+                
+                if result is not None:
+                    return result[0]
+                else:
+                    return None
+
+    async def get_iamsgs(self, member_id: int, guild_id: int) -> Optional[int]:
+        query = '''SELECT iamsgs FROM chromies WHERE member_id = ? AND guild_id = ?'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, (member_id, guild_id))
+                result = await cursor.fetchone()
+                
+                if result is not None:
+                    return result[0]
+                else:
+                    return None
 
     @discord.ui.button(label="Report member")
     async def report(self, interaction: discord.Interaction, button: discord.Button):
@@ -55,16 +88,74 @@ class ia(discord.ui.Modal):
         embed = discord.Embed(title="Inactivity", description=f"Sent from: [@{self.instagram.value}](https://instagram.com/{self.instagram.value} )\nReason: {self.reason.value}", color=0x2b2d31)
         embed.set_thumbnail(url=interaction.user.display_avatar)
         embed.set_footer(text=f"User ID: {interaction.user.id}")
+        saferole = 1290669744424484955
+        iamsgs = await self.get_iamsgs(guild_id=interaction.guild.id, member_id=interaction.user.id)
+        await self.remove_iamsg(guild_id=interaction.guild.id, member_id=interaction.user.id)
+        await self.set_inactive(guild_id=interaction.guild.id, member_id=interaction.user.id)
+        await interaction.user.add_roles(interaction.user.guild.get_role(saferole))
         msg = await interaction.client.get_channel(849707778380922910).send(f"{interaction.user.mention}", embed=embed)
-        await interaction.response.send_message('Thanks! I have sent your message!', ephemeral=True)
+        await interaction.response.send_message(f'Thanks! I have sent your message!\nYou now only have **{iamsgs-1} months** left to be inactive!\nAfter that we will still kick you and you will no longer be able to send inactive messages.', ephemeral=True)
 
-class kanzen(commands.Cog, name="kanzen", description="Includes the commands associated with [Chroma group](https://www.instagram.com/chromagrp) and its members!"):
+    async def add_member(self, member_id: int, guild_id: int) -> None:
+        query_check = '''SELECT 1 FROM chromies WHERE member_id = ? AND guild_id = ?'''
+        query_insert = '''INSERT INTO chromies (member_id, guild_id, inactive, iamsgs) VALUES (?, ?, ?, ?)'''
+
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query_check, (member_id, guild_id))
+                exists = await cursor.fetchone()
+                
+                if exists:
+                    print("Member already exists in the chromies table.")
+                else:
+                    await cursor.execute(query_insert, (member_id, guild_id, 1, 2))
+                    await conn.commit()
+            await self.bot.pool.release(conn)
+
+    async def set_inactive(self, member_id: int, guild_id: int) -> None:
+        query = '''UPDATE chromies SET inactive = 1 WHERE member_id = ? AND guild_id = ?'''
+        
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, (member_id, guild_id))
+                await conn.commit()
+
+    async def remove_iamsg(self, member_id: int, guild_id: int) -> None:
+        query_check = '''SELECT iamsgs FROM chromies WHERE member_id = ? AND guild_id = ?'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query_check, (member_id, guild_id))
+                result = await cursor.fetchone()
+                
+                if result is None:
+                    await self.add_member(member_id=member_id, guild_id=guild_id)
+                else:
+                    current_iamsgs = result[0]
+                    query_update = '''UPDATE chromies SET iamsgs = ? WHERE member_id = ? AND guild_id = ?'''
+                    await cursor.execute(query_update, (current_iamsgs - 1, member_id, guild_id))
+                    await conn.commit()
+            await self.bot.pool.release(conn)
+
+    async def get_iamsgs(self, member_id: int, guild_id: int) -> Optional[int]:
+        query = '''SELECT iamsgs FROM chromies WHERE member_id = ? AND guild_id = ?'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, (member_id, guild_id))
+                result = await cursor.fetchone()
+                
+                if result is not None:
+                    return result[0]
+                else:
+                    return None
+
+class chromies(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.pool = None
 
-    @commands.command(hidden=True)
+    @commands.command()
     @commands.has_permissions(manage_guild=True)
-    async def info1(self, ctx):
+    async def rules(self, ctx):
         embed = discord.Embed(title="Weclome to Chroma", color=0x2b2d31)
         embed.add_field(name="Group Rules", value="• Must be following [remqsi](https://instagra,.com/remqsi), [wqndqs](https://instagra,.com/wqndqs) + [chromagrp](https://instagra,.com/chromagrp)."
                                             "\n• Always use our hashtag #𝗰𝗵𝗿𝗼𝗺𝗮𝗴𝗿𝗽."
@@ -114,4 +205,4 @@ class kanzen(commands.Cog, name="kanzen", description="Includes the commands ass
         await ctx.send(embed=embed2, view=socials)
 
 async def setup(bot):
-    await bot.add_cog(kanzen(bot))
+    await bot.add_cog(chromies(bot))

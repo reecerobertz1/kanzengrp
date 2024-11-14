@@ -9,24 +9,17 @@ my_guild = discord.Object(id=1121841073673736215)
 
 extensions = {
     "jishaku",
-    "cogs.eb",
-    "cogs.editing",
     "cogs.fun",
-    "cogs.games",
     "cogs.help",
-    "cogs.kanzen",
     "cogs.levels",
-    "cogs.misc",
-    "cogs.moderation",
+    "cogs.mod",
+    "cogs.welc",
+    "cogs.settings",
+    "cogs.chromies",
     "cogs.other",
-    "cogs.welcandbye",
-    "cogs.countryvia",
-    "cogs.chromalevels",
-    "cogs.starboard",
-    "cogs.be",
-    "cogs.survey",
-    "cogs.staffapps"
+    "cogs.event"
 }
+
 class LalisaBot(commands.Bot):
     session: aiohttp.ClientSession
     launch_time: datetime

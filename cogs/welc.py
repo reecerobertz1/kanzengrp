@@ -39,7 +39,7 @@ class welcandleave(commands.Cog):
             embed.set_thumbnail(url=member.display_avatar.url)
             await channel.send(f'{member.mention}', embed=embed)
             channel2 = self.bot.get_channel(694010549532360726)
-            await channel2.send(f"{member.mention} welcome to chroma!\n・ get roles in <id:customize>\n・ Our logos are in <#725373131220320347>\n・ Introduce yourself in <#727875317439528982>\n・ Also please set your server nickname as `Name | Username`\nAny questions, ping staff or leads <a:3b56330f710c3a978f27c9cc7e099180:836940737123057705>")
+            await channel2.send(f"{member.mention} welcome to chroma!\n• get roles in <id:customize>\n・ Our logos are in <#725373131220320347>\n・ Introduce yourself in <#727875317439528982>\nAny questions, ping staff or leads <a:3b56330f710c3a978f27c9cc7e099180:836940737123057705>")
             await self.add_member(member.id)
 
         # CHROMA COMMUNITY WELCOME EMBED
@@ -47,10 +47,9 @@ class welcandleave(commands.Cog):
         elif member.guild.id == scout_guild_id:
             guild = self.bot.get_guild(694010548605550675)
             guild2 = self.bot.get_guild(835495688832811039)
-            embed2 = discord.Embed(title="welcome!", color=0x303136, description=f"• Read our [information](https://discord.com/channels/835495688832811039/1283439723053977730) and [apply](https://discord.com/channels/835495688832811039/1252726042964136026)\n• Chat with other editors [here](https://discord.com/channels/835495688832811039/836647673595428925)\n• Get editing help in [this channel](https://discord.com/channels/835495688832811039/1020005171645915196)")
+            embed2 = discord.Embed(title="welcome!", color=0x303136, description=f"{member.mention} has joined the server!\n・ read our <#1283439723053977730>!\n・ get editing help in <#1020005171645915196>\n・ talk to other editors <#836647673595428925>")
             embed2.set_footer(text='thanks for wanting to join chroma! <3', icon_url=member.display_avatar.url)
             embed2.set_thumbnail(url=member.display_avatar.url)
-            embed2.set_image(url="https://cdn.discordapp.com/attachments/1055168099252437094/1291004710182064211/chroma_partner_banner_00000_1.png?ex=66fe8554&is=66fd33d4&hm=5516aea99c974e800ba5558f3dcf732beaec34464adfaaaa9b411d155f2432da&")
             channel2 = self.bot.get_channel(836251337649160256)
             await channel2.send(f'{member.mention}', embed=embed2)
             member2 = guild.get_member(member.id)
@@ -60,7 +59,7 @@ class welcandleave(commands.Cog):
                 await member.add_roles(member.guild.get_role(836244165637046283))
 
     async def add_member(self, member_id: int, xp=5) -> None:
-        query = '''INSERT INTO chromalevels (member_id, xp, messages, color) VALUES (?, ?, ?, ?)'''
+        query = '''INSERT INTO levelling (member_id, xp, messages, color) VALUES (?, ?, ?, ?)'''
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cursor:
                 await cursor.execute(query, (member_id, xp, 1, '#c45a72'))
@@ -70,7 +69,7 @@ class welcandleave(commands.Cog):
     async def remove_member(self, member_id: int) -> None:
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cursor:
-                await cursor.execute('DELETE FROM chromalevels WHERE member_id = $1', member_id)
+                await cursor.execute('DELETE FROM levelling WHERE member_id = $1', member_id)
                 await conn.commit()
             await self.bot.pool.release(conn)
 
@@ -86,7 +85,7 @@ class welcandleave(commands.Cog):
             channel = self.bot.get_channel(self.kanzen_welcome)
             await channel.send(f'{member.mention}', embed=embed)
 
-        # CHROMA LEAVE EMBED
+        # CHROMA COMMUNITY LEAVE EMBED
 
         elif member.guild.id == stored_guild_id:
             embed = discord.Embed(title="Member left!", color=0x2b2d31, description=f"{member.mention} has left the discord.")

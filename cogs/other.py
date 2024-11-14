@@ -1,38 +1,11 @@
-import asyncio
-import random
 import discord
 from discord.ext import commands
-from typing import TypedDict
-import datetime
-import humanize
 from discord import ui
-
-class AFK(TypedDict):
-    user_id: int
-    reason: str
-    time: datetime.datetime
 
 class other(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.hidden = True
-        self.emoji = "<:tata:1121909389280944169>"
-
-    async def check_afk(self, userid: int) -> AFK:
-        query = "SELECT reason, time, user_id FROM afk WHERE user_id = $1"
-        async with self.bot.pool.acquire() as connection:
-            async with connection.transaction():
-                async with connection.cursor() as cursor:
-                    await cursor.execute(query, userid)
-                    result = await cursor.fetchall()
-        return result[0] if result else None
-
-    async def remove_afk(self, userid: int) -> None:
-        query = "DELETE FROM afk WHERE user_id = $1"
-        async with self.bot.pool.acquire() as connection:
-            async with connection.transaction():
-                async with connection.cursor() as cursor:
-                    await cursor.execute(query, userid)
 
     @commands.Cog.listener()
     async def on_message(self, message):
@@ -112,15 +85,6 @@ class other(commands.Cog):
                 await message.channel.send(f"{message.author.mention}", embed=chroma2embed)
             else:
                 pass
-        afk = await self.check_afk(message.author.id)
-        if afk is not None:
-            await self.remove_afk(message.author.id)
-            await message.reply(f"Hey, <@!{afk['user_id']}> welcome back! You were AFK for **{afk['reason']}**")
-        if len(message.mentions) > 0:
-            for mention in message.mentions:
-                afk_mention = await self.check_afk(mention.id)
-                if afk_mention is not None:
-                    await message.reply(f"**{mention.name}** went AFK **{afk_mention['reason']}**")
 
 async def setup(bot):
     await bot.add_cog(other(bot))

@@ -1,170 +1,446 @@
 import asyncio
-import math
-import random
 import re
 import discord
 from discord.ext import commands
 from random import randint
-from typing import List, Optional, TypedDict, Union, Tuple
-from PIL import Image, ImageDraw, ImageFont, ImageFilter, ImageEnhance
+from typing import Optional, TypedDict, List, Union, Tuple
+from PIL import Image, ImageFilter, ImageOps, ImageFont, ImageEnhance, ImageDraw
 from io import BytesIO
 import functools
 from discord import app_commands
-from PIL import Image, ImageFilter, ImageOps, UnidentifiedImageError
-import requests
-from utils.views import Paginator
+from PIL import Image
+from stuff.views import Paginator
 from colorthief import ColorThief
+from discord.app_commands import CommandOnCooldown
+import datetime
 
 class LevelRow(TypedDict):
     member_id: int
     xp: int
     messages: int
+    guild_id: int
     color: str
     image: str
+    decor: str
 
-class levels(commands.Cog):
-    def __init__(self, bot):
-        self.regex_hex = "^#(?:[0-9a-fA-F]{3}){1,2}$"
+class claimxp(discord.ui.View):
+    def __init__(self, amount, bot, dropper):
+        super().__init__(timeout=60)
         self.bot = bot
-        self.status_holder = {0: "disabled", 1: "enabled"}
-        self.pool = None
-        self.channels = [1134742133421658193, 1140616319801237515, 1197155970988646431, 1140180038902354001]
-        self.guilds = [1134736053803159592]
-        self.cd_mapping = commands.CooldownMapping.from_cooldown(1, 60, commands.BucketType.user)
+        self.amount = amount
+        self.dropper = dropper
 
-    def kanzen_only():
-        def predicate(ctx: commands.Context):
-            if ctx.guild.id == 1134736053803159592:
-                return True
-            else:
-                return False
-        return commands.check(predicate)
-    
-    def kanzen_cooldown(message: discord.Message):
-        if message.author.id == 609515684740988959:
-            return None
-        
-        role = message.guild.get_role(1134797882420117544)
-        if role in message.author.roles:
-            return commands.Cooldown(1, 86400)
-        
-        booster = message.guild.get_role(1134793235408093254)
-        if booster in message.author.roles:
-            return commands.Cooldown(1, 43200)
-        
-        return commands.Cooldown(1, 86400)
+    @discord.ui.button(label="Claim", emoji="<:key:1306072256094404698>", style=discord.ButtonStyle.blurple)
+    async def claim(self, interaction: discord.Interaction, button: discord.Button):
+        embed = discord.Embed(title="<:removal:1306071903198380082> Claimed XP", description=f"**{interaction.user.name}** has claimed `{self.amount}xp`", color=0x2b2d31)
+        embed.set_footer(text=f"dropped by {self.dropper}")
+        levels = await self.get_member_levels(interaction.user.id, interaction.guild_id)
+        await self.add_xp(interaction.user.id, interaction.guild.id, xp=self.amount, levels=levels)
+        await interaction.response.edit_message(embed=embed, view=None)
 
-    async def add_member(self, member_id: int, xp=5) -> None:
-        query_check = '''SELECT 1 FROM levels WHERE member_id = ?'''
-        query_insert = '''INSERT INTO levels (member_id, xp, messages, color) VALUES (?, ?, ?, ?)'''
-        query_update = '''UPDATE levels SET xp = xp + ?, messages = messages + 1 WHERE member_id = ?'''
+    async def add_xp(self, member_id: int, guild_id: int, xp: int, levels: Optional[LevelRow]) -> None:
+        if levels:
+            query = '''UPDATE levelling SET xp = ? WHERE member_id = ? AND guild_id = ?'''
+            async with self.bot.pool.acquire() as conn:
+                async with conn.cursor() as cursor:
+                    await cursor.execute(query, (levels['xp'] + xp, member_id, guild_id))
+                    await conn.commit()
+                await self.bot.pool.release(conn)
+        else:
+            await self.add_member(member_id, guild_id, xp)
+
+    async def add_member(self, member_id: int, guild_id: int, xp = 25) -> None:
+        query = '''INSERT INTO levelling (member_id, guild_id, xp , messages) VALUES (?, ?, ?, ?)'''
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cursor:
-                await cursor.execute(query_check, (member_id,))
-                exists = await cursor.fetchone()
-                if exists:
-                    await cursor.execute(query_update, (xp, member_id))
-                else:
-                    await cursor.execute(query_insert, (member_id, xp, 1, '#c45a72'))
+                await cursor.execute(query, (member_id, guild_id, xp, 1))
                 await conn.commit()
             await self.bot.pool.release(conn)
 
-    async def update_messages(self, member_id: int, levels: LevelRow) -> None:
-        query = '''UPDATE levels SET messages = ? WHERE member_id = ?'''
+    async def get_member_levels(self, member_id: int, guild_id: int) -> Optional[LevelRow]:
+        query = '''SELECT * from levelling WHERE member_id = ? AND guild_id = ?'''
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cursor:
-                await cursor.execute(query, (levels['messages'] + 1, member_id, ))
-                await conn.commit()
-            await self.bot.pool.release(conn)
-
-    async def update_xp(self, member_id: int, levels: LevelRow, xp: int) -> None:
-        query = '''UPDATE levels SET messages = ?, xp = ? WHERE member_id = ?'''
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cursor:
-                await cursor.execute(query, (levels['messages'] + 1, levels['xp'] + xp, member_id, ))
-                await conn.commit()
-            await self.bot.pool.release(conn)
-
-    async def get_member_levels(self, member_id: int) -> Optional[LevelRow]:
-        query = '''SELECT * from levels WHERE member_id = ?'''
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cursor:
-                await cursor.execute(query, (member_id, ))
+                await cursor.execute(query, (member_id, guild_id))
                 row = await cursor.fetchone()
                 if row:
                     return row
                 else:
                     return None
 
+class configrankcard(discord.ui.View):
+    def __init__(self, member, bot):
+        super().__init__(timeout=60)
+        self.member = member
+        self.bot = bot
+        self.regex_hex = "^#(?:[0-9a-fA-F]{3}){1,2}$"
+
+    @discord.ui.button(label="Image")
+    async def image(self, interaction: discord.Interaction, button: discord.ui.Button):
+        if interaction.user.id == self.member:
+            await interaction.response.send_message(
+                f"<:settings:1304222799639871530>**{interaction.user.name}**, Please upload an image for your rank card within the next 60 seconds.\n"
+                f"-# <:thread2:1304222916879323136> Please make sure your image file is a **PNG / JPEG**\n"
+                f"-# <:thread1:1304222965042249781> The file cannot be a **GIF, PDF or Video**",
+                ephemeral=True
+            )
+
+            def check(msg):
+                return (
+                    msg.author == interaction.user 
+                    and msg.channel == interaction.channel 
+                    and (msg.attachments or (msg.content.startswith("http://") or msg.content.startswith("https://")))
+                )
+            try:
+                msg = await self.bot.wait_for("message", timeout=60, check=check)
+                image_data = None
+                if msg.attachments:
+                    attachment = msg.attachments[0]
+                    if attachment.content_type.split("/")[0] == "image" and not attachment.content_type.split("/")[1] == "gif":
+                        async with self.bot.session.get(attachment.url) as resp:
+                            image_data = BytesIO(await resp.read())
+                            image_data.seek(0)
+                    else:
+                        return await interaction.followup.send("Invalid image. Please try again with a valid image format.", ephemeral=True)
+                else:
+                    url = msg.content
+                    async with self.bot.session.get(url) as resp:
+                        if resp.headers.get('content-type').split("/")[0] == "image" and not resp.headers.get('content-type').split("/")[1] == "gif":
+                            image_data = BytesIO(await resp.read())
+                            image_data.seek(0)
+                        else:
+                            return await interaction.followup.send("Invalid image URL. Please try again with a valid image format.", ephemeral=True)
+
+                await self.set_card_image(image_data, interaction.user.id)
+                await interaction.followup.send(f"<:check:1291748345194348594> Okay **{interaction.user.name}**, I have update your rank card image", ephemeral=True)
+                await msg.delete()
+
+            except asyncio.TimeoutError:
+                await interaction.followup.send("You didn't upload an image in time. Please try again.", ephemeral=True)
+        else:
+            await interaction.response.send_message(
+                f"<:whitex:1304222877305798697>**{interaction.user.name}**, You cannot edit someone else's rank card.\n"
+                f"-# <:thread1:1304222965042249781> Do **/rank** if you'd like to edit your rank card.",
+                ephemeral=True,
+            )
+
+    @discord.ui.button(label="Colour")
+    async def colour(self, interaction: discord.Interaction, button: discord.ui.Button):
+        if interaction.user.id == self.member:
+            await interaction.response.send_message(
+                f"<:settings:1304222799639871530>**{interaction.user.name}**, Please type a valid hex code within the next 60 seconds.\n"
+                f"-# <:thread:1291033931050778694> Enter a hex code for colors ([color picker](https://htmlcolorcodes.com/)).\n"
+                f"-# <:thread1:1304222965042249781> The default hex code is **#c45a72**", 
+                ephemeral=True
+            )
+
+            def check(m):
+                return m.author == interaction.user and m.channel == interaction.channel
+            try:
+                user_response = await self.bot.wait_for('message', timeout=60.0, check=check)
+                color = user_response.content.strip()
+                match = re.search(self.regex_hex, color)
+                if match:
+                    await self.set_rank_color(interaction.user.id, color)
+                    await self.get_color(interaction.user.id)
+                    await interaction.followup.send(f"<:check:1291748345194348594> Okay **{interaction.user.name}**, I have update your color to **{color}**", ephemeral=True)
+                    await user_response.delete()
+                else:
+                    await interaction.followup.send(f"`{color}` is not a valid hex color. Make sure to add a **#** at the start!", ephemeral=True)
+
+            except asyncio.TimeoutError:
+                await interaction.followup.send(f"You took too long to respond, please try again.", ephemeral=True)
+        else:
+            await interaction.response.send_message(
+                f"<:whitex:1304222877305798697>**{interaction.user.name}**, You cannot edit someone else's rank card.\n"
+                f"-# <:thread1:1304222965042249781> Do **/rank** if you'd like to edit your rank card.",
+                ephemeral=True
+            )
+
+    async def get_color(self, member_id: int):
+        query = '''SELECT color FROM levelling WHERE member_id = $1'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, (member_id,))
+                row = await cursor.fetchone()
+            await self.bot.pool.release(conn)
+
+        if row and row['color']:
+            color = row['color']
+            if color.startswith('#'):
+                embed_color = int(color.replace('#', '0x'), 16)
+                return embed_color
+       
+        return 0x2b2d31
+
+    async def set_rank_color(self, member_id: int, color: str) -> None:
+        query = '''UPDATE levelling SET color = ? WHERE member_id = ?'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, color, member_id, )
+                await conn.commit()
+            await self.bot.pool.release(conn)
+
+    async def set_card_image(self, image: BytesIO, member_id: int, colorchange: Optional[bool] = False) -> None:
+        query = "UPDATE levelling SET image = $1, color = $2 WHERE member_id = $3"
+        bytes_data = image.getvalue()
+        image.seek(0)
+        ct = ColorThief(image)
+        pb_colors = ct.get_palette(2, 2)
+        pb_primary = '#%02x%02x%02x' % pb_colors[0]
+        pb_accent = '#%02x%02x%02x' % pb_colors[1]
+        if colorchange == False:
+            async with self.bot.pool.acquire() as connection:
+                async with connection.transaction():
+                    await connection.execute(query, bytes_data, pb_primary, member_id)
+            await self.bot.pool.release(connection)
+        else:
+            new_query = "UPDATE levelling SET image = $1, accent_color = $4, color = $5 WHERE member_id = $2"
+            async with self.bot.pool.acquire() as connection:
+                async with connection.transaction():
+                    await connection.execute(new_query, bytes_data, member_id, pb_accent, pb_primary)
+            await self.bot.pool.release(connection)
+
+class levels(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+        self.status_holder = {0: "disabled", 1: "enabled"}
+        self.pool = None
+        self.cd_mapping = commands.CooldownMapping.from_cooldown(1, 60, commands.BucketType.user)
+
+    async def get_voicechannels(self, guild_id: int) -> int:
+        query = '''SELECT voicechannels FROM settings WHERE guild_id = ?'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, guild_id)
+                status = await cursor.fetchone()
+            await self.bot.pool.release(conn)
+        if status is not None:
+            return status[0]
+        else:
+            await self.add_server(guild_id)
+            return 1
+
+    async def get_textchannels(self, guild_id: int) -> int:
+        query = '''SELECT channels FROM settings WHERE guild_id = ?'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, guild_id)
+                status = await cursor.fetchone()
+            await self.bot.pool.release(conn)
+        if status is not None:
+            return status[0]
+        else:
+            await self.add_server(guild_id)
+            return 1
+
+    async def add_member(self, member_id: int, guild_id: int, xp = 25) -> None:
+        query = '''INSERT INTO levelling (member_id, guild_id, xp , messages) VALUES (?, ?, ?, ?)'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, (member_id, guild_id, xp, 1))
+                await conn.commit()
+            await self.bot.pool.release(conn)
+
+    async def update_messages(self, member_id: int, guild_id: int, levels: LevelRow) -> None:
+        query = '''UPDATE levelling SET messages = ? WHERE member_id = ? AND guild_id = ?'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, (levels['messages'] + 1, member_id, guild_id))
+                await conn.commit()
+            await self.bot.pool.release(conn)
+
+    async def update_xp(self, member_id: int, guild_id: int, levels: LevelRow, xp: int) -> None:
+        query = '''UPDATE levelling SET messages = ?, xp = ? WHERE member_id = ? AND guild_id = ?'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, (levels['messages'] + 1, levels['xp'] + xp, member_id, guild_id))
+                await conn.commit()
+            await self.bot.pool.release(conn)
+
     async def check_levels(self, message: discord.Message, xp: int, xp_to_add: int) -> None:
-        levels = await self.get_member_levels(message.author.id)
         new_xp = xp + xp_to_add
         lvl = 0
         while True:
             if xp < ((50*(lvl**2))+(50*(lvl-1))):
                 break
             lvl += 1
-
         next_level_xp = ((50*(lvl**2))+(50*(lvl-1)))
         if new_xp > next_level_xp:
-            current_memberlvl = levels['memberlvl'] or 0
-            new_memberlvl = current_memberlvl + 1
-
-            query = '''UPDATE levels SET memberlvl = ? WHERE member_id = ?'''
-            async with self.bot.pool.acquire() as conn:
-                async with conn.cursor() as cursor:
-                    await cursor.execute(query, (new_memberlvl, message.author.id,))
-                    await conn.commit()
-                await self.bot.pool.release(conn)
-
-            if lvl == 1:
-                stella = "Stella"
+            if message.guild.id == 694010548605550675:
+                if lvl == 2:
+                    reprole = await self.get_reprole(message.guild.id)
+                    role = message.guild.get_role(reprole)
+                    if role:
+                        await message.author.add_roles(role, reason=f"{message.author.name} reached level 2")
+                        top20 = await self.get_top20(message.guild.id)
+                        if top20 is not None:
+                            await self.top_20_role_handler(message.author, message.guild, top20)
+                await message.channel.send(f"Yay! {message.author.mention} you just reached **level {lvl}**\n-# This is a testing version of Hoshi 2.0... please ignore these levels!\n-# Use <@1223888050296324168> for your levels **/rank**")
             else:
-                stella = "Stellas"
+                if lvl == 1:
+                    stella = "Stella"
+                else:
+                    stella = "Stellas"
+                top20 = await self.get_top20(message.guild.id)
+                if top20 is not None:
+                    await self.top_20_role_handler(message.author, message.guild, top20)
+                embed = discord.Embed(description=f"{message.author.name} you just reached **{lvl}** {stella}!\n-# This is a testing version of Hoshi 2.0... please ignore these levels!\n-# Use <@1223888050296324168> for your levels **/rank**", colour=0xFEBCBE)
+                channel = message.guild.get_channel(1135027269853778020)
+                await channel.send(message.author.mention, embed=embed)
 
-            embed = discord.Embed(description=f"{message.author.name} you just reached **{lvl}** {stella}!", colour=0xFEBCBE)
-            
-            if lvl == 1:
-                role = message.guild.get_role(1147592763924295681)
-                if role:
-                    await message.author.add_roles(role, reason=f"{message.author.name} reached 1 stella")
-            channel = message.guild.get_channel(1135027269853778020)
-            await channel.send(message.author.mention, embed=embed)
-            await self.update_mora(message.author.id)
+    async def get_reprole(self, guild_id: int) -> int:
+        query = '''SELECT reprole FROM settings WHERE guild_id = ?'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, guild_id)
+                status = await cursor.fetchone()
+            await self.bot.pool.release(conn)
+        if status is not None:
+            return status[0]
+        else:
+            await self.add_server(guild_id)
+            return 1
 
     async def level_handler(self, message: discord.Message, retry_after: Optional[commands.CooldownMapping], xp: int) -> None:
         member_id = message.author.id
-        levels = await self.get_member_levels(member_id)
-        if levels is None:
-            await self.add_member(member_id)
+        guild_id = message.guild.id
+        levels = await self.get_member_levels(member_id, guild_id)
+        if levels == None:
+            await self.add_member(member_id, guild_id)
         else:
             if retry_after:
-                await self.update_messages(member_id, levels)
+                await self.update_messages(member_id, guild_id, levels)
             else:
-                await self.update_xp(member_id, levels, xp)
+                await self.update_xp(member_id, guild_id, levels, xp)
                 await self.check_levels(message, levels['xp'], xp)
+
+    async def get_member_levels(self, member_id: int, guild_id: int) -> Optional[LevelRow]:
+        query = '''SELECT * from levelling WHERE member_id = ? AND guild_id = ?'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, (member_id, guild_id))
+                row = await cursor.fetchone()
+                if row:
+                    return row
+                else:
+                    return None
+
+    async def _check_top_20(self, member_id: int, guild_id: int) -> bool:
+        rank = await self.get_rank(member_id, guild_id)
+        return rank < 21
+
+    async def get_top20(self, guild_id: int) -> int:
+        query = '''SELECT top20 FROM settings WHERE guild_id = ?'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, guild_id)
+                status = await cursor.fetchone()
+            await self.bot.pool.release(conn)
+        if status is not None:
+            return status[0]
+        else:
+            await self.add_server(guild_id)
+            return 1
+
+    async def _get_top_20_movedown(self, member_ids: list, guild_id: int) -> int:
+        t = tuple(member_ids)
+        query = "SELECT member_id FROM levels WHERE guild_id = ? AND xp = (SELECT MIN(xp) FROM levels WHERE member_id IN {} AND guild_id = ?)".format(t)
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, guild_id, guild_id)
+                member_id = await cursor.fetchone()
+            await self.bot.pool.release(conn)
+        return member_id[0]
+
+    async def _get_number_20(self, guild_id: int) -> int:
+        query = '''SELECT member_id FROM levels WHERE guild_id = ? ORDER BY xp LIMIT 20'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, guild_id)
+                member_ids = await cursor.fetchall()
+            await self.bot.pool.release(conn)
+        return member_ids[-1][0]
+
+    async def top_20_role_handler(self, member: discord.Member, guild: discord.Guild, role_id: int) -> None:
+        check = await self._check_top_20(member.id, guild.id)
+        if check is True:
+            role = member.get_role(role_id)
+            if role is None:
+                role = guild.get_role(role_id)
+                await member.add_roles(role, reason=f'{str(member)} made it to the top 20!')
+                if len(role.members) > 20:
+                    mem_ids = []
+                    for member in role.members:
+                        mem_ids.append(member.id)
+                    member_movedown_id = await self._get_top_20_movedown(mem_ids, guild.id)
+                    remove_member = guild.get_member(member_movedown_id)
+                    if remove_member is None:
+                        remove_member = await guild.fetch_member(member_movedown_id)
+                    await remove_member.remove_roles(role, reason=f'{str(remove_member)} dropped out of the top 20!')
+
+        if check is False:
+            role = member.get_role(role_id)
+            if role is not None: 
+                await member.remove_roles(role, reason=f'{str(member)} dropped out of the top 20!')
+                add_mem_id = await self._get_number_20(guild.id)
+                add_member = guild.get_member(add_mem_id)
+                if add_member is None:
+                    add_member = await guild.fetch_member(add_mem_id)
+                await add_member.add_roles(role, reason=f'{str(add_member)} made it to the top 20!')
 
     async def handle_message(self, message: discord.Message) -> None:
         if message.author.bot:
             return
-            
-        if message.channel.id not in self.channels:
-            return
 
-        zennie_role_id = 1134797882420117544
-        forms_zennie_role_id = 1134797882420117544
-        zennie_role = message.guild.get_role(zennie_role_id)
-        if zennie_role and zennie_role in message.author.roles:
-            bucket = self.cd_mapping.get_bucket(message)
-            retry_after = bucket.update_rate_limit()
-            xp_to_add = randint(5, 15)
-            await self.level_handler(message, retry_after, xp_to_add)
-        forms_zennie_role = message.guild.get_role(forms_zennie_role_id)
-        if forms_zennie_role and forms_zennie_role in message.author.roles:
-            bucket = self.cd_mapping.get_bucket(message)
-            retry_after = bucket.update_rate_limit()
-            xp_to_add = randint(5, 15)
-            await self.level_handler(message, retry_after, xp_to_add)
+        guild_id = message.guild.id if message.guild else None
+        if guild_id is None:
+            return
+        
+        channels = await self.get_textchannels(guild_id)
+        if str(message.channel.id) not in channels:
+            return
+        
+        xp_to_add = await self.get_chatxp(guild_id)
+        bucket = self.cd_mapping.get_bucket(message)
+        retry_after = bucket.update_rate_limit()
+        
+        await self.level_handler(message, retry_after, xp_to_add)
+
+    async def get_chatxp(self, guild_id: int) -> int:
+        query = '''SELECT chatxp FROM settings WHERE guild_id = ?'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, guild_id)
+                status = await cursor.fetchone()
+            await self.bot.pool.release(conn)
+        if status is not None:
+            return status[0]
+        else:
+            await self.add_server(guild_id)
+            return 1
+
+    def _make_progress_bar(self, progress, color):
+        width = 1500  # Width of the progress bar
+        height = 15  # Height of the progress bar
+        radius = 0  # Radius of the rounded corners
+        progress_bar = Image.new('RGBA', (width, height), (0, 0, 0, 0))
+        draw = ImageDraw.Draw(progress_bar)
+        draw.rectangle([(0, 0), (width, height)], fill=(195, 195, 195, 255))
+        bg_width = int(width * 1)
+        progress_width = int(width * progress)
+        draw.rounded_rectangle([(0, 0), (bg_width, height)], fill=(195, 195, 195, 255), width=1, radius=radius)
+        draw.rounded_rectangle([(0, 0), (progress_width, height)], fill=color, width=1, radius=radius)
+        mask = Image.new('L', (width, height), 0)
+        mask_draw = ImageDraw.Draw(mask)
+        mask_draw.rounded_rectangle([(0, 0), (bg_width, height)], fill=255, width=0, radius=radius)
+        return progress_bar, mask
+
+    def get_avatar(self, avatar: BytesIO) -> Tuple[Image.Image, Image.Image]:
+        circle = Image.open('./assets/circle-mask.png').resize((150, 150)).convert('L')
+        avatar_image = Image.open(avatar).convert('RGBA')
+        avatar_image = avatar_image.resize((150, 150))
+        return avatar_image, circle
 
     def human_format(self, number: int) -> str:
         number = float('{:.3g}'.format(number))
@@ -212,55 +488,7 @@ class levels(commands.Cog):
 
         return percentage, xp_progress_have, xp_progress_need, lvl
 
-    def _make_progress_bar(self, progress, color):
-        width = 1500  # Width of the progress bar
-        height = 15  # Height of the progress bar
-        radius = 0  # Radius of the rounded corners
-        progress_bar = Image.new('RGBA', (width, height), (0, 0, 0, 0))
-        draw = ImageDraw.Draw(progress_bar)
-        draw.rectangle([(0, 0), (width, height)], fill=(195, 195, 195, 255))
-        bg_width = int(width * 1)
-        progress_width = int(width * progress)
-        draw.rounded_rectangle([(0, 0), (bg_width, height)], fill=(195, 195, 195, 255), width=1, radius=radius)
-        draw.rounded_rectangle([(0, 0), (progress_width, height)], fill=color, width=1, radius=radius)
-        mask = Image.new('L', (width, height), 0)
-        mask_draw = ImageDraw.Draw(mask)
-        mask_draw.rounded_rectangle([(0, 0), (bg_width, height)], fill=255, width=0, radius=radius)
-        return progress_bar, mask
-
-    def get_avatar(self, avatar: BytesIO) -> Tuple[Image.Image, Image.Image]:
-        circle = Image.open('./assets/circle-mask.png').resize((190, 190)).convert('L')
-        avatar_image = Image.open(avatar).convert('RGBA')
-        avatar_image = avatar_image.resize((190, 190))
-        return avatar_image, circle
-
-    async def set_card_image(self, image: BytesIO, member_id: int, guild_id: int, colorchange: Optional[bool] = False) -> None:
-        query = "UPDATE levels SET image = $1, color = $2 WHERE member_id = $3"
-        bytes_data = image.getvalue()
-        image.seek(0)
-        ct = ColorThief(image)
-        pb_colors = ct.get_palette(2, 2)
-        pb_primary = '#%02x%02x%02x' % pb_colors[0]
-        pb_accent = '#%02x%02x%02x' % pb_colors[1]
-        if colorchange == False:
-            async with self.bot.pool.acquire() as connection:
-                async with connection.transaction():
-                    await connection.execute(query, bytes_data, pb_primary, member_id)
-            await self.bot.pool.release(connection)
-        else:
-            new_query = "UPDATE levels SET image = $1, accent_color = $4, color = $5 WHERE member_id = $2"
-            async with self.bot.pool.acquire() as connection:
-                async with connection.transaction():
-                    await connection.execute(new_query, bytes_data, member_id, pb_accent, pb_primary)
-            await self.bot.pool.release(connection)
-
-    def _get_bg_image(self, url: str):
-            """Gets background image"""
-            image = requests.get(url, stream=True)
-            b_img = Image.open(BytesIO(image.content))
-            return b_img
-
-    def get_card(self, name: str, status: str, avatar: BytesIO, levels: LevelRow, rank: int, user: discord.User, guild: discord.Guild) -> BytesIO:
+    def get_card(self, avatar: BytesIO, levels: LevelRow, rank: int, user: discord.User, guild: discord.Guild) -> BytesIO:
         percentage, xp_have, xp_need, level = self.xp_calculations(levels)
         card = Image.new('RGBA', size=(1500, 500), color='grey')
         
@@ -302,16 +530,23 @@ class levels(commands.Cog):
         card.paste(avatar_paste, (18, 17), circle)
         zhcn = ImageFont.truetype("./fonts/zhcn.ttf", size=36)
         zhcn2 = ImageFont.truetype("./fonts/zhcn.ttf", size=25)
+        rankdecor = Image.open(f'./assets/{levels["decor"]}.png')
+        rankdecor = rankdecor.resize((750, 750))
+        card.paste(rankdecor, (0, 0), rankdecor)
         rankboxes = Image.open('./assets/rankboxes.png')
         rankboxes = rankboxes.resize((750, 750))
         card.paste(rankboxes, (0, 0), rankboxes)
         draw = ImageDraw.Draw(card, 'RGBA')
         message = levels["messages"]
         messages = self.human_format(message)
+        if guild == 694010548605550675:
+            server = "chroma"
+        else:
+            server = "lyra"
         draw.text((100, 345), f'{xp_have} | {xp_need}', fill=levels['color'], font=zhcn)
         draw.text((100, 345), f'{xp_have} | {xp_need}', fill=levels['color'], font=zhcn)
         draw.text((225, 25), f"{user.name}", fill=levels['color'], font=zhcn)
-        draw.text((225, 65), f"lyra levels", fill=levels['color'], font=zhcn2)
+        draw.text((225, 65), f"{server} levels", fill=levels['color'], font=zhcn2)
         draw.text((300, 410), f'rank | {str(rank)}', fill=levels['color'], font=zhcn)
         draw.text((100, 410), f'level | {level-1}', fill=levels['color'], font=zhcn)
         draw.text((500, 410), f'{messages} messages', fill=levels['color'], font=zhcn)
@@ -320,163 +555,93 @@ class levels(commands.Cog):
         buffer.seek(0)
         return buffer
 
-    async def generate_card_rank1(self, name: str, status: str, avatar: BytesIO, levels: LevelRow, rank: int, member: discord.Member) -> BytesIO:
-        guild = member.guild
-        card_generator = functools.partial(self.get_card, name, status, avatar, levels, rank)
-        card = await self.bot.loop.run_in_executor(None, self.get_card, str(member), str(member.status), avatar, levels, rank, member, guild)
+    async def generate_card(self, avatar: BytesIO, levels: LevelRow, rank: int, member: discord.Member, guild: discord.Guild) -> BytesIO:
+        card_generator = functools.partial(self.get_card, avatar, levels, rank, guild)
+        card = await self.bot.loop.run_in_executor(None, self.get_card, avatar, levels, rank, member, guild)
         return card
 
-    async def get_rank(self, member_id: int) -> int:
-        query = '''SELECT COUNT(*) FROM levels WHERE xp > (SELECT xp FROM levels WHERE member_id = ?)'''
+    async def get_rank(self, member_id: int, guild_id: int) -> int:
+        query = '''SELECT COUNT(*) FROM levelling WHERE guild_id = ? AND xp > (SELECT xp FROM levelling WHERE member_id = ? AND guild_id = ?)'''
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cursor:
-                await cursor.execute(query, (member_id))
+                await cursor.execute(query, (guild_id, member_id, guild_id))
                 rank = await cursor.fetchone()
             await self.bot.pool.release(conn)
         return rank[0] + 1
 
-    async def reset_levels(self) -> None:
-        query = '''UPDATE levels SET xp = 0, messages = 0'''
+    async def reset_levels(self, guild_id: int) -> None:
+        query = '''UPDATE levelling SET xp = 0, messages = 0 WHERE guild_id = ?'''
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cursor:
-                await cursor.execute(query, )
+                await cursor.execute(query, guild_id)
                 await conn.commit()
             await self.bot.pool.release(conn)
 
-    async def add_xp(self, member_id: int, xp: int, levels: Optional[LevelRow]) -> None:
+    async def add_xp(self, member_id: int, guild_id: int, xp: int, levels: Optional[LevelRow]) -> None:
         if levels:
-            current_xp = levels['xp']
-            new_xp = current_xp + xp
-
-            query = '''UPDATE levels SET xp = ? WHERE member_id = ?'''
+            query = '''UPDATE levelling SET xp = ? WHERE member_id = ? AND guild_id = ?'''
             async with self.bot.pool.acquire() as conn:
                 async with conn.cursor() as cursor:
-                    await cursor.execute(query, (new_xp, member_id))
+                    await cursor.execute(query, (levels['xp'] + xp, member_id, guild_id))
                     await conn.commit()
+                await self.bot.pool.release(conn)
         else:
-            await self.add_member(member_id, xp)
+            await self.add_member(member_id, guild_id, xp)
 
-    async def remove_xp(self, member_id: int, xp: int, levels: LevelRow) -> None:
-        query = '''UPDATE levels SET xp = ? WHERE member_id = ?'''
+    async def remove_xp(self, member_id: int, guild_id: int, xp: int, levels: LevelRow) -> None:
+        query = '''UPDATE levelling SET xp = ? WHERE member_id = ? AND guild_id = ?'''
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cursor:
-                await cursor.execute(query, (levels['xp'] - xp, member_id, ))
+                await cursor.execute(query, (levels['xp'] - xp, member_id, guild_id))
                 await conn.commit()
             await self.bot.pool.release(conn)
 
-    async def set_rank_color(self, member_id: int, color: str) -> None:
-        query = '''UPDATE levels SET color = ? WHERE member_id = ?'''
+    async def get_leaderboard_stats(self, guild_id: int) -> List[LevelRow]:
+        query = '''SELECT * FROM levelling WHERE guild_id = ? ORDER BY xp DESC'''
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cursor:
-                await cursor.execute(query, color, member_id, )
-                await conn.commit()
-            await self.bot.pool.release(conn)
+                await cursor.execute(query, guild_id)
+                rows = await cursor.fetchall()
+        return rows
 
     @app_commands.command(name="rank", description="Check your rank")
+    @app_commands.checks.cooldown(1, 20)
     async def rank(self, interaction: discord.Interaction, member: Optional[discord.Member] = None):
-        zennie_role_id = 1134797882420117544
         member = member or interaction.user
-        
-        if zennie_role_id not in [role.id for role in member.roles]:
-            await interaction.response.send_message("Sorry, you cannot use this command.", ephemeral=True)
-            return
-
-        levels = await self.get_member_levels(member.id)
-        rank = await self.get_rank(member.id)
+        levels = await self.get_member_levels(member.id, interaction.guild_id)
+        rank = await self.get_rank(member.id, interaction.guild_id)
         avatar_url = member.display_avatar.replace(static_format='png', size=256).url
         response = await self.bot.session.get(avatar_url)
+        guild = interaction.guild.id
         avatar = BytesIO(await response.read())
         avatar.seek(0)
 
         if levels:
-            card = await self.generate_card_rank1(str(member), str(member.status), avatar, levels, rank, member)
+                card = await self.generate_card(avatar, levels, rank, member, guild)
         else:
             card = None
 
-        if interaction.response.is_done():
-            return
-
         if card:
-            await interaction.response.send_message(file=discord.File(card, 'card.png'))
+            await interaction.response.send_message(file=discord.File(card, 'card.png'), view=configrankcard(member=member.id, bot=self.bot))
         else:
             await interaction.response.send_message(f"{member} hasn't gotten levels yet!")
 
-    @app_commands.command(name="add", description="Add xp to someone", extras="+add @member amount")
-    async def add(self, interaction: discord.Interaction, member: discord.Member, amount: int):
-        zennie_role_id = 1261435772775563315
-        if zennie_role_id not in [role.id for role in interaction.user.roles]:
-            await interaction.response.send_message("Sorry, this is a staff-only command", ephemeral=True)
-            return
-
-        levels = await self.get_member_levels(member.id)
-        if levels is None:
-            await self.add_member(member.id, amount)
-            current_xp = amount
+    @rank.error
+    async def daily_error(self, interaction: discord.Interaction, error: Exception):
+        if isinstance(error, CommandOnCooldown):
+            remaining_time = datetime.timedelta(seconds=error.retry_after)
+            hours, remainder = divmod(remaining_time.seconds, 3600)
+            minutes, seconds = divmod(remainder, 60)
+            await interaction.response.send_message(f"Slow down! you're on cooldown for **{seconds} seconds**.")
         else:
-            current_xp = levels["xp"]
-
-        new_xp = current_xp + amount
-        await self.add_xp(member.id, amount, levels)
-        lvl = 0
-        while True:
-            xp_needed_for_next_level = ((50 * (lvl ** 2)) + (50 * (lvl - 1)))
-            if current_xp < xp_needed_for_next_level:
-                break
-            lvl += 1
-
-        final_lvl = lvl
-        while new_xp >= ((50 * (final_lvl ** 2)) + (50 * (final_lvl - 1))):
-            final_lvl += 1
-
-        stella = "Stella" if final_lvl == 1 else "Stellas"
-        embed = discord.Embed(description=f"{member.name} you just reached **{final_lvl - 1}** {stella}!", colour=0xFEBCBE)
-        embed.set_footer(text=f"This XP was added by {interaction.user.name}")
-        channel = interaction.guild.get_channel(1135027269853778020)
-        await channel.send(member.mention, embed=embed)
-        if final_lvl >= 1:
-            role = interaction.guild.get_role(1147592763924295681)
-            if role and not any(r.id == role.id for r in member.roles):
-                await member.add_roles(role, reason=f"{member.name} reached 1 Stella or higher")
-        embed = discord.Embed(title='XP Added!', description=f'Gave `{amount} XP` to {str(member)}', color=0xFEBCBE)
-        await interaction.response.send_message(embed=embed)
-
-    @app_commands.command(name="remove", description="Remove xp from someone", extras="+remove @member amount")
-    async def remove(self, interaction: discord.Interaction, member: discord.Member, amount: int):
-        zennie_role_id = 1261435772775563315
-        
-        if zennie_role_id not in [role.id for role in interaction.user.roles]:
-            await interaction.response.send_message("Sorry, this is a staff only command", ephemeral=True)
-            return
-        levels = await self.get_member_levels(member.id)
-        if levels:
-            if amount > levels['xp']:
-                await interaction.response.send_message("you can't take away more xp than the user already has!")
-            else:
-                await self.remove_xp(member.id, amount, levels)
-                embed = discord.Embed(title='xp removed!',description=f'removed `{amount}xp` from {str(member)}',color=0xFEBCBE)
-                await interaction.response.send_message(embed=embed)
-        else:
-            await interaction.response.send_message(f"{str(member)} doesn't have any xp yet!")
-
-    async def get_leaderboard_stats(self) -> List[LevelRow]:
-        query = '''SELECT * FROM levels ORDER BY xp DESC'''
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cursor:
-                await cursor.execute(query)
-                rows = await cursor.fetchall()
-        return rows
+            await interaction.response.send_message("An unexpected error occurred. Please try again later.",ephemeral=True)
 
     @app_commands.command(description="See the level leaderboard")
+    @app_commands.checks.cooldown(1, 20)
     async def leaderboard(self, interaction: discord.Interaction):
-        zennie_role_id = 1134797882420117544
-        member = interaction.user
-        
-        if zennie_role_id not in [role.id for role in member.roles]:
-            await interaction.response.send_message("Sorry, you currently aren't a member of lyra. This command is for lyre's only!", ephemeral=True)
-            return
         embeds = []
         description = ""
-        rows = await self.get_leaderboard_stats()
+        rows = await self.get_leaderboard_stats(interaction.guild_id)
         per_page = 5 if interaction.user.is_on_mobile() else 10
         for i, row in enumerate(rows, start=1):
             msg = "messages" if row['messages'] != 1 else "message"
@@ -486,9 +651,9 @@ class levels(commands.Cog):
                 if xp < ((50*(lvl**2))+(50*(lvl-1))):
                     break
                 lvl += 1
-            description += f"**{i}.** <@!{row['member_id']}>\n<:Empty:1188186122350759996><:1166196258499727480:1188190249768210582>**level {lvl-1} | {row['messages']} {msg}**\n\n"
+            description += f"**{i}.** <@!{row['member_id']}>\n<:bulletpoint:1304247536021667871>**{row['xp']} xp | level {lvl} | {row['messages']} {msg}**\n\n"
             if i % per_page == 0 or i == len(rows):
-                embed = discord.Embed(title=f"{interaction.guild.name}'s leaderboard", description=description, color=0xFEBCBE)
+                embed = discord.Embed(title=f"{interaction.guild.name}'s leaderboard", description=description, color=0x2b2d31)
                 embed.set_thumbnail(url=interaction.guild.icon.url)
                 embeds.append(embed)
                 description = ""
@@ -498,170 +663,156 @@ class levels(commands.Cog):
         else:
             await interaction.response.send_message(embed=embed)
 
-    @app_commands.command(name="rankcolor", description="Change your rank card color with hex codes")
-    async def rankcolor(self, interaction: discord.Interaction, color: str):
-        zennie_role_id = 1134797882420117544
-        member = interaction.user
-        
-        if zennie_role_id not in [role.id for role in member.roles]:
-            await interaction.response.send_message("Sorry, you cannot use this command.", ephemeral=True)
-            return
-        match = re.search(self.regex_hex, color)
-        if match:
-            await self.set_rank_color(interaction.user.id, color)
-            embed = discord.Embed(
-                title='changed your bar color!',
-                description=f'your new bar color is `{color}`',
-                color=0xFEBCBE
-            )
-            await interaction.response.send_message(embed=embed)
+    @leaderboard.error
+    async def daily_error(self, interaction: discord.Interaction, error: Exception):
+        if isinstance(error, CommandOnCooldown):
+            remaining_time = datetime.timedelta(seconds=error.retry_after)
+            hours, remainder = divmod(remaining_time.seconds, 3600)
+            minutes, seconds = divmod(remainder, 60)
+            await interaction.response.send_message(f"Slow down! you're on cooldown for **{seconds} seconds**.")
         else:
-            await interaction.response.send_message(f"`{color}` is not a valid hex color. You may need to add a #")
+            await interaction.response.send_message("An unexpected error occurred. Please try again later.",ephemeral=True)
 
-    @app_commands.command(name="rankbg", description="Upload an image when using this command!")
-    async def rankbg(self, interaction: discord.Interaction, image: Optional[discord.Attachment] = None):
-        zennie_role_id = 1134797882420117544
-        member = interaction.user
-        
-        if zennie_role_id not in [role.id for role in member.roles]:
-            await interaction.response.send_message("Sorry, you cannot use this command.", ephemeral=True)
-            return
-        image_data = None
+    @app_commands.command(name="add", description="Add xp to someone", extras="+add @member amount")
+    @app_commands.checks.has_permissions(manage_guild=True)
+    async def add(self, interaction: discord.Interaction, member: discord.Member, amount: int):
+        levels = await self.get_member_levels(member.id, interaction.guild_id)
+        await self.add_xp(member.id, interaction.guild_id, amount, levels)
+        embed = discord.Embed(
+            title='xp added!',
+            description=f'gave `{amount}xp` to {str(member)}',
+            color=0x2B2D31
+        )
+        top20 = await self.get_top20(interaction.guild.id)
+        if top20 is not None:
+            await self.top_20_role_handler(interaction.user, interaction.guild, top20)
+        await interaction.response.send_message(embed=embed)
 
-        if image:
-            if image.url.startswith("https://") or image.url.startswith("http://"):
-                try:
-                    async with self.bot.session.get(image.url) as resp:
-                        if resp.headers.get('content-type').split("/")[0] == "image" and not resp.headers.get('content-type').split("/")[1] == "gif":
-                            image_data = BytesIO(await resp.read())
-                            image_data.seek(0)
-                        else:
-                            return await interaction.response.send_message("Invalid image.", ephemeral=True)
-                except:
-                    return await interaction.response.send_message("Couldn't get the image from the link you provided.", ephemeral=True)
+    @app_commands.command(name="remove", description="Remove xp from someone", extras="+remove @member amount")
+    @app_commands.checks.has_permissions(manage_guild=True)
+    async def remove(self, interaction: discord.Interaction, member: discord.Member, amount: int):
+        levels = await self.get_member_levels(member.id, interaction.guild_id)
+        if levels:
+            if amount > levels['xp']:
+                await interaction.response.send_message("you can't take away more xp than the user already has!")
             else:
-                return await interaction.response.send_message("You need to use a https or http URL", ephemeral=True)
+                await self.remove_xp(member.id, interaction.guild_id, amount, levels)
+                embed = discord.Embed(
+                    title='xp removed!',
+                    description=f'removed `{amount}xp` from {str(member)}',
+                    color=0x2B2D31
+                )
+                await interaction.response.send_message(embed=embed)
+                top20 = await self.get_top20(interaction.guild.id)
+                if top20 is not None:
+                    await self.top_20_role_handler(interaction.user, interaction.guild, top20)
         else:
-            if interaction.data.get('attachments'):
-                to_edit = interaction.data['attachments'][0]
-                if to_edit['content_type'].split("/")[0] == "image" and not to_edit['content_type'].split("/")[1] == "gif":
-                    async with self.bot.session.get(to_edit['url']) as resp:
-                        image_data = BytesIO(await resp.read())
-                        image_data.seek(0)
-                else:
-                    return await interaction.response.send_message("Invalid image.", ephemeral=True)
-            else:
-                return await interaction.response.send_message("You need to upload an image attachment or add an image URL", ephemeral=True)
+            await interaction.response.send_message(f"{str(member)} doesn't have any xp yet!")
 
-        try:
-            b_img = Image.open(image_data)
-        except UnidentifiedImageError:
-            return await interaction.response.send_message("Invalid image.", ephemeral=True)
+    async def reset_inactive(self, guild_id: int) -> None:
+        query_select = '''SELECT member_id FROM chromies WHERE guild_id = ? AND inactive = 1'''
+        query_update = '''UPDATE chromies SET inactive = 0 WHERE guild_id = ? AND member_id = ?'''
         
-        await self.set_card_image(image_data, interaction.user.id, interaction.guild.id)
-        await interaction.response.send_message("Successfully changed your rank card image!", ephemeral=True)
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query_select, (guild_id,))
+                members_to_reset = await cursor.fetchall()
+                
+                for (member_id,) in members_to_reset:
+                    await cursor.execute(query_update, (guild_id, member_id))
+                
+                await conn.commit()
+
+    async def reset_iamsgs(self, guild_id: int) -> None:
+        query_select = '''SELECT member_id FROM chromies WHERE guild_id = ? AND iamsgs = 0'''
+        query_update = '''UPDATE chromies SET iamsgs = 3 WHERE guild_id = ? AND member_id = ?'''
+        
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query_select, (guild_id,))
+                members_to_reset = await cursor.fetchall()
+                
+                for (member_id,) in members_to_reset:
+                    await cursor.execute(query_update, (guild_id, member_id))
+                
+                await conn.commit()
 
     @app_commands.command(name="reset", description="Resets everyone's xp")
+    @app_commands.checks.has_permissions(manage_guild=True)
     async def reset(self, interaction: discord.Interaction):
-        zennie_role_id = 1261435772775563315
-        member = interaction.user
-        
-        if zennie_role_id not in [role.id for role in member.roles]:
-            await interaction.response.send_message("Sorry, this is a staff only command", ephemeral=True)
-            return
-        await self.reset_levels()
-        await interaction.response.send_message("All levels have been reset! All members are back to level 1 with 0 messages")
+        if interaction.guild.id == 694010548605550675:
+            await self.reset_iamsgs(interaction.guild.id)
+            await self.reset_inactive(interaction.guild.id)
+            await self.reset_levels(interaction.guild_id)
+            await interaction.response.send_message("All levels have been reset! All members are back to level 1 with 0 messages\nIf members had **0** chances to send another inactive message, they will now be able to send more!")
+        else:
+            await self.reset_levels(interaction.guild_id)
+            await interaction.response.send_message("All levels have been reset! All members are back to level 1")
+
+    async def get_dailyxp(self, guild_id: int) -> str:
+        query = '''SELECT dailyxp FROM settings WHERE guild_id = ?'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, (guild_id,))
+                status = await cursor.fetchone()
+        if status is not None:
+            return status[0]
+        else:
+            await self.add_server(guild_id)
+            return "150 - 300"
+
+    async def get_level_row(self, member_id: int, guild_id: int) -> Optional[LevelRow]:
+        query = '''SELECT * FROM levelling WHERE member_id = ? AND guild_id = ?'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, (member_id, guild_id))
+                return await cursor.fetchone()
+
+    @app_commands.command(name="daily", description="Get daily XP with Hoshi")
+    @app_commands.checks.cooldown(1, 86400)
+    async def daily(self, interaction: discord.Interaction):
+        xprand = await self.get_dailyxp(interaction.guild.id)
+        min_xp, max_xp = map(int, xprand.split('-'))
+        xp = randint(min_xp, max_xp)
+        levels = await self.get_level_row(interaction.user.id, interaction.guild.id)
+        await self.add_xp(interaction.user.id, interaction.guild.id, xp, levels)
+        top20 = await self.get_top20(interaction.guild.id)
+        if top20 is not None:
+            await self.top_20_role_handler(interaction.user, interaction.guild, top20)
+        await interaction.response.send_message(f"Yay! **{interaction.user.name}**, you received **{xp}** XP from daily XP!")
+
+    @daily.error
+    async def daily_error(self, interaction: discord.Interaction, error: Exception):
+        if isinstance(error, CommandOnCooldown):
+            remaining_time = datetime.timedelta(seconds=error.retry_after)
+            hours, remainder = divmod(remaining_time.seconds, 3600)
+            minutes, seconds = divmod(remainder, 60)
+            await interaction.response.send_message(f"You cannot claim your daily for another **{hours}h {minutes}m {seconds}s**.")
+        else:
+            await interaction.response.send_message("An unexpected error occurred. Please try again later.",ephemeral=True)
+
+    @app_commands.command(name="dropxp", description="Drop XP for server members")
+    @app_commands.checks.has_permissions(manage_guild=True)
+    @app_commands.checks.cooldown(1, 20)
+    async def dropxp(self, interaction: discord.Interaction, amount: int):
+        embed = discord.Embed(title="<:removal:1306071903198380082> Dropped XP", description=f"**{interaction.user.name}** dropped `{amount}xp`.", color=0x2b2d31)
+        view = claimxp(bot=self.bot, amount=amount, dropper=interaction.user.name)
+        await interaction.response.send_message(embed=embed, view=view)
+        await interaction.followup.send(f"<:whitecheck:1304222829595721770> **{interaction.user.name}** `{amount}xp` has been dropped!", ephemeral=True)
+
+    @dropxp.error
+    async def daily_error(self, interaction: discord.Interaction, error: Exception):
+        if isinstance(error, CommandOnCooldown):
+            remaining_time = datetime.timedelta(seconds=error.retry_after)
+            hours, remainder = divmod(remaining_time.seconds, 3600)
+            minutes, seconds = divmod(remainder, 60)
+            await interaction.response.send_message(f"Slow down! you're on cooldown for **{seconds} seconds**.")
+        else:
+            await interaction.response.send_message("An unexpected error occurred. Please try again later.",ephemeral=True)
 
     @commands.Cog.listener()
     async def on_message(self, message: discord.Message) -> None:
         await self.handle_message(message)
-
-    @commands.command()
-    @commands.dynamic_cooldown(kanzen_cooldown, commands.BucketType.user)
-    async def dailies(self, ctx: commands.Context):
-        zennie_role_id = 1134797882420117544
-        zennie_role2_id = 1219759999656530130
-        member = ctx.author
-        if not any(role.id in [zennie_role_id, zennie_role2_id] for role in member.roles):
-            await ctx.reply("Sorry, this is a members only command", ephemeral=True)
-            return
-        emojis = ["<:alhaithamuwu:1257829394995609722>", "<:dilucuwu:1215001949905223721>", "<:arleuwu:1236642544176205866>", "<:danhengiluwu:1236710497454264441>", "<:nilouuwu:1236642546269028443>", "<:xiaouwu:1214631450411016222>", "<:mizookuwu:1263923282072305674>", "<:bambyuwu:1258626994657300531>", "<:asmouwu:1281673436917399652>", "<:sigeuwu:1258217110752989184>", "<:scarauwu:1214787080262262826>", "<:neuviuwu:1259239904240468079>", "<:furinauwu:1269018189614809129>", "<:zhongliuwu:1215001895060512798>", "<:kazuhauwu:1215001799321321532>", "<:kaeyauwu:1258217332975730769>", "<:jiyanuwu:1258215228953591828>", "<:beeluwu:1281673450695557140>", "<:belphieuwu:1281673463517548584>", "<:leviuwu:1281673478831079556>", "<:luciuwu:1281673492449726535>", "<:lukeuwu:1281673507079717007>", "<:mammonuwu:1281673523122933770>", "<:moranuwu:1275808002229801010>"," <:satanuwu:1281673538390200461>", "<:rafayeluwu:1268323216904949820>", "<:ittouwu:1215041496584036455>", "<:eulauwu:1263578777422790687>", "<:chuwanninguwu:1258217513842376714>", "<:childeuwu:1236695748301688953>", "<:aventurineuwu:1236710521114202112>", "<:alhaithamuwu:1257830193750347918>", "<:solomonuwu:1281673568467292191>", "<:simeonuwu:1281673552931721246>", "<:sukunauwu:1268322507929157764>", "<:sylusuwu:1268323281010688154>", "<:tighnariuwu:1261061785406935153>", "<:vashuwu:1261060609278083183>", "<:ventiuwu:1215001849183076432>", "<:wriouwu:1258217203627462769>", "<:wukonguwu:1265138917670387794>", "<:yaeuwu:1258217291477422091>", "<:yejunuwu:1258217244966654013>", "<:yoiuwu:1259241806969704560>", "<:yanfeiuwu:1268323149741690890>"]
-        emoji = random.choice(emojis)
-        xp = randint(150, 300)
-        levels = await self.get_member_levels(ctx.author.id)
-        new_xp = levels["xp"] + xp
-        lvl = 0
-        while True:
-            if levels["xp"] < ((50*(lvl**2))+(50*(lvl-1))):
-                break
-            lvl += 1
-        next_level_xp = ((50*(lvl**2))+(50*(lvl-1)))
-        if new_xp > next_level_xp:
-            if lvl == 1:
-                stella = "Stella"
-            else:
-                stella = "Stellas"
-
-            embed = discord.Embed(description=f"{ctx.author.name} you just reached **{lvl}** {stella}!", colour=0xFEBCBE)
-            await self.add_xp(member.id, xp, levels)
-            if lvl == 1:
-                role = ctx.guild.get_role(1147592763924295681)
-                if role:
-                    await ctx.author.add_roles(role, reason=f"{ctx.author.name} reached 1 stella")
-            channel = ctx.guild.get_channel(1135027269853778020)
-            await channel.send(ctx.author.mention, embed=embed)
-        else:
-            await self.add_member(member.id, xp)
-        await ctx.reply(f"{emoji} Yay! You have claimed your daily xp! you got `{xp}xp`")
-        
-    @dailies.error
-    async def daily_error(self, ctx: commands.Context, error: commands.CommandError):
-        if isinstance(error, commands.CommandOnCooldown):
-            if error.retry_after > 3600:
-                hours = error.retry_after / 3600
-                await ctx.reply(f"You need to wait {int(hours)} hours before claiming daily XP again!")
-            elif error.retry_after > 60:
-                minutes = error.retry_after / 60
-                await ctx.reply(f"You need to wait {int(minutes)} minutes before claiming daily XP again!")
-            else:
-                await ctx.reply(f"You need to wait {int(error.retry_after)} seconds before claiming daily XP again!")
-
-    async def add_msg(self, member_id: int, messages: int, levels: Optional[LevelRow]) -> None:
-        if levels:
-            query = '''UPDATE levels SET messages = ? WHERE member_id = ?'''
-            async with self.bot.pool.acquire() as conn:
-                async with conn.cursor() as cursor:
-                    await cursor.execute(query, (levels['messages'] + messages, member_id, ))
-                    await conn.commit()
-                await self.bot.pool.release(conn)
-        else:
-            await self.add_member(member_id, messages)
-
-    async def add_msg(self, member_id: int, messages: int, levels: Optional[LevelRow]) -> None:
-        if levels:
-            query = '''UPDATE levels SET messages = ? WHERE member_id = ?'''
-            async with self.bot.pool.acquire() as conn:
-                async with conn.cursor() as cursor:
-                    await cursor.execute(query, (levels['messages'] + messages, member_id, ))
-                    await conn.commit()
-                await self.bot.pool.release(conn)
-        else:
-            await self.add_member(member_id, messages)
-
-    @commands.command()
-    async def lyraaddmsg(self, ctx, member: discord.Member, messages: int):
-        levels = await self.get_member_levels(member.id)
-        await self.add_msg(member.id, messages, levels)
-        await ctx.reply(f"Added **{messages}** messages to {member.mention}")
-
-    @commands.command(hidden=True)
-    async def dd(self, ctx, member_id: int):
-        guild_id = ctx.guild.id
-
-        async with self.bot.pool.acquire() as conn:
-            await conn.execute('DELETE FROM levels WHERE member_id = $1', member_id)
-
-        await ctx.send(f"<@{member_id}>'s levels have been removed!")
 
 async def setup(bot):
     await bot.add_cog(levels(bot))

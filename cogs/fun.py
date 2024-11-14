@@ -1,56 +1,18 @@
 import asyncio
-import datetime
 import io
-import json
-import math
 import os
-import random
-import textwrap
-from typing import Optional
-import typing
 import aiohttp
 import discord
 from discord.ext import commands
-from discord import ui, app_commands
-import requests
-from typing import Optional, Tuple
-from PIL import ImageDraw, Image
-from io import BytesIO
-from easy_pil import Font
-from triviastuff.getQuestions import getQuestions
-from triviastuff.checkHandler import buttonHandler
+from discord import app_commands
+import random
+from PIL import Image
+from typing import Optional
 
 class Fun(commands.Cog):
     """Hoshi's fun commands"""
     def __init__(self, bot):
         self.bot = bot
-        self.gif_cache = {}
-        self.server1_log_channel_id = 1122627075682078720
-        self.emoji="<:chimmy2:1148234652448981072>"
-
-    def get_random_color(self):
-        r = random.randint(0, 255)
-        g = random.randint(0, 255)
-        b = random.randint(0, 255)
-        return r, g, b
-
-    @commands.hybrid_command(name="say", description="Make Hoshi say something", extras="+say hello")
-    async def say(self, ctx, *, message):
-        await ctx.message.delete()
-        async with ctx.typing():
-            await asyncio.sleep(1)
-            await ctx.send(message)
-            embed = discord.Embed(title="Say command log", description=f"{ctx.author.name} has used the say command\nthey said: `{message}`", color=0x2b2d31)
-            embed.set_footer(text=f"id: {ctx.author.id}", icon_url=ctx.author.avatar)
-            log_channel_id = self.get_log_channel_id(ctx.guild.id)
-            if log_channel_id is not None:
-                log_channel = self.bot.get_channel(log_channel_id)
-                if log_channel:
-                    await log_channel.send(embed=embed)
-
-    def get_log_channel_id(self, guild_id):
-        if guild_id == 1131003330810871979:
-            return self.server1_log_channel_id
 
     @app_commands.command(name="jail", description="Lock someone up in jail")
     async def jail(self, interaction: discord.Interaction, member: Optional[discord.Member]):
@@ -122,7 +84,7 @@ class Fun(commands.Cog):
         embed.set_image(url=slap)
         await interaction.response.send_message(embed=embed)
 
-    @app_commands.command(name="kiss", description="kiss a member")
+    @app_commands.command(name="kiss", description="Kiss a member")
     async def kiss(self, interaction: discord.Interaction, member: discord.Member):
         descriptions = [f'{interaction.user.mention} gave {member.mention} a kiss', f'so cute {interaction.user.mention} and {member.mention} kissed 🥰', f'ew get a room you two... gross {member.mention} {interaction.user.mention}']
         description = random.choice(descriptions)
