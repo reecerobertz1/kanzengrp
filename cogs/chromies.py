@@ -73,7 +73,7 @@ class reportmember(ui.Modal, title='Report'):
         embed.set_thumbnail(url=interaction.guild.icon)
         channel = interaction.client.get_channel(1274063410463641642)
         await channel.send("<@&739513680860938290>", embed=embed)
-        await interaction.response.send_message(f'Your report has been sent!\nThank you for helping us make Chroma a better place!', ephemeral=True)
+        await interaction.followup.send(f'Your report has been sent!\nThank you for helping us make Chroma a better place!', ephemeral=True)
 
 class ia(discord.ui.Modal):
     def __init__(self, bot):
