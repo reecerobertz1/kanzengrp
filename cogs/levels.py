@@ -638,10 +638,7 @@ class levels(commands.Cog):
             else:
                 print(f"Error in 'rank' command: {error}")
                 if not interaction.response.is_done():
-                    await interaction.response.send_message(
-                        "An unexpected error occurred. Please try again later.",
-                        ephemeral=True
-                    )
+                    await interaction.response.send_message(f"An unexpected error occurred. Please try again later.\n{error}",ephemeral=True)
         except discord.InteractionResponded:
             pass
 
