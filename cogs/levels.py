@@ -422,7 +422,7 @@ class levels(commands.Cog):
                 time_spent = datetime.utcnow() - join_time
                 seconds_spent = time_spent.total_seconds()
                 xp_to_add = await self.get_voicexp(guild_id)
-                xp_earned = (seconds_spent // 1) * xp_to_add
+                xp_earned = (seconds_spent // 30) * xp_to_add
                 
                 if xp_earned > 0:
                     levels = await self.get_level_row(member.id, member.guild.id)

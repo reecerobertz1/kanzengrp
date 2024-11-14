@@ -83,66 +83,8 @@ class channelselect(discord.ui.View):
         except asyncio.TimeoutError:
             await interaction.followup.send("You didn’t respond in time. Please try again.", ephemeral=True)
 
-    @discord.ui.button(label="Voice Channels")
-    async def voice(self, interaction: discord.Interaction, button: discord.ui.Button):
-        guild_id = interaction.guild.id
-        await interaction.response.send_message(
-            f"<:settings:1304222799639871530> **{interaction.user.name}**, please enter the channel IDs separated by spaces.\n"
-            f"-# <:thread2:1304222916879323136> Default: **None**\n"
-            f"-# <:thread2:1304222916879323136> Please enter the IDs within **60 seconds**\n"
-            f"-# <:thread1:1304222965042249781> Enter the IDs in chat!",
-            ephemeral=True
-        )
-
-        def check(msg):
-            return msg.author == interaction.user and msg.channel == interaction.channel
-
-        try:
-            msg = await self.bot.wait_for("message", timeout=60, check=check)
-            channel_ids = msg.content.split()
-            invalid_ids = []
-            valid_channels = []
-
-            for channel_id in channel_ids:
-                if channel_id.isdigit():
-                    channel = interaction.guild.get_channel(int(channel_id))
-                    if channel:
-                        valid_channels.append(channel)
-                    else:
-                        invalid_ids.append(channel_id)
-                else:
-                    invalid_ids.append(channel_id)
-
-            await msg.delete()
-
-            if valid_channels:
-                channel_mentions = "\n".join(channel.mention for channel in valid_channels)
-                await self.set_voicechannels(guild_id, channels=str(channel_mentions))
-                await interaction.followup.send(
-                    f"<:check:1291748345194348594> **{interaction.user.name}**, the following channels have been set:\n{channel_mentions}",
-                    ephemeral=True
-                )
-
-            if invalid_ids:
-                invalid_list = ", ".join(invalid_ids)
-                await interaction.followup.send(
-                    f"<:whitex:1304222877305798697> **{interaction.user.name}**, the following IDs were invalid or channels not found:\n{invalid_list}",
-                    ephemeral=True
-                )
-
-        except asyncio.TimeoutError:
-            await interaction.followup.send("You didn’t respond in time. Please try again.", ephemeral=True)
-
     async def set_textchannels(self, guild_id: int, channels: str) -> None:
         query = f'''UPDATE settings SET channels = ? WHERE guild_id = ?'''
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cursor:
-                await cursor.execute(query, channels, guild_id)
-                await conn.commit()
-            await self.bot.pool.release(conn)
-
-    async def set_voicechannels(self, guild_id: int, channels: str) -> None:
-        query = f'''UPDATE settings SET voicechannels = ? WHERE guild_id = ?'''
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cursor:
                 await cursor.execute(query, channels, guild_id)
@@ -510,7 +452,7 @@ class settingselect(discord.ui.View):
         group = "Chroma" if guild.id == 694010548605550675 else "Lyra"
         textchannels = await self.get_textchannels(interaction.guild.id)
         voice= await self.get_voicechannels(interaction.guild.id)
-        embed = discord.Embed(title=f"<:settings:1304222799639871530> {group}'s Channels",description=f"<:bulletpoint:1304247536021667871> Text Channels:\n{textchannels}\n\n<:bulletpoint:1304247536021667871> Voice Channels:\n{voice}",color=0x2b2d31)
+        embed = discord.Embed(title=f"<:settings:1304222799639871530> {group}'s Channels",description=f"<:bulletpoint:1304247536021667871> Text Channels:\n{textchannels}",color=0x2b2d31)
         await interaction.response.edit_message(embed=embed, view=channelselect(bot=self.bot))
 
     async def get_dailyxp(self, guild_id: int) -> int:
@@ -528,19 +470,6 @@ class settingselect(discord.ui.View):
 
     async def get_top20(self, guild_id: int) -> int:
         query = '''SELECT top20 FROM settings WHERE guild_id = ?'''
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cursor:
-                await cursor.execute(query, guild_id)
-                status = await cursor.fetchone()
-            await self.bot.pool.release(conn)
-        if status is not None:
-            return status[0]
-        else:
-            await self.add_server(guild_id)
-            return 1
-
-    async def get_voicechannels(self, guild_id: int) -> int:
-        query = '''SELECT voicechannels FROM settings WHERE guild_id = ?'''
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cursor:
                 await cursor.execute(query, guild_id)
