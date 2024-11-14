@@ -207,6 +207,7 @@ class levels(commands.Cog):
         self.status_holder = {0: "disabled", 1: "enabled"}
         self.pool = None
         self.cd_mapping = commands.CooldownMapping.from_cooldown(1, 60, commands.BucketType.user)
+        self.voice_times = {}
 
     async def get_voicechannels(self, guild_id: int) -> int:
         query = '''SELECT voicechannels FROM settings WHERE guild_id = ?'''
