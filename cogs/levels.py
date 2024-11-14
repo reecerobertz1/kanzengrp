@@ -627,10 +627,10 @@ class levels(commands.Cog):
             await interaction.response.send_message(f"{member} hasn't gotten levels yet!")
 
     @rank.error
-    async def daily_error(self, interaction: discord.Interaction, error: Exception):
+    async def rank_error(self, interaction: discord.Interaction, error: Exception):
         if isinstance(error, CommandOnCooldown):
             remaining_time = datetime.timedelta(seconds=error.retry_after)
-            remainder = divmod(remaining_time.seconds, 3600)
+            remainder = divmod(remaining_time.seconds, 60)
             seconds = divmod(remainder, 60)
             await interaction.response.send_message(f"Slow down! you're on cooldown for **{seconds} seconds**.")
         else:
@@ -664,10 +664,10 @@ class levels(commands.Cog):
             await interaction.response.send_message(embed=embed)
 
     @leaderboard.error
-    async def daily_error(self, interaction: discord.Interaction, error: Exception):
+    async def leaderboard_error(self, interaction: discord.Interaction, error: Exception):
         if isinstance(error, CommandOnCooldown):
             remaining_time = datetime.timedelta(seconds=error.retry_after)
-            remainder = divmod(remaining_time.seconds, 3600)
+            remainder = divmod(remaining_time.seconds, 60)
             seconds = divmod(remainder, 60)
             await interaction.response.send_message(f"Slow down! you're on cooldown for **{seconds} seconds**.")
         else:
@@ -801,10 +801,10 @@ class levels(commands.Cog):
         await interaction.followup.send(f"<:whitecheck:1304222829595721770> **{interaction.user.name}** `{amount}xp` has been dropped!", ephemeral=True)
 
     @dropxp.error
-    async def daily_error(self, interaction: discord.Interaction, error: Exception):
+    async def dropxp_error(self, interaction: discord.Interaction, error: Exception):
         if isinstance(error, CommandOnCooldown):
             remaining_time = datetime.timedelta(seconds=error.retry_after)
-            remainder = divmod(remaining_time.seconds, 3600)
+            remainder = divmod(remaining_time.seconds, 60)
             seconds = divmod(remainder, 60)
             await interaction.response.send_message(f"Slow down! you're on cooldown for **{seconds} seconds**.")
         else:
