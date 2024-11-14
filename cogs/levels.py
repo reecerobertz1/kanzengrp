@@ -9,7 +9,7 @@ from io import BytesIO
 import functools
 from discord import app_commands
 from PIL import Image
-from stuff.views import Paginator
+from utils.views import Paginator
 from colorthief import ColorThief
 from discord.app_commands import CommandOnCooldown
 import datetime
