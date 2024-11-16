@@ -640,7 +640,7 @@ class levels(commands.Cog):
         return rows
 
     @app_commands.command(name="rank", description="Check your rank")
-    @app_commands.checks.cooldown(1, 20)
+    @app_commands.checks.cooldown(1, 5)
     async def rank(self, interaction: discord.Interaction, member: Optional[discord.Member] = None):
         required_roles = {694016195090710579, 1134797882420117544}
         member_roles = {role.id for role in interaction.user.roles}
@@ -684,6 +684,7 @@ class levels(commands.Cog):
             pass
 
     @app_commands.command(description="See the level leaderboard")
+    @app_commands.checks.cooldown(1, 5)
     async def leaderboard(self, interaction: discord.Interaction):
         required_roles = {694016195090710579, 1134797882420117544}
         member_roles = {role.id for role in interaction.user.roles}
@@ -860,7 +861,7 @@ class levels(commands.Cog):
             await interaction.response.send_message("An unexpected error occurred. Please try again later.",ephemeral=True)
 
     @app_commands.command(name="dropxp", description="Drop XP for server members")
-    @app_commands.checks.cooldown(1, 20)
+    @app_commands.checks.cooldown(1, 5)
     async def dropxp(self, interaction: discord.Interaction, amount: int):
         required_roles = {739513680860938290, 1261435772775563315}
         member_roles = {role.id for role in interaction.user.roles}
