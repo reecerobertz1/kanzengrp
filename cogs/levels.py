@@ -642,6 +642,12 @@ class levels(commands.Cog):
     @app_commands.command(name="rank", description="Check your rank")
     @app_commands.checks.cooldown(1, 20)
     async def rank(self, interaction: discord.Interaction, member: Optional[discord.Member] = None):
+        required_roles = {694016195090710579, 1134797882420117544}
+        member_roles = {role.id for role in interaction.user.roles}
+        if not required_roles.issubset(member_roles):
+            await interaction.response.send_message("Sorry, this command is only available to members with the required roles.", ephemeral=True)
+            return
+        
         member = member or interaction.user
         levels = await self.get_member_levels(member.id, interaction.guild_id)
         rank = await self.get_rank(member.id, interaction.guild_id)
@@ -678,11 +684,16 @@ class levels(commands.Cog):
             pass
 
     @app_commands.command(description="See the level leaderboard")
-    @app_commands.checks.cooldown(1, 20)
     async def leaderboard(self, interaction: discord.Interaction):
+        required_roles = {694016195090710579, 1134797882420117544}
+        member_roles = {role.id for role in interaction.user.roles}
+        if not required_roles.issubset(member_roles):
+            await interaction.response.send_message("Sorry, this command is only available to members with the required roles.", ephemeral=True)
+            return
+        
         embeds = []
         description = ""
-        rows = await self.get_leaderboard_stats(interaction.guild_id)
+        rows = await self.get_leaderboard_stats()
         per_page = 5 if interaction.user.is_on_mobile() else 10
         for i, row in enumerate(rows, start=1):
             msg = "messages" if row['messages'] != 1 else "message"
@@ -692,9 +703,9 @@ class levels(commands.Cog):
                 if xp < ((50*(lvl**2))+(50*(lvl-1))):
                     break
                 lvl += 1
-            description += f"**{i}.** <@!{row['member_id']}>\n<:bulletpoint:1304247536021667871>**{row['xp']} xp | level {lvl} | {row['messages']} {msg}**\n\n"
+            description += f"-# **{i}.** <@!{row['member_id']}>\n<:reply:1290714885792989238>**{row['messages']}** {msg} | level **{lvl}**\n\n"
             if i % per_page == 0 or i == len(rows):
-                embed = discord.Embed(title=f"{interaction.guild.name}'s leaderboard", description=description, color=0x2b2d31)
+                embed = discord.Embed(title=f"{interaction.guild.name}'s Leaderboard", description=description, color=0x2b2d31)
                 embed.set_thumbnail(url=interaction.guild.icon.url)
                 embeds.append(embed)
                 description = ""
@@ -702,7 +713,7 @@ class levels(commands.Cog):
             view = Paginator(embeds)
             await interaction.response.send_message(embed=view.initial, view=view)
         else:
-            await interaction.response.send_message(embed=embed)
+            await interaction.response.send_message(embed=embeds[0])
 
     @leaderboard.error
     async def daily_error(self, interaction: discord.Interaction, error: Exception):
@@ -715,8 +726,13 @@ class levels(commands.Cog):
             await interaction.response.send_message("An unexpected error occurred. Please try again later.",ephemeral=True)
 
     @app_commands.command(name="add", description="Add xp to someone", extras="+add @member amount")
-    @app_commands.checks.has_permissions(manage_guild=True)
     async def add(self, interaction: discord.Interaction, member: discord.Member, amount: int):
+        required_roles = {739513680860938290, 1261435772775563315}
+        member_roles = {role.id for role in interaction.user.roles}
+        if not required_roles.issubset(member_roles):
+            await interaction.response.send_message("Sorry, this command is only available for staff members.", ephemeral=True)
+            return
+
         levels = await self.get_member_levels(member.id, interaction.guild_id)
         await self.add_xp(member.id, interaction.guild_id, amount, levels)
         embed = discord.Embed(
@@ -730,8 +746,13 @@ class levels(commands.Cog):
         await interaction.response.send_message(embed=embed)
 
     @app_commands.command(name="remove", description="Remove xp from someone", extras="+remove @member amount")
-    @app_commands.checks.has_permissions(manage_guild=True)
     async def remove(self, interaction: discord.Interaction, member: discord.Member, amount: int):
+        required_roles = {739513680860938290, 1261435772775563315}
+        member_roles = {role.id for role in interaction.user.roles}
+        if not required_roles.issubset(member_roles):
+            await interaction.response.send_message("Sorry, this command is only available for staff members.", ephemeral=True)
+            return
+
         levels = await self.get_member_levels(member.id, interaction.guild_id)
         if levels:
             if amount > levels['xp']:
@@ -812,6 +833,12 @@ class levels(commands.Cog):
     @app_commands.command(name="daily", description="Get daily XP with Hoshi")
     @app_commands.checks.cooldown(1, 86400)
     async def daily(self, interaction: discord.Interaction):
+        required_roles = {694016195090710579, 1134797882420117544}
+        member_roles = {role.id for role in interaction.user.roles}
+        if not required_roles.issubset(member_roles):
+            await interaction.response.send_message("Sorry, this command is only available to members with the required roles.", ephemeral=True)
+            return
+        
         xprand = await self.get_dailyxp(interaction.guild.id)
         min_xp, max_xp = map(int, xprand.split('-'))
         xp = randint(min_xp, max_xp)
@@ -833,9 +860,14 @@ class levels(commands.Cog):
             await interaction.response.send_message("An unexpected error occurred. Please try again later.",ephemeral=True)
 
     @app_commands.command(name="dropxp", description="Drop XP for server members")
-    @app_commands.checks.has_permissions(manage_guild=True)
     @app_commands.checks.cooldown(1, 20)
     async def dropxp(self, interaction: discord.Interaction, amount: int):
+        required_roles = {739513680860938290, 1261435772775563315}
+        member_roles = {role.id for role in interaction.user.roles}
+        if not required_roles.issubset(member_roles):
+            await interaction.response.send_message("Sorry, this command is only available for staff members.", ephemeral=True)
+            return
+        
         embed = discord.Embed(title="<:removal:1306071903198380082> Dropped XP", description=f"**{interaction.user.name}** dropped `{amount}xp`.", color=0x2b2d31)
         view = claimxp(bot=self.bot, amount=amount, dropper=interaction.user.name)
         await interaction.response.send_message(embed=embed, view=view)
