@@ -210,16 +210,6 @@ class levelsettings(discord.ui.View):
         embed = discord.Embed(title=f"<:settings:1304222799639871530> Home Page", description=f"Welcome to the home page!\nHere you can change all the settings for Hoshi in {group}.\n\nCategories:\n<:bulletpoint:1304247536021667871> Levelling for {group1}\n-# <:thread1:1304222965042249781>Change XP amounts\n<:bulletpoint:1304247536021667871> Automatic Roles\n-# <:thread1:1304222965042249781>Change role ID's for the roles Hoshi can give out\n<:bulletpoint:1304247536021667871> Channels\n-# <:thread1:1304222965042249781>Change what channels members can level up in", color=0x2b2d31)
         await interaction.response.edit_message(embed=embed, view=settingselect(bot=self.bot))
 
-    @discord.ui.button(label="Enable", style=discord.ButtonStyle.green, row=2)
-    async def enable(self, interaction: discord.Interaction, button: discord.Button):
-        await self.change_levels_status(interaction.guild.id, 1)
-        await interaction.response.send_message("You have enabled the levelling system!\nDo </help:1202303486512083006> to see the commands", ephemeral=True)
-
-    @discord.ui.button(label="Disable", style=discord.ButtonStyle.red, row=2)
-    async def disable(self, interaction: discord.Interaction, button: discord.Button):
-        await self.change_levels_status(interaction.guild.id, 0)
-        await interaction.response.send_message("You have disabled the levelling system!", ephemeral=True)
-
     @discord.ui.button(label="Daily XP")
     async def dailyxp(self, interaction: discord.Interaction, button: discord.ui.Button):
         guild_id = interaction.guild.id
@@ -423,12 +413,7 @@ class settingselect(discord.ui.View):
         dailyxp = await self.get_dailyxp(interaction.guild.id)
         voicexp = await self.get_voicexp(interaction.guild.id)
         chatxp = await self.get_chatxp(interaction.guild.id)
-        statuses = await self.get_levels_status(interaction.guild.id)
-        if statuses == 1:
-            status = f"The levelling system for {group} is currently **enabled**\n-# You can disable them with the disable button"
-        else:
-            status = f"The levelling system for {group} is currently **disabled**\n-# You can enable them with the enable button"
-        embed = discord.Embed(title=f"<:settings:1304222799639871530> {group}'s Level Settings", description=f"{status}\n\n<:bulletpoint:1304247536021667871> How much XP do {group1} currently gain\n-# <:thread2:1304222916879323136> Text Channels: **{chatxp}xp** every **30 seconds**\n-# <:thread1:1304222965042249781> Voice Channels: **{voicexp}xp** every **30 seconds**\n\n<:bulletpoint:1304247536021667871> How much XP do {group1} currently gain from **+daily**\n-# <:thread1:1304222965042249781> Random amount between: **{dailyxp}**", color=0x2b2d31)
+        embed = discord.Embed(title=f"<:settings:1304222799639871530> {group}'s Level Settings", description=f"<:bulletpoint:1304247536021667871> How much XP do {group1} currently gain\n-# <:thread2:1304222916879323136> Text Channels: **{chatxp}xp** every **30 seconds**\n-# <:thread1:1304222965042249781> Voice Channels: **{voicexp}xp** every **30 seconds**\n\n<:bulletpoint:1304247536021667871> How much XP do {group1} currently gain from **+daily**\n-# <:thread1:1304222965042249781> Random amount between: **{dailyxp}**", color=0x2b2d31)
         await interaction.response.edit_message(embed=embed, view=levelsettings(bot=self.bot))
 
     @discord.ui.button(label="Automatic Roles")
