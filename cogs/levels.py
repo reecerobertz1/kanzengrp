@@ -694,7 +694,7 @@ class levels(commands.Cog):
         
         embeds = []
         description = ""
-        rows = await self.get_leaderboard_stats()
+        rows = await self.get_leaderboard_stats(interaction.guild_id)
         per_page = 5 if interaction.user.is_on_mobile() else 10
         for i, row in enumerate(rows, start=1):
             msg = "messages" if row['messages'] != 1 else "message"
