@@ -724,7 +724,7 @@ class levels(commands.Cog):
             minutes, seconds = divmod(remainder, 60)
             await interaction.response.send_message(f"Slow down! you're on cooldown for **{seconds} seconds**.")
         else:
-            await interaction.response.send_message("An unexpected error occurred. Please try again later.",ephemeral=True)
+            await interaction.response.send_message(f"An unexpected error occurred. Please try again later.\n{error}",ephemeral=True)
 
     @app_commands.command(name="add", description="Add xp to someone", extras="+add @member amount")
     async def add(self, interaction: discord.Interaction, member: discord.Member, amount: int):
