@@ -644,7 +644,7 @@ class levels(commands.Cog):
     async def rank(self, interaction: discord.Interaction, member: Optional[discord.Member] = None):
         required_roles = {694016195090710579, 1134797882420117544}
         member_roles = {role.id for role in interaction.user.roles}
-        if not required_roles.issubset(member_roles):
+        if required_roles.isdisjoint(member_roles):
             await interaction.response.send_message("Sorry, this command is only available to members with the required roles.", ephemeral=True)
             return
         
@@ -687,7 +687,7 @@ class levels(commands.Cog):
     async def leaderboard(self, interaction: discord.Interaction):
         required_roles = {694016195090710579, 1134797882420117544}
         member_roles = {role.id for role in interaction.user.roles}
-        if not required_roles.issubset(member_roles):
+        if required_roles.isdisjoint(member_roles):
             await interaction.response.send_message("Sorry, this command is only available to members with the required roles.", ephemeral=True)
             return
         
@@ -729,7 +729,7 @@ class levels(commands.Cog):
     async def add(self, interaction: discord.Interaction, member: discord.Member, amount: int):
         required_roles = {739513680860938290, 1261435772775563315}
         member_roles = {role.id for role in interaction.user.roles}
-        if not required_roles.issubset(member_roles):
+        if required_roles.isdisjoint(member_roles):
             await interaction.response.send_message("Sorry, this command is only available for staff members.", ephemeral=True)
             return
 
@@ -749,7 +749,7 @@ class levels(commands.Cog):
     async def remove(self, interaction: discord.Interaction, member: discord.Member, amount: int):
         required_roles = {739513680860938290, 1261435772775563315}
         member_roles = {role.id for role in interaction.user.roles}
-        if not required_roles.issubset(member_roles):
+        if required_roles.isdisjoint(member_roles):
             await interaction.response.send_message("Sorry, this command is only available for staff members.", ephemeral=True)
             return
 
@@ -835,7 +835,7 @@ class levels(commands.Cog):
     async def daily(self, interaction: discord.Interaction):
         required_roles = {694016195090710579, 1134797882420117544}
         member_roles = {role.id for role in interaction.user.roles}
-        if not required_roles.issubset(member_roles):
+        if required_roles.isdisjoint(member_roles):
             await interaction.response.send_message("Sorry, this command is only available to members with the required roles.", ephemeral=True)
             return
         
@@ -864,10 +864,10 @@ class levels(commands.Cog):
     async def dropxp(self, interaction: discord.Interaction, amount: int):
         required_roles = {739513680860938290, 1261435772775563315}
         member_roles = {role.id for role in interaction.user.roles}
-        if not required_roles.issubset(member_roles):
+        if required_roles.isdisjoint(member_roles):
             await interaction.response.send_message("Sorry, this command is only available for staff members.", ephemeral=True)
             return
-        
+
         embed = discord.Embed(title="<:removal:1306071903198380082> Dropped XP", description=f"**{interaction.user.name}** dropped `{amount}xp`.", color=0x2b2d31)
         view = claimxp(bot=self.bot, amount=amount, dropper=interaction.user.name)
         await interaction.response.send_message(embed=embed, view=view)
