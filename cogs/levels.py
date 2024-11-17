@@ -645,7 +645,7 @@ class levels(commands.Cog):
         required_roles = {753678720119603341, 753678720119603341}
         member_roles = {role.id for role in interaction.user.roles}
         if required_roles.isdisjoint(member_roles):
-            await interaction.response.send_message("Sorry, this command is currently unavilable due to Hoshi being coded.\nPlease stop using Hoshi's commands...", ephemeral=True)
+            await interaction.response.send_message("Sorry, this command is currently not available due to Hoshi being coded.\nPlease stop using Hoshi's commands...", ephemeral=True)
             return
         
         member = member or interaction.user
@@ -689,7 +689,7 @@ class levels(commands.Cog):
         required_roles = {753678720119603341, 753678720119603341}
         member_roles = {role.id for role in interaction.user.roles}
         if required_roles.isdisjoint(member_roles):
-            await interaction.response.send_message("Sorry, this command is currently unavilable due to Hoshi being coded.\nPlease stop using Hoshi's commands...", ephemeral=True)
+            await interaction.response.send_message("Sorry, this command is currently not available due to Hoshi being coded.\nPlease stop using Hoshi's commands...", ephemeral=True)
             return
         
         embeds = []
@@ -837,7 +837,7 @@ class levels(commands.Cog):
         required_roles = {753678720119603341, 753678720119603341}
         member_roles = {role.id for role in interaction.user.roles}
         if required_roles.isdisjoint(member_roles):
-            await interaction.response.send_message("Sorry, this command is currently unavilable due to Hoshi being coded.\nPlease stop using Hoshi's commands...", ephemeral=True)
+            await interaction.response.send_message("Sorry, this command is currently not available due to Hoshi being coded.\nPlease stop using Hoshi's commands...", ephemeral=True)
             return
         
         xprand = await self.get_dailyxp(interaction.guild.id)
