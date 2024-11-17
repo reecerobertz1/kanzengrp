@@ -642,10 +642,10 @@ class levels(commands.Cog):
     @app_commands.command(name="rank", description="Check your rank")
     @app_commands.checks.cooldown(1, 5)
     async def rank(self, interaction: discord.Interaction, member: Optional[discord.Member] = None):
-        required_roles = {694016195090710579, 1134797882420117544}
+        required_roles = {753678720119603341, 753678720119603341}
         member_roles = {role.id for role in interaction.user.roles}
         if required_roles.isdisjoint(member_roles):
-            await interaction.response.send_message("Sorry, this command is only available to members with the required roles.", ephemeral=True)
+            await interaction.response.send_message("Sorry, this command is currently unavilable due to Hoshi being coded.\nPlease stop using Hoshi's commands...", ephemeral=True)
             return
         
         member = member or interaction.user
@@ -686,10 +686,10 @@ class levels(commands.Cog):
     @app_commands.command(description="See the level leaderboard")
     @app_commands.checks.cooldown(1, 5)
     async def leaderboard(self, interaction: discord.Interaction):
-        required_roles = {694016195090710579, 1134797882420117544}
+        required_roles = {753678720119603341, 753678720119603341}
         member_roles = {role.id for role in interaction.user.roles}
         if required_roles.isdisjoint(member_roles):
-            await interaction.response.send_message("Sorry, this command is only available to members with the required roles.", ephemeral=True)
+            await interaction.response.send_message("Sorry, this command is currently unavilable due to Hoshi being coded.\nPlease stop using Hoshi's commands...", ephemeral=True)
             return
         
         embeds = []
@@ -834,10 +834,10 @@ class levels(commands.Cog):
     @app_commands.command(name="daily", description="Get daily XP with Hoshi")
     @app_commands.checks.cooldown(1, 86400)
     async def daily(self, interaction: discord.Interaction):
-        required_roles = {694016195090710579, 1134797882420117544}
+        required_roles = {753678720119603341, 753678720119603341}
         member_roles = {role.id for role in interaction.user.roles}
         if required_roles.isdisjoint(member_roles):
-            await interaction.response.send_message("Sorry, this command is only available to members with the required roles.", ephemeral=True)
+            await interaction.response.send_message("Sorry, this command is currently unavilable due to Hoshi being coded.\nPlease stop using Hoshi's commands...", ephemeral=True)
             return
         
         xprand = await self.get_dailyxp(interaction.guild.id)
