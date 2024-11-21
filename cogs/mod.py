@@ -104,5 +104,10 @@ class mod(commands.Cog):
         if not successful_changes and not failed_changes:
             await ctx.reply("No members were updated. Ensure you mentioned valid members and have sufficient permissions.")
 
+    @commands.command()
+    async def delete(self, ctx, member: discord.Member):
+        await self.remove_from_database(ctx.guild.id, member.id)
+        await ctx.reply(f"Okay! {member.mention} has been removed from {ctx.guild.name}'s database")
+
 async def setup(bot):
     await bot.add_cog(mod(bot))
