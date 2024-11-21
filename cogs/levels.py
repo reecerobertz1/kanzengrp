@@ -795,6 +795,7 @@ class levels(commands.Cog):
         levels = await self.get_member_levels(member.id, interaction.guild_id)
         rank = await self.get_rank(member.id, interaction.guild_id)
         avatar_url = member.display_avatar.replace(static_format='png', size=256).url
+        format = await self.get_format(member.id, interaction.guild.id)
         response = await self.bot.session.get(avatar_url)
         guild = interaction.guild.id
         avatar = BytesIO(await response.read())
