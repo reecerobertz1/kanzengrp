@@ -157,6 +157,54 @@ class configrankcard(discord.ui.View):
                 ephemeral=True
             )
 
+    @discord.ui.button(label="Format")
+    async def format(self, interaction: discord.Interaction, button: discord.ui.Button):
+        if interaction.user.id == self.member:
+            await interaction.response.send_message(
+                f"<:settings:1304222799639871530>**{interaction.user.name}**, Please type the format number you'd like (1 or 2) within the next 60 seconds.\n"
+                f"-# <:thread:1291033931050778694> Here is a preview of what the rank formats look like[.](https://cdn.discordapp.com/attachments/1248039148888129647/1309164689988518008/format_preview_00000.png?ex=67409621&is=673f44a1&hm=a8692f6ae45016b5cff1810e7639412a1c13870b81275c4723b4a388a9f0fc49&)\n"
+                f"-# <:thread1:1304222965042249781> The default format is **1**.", 
+                ephemeral=True
+            )
+
+            def check(m):
+                return m.author == interaction.user and m.channel == interaction.channel
+            try:
+                user_response = await self.bot.wait_for('message', timeout=60.0, check=check)
+                format_choice = user_response.content.strip()
+                if format_choice in {'1', '2'}:
+                    await self.set_format(interaction.user.id, int(format_choice))
+                    await interaction.followup.send(
+                        f"<:check:1291748345194348594> Okay **{interaction.user.name}**, I have updated your rank format to **{format_choice}**.", 
+                        ephemeral=True
+                    )
+                    await user_response.delete()
+                else:
+                    await interaction.followup.send(
+                        f"`{format_choice}` is not a valid option. Please choose **1** or **2**.",
+                        ephemeral=True
+                    )
+
+            except asyncio.TimeoutError:
+                await interaction.followup.send(
+                    f"You took too long to respond, please try again.",
+                    ephemeral=True
+                )
+        else:
+            await interaction.response.send_message(
+                f"<:whitex:1304222877305798697>**{interaction.user.name}**, You cannot edit someone else's rank card.\n"
+                f"-# <:thread1:1304222965042249781> Use **/rank** if you'd like to edit your rank card.",
+                ephemeral=True
+            )
+
+    async def set_format(self, member_id: int, format: str) -> None:
+        query = '''UPDATE levelling SET format = ? WHERE member_id = ?'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, format, member_id, )
+                await conn.commit()
+            await self.bot.pool.release(conn)
+
     async def get_color(self, member_id: int):
         query = '''SELECT color FROM levelling WHERE member_id = $1'''
         async with self.bot.pool.acquire() as conn:
@@ -236,10 +284,10 @@ class levels(commands.Cog):
             return 1
 
     async def add_member(self, member_id: int, guild_id: int, xp = 25) -> None:
-        query = '''INSERT INTO levelling (member_id, guild_id, xp , messages) VALUES (?, ?, ?, ?)'''
+        query = '''INSERT INTO levelling (member_id, guild_id, xp , messages, format) VALUES (?, ?, ?, ?, ?)'''
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cursor:
-                await cursor.execute(query, (member_id, guild_id, xp, 1))
+                await cursor.execute(query, (member_id, guild_id, xp, 1, 1))
                 await conn.commit()
             await self.bot.pool.release(conn)
 
@@ -455,8 +503,24 @@ class levels(commands.Cog):
             await self.add_server(guild_id)
             return 1
 
-    def _make_progress_bar(self, progress, color):
+    def _make_progress_bar1(self, progress, color):
         width = 1500  # Width of the progress bar
+        height = 15  # Height of the progress bar
+        radius = 0  # Radius of the rounded corners
+        progress_bar = Image.new('RGBA', (width, height), (0, 0, 0, 0))
+        draw = ImageDraw.Draw(progress_bar)
+        draw.rectangle([(0, 0), (width, height)], fill=(195, 195, 195, 255))
+        bg_width = int(width * 1)
+        progress_width = int(width * progress)
+        draw.rounded_rectangle([(0, 0), (bg_width, height)], fill=(195, 195, 195, 255), width=1, radius=radius)
+        draw.rounded_rectangle([(0, 0), (progress_width, height)], fill=color, width=1, radius=radius)
+        mask = Image.new('L', (width, height), 0)
+        mask_draw = ImageDraw.Draw(mask)
+        mask_draw.rounded_rectangle([(0, 0), (bg_width, height)], fill=255, width=0, radius=radius)
+        return progress_bar, mask
+
+    def _make_progress_bar2(self, progress, color):
+        width = 750  # Width of the progress bar
         height = 15  # Height of the progress bar
         radius = 0  # Radius of the rounded corners
         progress_bar = Image.new('RGBA', (width, height), (0, 0, 0, 0))
@@ -523,7 +587,7 @@ class levels(commands.Cog):
 
         return percentage, xp_progress_have, xp_progress_need, lvl
 
-    def get_card(self, avatar: BytesIO, levels: LevelRow, rank: int, user: discord.User, guild: discord.Guild) -> BytesIO:
+    def get_card1(self, avatar: BytesIO, levels: LevelRow, rank: int, user: discord.User, guild: discord.Guild) -> BytesIO:
         percentage, xp_have, xp_need, level = self.xp_calculations(levels)
         card = Image.new('RGBA', size=(1500, 500), color='grey')
         
@@ -553,11 +617,11 @@ class levels(commands.Cog):
         dark = ImageEnhance.Brightness(bg)
         bg_dark = dark.enhance(0.8)
         bg_blurred = bg_dark.filter(ImageFilter.GaussianBlur(radius=20))
-        mask = Image.open("./assets/boxmask.png").resize((1500, 500)).convert("L")
+        mask = Image.open("./assets/boxmask1.png").resize((1500, 500)).convert("L")
         inverted_mask = ImageOps.invert(mask)
         bg_frosted = Image.composite(bg_blurred, Image.new("RGBA", bg.size, "white"), inverted_mask)
         bg_frosted.putalpha(inverted_mask)
-        bar, mask_bar = self._make_progress_bar(percentage, levels['color'])
+        bar, mask_bar = self._make_progress_bar1(percentage, levels['color'])
         avatar_paste, circle = self.get_avatar(avatar)
         card.paste(bg, (0, 0))
         card.paste(bg_frosted, (0, 0), bg_frosted)
@@ -590,9 +654,75 @@ class levels(commands.Cog):
         buffer.seek(0)
         return buffer
 
-    async def generate_card(self, avatar: BytesIO, levels: LevelRow, rank: int, member: discord.Member, guild: discord.Guild) -> BytesIO:
-        card_generator = functools.partial(self.get_card, avatar, levels, rank, guild)
-        card = await self.bot.loop.run_in_executor(None, self.get_card, avatar, levels, rank, member, guild)
+    def get_card2(self, avatar: BytesIO, levels: LevelRow, rank: int, user: discord.User, guild: discord.Guild) -> BytesIO:
+        percentage, xp_have, xp_need, level = self.xp_calculations(levels)
+        card = Image.new('RGBA', size=(750, 750), color='grey')
+        
+        if levels['image'] is not None:
+            bg = Image.open(BytesIO(levels["image"]))
+        else:
+            bg = Image.open("./assets/rankcard.png")
+
+        bg_aspect_ratio = bg.width / bg.height
+        target_aspect_ratio = 750 / 750
+        
+        if bg_aspect_ratio > target_aspect_ratio:
+            new_width = int(bg.height * target_aspect_ratio)
+            left = (bg.width - new_width) // 2
+            right = left + new_width
+            top = 0
+            bottom = bg.height
+        else:
+            new_height = int(bg.width / target_aspect_ratio)
+            top = (bg.height - new_height) // 2
+            bottom = top + new_height
+            left = 0
+            right = bg.width
+        
+        bg = bg.crop((left, top, right, bottom))
+        bg = bg.resize((750, 750))
+        dark = ImageEnhance.Brightness(bg)
+        bg_dark = dark.enhance(0.8)
+        bg_blurred = bg_dark.filter(ImageFilter.GaussianBlur(radius=20))
+        mask = Image.open("./assets/boxmask2.png").resize((750, 750)).convert("L")
+        inverted_mask = ImageOps.invert(mask)
+        bg_frosted = Image.composite(bg_blurred, Image.new("RGBA", bg.size, "white"), inverted_mask)
+        bg_frosted.putalpha(inverted_mask)
+        bar, mask_bar = self._make_progress_bar2(percentage, levels['color'])
+        avatar_paste, circle = self.get_avatar(avatar)
+        card.paste(bg, (0, 0))
+        card.paste(bg_frosted, (0, 0), bg_frosted)
+        card.paste(bar, (0, 735), mask_bar)
+        card.paste(avatar_paste, (18, 17), circle)
+        zhcn = ImageFont.truetype("./fonts/zhcn.ttf", size=30)
+        zhcn2 = ImageFont.truetype("./fonts/zhcn.ttf", size=20)
+        # rankdecor = Image.open(f'./assets/{levels["decor"]}.png')
+        # rankdecor = rankdecor.resize((750, 750))
+        # card.paste(rankdecor, (0, 0), rankdecor)
+        draw = ImageDraw.Draw(card, 'RGBA')
+        message = levels["messages"]
+        messages = self.human_format(message)
+        if guild == 694010548605550675:
+            server = "chroma"
+        else:
+            server = "lyra"
+        draw.text((65, 620), f'{xp_have} | {xp_need}', fill=levels['color'], font=zhcn)
+        draw.text((170, 25), f"{user.name}", fill=levels['color'], font=zhcn)
+        draw.text((170, 55), f"{server} levels", fill=levels['color'], font=zhcn2)
+        draw.text((57, 670), f'rank | {str(rank)}   level | {level-1}   {messages} messages', fill=levels['color'], font=zhcn)
+        buffer = BytesIO()
+        card.save(buffer, 'png')
+        buffer.seek(0)
+        return buffer
+
+    async def generate_card1(self, avatar: BytesIO, levels: LevelRow, rank: int, member: discord.Member, guild: discord.Guild) -> BytesIO:
+        card_generator = functools.partial(self.get_card1, avatar, levels, rank, guild)
+        card = await self.bot.loop.run_in_executor(None, self.get_card1, avatar, levels, rank, member, guild)
+        return card
+
+    async def generate_card2(self, avatar: BytesIO, levels: LevelRow, rank: int, member: discord.Member, guild: discord.Guild) -> BytesIO:
+        card_generator = functools.partial(self.get_card2, avatar, levels, rank, guild)
+        card = await self.bot.loop.run_in_executor(None, self.get_card2, avatar, levels, rank, member, guild)
         return card
 
     async def get_rank(self, member_id: int, guild_id: int) -> int:
@@ -639,6 +769,19 @@ class levels(commands.Cog):
                 rows = await cursor.fetchall()
         return rows
 
+    async def get_format(self, member_id: int, guild_id: int) -> int:
+        query = '''SELECT format FROM levelling WHERE guild_id = ? AND member_id = ?'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, (guild_id, member_id))
+                status = await cursor.fetchone()
+            await self.bot.pool.release(conn)
+        if status is not None:
+            return status[0]
+        else:
+            await self.add_server(guild_id)
+            return 1
+
     @app_commands.command(name="rank", description="Check your rank")
     @app_commands.checks.cooldown(1, 5)
     async def rank(self, interaction: discord.Interaction, member: Optional[discord.Member] = None):
@@ -657,10 +800,16 @@ class levels(commands.Cog):
         avatar = BytesIO(await response.read())
         avatar.seek(0)
 
-        if levels:
-                card = await self.generate_card(avatar, levels, rank, member, guild)
-        else:
-            card = None
+        if format == 1:
+            if levels:
+                    card = await self.generate_card1(avatar, levels, rank, member, guild)
+            else:
+                card = None
+        elif format == 2:
+            if levels:
+                    card = await self.generate_card2(avatar, levels, rank, member, guild)
+            else:
+                card = None
 
         if card:
             await interaction.response.send_message(file=discord.File(card, 'card.png'), view=configrankcard(member=member.id, bot=self.bot))
