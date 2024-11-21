@@ -106,8 +106,11 @@ class mod(commands.Cog):
 
     @commands.command()
     async def delete(self, ctx, member: discord.Member):
-        await self.remove_from_database(ctx.guild.id, member.id)
-        await ctx.reply(f"Okay! {member.mention} has been removed from {ctx.guild.name}'s database")
+        removed_members = await self.remove_from_database(ctx.guild.id, [member.id])
+        if removed_members:
+            await ctx.reply(f"Okay! {member.mention} has been removed from {ctx.guild.name}'s database")
+        else:
+            await ctx.reply(f"{member.mention} was not found in {ctx.guild.name}'s database.")
 
 async def setup(bot):
     await bot.add_cog(mod(bot))
