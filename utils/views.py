@@ -36,7 +36,7 @@ class Paginator(ui.View):
 
     @ui.button(label="1/1", disabled=True, style=ButtonStyle.secondary)
     async def page_number(self, interaction: Interaction, button: ui.Button):
-        await interaction.response.send_message("This button just shows the page number.", ephemeral=True)
+        await interaction.response.send_message("This button just shows the page number", ephemeral=True)
 
     @ui.button(label='>')
     async def next_embed(self, interaction: Interaction, button: ui.Button):
