@@ -25,7 +25,7 @@ class LevelRow(TypedDict):
 
 class claimxp(discord.ui.View):
     def __init__(self, amount, bot, dropper):
-        super().__init__(timeout=60)
+        super().__init__(timeout=None)
         self.bot = bot
         self.amount = amount
         self.dropper = dropper
@@ -785,7 +785,7 @@ class levels(commands.Cog):
     @app_commands.command(name="rank", description="Check your rank")
     @app_commands.checks.cooldown(1, 5)
     async def rank(self, interaction: discord.Interaction, member: Optional[discord.Member] = None):
-        required_roles = {753678720119603341, 753678720119603341}
+        required_roles = {753678720119603341, 1261435772775563315}
         member_roles = {role.id for role in interaction.user.roles}
         if required_roles.isdisjoint(member_roles):
             await interaction.response.send_message("Sorry, this command is currently not available due to Hoshi being coded.\nPlease stop using Hoshi's commands...", ephemeral=True)
@@ -836,7 +836,7 @@ class levels(commands.Cog):
     @app_commands.command(description="See the level leaderboard")
     @app_commands.checks.cooldown(1, 5)
     async def leaderboard(self, interaction: discord.Interaction):
-        required_roles = {753678720119603341, 753678720119603341}
+        required_roles = {753678720119603341, 1261435772775563315}
         member_roles = {role.id for role in interaction.user.roles}
         if required_roles.isdisjoint(member_roles):
             await interaction.response.send_message("Sorry, this command is currently not available due to Hoshi being coded.\nPlease stop using Hoshi's commands...", ephemeral=True)
@@ -984,7 +984,7 @@ class levels(commands.Cog):
     @app_commands.command(name="daily", description="Get daily XP with Hoshi")
     @app_commands.checks.cooldown(1, 86400)
     async def daily(self, interaction: discord.Interaction):
-        required_roles = {753678720119603341, 753678720119603341}
+        required_roles = {753678720119603341, 1261435772775563315}
         member_roles = {role.id for role in interaction.user.roles}
         if required_roles.isdisjoint(member_roles):
             await interaction.response.send_message("Sorry, this command is currently not available due to Hoshi being coded.\nPlease stop using Hoshi's commands...", ephemeral=True)
