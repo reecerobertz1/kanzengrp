@@ -460,22 +460,60 @@ class levels(commands.Cog):
     async def on_voice_state_update(self, member: discord.Member, before: discord.VoiceState, after: discord.VoiceState):
         if member.bot:
             return
-        
+
         guild_id = member.guild.id
+        if guild_id == 694010548605550675:
+            channel_id = 1248039148888129647
+        else:
+            channel_id = 1135027269853778020
+
         if before.channel is None and after.channel is not None:
-            self.voice_times[member.id] = datetime.utcnow()
+            if len(after.channel.members) >= 2:
+                for m in after.channel.members:
+                    self.voice_times[m.id] = datetime.utcnow()
+
         elif before.channel is not None and after.channel is None:
             join_time = self.voice_times.pop(member.id, None)
             if join_time:
                 time_spent = datetime.utcnow() - join_time
                 seconds_spent = time_spent.total_seconds()
-                xp_to_add = await self.get_voicexp(guild_id)
-                xp_earned = (seconds_spent // 30) * xp_to_add
-                
-                if xp_earned > 0:
+
+                minimum_seconds = 30  
+
+                if seconds_spent >= minimum_seconds:
+                    xp_to_add = await self.get_voicexp(guild_id)
+                    xp_earned = (seconds_spent // minimum_seconds) * xp_to_add
+
                     levels = await self.get_level_row(member.id, member.guild.id)
-                    await self.add_xp(member.id, guild_id, int(xp_earned), levels)
+                    await self.add_xp(member.id, guild_id, xp_earned, levels)
                     await self.check_levels(member, xp_to_add=int(xp_earned), xp=levels["xp"])
+                    channel = member.guild.get_channel(channel_id)
+                    if channel:
+                        await channel.send(f"<@{member.id}> you earned **{xp_earned}** XP from speaking in #{before.channel.name}")
+
+                if len(before.channel.members) == 1:
+                    xp_to_add = await self.get_voicexp(guild_id)
+                    for m in before.channel.members:
+                        join_time = self.voice_times.pop(m.id, None)
+                        if join_time:
+                            time_spent = datetime.utcnow() - join_time
+                            seconds_spent = time_spent.total_seconds()
+
+                            if seconds_spent >= minimum_seconds:
+                                xp_earned = (seconds_spent // minimum_seconds) * xp_to_add
+                                levels = await self.get_level_row(m.id, m.guild.id)
+                                await self.add_xp(m.id, guild_id, xp_earned, levels)
+                                await self.check_levels(m, xp_to_add=int(xp_earned), xp=levels["xp"])
+                                channel = member.guild.get_channel(channel_id)
+                                if channel:
+                                    await channel.send(f"<@{m.id}> you earned **{xp_earned}** XP from speaking in #{before.channel.name}")
+
+                elif len(before.channel.members) > 1:
+                    for m in before.channel.members:
+                        self.voice_times[m.id] = datetime.utcnow()
+
+        elif before.channel is not None and after.channel is not None:
+            pass
 
     async def get_voicexp(self, guild_id: int) -> int:
         query = '''SELECT voicexp FROM settings WHERE guild_id = ?'''
