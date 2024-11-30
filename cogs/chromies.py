@@ -155,24 +155,28 @@ class chromies(commands.Cog):
     @commands.command()
     @commands.has_permissions(manage_guild=True)
     async def rules(self, ctx):
-        embed = discord.Embed(title="Weclome to Chroma", color=0x2b2d31)
-        embed.add_field(name="Group Rules", value="• Must be following [remqsi](https://instagra,.com/remqsi), [wqndqs](https://instagra,.com/wqndqs) + [chromagrp](https://instagra,.com/chromagrp)."
-                                            "\n• Always use our hashtag #𝗰𝗵𝗿𝗼𝗺𝗮𝗴𝗿𝗽."
-                                            "\n• Watermark logos if the background is mostly plain."
-                                            "\n• Never share the logos with anyone outside of Chroma."
-                                            "\n-# **Note:** Leaking our logos will get you banned.", inline=False)
-        embed.add_field(name="Chat Rules", value="• Make sure you have your age roles from <id:customize>!"
-                            "\n• No NSFW content or sexual discussions."
-                            "\n• No offensive jokes that can make others uncomfortable."
-                            '\n• Please stay as active as possible.'
-                            '\n• Set your nickname as "name | username".'
-                            "\n• No impersonating other editors."
-                            "\n• Be friendly and respect everyone."
-                            "\n• If you move accounts or leave, please dm [chromagrp](https://instagram.com/chromagrp)."
-                            "\n• No trash talking of other groups or editors."
-                            "\n• Respect the server and use channels correctly."
-                            "\n-# **Note:** Breaking any of the rules will lead to a warning / kick or ban!", inline=False)
-        embed2 = discord.Embed(title="Reporting Members", description="• If you see someone breaking our rules, report them below.\n• You can stay anonymous by leaving your username blank.\n• Click the `Report Member` button to report a chroma member.\n-# **Note:** We may DM you for more information if we need more.", color=0x2b2d31)
+        embed = discord.Embed(title="✾ ༝ __Weclome to Chroma__ ⁺", description="**Group Rules**"
+        "\n・Must be following **[remqsi](https://instagra,.com/remqsi)**, **[wqndqs](https://instagra,.com/wqndqs)** + **[chromagrp](https://instagra,.com/chromagrp)**."
+        "\n・Always use our hashtag __**#𝗰𝗵𝗿𝗼𝗺𝗮𝗴𝗿𝗽**__."
+        "\n・Watermark logos if the background is mostly plain."
+        "\n-# ***Note:** Leaking the logos will get you banned!*"
+
+        "\n\n**Chat Rules**"
+        "\n・Make sure you have your age roles from <id:customize> "
+        "\n・No NSFW content or sexual discussions."
+        "\n・No offensive jokes that can make others uncomfortable."
+        "\n・Please stay as active as possible."
+        '\n・Set your nickname as "name | username".'
+        "\n・ No impersonating other editors."
+        "\n・ Be friendly and respect everyone."
+        "\n・If you move accounts or leave, please dm **[chromagrp](https://instagra,.com/chromagrp)**."
+        "\n・No trash talking of other groups or editors."
+        "\n・Respect the server and use channels correctly."
+        "\n-# ***Note:** Breaking any of the rules will lead to a warning / kick or ban!*", color=0x2b2d31)
+        embed2 = discord.Embed(title="✾ ༝ __Reporting Members__ ⁺", description="・If you see someone breaking our rules, report them below."
+        "\n・You can stay anonymous by leaving your username blank."
+        "\n・Click the Report Member button to report a chroma member."
+        "\n-# ***Note:** We may DM you for more information if we need more.*", color=0x2b2d31)
         view=infoview(bot=self.bot)
         await ctx.send(embed=embed)
         await ctx.send(embed=embed2, view=view)
