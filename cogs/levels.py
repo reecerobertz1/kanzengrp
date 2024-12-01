@@ -33,11 +33,56 @@ class claimxp(discord.ui.View):
 
     @discord.ui.button(label="Claim", emoji="<:key:1306072256094404698>", style=discord.ButtonStyle.blurple)
     async def claim(self, interaction: discord.Interaction, button: discord.Button):
-        embed = discord.Embed(title="<:removal:1306071903198380082> Claimed XP", description=f"**{interaction.user.name}** has claimed `{self.amount}xp`", color=0x2b2d31)
+        embed = discord.Embed(title="<:removal:1306071903198380082> Claimed XP", description=f"**{interaction.user.name}** has claimed `{self.amount} XP`", color=0x2b2d31)
         embed.set_footer(text=f"dropped by {self.dropper}")
-        levels = await self.get_member_levels(interaction.user.id, interaction.guild_id)
+        levels = await self.get_member_levels(interaction.user.id, interaction.guild.id)
+        if not levels:
+            await interaction.response.send_message("Could not retrieve your level data. Please try again later.", ephemeral=True)
+            return
+
+        current_xp = levels["xp"]
+        new_xp = current_xp + self.amount
         await self.add_xp(interaction.user.id, interaction.guild.id, xp=self.amount, levels=levels)
+        lvl = 0
+        while True:
+            if current_xp < ((50 * (lvl ** 2)) + (50 * (lvl - 1))):
+                break
+            lvl += 1
+        next_level_xp = ((50 * (lvl ** 2)) + (50 * (lvl - 1)))
+
+        if new_xp > next_level_xp:
+            guild_id = interaction.guild.id
+            if guild_id == 694010548605550675:
+                if lvl == 2:
+                    reprole = await self.get_reprole(guild_id)
+                    if reprole:
+                        role = interaction.guild.get_role(reprole)
+                        if role:
+                            await interaction.user.add_roles(role, reason=f"{interaction.user.name} reached level 2")
+                await interaction.followup.send(f"Yay! {interaction.user.mention} just reached **level {lvl}**!")
+
+            else:
+                stella = "Stella" if lvl == 1 else "Stellas"
+                reprole = await self.get_reprole(guild_id)
+                if reprole:
+                    role = interaction.guild.get_role(reprole)
+                    if role and lvl == 1:
+                        await interaction.user.add_roles(role, reason=f"{interaction.user.name} reached level 1")
+
+                embed.add_field(name="Level Up!", value=f"Congrats! You've reached **level {lvl}** {stella}!", inline=False)
         await interaction.response.edit_message(embed=embed, view=None)
+
+    async def get_reprole(self, guild_id: int) -> int:
+        query = '''SELECT reprole FROM settings WHERE guild_id = ?'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, guild_id)
+                status = await cursor.fetchone()
+            await self.bot.pool.release(conn)
+        if status is not None:
+            return status[0]
+        else:
+            return 1
 
     async def add_xp(self, member_id: int, guild_id: int, xp: int, levels: Optional[LevelRow]) -> None:
         if levels:
@@ -532,8 +577,6 @@ class levels(commands.Cog):
 
                             if seconds_spent >= minimum_seconds:
                                 xp_earned = (seconds_spent // minimum_seconds) * xp_to_add
-
-                                # Add XP and handle role assignment
                                 levels = await self.get_level_row(m.id, guild_id)
                                 if levels:
                                     current_xp = levels["xp"]
@@ -551,8 +594,6 @@ class levels(commands.Cog):
                                         role = member.guild.get_role(reprole)
                                         if role and lvl == 1:
                                             await m.add_roles(role, reason=f"{m.name} reached level 1 through voice activity")
-
-                                # Send XP earned message
                                 channel = member.guild.get_channel(channel_id)
                                 if channel:
                                     await channel.send(f"<@{m.id}> you earned **{xp_earned}** XP from speaking in #{before.channel.name}")
@@ -958,24 +999,61 @@ class levels(commands.Cog):
         else:
             await interaction.response.send_message(f"An unexpected error occurred. Please try again later.\n{error}",ephemeral=True)
 
-    @app_commands.command(name="add", description="Add xp to someone", extras="+add @member amount")
+    @app_commands.command(name="add", description="Add XP to someone", extras="+add @member amount")
     async def add(self, interaction: discord.Interaction, member: discord.Member, amount: int):
         required_roles = {739513680860938290, 1261435772775563315}
         member_roles = {role.id for role in interaction.user.roles}
         if required_roles.isdisjoint(member_roles):
             await interaction.response.send_message("Sorry, this command is only available for staff members.", ephemeral=True)
             return
+        levels = await self.get_member_levels(member.id, interaction.guild.id)
+        if not levels:
+            await interaction.response.send_message("Could not retrieve the member's level data. Please try again later.", ephemeral=True)
+            return
 
-        levels = await self.get_member_levels(member.id, interaction.guild_id)
-        await self.add_xp(member.id, interaction.guild_id, amount, levels)
-        embed = discord.Embed(
-            title='xp added!',
-            description=f'gave `{amount}xp` to {str(member)}',
-            color=0x2B2D31
-        )
+        current_xp = levels["xp"]
+        new_xp = current_xp + amount
+        await self.add_xp(member.id, interaction.guild.id, amount, levels)
+        lvl = 0
+        while True:
+            if current_xp < ((50 * (lvl ** 2)) + (50 * (lvl - 1))):
+                break
+            lvl += 1
+        next_level_xp = ((50 * (lvl ** 2)) + (50 * (lvl - 1)))
+
+        if new_xp > next_level_xp:
+            guild_id = interaction.guild.id
+            if guild_id == 694010548605550675:
+                if lvl == 2:
+                    reprole = await self.get_reprole(guild_id)
+                    if reprole:
+                        role = interaction.guild.get_role(reprole)
+                        if role:
+                            await member.add_roles(role, reason=f"{member.name} reached level 2")
+                await interaction.followup.send(f"Yay! {member.mention} just reached **level {lvl}**!")
+
+            else:
+                stella = "Stella" if lvl == 1 else "Stellas"
+                reprole = await self.get_reprole(guild_id)
+                if reprole:
+                    role = interaction.guild.get_role(reprole)
+                    if role and lvl == 1:
+                        await member.add_roles(role, reason=f"{member.name} reached level 1")
+
+                embed = discord.Embed(
+                    description=f"{member.name} just reached **{lvl}** {stella}!", colour=0xFEBCBE
+                )
+                channel = interaction.guild.get_channel(1135027269853778020)
+                if channel:
+                    await channel.send(member.mention, embed=embed)
         top20 = await self.get_top20(interaction.guild.id)
         if top20 is not None:
-            await self.top_20_role_handler(interaction.user, interaction.guild, top20)
+            await self.top_20_role_handler(member, interaction.guild, top20)
+        embed = discord.Embed(
+            title="XP Added!",
+            description=f"Gave `{amount} XP` to {str(member)}.",
+            color=0x2B2D31
+        )
         await interaction.response.send_message(embed=embed)
 
     @app_commands.command(name="remove", description="Remove xp from someone", extras="+remove @member amount")
