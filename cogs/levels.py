@@ -12,7 +12,8 @@ from PIL import Image
 from utils.views import Paginator
 from colorthief import ColorThief
 from discord.app_commands import CommandOnCooldown
-from datetime import datetime
+import datetime
+from datetime import datetime, timedelta
 
 class LevelRow(TypedDict):
     member_id: int
@@ -475,7 +476,7 @@ class levels(commands.Cog):
             return not required_roles.isdisjoint(member_roles)
 
         guild_id = member.guild.id
-        channel_id = 1248039148888129647 if guild_id == 694010548605550675 else 1135027269853778020
+        channel_id = 822422177612824580 if guild_id == 694010548605550675 else 1135027269853778020
 
         if before.channel is None and after.channel is not None:
             if len(after.channel.members) >= 2:
@@ -494,6 +495,30 @@ class levels(commands.Cog):
                 if seconds_spent >= minimum_seconds:
                     xp_to_add = await self.get_voicexp(guild_id)
                     xp_earned = (seconds_spent // minimum_seconds) * xp_to_add
+                    levels = await self.get_level_row(member.id, guild_id)
+                    if not levels:
+                        return
+
+                    current_xp = levels["xp"]
+                    new_xp = current_xp + xp_earned
+                    await self.add_xp(member.id, guild_id, xp_earned, levels)
+
+                    lvl = 0
+                    while True:
+                        if current_xp < ((50 * (lvl ** 2)) + (50 * (lvl - 1))):
+                            break
+                        lvl += 1
+
+                    reprole = await self.get_reprole(guild_id)
+                    if reprole:
+                        role = member.guild.get_role(reprole)
+                        if guild_id == 694010548605550675:
+                            if role and lvl == 2:
+                                await member.add_roles(role, reason=f"{member.name} reached level 2 through voice activity")
+                            else:
+                                if role and lvl == 1:
+                                    await member.add_roles(role, reason=f"{member.name} reached level 1 through voice activity")
+
                     channel = member.guild.get_channel(channel_id)
                     if channel:
                         await channel.send(f"<@{member.id}> you earned **{xp_earned}** XP from speaking in #{before.channel.name}")
@@ -511,9 +536,31 @@ class levels(commands.Cog):
 
                             if seconds_spent >= minimum_seconds:
                                 xp_earned = (seconds_spent // minimum_seconds) * xp_to_add
+
+                                # Add XP and handle role assignment
+                                levels = await self.get_level_row(m.id, guild_id)
+                                if levels:
+                                    current_xp = levels["xp"]
+                                    new_xp = current_xp + xp_earned
+                                    await self.add_xp(m.id, guild_id, xp_earned, levels)
+
+                                    lvl = 0
+                                    while True:
+                                        if current_xp < ((50 * (lvl ** 2)) + (50 * (lvl - 1))):
+                                            break
+                                        lvl += 1
+
+                                    reprole = await self.get_reprole(guild_id)
+                                    if reprole:
+                                        role = member.guild.get_role(reprole)
+                                        if role and lvl == 1:
+                                            await m.add_roles(role, reason=f"{m.name} reached level 1 through voice activity")
+
+                                # Send XP earned message
                                 channel = member.guild.get_channel(channel_id)
                                 if channel:
                                     await channel.send(f"<@{m.id}> you earned **{xp_earned}** XP from speaking in #{before.channel.name}")
+
                         self.voice_times[m.id] = datetime.utcnow()
 
         elif before.channel is not None and after.channel is not None:
@@ -1023,24 +1070,75 @@ class levels(commands.Cog):
                 await cursor.execute(query, (member_id, guild_id))
                 return await cursor.fetchone()
 
-    @app_commands.command(name="daily", description="Get daily XP with Hoshi")
+    @app_commands.command(name="daily", description="Get daily XP with Hoshi for Chroma")
     @app_commands.checks.cooldown(1, 86400)
+    @app_commands.guilds(discord.Object(id=694010548605550675))
     async def daily(self, interaction: discord.Interaction):
         required_roles = {1134797882420117544, 694016195090710579}
         member_roles = {role.id for role in interaction.user.roles}
         if required_roles.isdisjoint(member_roles):
-            await interaction.response.send_message("Sorry, this command is currently not available for non members!", ephemeral=True)
+            await interaction.response.send_message("Sorry, this command is currently not available for non-members!", ephemeral=True)
             return
-        
+
         xprand = await self.get_dailyxp(interaction.guild.id)
+        if not xprand:
+            await interaction.response.send_message("Daily XP configuration not found.", ephemeral=True)
+            return
+
         min_xp, max_xp = map(int, xprand.split('-'))
-        xp = randint(min_xp, max_xp)
+        xp_to_add = randint(min_xp, max_xp)
         levels = await self.get_level_row(interaction.user.id, interaction.guild.id)
-        await self.add_xp(interaction.user.id, interaction.guild.id, xp, levels)
+        if not levels:
+            await interaction.response.send_message("Could not retrieve your level data. Please try again later.", ephemeral=True)
+            return
+
+        current_xp = levels["xp"]
+        new_xp = current_xp + xp_to_add
+
+        await self.add_xp(interaction.user.id, interaction.guild.id, xp_to_add, levels)
+
+        lvl = 0
+        while True:
+            if current_xp < ((50 * (lvl ** 2)) + (50 * (lvl - 1))):
+                break
+            lvl += 1
+
+        next_level_xp = ((50 * (lvl ** 2)) + (50 * (lvl - 1)))
+
+        if new_xp > next_level_xp:
+            guild_id = interaction.guild.id
+            if guild_id == 694010548605550675:
+                if lvl == 2:
+                    reprole = await self.get_reprole(guild_id)
+                    if reprole:
+                        role = interaction.guild.get_role(reprole)
+                        if role:
+                            await interaction.user.add_roles(role, reason=f"{interaction.user.name} reached level 2")
+                embed = discord.Embed(
+                    description=f"{interaction.user.name} you just reached **Level {lvl}**!", colour=0xFEBCBE
+                )
+                channel = interaction.guild.get_channel(822422177612824580)
+                if channel:
+                    await channel.send(interaction.user.mention, embed=embed)
+            else:
+                stella = "Stella" if lvl == 1 else "Stellas"
+                reprole = await self.get_reprole(guild_id)
+                if reprole:
+                    role = interaction.guild.get_role(reprole)
+                    if role and lvl == 1:
+                        await interaction.user.add_roles(role, reason=f"{interaction.user.name} reached level 1")
+                embed = discord.Embed(
+                    description=f"{interaction.user.name} you just reached **{lvl}** {stella}!", colour=0xFEBCBE
+                )
+                channel = interaction.guild.get_channel(1135027269853778020)
+                if channel:
+                    await channel.send(interaction.user.mention, embed=embed)
+
         top20 = await self.get_top20(interaction.guild.id)
         if top20 is not None:
             await self.top_20_role_handler(interaction.user, interaction.guild, top20)
-        await interaction.response.send_message(f"Yay! **{interaction.user.name}**, you received **{xp}** XP from daily XP!")
+
+        await interaction.response.send_message(f"Yay! **{interaction.user.name}**, you received **{xp_to_add}** XP from daily XP!")
 
     @daily.error
     async def daily_error(self, interaction: discord.Interaction, error: Exception):
@@ -1050,7 +1148,73 @@ class levels(commands.Cog):
             minutes, seconds = divmod(remainder, 60)
             await interaction.response.send_message(f"You cannot claim your daily for another **{hours}h {minutes}m {seconds}s**.")
         else:
-            await interaction.response.send_message("An unexpected error occurred. Please try again later.",ephemeral=True)
+            await interaction.response.send_message(f"An unexpected error occurred. Please try again later.\n{error}",ephemeral=True)
+
+    @app_commands.command(name="dailies", description="Get daily XP with Hoshi for Lyra")
+    @app_commands.checks.cooldown(1, 86400)
+    @app_commands.guilds(discord.Object(id=1134736053803159592))
+    async def dailies(self, interaction: discord.Interaction):
+        required_roles = {1134797882420117544, 694016195090710579}
+        member_roles = {role.id for role in interaction.user.roles}
+        if required_roles.isdisjoint(member_roles):
+            await interaction.response.send_message("Sorry, this command is currently not available for non-members!", ephemeral=True)
+            return
+
+        xprand = await self.get_dailyxp(interaction.guild.id)
+        if not xprand:
+            await interaction.response.send_message("Daily XP configuration not found.", ephemeral=True)
+            return
+
+        min_xp, max_xp = map(int, xprand.split('-'))
+        xp_to_add = randint(min_xp, max_xp)
+        levels = await self.get_level_row(interaction.user.id, interaction.guild.id)
+        if not levels:
+            await interaction.response.send_message("Could not retrieve your level data. Please try again later.", ephemeral=True)
+            return
+
+        current_xp = levels["xp"]
+        new_xp = current_xp + xp_to_add
+
+        await self.add_xp(interaction.user.id, interaction.guild.id, xp_to_add, levels)
+
+        lvl = 0
+        while True:
+            if current_xp < ((50 * (lvl ** 2)) + (50 * (lvl - 1))):
+                break
+            lvl += 1
+
+        next_level_xp = ((50 * (lvl ** 2)) + (50 * (lvl - 1)))
+
+        if new_xp > next_level_xp:
+            guild_id = interaction.guild.id
+            stella = "Stella" if lvl == 1 else "Stellas"
+            reprole = await self.get_reprole(guild_id)
+            if reprole:
+                role = interaction.guild.get_role(reprole)
+                if role and lvl == 1:
+                    await interaction.user.add_roles(role, reason=f"{interaction.user.name} reached level 1")
+            embed = discord.Embed(
+                description=f"{interaction.user.name} you just reached **{lvl}** {stella}!", colour=0xFEBCBE
+            )
+            channel = interaction.guild.get_channel(1135027269853778020)
+            if channel:
+                await channel.send(interaction.user.mention, embed=embed)
+
+        top20 = await self.get_top20(interaction.guild.id)
+        if top20 is not None:
+            await self.top_20_role_handler(interaction.user, interaction.guild, top20)
+
+        await interaction.response.send_message(f"Yay! **{interaction.user.name}**, you received **{xp_to_add}** XP from daily XP!")
+
+    @dailies.error
+    async def dailies_error(self, interaction: discord.Interaction, error: Exception):
+        if isinstance(error, CommandOnCooldown):
+            remaining_time = datetime.timedelta(seconds=error.retry_after)
+            hours, remainder = divmod(remaining_time.seconds, 3600)
+            minutes, seconds = divmod(remainder, 60)
+            await interaction.response.send_message(f"You cannot claim your daily for another **{hours}h {minutes}m {seconds}s**.")
+        else:
+            await interaction.response.send_message(f"An unexpected error occurred. Please try again later.\n{error}",ephemeral=True)
 
     @app_commands.command(name="dropxp", description="Drop XP for server members")
     @app_commands.checks.cooldown(1, 5)
