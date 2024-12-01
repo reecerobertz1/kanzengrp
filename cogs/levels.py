@@ -1073,5 +1073,18 @@ class levels(commands.Cog):
     async def on_message(self, message: discord.Message) -> None:
         await self.handle_message(message)
 
+    async def set_format(self, member_id: int, format: str) -> None:
+        query = '''UPDATE levelling SET format = ? WHERE member_id = ?'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, format, member_id, )
+                await conn.commit()
+            await self.bot.pool.release(conn)
+
+    @commands.command()
+    async def format(self, ctx):
+        await self.set_format(ctx.author.id, 1)
+        await ctx.reply("Okay, the issue is now fixed! please try /rank again!")
+
 async def setup(bot):
     await bot.add_cog(levels(bot))
