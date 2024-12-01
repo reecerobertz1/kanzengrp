@@ -1072,12 +1072,11 @@ class levels(commands.Cog):
 
     @app_commands.command(name="daily", description="Get daily XP with Hoshi for Chroma")
     @app_commands.checks.cooldown(1, 86400)
-    @app_commands.guilds(discord.Object(id=694010548605550675))
     async def daily(self, interaction: discord.Interaction):
-        required_roles = {1134797882420117544, 694016195090710579}
+        required_roles = {694016195090710579}
         member_roles = {role.id for role in interaction.user.roles}
         if required_roles.isdisjoint(member_roles):
-            await interaction.response.send_message("Sorry, this command is currently not available for non-members!", ephemeral=True)
+            await interaction.response.send_message("Sorry, you need to be a member of Chroma to use this command!", ephemeral=True)
             return
 
         xprand = await self.get_dailyxp(interaction.guild.id)
