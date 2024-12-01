@@ -329,10 +329,6 @@ class levels(commands.Cog):
             else:
                 if lvl == 1:
                     stella = "Stella"
-                else:
-                    stella = "Stellas"
-                top20 = await self.get_top20(message.guild.id)
-                if lvl == 1:
                     reprole = await self.get_reprole(message.guild.id)
                     role = message.guild.get_role(reprole)
                     if role:
@@ -340,6 +336,9 @@ class levels(commands.Cog):
                         top20 = await self.get_top20(message.guild.id)
                         if top20 is not None:
                             await self.top_20_role_handler(message.author, message.guild, top20)
+                else:
+                    stella = "Stellas"
+                top20 = await self.get_top20(message.guild.id)
                 if top20 is not None:
                     await self.top_20_role_handler(message.author, message.guild, top20)
                 embed = discord.Embed(description=f"{message.author.name} you just reached **{lvl}** {stella}!", colour=0xFEBCBE)
