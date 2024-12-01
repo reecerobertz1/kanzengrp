@@ -268,7 +268,6 @@ class levels(commands.Cog):
         if status is not None:
             return status[0]
         else:
-            await self.add_server(guild_id)
             return 1
 
     async def get_textchannels(self, guild_id: int) -> int:
@@ -281,7 +280,6 @@ class levels(commands.Cog):
         if status is not None:
             return status[0]
         else:
-            await self.add_server(guild_id)
             return 1
 
     async def add_member(self, member_id: int, guild_id: int, xp = 25) -> None:
@@ -356,7 +354,6 @@ class levels(commands.Cog):
         if status is not None:
             return status[0]
         else:
-            await self.add_server(guild_id)
             return 1
 
     async def level_handler(self, message: discord.Message, retry_after: Optional[commands.CooldownMapping], xp: int) -> None:
@@ -397,7 +394,6 @@ class levels(commands.Cog):
         if status is not None:
             return status[0]
         else:
-            await self.add_server(guild_id)
             return 1
 
     async def _get_top_20_movedown(self, member_ids: list, guild_id: int) -> int:
@@ -576,7 +572,6 @@ class levels(commands.Cog):
         if status is not None:
             return status[0]
         else:
-            await self.add_server(guild_id)
             return 1
 
     async def get_chatxp(self, guild_id: int) -> int:
@@ -589,7 +584,6 @@ class levels(commands.Cog):
         if status is not None:
             return status[0]
         else:
-            await self.add_server(guild_id)
             return 1
 
     def _make_progress_bar1(self, progress, color):
@@ -868,7 +862,6 @@ class levels(commands.Cog):
         if status is not None:
             return status[0]
         else:
-            await self.add_server(guild_id)
             return 1
 
     @app_commands.command(name="rank", description="Check your rank")
@@ -1060,7 +1053,6 @@ class levels(commands.Cog):
         if status is not None:
             return status[0]
         else:
-            await self.add_server(guild_id)
             return "150 - 300"
 
     async def get_level_row(self, member_id: int, guild_id: int) -> Optional[LevelRow]:
