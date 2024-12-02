@@ -260,7 +260,7 @@ class configrankcard(discord.ui.View):
         return 0xc45a72
 
     async def set_format(self, member_id: int, format: str, guild_id: int) -> None:
-        query = '''UPDATE levelling SET format = ? WHERE member_id = ?'''
+        query = '''UPDATE levelling SET format = ? WHERE member_id = ? AND guild_id = ?'''
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cursor:
                 await cursor.execute(query, format, member_id, guild_id)
