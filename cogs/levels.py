@@ -157,7 +157,7 @@ class configrankcard(discord.ui.View):
                         else:
                             return await interaction.followup.send("Invalid image URL. Please try again with a valid image format.", ephemeral=True)
 
-                await self.set_card_image(image_data, interaction.user.id)
+                await self.set_card_image(image_data, interaction.user.id, guild_id=interaction.guild.id)
                 await interaction.followup.send(f"<:check:1291748345194348594> Okay **{interaction.user.name}**, I have update your rank card image", ephemeral=True)
                 await msg.delete()
 
@@ -187,8 +187,8 @@ class configrankcard(discord.ui.View):
                 color = user_response.content.strip()
                 match = re.search(self.regex_hex, color)
                 if match:
-                    await self.set_rank_color(interaction.user.id, color)
-                    await self.get_color(interaction.user.id)
+                    await self.set_rank_color(interaction.user.id, color, guild_id=interaction.guild_id)
+                    await self.get_color(interaction.user.id, guild_id=interaction.guild.id)
                     await interaction.followup.send(f"<:check:1291748345194348594> Okay **{interaction.user.name}**, I have update your color to **{color}**", ephemeral=True)
                     await user_response.delete()
                 else:
@@ -219,7 +219,7 @@ class configrankcard(discord.ui.View):
                 user_response = await self.bot.wait_for('message', timeout=60.0, check=check)
                 format_choice = user_response.content.strip()
                 if format_choice in {'1', '2'}:
-                    await self.set_format(interaction.user.id, int(format_choice))
+                    await self.set_format(interaction.user.id, int(format_choice), guild_id=interaction.guild_id)
                     await interaction.followup.send(
                         f"<:check:1291748345194348594> Okay **{interaction.user.name}**, I have updated your rank format to **{format_choice}**.", 
                         ephemeral=True
@@ -243,19 +243,11 @@ class configrankcard(discord.ui.View):
                 ephemeral=True
             )
 
-    async def set_format(self, member_id: int, format: str) -> None:
-        query = '''UPDATE levelling SET format = ? WHERE member_id = ?'''
+    async def get_color(self, member_id: int, guild_id: int):
+        query = '''SELECT color FROM levelling WHERE member_id = $1 AND guild_id = $2'''
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cursor:
-                await cursor.execute(query, format, member_id, )
-                await conn.commit()
-            await self.bot.pool.release(conn)
-
-    async def get_color(self, member_id: int):
-        query = '''SELECT color FROM levelling WHERE member_id = $1'''
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cursor:
-                await cursor.execute(query, (member_id,))
+                await cursor.execute(query, (member_id, guild_id))
                 row = await cursor.fetchone()
             await self.bot.pool.release(conn)
 
@@ -265,35 +257,42 @@ class configrankcard(discord.ui.View):
                 embed_color = int(color.replace('#', '0x'), 16)
                 return embed_color
        
-        return 0x2b2d31
+        return 0xc45a72
 
-    async def set_rank_color(self, member_id: int, color: str) -> None:
-        query = '''UPDATE levelling SET color = ? WHERE member_id = ?'''
+    async def set_format(self, member_id: int, format: str, guild_id: int) -> None:
+        query = '''UPDATE levelling SET format = ? WHERE member_id = ?'''
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cursor:
-                await cursor.execute(query, color, member_id, )
+                await cursor.execute(query, format, member_id, guild_id)
                 await conn.commit()
             await self.bot.pool.release(conn)
 
-    async def set_card_image(self, image: BytesIO, member_id: int, colorchange: Optional[bool] = False) -> None:
-        query = "UPDATE levelling SET image = $1, color = $2 WHERE member_id = $3"
+    async def set_rank_color(self, member_id: int, color: str, guild_id: int) -> None:
+        query = '''UPDATE levelling SET color = ? WHERE member_id = ? AND guild_id = ?'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, color, member_id, guild_id)
+                await conn.commit()
+            await self.bot.pool.release(conn)
+
+    async def set_card_image(self, image: BytesIO, member_id: int, guild_id: int, colorchange: Optional[bool] = False) -> None:
+        if not colorchange:
+            query = """UPDATE levelling SET image = $1, color = $2 WHERE member_id = $3 AND guild_id = $4"""
+        else:
+            query = """UPDATE levelling SET image = $1, accent_color = $2, color = $3 WHERE member_id = $4 AND guild_id = $5"""
+
         bytes_data = image.getvalue()
         image.seek(0)
         ct = ColorThief(image)
         pb_colors = ct.get_palette(2, 2)
         pb_primary = '#%02x%02x%02x' % pb_colors[0]
         pb_accent = '#%02x%02x%02x' % pb_colors[1]
-        if colorchange == False:
-            async with self.bot.pool.acquire() as connection:
-                async with connection.transaction():
-                    await connection.execute(query, bytes_data, pb_primary, member_id)
-            await self.bot.pool.release(connection)
-        else:
-            new_query = "UPDATE levelling SET image = $1, accent_color = $4, color = $5 WHERE member_id = $2"
-            async with self.bot.pool.acquire() as connection:
-                async with connection.transaction():
-                    await connection.execute(new_query, bytes_data, member_id, pb_accent, pb_primary)
-            await self.bot.pool.release(connection)
+        async with self.bot.pool.acquire() as connection:
+            async with connection.transaction():
+                if not colorchange:
+                    await connection.execute(query, bytes_data, pb_primary, member_id, guild_id)
+                else:
+                    await connection.execute(query, bytes_data, pb_accent, pb_primary, member_id, guild_id)
 
 class levels(commands.Cog):
     def __init__(self, bot):
@@ -990,21 +989,21 @@ class levels(commands.Cog):
         else:
             await interaction.response.send_message(f"An unexpected error occurred. Please try again later.\n{error}",ephemeral=True)
 
-    @app_commands.command(name="add", description="Add XP to someone", extras="+add @member amount")
-    async def add(self, interaction: discord.Interaction, member: discord.Member, amount: int):
+    @commands.command(name="add", description="Add XP to someone", extras="+add @member amount")
+    async def add(self, ctx, member: discord.Member, amount: int):
         required_roles = {739513680860938290, 1261435772775563315}
-        member_roles = {role.id for role in interaction.user.roles}
+        member_roles = {role.id for role in ctx.user.roles}
         if required_roles.isdisjoint(member_roles):
-            await interaction.response.send_message("Sorry, this command is only available for staff members.", ephemeral=True)
+            await ctx.response.send_message("Sorry, this command is only available for staff members.", ephemeral=True)
             return
-        levels = await self.get_member_levels(member.id, interaction.guild.id)
+        levels = await self.get_member_levels(member.id, ctx.guild.id)
         if not levels:
-            await interaction.response.send_message("Could not retrieve the member's level data. Please try again later.", ephemeral=True)
+            await ctx.response.send_message("Could not retrieve the member's level data. Please try again later.", ephemeral=True)
             return
 
         current_xp = levels["xp"]
         new_xp = current_xp + amount
-        await self.add_xp(member.id, interaction.guild.id, amount, levels)
+        await self.add_xp(member.id, ctx.guild.id, amount, levels)
         lvl = 0
         while True:
             if current_xp < ((50 * (lvl ** 2)) + (50 * (lvl - 1))):
@@ -1013,39 +1012,39 @@ class levels(commands.Cog):
         next_level_xp = ((50 * (lvl ** 2)) + (50 * (lvl - 1)))
 
         if new_xp > next_level_xp:
-            guild_id = interaction.guild.id
+            guild_id = ctx.guild.id
             if guild_id == 694010548605550675:
                 if lvl == 2:
                     reprole = await self.get_reprole(guild_id)
                     if reprole:
-                        role = interaction.guild.get_role(reprole)
+                        role = ctx.guild.get_role(reprole)
                         if role:
                             await member.add_roles(role, reason=f"{member.name} reached level 2")
-                await interaction.followup.send(f"Yay! {member.mention} just reached **level {lvl}**!")
+                await ctx.followup.send(f"Yay! {member.mention} just reached **level {lvl}**!")
 
             else:
                 stella = "Stella" if lvl == 1 else "Stellas"
                 reprole = await self.get_reprole(guild_id)
                 if reprole:
-                    role = interaction.guild.get_role(reprole)
+                    role = ctx.guild.get_role(reprole)
                     if role and lvl == 1:
                         await member.add_roles(role, reason=f"{member.name} reached level 1")
 
                 embed = discord.Embed(
                     description=f"{member.name} just reached **{lvl}** {stella}!", colour=0xFEBCBE
                 )
-                channel = interaction.guild.get_channel(1135027269853778020)
+                channel = ctx.guild.get_channel(1135027269853778020)
                 if channel:
                     await channel.send(member.mention, embed=embed)
-        top20 = await self.get_top20(interaction.guild.id)
+        top20 = await self.get_top20(ctx.guild.id)
         if top20 is not None:
-            await self.top_20_role_handler(member, interaction.guild, top20)
+            await self.top_20_role_handler(member, ctx.guild, top20)
         embed = discord.Embed(
             title="XP Added!",
             description=f"Gave `{amount} XP` to {str(member)}.",
             color=0x2B2D31
         )
-        await interaction.response.send_message(embed=embed)
+        await ctx.response.send_message(embed=embed)
 
     @app_commands.command(name="remove", description="Remove xp from someone", extras="+remove @member amount")
     async def remove(self, interaction: discord.Interaction, member: discord.Member, amount: int):
