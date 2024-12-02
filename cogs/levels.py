@@ -370,7 +370,7 @@ class levels(commands.Cog):
                         if top20 is not None:
                             await self.top_20_role_handler(message.author, message.guild, top20)
                 await message.channel.send(f"Yay! {message.author.mention} you just reached **level {lvl}**\n-# This is a testing version of Hoshi 2.0... please ignore these levels!\n-# Use <@1223888050296324168> for your levels **/rank**")
-            else:
+            if message.guild.id == 1134736053803159592:
                 if lvl == 1:
                     stella = "Stella"
                 else:
