@@ -369,7 +369,7 @@ class levels(commands.Cog):
                         top20 = await self.get_top20(message.guild.id)
                         if top20 is not None:
                             await self.top_20_role_handler(message.author, message.guild, top20)
-                await message.channel.send(f"Yay! {message.author.mention} you just reached **level {lvl}**\n-# This is a testing version of Hoshi 2.0... please ignore these levels!\n-# Use <@1223888050296324168> for your levels **/rank**")
+                await message.channel.send(f"Yay! {message.author.mention} you just reached **level {lvl}**")
             if message.guild.id == 1134736053803159592:
                 if lvl == 1:
                     stella = "Stella"
@@ -378,7 +378,7 @@ class levels(commands.Cog):
                 top20 = await self.get_top20(message.guild.id)
                 if top20 is not None:
                     await self.top_20_role_handler(message.author, message.guild, top20)
-                embed = discord.Embed(description=f"{message.author.name} you just reached **{lvl}** {stella}!\n-# This is a testing version of Hoshi 2.0... please ignore these levels!\n-# Use <@1223888050296324168> for your levels **/rank**", colour=0xFEBCBE)
+                embed = discord.Embed(description=f"{message.author.name} you just reached **{lvl}** {stella}!", colour=0xFEBCBE)
                 channel = message.guild.get_channel(1135027269853778020)
                 await channel.send(message.author.mention, embed=embed)
 
