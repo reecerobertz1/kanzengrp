@@ -352,42 +352,40 @@ class levels(commands.Cog):
             await self.bot.pool.release(conn)
 
     async def check_levels(self, message: discord.Message, xp: int, xp_to_add: int) -> None:
+        levels = await self.get_member_levels(message.author.id)
         new_xp = xp + xp_to_add
         lvl = 0
         while True:
             if xp < ((50*(lvl**2))+(50*(lvl-1))):
                 break
             lvl += 1
+
         next_level_xp = ((50*(lvl**2))+(50*(lvl-1)))
         if new_xp > next_level_xp:
-            if message.guild.id == 694010548605550675:
-                if lvl == 2:
-                    reprole = await self.get_reprole(message.guild.id)
-                    role = message.guild.get_role(reprole)
-                    if role:
-                        await message.author.add_roles(role, reason=f"{message.author.name} reached level 2")
-                        top20 = await self.get_top20(message.guild.id)
-                        if top20 is not None:
-                            await self.top_20_role_handler(message.author, message.guild, top20)
-                await message.channel.send(f"Yay! {message.author.mention} you just reached **level {lvl}**")
+            current_memberlvl = levels['memberlvl'] or 0
+            new_memberlvl = current_memberlvl + 1
+
+            query = '''UPDATE levels SET memberlvl = ? WHERE member_id = ?'''
+            async with self.bot.pool.acquire() as conn:
+                async with conn.cursor() as cursor:
+                    await cursor.execute(query, (new_memberlvl, message.author.id,))
+                    await conn.commit()
+                await self.bot.pool.release(conn)
+
+            if lvl == 1:
+                stella = "Stella"
             else:
-                if lvl == 1:
-                    stella = "Stella"
-                    reprole = await self.get_reprole(message.guild.id)
-                    role = message.guild.get_role(reprole)
-                    if role:
-                        await message.author.add_roles(role, reason=f"{message.author.name} reached level 1")
-                        top20 = await self.get_top20(message.guild.id)
-                        if top20 is not None:
-                            await self.top_20_role_handler(message.author, message.guild, top20)
-                else:
-                    stella = "Stellas"
-                top20 = await self.get_top20(message.guild.id)
-                if top20 is not None:
-                    await self.top_20_role_handler(message.author, message.guild, top20)
-                embed = discord.Embed(description=f"{message.author.name} you just reached **{lvl}** {stella}!", colour=0xFEBCBE)
-                channel = message.guild.get_channel(1135027269853778020)
-                await channel.send(message.author.mention, embed=embed)
+                stella = "Stellas"
+
+            embed = discord.Embed(description=f"{message.author.name} you just reached **{lvl}** {stella}!", colour=0xFEBCBE)
+
+            if lvl == 1:
+                role = message.guild.get_role(1147592763924295681)
+                if role:
+                    await message.author.add_roles(role, reason=f"{message.author.name} reached 1 stella")
+            channel = message.guild.get_channel(1135027269853778020)
+            await channel.send(message.author.mention, embed=embed)
+            await self.update_mora(message.author.id)
 
     async def get_reprole(self, guild_id: int) -> int:
         query = '''SELECT reprole FROM settings WHERE guild_id = ?'''
@@ -770,9 +768,7 @@ class levels(commands.Cog):
         draw.text((100, 345), f'{xp_have} | {xp_need}', fill=levels['color'], font=zhcn)
         draw.text((225, 25), f"{user.name}", fill=levels['color'], font=zhcn)
         draw.text((225, 65), f"{server} levels", fill=levels['color'], font=zhcn2)
-        draw.text((300, 410), f'rank | {str(rank)}', fill=levels['color'], font=zhcn)
-        draw.text((100, 410), f'level | {level-1}', fill=levels['color'], font=zhcn)
-        draw.text((500, 410), f'{messages} messages', fill=levels['color'], font=zhcn)
+        draw.text((300, 410), f'level | {level-1}   rank | {str(rank)}   {messages} messages', fill=levels['color'], font=zhcn)
         buffer = BytesIO()
         card.save(buffer, 'png')
         buffer.seek(0)
@@ -833,7 +829,7 @@ class levels(commands.Cog):
         draw.text((65, 620), f'{xp_have} | {xp_need}', fill=levels['color'], font=zhcn)
         draw.text((170, 25), f"{user.name}", fill=levels['color'], font=zhcn)
         draw.text((170, 55), f"{server} levels", fill=levels['color'], font=zhcn2)
-        draw.text((57, 670), f'rank | {str(rank)}   level | {level-1}   {messages} messages', fill=levels['color'], font=zhcn)
+        draw.text((57, 670), f'level | {level-1}   rank | {str(rank)}   {messages} messages', fill=levels['color'], font=zhcn)
         buffer = BytesIO()
         card.save(buffer, 'png')
         buffer.seek(0)
@@ -977,7 +973,7 @@ class levels(commands.Cog):
                 if xp < ((50*(lvl**2))+(50*(lvl-1))):
                     break
                 lvl += 1
-            description += f"**{i}.** <@!{row['member_id']}>\n-# <:reply:1290714885792989238> level {lvl} | {row['messages']} {msg}\n\n"
+            description += f"**{i}.** <@!{row['member_id']}>\n-# <:reply:1290714885792989238> level {lvl-1} | {row['messages']} {msg}\n\n"
             if i % per_page == 0 or i == len(rows):
                 embed = discord.Embed(title=f"{interaction.guild.name}'s leaderboard", description=description, color=0x2b2d31)
                 embed.set_thumbnail(url=interaction.guild.icon.url)
