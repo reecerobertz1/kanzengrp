@@ -763,7 +763,7 @@ class levels(commands.Cog):
         draw.text((100, 345), f'{xp_have} | {xp_need}', fill=levels['color'], font=zhcn)
         draw.text((225, 25), f"{user.name}", fill=levels['color'], font=zhcn)
         draw.text((225, 65), f"{server} levels", fill=levels['color'], font=zhcn2)
-        draw.text((300, 410), f'level | {level-1}   rank | {str(rank)}   {messages} messages', fill=levels['color'], font=zhcn)
+        draw.text((100, 410), f'level | {level-1}   rank | {str(rank)}   {messages} messages', fill=levels['color'], font=zhcn)
         buffer = BytesIO()
         card.save(buffer, 'png')
         buffer.seek(0)
