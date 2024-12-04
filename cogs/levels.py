@@ -992,7 +992,7 @@ class levels(commands.Cog):
     @commands.command(name="add", description="Add XP to someone", extras="+add @member amount")
     async def add(self, ctx, member: discord.Member, amount: int):
         required_roles = {739513680860938290, 1261435772775563315}
-        member_roles = {role.id for role in ctx.user.roles}
+        member_roles = {role.id for role in ctx.author.roles}
         if required_roles.isdisjoint(member_roles):
             await ctx.response.send_message("Sorry, this command is only available for staff members.", ephemeral=True)
             return
@@ -1014,21 +1014,22 @@ class levels(commands.Cog):
         if new_xp > next_level_xp:
             guild_id = ctx.guild.id
             if guild_id == 694010548605550675:
-                if lvl == 2:
+                if lvl <= 2:
                     reprole = await self.get_reprole(guild_id)
                     if reprole:
                         role = ctx.guild.get_role(reprole)
                         if role:
-                            await member.add_roles(role, reason=f"{member.name} reached level 2")
-                await ctx.followup.send(f"Yay! {member.mention} just reached **level {lvl}**!")
+                            await member.add_roles(role, reason=f"{member.name} reached level 2 or higher from added xp")
+                channel = ctx.guild.get_channel(822422177612824580)
+                await channel.send(f"Yay! {member.mention} just reached **level {lvl}** from added XP!")
 
             else:
                 stella = "Stella" if lvl == 1 else "Stellas"
                 reprole = await self.get_reprole(guild_id)
                 if reprole:
                     role = ctx.guild.get_role(reprole)
-                    if role and lvl == 1:
-                        await member.add_roles(role, reason=f"{member.name} reached level 1")
+                    if role and lvl <= 1:
+                        await member.add_roles(role, reason=f"{member.name} reached level 1 or higher from added xp")
 
                 embed = discord.Embed(
                     description=f"{member.name} just reached **{lvl}** {stella}!", colour=0xFEBCBE
@@ -1044,7 +1045,7 @@ class levels(commands.Cog):
             description=f"Gave `{amount} XP` to {str(member)}.",
             color=0x2B2D31
         )
-        await ctx.response.send_message(embed=embed)
+        await ctx.reply(embed=embed)
 
     @app_commands.command(name="remove", description="Remove xp from someone", extras="+remove @member amount")
     async def remove(self, interaction: discord.Interaction, member: discord.Member, amount: int):
