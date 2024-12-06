@@ -994,13 +994,9 @@ class levels(commands.Cog):
         required_roles = {739513680860938290, 1261435772775563315}
         member_roles = {role.id for role in ctx.author.roles}
         if required_roles.isdisjoint(member_roles):
-            await ctx.response.send_message("Sorry, this command is only available for staff members.", ephemeral=True)
+            await ctx.response.send_message("Sorry, this command is only available for staff members.")
             return
         levels = await self.get_member_levels(member.id, ctx.guild.id)
-        if not levels:
-            await ctx.response.send_message("Could not retrieve the member's level data. Please try again later.", ephemeral=True)
-            return
-
         current_xp = levels["xp"]
         new_xp = current_xp + amount
         await self.add_xp(member.id, ctx.guild.id, amount, levels)
