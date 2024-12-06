@@ -1010,7 +1010,7 @@ class levels(commands.Cog):
         levels = await self.get_member_levels(member.id, ctx.guild.id)
         xp = await self.get_xp(member.id, ctx.guild.id)
         current_xp = xp
-        new_xp = current_xp + amount
+        new_xp = {int(current_xp)} + amount
         await self.add_xp(member.id, ctx.guild.id, amount, levels)
         lvl = 0
         while True:
