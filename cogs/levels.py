@@ -989,29 +989,31 @@ class levels(commands.Cog):
         else:
             await interaction.response.send_message(f"An unexpected error occurred. Please try again later.\n{error}",ephemeral=True)
 
-    async def get_xp(self, member_id: int, guild_id: int) -> Optional[LevelRow]:
-        query = '''SELECT xp from levelling WHERE member_id = ? AND guild_id = ?'''
+    async def get_xp(self, member_id: int, guild_id: int) -> int:
+        query = '''SELECT xp FROM levelling WHERE member_id = ? AND guild_id = ?'''
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cursor:
                 await cursor.execute(query, (member_id, guild_id))
                 row = await cursor.fetchone()
                 if row:
-                    return row
+                    return row[0]
                 else:
-                    return None
+                    return 0 
 
     @commands.command(name="add", description="Add XP to someone", extras="+add @member amount")
     async def add(self, ctx, member: discord.Member, amount: int):
         required_roles = {739513680860938290, 1261435772775563315}
         member_roles = {role.id for role in ctx.author.roles}
         if required_roles.isdisjoint(member_roles):
-            await ctx.response.send_message("Sorry, this command is only available for staff members.")
+            await ctx.reply("Sorry, this command is only available for staff members.")
             return
+
         levels = await self.get_member_levels(member.id, ctx.guild.id)
-        xp = await self.get_xp(member.id, ctx.guild.id)
-        current_xp = xp
-        new_xp = {int(current_xp)} + amount
+        current_xp = await self.get_xp(member.id, ctx.guild.id)
+        new_xp = current_xp + amount
+
         await self.add_xp(member.id, ctx.guild.id, amount, levels)
+
         lvl = 0
         while True:
             if current_xp < ((50 * (lvl ** 2)) + (50 * (lvl - 1))):
@@ -1027,24 +1029,23 @@ class levels(commands.Cog):
                     if reprole:
                         role = ctx.guild.get_role(reprole)
                         if role:
-                            await member.add_roles(role, reason=f"{member.name} reached level 2 or higher from added xp")
+                            await member.add_roles(role, reason=f"{member.name} reached level 2 or higher from added XP")
                 channel = ctx.guild.get_channel(822422177612824580)
                 await channel.send(f"Yay! {member.mention} just reached **level {lvl}** from added XP!")
-
             else:
                 stella = "Stella" if lvl == 1 else "Stellas"
                 reprole = await self.get_reprole(guild_id)
                 if reprole:
                     role = ctx.guild.get_role(reprole)
                     if role and lvl <= 1:
-                        await member.add_roles(role, reason=f"{member.name} reached level 1 or higher from added xp")
-
+                        await member.add_roles(role, reason=f"{member.name} reached level 1 or higher from added XP")
                 embed = discord.Embed(
                     description=f"{member.name} just reached **{lvl}** {stella}!", colour=0xFEBCBE
                 )
                 channel = ctx.guild.get_channel(1135027269853778020)
                 if channel:
                     await channel.send(member.mention, embed=embed)
+
         top20 = await self.get_top20(ctx.guild.id)
         if top20 is not None:
             await self.top_20_role_handler(member, ctx.guild, top20)
