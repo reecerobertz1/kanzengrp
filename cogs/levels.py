@@ -435,7 +435,7 @@ class levels(commands.Cog):
 
     async def _get_top_20_movedown(self, member_ids: list, guild_id: int) -> int:
         t = tuple(member_ids)
-        query = "SELECT member_id FROM levels WHERE guild_id = ? AND xp = (SELECT MIN(xp) FROM levels WHERE member_id IN {} AND guild_id = ?)".format(t)
+        query = "SELECT member_id FROM levelling WHERE guild_id = ? AND xp = (SELECT MIN(xp) FROM levelling WHERE member_id IN {} AND guild_id = ?)".format(t)
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cursor:
                 await cursor.execute(query, guild_id, guild_id)
@@ -444,7 +444,7 @@ class levels(commands.Cog):
         return member_id[0]
 
     async def _get_number_20(self, guild_id: int) -> int:
-        query = '''SELECT member_id FROM levels WHERE guild_id = ? ORDER BY xp LIMIT 20'''
+        query = '''SELECT member_id FROM levelling WHERE guild_id = ? ORDER BY xp LIMIT 20'''
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cursor:
                 await cursor.execute(query, guild_id)
