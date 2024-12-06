@@ -989,14 +989,27 @@ class levels(commands.Cog):
         else:
             await interaction.response.send_message(f"An unexpected error occurred. Please try again later.\n{error}",ephemeral=True)
 
+    async def get_xp(self, member_id: int, guild_id: int) -> Optional[LevelRow]:
+        query = '''SELECT xp from levelling WHERE member_id = ? AND guild_id = ?'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, (member_id, guild_id))
+                row = await cursor.fetchone()
+                if row:
+                    return row
+                else:
+                    return None
+
     @commands.command(name="add", description="Add XP to someone", extras="+add @member amount")
-    async def add(self, ctx, member: discord.Member, amount: int, levels: LevelRow):
+    async def add(self, ctx, member: discord.Member, amount: int):
         required_roles = {739513680860938290, 1261435772775563315}
         member_roles = {role.id for role in ctx.author.roles}
         if required_roles.isdisjoint(member_roles):
             await ctx.response.send_message("Sorry, this command is only available for staff members.")
             return
-        current_xp = levels["xp"]
+        levels = await self.get_member_levels(member.id, ctx.guild.id)
+        xp = await self.get_xp(member.id, ctx.guild.id)
+        current_xp = xp
         new_xp = current_xp + amount
         await self.add_xp(member.id, ctx.guild.id, amount, levels)
         lvl = 0
