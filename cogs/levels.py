@@ -359,6 +359,8 @@ class levels(commands.Cog):
             lvl += 1
         next_level_xp = ((50*(lvl**2))+(50*(lvl-1)))
         if new_xp > next_level_xp:
+            coins = randint(2, 5)
+            await self.add_currency(message.author.id, coins)
             if message.guild.id == 694010548605550675:
                 if lvl == 2:
                     reprole = await self.get_reprole(message.guild.id)
@@ -368,7 +370,7 @@ class levels(commands.Cog):
                         top20 = await self.get_top20(message.guild.id)
                         if top20 is not None:
                             await self.top_20_role_handler(message.author, message.guild, top20)
-                await message.channel.send(f"Yay! {message.author.mention} you just reached **level {lvl}**")
+                await message.channel.send(f"Yay! {message.author.mention} you just reached **level {lvl}**\nYou also collected 🪙 **{coins}** coins!")
             if message.guild.id == 1134736053803159592:
                 if lvl == 1:
                     stella = "Stella"
@@ -377,7 +379,9 @@ class levels(commands.Cog):
                 top20 = await self.get_top20(message.guild.id)
                 if top20 is not None:
                     await self.top_20_role_handler(message.author, message.guild, top20)
-                embed = discord.Embed(description=f"{message.author.name} you just reached **{lvl}** {stella}!", colour=0xFEBCBE)
+                coins = randint(2, 5)
+                await self.add_currency(message.author.id, coins)
+                embed = discord.Embed(description=f"{message.author.name} you just reached **{lvl}** {stella}!\nYou also collected 🪙 **{coins}** coins!", colour=0xFEBCBE)
                 channel = message.guild.get_channel(1135027269853778020)
                 await channel.send(message.author.mention, embed=embed)
 
@@ -509,7 +513,7 @@ class levels(commands.Cog):
             return not required_roles.isdisjoint(member_roles)
 
         guild_id = member.guild.id
-        channel_id = 822422177612824580 if guild_id == 694010548605550675 else 1135027269853778020
+        channel_id = 1248039148888129647 if guild_id == 694010548605550675 else 1135027269853778020
 
         if before.channel is None and after.channel is not None:
             if len(after.channel.members) >= 2:
@@ -523,35 +527,11 @@ class levels(commands.Cog):
                 time_spent = datetime.utcnow() - join_time
                 seconds_spent = time_spent.total_seconds()
 
-                minimum_seconds = 30
+                minimum_seconds = 3
 
                 if seconds_spent >= minimum_seconds:
                     xp_to_add = await self.get_voicexp(guild_id)
                     xp_earned = (seconds_spent // minimum_seconds) * xp_to_add
-                    levels = await self.get_level_row(member.id, guild_id)
-                    if not levels:
-                        return
-
-                    current_xp = levels["xp"]
-                    new_xp = current_xp + xp_earned
-                    await self.add_xp(member.id, guild_id, xp_earned, levels)
-
-                    lvl = 0
-                    while True:
-                        if current_xp < ((50 * (lvl ** 2)) + (50 * (lvl - 1))):
-                            break
-                        lvl += 1
-
-                    reprole = await self.get_reprole(guild_id)
-                    if reprole:
-                        role = member.guild.get_role(reprole)
-                        if guild_id == 694010548605550675:
-                            if role and lvl == 2:
-                                await member.add_roles(role, reason=f"{member.name} reached level 2 through voice activity")
-                            else:
-                                if role and lvl == 1:
-                                    await member.add_roles(role, reason=f"{member.name} reached level 1 through voice activity")
-
                     channel = member.guild.get_channel(channel_id)
                     if channel:
                         await channel.send(f"<@{member.id}> you earned **{xp_earned}** XP from speaking in #{before.channel.name}")
@@ -569,27 +549,11 @@ class levels(commands.Cog):
 
                             if seconds_spent >= minimum_seconds:
                                 xp_earned = (seconds_spent // minimum_seconds) * xp_to_add
-                                levels = await self.get_level_row(m.id, guild_id)
-                                if levels:
-                                    current_xp = levels["xp"]
-                                    new_xp = current_xp + xp_earned
-                                    await self.add_xp(m.id, guild_id, xp_earned, levels)
-
-                                    lvl = 0
-                                    while True:
-                                        if current_xp < ((50 * (lvl ** 2)) + (50 * (lvl - 1))):
-                                            break
-                                        lvl += 1
-
-                                    reprole = await self.get_reprole(guild_id)
-                                    if reprole:
-                                        role = member.guild.get_role(reprole)
-                                        if role and lvl == 1:
-                                            await m.add_roles(role, reason=f"{m.name} reached level 1 through voice activity")
                                 channel = member.guild.get_channel(channel_id)
                                 if channel:
-                                    await channel.send(f"<@{m.id}> you earned **{xp_earned}** XP from speaking in #{before.channel.name}")
-
+                                    coins = randint(2, 5)
+                                    await self.add_currency(m.id, coins)
+                                    await channel.send(f"<@{m.id}> you earned **{xp_earned}** XP and 🪙 **{coins}** coins from speaking in #{before.channel.name}")
                         self.voice_times[m.id] = datetime.utcnow()
 
         elif before.channel is not None and after.channel is not None:
