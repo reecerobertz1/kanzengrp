@@ -621,10 +621,16 @@ class levels(commands.Cog):
         mask_draw.rounded_rectangle([(0, 0), (bg_width, height)], fill=255, width=0, radius=radius)
         return progress_bar, mask
 
-    def get_avatar(self, avatar: BytesIO) -> Tuple[Image.Image, Image.Image]:
+    def get_avatar1(self, avatar: BytesIO) -> Tuple[Image.Image, Image.Image]:
         circle = Image.open('./assets/circle-mask.png').resize((200, 200)).convert('L')
         avatar_image = Image.open(avatar).convert('RGBA')
         avatar_image = avatar_image.resize((200, 200))
+        return avatar_image, circle
+
+    def get_avatar2(self, avatar: BytesIO) -> Tuple[Image.Image, Image.Image]:
+        circle = Image.open('./assets/circle-mask.png').resize((150, 150)).convert('L')
+        avatar_image = Image.open(avatar).convert('RGBA')
+        avatar_image = avatar_image.resize((150, 150))
         return avatar_image, circle
 
     def human_format(self, number: int) -> str:
@@ -708,7 +714,7 @@ class levels(commands.Cog):
         bg_frosted = Image.composite(bg_blurred, Image.new("RGBA", bg.size, "white"), inverted_mask)
         bg_frosted.putalpha(inverted_mask)
         bar, mask_bar = self._make_progress_bar1(percentage, levels['color'])
-        avatar_paste, circle = self.get_avatar(avatar)
+        avatar_paste, circle = self.get_avatar1(avatar)
         card.paste(bg, (0, 0))
         card.paste(bg_frosted, (0, 0), bg_frosted)
         card.paste(bar, (0, 485), mask_bar)
@@ -775,7 +781,7 @@ class levels(commands.Cog):
         bg_frosted = Image.composite(bg_blurred, Image.new("RGBA", bg.size, "white"), inverted_mask)
         bg_frosted.putalpha(inverted_mask)
         bar, mask_bar = self._make_progress_bar2(percentage, levels['color'])
-        avatar_paste, circle = self.get_avatar(avatar)
+        avatar_paste, circle = self.get_avatar2(avatar)
         card.paste(bg, (0, 0))
         card.paste(bg_frosted, (0, 0), bg_frosted)
         card.paste(bar, (0, 735), mask_bar)
