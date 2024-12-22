@@ -616,9 +616,9 @@ class levels(commands.Cog):
         return progress_bar, mask
 
     def get_avatar(self, avatar: BytesIO) -> Tuple[Image.Image, Image.Image]:
-        circle = Image.open('./assets/circle-mask.png').resize((150, 150)).convert('L')
+        circle = Image.open('./assets/circle-mask.png').resize((200, 200)).convert('L')
         avatar_image = Image.open(avatar).convert('RGBA')
-        avatar_image = avatar_image.resize((150, 150))
+        avatar_image = avatar_image.resize((200, 200))
         return avatar_image, circle
 
     def human_format(self, number: int) -> str:
@@ -667,7 +667,7 @@ class levels(commands.Cog):
 
         return percentage, xp_progress_have, xp_progress_need, lvl
 
-    def get_card1(self, avatar: BytesIO, levels: LevelRow, rank: int, user: discord.User, guild: discord.Guild) -> BytesIO:
+    def get_card1(self, avatar: BytesIO, levels: LevelRow, decorations: Decorations, rank: int, user: discord.User, guild: discord.Guild) -> BytesIO:
         percentage, xp_have, xp_need, level = self.xp_calculations(levels)
         card = Image.new('RGBA', size=(1500, 500), color='grey')
         
@@ -709,9 +709,9 @@ class levels(commands.Cog):
         card.paste(avatar_paste, (18, 17), circle)
         zhcn = ImageFont.truetype("./fonts/zhcn.ttf", size=36)
         zhcn2 = ImageFont.truetype("./fonts/zhcn.ttf", size=25)
-        # rankdecor = Image.open(f'./assets/{levels["decor"]}.png')
-        # rankdecor = rankdecor.resize((750, 750))
-        # card.paste(rankdecor, (0, 0), rankdecor)
+        rankdecor = Image.open(f'./assets/{decorations["selected"]}.png')
+        rankdecor = rankdecor.resize((1500, 500))
+        card.paste(rankdecor, (0, 0), rankdecor)
         rankboxes = Image.open('./assets/rankboxes.png')
         rankboxes = rankboxes.resize((750, 750))
         card.paste(rankboxes, (0, 0), rankboxes)
@@ -726,7 +726,9 @@ class levels(commands.Cog):
         draw.text((100, 345), f'{xp_have} | {xp_need}', fill=levels['color'], font=zhcn)
         draw.text((225, 25), f"{user.name}", fill=levels['color'], font=zhcn)
         draw.text((225, 65), f"{server} levels", fill=levels['color'], font=zhcn2)
-        draw.text((100, 410), f'level | {level-1}   rank | {str(rank)}   {messages} messages', fill=levels['color'], font=zhcn)
+        draw.text((300, 410), f'rank | {str(rank)}', fill=levels['color'], font=zhcn)
+        draw.text((100, 410), f'level | {level-1}', fill=levels['color'], font=zhcn)
+        draw.text((500, 410), f'{messages} messages', fill=levels['color'], font=zhcn)
         buffer = BytesIO()
         card.save(buffer, 'png')
         buffer.seek(0)
@@ -774,9 +776,9 @@ class levels(commands.Cog):
         card.paste(avatar_paste, (18, 17), circle)
         zhcn = ImageFont.truetype("./fonts/zhcn.ttf", size=30)
         zhcn2 = ImageFont.truetype("./fonts/zhcn.ttf", size=20)
-        # rankdecor = Image.open(f'./assets/{levels["decor"]}.png')
-        # rankdecor = rankdecor.resize((750, 750))
-        # card.paste(rankdecor, (0, 0), rankdecor)
+        rankdecor = Image.open(f'./assets/{levels["decor"]}.png')
+        rankdecor = rankdecor.resize((750, 750))
+        card.paste(rankdecor, (0, 0), rankdecor)
         draw = ImageDraw.Draw(card, 'RGBA')
         message = levels["messages"]
         messages = self.human_format(message)
@@ -787,20 +789,20 @@ class levels(commands.Cog):
         draw.text((65, 620), f'{xp_have} | {xp_need}', fill=levels['color'], font=zhcn)
         draw.text((170, 25), f"{user.name}", fill=levels['color'], font=zhcn)
         draw.text((170, 55), f"{server} levels", fill=levels['color'], font=zhcn2)
-        draw.text((57, 670), f'level | {level-1}   rank | {str(rank)}   {messages} messages', fill=levels['color'], font=zhcn)
+        draw.text((57, 670), f'rank | {str(rank)}   level | {level-1}   {messages} messages', fill=levels['color'], font=zhcn)
         buffer = BytesIO()
         card.save(buffer, 'png')
         buffer.seek(0)
         return buffer
 
-    async def generate_card1(self, avatar: BytesIO, levels: LevelRow, rank: int, member: discord.Member, guild: discord.Guild) -> BytesIO:
-        card_generator = functools.partial(self.get_card1, avatar, levels, rank, guild)
-        card = await self.bot.loop.run_in_executor(None, self.get_card1, avatar, levels, rank, member, guild)
+    async def generate_card1(self, avatar: BytesIO, levels: LevelRow, decorations: Decorations, rank: int, member: discord.Member, guild: discord.Guild) -> BytesIO:
+        card_generator = functools.partial(self.get_card1, avatar, levels, decorations, rank, guild)
+        card = await self.bot.loop.run_in_executor(None, self.get_card1, avatar, levels, decorations, rank, member, guild)
         return card
 
-    async def generate_card2(self, avatar: BytesIO, levels: LevelRow, rank: int, member: discord.Member, guild: discord.Guild) -> BytesIO:
-        card_generator = functools.partial(self.get_card2, avatar, levels, rank, guild)
-        card = await self.bot.loop.run_in_executor(None, self.get_card2, avatar, levels, rank, member, guild)
+    async def generate_card2(self, avatar: BytesIO, levels: LevelRow, decorations: Decorations, rank: int, member: discord.Member, guild: discord.Guild) -> BytesIO:
+        card_generator = functools.partial(self.get_card2, avatar, levels, decorations, rank, guild)
+        card = await self.bot.loop.run_in_executor(None, self.get_card2, avatar, levels, decorations, rank, member, guild)
         return card
 
     async def get_rank(self, member_id: int, guild_id: int) -> int:
@@ -869,10 +871,11 @@ class levels(commands.Cog):
             return
         
         member = member or interaction.user
+        format = await self.get_format(member.id, interaction.guild.id)
         levels = await self.get_member_levels(member.id, interaction.guild_id)
+        decorations = await self.get_member_decors(member.id)
         rank = await self.get_rank(member.id, interaction.guild_id)
         avatar_url = member.display_avatar.replace(static_format='png', size=256).url
-        format = await self.get_format(member.id, interaction.guild.id)
         response = await self.bot.session.get(avatar_url)
         guild = interaction.guild.id
         avatar = BytesIO(await response.read())
@@ -880,15 +883,14 @@ class levels(commands.Cog):
 
         if format == 1:
             if levels:
-                    card = await self.generate_card1(avatar, levels, rank, member, guild)
+                    card = await self.generate_card1(avatar, levels, decorations, rank, member, guild)
             else:
                 card = None
         elif format == 2:
             if levels:
-                    card = await self.generate_card2(avatar, levels, rank, member, guild)
+                    card = await self.generate_card2(avatar, levels, decorations, rank, member, guild)
             else:
                 card = None
-
         if card:
             await interaction.response.send_message(file=discord.File(card, 'card.png'), view=configrankcard(member=member.id, bot=self.bot))
         else:

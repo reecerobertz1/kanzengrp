@@ -346,7 +346,7 @@ class event(commands.Cog):
 
     async def add_member(self, member_id: int, currency: int) -> None:
         query_check = '''SELECT 1 FROM decors WHERE member_id = ?'''
-        query_insert = '''INSERT INTO decors (member_id, currency, unlocked) VALUES (?, ?, ?)'''
+        query_insert = '''INSERT INTO decors (member_id, currency, unlocked, selected) VALUES (?, ?, ?, ?)'''
 
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cursor:
@@ -355,7 +355,7 @@ class event(commands.Cog):
                 if result:
                     print(f"Member {member_id} already exists in the database.")
                 else:
-                    await cursor.execute(query_insert, (member_id, currency, 0))
+                    await cursor.execute(query_insert, (member_id, currency, 0, 0))
                     await conn.commit()
 
     @app_commands.command(name="shop", description="Hoshi's shop")
