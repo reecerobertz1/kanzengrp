@@ -106,7 +106,7 @@ class standard1(discord.ui.View):
         currency = await self.get_currency(interaction.user.id)
         embed=discord.Embed(title="Standard Collection", description=f"`・` Use the **Buy** button below and enter the number of the decoration you want.\n`・` These decorations are available forever.\n\n`🪙{currency} coins`", color=0x2b2d31)
         embed.set_footer(icon_url=interaction.guild.icon, text="Page 2 of 2")
-        embed.set_image(url="https://cdn.discordapp.com/attachments/1248991619026391122/1319391113215213588/standard_collection_1080x1080_00000.png?ex=6765ca3a&is=676478ba&hm=ae3028d936e1b046e255788ae98ee723d335495f4d498f5de9a135ff8eab650e&")
+        embed.set_image(url="https://cdn.discordapp.com/attachments/1248039148888129647/1320189667248967720/standard_collection_1080x1080_00000.png?ex=6768b1f0&is=67676070&hm=fa0138fea3115f684bed74dae02166c4dbd0e165485fd54c31295adeb85c9a4f&")
         await interaction.response.edit_message(embed=embed)
 
     @discord.ui.button(label="Buy")
