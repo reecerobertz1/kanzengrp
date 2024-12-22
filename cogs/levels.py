@@ -249,6 +249,18 @@ class configrankcard(discord.ui.View):
                 ephemeral=True
             )
 
+    @discord.ui.button(label="Clear Decoration")
+    async def clear(self, interaction: discord.Interaction, button: discord.ui.Button):
+        await self.update_equiped(interaction.user.id, 0)
+        await interaction.response.send_message(f"<:check:1291748345194348594> Okay **{interaction.user.name}**, your decoration has been cleared!")
+
+    async def update_equiped(self, member_id: int, chosen: int) -> None:
+        query = '''UPDATE decors SET selected = ? WHERE member_id = ?'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, (chosen, member_id))
+                await conn.commit()
+
     async def get_color(self, member_id: int, guild_id: int):
         query = '''SELECT color FROM levelling WHERE member_id = $1 AND guild_id = $2'''
         async with self.bot.pool.acquire() as conn:
