@@ -740,7 +740,7 @@ class levels(commands.Cog):
         buffer.seek(0)
         return buffer
 
-    def get_card2(self, avatar: BytesIO, levels: LevelRow, rank: int, user: discord.User, guild: discord.Guild) -> BytesIO:
+    def get_card2(self, avatar: BytesIO, levels: LevelRow, decorations: Decorations, rank: int, user: discord.User, guild: discord.Guild) -> BytesIO:
         percentage, xp_have, xp_need, level = self.xp_calculations(levels)
         card = Image.new('RGBA', size=(750, 750), color='grey')
         
