@@ -782,7 +782,7 @@ class levels(commands.Cog):
         card.paste(avatar_paste, (18, 17), circle)
         zhcn = ImageFont.truetype("./fonts/zhcn.ttf", size=30)
         zhcn2 = ImageFont.truetype("./fonts/zhcn.ttf", size=20)
-        rankdecor = Image.open(f'./assets/{levels["decor"]}.png')
+        rankdecor = Image.open(f'./assets/{decorations["selected"]}.png')
         rankdecor = rankdecor.resize((750, 750))
         card.paste(rankdecor, (0, 0), rankdecor)
         draw = ImageDraw.Draw(card, 'RGBA')
