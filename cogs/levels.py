@@ -15,6 +15,12 @@ from discord.app_commands import CommandOnCooldown
 import datetime
 from datetime import datetime, timedelta
 
+class Decorations(TypedDict):
+    member_id: int
+    unlocked: int
+    selected: int
+    currency: int
+
 class LevelRow(TypedDict):
     member_id: int
     xp: int
