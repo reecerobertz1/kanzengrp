@@ -531,7 +531,7 @@ class levels(commands.Cog):
             return not required_roles.isdisjoint(member_roles)
 
         guild_id = member.guild.id
-        channel_id = 1248039148888129647 if guild_id == 694010548605550675 else 1135027269853778020
+        channel_id = 822422177612824580 if guild_id == 694010548605550675 else 1135027269853778020
 
         if before.channel is None and after.channel is not None:
             if len(after.channel.members) >= 2:
