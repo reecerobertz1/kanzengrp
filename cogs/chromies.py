@@ -2,6 +2,8 @@ from typing import Optional
 import discord
 from discord.ext import commands
 from discord import ui
+from discord import app_commands
+from io import BytesIO
 
 class infoview(discord.ui.View):
     def __init__(self, bot):
@@ -14,7 +16,7 @@ class infoview(discord.ui.View):
         logos = discord.Embed(title="<a:bun:1098764398962671677> Chroma Logos!", description="˃ Please make sure you watermark the logos!\n˃ Use the watermark on every edit\n˃ Do not share this link with anyone outside the group!", color=0x2b2d31)
         logos.set_footer(text="Made us some logos? send them to Reece or Alisha!")
         logos.set_image(url=interaction.guild.banner)
-        await interaction.user.send("key: `chUZuZ7Eu0mqLOM5rxRsQw`\nhttps://mega.nz/folder/xOk1SApA", embed=logos)
+        await interaction.user.send({logos}, embed=logos)
         channel = interaction.client.get_channel(1011212849965715528)
         log = discord.Embed(title="Logo button has been used!", description=f"`{interaction.user.display_name}` has used the logos button", color=0x2b2d31)
         log.set_footer(text=f"id: {interaction.user.id}", icon_url=interaction.user.display_avatar)
@@ -73,7 +75,78 @@ class reportmember(ui.Modal, title='Report'):
         embed.set_thumbnail(url=interaction.guild.icon)
         channel = interaction.client.get_channel(1274063410463641642)
         await channel.send("<@&739513680860938290>", embed=embed)
-        await interaction.followup.send(f'Your report has been sent!\nThank you for helping us make Chroma a better place!', ephemeral=True)
+        await interaction.response.send_message(f'Your report has been sent!\nThank you for helping us make Chroma a better place!', ephemeral=True)
+
+class staff(ui.Modal, title='Staff Apps'):
+    why = discord.ui.TextInput(label="Why should we pick you?", placeholder="Put your reasoning here...", style=discord.TextStyle.paragraph)
+    experience = discord.ui.TextInput(label="What kind of previous experience do you have?", placeholder="List your previous experience here...", style=discord.TextStyle.paragraph)
+    events = discord.ui.TextInput(label="What would you contribute with?", placeholder="E.g. Events you wanna host and why, things you wanna improve in Chroma etc...", style=discord.TextStyle.paragraph)
+    other = discord.ui.TextInput(label="Anything else you want us to know?", placeholder="Extra information goes here...", style=discord.TextStyle.paragraph, required=False)
+    async def on_submit(self, interaction: discord.Interaction):
+        for response in [self.why.value, self.experience.value, self.events.value, self.other.value]:
+            if response is not None:
+                if len(response) > 1024:
+                    return await interaction.followup.send("Your form reply exceeds our limits, try shortening your responses!", ephemeral=True)
+        embed = discord.Embed(title="General Staff Application", description="", color=0xeeb0e3)
+        embed.add_field(name="Why should we pick you?", value=self.why.value)
+        embed.add_field(name="What kind of previous experience do you have?", value=self.experience.value, inline=False)
+        embed.add_field(name="What kind of activities and/or events would you initiate in Chroma?", value=self.events.value, inline=False)
+        if self.other.value:
+            embed.add_field(name="Anything else you want us to know?", value=self.other.value, inline=False)
+        msg = await interaction.client.get_channel(1321922648887791626).send(f"Sent from {interaction.user.mention}\nID: {interaction.user.id}", embed=embed)
+        await interaction.response.send_message(f'Thanks for applying to be a part of the Chroma staff! We appreciate it <3', ephemeral=True)
+
+class gfx(ui.Modal, title='GFX Staff Apps'):
+    def __init__(self, files: list = None):
+        super().__init__()
+        self.files = files
+        
+    experience = discord.ui.TextInput(label="What kind of previous experience do you have?", placeholder="List your previous experience here...", style=discord.TextStyle.paragraph)
+    events = discord.ui.TextInput(label="Any other staff activities of interest?", placeholder="E.g. Event hosting, recruits, helping members etc", style=discord.TextStyle.paragraph)
+    other = discord.ui.TextInput(label="Anything else you want us to know?", placeholder="Extra information goes here...", style=discord.TextStyle.paragraph, required=False)
+    async def on_submit(self, interaction: discord.Interaction):
+        for response in [self.experience.value, self.events.value, self.other.value]:
+            if response is not None:
+                if len(response) > 1024:
+                    return await interaction.followup.send("Your form reply exceeds our limits, try shortening your responses!", ephemeral=True)
+        embed = discord.Embed(title="GFX Staff Application", description="", color=0x463f78)
+        embed.add_field(name="What kind of previous experience do you have?", value=self.experience.value, inline=False)
+        embed.add_field(name="Any other staff activities of interest?", value=self.events.value, inline=False)
+        if self.other.value:
+            embed.add_field(name="Anything else you want us to know?", value=self.other.value, inline=False)
+        if self.files != None:
+            await interaction.client.get_channel(1321922724607823922).send(f"Sent from {interaction.user.mention}\nID: {interaction.user.id}", embed=embed)
+            await interaction.client.get_channel(1321922724607823922).send(content=f"{interaction.user.mention}'s previous work", files=self.files)
+        else:
+            await interaction.client.get_channel(1321922724607823922).send(f"Sent from {interaction.user.mention}\nID: {interaction.user.id}", embed=embed)
+        await interaction.response.send_message(f'Thanks for applying to be a part of the GFX team! We appreciate it <3', ephemeral=True)
+
+class code(ui.Modal, title='Hoshi Developer Apps'):
+    def __init__(self, files):
+        super().__init__()
+        self.files = files
+
+    experience = discord.ui.TextInput(label="What kind of previous experience do you have?", placeholder="List your previous experience here...", style=discord.TextStyle.paragraph)
+    otherstaff = discord.ui.TextInput(label="Any other staff activities of interest?", placeholder="E.g. Event hosting, recruits, helping members etc", style=discord.TextStyle.paragraph)
+    events = discord.ui.TextInput(label="Are you able to code using Discord.py?", placeholder="yes or no...", style=discord.TextStyle.short)
+    other = discord.ui.TextInput(label="Anything else you want us to know?", placeholder="Extra information goes here...", style=discord.TextStyle.paragraph, required=False)
+    async def on_submit(self, interaction: discord.Interaction):
+        for response in [self.experience.value, self.otherstaff.value, self.events.value, self.other.value]:
+            if response is not None:
+                if len(response) > 1024:
+                    return await interaction.followup.send("Your form reply exceeds our limits, try shortening your responses!", ephemeral=True)
+        embed = discord.Embed(title="Hoshi Developer Application", description="", color=0xa4c4e6)
+        embed.add_field(name="What kind of previous experience do you have?", value=self.experience.value, inline=False)
+        embed.add_field(name="Any other staff activities of interest?", value=self.otherstaff.value, inline=False)
+        embed.add_field(name="Are you able to code using Discord.py?", value=self.events.value, inline=False)
+        if self.other.value:
+            embed.add_field(name="Anything else you want us to know?", value=self.other.value, inline=False)
+        if self.files != None:
+            await interaction.client.get_channel(1321922683599851672).send(f"Sent from {interaction.user.mention}\nID: {interaction.user.id}", embed=embed)
+            await interaction.client.get_channel(1321922683599851672).send(content=f"{interaction.user.mention}'s previous code\n{self.files}")
+        else:
+            await interaction.client.get_channel(1321922683599851672).send(f"Sent from {interaction.user.mention}\nID: {interaction.user.id}", embed=embed)
+        await interaction.response.send_message(f'Thanks for applying to be a Hoshi Developer! We appreciate it <3', ephemeral=True)
 
 class ia(discord.ui.Modal):
     def __init__(self, bot):
@@ -155,28 +228,24 @@ class chromies(commands.Cog):
     @commands.command()
     @commands.has_permissions(manage_guild=True)
     async def rules(self, ctx):
-        embed = discord.Embed(title="✾ ༝ __Weclome to Chroma__ ⁺", description="**Group Rules**"
-        "\n・Must be following **[remqsi](https://instagra,.com/remqsi)**, **[wqndqs](https://instagra,.com/wqndqs)** + **[chromagrp](https://instagra,.com/chromagrp)**."
-        "\n・Always use our hashtag __**#𝗰𝗵𝗿𝗼𝗺𝗮𝗴𝗿𝗽**__."
-        "\n・Watermark logos if the background is mostly plain."
-        "\n-# ***Note:** Leaking the logos will get you banned!*"
-
-        "\n\n**Chat Rules**"
-        "\n・Make sure you have your age roles from <id:customize> "
-        "\n・No NSFW content or sexual discussions."
-        "\n・No offensive jokes that can make others uncomfortable."
-        "\n・Please stay as active as possible."
-        '\n・Set your nickname as "name | username".'
-        "\n・ No impersonating other editors."
-        "\n・ Be friendly and respect everyone."
-        "\n・If you move accounts or leave, please dm **[chromagrp](https://instagra,.com/chromagrp)**."
-        "\n・No trash talking of other groups or editors."
-        "\n・Respect the server and use channels correctly."
-        "\n-# ***Note:** Breaking any of the rules will lead to a warning / kick or ban!*", color=0x2b2d31)
-        embed2 = discord.Embed(title="✾ ༝ __Reporting Members__ ⁺", description="・If you see someone breaking our rules, report them below."
-        "\n・You can stay anonymous by leaving your username blank."
-        "\n・Click the Report Member button to report a chroma member."
-        "\n-# ***Note:** We may DM you for more information if we need more.*", color=0x2b2d31)
+        embed = discord.Embed(title="Weclome to Chroma", color=0x2b2d31)
+        embed.add_field(name="Group Rules", value="• Must be following [remqsi](https://instagra,.com/remqsi), [wqndqs](https://instagra,.com/wqndqs) + [chromagrp](https://instagra,.com/chromagrp)."
+                                            "\n• Always use our hashtag #𝗰𝗵𝗿𝗼𝗺𝗮𝗴𝗿𝗽."
+                                            "\n• Watermark logos if the background is mostly plain."
+                                            "\n• Never share the logos with anyone outside of Chroma."
+                                            "\n-# **Note:** Leaking our logos will get you banned.", inline=False)
+        embed.add_field(name="Chat Rules", value="• Make sure you have your age roles from <id:customize>!"
+                            "\n• No NSFW content or sexual discussions."
+                            "\n• No offensive jokes that can make others uncomfortable."
+                            '\n• Please stay as active as possible.'
+                            '\n• Set your nickname as "name | username".'
+                            "\n• No impersonating other editors."
+                            "\n• Be friendly and respect everyone."
+                            "\n• If you move accounts or leave, please dm [chromagrp](https://instagram.com/chromagrp)."
+                            "\n• No trash talking of other groups or editors."
+                            "\n• Respect the server and use channels correctly."
+                            "\n-# **Note:** Breaking any of the rules will lead to a warning / kick or ban!", inline=False)
+        embed2 = discord.Embed(title="Reporting Members", description="• If you see someone breaking our rules, report them below.\n• You can stay anonymous by leaving your username blank.\n• Click the `Report Member` button to report a chroma member.\n-# **Note:** We may DM you for more information if we need more.", color=0x2b2d31)
         view=infoview(bot=self.bot)
         await ctx.send(embed=embed)
         await ctx.send(embed=embed2, view=view)
@@ -206,6 +275,32 @@ class chromies(commands.Cog):
         socials.add_item(remqsi)
         socials.add_item(wqndqs)
         await ctx.send(embed=embed2, view=socials)
+
+    @app_commands.command(name="staff", description="Apply to be Chroma staff")
+    @app_commands.guilds(discord.Object(id=694010548605550675))
+    async def staff(self, interaction: discord.Interaction):
+        await interaction.response.send_modal(staff())
+
+    @app_commands.command(name="coder", description="Apply to be Hoshi developer")
+    @app_commands.guilds(discord.Object(id=694010548605550675))
+    async def coder(self, interaction: discord.Interaction, mega_link: Optional[str]):
+        if mega_link:
+            await interaction.response.send_modal(code(mega_link))
+        else:
+            await interaction.response.send_modal(code())
+
+    @app_commands.command(name="gfx", description="Apply to be Chroma GFX artist")
+    @app_commands.guilds(discord.Object(id=694010548605550675))
+    async def gfx(self, interaction: discord.Interaction, artwork: Optional[discord.Attachment], artwork2: Optional[discord.Attachment], artwork3: Optional[discord.Attachment]):
+        files = []
+        for attachment in [artwork, artwork2, artwork]:
+            if attachment and attachment.size > 0:
+                fil = discord.File(BytesIO(await attachment.read()), filename=attachment.filename)
+                files.append(fil)
+        if len(files) > 0:
+            await interaction.response.send_modal(gfx(files))
+        else:
+            await interaction.response.send_modal(gfx())
 
 async def setup(bot):
     await bot.add_cog(chromies(bot))
