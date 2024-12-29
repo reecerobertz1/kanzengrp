@@ -34,7 +34,8 @@ class welcandleave(commands.Cog):
 
         elif member.guild.id == stored_guild_id:
             await member.add_roles(member.guild.get_role(role))
-            embed = discord.Embed(title='<a:shookylove:1082786001958744224> __Welcome to chroma!__', color=0x2b2d31, description=f"{member.name} has joined!\n> • Please make sure to read [our rules](https://discord.com/channels/694010548605550675/725373131220320347)\n> • Introduce yourself [here](https://discord.com/channels/694010548605550675/727875317439528982)\n> • Questions? ping <@&753678720119603341> or <@&739513680860938290>\nEnjoy your time here in chroma!")
+            embed = discord.Embed(title='ᯓ Welcome to Chromagrp ༝ ⁺', color=0x463F78, description=f"**{member.name}** has joined !\n-# ・Please read our [rules](https://discord.com/channels/694010548605550675/725373131220320347)\n-# ・Introduce yourself in [this channel](https://discord.com/channels/694010548605550675/727875317439528982)\n-#  ⠀⠀—・⋆ Need help? Ping @leads or @staff")
+            embed.set_footer(text="Thank you for joining Chroma ★ ₊ ۫ ּ")
             channel = self.bot.get_channel(725389930607673384)
             embed.set_thumbnail(url=member.display_avatar.url)
             await channel.send(f'{member.mention}', embed=embed)
@@ -85,14 +86,11 @@ class welcandleave(commands.Cog):
             channel = self.bot.get_channel(self.kanzen_welcome)
             await channel.send(f'{member.mention}', embed=embed)
 
-        # CHROMA COMMUNITY LEAVE EMBED
+        # CHROMA LEAVE EMBED
 
         elif member.guild.id == stored_guild_id:
-            embed = discord.Embed(title="Member left!", color=0x2b2d31, description=f"{member.mention} has left the discord.")
-            embed.set_thumbnail(url=member.display_avatar.url)
-            embed.set_footer(text='i hope to see you again!', icon_url='https://cdn.discordapp.com/attachments/799984745772875786/800015677653909504/yaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.png')
             channel = self.bot.get_channel(725389930607673384)
-            await channel.send(embed=embed)
+            await channel.send(f"**{member.display_name}** has left Chroma\n-# ・⋆  We will miss you ")
             await self.remove_member(member.id)
 
 async def setup(bot):
