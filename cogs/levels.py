@@ -12,7 +12,7 @@ from PIL import Image
 from utils.views import Paginator
 from colorthief import ColorThief
 from discord.app_commands import CommandOnCooldown
-import datetime
+import datetime as dt
 from datetime import datetime, timedelta
 
 class Decorations(TypedDict):
@@ -902,32 +902,36 @@ class levels(commands.Cog):
         required_roles = {1134797882420117544, 694016195090710579}
         member_roles = {role.id for role in interaction.user.roles}
         if required_roles.isdisjoint(member_roles):
-            await interaction.response.send_message("Sorry, this command is currently not available for non members!", ephemeral=True)
+            await interaction.response.send_message(
+                "Sorry, this command is currently not available for non members!", ephemeral=True
+            )
             return
-        
+
         member = member or interaction.user
         format = await self.get_format(member.id, interaction.guild.id)
         levels = await self.get_member_levels(member.id, interaction.guild_id)
         decorations = await self.get_member_decors(member.id)
         rank = await self.get_rank(member.id, interaction.guild_id)
-        avatar_url = member.display_avatar.replace(static_format='png', size=256).url
+        avatar_url = member.display_avatar.replace(static_format="png", size=256).url
         response = await self.bot.session.get(avatar_url)
         guild = interaction.guild.id
         avatar = BytesIO(await response.read())
         avatar.seek(0)
 
+        card = None
+
         if format == 1:
             if levels:
-                    card = await self.generate_card1(avatar, levels, decorations, rank, member, guild)
-            else:
-                card = None
+                card = await self.generate_card1(avatar, levels, decorations, rank, member, guild)
         elif format == 2:
             if levels:
-                    card = await self.generate_card2(avatar, levels, decorations, rank, member, guild)
-            else:
-                card = None
+                card = await self.generate_card2(avatar, levels, decorations, rank, member, guild)
+
         if card:
-            await interaction.response.send_message(file=discord.File(card, 'card.png'), view=configrankcard(member=member.id, bot=self.bot))
+            await interaction.response.send_message(
+                file=discord.File(card, "card.png"), 
+                view=configrankcard(member=member.id, bot=self.bot)
+            )
         else:
             await interaction.response.send_message(f"{member} hasn't gotten levels yet!")
 
@@ -983,7 +987,7 @@ class levels(commands.Cog):
     @leaderboard.error
     async def daily_error(self, interaction: discord.Interaction, error: Exception):
         if isinstance(error, CommandOnCooldown):
-            remaining_time = datetime.timedelta(seconds=error.retry_after)
+            remaining_time = dt.timedelta(seconds=error.retry_after)
             hours, remainder = divmod(remaining_time.seconds, 3600)
             minutes, seconds = divmod(remainder, 60)
             await interaction.response.send_message(f"Slow down! you're on cooldown for **{seconds} seconds**.")
@@ -1215,7 +1219,7 @@ class levels(commands.Cog):
     @daily.error
     async def daily_error(self, interaction: discord.Interaction, error: Exception):
         if isinstance(error, CommandOnCooldown):
-            remaining_time = datetime.timedelta(seconds=error.retry_after)
+            remaining_time = dt.timedelta(seconds=error.retry_after)
             hours, remainder = divmod(remaining_time.seconds, 3600)
             minutes, seconds = divmod(remainder, 60)
             await interaction.response.send_message(f"You cannot claim your daily for another **{hours}h {minutes}m {seconds}s**.")
@@ -1283,7 +1287,7 @@ class levels(commands.Cog):
     @dailies.error
     async def dailies_error(self, interaction: discord.Interaction, error: Exception):
         if isinstance(error, CommandOnCooldown):
-            remaining_time = datetime.timedelta(seconds=error.retry_after)
+            remaining_time = dt.timedelta(seconds=error.retry_after)
             hours, remainder = divmod(remaining_time.seconds, 3600)
             minutes, seconds = divmod(remainder, 60)
             await interaction.response.send_message(f"You cannot claim your daily for another **{hours}h {minutes}m {seconds}s**.")
@@ -1324,7 +1328,7 @@ class levels(commands.Cog):
     @dropxp.error
     async def dropxp_error(self, interaction: discord.Interaction, error: Exception):
         if isinstance(error, CommandOnCooldown):
-            remaining_time = datetime.timedelta(seconds=error.retry_after)
+            remaining_time = dt.timedelta(seconds=error.retry_after)
             remainder = divmod(remaining_time.seconds, 60)
             seconds = divmod(remainder, 60)
             await interaction.response.send_message(f"Slow down! you're on cooldown for **{seconds} seconds**.")
