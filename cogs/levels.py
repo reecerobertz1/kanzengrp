@@ -389,19 +389,6 @@ class levels(commands.Cog):
                         if top20 is not None:
                             await self.top_20_role_handler(message.author, message.guild, top20)
                 await message.channel.send(f"Yay! {message.author.mention} you just reached **level {lvl}**\nYou also collected 🪙 **{coins}** coins!")
-            if message.guild.id == 1134736053803159592:
-                if lvl == 1:
-                    stella = "Stella"
-                else:
-                    stella = "Stellas"
-                top20 = await self.get_top20(message.guild.id)
-                if top20 is not None:
-                    await self.top_20_role_handler(message.author, message.guild, top20)
-                coins = randint(2, 5)
-                await self.add_currency(message.author.id, coins)
-                embed = discord.Embed(description=f"{message.author.name} you just reached **{lvl}** {stella}!\nYou also collected 🪙 **{coins}** coins!", colour=0xFEBCBE)
-                channel = message.guild.get_channel(1135027269853778020)
-                await channel.send(message.author.mention, embed=embed)
 
     async def get_reprole(self, guild_id: int) -> int:
         query = '''SELECT reprole FROM settings WHERE guild_id = ?'''
@@ -524,40 +511,47 @@ class levels(commands.Cog):
         if member.bot:
             return
 
+        if member.guild.id != 694010548605550675:
+            return
+
         required_roles = {694016195090710579, 1134797882420117544}
 
         def has_required_roles(member: discord.Member) -> bool:
             member_roles = {role.id for role in member.roles}
             return not required_roles.isdisjoint(member_roles)
 
-        guild_id = member.guild.id
-        channel_id = 822422177612824580 if guild_id == 694010548605550675 else 1135027269853778020
+        def is_unmuted(voice_state: discord.VoiceState) -> bool:
+            return not (voice_state.self_mute or voice_state.mute)
+
+        channel_id = 822422177612824580
 
         if before.channel is None and after.channel is not None:
             if len(after.channel.members) >= 2:
                 for m in after.channel.members:
-                    if has_required_roles(m):
+                    if has_required_roles(m) and is_unmuted(after):
                         self.voice_times[m.id] = datetime.utcnow()
 
         elif before.channel is not None and after.channel is None:
             join_time = self.voice_times.pop(member.id, None)
-            if join_time and has_required_roles(member):
+            if join_time and has_required_roles(member) and is_unmuted(before):
                 time_spent = datetime.utcnow() - join_time
                 seconds_spent = time_spent.total_seconds()
 
                 minimum_seconds = 3
 
                 if seconds_spent >= minimum_seconds:
-                    xp_to_add = await self.get_voicexp(guild_id)
+                    xp_to_add = await self.get_voicexp(member.guild.id)
                     xp_earned = (seconds_spent // minimum_seconds) * xp_to_add
                     channel = member.guild.get_channel(channel_id)
                     if channel:
-                        await channel.send(f"<@{member.id}> you earned **{xp_earned}** XP from speaking in #{before.channel.name}")
+                        coins = randint(2, 5)
+                        await self.add_currency(m.id, coins)
+                        await channel.send(f"<@{m.id}> you earned **{xp_earned}** XP and 🪙 **{coins}** coins from speaking in #{before.channel.name}")
 
             if before.channel.members:
-                xp_to_add = await self.get_voicexp(guild_id)
+                xp_to_add = await self.get_voicexp(member.guild.id)
                 for m in before.channel.members:
-                    if has_required_roles(m):
+                    if has_required_roles(m) and is_unmuted(before):
                         join_time = self.voice_times.pop(m.id, None)
                         if join_time:
                             time_spent = datetime.utcnow() - join_time
@@ -742,14 +736,10 @@ class levels(commands.Cog):
         draw = ImageDraw.Draw(card, 'RGBA')
         message = levels["messages"]
         messages = self.human_format(message)
-        if guild == 694010548605550675:
-            server = "chroma"
-        else:
-            server = "lyra"
         draw.text((100, 345), f'{xp_have} | {xp_need}', fill=levels['color'], font=zhcn)
         draw.text((100, 345), f'{xp_have} | {xp_need}', fill=levels['color'], font=zhcn)
         draw.text((225, 25), f"{user.name}", fill=levels['color'], font=zhcn)
-        draw.text((225, 65), f"{server} levels", fill=levels['color'], font=zhcn2)
+        draw.text((225, 65), f"chroma levels", fill=levels['color'], font=zhcn2)
         draw.text((300, 410), f'rank | {str(rank)}', fill=levels['color'], font=zhcn)
         draw.text((100, 410), f'level | {level-1}', fill=levels['color'], font=zhcn)
         draw.text((500, 410), f'{messages} messages', fill=levels['color'], font=zhcn)
@@ -806,13 +796,9 @@ class levels(commands.Cog):
         draw = ImageDraw.Draw(card, 'RGBA')
         message = levels["messages"]
         messages = self.human_format(message)
-        if guild == 694010548605550675:
-            server = "chroma"
-        else:
-            server = "lyra"
         draw.text((65, 620), f'{xp_have} | {xp_need}', fill=levels['color'], font=zhcn)
         draw.text((170, 25), f"{user.name}", fill=levels['color'], font=zhcn)
-        draw.text((170, 55), f"{server} levels", fill=levels['color'], font=zhcn2)
+        draw.text((170, 55), f"chroma levels", fill=levels['color'], font=zhcn2)
         draw.text((57, 670), f'rank | {str(rank)}   level | {level-1}   {messages} messages', fill=levels['color'], font=zhcn)
         buffer = BytesIO()
         card.save(buffer, 'png')
@@ -1037,19 +1023,6 @@ class levels(commands.Cog):
                             await member.add_roles(role, reason=f"{member.name} reached level 2 or higher from added XP")
                 channel = ctx.guild.get_channel(822422177612824580)
                 await channel.send(f"Yay! {member.mention} just reached **level {lvl}** from added XP!")
-            else:
-                stella = "Stella" if lvl == 1 else "Stellas"
-                reprole = await self.get_reprole(guild_id)
-                if reprole:
-                    role = ctx.guild.get_role(reprole)
-                    if role and lvl <= 1:
-                        await member.add_roles(role, reason=f"{member.name} reached level 1 or higher from added XP")
-                embed = discord.Embed(
-                    description=f"{member.name} just reached **{lvl}** {stella}!", colour=0xFEBCBE
-                )
-                channel = ctx.guild.get_channel(1135027269853778020)
-                if channel:
-                    await channel.send(member.mention, embed=embed)
 
         top20 = await self.get_top20(ctx.guild.id)
         if top20 is not None:
@@ -1194,19 +1167,6 @@ class levels(commands.Cog):
                 channel = interaction.guild.get_channel(822422177612824580)
                 if channel:
                     await channel.send(interaction.user.mention, embed=embed)
-            else:
-                stella = "Stella" if lvl == 1 else "Stellas"
-                reprole = await self.get_reprole(guild_id)
-                if reprole:
-                    role = interaction.guild.get_role(reprole)
-                    if role and lvl == 1:
-                        await interaction.user.add_roles(role, reason=f"{interaction.user.name} reached level 1")
-                embed = discord.Embed(
-                    description=f"{interaction.user.name} you just reached **{lvl}** {stella}!", colour=0xFEBCBE
-                )
-                channel = interaction.guild.get_channel(1135027269853778020)
-                if channel:
-                    await channel.send(interaction.user.mention, embed=embed)
 
         top20 = await self.get_top20(interaction.guild.id)
         if top20 is not None:
@@ -1218,74 +1178,6 @@ class levels(commands.Cog):
 
     @daily.error
     async def daily_error(self, interaction: discord.Interaction, error: Exception):
-        if isinstance(error, CommandOnCooldown):
-            remaining_time = dt.timedelta(seconds=error.retry_after)
-            hours, remainder = divmod(remaining_time.seconds, 3600)
-            minutes, seconds = divmod(remainder, 60)
-            await interaction.response.send_message(f"You cannot claim your daily for another **{hours}h {minutes}m {seconds}s**.")
-        else:
-            await interaction.response.send_message(f"An unexpected error occurred. Please try again later.\n{error}",ephemeral=True)
-
-    @app_commands.command(name="dailies", description="Get daily XP with Hoshi for Lyra")
-    @app_commands.checks.cooldown(1, 86400)
-    @app_commands.guilds(discord.Object(id=1134736053803159592))
-    async def dailies(self, interaction: discord.Interaction):
-        required_roles = {1134797882420117544, 694016195090710579}
-        member_roles = {role.id for role in interaction.user.roles}
-        if required_roles.isdisjoint(member_roles):
-            await interaction.response.send_message("Sorry, this command is currently not available for non-members!", ephemeral=True)
-            return
-
-        xprand = await self.get_dailyxp(interaction.guild.id)
-        if not xprand:
-            await interaction.response.send_message("Daily XP configuration not found.", ephemeral=True)
-            return
-
-        min_xp, max_xp = map(int, xprand.split('-'))
-        xp_to_add = randint(min_xp, max_xp)
-        levels = await self.get_level_row(interaction.user.id, interaction.guild.id)
-        if not levels:
-            await interaction.response.send_message("Could not retrieve your level data. Please try again later.", ephemeral=True)
-            return
-
-        current_xp = levels["xp"]
-        new_xp = current_xp + xp_to_add
-
-        await self.add_xp(interaction.user.id, interaction.guild.id, xp_to_add, levels)
-
-        lvl = 0
-        while True:
-            if current_xp < ((50 * (lvl ** 2)) + (50 * (lvl - 1))):
-                break
-            lvl += 1
-
-        next_level_xp = ((50 * (lvl ** 2)) + (50 * (lvl - 1)))
-
-        if new_xp > next_level_xp:
-            guild_id = interaction.guild.id
-            stella = "Stella" if lvl == 1 else "Stellas"
-            reprole = await self.get_reprole(guild_id)
-            if reprole:
-                role = interaction.guild.get_role(reprole)
-                if role and lvl == 1:
-                    await interaction.user.add_roles(role, reason=f"{interaction.user.name} reached level 1")
-            embed = discord.Embed(
-                description=f"{interaction.user.name} you just reached **{lvl}** {stella}!", colour=0xFEBCBE
-            )
-            channel = interaction.guild.get_channel(1135027269853778020)
-            if channel:
-                await channel.send(interaction.user.mention, embed=embed)
-
-        top20 = await self.get_top20(interaction.guild.id)
-        if top20 is not None:
-            await self.top_20_role_handler(interaction.user, interaction.guild, top20)
-
-        coins = randint(2, 5)
-        await self.add_currency(interaction.user.id, coins)
-        await interaction.response.send_message(f"Yay! **{interaction.user.name}**, you received **{xp_to_add}** XP and **🪙{coins}** coins from daily XP!")
-
-    @dailies.error
-    async def dailies_error(self, interaction: discord.Interaction, error: Exception):
         if isinstance(error, CommandOnCooldown):
             remaining_time = dt.timedelta(seconds=error.retry_after)
             hours, remainder = divmod(remaining_time.seconds, 3600)

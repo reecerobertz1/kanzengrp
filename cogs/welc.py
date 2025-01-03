@@ -19,20 +19,9 @@ class welcandleave(commands.Cog):
         stored_guild_id = 694010548605550675
         scout_guild_id = 835495688832811039
 
-        # LYRA WELCOME EMBED
-
-        if member.guild.id == self.kanzen_id:
-            embed = discord.Embed(title="Welcome to lyra!", color=0xFEF7E5, description=f"• Read our [rules](https://discord.com/channels/1134736053803159592/1134744553425993799) and get some [roles](https://discord.com/channels/1134736053803159592/1134771998896181289)\n• Chat with other members [here](https://discord.com/channels/1134736053803159592/1134742133421658193)\n• Get to know our [leads](https://discord.com/channels/1134736053803159592/1207118201897492480) & [staff](https://discord.com/channels/1134736053803159592/1134802970031161355)")
-            role = member.guild.get_role(1134797836135964723)  
-            channel = self.bot.get_channel(self.kanzen_welcome)
-            embed.set_thumbnail(url=member.display_avatar.url)
-            embed.set_image(url="https://cdn.discordapp.com/attachments/1134736054637838490/1137359950750961724/form_gfx_w_grains.png?ex=66b0c3ff&is=66af727f&hm=a8f1172d9b51a678101b5632b16bab4160228bd1fcfd9120c0d9fdc64ea78844&")
-            await channel.send(f'{member.mention}', embed=embed)
-            await member.add_roles(role)
-
         # CHROMA MEMBERS WELCOME EMBED
 
-        elif member.guild.id == stored_guild_id:
+        if member.guild.id == stored_guild_id:
             await member.add_roles(member.guild.get_role(role))
             embed = discord.Embed(title='ᯓ Welcome to Chromagrp ༝ ⁺', color=0x463F78, description=f"**{member.name}** has joined !\n-# ・Please read our [rules](https://discord.com/channels/694010548605550675/725373131220320347)\n-# ・Introduce yourself in [this channel](https://discord.com/channels/694010548605550675/727875317439528982)\n-#  ⠀⠀—・⋆ Need help? Ping @leads or @staff")
             embed.set_footer(text="Thank you for joining Chroma ★ ₊ ۫ ּ")
@@ -78,17 +67,9 @@ class welcandleave(commands.Cog):
     async def on_member_remove(self, member: discord.Member):
         stored_guild_id = 694010548605550675
 
-        # LYRA LEAVE EMBED
-
-        if member.guild.id == self.kanzen_id:
-            embed = discord.Embed(title=f"Thank you for joining lyra", color=0xFEF7E5, description="We hope to see you again soon")
-            embed.set_thumbnail(url=member.display_avatar.url)
-            channel = self.bot.get_channel(self.kanzen_welcome)
-            await channel.send(f'{member.mention}', embed=embed)
-
         # CHROMA LEAVE EMBED
 
-        elif member.guild.id == stored_guild_id:
+        if member.guild.id == stored_guild_id:
             channel = self.bot.get_channel(725389930607673384)
             await channel.send(f"**{member.display_name}** has left Chroma\n-# ・⋆  We will miss you ")
             await self.remove_member(member.id)

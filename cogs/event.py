@@ -422,5 +422,10 @@ class event(commands.Cog):
     async def equip(self, interation: discord.Interaction):
         await interation.response.send_modal(equip(bot=self.bot))
 
+    @commands.command()
+    async def fix(self, ctx):
+        await self.add_member(ctx.author.id, currency=10)
+        await ctx.reply(f"**Ok {ctx.author.name}** the issue should be fixed!")
+
 async def setup(bot):
     await bot.add_cog(event(bot))
