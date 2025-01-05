@@ -277,12 +277,12 @@ class chromies(commands.Cog):
         await ctx.send(embed=embed2, view=socials)
 
     @app_commands.command(name="staff", description="Apply to be Chroma staff")
-    @app_commands.guilds(discord.Object(id=694010548605550675))
+    @app_commands.guilds(discord.Object(id=1157492644402970744))
     async def staff(self, interaction: discord.Interaction):
         await interaction.response.send_modal(staff())
 
     @app_commands.command(name="coder", description="Apply to be Hoshi developer")
-    @app_commands.guilds(discord.Object(id=694010548605550675))
+    @app_commands.guilds(discord.Object(id=1157492644402970744))
     async def coder(self, interaction: discord.Interaction, mega_link: Optional[str]):
         if mega_link:
             await interaction.response.send_modal(code(mega_link))
@@ -290,7 +290,7 @@ class chromies(commands.Cog):
             await interaction.response.send_modal(code())
 
     @app_commands.command(name="gfx", description="Apply to be Chroma GFX artist")
-    @app_commands.guilds(discord.Object(id=694010548605550675))
+    @app_commands.guilds(discord.Object(id=1157492644402970744))
     async def gfx(self, interaction: discord.Interaction, artwork: Optional[discord.Attachment], artwork2: Optional[discord.Attachment], artwork3: Optional[discord.Attachment]):
         files = []
         for attachment in [artwork, artwork2, artwork]:
