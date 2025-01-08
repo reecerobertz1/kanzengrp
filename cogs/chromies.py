@@ -228,27 +228,19 @@ class chromies(commands.Cog):
     @commands.command()
     @commands.has_permissions(manage_guild=True)
     async def rules(self, ctx):
-        embed = discord.Embed(title="Weclome to Chroma", color=0x2b2d31)
-        embed.add_field(name="Group Rules", value="• Must be following [remqsi](https://instagra,.com/remqsi), [wqndqs](https://instagra,.com/wqndqs) + [chromagrp](https://instagra,.com/chromagrp)."
-                                            "\n• Always use our hashtag #𝗰𝗵𝗿𝗼𝗺𝗮𝗴𝗿𝗽."
-                                            "\n• Watermark logos if the background is mostly plain."
-                                            "\n• Never share the logos with anyone outside of Chroma."
-                                            "\n-# **Note:** Leaking our logos will get you banned.", inline=False)
-        embed.add_field(name="Chat Rules", value="• Make sure you have your age roles from <id:customize>!"
-                            "\n• No NSFW content or sexual discussions."
-                            "\n• No offensive jokes that can make others uncomfortable."
-                            '\n• Please stay as active as possible.'
-                            '\n• Set your nickname as "name | username".'
-                            "\n• No impersonating other editors."
-                            "\n• Be friendly and respect everyone."
-                            "\n• If you move accounts or leave, please dm [chromagrp](https://instagram.com/chromagrp)."
-                            "\n• No trash talking of other groups or editors."
-                            "\n• Respect the server and use channels correctly."
-                            "\n-# **Note:** Breaking any of the rules will lead to a warning / kick or ban!", inline=False)
-        embed2 = discord.Embed(title="Reporting Members", description="• If you see someone breaking our rules, report them below.\n• You can stay anonymous by leaving your username blank.\n• Click the `Report Member` button to report a chroma member.\n-# **Note:** We may DM you for more information if we need more.", color=0x2b2d31)
+        embed = discord.Embed(color=0x433757)
+        embed.set_image(url="https://cdn.discordapp.com/attachments/1248039148888129647/1326575388876603534/Welcome_To_Chroma_00000.png?ex=677fed1b&is=677e9b9b&hm=3db5f303cde837b9675fc1e029db2fa5b50a4c104b2c6b8b069298011a4f3b03&")
+        embed2 = discord.Embed(description="**Group Rules**\n・Must be following [remqsi](https://instagram.com/remqsi), [wqndqs](https://instagram.com/wqndqs) + [chromagrp](https://instagram.com/chromagrp).\n・Always use our hashtag #𝗰𝗵𝗿𝗼𝗺𝗮𝗴𝗿𝗽.\n・Watermark logos if the background is mostly plain.\n-# ⠀— ・**Note:** Leaking our logos will get you banned.", color=0x433757)
+        embed2.set_image(url="https://cdn.discordapp.com/attachments/1248039148888129647/1326538980316938251/if_you_see_this_hello_00000.png?ex=677fcb32&is=677e79b2&hm=7b8da9643a69d5eda9df86c4e5c1a55baaa2a5747238a9b5d20b26148c7d8570&")
+        embed3 = discord.Embed(description='**Chat Rules**\n・No NSFW, offensive jokes, or distribution.\n・Please stay as active as possible.\n・Set your nickname as "name | username".\n・ No impersonating other editors.\n・ Be friendly and respect everyone.\n・If you move accounts or leave, please dm [chromagrp](https://instagram.com/chromagrp).\n・Do not start or bring drama from other servers.\n・Respect the server and use channels correctly.\n-# ⠀— ・**Note:** Breaking any of the rules will lead to a warning / kick or ban!', color=0x433757)
+        embed3.set_image(url="https://cdn.discordapp.com/attachments/1248039148888129647/1326538980316938251/if_you_see_this_hello_00000.png?ex=677fcb32&is=677e79b2&hm=7b8da9643a69d5eda9df86c4e5c1a55baaa2a5747238a9b5d20b26148c7d8570&")
+        embed4 = discord.Embed(description="**Reporting Members**\n・If you see someone breaking our rules, report them below.\n・You can stay anonymous by leaving your username blank.\n・Click the Report Member button to report a chroma member.\n-# ⠀— ・**Note:** Note: We may DM you for more information if we need more.", color=0x433757)
+        embed4.set_image(url="https://cdn.discordapp.com/attachments/1248039148888129647/1326538980316938251/if_you_see_this_hello_00000.png?ex=677fcb32&is=677e79b2&hm=7b8da9643a69d5eda9df86c4e5c1a55baaa2a5747238a9b5d20b26148c7d8570&")
         view=infoview(bot=self.bot)
         await ctx.send(embed=embed)
-        await ctx.send(embed=embed2, view=view)
+        await ctx.send(embed=embed2)
+        await ctx.send(embed=embed4)
+        await ctx.send(embed=embed4, view=view)
 
     @commands.command(hidden=True)
     @commands.has_permissions(manage_guild=True)
