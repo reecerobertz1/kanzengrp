@@ -239,7 +239,7 @@ class chromies(commands.Cog):
         view=infoview(bot=self.bot)
         await ctx.send(embed=embed)
         await ctx.send(embed=embed2)
-        await ctx.send(embed=embed4)
+        await ctx.send(embed=embed3)
         await ctx.send(embed=embed4, view=view)
 
     @commands.command(hidden=True)
