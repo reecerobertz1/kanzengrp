@@ -49,7 +49,7 @@ class welcandleave(commands.Cog):
             await member.add_roles(member.guild.get_role(asterrole))
             embed = discord.Embed(title=f'ᯓ welcome {member.name} ༝ ⁺', color=0x463F78, description=f"Read our [rules](https://discord.com/channels/748021504830341330/1292635243987210260)\nChat with other members [here](https://discord.com/channels/748021504830341330/1292636359302971402)\nGet edit help [here](https://discord.com/channels/748021504830341330/1292636638404677662)")
             embed.set_footer(text=f"we now have {len(guild.members)} members!ּ", icon_url=member.guild.icon)
-            channel = self.bot.get_channel(725389930607673384)
+            channel = self.bot.get_channel(1292647516222787686)
             embed.set_thumbnail(url=member.display_avatar.url)
             await channel.send(f'{member.mention}', embed=embed)
             channel2 = self.bot.get_channel(694010549532360726)
