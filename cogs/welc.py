@@ -45,17 +45,12 @@ class welcandleave(commands.Cog):
                 await member.add_roles(member.guild.get_role(public))
             else:
                 await member.add_roles(member.guild.get_role(836244165637046283))
+        # ASTER WELCOME EMBED
         elif member.guild.id == aster:
-            await member.add_roles(member.guild.get_role(asterrole))
-            embed = discord.Embed(title=f'ᯓ welcome {member.name} ༝ ⁺', color=0x463F78, description=f"Read our [rules](https://discord.com/channels/748021504830341330/1292635243987210260)\nChat with other members [here](https://discord.com/channels/748021504830341330/1292636359302971402)\nGet edit help [here](https://discord.com/channels/748021504830341330/1292636638404677662)")
-            embed.set_footer(text=f"we now have {len(guild.members)} members!ּ", icon_url=member.guild.icon)
+            embed = discord.Embed(title=f'ᯓ Welcome {member.name} ༝ ⁺', color=0x463F78, description=f"Read our [rules](https://discord.com/channels/748021504830341330/1292635243987210260)\nChat with other members [here](https://discord.com/channels/748021504830341330/1292636359302971402)\nGet edit help [here](https://discord.com/channels/748021504830341330/1292636638404677662)")
             channel = self.bot.get_channel(1292647516222787686)
             embed.set_thumbnail(url=member.display_avatar.url)
             await channel.send(f'{member.mention}', embed=embed)
-            channel2 = self.bot.get_channel(694010549532360726)
-            await channel2.send(f"{member.mention} welcome to chroma!\n• get roles in <id:customize>\n・ Our logos are in <#725373131220320347>\n・ Introduce yourself in <#727875317439528982>\n・ Please set your server nickname as `name | username` !\nAny questions, ping staff or leads <a:3b56330f710c3a978f27c9cc7e099180:836940737123057705>")
-            await self.add_member(member.id)
-        # ASTER WELCOME EMBED
 
     async def add_member(self, member_id: int, xp=5) -> None:
         query = '''INSERT INTO levelling (member_id, xp, messages, color) VALUES (?, ?, ?, ?)'''
@@ -82,7 +77,7 @@ class welcandleave(commands.Cog):
             await channel.send(f"**{member.display_name}** has left Chroma\n-# ・⋆  We will miss you ")
             await self.remove_member(member.id)
         # ASTER LEAVE MESSAGE
-        elif member.guild.id == stored_guild_id:
+        elif member.guild.id == aster:
             channel = self.bot.get_channel(1292647516222787686)
             await channel.send(f"**{member.display_name}** has left Aster\n-# ・⋆  We will miss you ")
             await self.remove_member(member.id)
