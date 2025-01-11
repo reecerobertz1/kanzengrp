@@ -142,7 +142,7 @@ class editing(commands.Cog):
     def get_palette(self, hex_colors, output_path="palette.png"):
         color_box_size = 100
         font_size = 30
-        padding = 15
+        padding = 2
         text_padding = 10
         bottom_padding = 5
         num_colors = len(hex_colors)
@@ -151,7 +151,7 @@ class editing(commands.Cog):
         img = Image.new("RGB", (width, height), "white")
         draw = ImageDraw.Draw(img)
         try:
-            font = ImageFont.truetype("arial.ttf", font_size)
+            font = ImageFont.truetype("./fonts/zhcn.ttf", font_size)
         except IOError:
             font = ImageFont.load_default()
         for i, hex_color in enumerate(hex_colors):
