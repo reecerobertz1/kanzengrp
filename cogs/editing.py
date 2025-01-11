@@ -141,7 +141,7 @@ class editing(commands.Cog):
 
     def get_palette(self, hex_colors, output_path="palette.png"):
         color_box_size = 100
-        font_size = 22
+        font_size = 15
         padding = 15
         text_padding = 10
         bottom_padding = 1
