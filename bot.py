@@ -9,14 +9,15 @@ my_guild = discord.Object(id=1121841073673736215)
 
 extensions = {
     "jishaku",
+    "cogs.asstral",
+    "cogs.chromies",
+    "cogs.editing",
+    "cogs.event",
     "cogs.fun",
-    "cogs.help",
     "cogs.levels",
     "cogs.mod",
-    "cogs.welc",
-    "cogs.settings",
-    "cogs.chromies",
     "cogs.other",
+    "cogs.settings",
     "cogs.event"
 }
 
@@ -55,6 +56,7 @@ class LalisaBot(commands.Bot):
 
         async with self.pool.acquire() as conn:
             await conn.execute('''CREATE TABLE IF NOT EXISTS levelling (guild_id BIGINT, member_id BIGINT, xp INTEGER, messages INTEGER, color TEXT, image TEXT, decor TEXT, format INTEGER, PRIMARY KEY(guild_id, member_id))''')
+            await conn.execute('''CREATE TABLE IF NOT EXISTS levels (guild_id BIGINT, member_id INTEGER, xp INTEGER, messages INTEGER, bar_color TEXT, PRIMARY KEY (guild_id, member_id))''')
             await conn.execute('''CREATE TABLE IF NOT EXISTS decors (member_id BIGINT, unlocked INTEGER, selected INTEGER, currency INTEGER, PRIMARY KEY(member_id))''')
             await conn.execute('''CREATE TABLE IF NOT EXISTS settings (guild_id BIGINT, chatxp INTEGER, voicexp INTEGER, dailyxp TEXT, top20 INTEGER, reprole INTEGER, channels TEXT, voicechannels TEXT, levels INTEGER, PRIMARY KEY(guild_id))''')
             await conn.execute('''CREATE TABLE IF NOT EXISTS chromies (guild_id INTEGER, member_id INTEGER, inactive INTEGER, iamsgs INTEGER, PRIMARY KEY (guild_id, member_id))''')
