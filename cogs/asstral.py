@@ -7,7 +7,7 @@ from typing import Optional, TypedDict, List, Union
 from PIL import ImageDraw, Image, ImageFont
 from io import BytesIO
 import functools
-from stuff.views import Paginator
+from utils.views import Paginator
 import re
 import asyncio
 
