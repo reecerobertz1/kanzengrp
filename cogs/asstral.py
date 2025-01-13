@@ -260,8 +260,8 @@ class Asstral(commands.Cog):
                 await conn.commit()
             await self.bot.pool.release(conn)
 
-    @commands.command(aliases=['levels', 'lb'])
-    async def leaderboard(self, ctx: commands.Context):
+    @commands.command(aliases=['lb'])
+    async def levels(self, ctx: commands.Context):
         embeds = []
         description = ""
         rows = await self.get_leaderboard_stats()
@@ -291,7 +291,7 @@ class Asstral(commands.Cog):
             await ctx.send(embed=embed)
 
     @commands.command(extras={"examples": ["rank", "rank candysnowy", "rank <@609515684740988959>"]})
-    async def rank(self, ctx: commands.Context, member: Optional[discord.Member]):
+    async def level(self, ctx: commands.Context, member: Optional[discord.Member]):
         member = member or ctx.author
         levels = await self.get_member_levels(member.id)
         rank = await self.get_rank(member.id)
@@ -320,7 +320,7 @@ class Asstral(commands.Cog):
             await ctx.reply(f"`{color}` is not a valid hex color")
 
     @commands.command(aliases=['give', 'a'], extras={"examples": ["xp add <@609515684740988959> 1000", "xp give candysnowy 1000"]})
-    async def add(self, ctx: commands.Context, member: discord.Member, amount: int):
+    async def xpadd(self, ctx: commands.Context, member: discord.Member, amount: int):
         levels = await self.get_member_levels(member.id)
         await self.add_xp(member.id, amount, levels)
         embed = discord.Embed(
@@ -331,7 +331,7 @@ class Asstral(commands.Cog):
         await ctx.reply(embed=embed)
 
     @commands.command(aliases=['take', 'r'], extras={"examples": ["xp remove <@609515684740988959> 1000", "xp take candysnowy 1000"]})
-    async def remove(self, ctx: commands.Context, member: discord.Member, amount: int):
+    async def xpremove(self, ctx: commands.Context, member: discord.Member, amount: int):
         levels = await self.get_member_levels(member.id)
         if levels:
             if amount > levels['xp']:
@@ -349,7 +349,7 @@ class Asstral(commands.Cog):
 
     @commands.command()
     @commands.has_permissions(administrator=True)
-    async def reset(self, ctx: commands.Context):
+    async def clear(self, ctx: commands.Context):
         message = await ctx.reply("are you sure you want to reset the ranks? it's irreversible!")
         await message.add_reaction('👍')
 
@@ -374,7 +374,7 @@ class Asstral(commands.Cog):
 
     @commands.command()
     async def help(self, ctx):
-        embed=discord.Embed(title="Astral Commands", description="**+add**\nAdd xp to a member\n\n**+remove**\nRemove xp from a member\n\n**+rank**\nCheck your current rank in the server\n\n**+leaderboard**\nCheck where you are on Astral's leaderboard\n\n**+rankcolor**\nUse a hex code to change the colour of the progress bar\n\n**+reset**\nReset all member levels (locked for server admins)", color=0xCA253B)
+        embed=discord.Embed(title="Astral Commands", description="**+xpadd**\nAdd xp to a member\n\n**+xpremove**\nRemove xp from a member\n\n**+level**\nCheck your current level in the server\n\n**+levels**\nCheck where you are on Astral's level leaderboard\n\n**+rankcolor**\nUse a hex code to change the colour of the progress bar\n\n**+clear**\nReset all member levels (locked for server admins)", color=0xCA253B)
         embed.set_thumbnail(url=ctx.guild.icon)
         await ctx.reply(embed=embed)
 
