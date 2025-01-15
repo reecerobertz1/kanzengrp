@@ -837,7 +837,7 @@ class levels(commands.Cog):
         bg_frosted = Image.composite(bg_blurred, Image.new("RGBA", bg.size, "white"), inverted_mask)
         bg_frosted.putalpha(inverted_mask)
         bar, mask_bar = self._make_progress_bar_circle(percentage, levels['color'])
-        avatar_paste, circle = self.get_avatar2(avatar)
+        avatar_paste, circle = self.get_avatar3(avatar)
         card.paste(bg, (0, 0))
         card.paste(bg_frosted, (0, 0), bg_frosted)
         card.paste(bar, (39, 30), mask_bar)
