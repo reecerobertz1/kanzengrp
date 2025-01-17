@@ -11,6 +11,14 @@ class infoview(discord.ui.View):
         self.value = None
         self.bot = bot
 
+    @discord.ui.button(label="Rules", style=discord.ButtonStyle.blurple)
+    async def rules(self, interaction: discord.Interaction, button: discord.Button):
+        embed = discord.Embed(description="**Group Rules**\n・Must be following [remqsi](https://instagram.com/remqsi), [wqndqs](https://instagram.com/wqndqs) + [chromagrp](https://instagram.com/chromagrp).\n・Always use our hashtag #𝗰𝗵𝗿𝗼𝗺𝗮𝗴𝗿𝗽.\n・Watermark logos if the background is mostly plain.\n-# ⠀— ・**Note:** Leaking our logos will get you banned.", color=0x433757)
+        embed.set_image(url="https://cdn.discordapp.com/attachments/1248039148888129647/1326538980316938251/if_you_see_this_hello_00000.png?ex=678ba8b2&is=678a5732&hm=2cf73ca4a605a243f71546dcb781527644b5b4da03d2ffd2f7e1a41103c677d4&")
+        embed2 = discord.Embed(description='**Chat Rules**\n・No NSFW, offensive jokes, or distribution.\n・Please stay as active as possible.\n・Set your nickname as "name | username".\n・ No impersonating other editors.\n・ Be friendly and respect everyone.\n・If you move accounts or leave, please dm [chromagrp](https://instagram.com/chromagrp).\n・Do not start or bring drama from other servers.\n・Respect the server and use channels correctly.\n-# ⠀— ・**Note:** Breaking any of the rules will lead to a warning / kick or ban!', color=0x433757)
+        embed2.set_image(url="https://cdn.discordapp.com/attachments/1248039148888129647/1326538980316938251/if_you_see_this_hello_00000.png?ex=678ba8b2&is=678a5732&hm=2cf73ca4a605a243f71546dcb781527644b5b4da03d2ffd2f7e1a41103c677d4&")
+        await interaction.response.send_message(embeds=[embed, embed2], ephemeral=True)
+
     @discord.ui.button(label="Logos")
     async def klogos(self, interaction: discord.Interaction, button: discord.ui.Button):
         logos = discord.Embed(title="<a:bun:1098764398962671677> Chroma Logos!", description="˃ Please make sure you watermark the logos!\n˃ Use the watermark on every edit\n˃ Do not share this link with anyone outside the group!", color=0x2b2d31)
@@ -228,19 +236,12 @@ class chromies(commands.Cog):
     @commands.command()
     @commands.has_permissions(manage_guild=True)
     async def rules(self, ctx):
-        embed = discord.Embed(color=0x433757)
-        embed.set_image(url="https://cdn.discordapp.com/attachments/1248039148888129647/1326575388876603534/Welcome_To_Chroma_00000.png?ex=677fed1b&is=677e9b9b&hm=3db5f303cde837b9675fc1e029db2fa5b50a4c104b2c6b8b069298011a4f3b03&")
-        embed2 = discord.Embed(description="**Group Rules**\n・Must be following [remqsi](https://instagram.com/remqsi), [wqndqs](https://instagram.com/wqndqs) + [chromagrp](https://instagram.com/chromagrp).\n・Always use our hashtag #𝗰𝗵𝗿𝗼𝗺𝗮𝗴𝗿𝗽.\n・Watermark logos if the background is mostly plain.\n-# ⠀— ・**Note:** Leaking our logos will get you banned.", color=0x433757)
-        embed2.set_image(url="https://cdn.discordapp.com/attachments/1248039148888129647/1326538980316938251/if_you_see_this_hello_00000.png?ex=677fcb32&is=677e79b2&hm=7b8da9643a69d5eda9df86c4e5c1a55baaa2a5747238a9b5d20b26148c7d8570&")
-        embed3 = discord.Embed(description='**Chat Rules**\n・No NSFW, offensive jokes, or distribution.\n・Please stay as active as possible.\n・Set your nickname as "name | username".\n・ No impersonating other editors.\n・ Be friendly and respect everyone.\n・If you move accounts or leave, please dm [chromagrp](https://instagram.com/chromagrp).\n・Do not start or bring drama from other servers.\n・Respect the server and use channels correctly.\n-# ⠀— ・**Note:** Breaking any of the rules will lead to a warning / kick or ban!', color=0x433757)
-        embed3.set_image(url="https://cdn.discordapp.com/attachments/1248039148888129647/1326538980316938251/if_you_see_this_hello_00000.png?ex=677fcb32&is=677e79b2&hm=7b8da9643a69d5eda9df86c4e5c1a55baaa2a5747238a9b5d20b26148c7d8570&")
-        embed4 = discord.Embed(description="**Reporting Members**\n・If you see someone breaking our rules, report them below.\n・You can stay anonymous by leaving your username blank.\n・Click the Report Member button to report a chroma member.\n-# ⠀— ・**Note:** Note: We may DM you for more information if we need more.", color=0x433757)
-        embed4.set_image(url="https://cdn.discordapp.com/attachments/1248039148888129647/1326538980316938251/if_you_see_this_hello_00000.png?ex=677fcb32&is=677e79b2&hm=7b8da9643a69d5eda9df86c4e5c1a55baaa2a5747238a9b5d20b26148c7d8570&")
+        embed = discord.Embed(title="ᯓ Welcome to Chromagrp ༝ ⁺", description="Thank you so much for joining Chroma!\n-# ・Please use the buttons below to read our rules and get our logos!\n-# ・If you ever need to go inactive, use our inactivity button below!", color=0x2b2d31)
+        embed.set_image(url="https://cdn.discordapp.com/attachments/1248039148888129647/1326538980316938251/if_you_see_this_hello_00000.png?ex=6783bfb2&is=67826e32&hm=3c7101d627e3a200730e38e7dd272412855f9a556f59ca038533f848d611f23a&")
+        embed2 = discord.Embed(title="Reporting Members", description="**Reporting Members**\n-# ・If you see someone breaking our rules, report them below.\n-# ・You can stay anonymous by leaving your username blank.\n-# ・Click the Report Member button to report a chroma member.\n-# ⠀— ・Note: Note: We may DM you for more information if we need more.", color=0x433757)
+        embed2.set_image(url="https://cdn.discordapp.com/attachments/1248039148888129647/1326575388876603534/Welcome_To_Chroma_00000.png?ex=6783e19b&is=6782901b&hm=23b12109f1a18464ae443925ede0ae57a09f093c8f696e91a7232e6d3e0b97b8&")
         view=infoview(bot=self.bot)
-        await ctx.send(embed=embed)
-        await ctx.send(embed=embed2)
-        await ctx.send(embed=embed3)
-        await ctx.send(embed=embed4, view=view)
+        await ctx.send(embeds=[embed, embed2], view=view)
 
     @commands.command(hidden=True)
     @commands.has_permissions(manage_guild=True)
