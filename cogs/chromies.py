@@ -238,7 +238,7 @@ class chromies(commands.Cog):
     async def rules(self, ctx):
         embed = discord.Embed(title="ᯓ Welcome to Chromagrp ༝ ⁺", description="Thank you so much for joining Chroma!\n-# ・Please use the buttons below to read our rules and get our logos!\n-# ・If you ever need to go inactive, use our inactivity button below!", color=0x2b2d31)
         embed.set_image(url="https://cdn.discordapp.com/attachments/1248039148888129647/1326538980316938251/if_you_see_this_hello_00000.png?ex=6783bfb2&is=67826e32&hm=3c7101d627e3a200730e38e7dd272412855f9a556f59ca038533f848d611f23a&")
-        embed2 = discord.Embed(title="Reporting Members", description="**Reporting Members**\n-# ・If you see someone breaking our rules, report them below.\n-# ・You can stay anonymous by leaving your username blank.\n-# ・Click the Report Member button to report a chroma member.\n-# ⠀— ・Note: Note: We may DM you for more information if we need more.", color=0x433757)
+        embed2 = discord.Embed(description="**Reporting Members**\n-# ・If you see someone breaking our rules, report them below.\n-# ・You can stay anonymous by leaving your username blank.\n-# ・Click the Report Member button to report a chroma member.\n-# ⠀— ・Note: Note: We may DM you for more information if we need more.", color=0x433757)
         embed2.set_image(url="https://cdn.discordapp.com/attachments/1248039148888129647/1326575388876603534/Welcome_To_Chroma_00000.png?ex=6783e19b&is=6782901b&hm=23b12109f1a18464ae443925ede0ae57a09f093c8f696e91a7232e6d3e0b97b8&")
         view=infoview(bot=self.bot)
         await ctx.send(embeds=[embed, embed2], view=view)
