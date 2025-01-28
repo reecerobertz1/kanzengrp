@@ -18,7 +18,8 @@ extensions = {
     "cogs.mod",
     "cogs.other",
     "cogs.settings",
-    "cogs.event"
+    "cogs.event",
+    "cogs.community"
 }
 
 class LalisaBot(commands.Bot):
