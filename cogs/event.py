@@ -14,9 +14,9 @@ class standard2(discord.ui.View):
         embed = discord.Embed(description="Welcome to Hoshi's shop!"
         "\n<:bulletpoint:1304247536021667871>Here you can buy rank decorations."
         "\n<:bulletpoint:1304247536021667871>Rank decorations overlay on top of your rank cards."
-        "\n<:bulletpoint:1304247536021667871>Decorations are available for both Lyra and Chroma."
-        "\n<:bulletpoint:1304247536021667871>If you buy a decoration in Chroma, you don't need to repurchase it in Lyra."
-        "\n<:bulletpoint:1304247536021667871>You can have a different decoration for Chroma and Lyra.", color=0xC7D9E5)
+        "\n<:bulletpoint:1304247536021667871>Decorations are available for both and Chroma."
+        "\n<:bulletpoint:1304247536021667871>If you buy a decoration in Chroma, you don't need to repurchase it in."
+        "\n<:bulletpoint:1304247536021667871>You can have a different decoration for Chroma and.", color=0xC7D9E5)
         embed.set_image(url="https://cdn.discordapp.com/attachments/1202385683134812210/1316858495395434568/home_page_yuh_00000.png?ex=675c938b&is=675b420b&hm=75571d2c24b722ba1dafacc62a89c549dc8faa860c67c08191ea140e377d2220&")
         await interaction.response.edit_message(embed=embed, view=categories(bot=self.bot))
 
@@ -87,9 +87,9 @@ class standard1(discord.ui.View):
         embed = discord.Embed(description="Welcome to Hoshi's shop!"
         "\n<:bulletpoint:1304247536021667871>Here you can buy rank decorations."
         "\n<:bulletpoint:1304247536021667871>Rank decorations overlay on top of your rank cards."
-        "\n<:bulletpoint:1304247536021667871>Decorations are available for both Lyra and Chroma."
-        "\n<:bulletpoint:1304247536021667871>If you buy a decoration in Chroma, you don't need to repurchase it in Lyra."
-        "\n<:bulletpoint:1304247536021667871>You can have a different decoration for Chroma and Lyra.", color=0xC7D9E5)
+        "\n<:bulletpoint:1304247536021667871>Decorations are available for both and Chroma."
+        "\n<:bulletpoint:1304247536021667871>If you buy a decoration in Chroma, you don't need to repurchase it in."
+        "\n<:bulletpoint:1304247536021667871>You can have a different decoration for Chroma and.", color=0xC7D9E5)
         embed.set_image(url="https://cdn.discordapp.com/attachments/1202385683134812210/1316858495395434568/home_page_yuh_00000.png?ex=675c938b&is=675b420b&hm=75571d2c24b722ba1dafacc62a89c549dc8faa860c67c08191ea140e377d2220&")
         await interaction.response.edit_message(embed=embed, view=categories(bot=self.bot))
 
@@ -144,9 +144,9 @@ class limitedtime(discord.ui.View):
         embed = discord.Embed(description="Welcome to Hoshi's shop!"
         "\n<:bulletpoint:1304247536021667871>Here you can buy rank decorations."
         "\n<:bulletpoint:1304247536021667871>Rank decorations overlay on top of your rank cards."
-        "\n<:bulletpoint:1304247536021667871>Decorations are available for both Lyra and Chroma."
-        "\n<:bulletpoint:1304247536021667871>If you buy a decoration in Chroma, you don't need to repurchase it in Lyra."
-        "\n<:bulletpoint:1304247536021667871>You can have a different decoration for Chroma and Lyra.", color=0xC7D9E5)
+        "\n<:bulletpoint:1304247536021667871>Decorations are available for both and Chroma."
+        "\n<:bulletpoint:1304247536021667871>If you buy a decoration in Chroma, you don't need to repurchase it in."
+        "\n<:bulletpoint:1304247536021667871>You can have a different decoration for Chroma and.", color=0xC7D9E5)
         embed.set_image(url="https://cdn.discordapp.com/attachments/1202385683134812210/1316858495395434568/home_page_yuh_00000.png?ex=675c938b&is=675b420b&hm=75571d2c24b722ba1dafacc62a89c549dc8faa860c67c08191ea140e377d2220&")
         await interaction.response.edit_message(embed=embed, view=categories(bot=self.bot))
 
@@ -188,7 +188,7 @@ class categories(discord.ui.View):
         super().__init__(timeout=60)
         self.bot = bot
 
-    @discord.ui.button(label="Limited Collection", style=discord.ButtonStyle.blurple)
+    @discord.ui.button(label="Limited Collection", style=discord.ButtonStyle.blurple, disabled=True)
     async def limited(self, interaction: discord.Interaction, button: discord.Button):
         currency = await self.get_currency(interaction.user.id)
         embed=discord.Embed(title="Limited Decorations", description="`・` Use the **Buy** button below and enter the number of the decoration you want."
@@ -368,11 +368,8 @@ class event(commands.Cog):
         
         embed = discord.Embed(description="Welcome to Hoshi's shop!"
         "\n<:bulletpoint:1304247536021667871>Here you can buy rank decorations."
-        "\n<:bulletpoint:1304247536021667871>Rank decorations overlay on top of your rank cards."
-        "\n<:bulletpoint:1304247536021667871>Decorations are available for both Lyra and Chroma."
-        "\n<:bulletpoint:1304247536021667871>If you buy a decoration in Chroma, you don't need to repurchase it in Lyra."
-        "\n<:bulletpoint:1304247536021667871>You can have a different decoration for Chroma and Lyra.", color=0xC7D9E5)
-        embed.set_image(url="https://cdn.discordapp.com/attachments/1202385683134812210/1316858495395434568/home_page_yuh_00000.png?ex=675c938b&is=675b420b&hm=75571d2c24b722ba1dafacc62a89c549dc8faa860c67c08191ea140e377d2220&")
+        "\n<:bulletpoint:1304247536021667871>Rank decorations overlay on top of your rank cards.", color=0xeab4de)
+        embed.set_image(url="https://cdn.discordapp.com/attachments/1248039148888129647/1338319157438976111/home_page_yuh_00000.png?ex=67aaa657&is=67a954d7&hm=f086399f10fdeb9b8a48e64b74f9bef974f22f2cb1a39435b095f63bf5b6a05e&")
         await self.add_member(interaction.user.id, currency=10)
         await interaction.response.send_message(embed=embed, view=categories(bot=self.bot))
 
