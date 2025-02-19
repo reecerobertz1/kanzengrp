@@ -3,6 +3,51 @@ import re
 import discord
 from discord.ext import commands
 from discord import ui
+import random
+
+class verify(discord.ui.View):
+    def __init__ (self):
+        super().__init__(timeout=None)
+        self.value = None
+
+    @discord.ui.button(label="Verify", style=discord.ButtonStyle.blurple)
+    async def verify(self, interaction: discord.Interaction, button: discord.Button):
+        letters = ('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z')
+        numbers = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
+        code = "".join([
+            random.choice(letters), random.choice(letters), str(random.choice(numbers)),
+            random.choice(letters), random.choice(letters), str(random.choice(numbers)),
+            random.choice(letters), random.choice(letters), str(random.choice(numbers))
+        ])
+
+        await interaction.response.send_message(f"Please type this code below:\n`{code}`", ephemeral=True)
+
+        def check(msg: discord.Message):
+            return msg.author == interaction.user and msg.channel == interaction.channel
+
+        try:
+            msg = await interaction.client.wait_for("message", check=check, timeout=60)
+
+            if msg.content.strip().upper() == code:
+                role = interaction.guild.get_role(1341753597368733736)
+                if role:
+                    await interaction.user.add_roles(role)
+                    await interaction.followup.send("✅ Verification successful! You have been given the role.", ephemeral=True)
+                    await msg.delete()
+                else:
+                    await interaction.followup.send("❌ The 'Verified' role was not found. Please contact an admin.", ephemeral=True)
+                    await msg.delete()
+            else:
+                await interaction.followup.send("❌ Incorrect code! Please try again by clicking the verify button again.", ephemeral=True)
+                await msg.delete()
+
+        except TimeoutError:
+            await interaction.followup.send("⌛ You took too long to respond. Please try again.", ephemeral=True)
+
+    @discord.ui.button(label="Help")
+    async def help(self, interaction: discord.Interaction, button: discord.Button):
+        embed = discord.Embed (description="## Verification Help\n<:bullet_point_blue:1340661702378786879>Click the `Verify` button below\n<:bullet_point_blue:1340661702378786879>Hoshi will randomly generate a code for you to use\n<:bullet_point_blue:1340661702378786879>Send the same code within 60 seconds into chat to complete verification\n<:bullet_point_blue:1340661702378786879>If the bot does not reply after you have sent the code, or doesn't give you <@&1341753597368733736>. Please contact a staff member!", color=0xA4C4E6)
+        await interaction.response.send_message(embed=embed, ephemeral=True)
 
 class arrows(discord.ui.View):
     def __init__ (self):
@@ -93,6 +138,12 @@ class Community(commands.Cog):
                 print(f"Failed to process the command: {e}")
         else:
             await ctx.send("Please reply to the question you want to answer.")
+
+    @commands.command()
+    async def verifyy(self, ctx):
+        embed = discord.Embed(description="## Verification Required\n<:bullet_point_pink:1340661739628531813>To access the server, you need to pass the verification first.\n<:bullet_point_pink:1340661739628531813>Click `Verify` to begin the verification process.", color=0xEEB0E3)
+        embed.set_image(url="https://cdn.discordapp.com/attachments/1055168099252437094/1341737531372208128/Comp_7_00000.png?ex=67b715f3&is=67b5c473&hm=6767f6324961368583233c70154f85525901a513f6606071b7f15822faf9adb1&")
+        await ctx.send(embed=embed, view=verify())
 
 async def setup(bot):
     await bot.add_cog(Community(bot))
