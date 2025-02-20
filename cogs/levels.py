@@ -1314,7 +1314,7 @@ class levels(commands.Cog):
 
     @commands.Cog.listener()
     async def on_voice_state_update(self, member, before, after):
-        channel = self.bot.get_channel(1248039148888129647)
+        channel = self.bot.get_channel(822422177612824580)
         levels = await self.get_member_levels(member.id, guild_id=member.guild.id)
 
         if before.channel is None and after.channel is not None:
