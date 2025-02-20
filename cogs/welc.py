@@ -35,7 +35,7 @@ class welcandleave(commands.Cog):
         elif member.guild.id == scout_guild_id:
             guild = self.bot.get_guild(694010548605550675)
             guild2 = self.bot.get_guild(835495688832811039)
-            embed2 = discord.Embed(color=0x2b2d31, description=f"## ᯓ Welcome reeceroberts ༝ ⁺\n<:bullet_point_blue:1340661702378786879>Please make sure to [verify](https://discord.com/channels/835495688832811039/1341728546946682941)\n<:bullet_point_blue:1340661702378786879>Read our [rules](https://discord.com/channels/835495688832811039/1283439723053977730)\n<:bullet_point_blue:1340661702378786879>Come and get your [roles](https://discord.com/channels/835495688832811039/1340656462342393918)")
+            embed2 = discord.Embed(color=0x2b2d31, description=f"## ᯓ Welcome {member.name} ༝ ⁺\n<:bullet_point_blue:1340661702378786879>Please make sure to [verify](https://discord.com/channels/835495688832811039/1341728546946682941)\n<:bullet_point_blue:1340661702378786879>Read our [rules](https://discord.com/channels/835495688832811039/1283439723053977730)\n<:bullet_point_blue:1340661702378786879>Come and get your [roles](https://discord.com/channels/835495688832811039/1340656462342393918)")
             embed2.set_footer(text='Thanks for joining Chroma Community', icon_url=member.guild.icon)
             embed2.set_thumbnail(url=member.display_avatar.url)
             channel2 = self.bot.get_channel(836251337649160256)
