@@ -1,7 +1,7 @@
 import asyncio
 import re
 import discord
-from discord.ext import commands
+from discord.ext import commands, tasks
 from random import randint
 from typing import Optional, TypedDict, List, Union, Tuple
 from PIL import Image, ImageFilter, ImageOps, ImageFont, ImageEnhance, ImageDraw, ImageColor
@@ -319,6 +319,8 @@ class levels(commands.Cog):
         self.pool = None
         self.cd_mapping = commands.CooldownMapping.from_cooldown(1, 60, commands.BucketType.user)
         self.voice_times = {}
+        self.xp_tracker = {}
+        self.gain_xp.start()
 
     async def get_voicechannels(self, guild_id: int) -> int:
         query = '''SELECT voicechannels FROM settings WHERE guild_id = ?'''
@@ -1309,6 +1311,37 @@ class levels(commands.Cog):
     async def format(self, ctx):
         await self.set_format(ctx.author.id, 1)
         await ctx.reply("Okay, the issue is now fixed! please try /rank again!")
+
+    @commands.Cog.listener()
+    async def on_voice_state_update(self, member, before, after):
+        channel = self.bot.get_channel(1248039148888129647)
+        levels = await self.get_member_levels(member.id, guild_id=member.guild.id)
+
+        if before.channel is None and after.channel is not None:
+            self.voice_times[member.id] = datetime.utcnow()
+            self.xp_tracker[member.id] = 0
+        
+        elif before.channel is not None and after.channel is None:
+            if member.id in self.voice_times:
+                join_time = self.voice_times.pop(member.id)
+                time_spent = (datetime.utcnow() - join_time).total_seconds()
+                xp_earned = self.xp_tracker.pop(member.id, 0)
+                if channel:
+                    await self.add_xp(member.id, xp=xp_earned, levels=levels, guild_id=member.guild.id)
+                    await channel.send(f"{member.mention}, you earned **{xp_earned}xp** from talking in {before.channel.mention}.")
+    
+    @tasks.loop(seconds=1)
+    async def gain_xp(self):
+        for member_id in list(self.xp_tracker.keys()):
+            guild = self.bot.get_guild(694010548605550675)
+            member = guild.get_member(member_id) if guild else None
+            if member and member.voice and len(member.voice.channel.members) > 1:
+                if not member.voice.self_mute and not member.voice.self_deaf:
+                    self.xp_tracker[member_id] += 1
+
+    @gain_xp.before_loop
+    async def before_gain_xp(self):
+        await self.bot.wait_until_ready()
 
 async def setup(bot):
     await bot.add_cog(levels(bot))
