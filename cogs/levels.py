@@ -1330,7 +1330,7 @@ class levels(commands.Cog):
                     await self.add_xp(member.id, xp=xp_earned, levels=levels, guild_id=member.guild.id)
                     await channel.send(f"{member.mention}, you earned **{xp_earned}xp** from talking in {before.channel.mention}.")
     
-    @tasks.loop(seconds=1)
+    @tasks.loop(seconds=15)
     async def gain_xp(self):
         for member_id in list(self.xp_tracker.keys()):
             guild = self.bot.get_guild(694010548605550675)
