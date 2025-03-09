@@ -141,8 +141,8 @@ class Community(commands.Cog):
 
     @commands.command()
     async def verifyy(self, ctx):
-        embed = discord.Embed(description="## Verification Required\n<:bullet_point_pink:1340661739628531813>To access the server, you need to pass the verification first.\n<:bullet_point_pink:1340661739628531813>Click `Verify` to begin the verification process.", color=0xEEB0E3)
-        embed.set_image(url="https://cdn.discordapp.com/attachments/1055168099252437094/1341737531372208128/Comp_7_00000.png?ex=67b715f3&is=67b5c473&hm=6767f6324961368583233c70154f85525901a513f6606071b7f15822faf9adb1&")
+        embed = discord.Embed(description="## Verification Required\n<:bullet_point_pink:1340661739628531813>To access the server, you need to pass the verification first.\n<:bullet_point_pink:1340661739628531813>Click `Verify` to begin the verification process.", color=0x2b2d31)
+        embed.set_image(url="https://cdn.discordapp.com/attachments/1055168099252437094/1348432753070444544/Comp_7_00000.png?ex=67cf715d&is=67ce1fdd&hm=62675a13b52993107da1b725afbd3919ec187b2c5f7713fedfee6fe8e8b08464&")
         await ctx.send(embed=embed, view=verify())
 
 async def setup(bot):
