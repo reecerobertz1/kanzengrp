@@ -23,7 +23,7 @@ class welcandleave(commands.Cog):
         # CHROMA MEMBERS WELCOME EMBED
         if member.guild.id == stored_guild_id:
             await member.add_roles(member.guild.get_role(role))
-            embed = discord.Embed(title='ᯓ Welcome to Chromagrp ༝ ⁺', color=0x463F78, description=f"**{member.name}** has joined !\n-# ・Please read our [rules](https://discord.com/channels/694010548605550675/725373131220320347)\n-# ・Introduce yourself in [this channel](https://discord.com/channels/694010548605550675/727875317439528982)\n-#  ⠀⠀—・⋆ Need help? Ping @leads or @staff")
+            embed = discord.Embed(title='ᯓ Welcome to Chromagrp ༝ ⁺', color=0x2b2d31, description=f"**{member.name}** has joined !\n-# ・Please read our [rules](https://discord.com/channels/694010548605550675/725373131220320347)\n-# ・Introduce yourself in [this channel](https://discord.com/channels/694010548605550675/727875317439528982)\n-#  ⠀⠀—・⋆ Need help? Ping @leads or @staff")
             embed.set_footer(text="Thank you for joining Chroma ★ ₊ ۫ ּ")
             channel = self.bot.get_channel(725389930607673384)
             embed.set_thumbnail(url=member.display_avatar.url)
