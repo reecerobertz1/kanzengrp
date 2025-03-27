@@ -343,6 +343,25 @@ class profiles(commands.Cog):
             left = 0
             right = bg.width
 
+        target_width2, target_height2 = 750, 750
+        background_aspect_ratio2 = background.width / background.height
+        target_aspect_ratio2 = target_width2 / target_height2
+        
+        if background_aspect_ratio2 > target_aspect_ratio2:
+            new_width2 = int(background.height * target_aspect_ratio2)
+            left2 = (background.width - new_width2) // 2
+            right2 = left2 + new_width2
+            top2 = 0
+            bottom2 = background.height
+        else:
+            new_height2 = int(background.width / target_aspect_ratio2)
+            top2 = (background.height - new_height2) // 2
+            bottom2 = top2 + new_height2
+            left2 = 0
+            right2 = background.width
+
+        background = background.crop((left2, top2, right2, bottom2))
+        background = background.resize((750, 750))
         bg = bg.crop((left, top, right, bottom))
         bg = bg.resize((750, 250))
         banner_mask = Image.open('./assets/banner-mask.png').convert('L').resize((750, 250))
