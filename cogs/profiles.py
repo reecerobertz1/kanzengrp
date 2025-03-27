@@ -423,22 +423,32 @@ class profiles(commands.Cog):
     async def profile(self, interaction: discord.Interaction, member: Optional[discord.Member] = None):
         member = member or interaction.user
         profiles = await self.get_member_profiles(member.id)
+
         avatar_url = member.display_avatar.replace(static_format='png', size=256).url
         response = await self.bot.session.get(avatar_url)
         avatar = BytesIO(await response.read())
         avatar.seek(0)
+
         if profiles:
-                card = await self.generate_card(avatar, profiles, member)
+            card = await self.generate_card(avatar, profiles, member)
         else:
             card = None
-        if member == interaction.user:
-            if card:
-                await interaction.response.send_message(file=discord.File(card, 'card.png'), view=configprofilecard(member=member.id, bot=self.bot))
-        if member == member:
-            await interaction.response.send_message(file=discord.File(card, 'card.png'))
+
+        if card:
+            if member == interaction.user:
+                await interaction.response.send_message(
+                    file=discord.File(card, 'card.png'),
+                    view=configprofilecard(member=member.id, bot=self.bot)
+                )
+            else:
+                await interaction.response.send_message(file=discord.File(card, 'card.png'))
         else:
             await self.add_member(member.id)
-            await interaction.response.send_message(f"{member} hasn't setup their profile yet...\nIf this is your profile, use the buttons below to setup now!", view=configprofilecard(member=member.id, bot=self.bot))
+            await interaction.response.send_message(
+                f"{member} hasn't set up their profile yet...\n"
+                f"If this is your profile, use the buttons below to set up now!",
+                view=configprofilecard(member=member.id, bot=self.bot)
+            )
 
 async def setup(bot):
     await bot.add_cog(profiles(bot))
