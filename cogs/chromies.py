@@ -11,7 +11,7 @@ class infoview(discord.ui.View):
         self.value = None
         self.bot = bot
 
-    @discord.ui.button(label="Rules", style=discord.ButtonStyle.blurple)
+    @discord.ui.button(label="Rules", style=discord.ButtonStyle.red)
     async def rules(self, interaction: discord.Interaction, button: discord.Button):
         embed = discord.Embed(description="**Group Rules**\n・Must be following [remqsi](https://instagram.com/remqsi), [wqndqs](https://instagram.com/wqndqs) + [chromagrp](https://instagram.com/chromagrp).\n・Always use our hashtag #𝗰𝗵𝗿𝗼𝗺𝗮𝗴𝗿𝗽.\n・Watermark logos if the background is mostly plain.\n-# ⠀— ・**Note:** Leaking our logos will get you banned.", color=0x433757)
         embed.set_image(url="https://cdn.discordapp.com/attachments/1248039148888129647/1326538980316938251/if_you_see_this_hello_00000.png?ex=678ba8b2&is=678a5732&hm=2cf73ca4a605a243f71546dcb781527644b5b4da03d2ffd2f7e1a41103c677d4&")
