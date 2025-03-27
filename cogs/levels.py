@@ -962,43 +962,28 @@ class levels(commands.Cog):
     @app_commands.command(name="rank", description="Check your rank")
     @app_commands.checks.cooldown(1, 5)
     async def rank(self, interaction: discord.Interaction, member: Optional[discord.Member] = None):
-        required_roles = {1134797882420117544, 694016195090710579}
-        member_roles = {role.id for role in interaction.user.roles}
-        if required_roles.isdisjoint(member_roles):
-            await interaction.response.send_message(
-                "Sorry, this command is currently not available for non members!", ephemeral=True
-            )
-            return
-
         member = member or interaction.user
         format = await self.get_format(member.id, interaction.guild.id)
         levels = await self.get_member_levels(member.id, interaction.guild_id)
-        decorations = await self.get_member_decors(member.id)
         rank = await self.get_rank(member.id, interaction.guild_id)
-        avatar_url = member.display_avatar.replace(static_format="png", size=256).url
+        avatar_url = member.display_avatar.replace(static_format='png', size=256).url
         response = await self.bot.session.get(avatar_url)
         guild = interaction.guild.id
         avatar = BytesIO(await response.read())
         avatar.seek(0)
 
-        card = None
-
         if format == 1:
             if levels:
-                card = await self.generate_card1(avatar, levels, decorations, rank, member, guild)
+                    card = await self.generate_card1(avatar, levels, rank, member, guild)
+            else:
+                card = None
         elif format == 2:
             if levels:
-                card = await self.generate_card2(avatar, levels, decorations, rank, member, guild)
-        elif format == 3:
-            if levels:
-                    card = await self.generate_card3(avatar, levels, rank, member, guild)
+                    card = await self.generate_card2(avatar, levels, rank, member, guild)
             else:
                 card = None
         if card:
-            await interaction.response.send_message(
-                file=discord.File(card, "card.png"), 
-                view=configrankcard(member=member.id, bot=self.bot)
-            )
+            await interaction.response.send_message(file=discord.File(card, 'card.png'), view=configrankcard(member=member.id, bot=self.bot))
         else:
             await interaction.response.send_message(f"{member} hasn't gotten levels yet!")
 
