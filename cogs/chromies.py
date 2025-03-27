@@ -237,9 +237,9 @@ class chromies(commands.Cog):
     @commands.has_permissions(manage_guild=True)
     async def rules(self, ctx):
         embed = discord.Embed(title="ᯓ Welcome to Chromagrp ༝ ⁺", description="Thank you so much for joining Chroma!\n-# ・Please use the buttons below to read our rules and get our logos!\n-# ・If you ever need to go inactive, use our inactivity button below!", color=0x2b2d31)
-        embed.set_image(url="https://discord.com/channels/694010548605550675/1248039148888129647/1349013016087101450")
-        embed2 = discord.Embed(description="**Reporting Members**\n-# ・If you see someone breaking our rules, report them below.\n-# ・You can stay anonymous by leaving your username blank.\n-# ・Click the Report Member button to report a chroma member.\n-# ⠀— ・Note: Note: We may DM you for more information if we need more.", color=0x433757)
-        embed2.set_image(url="https://discord.com/channels/694010548605550675/1248039148888129647/1353845796231053313")
+        embed.set_image(url="https://cdn.discordapp.com/attachments/1248039148888129647/1349013015881842728/fit_embeds_00000_00000.png?ex=67e6a5c6&is=67e55446&hm=2a5e41cee28ae9818b09efa61a193656c0e33d0deb301b38928e14a86a6ea70a&")
+        embed2 = discord.Embed(description="**Reporting Members**\n-# ・If you see someone breaking our rules, report them below.\n-# ・You can stay anonymous by leaving your username blank.\n-# ・Click the Report Member button to report a chroma member.\n-# ⠀— ・Note: Note: We may DM you for more information if we need more.", color=0x2b2d31)
+        embed2.set_image(url="https://cdn.discordapp.com/attachments/1248039148888129647/1353845796088315904/welc_banner_00000.png?ex=67e66e67&is=67e51ce7&hm=4fd36540bff9b041d18fb25918c0d681862b7ee15087fdf7965da780e1cbe5ea&")
         view=infoview(bot=self.bot)
         await ctx.send(embeds=[embed, embed2], view=view)
 
