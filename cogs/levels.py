@@ -341,10 +341,10 @@ class levels(commands.Cog):
             return 1
 
     async def add_member(self, member_id: int, guild_id: int, xp = 25) -> None:
-        query = '''INSERT INTO levelling (member_id, guild_id, xp , messages, format) VALUES (?, ?, ?, ?, ?)'''
+        query = '''INSERT INTO levelling (member_id, guild_id, xp , messages, format, color, color2) VALUES (?, ?, ?, ?, ?, ?, ?)'''
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cursor:
-                await cursor.execute(query, (member_id, guild_id, xp, 1, 1))
+                await cursor.execute(query, (member_id, guild_id, xp, 1, 1, "#67191F", "#ECE2E2"))
                 await conn.commit()
             await self.bot.pool.release(conn)
 
