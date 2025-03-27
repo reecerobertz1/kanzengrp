@@ -11,15 +11,15 @@ extensions = {
     "jishaku",
     "cogs.asstral",
     "cogs.chromies",
+    "cogs.community",
     "cogs.editing",
-    "cogs.event",
     "cogs.fun",
     "cogs.levels",
     "cogs.mod",
     "cogs.other",
+    "cogs.profiles",
     "cogs.settings",
-    "cogs.event",
-    "cogs.community"
+    "cogs.welc"
 }
 
 class LalisaBot(commands.Bot):

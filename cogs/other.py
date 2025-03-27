@@ -13,24 +13,6 @@ class other(commands.Cog):
             return
         if message.content.lower() == "chroma":
             await message.channel.send(f"<:ichromayou:1300869402614567025> **{message.author.name}** loves chroma\n-# <:reply:1290714885792989238> we love you too! **<3**")
-        if message.content.lower() == "reece":
-            await message.channel.send("<@609515684740988959> is the sexiest")
-        if message.content.lower() == "rinaya":
-            await message.channel.send("#1 ranwan lover")
-        if message.content.lower() == "cc":
-            await message.channel.send("cece is the most sane diluc stan... *not*")
-        if message.content.lower() == "aspenola":
-            await message.channel.send("aspen is streaming lower one's eyes")
-        if message.content.lower() == "kim":
-            await message.channel.send("mizukis lover")
-        if message.content.lower() == "denise":
-            await message.channel.send("https://tenor.com/qIoidKLXAGv.gif")
-        if message.content.lower() == "lyra":
-            await message.channel.send("<:ilyrayou:1270405427989057576>")
-        if message.content.lower() == "hoshi! come here, your dad wants you":
-            await message.channel.send("Hi!! i'm here")
-        if message.content.lower() == "good boy":
-            await message.channel.send("Thank you dad!!")
         if message.type == discord.MessageType.premium_guild_subscription:
             embed = discord.Embed(
                 title="Thank you for boosting",

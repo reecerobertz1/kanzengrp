@@ -15,18 +15,13 @@ from discord.app_commands import CommandOnCooldown
 import datetime as dt
 from datetime import datetime, timedelta
 
-class Decorations(TypedDict):
-    member_id: int
-    unlocked: int
-    selected: int
-    currency: int
-
 class LevelRow(TypedDict):
+    guild_id: int
     member_id: int
     xp: int
     messages: int
-    guild_id: int
     color: str
+    color2: str
     image: str
     decor: str
 
@@ -39,56 +34,11 @@ class claimxp(discord.ui.View):
 
     @discord.ui.button(label="Claim", emoji="<:key:1306072256094404698>", style=discord.ButtonStyle.blurple)
     async def claim(self, interaction: discord.Interaction, button: discord.Button):
-        embed = discord.Embed(title="<:removal:1306071903198380082> Claimed XP", description=f"**{interaction.user.name}** has claimed `{self.amount} XP`", color=0x2b2d31)
+        embed = discord.Embed(title="<:removal:1306071903198380082> Claimed XP", description=f"**{interaction.user.name}** has claimed `{self.amount}xp`", color=0x2b2d31)
         embed.set_footer(text=f"dropped by {self.dropper}")
-        levels = await self.get_member_levels(interaction.user.id, interaction.guild.id)
-        if not levels:
-            await interaction.response.send_message("Could not retrieve your level data. Please try again later.", ephemeral=True)
-            return
-
-        current_xp = levels["xp"]
-        new_xp = current_xp + self.amount
+        levels = await self.get_member_levels(interaction.user.id, interaction.guild_id)
         await self.add_xp(interaction.user.id, interaction.guild.id, xp=self.amount, levels=levels)
-        lvl = 0
-        while True:
-            if current_xp < ((50 * (lvl ** 2)) + (50 * (lvl - 1))):
-                break
-            lvl += 1
-        next_level_xp = ((50 * (lvl ** 2)) + (50 * (lvl - 1)))
-
-        if new_xp > next_level_xp:
-            guild_id = interaction.guild.id
-            if guild_id == 694010548605550675:
-                if lvl == 2:
-                    reprole = await self.get_reprole(guild_id)
-                    if reprole:
-                        role = interaction.guild.get_role(reprole)
-                        if role:
-                            await interaction.user.add_roles(role, reason=f"{interaction.user.name} reached level 2")
-                await interaction.followup.send(f"Yay! {interaction.user.mention} just reached **level {lvl}**!")
-
-            else:
-                stella = "Stella" if lvl == 1 else "Stellas"
-                reprole = await self.get_reprole(guild_id)
-                if reprole:
-                    role = interaction.guild.get_role(reprole)
-                    if role and lvl == 1:
-                        await interaction.user.add_roles(role, reason=f"{interaction.user.name} reached level 1")
-
-                embed.add_field(name="Level Up!", value=f"Congrats! You've reached **level {lvl}** {stella}!", inline=False)
         await interaction.response.edit_message(embed=embed, view=None)
-
-    async def get_reprole(self, guild_id: int) -> int:
-        query = '''SELECT reprole FROM settings WHERE guild_id = ?'''
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cursor:
-                await cursor.execute(query, guild_id)
-                status = await cursor.fetchone()
-            await self.bot.pool.release(conn)
-        if status is not None:
-            return status[0]
-        else:
-            return 1
 
     async def add_xp(self, member_id: int, guild_id: int, xp: int, levels: Optional[LevelRow]) -> None:
         if levels:
@@ -176,8 +126,8 @@ class configrankcard(discord.ui.View):
                 ephemeral=True,
             )
 
-    @discord.ui.button(label="Colour")
-    async def colour(self, interaction: discord.Interaction, button: discord.ui.Button):
+    @discord.ui.button(label="Colour 1")
+    async def colour1(self, interaction: discord.Interaction, button: discord.ui.Button):
         if interaction.user.id == self.member:
             await interaction.response.send_message(
                 f"<:settings:1304222799639871530>**{interaction.user.name}**, Please type a valid hex code within the next 60 seconds.\n"
@@ -193,8 +143,41 @@ class configrankcard(discord.ui.View):
                 color = user_response.content.strip()
                 match = re.search(self.regex_hex, color)
                 if match:
-                    await self.set_rank_color(interaction.user.id, color, guild_id=interaction.guild_id)
-                    await self.get_color(interaction.user.id, guild_id=interaction.guild.id)
+                    await self.set_rank_color1(interaction.user.id, color, guild_id=interaction.guild_id)
+                    await self.get_color1(interaction.user.id, guild_id=interaction.guild.id)
+                    await interaction.followup.send(f"<:check:1291748345194348594> Okay **{interaction.user.name}**, I have update your color to **{color}**", ephemeral=True)
+                    await user_response.delete()
+                else:
+                    await interaction.followup.send(f"`{color}` is not a valid hex color. Make sure to add a **#** at the start!", ephemeral=True)
+
+            except asyncio.TimeoutError:
+                await interaction.followup.send(f"You took too long to respond, please try again.", ephemeral=True)
+        else:
+            await interaction.response.send_message(
+                f"<:whitex:1304222877305798697>**{interaction.user.name}**, You cannot edit someone else's rank card.\n"
+                f"-# <:thread1:1304222965042249781> Do **/rank** if you'd like to edit your rank card.",
+                ephemeral=True
+            )
+
+    @discord.ui.button(label="Colour 2")
+    async def colour2(self, interaction: discord.Interaction, button: discord.ui.Button):
+        if interaction.user.id == self.member:
+            await interaction.response.send_message(
+                f"<:settings:1304222799639871530>**{interaction.user.name}**, Please type a valid hex code within the next 60 seconds.\n"
+                f"-# <:thread:1291033931050778694> Enter a hex code for colors ([color picker](https://htmlcolorcodes.com/)).\n"
+                f"-# <:thread1:1304222965042249781> The default hex code is **#c45a72**", 
+                ephemeral=True
+            )
+
+            def check(m):
+                return m.author == interaction.user and m.channel == interaction.channel
+            try:
+                user_response = await self.bot.wait_for('message', timeout=60.0, check=check)
+                color = user_response.content.strip()
+                match = re.search(self.regex_hex, color)
+                if match:
+                    await self.set_rank_color2(interaction.user.id, color, guild_id=interaction.guild_id)
+                    await self.get_color2(interaction.user.id, guild_id=interaction.guild.id)
                     await interaction.followup.send(f"<:check:1291748345194348594> Okay **{interaction.user.name}**, I have update your color to **{color}**", ephemeral=True)
                     await user_response.delete()
                 else:
@@ -248,20 +231,7 @@ class configrankcard(discord.ui.View):
                 f"-# <:thread1:1304222965042249781> Use **/rank** if you'd like to edit your rank card.",
                 ephemeral=True
             )
-
-    @discord.ui.button(label="Clear Decoration")
-    async def clear(self, interaction: discord.Interaction, button: discord.ui.Button):
-        await self.update_equiped(interaction.user.id, 0)
-        await interaction.response.send_message(f"<:check:1291748345194348594> Okay **{interaction.user.name}**, your decoration has been cleared!")
-
-    async def update_equiped(self, member_id: int, chosen: int) -> None:
-        query = '''UPDATE decors SET selected = ? WHERE member_id = ?'''
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cursor:
-                await cursor.execute(query, (chosen, member_id))
-                await conn.commit()
-
-    async def get_color(self, member_id: int, guild_id: int):
+    async def get_color1(self, member_id: int, guild_id: int):
         query = '''SELECT color FROM levelling WHERE member_id = $1 AND guild_id = $2'''
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cursor:
@@ -277,6 +247,22 @@ class configrankcard(discord.ui.View):
        
         return 0xc45a72
 
+    async def get_color2(self, member_id: int, guild_id: int):
+        query = '''SELECT color2 FROM levelling WHERE member_id = $1 AND guild_id = $2'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, (member_id, guild_id))
+                row = await cursor.fetchone()
+            await self.bot.pool.release(conn)
+
+        if row and row['color2']:
+            color = row['color2']
+            if color.startswith('#'):
+                embed_color = int(color.replace('#', '0x'), 16)
+                return embed_color
+       
+        return 0xc45a72
+
     async def set_format(self, member_id: int, format: str, guild_id: int) -> None:
         query = '''UPDATE levelling SET format = ? WHERE member_id = ? AND guild_id = ?'''
         async with self.bot.pool.acquire() as conn:
@@ -285,8 +271,16 @@ class configrankcard(discord.ui.View):
                 await conn.commit()
             await self.bot.pool.release(conn)
 
-    async def set_rank_color(self, member_id: int, color: str, guild_id: int) -> None:
+    async def set_rank_color1(self, member_id: int, color: str, guild_id: int) -> None:
         query = '''UPDATE levelling SET color = ? WHERE member_id = ? AND guild_id = ?'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, color, member_id, guild_id)
+                await conn.commit()
+            await self.bot.pool.release(conn)
+
+    async def set_rank_color2(self, member_id: int, color: str, guild_id: int) -> None:
+        query = '''UPDATE levelling SET color2 = ? WHERE member_id = ? AND guild_id = ?'''
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cursor:
                 await cursor.execute(query, color, member_id, guild_id)
@@ -532,70 +526,66 @@ class levels(commands.Cog):
         else:
             return 1
 
-    def _make_progress_bar1(self, progress, color):
-        width = 1500  # Width of the progress bar
-        height = 15  # Height of the progress bar
-        radius = 0  # Radius of the rounded corners
-        progress_bar = Image.new('RGBA', (width, height), (0, 0, 0, 0))
-        draw = ImageDraw.Draw(progress_bar)
-        draw.rectangle([(0, 0), (width, height)], fill=(195, 195, 195, 255))
-        bg_width = int(width * 1)
-        progress_width = int(width * progress)
-        draw.rounded_rectangle([(0, 0), (bg_width, height)], fill=(195, 195, 195, 255), width=1, radius=radius)
-        draw.rounded_rectangle([(0, 0), (progress_width, height)], fill=color, width=1, radius=radius)
-        mask = Image.new('L', (width, height), 0)
-        mask_draw = ImageDraw.Draw(mask)
-        mask_draw.rounded_rectangle([(0, 0), (bg_width, height)], fill=255, width=0, radius=radius)
-        return progress_bar, mask
+    async def get_color2(self, member_id: int, guild_id: int):
+        query = '''SELECT color2 FROM levelling WHERE member_id = $1 AND guild_id = $2'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, (member_id, guild_id))
+                row = await cursor.fetchone()
+            await self.bot.pool.release(conn)
 
-    def _make_progress_bar2(self, progress, color):
-        width = 750  # Width of the progress bar
-        height = 15  # Height of the progress bar
-        radius = 0  # Radius of the rounded corners
-        progress_bar = Image.new('RGBA', (width, height), (0, 0, 0, 0))
-        draw = ImageDraw.Draw(progress_bar)
-        draw.rectangle([(0, 0), (width, height)], fill=(195, 195, 195, 255))
-        bg_width = int(width * 1)
-        progress_width = int(width * progress)
-        draw.rounded_rectangle([(0, 0), (bg_width, height)], fill=(195, 195, 195, 255), width=1, radius=radius)
-        draw.rounded_rectangle([(0, 0), (progress_width, height)], fill=color, width=1, radius=radius)
-        mask = Image.new('L', (width, height), 0)
-        mask_draw = ImageDraw.Draw(mask)
-        mask_draw.rounded_rectangle([(0, 0), (bg_width, height)], fill=255, width=0, radius=radius)
-        return progress_bar, mask
+        if row and row['color']:
+            color = row['color']
+            if color.startswith('#'):
+                embed_color = int(color.replace('#', '0x'), 16)
+                return embed_color
+       
+        return 0xc45a72
 
-    def _make_progress_bar_circle(self, progress, color, circle_size=232, bar_thickness=7):
+    def _make_progress_bar(self, progress, color1, color2, circle_size=235, bar_thickness=15):
         upscale_factor = 4
         upscale_circle_size = circle_size * upscale_factor
         upscale_bar_thickness = bar_thickness * upscale_factor
-        if isinstance(color, str):
-            color = ImageColor.getcolor(color, "RGBA")
-        elif len(color) == 3:
-            color = (*color, 255)
+
+        if isinstance(color1, str):
+            color1 = ImageColor.getcolor(color1, "RGBA")
+        elif len(color1) == 3:
+            color1 = (*color1, 255)
+
+        if isinstance(color2, str):
+            color2 = ImageColor.getcolor(color2, "RGBA")
+        elif len(color2) == 3:
+            color2 = (*color2, 255)
 
         arc = Image.new('RGBA', (upscale_circle_size, upscale_circle_size), (0, 0, 0, 0))
         draw = ImageDraw.Draw(arc)
         start_angle = -90
         end_angle = start_angle + 360 * progress
-        def adjust_brightness(color, factor):
-            r, g, b, a = color
-            r = max(0, min(255, int(r * factor)))
-            g = max(0, min(255, int(g * factor)))
-            b = max(0, min(255, int(b * factor)))
+
+        def interpolate_color(color1, color2, factor):
+            r1, g1, b1, a1 = color1
+            r2, g2, b2, a2 = color2
+            r = int(r1 + (r2 - r1) * factor)
+            g = int(g1 + (g2 - g1) * factor)
+            b = int(b1 + (b2 - b1) * factor)
+            a = int(a1 + (a2 - a1) * factor)
             return (r, g, b, a)
-        
+
         segments = 500
         for i in range(segments):
             t1 = i / segments
             t2 = (i + 1) / segments
             segment_start_angle = start_angle + (end_angle - start_angle) * t1
             segment_end_angle = start_angle + (end_angle - start_angle) * t2
-            if t1 < 0.5:
-                brightness_factor = 1 + t1
-            else:
-                brightness_factor = 2 - t1
 
-            gradient_color = adjust_brightness(color, brightness_factor)
+            if progress > 0:
+                segment_progress = (t1 * 360) / (progress * 360) if (progress * 360) > 0 else 0
+                gradient_factor = min(1, segment_progress)
+            else:
+                gradient_factor = 0
+
+            gradient_color = interpolate_color(color1, color2, gradient_factor)
+
             draw.arc(
                 [upscale_bar_thickness // 2, upscale_bar_thickness // 2,
                 upscale_circle_size - upscale_bar_thickness // 2,
@@ -605,6 +595,7 @@ class levels(commands.Cog):
                 fill=gradient_color,
                 width=upscale_bar_thickness
             )
+
         mask = Image.new('L', (upscale_circle_size, upscale_circle_size), 0)
         mask_draw = ImageDraw.Draw(mask)
         mask_draw.arc(
@@ -616,26 +607,15 @@ class levels(commands.Cog):
             fill=255,
             width=upscale_bar_thickness
         )
+
         arc = arc.resize((circle_size, circle_size), Image.ANTIALIAS)
         mask = mask.resize((circle_size, circle_size), Image.ANTIALIAS)
         return arc, mask
 
-    def get_avatar1(self, avatar: BytesIO) -> Tuple[Image.Image, Image.Image]:
-        circle = Image.open('./assets/circle-mask.png').resize((200, 200)).convert('L')
+    def get_avatar(self, avatar: BytesIO) -> Tuple[Image.Image, Image.Image]:
+        circle = Image.open('./assets/circle-mask.png').resize((210, 210)).convert('L')
         avatar_image = Image.open(avatar).convert('RGBA')
-        avatar_image = avatar_image.resize((200, 200))
-        return avatar_image, circle
-
-    def get_avatar3(self, avatar: BytesIO) -> Tuple[Image.Image, Image.Image]:
-        circle = Image.open('./assets/circle-mask.png').resize((222, 222)).convert('L')
-        avatar_image = Image.open(avatar).convert('RGBA')
-        avatar_image = avatar_image.resize((222, 222))
-        return avatar_image, circle
-
-    def get_avatar2(self, avatar: BytesIO) -> Tuple[Image.Image, Image.Image]:
-        circle = Image.open('./assets/circle-mask.png').resize((150, 150)).convert('L')
-        avatar_image = Image.open(avatar).convert('RGBA')
-        avatar_image = avatar_image.resize((150, 150))
+        avatar_image = avatar_image.resize((210, 210))
         return avatar_image, circle
 
     def human_format(self, number: int) -> str:
@@ -672,7 +652,7 @@ class levels(commands.Cog):
                 xp_progress_need = self.human_format(xp_progress_need)
 
             else:
-                xp_progress_need = f"{xp_progress_need} XP"
+                xp_progress_need = f"{xp_progress_need}"
 
             if xp_progress_have > 999:
                 xp_progress_have = self.human_format(xp_progress_have)
@@ -684,9 +664,9 @@ class levels(commands.Cog):
 
         return percentage, xp_progress_have, xp_progress_need, lvl
 
-    def get_card1(self, avatar: BytesIO, levels: LevelRow, decorations: Decorations, rank: int, user: discord.User, guild: discord.Guild) -> BytesIO:
+    def get_card1(self, avatar: BytesIO, levels: LevelRow, rank: int, user: discord.User, guild: discord.Guild) -> BytesIO:
         percentage, xp_have, xp_need, level = self.xp_calculations(levels)
-        card = Image.new('RGBA', size=(1500, 500), color='grey')
+        card = Image.new('RGBA', size=(1000, 1000), color='grey')
         
         if levels['image'] is not None:
             bg = Image.open(BytesIO(levels["image"]))
@@ -694,7 +674,7 @@ class levels(commands.Cog):
             bg = Image.open("./assets/rankcard.png")
 
         bg_aspect_ratio = bg.width / bg.height
-        target_aspect_ratio = 1500 / 500
+        target_aspect_ratio = 1000 / 1000
         
         if bg_aspect_ratio > target_aspect_ratio:
             new_width = int(bg.height * target_aspect_ratio)
@@ -710,46 +690,92 @@ class levels(commands.Cog):
             right = bg.width
         
         bg = bg.crop((left, top, right, bottom))
-        bg = bg.resize((1500, 500))
+        bg = bg.resize((1000, 1000))
         dark = ImageEnhance.Brightness(bg)
-        bg_dark = dark.enhance(0.8)
+        bg_dark = dark.enhance(0.5)
         bg_blurred = bg_dark.filter(ImageFilter.GaussianBlur(radius=20))
-        mask = Image.open("./assets/boxmask1.png").resize((1500, 500)).convert("L")
+        mask = Image.open("./assets/boxmask1.png").resize((1000, 1000)).convert("L")
+        xpneedbox = Image.open("./assets/xpneed1.png").resize((1000, 1000))
+        icons = Image.open("./assets/icons.png").resize((1000, 1000))
         inverted_mask = ImageOps.invert(mask)
         bg_frosted = Image.composite(bg_blurred, Image.new("RGBA", bg.size, "white"), inverted_mask)
         bg_frosted.putalpha(inverted_mask)
-        bar, mask_bar = self._make_progress_bar1(percentage, levels['color'])
-        avatar_paste, circle = self.get_avatar1(avatar)
+        bar, mask_bar = self._make_progress_bar(percentage, levels['color'], levels["color2"])
+        avatar_paste, circle = self.get_avatar(avatar)
+        empty = Image.open("./assets/badgeempty.png").resize((100, 100))
         card.paste(bg, (0, 0))
         card.paste(bg_frosted, (0, 0), bg_frosted)
-        card.paste(bar, (0, 485), mask_bar)
-        card.paste(avatar_paste, (18, 17), circle)
-        zhcn = ImageFont.truetype("./fonts/zhcn.ttf", size=36)
-        zhcn2 = ImageFont.truetype("./fonts/zhcn.ttf", size=25)
-        rankdecor = Image.open(f'./assets/{decorations["selected"]}.png')
-        rankdecor = rankdecor.resize((1500, 500))
-        card.paste(rankdecor, (0, 0), rankdecor)
-        rankboxes = Image.open('./assets/rankboxes.png')
-        rankboxes = rankboxes.resize((750, 750))
-        card.paste(rankboxes, (0, 0), rankboxes)
+        card.paste(bar, (28, 26), mask_bar)
+        card.paste(avatar_paste, (40, 39), circle)
+        card.paste(xpneedbox, xpneedbox)
+        card.paste(icons, icons)
+
+        leads_role = 753678720119603341
+        has_leads_role = any(role.id == leads_role for role in user.roles)
+
+        staff_role = 739513680860938290
+        has_staff_role = any(role.id == staff_role for role in user.roles)
+
+        member_role = 694016195090710579
+        has_member_role = any(role.id == member_role for role in user.roles)
+
+        top20_role = 1304568190294294558
+        has_top20_role = any(role.id == top20_role for role in user.roles)
+
+        booster = 728684846846574703
+        has_booster_role = any(role.id == booster for role in user.roles)
+
+        if has_leads_role:
+            leads_role_png = Image.open('./assets/leads.png').resize((100, 100))
+            card.paste(leads_role_png, (75, 325), leads_role_png)
+        else:
+            card.paste(empty, (75, 325), empty)
+
+        if has_staff_role:
+            staff_role_png = Image.open('./assets/staff.png').resize((100, 100))
+            card.paste(staff_role_png, (165, 325), staff_role_png)
+        else:
+            card.paste(empty, (165, 325), empty)
+
+        if has_top20_role:
+            top20_role_png = Image.open('./assets/top20.png').resize((100, 100))
+            card.paste(top20_role_png, (255, 325), top20_role_png)
+        else:
+            card.paste(empty, (255, 325), empty)
+
+        if has_member_role:
+            member_role_png = Image.open('./assets/chromies.png').resize((100, 100))
+            card.paste(member_role_png, (75, 425), member_role_png)
+        else:
+            card.paste(empty, (75, 425), empty)
+
+        if has_booster_role:
+            booster_role_png = Image.open('./assets/booster.png').resize((100, 100))
+            card.paste(booster_role_png, (165, 425), booster_role_png)
+        else:
+            card.paste(empty, (165, 425), empty)
+
+        zhcn = ImageFont.truetype("./fonts/IntegralCF-Regular.otf", size=40)
+        zhcn2 = ImageFont.truetype("./fonts/IntegralCF-Regular.otf", size=20)
+        zhcn3 = ImageFont.truetype("./fonts/IntegralCF-Regular.otf", size=25)
         draw = ImageDraw.Draw(card, 'RGBA')
         message = levels["messages"]
         messages = self.human_format(message)
-        draw.text((100, 345), f'{xp_have} | {xp_need}', fill=levels['color'], font=zhcn)
-        draw.text((100, 345), f'{xp_have} | {xp_need}', fill=levels['color'], font=zhcn)
-        draw.text((225, 25), f"{user.name}", fill=levels['color'], font=zhcn)
-        draw.text((225, 65), f"chroma levels", fill=levels['color'], font=zhcn2)
-        draw.text((300, 410), f'rank | {str(rank)}', fill=levels['color'], font=zhcn)
-        draw.text((100, 410), f'level | {level-1}', fill=levels['color'], font=zhcn)
-        draw.text((500, 410), f'{messages} messages', fill=levels['color'], font=zhcn)
+        draw.text((155, 767), f'{xp_have} | {xp_need}', fill=levels['color'], font=zhcn)
+        draw.text((275, 85), f"{user.name}", fill=levels['color2'], font=zhcn)
+        draw.text((295, 137), f"chroma levels", fill=levels['color'], font=zhcn3)
+        draw.text((125, 265), f"badges", fill=levels['color2'], font=zhcn)
+        draw.text((115, 885), f'rank {str(rank)}', fill=levels['color2'], font=zhcn)
+        draw.text((435, 885), f'level {level-1}', fill=levels['color2'], font=zhcn)
+        draw.text((735, 885), f'{messages} msgs', fill=levels['color2'], font=zhcn)
         buffer = BytesIO()
         card.save(buffer, 'png')
         buffer.seek(0)
         return buffer
 
-    def get_card2(self, avatar: BytesIO, levels: LevelRow, decorations: Decorations, rank: int, user: discord.User, guild: discord.Guild) -> BytesIO:
+    def get_card2(self, avatar: BytesIO, levels: LevelRow, rank: int, user: discord.User, guild: discord.Guild) -> BytesIO:
         percentage, xp_have, xp_need, level = self.xp_calculations(levels)
-        card = Image.new('RGBA', size=(750, 750), color='grey')
+        card = Image.new('RGBA', size=(1000, 500), color='grey')
         
         if levels['image'] is not None:
             bg = Image.open(BytesIO(levels["image"]))
@@ -757,7 +783,7 @@ class levels(commands.Cog):
             bg = Image.open("./assets/rankcard.png")
 
         bg_aspect_ratio = bg.width / bg.height
-        target_aspect_ratio = 750 / 750
+        target_aspect_ratio = 1000 / 500
         
         if bg_aspect_ratio > target_aspect_ratio:
             new_width = int(bg.height * target_aspect_ratio)
@@ -773,110 +799,97 @@ class levels(commands.Cog):
             right = bg.width
         
         bg = bg.crop((left, top, right, bottom))
-        bg = bg.resize((750, 750))
+        bg = bg.resize((1000, 500))
         dark = ImageEnhance.Brightness(bg)
-        bg_dark = dark.enhance(0.8)
+        bg_dark = dark.enhance(0.5)
         bg_blurred = bg_dark.filter(ImageFilter.GaussianBlur(radius=20))
-        mask = Image.open("./assets/boxmask2.png").resize((750, 750)).convert("L")
+        mask = Image.open("./assets/boxmask2.png").resize((1000, 500)).convert("L")
+        xpneedbox = Image.open("./assets/xpneed2.png").resize((1000, 500))
+        icons = Image.open("./assets/icons2.png").resize((1000, 500))
         inverted_mask = ImageOps.invert(mask)
         bg_frosted = Image.composite(bg_blurred, Image.new("RGBA", bg.size, "white"), inverted_mask)
         bg_frosted.putalpha(inverted_mask)
-        bar, mask_bar = self._make_progress_bar2(percentage, levels['color'])
-        avatar_paste, circle = self.get_avatar2(avatar)
+        bar, mask_bar = self._make_progress_bar(percentage, levels['color'], levels["color2"])
+        avatar_paste, circle = self.get_avatar(avatar)
+        empty = Image.open("./assets/badgeempty.png").resize((100, 100))
         card.paste(bg, (0, 0))
         card.paste(bg_frosted, (0, 0), bg_frosted)
-        card.paste(bar, (0, 735), mask_bar)
-        card.paste(avatar_paste, (18, 17), circle)
-        zhcn = ImageFont.truetype("./fonts/zhcn.ttf", size=30)
-        zhcn2 = ImageFont.truetype("./fonts/zhcn.ttf", size=20)
-        rankdecor = Image.open(f'./assets/{decorations["selected"]}.png')
-        rankdecor = rankdecor.resize((750, 750))
-        card.paste(rankdecor, (0, 0), rankdecor)
+        card.paste(bar, (28, 26), mask_bar)
+        card.paste(avatar_paste, (40, 39), circle)
+        card.paste(xpneedbox, xpneedbox)
+        card.paste(icons, (0,0) ,icons)
+
+        leads_role = 753678720119603341
+        has_leads_role = any(role.id == leads_role for role in user.roles)
+
+        staff_role = 739513680860938290
+        has_staff_role = any(role.id == staff_role for role in user.roles)
+
+        member_role = 694016195090710579
+        has_member_role = any(role.id == member_role for role in user.roles)
+
+        top20_role = 1304568190294294558
+        has_top20_role = any(role.id == top20_role for role in user.roles)
+
+        booster = 728684846846574703
+        has_booster_role = any(role.id == booster for role in user.roles)
+
+        if has_leads_role:
+            leads_role_png = Image.open('./assets/leads.png').resize((100, 100))
+            card.paste(leads_role_png, (450, 50), leads_role_png)
+        else:
+            card.paste(empty, (450, 50), empty)
+
+        if has_staff_role:
+            staff_role_png = Image.open('./assets/staff.png').resize((100, 100))
+            card.paste(staff_role_png, (575, 50), staff_role_png)
+        else:
+            card.paste(empty, (575, 50), empty)
+
+        if has_top20_role:
+            top20_role_png = Image.open('./assets/top20.png').resize((100, 100))
+            card.paste(top20_role_png, (700, 50), top20_role_png)
+        else:
+            card.paste(empty, (700, 50), empty)
+
+        if has_member_role:
+            member_role_png = Image.open('./assets/chromies.png').resize((100, 100))
+            card.paste(member_role_png, (825, 50), member_role_png)
+        else:
+            card.paste(empty, (825, 50), empty)
+
+        if has_booster_role:
+            booster_role_png = Image.open('./assets/booster.png').resize((100, 100))
+            card.paste(booster_role_png, (450, 140), booster_role_png)
+        else:
+            card.paste(empty, (450, 140), empty)
+
+        zhcn = ImageFont.truetype("./fonts/IntegralCF-Regular.otf", size=40)
+        zhcn2 = ImageFont.truetype("./fonts/IntegralCF-Regular.otf", size=20)
+        zhcn3 = ImageFont.truetype("./fonts/IntegralCF-Regular.otf", size=22)
         draw = ImageDraw.Draw(card, 'RGBA')
         message = levels["messages"]
         messages = self.human_format(message)
-        draw.text((65, 620), f'{xp_have} | {xp_need}', fill=levels['color'], font=zhcn)
-        draw.text((170, 25), f"{user.name}", fill=levels['color'], font=zhcn)
-        draw.text((170, 55), f"chroma levels", fill=levels['color'], font=zhcn2)
-        draw.text((57, 670), f'rank | {str(rank)}   level | {level-1}   {messages} messages', fill=levels['color'], font=zhcn)
+        draw.text((625, 308), f'{xp_have} | {xp_need}', fill=levels['color'], font=zhcn)
+        draw.text((43, 250), f"{user.name}", fill=levels['color2'], font=zhcn)
+        draw.text((43, 295), f"chroma levels", fill=levels['color'], font=zhcn3)
+        draw.text((625, 5), f"badges", fill=levels['color2'], font=zhcn)
+        draw.text((125, 410), f'rank {str(rank)}', fill=levels['color2'], font=zhcn)
+        draw.text((445, 410), f'level {level-1}', fill=levels['color2'], font=zhcn)
+        draw.text((745, 410), f'{messages} msgs', fill=levels['color2'], font=zhcn)
         buffer = BytesIO()
         card.save(buffer, 'png')
         buffer.seek(0)
         return buffer
 
-    def get_card3(self, avatar: BytesIO, levels: LevelRow, rank: int, user: discord.User, guild: discord.Guild) -> BytesIO:
-        percentage, xp_have, xp_need, level = self.xp_calculations(levels)
-        card = Image.new('RGBA', size=(1000, 750), color='grey')
-        
-        if levels['image'] is not None:
-            bg = Image.open(BytesIO(levels["image"]))
-        else:
-            bg = Image.open("./assets/rankcard.png")
-
-        bg_aspect_ratio = bg.width / bg.height
-        target_aspect_ratio = 1000 / 750
-        
-        if bg_aspect_ratio > target_aspect_ratio:
-            new_width = int(bg.height * target_aspect_ratio)
-            left = (bg.width - new_width) // 2
-            right = left + new_width
-            top = 0
-            bottom = bg.height
-        else:
-            new_height = int(bg.width / target_aspect_ratio)
-            top = (bg.height - new_height) // 2
-            bottom = top + new_height
-            left = 0
-            right = bg.width
-        
-        bg = bg.crop((left, top, right, bottom))
-        bg = bg.resize((1000, 750))
-        dark = ImageEnhance.Brightness(bg)
-        bg_dark = dark.enhance(0.8)
-        bg_blurred = bg_dark.filter(ImageFilter.GaussianBlur(radius=20))
-        mask = Image.open("./assets/new_rank.png").resize((1000, 750)).convert("L")
-        inverted_mask = ImageOps.invert(mask)
-        bg_frosted = Image.composite(bg_blurred, Image.new("RGBA", bg.size, "white"), inverted_mask)
-        bg_frosted.putalpha(inverted_mask)
-        bar, mask_bar = self._make_progress_bar_circle(percentage, levels['color'])
-        avatar_paste, circle = self.get_avatar3(avatar)
-        card.paste(bg, (0, 0))
-        card.paste(bg_frosted, (0, 0), bg_frosted)
-        card.paste(bar, (39, 30), mask_bar)
-        card.paste(avatar_paste, (45, 35), circle)
-        icons = Image.open('./assets/icons.png')
-        icons = icons.resize((1000, 750))
-        card.paste(icons, (0, 0), icons)
-        zhcn = ImageFont.truetype("./fonts/zhcn.ttf", size=45)
-        zhcn2 = ImageFont.truetype("./fonts/zhcn.ttf", size=37)
-        zhcn3 = ImageFont.truetype("./fonts/zhcn.ttf", size=25)
-        draw = ImageDraw.Draw(card, 'RGBA')
-        message = levels["messages"]
-        messages = self.human_format(message)
-        draw.text((58, 572), f'{xp_have} | {xp_need}', fill=levels['color'], font=zhcn3)
-        draw.text((297, 75), f"{user.name}", fill=levels['color'], font=zhcn)
-        draw.text((297, 135), f"chroma levels", "#ffffff", font=zhcn3)
-        draw.text((433, 635), f'rank #{str(rank)}', fill=levels['color'], font=zhcn2)
-        draw.text((87, 635), f'level {level-1}', fill=levels['color'], font=zhcn2)
-        draw.text((765, 635), f'{messages} msgs', fill=levels['color'], font=zhcn2)
-        buffer = BytesIO()
-        card.save(buffer, 'png')
-        buffer.seek(0)
-        return buffer
-
-    async def generate_card1(self, avatar: BytesIO, levels: LevelRow, decorations: Decorations, rank: int, member: discord.Member, guild: discord.Guild) -> BytesIO:
-        card_generator = functools.partial(self.get_card1, avatar, levels, decorations, rank, guild)
-        card = await self.bot.loop.run_in_executor(None, self.get_card1, avatar, levels, decorations, rank, member, guild)
+    async def generate_card1(self, avatar: BytesIO, levels: LevelRow, rank: int, member: discord.Member, guild: discord.Guild) -> BytesIO:
+        card_generator = functools.partial(self.get_card1, avatar, levels, rank, guild)
+        card = await self.bot.loop.run_in_executor(None, self.get_card1, avatar, levels, rank, member, guild)
         return card
-
-    async def generate_card2(self, avatar: BytesIO, levels: LevelRow, decorations: Decorations, rank: int, member: discord.Member, guild: discord.Guild) -> BytesIO:
-        card_generator = functools.partial(self.get_card2, avatar, levels, decorations, rank, guild)
-        card = await self.bot.loop.run_in_executor(None, self.get_card2, avatar, levels, decorations, rank, member, guild)
-        return card
-
-    async def generate_card3(self, avatar: BytesIO, levels: LevelRow, rank: int, member: discord.Member, guild: discord.Guild) -> BytesIO:
-        card_generator = functools.partial(self.get_card3, avatar, levels, rank, guild)
-        card = await self.bot.loop.run_in_executor(None, self.get_card3, avatar, levels, rank, member, guild)
+    
+    async def generate_card2(self, avatar: BytesIO, levels: LevelRow, rank: int, member: discord.Member, guild: discord.Guild) -> BytesIO:
+        card_generator = functools.partial(self.get_card2, avatar, levels, rank, guild)
+        card = await self.bot.loop.run_in_executor(None, self.get_card2, avatar, levels, rank, member, guild)
         return card
 
     async def get_rank(self, member_id: int, guild_id: int) -> int:
@@ -1234,7 +1247,7 @@ class levels(commands.Cog):
                 )
                 channel = interaction.guild.get_channel(822422177612824580)
                 if channel:
-                    await channel.send(interaction.user.mention, embed=embed)
+                    await channel.send(f"Yay! **{interaction.user.name}**, you reached level **{lvl}**!")
 
         top20 = await self.get_top20(interaction.guild.id)
         if top20 is not None:
@@ -1242,7 +1255,7 @@ class levels(commands.Cog):
 
         coins = randint(2, 5)
         await self.add_currency(interaction.user.id, coins)
-        await interaction.response.send_message(f"Yay! **{interaction.user.name}**, you received **{xp_to_add}** XP and **🪙{coins}** coins from daily XP!")
+        await interaction.response.send_message(f"Yay! **{interaction.user.name}**, you received **{xp_to_add}** XP!")
 
     @daily.error
     async def daily_error(self, interaction: discord.Interaction, error: Exception):

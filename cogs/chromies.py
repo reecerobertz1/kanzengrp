@@ -76,9 +76,9 @@ class reportmember(ui.Modal, title='Report'):
     user = ui.TextInput(label="Instagram / discord username", placeholder="Leave blank to stay anonymous", style=discord.TextStyle.short, required=False)
     async def on_submit(self, interaction: discord.Interaction):
         if self.user.value:
-            description=f"reported member:\n{self.reported.value}\n\nwhy was they reported:\n{self.why.value}\n\nwho reported:\n{interaction.user.mention}\n-# please react to this report message once the issue has been resolved!"
+            description=f"reported member:\n{self.reported.value}\n\nwhy were they reported:\n{self.why.value}\n\nwho reported:\n{interaction.user.mention}\n-# please react to this report message once the issue has been resolved!"
         else:
-            description=f"reported member:\n{self.reported.value}\n\nwhy was they reported?\n{self.why.value}"
+            description=f"reported member:\n{self.reported.value}\n\nwhy were they reported?\n{self.why.value}"
         embed = discord.Embed(description=description, color=0x2b2d31)
         embed.set_thumbnail(url=interaction.guild.icon)
         channel = interaction.client.get_channel(1274063410463641642)
