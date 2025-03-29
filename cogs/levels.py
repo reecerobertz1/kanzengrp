@@ -1098,7 +1098,7 @@ class levels(commands.Cog):
             await ctx.reply("Sorry, this command is only available for staff members.", ephemeral=True)
             return
 
-        levels = await self.get_member_levels(member.id, ctx.guild_id)
+        levels = await self.get_member_levels(member.id, ctx.guild.id)
         if levels:
             if amount > levels['xp']:
                 await ctx.reply("you can't take away more xp than the user already has!")
