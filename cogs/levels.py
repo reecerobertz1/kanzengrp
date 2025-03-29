@@ -1106,7 +1106,7 @@ class levels(commands.Cog):
                 await ctx.reply(f'removed `{amount}xp` from {str(member)}')
                 top20 = await self.get_top20(ctx.guild.id)
                 if top20 is not None:
-                    await self.top_20_role_handler(ctx.user, ctx.guild, top20)
+                    await self.top_20_role_handler(member, ctx.guild, top20)
         else:
             await ctx.reply(f"{str(member)} doesn't have any xp yet!")
 
