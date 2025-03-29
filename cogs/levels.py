@@ -1057,20 +1057,21 @@ class levels(commands.Cog):
                 else:
                     return 0 
 
-    @commands.command(name="add", description="Add XP to someone", extras="+add @member amount")
-    async def add(self, ctx, member: discord.Member, amount: int):
+    @app_commands.command(name="add", description="Add XP to someone", extras="+add @member amount")
+    async def add(self, interaction: discord.Interaction, member: discord.Member, amount: int):
         required_roles = {739513680860938290, 1261435772775563315}
-        member_roles = {role.id for role in ctx.author.roles}
+        member_roles = {role.id for role in interaction.user.roles}
         if required_roles.isdisjoint(member_roles):
-            await ctx.reply("Sorry, this command is only available for staff members.")
+            await interaction.response.send_message("Sorry, this command is only available for staff members.", ephemeral=True)
+            return
+        levels = await self.get_member_levels(member.id, interaction.guild.id)
+        if not levels:
+            await interaction.response.send_message("Could not retrieve the member's level data. Please try again later.", ephemeral=True)
             return
 
-        levels = await self.get_member_levels(member.id, ctx.guild.id)
-        current_xp = await self.get_xp(member.id, ctx.guild.id)
+        current_xp = levels["xp"]
         new_xp = current_xp + amount
-
-        await self.add_xp(member.id, ctx.guild.id, amount, levels)
-
+        await self.add_xp(member.id, interaction.guild.id, amount, levels)
         lvl = 0
         while True:
             if current_xp < ((50 * (lvl ** 2)) + (50 * (lvl - 1))):
@@ -1079,26 +1080,15 @@ class levels(commands.Cog):
         next_level_xp = ((50 * (lvl ** 2)) + (50 * (lvl - 1)))
 
         if new_xp > next_level_xp:
-            guild_id = ctx.guild.id
+            guild_id = interaction.guild.id
             if guild_id == 694010548605550675:
-                if lvl <= 2:
-                    reprole = await self.get_reprole(guild_id)
-                    if reprole:
-                        role = ctx.guild.get_role(reprole)
-                        if role:
-                            await member.add_roles(role, reason=f"{member.name} reached level 2 or higher from added XP")
-                channel = ctx.guild.get_channel(822422177612824580)
+                channel = interaction.guild.get_channel(822422177612824580)
                 await channel.send(f"Yay! {member.mention} just reached **level {lvl}** from added XP!")
 
-        top20 = await self.get_top20(ctx.guild.id)
+        top20 = await self.get_top20(interaction.guild.id)
         if top20 is not None:
-            await self.top_20_role_handler(member, ctx.guild, top20)
-        embed = discord.Embed(
-            title="XP Added!",
-            description=f"Gave `{amount} XP` to {str(member)}.",
-            color=0x2B2D31
-        )
-        await ctx.reply(embed=embed)
+            await self.top_20_role_handler(member, interaction.guild, top20)
+        await interaction.response.send_message(f"<:check:1296872662622273546> Gave `{amount} XP` to {str(member)}.")
 
     @app_commands.command(name="remove", description="Remove xp from someone", extras="+remove @member amount")
     async def remove(self, interaction: discord.Interaction, member: discord.Member, amount: int):
