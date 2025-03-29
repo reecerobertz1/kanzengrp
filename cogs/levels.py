@@ -1103,6 +1103,7 @@ class levels(commands.Cog):
             if amount > levels['xp']:
                 await ctx.reply("you can't take away more xp than the user already has!")
             else:
+                await self.remove_xp(member.id, ctx.guild.id, amount, levels)
                 await ctx.reply(f'removed `{amount}xp` from {str(member)}')
                 top20 = await self.get_top20(ctx.guild.id)
                 if top20 is not None:
