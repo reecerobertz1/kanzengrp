@@ -14,9 +14,9 @@ class infoview(discord.ui.View):
     @discord.ui.button(label="Rules", style=discord.ButtonStyle.red)
     async def rules(self, interaction: discord.Interaction, button: discord.Button):
         embed = discord.Embed(description="**Group Rules**\n・Must be following [remqsi](https://instagram.com/remqsi), [wqndqs](https://instagram.com/wqndqs) + [chromagrp](https://instagram.com/chromagrp).\n・Always use our hashtag #𝗰𝗵𝗿𝗼𝗺𝗮𝗴𝗿𝗽.\n・Watermark logos if the background is mostly plain.\n-# ⠀— ・**Note:** Leaking our logos will get you banned.", color=0x433757)
-        embed.set_image(url="https://cdn.discordapp.com/attachments/1248039148888129647/1326538980316938251/if_you_see_this_hello_00000.png?ex=678ba8b2&is=678a5732&hm=2cf73ca4a605a243f71546dcb781527644b5b4da03d2ffd2f7e1a41103c677d4&")
+        embed.set_image(url="https://cdn.discordapp.com/attachments/1248039148888129647/1349013015881842728/fit_embeds_00000_00000.png?ex=67ea9a46&is=67e948c6&hm=d1d21f2da78237158a639f1ddf4ceca9fea162d057bb49924db7d383351aca00&")
         embed2 = discord.Embed(description='**Chat Rules**\n・No NSFW, offensive jokes, or distribution.\n・Please stay as active as possible.\n・Set your nickname as "name | username".\n・ No impersonating other editors.\n・ Be friendly and respect everyone.\n・If you move accounts or leave, please dm [chromagrp](https://instagram.com/chromagrp).\n・Do not start or bring drama from other servers.\n・Respect the server and use channels correctly.\n-# ⠀— ・**Note:** Breaking any of the rules will lead to a warning / kick or ban!', color=0x433757)
-        embed2.set_image(url="https://cdn.discordapp.com/attachments/1248039148888129647/1326538980316938251/if_you_see_this_hello_00000.png?ex=678ba8b2&is=678a5732&hm=2cf73ca4a605a243f71546dcb781527644b5b4da03d2ffd2f7e1a41103c677d4&")
+        embed2.set_image(url="https://cdn.discordapp.com/attachments/1248039148888129647/1349013015881842728/fit_embeds_00000_00000.png?ex=67ea9a46&is=67e948c6&hm=d1d21f2da78237158a639f1ddf4ceca9fea162d057bb49924db7d383351aca00&")
         await interaction.response.send_message(embeds=[embed, embed2], ephemeral=True)
 
     @discord.ui.button(label="Logos")
