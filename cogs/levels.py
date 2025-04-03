@@ -1224,7 +1224,6 @@ class levels(commands.Cog):
             await self.top_20_role_handler(interaction.user, interaction.guild, top20)
 
         coins = randint(2, 5)
-        await self.add_currency(interaction.user.id, coins)
         await interaction.response.send_message(f"Yay! **{interaction.user.name}**, you received **{xp_to_add}** XP!")
 
     @daily.error
@@ -1236,23 +1235,6 @@ class levels(commands.Cog):
             await interaction.response.send_message(f"You cannot claim your daily for another **{hours}h {minutes}m {seconds}s**.")
         else:
             await interaction.response.send_message(f"An unexpected error occurred. Please try again later.\n{error}",ephemeral=True)
-
-    async def get_currency(self, member_id: int) -> int:
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cursor:
-                await cursor.execute("SELECT currency FROM decors WHERE member_id = ?", (member_id,))
-                result = await cursor.fetchone()
-                if result:
-                    return result[0]
-                return 0
-
-    async def add_currency(self, member_id: int, coins: int) -> None:
-        query = '''UPDATE decors SET currency = ? WHERE member_id = ?'''
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cursor:
-                currency = await self.get_currency(member_id)
-                await cursor.execute(query, (currency + coins, member_id))
-                await conn.commit()
 
     @app_commands.command(name="dropxp", description="Drop XP for server members")
     @app_commands.checks.cooldown(1, 5)
