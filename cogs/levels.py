@@ -1163,7 +1163,7 @@ class levels(commands.Cog):
             return "150 - 300"
 
     async def get_level_row(self, member_id: int, guild_id: int) -> Optional[LevelRow]:
-        query = '''SELECT * FROM levelling WHERE member_id = ? AND guild_id = ?'''
+        query = '''SELECT xp, messages FROM levelling WHERE member_id = ? AND guild_id = ?'''
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cursor:
                 await cursor.execute(query, (member_id, guild_id))
@@ -1217,7 +1217,7 @@ class levels(commands.Cog):
                 )
                 channel = interaction.guild.get_channel(822422177612824580)
                 if channel:
-                    await channel.send(f"Yay! **{interaction.user.name}**, you reached level **{lvl}**!")
+                    await channel.send(f"Yay! **{interaction.user.mention}**, you reached level **{lvl}**!")
 
         top20 = await self.get_top20(interaction.guild.id)
         if top20 is not None:
