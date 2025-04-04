@@ -18,6 +18,7 @@ extensions = {
     "cogs.mod",
     "cogs.other",
     "cogs.profiles",
+    "cogs.qotd",
     "cogs.settings",
     "cogs.starboard",
     "cogs.welc"
