@@ -87,7 +87,7 @@ class Starboard(commands.Cog):
             return
 
         star_reaction = discord.utils.get(message.reactions, emoji="⭐")
-        if not star_reaction or star_reaction.count < 3:
+        if not star_reaction or star_reaction.count < 1:
             return
 
         starboard_channel = guild.get_channel(self.starboard_channel_id)
