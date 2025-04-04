@@ -44,7 +44,6 @@ class Starboard(commands.Cog):
         embed.timestamp = message.created_at
         return embed
 
-
     async def get_message(self, channel: discord.abc.Messageable, message_id: int) -> discord.Message | None:
         try:
             return self._message_cache[message_id]
@@ -94,14 +93,9 @@ class Starboard(commands.Cog):
         embed = self.starboard_embed(message, message.author)
         await starboard_channel.send(content=f"⭐ Starred message in <#{channel.id}>", embed=embed)
 
-
     @commands.Cog.listener()
     async def on_raw_reaction_add(self, payload: discord.RawReactionActionEvent) -> None:
         await self.handle_star(payload)
-
-    @commands.Cog.listener()
-    async def on_raw_reaction_remove(self, payload: discord.RawReactionActionEvent) -> None:
-        await self.handle_unstar(payload)
 
 async def setup(bot):
     await bot.add_cog(Starboard(bot))
