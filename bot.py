@@ -19,6 +19,7 @@ extensions = {
     "cogs.other",
     "cogs.profiles",
     "cogs.settings",
+    "cogs.starboard",
     "cogs.welc"
 }
 
