@@ -103,5 +103,5 @@ class Starboard(commands.Cog):
     async def on_raw_reaction_remove(self, payload: discord.RawReactionActionEvent) -> None:
         await self.handle_unstar(payload)
 
-async def setup(bot: commands.Bot):
+async def setup(bot):
     await bot.add_cog(Starboard(bot))
