@@ -960,7 +960,7 @@ class levels(commands.Cog):
 
     @app_commands.command(name="rank", description="Check your rank")
     @app_commands.checks.cooldown(1, 5)
-    @app_commands.guilds(discord.Object(id=1157492644402970744))
+    @app_commands.guilds(discord.Object(id=694010548605550675))
     async def rank(self, interaction: discord.Interaction, member: Optional[discord.Member] = None):
         member = member or interaction.user
         format = await self.get_format(member.id, interaction.guild.id)
@@ -1005,7 +1005,7 @@ class levels(commands.Cog):
 
     @app_commands.command(description="See the level leaderboard")
     @app_commands.checks.cooldown(1, 5)
-    @app_commands.guilds(discord.Object(id=1157492644402970744))
+    @app_commands.guilds(discord.Object(id=694010548605550675))
     async def leaderboard(self, interaction: discord.Interaction):
         required_roles = {1134797882420117544, 694016195090710579}
         member_roles = {role.id for role in interaction.user.roles}
@@ -1142,7 +1142,7 @@ class levels(commands.Cog):
 
     @app_commands.command(name="reset", description="Resets everyone's xp")
     @app_commands.checks.has_permissions(manage_guild=True)
-    @app_commands.guilds(discord.Object(id=1157492644402970744))
+    @app_commands.guilds(discord.Object(id=694010548605550675))
     async def reset(self, interaction: discord.Interaction):
         if interaction.guild.id == 694010548605550675:
             await self.reset_iamsgs(interaction.guild.id)
@@ -1173,7 +1173,7 @@ class levels(commands.Cog):
 
     @app_commands.command(name="daily", description="Get daily XP with Hoshi for Chroma")
     @app_commands.checks.cooldown(1, 86400)
-    @app_commands.guilds(discord.Object(id=1157492644402970744))
+    @app_commands.guilds(discord.Object(id=694010548605550675))
     async def daily(self, interaction: discord.Interaction):
         required_roles = {694016195090710579}
         member_roles = {role.id for role in interaction.user.roles}
@@ -1241,7 +1241,7 @@ class levels(commands.Cog):
 
     @app_commands.command(name="dropxp", description="Drop XP for server members")
     @app_commands.checks.cooldown(1, 5)
-    @app_commands.guilds(discord.Object(id=1157492644402970744))
+    @app_commands.guilds(discord.Object(id=694010548605550675))
     async def dropxp(self, interaction: discord.Interaction, amount: int):
         required_roles = {739513680860938290, 1261435772775563315}
         member_roles = {role.id for role in interaction.user.roles}
