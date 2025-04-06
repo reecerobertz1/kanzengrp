@@ -197,7 +197,6 @@ class configrankcard(discord.ui.View):
         if interaction.user.id == self.member:
             await interaction.response.send_message(
                 f"<:settings:1304222799639871530>**{interaction.user.name}**, Please type the format number you'd like (1, 2 or 3) within the next 60 seconds.\n"
-                f"-# <:thread:1291033931050778694> Here is a preview of what the rank formats look like[.](https://cdn.discordapp.com/attachments/1328980986301517865/1329004746953986119/preview_00000.png?ex=6788c39f&is=6787721f&hm=43c62c863e9c39c2a9e17df7bca0c4ebfbb851b70b56891c06bf492901025d06&)\n"
                 f"-# <:thread1:1304222965042249781> The default format is **1**.", 
                 ephemeral=True
             )
@@ -207,7 +206,7 @@ class configrankcard(discord.ui.View):
             try:
                 user_response = await self.bot.wait_for('message', timeout=60.0, check=check)
                 format_choice = user_response.content.strip()
-                if format_choice in {'1', '2', '3'}:
+                if format_choice in {'1', '2'}:
                     await self.set_format(interaction.user.id, int(format_choice), guild_id=interaction.guild_id)
                     await interaction.followup.send(
                         f"<:check:1291748345194348594> Okay **{interaction.user.name}**, I have updated your rank format to **{format_choice}**.", 
@@ -216,7 +215,7 @@ class configrankcard(discord.ui.View):
                     await user_response.delete()
                 else:
                     await interaction.followup.send(
-                        f"`{format_choice}` is not a valid option. Please choose **1**, **2** or **3**.",
+                        f"`{format_choice}` is not a valid option. Please choose **1** or **2**.",
                         ephemeral=True
                     )
 
