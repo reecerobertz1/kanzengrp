@@ -1023,7 +1023,7 @@ class levels(commands.Cog):
                 if xp < ((50*(lvl**2))+(50*(lvl-1))):
                     break
                 lvl += 1
-            description += f"**{i}.** <@!{row['member_id']}>\n-# <:reply:1290714885792989238> level {lvl-1} | {row['messages']} {msg}\n\n"
+            description += f"**{i}.** <@!{row['member_id']}>\n-# <:1166196258499727480:1325926576042410094> level {lvl-1} | {row['messages']} {msg}\n\n"
             if i % per_page == 0 or i == len(rows):
                 embed = discord.Embed(title=f"{interaction.guild.name}'s leaderboard", description=description, color=0x2b2d31)
                 embed.set_thumbnail(url=interaction.guild.icon.url)
