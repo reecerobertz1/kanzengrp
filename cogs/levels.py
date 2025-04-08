@@ -1242,7 +1242,7 @@ class levels(commands.Cog):
     @app_commands.command(name="dropxp", description="Drop XP for server members")
     @app_commands.checks.cooldown(1, 5)
     @app_commands.guilds(discord.Object(id=694010548605550675))
-    async def dropxp(self, interaction: discord.Interaction, amount: int):
+    async def dropxp(self, interaction: discord.Interaction, amount: int, channel: discord.TextChannel):
         required_roles = {739513680860938290, 1261435772775563315}
         member_roles = {role.id for role in interaction.user.roles}
         if required_roles.isdisjoint(member_roles):
@@ -1252,7 +1252,7 @@ class levels(commands.Cog):
         embed = discord.Embed(title="<:removal:1306071903198380082> Dropped XP", description=f"**{interaction.user.name}** dropped `{amount}xp`.", color=0x2b2d31)
         view = claimxp(bot=self.bot, amount=amount, dropper=interaction.user.name)
         await interaction.response.send_message(f"<:whitecheck:1304222829595721770> **{interaction.user.name}** `{amount}xp` has been dropped!", ephemeral=True)
-        await interaction.followup.send(embed=embed, view=view)
+        await channel.send(embed=embed, view=view)
 
     @dropxp.error
     async def dropxp_error(self, interaction: discord.Interaction, error: Exception):
