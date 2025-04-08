@@ -1251,8 +1251,8 @@ class levels(commands.Cog):
 
         embed = discord.Embed(title="<:removal:1306071903198380082> Dropped XP", description=f"**{interaction.user.name}** dropped `{amount}xp`.", color=0x2b2d31)
         view = claimxp(bot=self.bot, amount=amount, dropper=interaction.user.name)
-        await interaction.response.send_message(embed=embed, view=view)
-        await interaction.followup.send(f"<:whitecheck:1304222829595721770> **{interaction.user.name}** `{amount}xp` has been dropped!", ephemeral=True)
+        await interaction.response.send_message(f"<:whitecheck:1304222829595721770> **{interaction.user.name}** `{amount}xp` has been dropped!", ephemeral=True)
+        await interaction.followup.send(embed=embed, view=view)
 
     @dropxp.error
     async def dropxp_error(self, interaction: discord.Interaction, error: Exception):
