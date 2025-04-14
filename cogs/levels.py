@@ -1082,12 +1082,12 @@ class levels(commands.Cog):
             guild_id = ctx.guild.id
             if guild_id == 694010548605550675:
                 channel = ctx.guild.get_channel(822422177612824580)
-                await channel.send(f"Yay! {member.mention} just reached **level {lvl}** from added <a:XP:1361346906693046312>!")
+                await channel.send(f"Yay! {member.mention} just reached **level {lvl}** from added <a:Comp1:1361349439738089833>!")
 
         top20 = await self.get_top20(ctx.guild.id)
         if top20 is not None:
             await self.top_20_role_handler(member, ctx.guild, top20)
-        await ctx.reply(f"<:check:1296872662622273546> Gave <a:XP:1361346906693046312> **{amount}** to {str(member)}.")
+        await ctx.reply(f"<:check:1296872662622273546> Gave <a:Comp1:1361349439738089833> **{amount}** to {str(member)}.")
 
     @commands.command(name="remove", description="Remove xp from someone", extras="+remove @member amount")
     async def remove(self, ctx, member: discord.Member, amount: int):
@@ -1103,7 +1103,7 @@ class levels(commands.Cog):
                 await ctx.reply("you can't take away more xp than the user already has!")
             else:
                 await self.remove_xp(member.id, ctx.guild.id, amount, levels)
-                await ctx.reply(f'removed <a:XP:1361346906693046312> **{amount}** from {str(member)}')
+                await ctx.reply(f'removed <a:Comp1:1361349439738089833> **{amount}** from {str(member)}')
                 top20 = await self.get_top20(ctx.guild.id)
                 if top20 is not None:
                     await self.top_20_role_handler(member, ctx.guild, top20)
@@ -1225,7 +1225,7 @@ class levels(commands.Cog):
             await self.top_20_role_handler(interaction.user, interaction.guild, top20)
 
         coins = randint(2, 5)
-        await interaction.response.send_message(f"Yay! **{interaction.user.name}**, you received <a:XP:1361346906693046312> **{xp_to_add}**!")
+        await interaction.response.send_message(f"Yay! **{interaction.user.name}**, you received <a:Comp1:1361349439738089833> **{xp_to_add}**!")
 
     @daily.error
     async def daily_error(self, interaction: discord.Interaction, error: Exception):
@@ -1247,9 +1247,9 @@ class levels(commands.Cog):
             await interaction.response.send_message("Sorry, this command is only available for staff members.", ephemeral=True)
             return
 
-        embed = discord.Embed(title="<:removal:1306071903198380082> Dropped <a:XP:1361346906693046312>", description=f"**{interaction.user.name}** dropped <a:XP:1361346906693046312> **{amount}**.", color=0x2b2d31)
+        embed = discord.Embed(title="<:removal:1306071903198380082> Dropped <a:Comp1:1361349439738089833>", description=f"**{interaction.user.name}** dropped <a:Comp1:1361349439738089833> **{amount}**.", color=0x2b2d31)
         view = claimxp(bot=self.bot, amount=amount, dropper=interaction.user.name)
-        await interaction.response.send_message(f"<:whitecheck:1304222829595721770> **{interaction.user.name}** <a:XP:1361346906693046312> **{amount}** has been dropped in {channel}!", ephemeral=True)
+        await interaction.response.send_message(f"<:whitecheck:1304222829595721770> **{interaction.user.name}** <a:Comp1:1361349439738089833> **{amount}** has been dropped in {channel}!", ephemeral=True)
         await channel.send(embed=embed, view=view)
 
     @dropxp.error
@@ -1295,7 +1295,7 @@ class levels(commands.Cog):
                 xp_earned = self.xp_tracker.pop(member.id, 0)
                 if channel:
                     await self.add_xp(member.id, xp=xp_earned, levels=levels, guild_id=member.guild.id)
-                    await channel.send(f"{member.mention}, you earned <a:XP:1361346906693046312> **{xp_earned}** from talking in {before.channel.mention}.")
+                    await channel.send(f"{member.mention}, you earned <a:Comp1:1361349439738089833> **{xp_earned}** from talking in {before.channel.mention}.")
     
     @tasks.loop(seconds=15)
     async def gain_xp(self):
