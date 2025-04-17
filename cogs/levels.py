@@ -1410,5 +1410,35 @@ class levels(commands.Cog):
     async def before_gain_xp(self):
         await self.bot.wait_until_ready()
 
+    async def add_messages(self, amount, member_id: int, guild_id: int, levels: LevelRow) -> None:
+        query = '''UPDATE levelling SET messages = ? WHERE member_id = ? AND guild_id = ?'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, (levels['messages'] + amount, member_id, guild_id))
+                await conn.commit()
+            await self.bot.pool.release(conn)
+
+    @commands.command()
+    async def addmsg(self, ctx, member: discord.Member, amount):
+        required_roles = {739513680860938290, 1261435772775563315}
+        member_roles = {role.id for role in ctx.author.roles}
+        if required_roles.isdisjoint(member_roles):
+            await ctx.reply("Sorry, this command is only available for staff members.", ephemeral=True)
+            return
+
+        try:
+            amount = int(amount)
+        except ValueError:
+            await ctx.reply("Amount must be a number.", ephemeral=True)
+            return
+
+        levels = await self.get_member_levels(member.id, ctx.guild.id)
+        if not levels:
+            await ctx.reply("Could not retrieve the member's level data. Please try again later.", ephemeral=True)
+            return
+
+        await self.add_messages(amount, member.id, ctx.guild.id, levels)
+        await ctx.reply(f"<:check:1296872662622273546> Gave `{amount} messages` to {str(member)}.")
+
 async def setup(bot):
     await bot.add_cog(levels(bot))
