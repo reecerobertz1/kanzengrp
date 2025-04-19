@@ -717,6 +717,9 @@ class levels(commands.Cog):
         member_role = 694016195090710579
         has_member_role = any(role.id == member_role for role in user.roles)
 
+        top1_role = 1363283035574767676
+        has_top1_role = any(role.id == top1_role for role in user.roles)
+
         top20_role = 1304568190294294558
         has_top20_role = any(role.id == top20_role for role in user.roles)
 
@@ -756,9 +759,13 @@ class levels(commands.Cog):
         else:
             card.paste(empty_image, (165, 425), empty_image)
 
-        if has_empty_role:
-            empty_filler = Image.open('./assets/badgeempty.png').resize((100, 100))
-            card.paste(empty_filler, (255, 425), empty_filler)
+        if has_top1_role:
+            top1 = Image.open('./assets/crown1.png').resize((1000, 1000))
+            card.paste(top1, (0, 0), top1)
+
+        if has_top1_role:
+            top1st = Image.open('./assets/1st.png').resize((100, 100))
+            card.paste(top1st, (255, 425), top1st)
         else:
             card.paste(empty_image, (255, 425), empty_image)
 
@@ -876,6 +883,9 @@ class levels(commands.Cog):
         member_role = 694016195090710579
         has_member_role = any(role.id == member_role for role in user.roles)
 
+        top1_role = 1363283035574767676
+        has_top1_role = any(role.id == top1_role for role in user.roles)
+
         top20_role = 1304568190294294558
         has_top20_role = any(role.id == top20_role for role in user.roles)
 
@@ -915,9 +925,13 @@ class levels(commands.Cog):
         else:
             card.paste(empty, (450, 140), empty)
 
-        if has_empty_role:
-            empty_filler = Image.open('./assets/badgeempty.png').resize((100, 100))
-            card.paste(empty_filler, (575, 140), empty_filler)
+        if has_top1_role:
+            top1 = Image.open('./assets/crown2.png').resize((1000, 500))
+            card.paste(top1, (0, 0), top1)
+
+        if has_top1_role:
+            top1st = Image.open('./assets/1st.png').resize((100, 100))
+            card.paste(top1st, (575, 140), top1st)
         else:
             card.paste(empty, (575, 140), empty)
 
