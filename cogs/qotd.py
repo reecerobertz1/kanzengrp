@@ -21,6 +21,7 @@ class QOTD(commands.Cog):
         self.bot = bot
         self.questions = []
         self.daily_qotd.start()
+        self.color = 0x2b2d31
 
     @commands.command()
     async def addquestions(self, ctx, *, question_list: str):
@@ -48,13 +49,15 @@ class QOTD(commands.Cog):
         question = self.questions.pop(0)
 
         for server_id, settings in SERVER_SETTINGS.items():
-            channel = self.bot.get_channel(settings["channel_id"])  # Fetch channel object
+            channel = self.bot.get_channel(settings["channel_id"])
             role_id = settings["role_id"]
 
             if channel:
                 mention = f"<@&{role_id}>"
-                message = await channel.send(f"**Question of the Day:** {question} {mention}")
-                thread = await message.create_thread(name=f"QOTD Discussion: {datetime.date.today()}")
+                embed = discord.Embed(title="Question of the day", description=f"⠀— ・{question}", color=self.color)
+                embed.set_footer(text=f"Answer in the thread below | {datetime.date.today}")
+                message = await channel.send(f"{mention}", embed=embed)
+                thread = await message.create_thread(name=f"Answer of the day")
                 if thread:
                     await thread.send("Answer today's question here!")
 

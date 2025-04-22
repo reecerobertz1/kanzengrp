@@ -13,6 +13,7 @@ class Fun(commands.Cog):
     """Hoshi's fun commands"""
     def __init__(self, bot):
         self.bot = bot
+        self.color = 0x2b2d31
 
     @app_commands.command(name="jail", description="Lock someone up in jail")
     async def jail(self, interaction: discord.Interaction, member: Optional[discord.Member]):
@@ -69,7 +70,7 @@ class Fun(commands.Cog):
     async def eight_ball(self, interaction: discord.Interaction, question:str):
         responses = ["It is certain.","It is decidedly so.","Without a doubt.","Yes - definitely.","You may rely on it.","As I see it, yes.","Most likely.","Outlook good.","Yes.","Signs point to yes.","Reply hazy, try again.","Ask again later.","Better not tell you now.","Cannot predict now.","Concentrate and ask again.","Don't count on it.","My reply is no.","My sources say no.","Outlook not so good.","Very doubtful."]
         response = random.choice(responses)
-        embed = discord.Embed(description=f"question: {question}\nanswer: {response}", color=0x2b2d31)
+        embed = discord.Embed(description=f"question: {question}\nanswer: {response}", color=self.color)
         embed.set_author(name="8ball", icon_url="https://cdn.discordapp.com/attachments/1121841074512605186/1151109254959333426/png-clipart-magic-8-ball-eight-ball-crazy-eights-ball-game-logo.png")
         embed.set_footer(text=f"8ball for {interaction.user.name}", icon_url=interaction.user.avatar)
         await interaction.response.send_message(embed=embed)
@@ -80,7 +81,7 @@ class Fun(commands.Cog):
         description = random.choice(descriptions)
         slaps = ['https://media1.tenor.com/m/xdF1G7Hrxa0AAAAC/slap-christmas.gif', 'https://media1.tenor.com/m/MXZGFeabIIwAAAAC/taiga-toradora.gif', 'https://media1.tenor.com/m/DqE9eSc0Xs8AAAAC/systempack-stewie.gif', 'https://media1.tenor.com/m/Ws6Dm1ZW_vMAAAAC/girl-slap.gif', 'https://media1.tenor.com/m/eU5H6GbVjrcAAAAC/slap-jjk.gif', 'https://media1.tenor.com/m/taxXCAMGXn0AAAAd/genshin-slap.gif', 'https://media1.tenor.com/m/3XwLxStQGXEAAAAC/ddwoo-kpop.gif', 'https://media1.tenor.com/m/vkeCOepvLBIAAAAC/jungkook-slap.gif']
         slap = random.choice(slaps)
-        embed = discord.Embed(description=description, color=0x2b2d31)
+        embed = discord.Embed(description=description, color=self.color)
         embed.set_image(url=slap)
         await interaction.response.send_message(embed=embed)
 
@@ -90,7 +91,7 @@ class Fun(commands.Cog):
         description = random.choice(descriptions)
         kisses = ['https://media1.tenor.com/m/MkwSXI4PX8EAAAAd/loona-haseul.gif', 'https://media1.tenor.com/m/b7DWF8ecBkIAAAAC/kiss-anime-anime.gif', 'https://media1.tenor.com/m/7P7x7JObd98AAAAC/hori-kyouko-miyamura-izumi.gif', 'https://media1.tenor.com/m/06lz817csVgAAAAd/anime-anime-kiss.gif', 'https://media1.tenor.com/m/Fj_CLLeUrB4AAAAC/seungminkiss-blow-kiss.gif', 'https://media1.tenor.com/m/FDrTOGwUXx0AAAAC/jin-kiss.gif', 'https://media1.tenor.com/m/M7ZtP6rTmAkAAAAd/lovelyz-mijoo.gif', 'https://media1.tenor.com/m/X7qKTiHPkWAAAAAC/txt-tomorrow-x-together.gif']
         kiss = random.choice(kisses)
-        embed = discord.Embed(description=description, color=0x2b2d31)
+        embed = discord.Embed(description=description, color=self.color)
         embed.set_image(url=kiss)
         await interaction.response.send_message(embed=embed)
 
@@ -100,7 +101,7 @@ class Fun(commands.Cog):
         description = random.choice(descriptions)
         slaps = ['https://media1.tenor.com/m/YNmsataG5WoAAAAd/nishimura-riki-yang-jungwon.gif', 'https://media1.tenor.com/m/KRjC3Ab4KTQAAAAC/stray-kids.gif', 'https://media1.tenor.com/m/IrT616B3ChgAAAAC/bangchan-han.gif', 'https://media1.tenor.com/m/i3EHA2MwEXsAAAAC/rocket-punch-rcpc.gif', 'https://media1.tenor.com/m/L3IZbZiEnpUAAAAd/hanni-danielle.gif', 'https://media1.tenor.com/m/mB_y2KUsyuoAAAAd/cuddle-anime-hug.gif', 'https://media1.tenor.com/m/C0WXbXrrhxgAAAAC/hugs.gif', 'https://media1.tenor.com/m/ImuSrg7mXekAAAAC/genshin-impact-genshin.gif']
         slap = random.choice(slaps)
-        embed = discord.Embed(description=description, color=0x2b2d31)
+        embed = discord.Embed(description=description, color=self.color)
         embed.set_image(url=slap)
         await interaction.response.send_message(embed=embed)
 

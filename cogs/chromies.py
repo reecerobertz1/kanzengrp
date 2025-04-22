@@ -232,13 +232,14 @@ class chromies(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.pool = None
+        self.color = 0x2b2d31
 
     @commands.command()
     @commands.has_permissions(manage_guild=True)
     async def rules(self, ctx):
-        embed = discord.Embed(title="ᯓ Welcome to Chromagrp ༝ ⁺", description="Thank you so much for joining Chroma!\n-# ・Please use the buttons below to read our rules and get our logos!\n-# ・If you ever need to go inactive, use our inactivity button below!", color=0x2b2d31)
+        embed = discord.Embed(title="ᯓ Welcome to Chromagrp ༝ ⁺", description="Thank you so much for joining Chroma!\n-# ・Please use the buttons below to read our rules and get our logos!\n-# ・If you ever need to go inactive, use our inactivity button below!", color=self.color)
         embed.set_image(url="https://cdn.discordapp.com/attachments/1248039148888129647/1349013015881842728/fit_embeds_00000_00000.png?ex=67e6a5c6&is=67e55446&hm=2a5e41cee28ae9818b09efa61a193656c0e33d0deb301b38928e14a86a6ea70a&")
-        embed2 = discord.Embed(description="**Reporting Members**\n-# ・If you see someone breaking our rules, report them below.\n-# ・You can stay anonymous by leaving your username blank.\n-# ・Click the Report Member button to report a chroma member.\n-# ⠀— ・Note: Note: We may DM you for more information if we need more.", color=0x2b2d31)
+        embed2 = discord.Embed(description="**Reporting Members**\n-# ・If you see someone breaking our rules, report them below.\n-# ・You can stay anonymous by leaving your username blank.\n-# ・Click the Report Member button to report a chroma member.\n-# ⠀— ・Note: Note: We may DM you for more information if we need more.", color=self.color)
         embed2.set_image(url="https://cdn.discordapp.com/attachments/1248039148888129647/1353845796088315904/welc_banner_00000.png?ex=67e66e67&is=67e51ce7&hm=4fd36540bff9b041d18fb25918c0d681862b7ee15087fdf7965da780e1cbe5ea&")
         view=infoview(bot=self.bot)
         await ctx.send(embeds=[embed, embed2], view=view)
@@ -246,7 +247,7 @@ class chromies(commands.Cog):
     @commands.command(hidden=True)
     @commands.has_permissions(manage_guild=True)
     async def ccrules(self, ctx):
-        embed = discord.Embed(color=0x2b2d31)
+        embed = discord.Embed(color=self.color)
         embed.set_image(url="https://cdn.discordapp.com/attachments/1226134627664789526/1254162072351277066/welc_banner_00000_00000.png?ex=66787cf3&is=66772b73&hm=cb44b5ff9979c2cb672fc9a6f473e32e23727cd12a17644cb8db1f577e45ee87&")
         embed2 = discord.Embed(description="__Server Rules__:"
         "\n• English chat only"
@@ -258,7 +259,7 @@ class chromies(commands.Cog):
         "\n• No spamming pings; you will be warned"
         "\n• No trash talking others"
         "\n• No unnecessary pings to Chroma staff"
-        "\n• No spamming or flooding channels with messages", color=0x2b2d31)
+        "\n• No spamming or flooding channels with messages", color=self.color)
         await ctx.send(embed=embed)
         socials = discord.ui.View()
         insta = discord.ui.Button(label="instagram", url="https://www.instagram.com/chromagrp/")

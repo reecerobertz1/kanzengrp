@@ -314,6 +314,7 @@ class levels(commands.Cog):
         self.voice_times = {}
         self.xp_tracker = {}
         self.gain_xp.start()
+        self.color = 0x2b2d31
 
     async def get_voicechannels(self, guild_id: int) -> int:
         query = '''SELECT voicechannels FROM settings WHERE guild_id = ?'''
@@ -1139,7 +1140,7 @@ class levels(commands.Cog):
                 lvl += 1
             description += f"\n**{i}.** <@!{row['member_id']}>\n<:1166196254141861979:1325926597517119599>** level {lvl-1}\n<:1166196258499727480:1359653802235400486> {row['messages']} {msg}**\n"
             if i % per_page == 0 or i == len(rows):
-                embed = discord.Embed(title=f"🌹CHROMA'S LEADERBOARD", description=description, color=0x2b2d31)
+                embed = discord.Embed(title=f"🌹CHROMA'S LEADERBOARD", description=description, color=self.color)
                 embed.set_thumbnail(url=interaction.guild.icon.url)
                 embeds.append(embed)
                 description = ""
@@ -1361,7 +1362,7 @@ class levels(commands.Cog):
             await interaction.response.send_message("Sorry, this command is only available for staff members.", ephemeral=True)
             return
 
-        embed = discord.Embed(title="<:removal:1306071903198380082> Dropped <a:Comp1:1361349439738089833>", description=f"**{interaction.user.name}** dropped <a:Comp1:1361349439738089833> **{amount}**.", color=0x2b2d31)
+        embed = discord.Embed(title="<:removal:1306071903198380082> Dropped <a:Comp1:1361349439738089833>", description=f"**{interaction.user.name}** dropped <a:Comp1:1361349439738089833> **{amount}**.", color=self.color)
         view = claimxp(bot=self.bot, amount=amount, dropper=interaction.user.name)
         await interaction.response.send_message(f"<:whitecheck:1304222829595721770> **{interaction.user.name}** <a:Comp1:1361349439738089833> **{amount}** has been dropped in {channel}!", ephemeral=True)
         await channel.send(embed=embed, view=view)
