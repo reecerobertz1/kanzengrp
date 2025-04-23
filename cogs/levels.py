@@ -669,7 +669,7 @@ class levels(commands.Cog):
         if levels['image'] is not None:
             bg = Image.open(BytesIO(levels["image"]))
         else:
-            bg = Image.open("./assets/rankcard.png")
+            bg = Image.open("./assets/rankcard/rankcard.png")
 
         bg_aspect_ratio = bg.width / bg.height
         target_aspect_ratio = 1000 / 1000
@@ -692,15 +692,15 @@ class levels(commands.Cog):
         dark = ImageEnhance.Brightness(bg)
         bg_dark = dark.enhance(0.5)
         bg_blurred = bg_dark.filter(ImageFilter.GaussianBlur(radius=20))
-        mask = Image.open("./assets/boxmask1.png").resize((1000, 1000)).convert("L")
-        xpneedbox = Image.open("./assets/xpneed1.png").resize((1000, 1000))
-        icons = Image.open("./assets/icons.png").resize((1000, 1000))
+        mask = Image.open("./assets/rankcard/boxmask1.png").resize((1000, 1000)).convert("L")
+        xpneedbox = Image.open("./assets/rankcard/xpneed1.png").resize((1000, 1000))
+        icons = Image.open("./assets/rankcard/icons.png").resize((1000, 1000))
         inverted_mask = ImageOps.invert(mask)
         bg_frosted = Image.composite(bg_blurred, Image.new("RGBA", bg.size, "white"), inverted_mask)
         bg_frosted.putalpha(inverted_mask)
         bar, mask_bar = self._make_progress_bar(percentage, levels['color'], levels["color2"])
         avatar_paste, circle = self.get_avatar(avatar)
-        empty_image = Image.open("./assets/badgeempty.png").resize((100, 100))
+        empty_image = Image.open("./assets/badges/badgeempty.png").resize((100, 100))
 
         card.paste(bg, (0, 0))
         card.paste(bg_frosted, (0, 0), bg_frosted)
@@ -731,77 +731,77 @@ class levels(commands.Cog):
         has_empty_role = any(role.id == empty_role_id for role in user.roles)
 
         if has_leads_role:
-            leads_role_png = Image.open('./assets/leads.png').resize((100, 100))
+            leads_role_png = Image.open('./assets/badges/leads.png').resize((100, 100))
             card.paste(leads_role_png, (75, 325), leads_role_png)
         else:
             card.paste(empty_image, (75, 325), empty_image)
 
         if has_staff_role:
-            staff_role_png = Image.open('./assets/staff.png').resize((100, 100))
+            staff_role_png = Image.open('./assets/badges/staff.png').resize((100, 100))
             card.paste(staff_role_png, (165, 325), staff_role_png)
         else:
             card.paste(empty_image, (165, 325), empty_image)
 
         if has_top20_role:
-            top20_role_png = Image.open('./assets/top20.png').resize((100, 100))
+            top20_role_png = Image.open('./assets/badges/top20.png').resize((100, 100))
             card.paste(top20_role_png, (255, 325), top20_role_png)
         else:
             card.paste(empty_image, (255, 325), empty_image)
 
         if has_member_role:
-            member_role_png = Image.open('./assets/chromies.png').resize((100, 100))
+            member_role_png = Image.open('./assets/badges/chromies.png').resize((100, 100))
             card.paste(member_role_png, (75, 425), member_role_png)
         else:
             card.paste(empty_image, (75, 425), empty_image)
 
         if has_booster_role:
-            booster_role_png = Image.open('./assets/booster.png').resize((100, 100))
+            booster_role_png = Image.open('./assets/badges/booster.png').resize((100, 100))
             card.paste(booster_role_png, (165, 425), booster_role_png)
         else:
             card.paste(empty_image, (165, 425), empty_image)
 
         if has_top1_role:
-            top1 = Image.open('./assets/crown1.png').resize((1000, 1000))
+            top1 = Image.open('./assets/badges/crown1.png').resize((1000, 1000))
             card.paste(top1, (0, 0), top1)
 
         if has_top1_role:
-            top1st = Image.open('./assets/1st.png').resize((100, 100))
+            top1st = Image.open('./assets/badges/1st.png').resize((100, 100))
             card.paste(top1st, (255, 425), top1st)
         else:
             card.paste(empty_image, (255, 425), empty_image)
 
         if has_empty_role:
-            empty_filler = Image.open('./assets/badgeempty.png').resize((100, 100))
+            empty_filler = Image.open('./assets/badges/badgeempty.png').resize((100, 100))
             card.paste(empty_filler, (75, 525), empty_filler)
         else:
             card.paste(empty_image, (75, 525), empty_image)
 
         if has_empty_role:
-            empty_filler = Image.open('./assets/badgeempty.png').resize((100, 100))
+            empty_filler = Image.open('./assets/badges/badgeempty.png').resize((100, 100))
             card.paste(empty_filler, (165, 525), empty_filler)
         else:
             card.paste(empty_image, (165, 525), empty_image)
 
         if has_empty_role:
-            empty_filler = Image.open('./assets/badgeempty.png').resize((100, 100))
+            empty_filler = Image.open('./assets/badges/badgeempty.png').resize((100, 100))
             card.paste(empty_filler, (255, 525), empty_filler)
         else:
             card.paste(empty_image, (255, 525), empty_image)
 
         if has_empty_role:
-            empty_filler = Image.open('./assets/badgeempty.png').resize((100, 100))
+            empty_filler = Image.open('./assets/badges/badgeempty.png').resize((100, 100))
             card.paste(empty_filler, (75, 625), empty_filler)
         else:
             card.paste(empty_image, (75, 625), empty_image)
 
         if has_empty_role:
-            empty_filler = Image.open('./assets/badgeempty.png').resize((100, 100))
+            empty_filler = Image.open('./assets/badges/badgeempty.png').resize((100, 100))
             card.paste(empty_filler, (165, 625), empty_filler)
         else:
             card.paste(empty_image, (165, 625), empty_image)
 
         if has_empty_role:
-            empty_filler = Image.open('./assets/badgeempty.png').resize((100, 100))
+            empty_filler = Image.open('./assets/badges/badgeempty.png').resize((100, 100))
             card.paste(empty_filler, (255, 625), empty_filler)
         else:
             card.paste(empty_image, (255, 625), empty_image)
@@ -836,7 +836,7 @@ class levels(commands.Cog):
         if levels['image'] is not None:
             bg = Image.open(BytesIO(levels["image"]))
         else:
-            bg = Image.open("./assets/rankcard.png")
+            bg = Image.open("./assets/rankcard/rankcard.png")
 
         bg_aspect_ratio = bg.width / bg.height
         target_aspect_ratio = 1000 / 500
@@ -859,15 +859,15 @@ class levels(commands.Cog):
         dark = ImageEnhance.Brightness(bg)
         bg_dark = dark.enhance(0.5)
         bg_blurred = bg_dark.filter(ImageFilter.GaussianBlur(radius=20))
-        mask = Image.open("./assets/boxmask2.png").resize((1000, 500)).convert("L")
-        xpneedbox = Image.open("./assets/xpneed2.png").resize((1000, 500))
-        icons = Image.open("./assets/icons2.png").resize((1000, 500))
+        mask = Image.open("./assets/rankcard/boxmask2.png").resize((1000, 500)).convert("L")
+        xpneedbox = Image.open("./assets/rankcard/xpneed2.png").resize((1000, 500))
+        icons = Image.open("./assets/rankcard/icons2.png").resize((1000, 500))
         inverted_mask = ImageOps.invert(mask)
         bg_frosted = Image.composite(bg_blurred, Image.new("RGBA", bg.size, "white"), inverted_mask)
         bg_frosted.putalpha(inverted_mask)
         bar, mask_bar = self._make_progress_bar(percentage, levels['color'], levels["color2"])
         avatar_paste, circle = self.get_avatar(avatar)
-        empty = Image.open("./assets/badgeempty.png").resize((100, 100))
+        empty = Image.open("./assets/badges/badgeempty.png").resize((100, 100))
         card.paste(bg, (0, 0))
         card.paste(bg_frosted, (0, 0), bg_frosted)
         card.paste(bar, (28, 26), mask_bar)
@@ -897,77 +897,77 @@ class levels(commands.Cog):
         has_empty_role = any(role.id == empty_role_id for role in user.roles)
 
         if has_leads_role:
-            leads_role_png = Image.open('./assets/leads.png').resize((100, 100))
+            leads_role_png = Image.open('./assets/badges/leads.png').resize((100, 100))
             card.paste(leads_role_png, (450, 50), leads_role_png)
         else:
             card.paste(empty, (450, 50), empty)
 
         if has_staff_role:
-            staff_role_png = Image.open('./assets/staff.png').resize((100, 100))
+            staff_role_png = Image.open('./assets/badges/staff.png').resize((100, 100))
             card.paste(staff_role_png, (575, 50), staff_role_png)
         else:
             card.paste(empty, (575, 50), empty)
 
         if has_top20_role:
-            top20_role_png = Image.open('./assets/top20.png').resize((100, 100))
+            top20_role_png = Image.open('./assets/badges/top20.png').resize((100, 100))
             card.paste(top20_role_png, (700, 50), top20_role_png)
         else:
             card.paste(empty, (700, 50), empty)
 
         if has_member_role:
-            member_role_png = Image.open('./assets/chromies.png').resize((100, 100))
+            member_role_png = Image.open('./assets/badges/chromies.png').resize((100, 100))
             card.paste(member_role_png, (825, 50), member_role_png)
         else:
             card.paste(empty, (825, 50), empty)
 
         if has_booster_role:
-            booster_role_png = Image.open('./assets/booster.png').resize((100, 100))
+            booster_role_png = Image.open('./assets/badges/booster.png').resize((100, 100))
             card.paste(booster_role_png, (450, 140), booster_role_png)
         else:
             card.paste(empty, (450, 140), empty)
 
         if has_top1_role:
-            top1 = Image.open('./assets/crown2.png').resize((1000, 500))
+            top1 = Image.open('./assets/badges/crown2.png').resize((1000, 500))
             card.paste(top1, (0, 0), top1)
 
         if has_top1_role:
-            top1st = Image.open('./assets/1st.png').resize((100, 100))
+            top1st = Image.open('./assets/badges/1st.png').resize((100, 100))
             card.paste(top1st, (575, 140), top1st)
         else:
             card.paste(empty, (575, 140), empty)
 
         if has_empty_role:
-            empty_filler = Image.open('./assets/badgeempty.png').resize((100, 100))
+            empty_filler = Image.open('./assets/badges/badgeempty.png').resize((100, 100))
             card.paste(empty_filler, (700, 140), empty_filler)
         else:
             card.paste(empty, (700, 140), empty)
 
         if has_empty_role:
-            empty_filler = Image.open('./assets/badgeempty.png').resize((100, 100))
+            empty_filler = Image.open('./assets/badges/badgeempty.png').resize((100, 100))
             card.paste(empty_filler, (825, 140), empty_filler)
         else:
             card.paste(empty, (825, 140), empty)
 
         if has_empty_role:
-            empty_filler = Image.open('./assets/badgeempty.png').resize((100, 100))
+            empty_filler = Image.open('./assets/badges/badgeempty.png').resize((100, 100))
             card.paste(empty_filler, (450, 230), empty_filler)
         else:
             card.paste(empty, (450, 230), empty)
 
         if has_empty_role:
-            empty_filler = Image.open('./assets/badgeempty.png').resize((100, 100))
+            empty_filler = Image.open('./assets/badges/badgeempty.png').resize((100, 100))
             card.paste(empty_filler, (575, 230), empty_filler)
         else:
             card.paste(empty, (575, 230), empty)
 
         if has_empty_role:
-            empty_filler = Image.open('./assets/badgeempty.png').resize((100, 100))
+            empty_filler = Image.open('./assets/badges/badgeempty.png').resize((100, 100))
             card.paste(empty_filler, (700, 230), empty_filler)
         else:
             card.paste(empty, (700, 230), empty)
 
         if has_empty_role:
-            empty_filler = Image.open('./assets/badgeempty.png').resize((100, 100))
+            empty_filler = Image.open('./assets/badges/badgeempty.png').resize((100, 100))
             card.paste(empty_filler, (825, 230), empty_filler)
         else:
             card.paste(empty, (825, 230), empty)

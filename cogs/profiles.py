@@ -319,12 +319,12 @@ class profiles(commands.Cog):
         if profiles['banner'] is not None:
             bg = Image.open(BytesIO(profiles["banner"]))
         else:
-            bg = Image.open("./assets/profilebanner.png")
+            bg = Image.open("./assets/profiles/profilebanner.png")
 
         if profiles['background'] is not None:
             background = Image.open(BytesIO(profiles["background"]))
         else:
-            background = Image.open("./assets/profilebg.png")
+            background = Image.open("./assets/profiles/profilebg.png")
 
         target_width, target_height = 750, 250
         bg_aspect_ratio = bg.width / bg.height
@@ -364,17 +364,17 @@ class profiles(commands.Cog):
         background = background.resize((750, 750))
         bg = bg.crop((left, top, right, bottom))
         bg = bg.resize((750, 250))
-        banner_mask = Image.open('./assets/banner-mask.png').convert('L').resize((750, 250))
+        banner_mask = Image.open('./assets/profiles/banner-mask.png').convert('L').resize((750, 250))
         bg.putalpha(banner_mask)
         card.paste(background, (0, 0))
         card.paste(bg, (0, 0), bg)
         avatar_paste, circle = self.get_avatar(avatar)
         card.paste(avatar_paste, (68, 132), circle)
-        socials = Image.open('./assets/socials.png').resize((750, 750))
+        socials = Image.open('./assets/profiles/socials.png').resize((750, 750))
         card.paste(socials, (0, 0), socials)
-        aboutstan = Image.open('./assets/about-stan.png').resize((750, 750))
+        aboutstan = Image.open('./assets/profiles/about-stan.png').resize((750, 750))
         card.paste(aboutstan, (0, 0), aboutstan)
-        styles = Image.open('./assets/styles.png').resize((750, 750))
+        styles = Image.open('./assets/profiles/styles.png').resize((750, 750))
         card.paste(styles, (0, 0), styles)
         draw = ImageDraw.Draw(card, 'RGBA')
         Coolvetica = ImageFont.truetype("./fonts/Coolvetica Rg.otf", size=45)

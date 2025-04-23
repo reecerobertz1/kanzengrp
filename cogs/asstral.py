@@ -169,7 +169,7 @@ class Asstral(commands.Cog):
     def _get_card(self, name: str, status: str, avatar: BytesIO, levels: LevelRow, rank: int) -> BytesIO:
         percentage, xp_have, xp_need, level = self._xp_calculations(levels)
         card = Image.new('RGBA', size=(1000, 500), color='grey')
-        bg = Image.open("./assets/rank_bg.png")
+        bg = Image.open("./assets/astral/rank_bg.png")
         card.paste(bg)
         message = levels["messages"]
         messages = self._human_format(message)
