@@ -192,44 +192,6 @@ class configrankcard(discord.ui.View):
                 ephemeral=True
             )
 
-    @discord.ui.button(label="Format")
-    async def format(self, interaction: discord.Interaction, button: discord.ui.Button):
-        if interaction.user.id == self.member:
-            await interaction.response.send_message(
-                f"<:settings:1304222799639871530>**{interaction.user.name}**, Please type the format number you'd like (1, 2 or 3) within the next 60 seconds.\n"
-                f"-# <:thread1:1304222965042249781> The default format is **1**.", 
-                ephemeral=True
-            )
-
-            def check(m):
-                return m.author == interaction.user and m.channel == interaction.channel
-            try:
-                user_response = await self.bot.wait_for('message', timeout=60.0, check=check)
-                format_choice = user_response.content.strip()
-                if format_choice in {'1', '2'}:
-                    await self.set_format(interaction.user.id, int(format_choice), guild_id=interaction.guild_id)
-                    await interaction.followup.send(
-                        f"<:check:1291748345194348594> Okay **{interaction.user.name}**, I have updated your rank format to **{format_choice}**.", 
-                        ephemeral=True
-                    )
-                    await user_response.delete()
-                else:
-                    await interaction.followup.send(
-                        f"`{format_choice}` is not a valid option. Please choose **1** or **2**.",
-                        ephemeral=True
-                    )
-
-            except asyncio.TimeoutError:
-                await interaction.followup.send(
-                    f"You took too long to respond, please try again.",
-                    ephemeral=True
-                )
-        else:
-            await interaction.response.send_message(
-                f"<:whitex:1304222877305798697>**{interaction.user.name}**, You cannot edit someone else's rank card.\n"
-                f"-# <:thread1:1304222965042249781> Use **/rank** if you'd like to edit your rank card.",
-                ephemeral=True
-            )
     async def get_color1(self, member_id: int, guild_id: int):
         query = '''SELECT color FROM levelling WHERE member_id = $1 AND guild_id = $2'''
         async with self.bot.pool.acquire() as conn:
@@ -261,14 +223,6 @@ class configrankcard(discord.ui.View):
                 return embed_color
        
         return 0xc45a72
-
-    async def set_format(self, member_id: int, format: str, guild_id: int) -> None:
-        query = '''UPDATE levelling SET format = ? WHERE member_id = ? AND guild_id = ?'''
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cursor:
-                await cursor.execute(query, format, member_id, guild_id)
-                await conn.commit()
-            await self.bot.pool.release(conn)
 
     async def set_rank_color1(self, member_id: int, color: str, guild_id: int) -> None:
         query = '''UPDATE levelling SET color = ? WHERE member_id = ? AND guild_id = ?'''
@@ -540,10 +494,10 @@ class levels(commands.Cog):
        
         return 0xc45a72
 
-    def _make_progress_bar(self, progress, color1, color2, circle_size=235, bar_thickness=15):
-        upscale_factor = 4
-        upscale_circle_size = circle_size * upscale_factor
-        upscale_bar_thickness = bar_thickness * upscale_factor
+    def _make_progress_bar(self, progress: float, color1, color2):
+        width = 1400
+        height = 45
+        radius = 32.5
 
         if isinstance(color1, str):
             color1 = ImageColor.getcolor(color1, "RGBA")
@@ -555,65 +509,43 @@ class levels(commands.Cog):
         elif len(color2) == 3:
             color2 = (*color2, 255)
 
-        arc = Image.new('RGBA', (upscale_circle_size, upscale_circle_size), (0, 0, 0, 0))
-        draw = ImageDraw.Draw(arc)
-        start_angle = -90
-        end_angle = start_angle + 360 * progress
-
-        def interpolate_color(color1, color2, factor):
-            r1, g1, b1, a1 = color1
-            r2, g2, b2, a2 = color2
-            r = int(r1 + (r2 - r1) * factor)
-            g = int(g1 + (g2 - g1) * factor)
-            b = int(b1 + (b2 - b1) * factor)
-            a = int(a1 + (a2 - a1) * factor)
+        def interpolate_color(c1, c2, factor):
+            r = int(c1[0] + (c2[0] - c1[0]) * factor)
+            g = int(c1[1] + (c2[1] - c1[1]) * factor)
+            b = int(c1[2] + (c2[2] - c1[2]) * factor)
+            a = int(c1[3] + (c2[3] - c1[3]) * factor)
             return (r, g, b, a)
 
-        segments = 500
+        progress_width = int(width * progress)
+
+        if progress_width == 0:
+            return Image.new("RGBA", (1, height), (0, 0, 0, 0)), None  # return empty if no progress
+
+        # Create the gradient bar (only up to progress width)
+        gradient = Image.new('RGBA', (progress_width, height), (0, 0, 0, 0))
+        gradient_draw = ImageDraw.Draw(gradient)
+
+        segments = progress_width
         for i in range(segments):
-            t1 = i / segments
-            t2 = (i + 1) / segments
-            segment_start_angle = start_angle + (end_angle - start_angle) * t1
-            segment_end_angle = start_angle + (end_angle - start_angle) * t2
+            t = i / segments
+            color = interpolate_color(color1, color2, t)
+            gradient_draw.line([(i, 0), (i, height)], fill=color)
 
-            if progress > 0:
-                segment_progress = (t1 * 360) / (progress * 360) if (progress * 360) > 0 else 0
-                gradient_factor = min(1, segment_progress)
-            else:
-                gradient_factor = 0
-
-            gradient_color = interpolate_color(color1, color2, gradient_factor)
-
-            draw.arc(
-                [upscale_bar_thickness // 2, upscale_bar_thickness // 2,
-                upscale_circle_size - upscale_bar_thickness // 2,
-                upscale_circle_size - upscale_bar_thickness // 2],
-                start=segment_start_angle,
-                end=segment_end_angle,
-                fill=gradient_color,
-                width=upscale_bar_thickness
-            )
-
-        mask = Image.new('L', (upscale_circle_size, upscale_circle_size), 0)
+        # Rounded mask
+        mask = Image.new('L', (progress_width, height), 0)
         mask_draw = ImageDraw.Draw(mask)
-        mask_draw.arc(
-            [upscale_bar_thickness // 2, upscale_bar_thickness // 2,
-            upscale_circle_size - upscale_bar_thickness // 2,
-            upscale_circle_size - upscale_bar_thickness // 2],
-            start=start_angle,
-            end=end_angle,
-            fill=255,
-            width=upscale_bar_thickness
-        )
+        mask_draw.rounded_rectangle([(0, 0), (progress_width, height)], fill=255, radius=radius)
 
-        arc = arc.resize((circle_size, circle_size), Image.ANTIALIAS)
-        mask = mask.resize((circle_size, circle_size), Image.ANTIALIAS)
-        return arc, mask
+        # Apply mask to gradient for rounded edges
+        rounded_gradient = Image.new("RGBA", (progress_width, height), (0, 0, 0, 0))
+        rounded_gradient.paste(gradient, (0, 0), mask)
+
+        return rounded_gradient, mask
 
     def get_avatar(self, avatar: BytesIO) -> Tuple[Image.Image, Image.Image]:
-        circle = Image.open('./assets/circle-mask.png').resize((210, 210)).convert('L')
+        circle = Image.open('./assets/circle-mask.png').resize((128, 128)).convert('L')
         avatar_image = Image.open(avatar).convert('RGBA')
-        avatar_image = avatar_image.resize((210, 210))
+        avatar_image = avatar_image.resize((128, 128))
         return avatar_image, circle
 
     def human_format(self, number: int) -> str:
@@ -662,9 +594,9 @@ class levels(commands.Cog):
 
         return percentage, xp_progress_have, xp_progress_need, lvl
 
-    def get_card1(self, avatar: BytesIO, levels: LevelRow, rank: int, user: discord.User, guild: discord.Guild) -> BytesIO:
+    def get_card(self, avatar: BytesIO, levels: LevelRow, rank: int, user: discord.User, guild: discord.Guild) -> BytesIO:
         percentage, xp_have, xp_need, level = self.xp_calculations(levels)
-        card = Image.new('RGBA', size=(1000, 1000), color='grey')
+        card = Image.new('RGBA', size=(1500, 500), color='grey')
 
         if levels['image'] is not None:
             bg = Image.open(BytesIO(levels["image"]))
@@ -672,7 +604,7 @@ class levels(commands.Cog):
             bg = Image.open("./assets/rankcard/rankcard.png")
 
         bg_aspect_ratio = bg.width / bg.height
-        target_aspect_ratio = 1000 / 1000
+        target_aspect_ratio = 1500 / 500
 
         if bg_aspect_ratio > target_aspect_ratio:
             new_width = int(bg.height * target_aspect_ratio)
@@ -688,26 +620,22 @@ class levels(commands.Cog):
             right = bg.width
 
         bg = bg.crop((left, top, right, bottom))
-        bg = bg.resize((1000, 1000))
+        bg = bg.resize((1500, 500))
         dark = ImageEnhance.Brightness(bg)
-        bg_dark = dark.enhance(0.5)
+        bg_dark = dark.enhance(0.8)
         bg_blurred = bg_dark.filter(ImageFilter.GaussianBlur(radius=20))
-        mask = Image.open("./assets/rankcard/boxmask1.png").resize((1000, 1000)).convert("L")
-        xpneedbox = Image.open("./assets/rankcard/xpneed1.png").resize((1000, 1000))
-        icons = Image.open("./assets/rankcard/icons.png").resize((1000, 1000))
+        mask = Image.open("./assets/rankcard/rank_mask.png").resize((1500, 500)).convert("L")
         inverted_mask = ImageOps.invert(mask)
         bg_frosted = Image.composite(bg_blurred, Image.new("RGBA", bg.size, "white"), inverted_mask)
         bg_frosted.putalpha(inverted_mask)
         bar, mask_bar = self._make_progress_bar(percentage, levels['color'], levels["color2"])
         avatar_paste, circle = self.get_avatar(avatar)
-        empty_image = Image.open("./assets/badges/badgeempty.png").resize((100, 100))
+        empty_image = Image.open("./assets/badges/badgeempty.png").resize((65, 65))
 
         card.paste(bg, (0, 0))
         card.paste(bg_frosted, (0, 0), bg_frosted)
-        card.paste(bar, (28, 26), mask_bar)
-        card.paste(avatar_paste, (40, 39), circle)
-        card.paste(xpneedbox, xpneedbox)
-        card.paste(icons, icons)
+        card.paste(bar, (50, 415), mask_bar)
+        card.paste(avatar_paste, (46, 36), circle)
 
         leads_role = 753678720119603341
         has_leads_role = any(role.id == leads_role for role in user.roles)
@@ -731,277 +659,102 @@ class levels(commands.Cog):
         has_empty_role = any(role.id == empty_role_id for role in user.roles)
 
         if has_leads_role:
-            leads_role_png = Image.open('./assets/badges/leads.png').resize((100, 100))
-            card.paste(leads_role_png, (75, 325), leads_role_png)
+            leads_role_png = Image.open('./assets/badges/leads.png').resize((65, 65))
+            card.paste(leads_role_png, (1300, 125), leads_role_png)
         else:
-            card.paste(empty_image, (75, 325), empty_image)
+            card.paste(empty_image, (1300, 125), empty_image)
 
         if has_staff_role:
-            staff_role_png = Image.open('./assets/badges/staff.png').resize((100, 100))
-            card.paste(staff_role_png, (165, 325), staff_role_png)
+            staff_role_png = Image.open('./assets/badges/staff.png').resize((65, 65))
+            card.paste(staff_role_png, (1225, 125), staff_role_png)
         else:
-            card.paste(empty_image, (165, 325), empty_image)
+            card.paste(empty_image, (1225, 125), empty_image)
 
         if has_top20_role:
-            top20_role_png = Image.open('./assets/badges/top20.png').resize((100, 100))
-            card.paste(top20_role_png, (255, 325), top20_role_png)
+            top20_role_png = Image.open('./assets/badges/top20.png').resize((65, 65))
+            card.paste(top20_role_png, (1300, 45), top20_role_png)
         else:
-            card.paste(empty_image, (255, 325), empty_image)
+            card.paste(empty_image, (1300, 45), empty_image)
 
         if has_member_role:
-            member_role_png = Image.open('./assets/badges/chromies.png').resize((100, 100))
-            card.paste(member_role_png, (75, 425), member_role_png)
+            member_role_png = Image.open('./assets/badges/chromies.png').resize((65, 65))
+            card.paste(member_role_png, (1225, 45), member_role_png)
         else:
-            card.paste(empty_image, (75, 425), empty_image)
+            card.paste(empty_image, (1225, 45), empty_image)
 
         if has_booster_role:
-            booster_role_png = Image.open('./assets/badges/booster.png').resize((100, 100))
-            card.paste(booster_role_png, (165, 425), booster_role_png)
+            booster_role_png = Image.open('./assets/badges/booster.png').resize((65, 65))
+            card.paste(booster_role_png, (1375, 45), booster_role_png)
         else:
-            card.paste(empty_image, (165, 425), empty_image)
+            card.paste(empty_image, (1375, 45), empty_image)
 
         if has_top1_role:
-            top1 = Image.open('./assets/badges/crown1.png').resize((1000, 1000))
-            card.paste(top1, (0, 0), top1)
-
-        if has_top1_role:
-            top1st = Image.open('./assets/badges/1st.png').resize((100, 100))
-            card.paste(top1st, (255, 425), top1st)
+            top1st = Image.open('./assets/badges/1st.png').resize((65, 65))
+            card.paste(top1st, (1375, 125), top1st)
         else:
-            card.paste(empty_image, (255, 425), empty_image)
+            card.paste(empty_image, (1375, 125), empty_image)
 
         if has_empty_role:
-            empty_filler = Image.open('./assets/badges/badgeempty.png').resize((100, 100))
-            card.paste(empty_filler, (75, 525), empty_filler)
+            empty_filler = Image.open('./assets/badges/badgeempty.png').resize((65, 65))
+            card.paste(empty_filler, (1225, 205), empty_filler)
         else:
-            card.paste(empty_image, (75, 525), empty_image)
+            card.paste(empty_image, (1225, 205), empty_image)
 
         if has_empty_role:
-            empty_filler = Image.open('./assets/badges/badgeempty.png').resize((100, 100))
-            card.paste(empty_filler, (165, 525), empty_filler)
+            empty_filler = Image.open('./assets/badges/badgeempty.png').resize((65, 65))
+            card.paste(empty_filler, (1300, 205), empty_filler)
         else:
-            card.paste(empty_image, (165, 525), empty_image)
+            card.paste(empty_image, (1300, 205), empty_image)
 
         if has_empty_role:
-            empty_filler = Image.open('./assets/badges/badgeempty.png').resize((100, 100))
-            card.paste(empty_filler, (255, 525), empty_filler)
+            empty_filler = Image.open('./assets/badges/badgeempty.png').resize((65, 65))
+            card.paste(empty_filler, (1375, 205), empty_filler)
         else:
-            card.paste(empty_image, (255, 525), empty_image)
+            card.paste(empty_image, (1375, 205), empty_image)
 
         if has_empty_role:
-            empty_filler = Image.open('./assets/badges/badgeempty.png').resize((100, 100))
-            card.paste(empty_filler, (75, 625), empty_filler)
+            empty_filler = Image.open('./assets/badges/badgeempty.png').resize((65, 65))
+            card.paste(empty_filler, (1225, 285), empty_filler)
         else:
-            card.paste(empty_image, (75, 625), empty_image)
+            card.paste(empty_image, (1225, 285), empty_image)
 
         if has_empty_role:
-            empty_filler = Image.open('./assets/badges/badgeempty.png').resize((100, 100))
-            card.paste(empty_filler, (165, 625), empty_filler)
+            empty_filler = Image.open('./assets/badges/badgeempty.png').resize((65, 65))
+            card.paste(empty_filler, (1300, 285), empty_filler)
         else:
-            card.paste(empty_image, (165, 625), empty_image)
+            card.paste(empty_image, (1300, 285), empty_image)
 
         if has_empty_role:
-            empty_filler = Image.open('./assets/badges/badgeempty.png').resize((100, 100))
-            card.paste(empty_filler, (255, 625), empty_filler)
+            empty_filler = Image.open('./assets/badges/badgeempty.png').resize((65, 65))
+            card.paste(empty_filler, (1375, 285), empty_filler)
         else:
-            card.paste(empty_image, (255, 625), empty_image)
+            card.paste(empty_image, (1375, 285), empty_image)
 
-        zhcn = ImageFont.truetype("./fonts/IntegralCF-Regular.otf", size=40)
-        zhcn2 = ImageFont.truetype("./fonts/IntegralCF-Regular.otf", size=35)
-        zhcn3 = ImageFont.truetype("./fonts/IntegralCF-Regular.otf", size=25)
-        zhcn4 = ImageFont.truetype("./fonts/IntegralCF-Regular.otf", size=27)
+        size50 = ImageFont.truetype("./fonts/IntegralCF-Regular.otf", size=50)
+        size46 = ImageFont.truetype("./fonts/IntegralCF-Regular.otf", size=46)
+        size33 = ImageFont.truetype("./fonts/IntegralCF-Regular.otf", size=33)
+        size18 = ImageFont.truetype("./fonts/IntegralCF-Regular.otf", size=18)
+        size25 = ImageFont.truetype("./fonts/IntegralCF-Regular.otf", size=25)
         draw = ImageDraw.Draw(card, 'RGBA')
         messages = levels["messages"]
+        msgs = self.human_format(messages)
 
-        draw.text((125, 773), f'{xp_have}', fill=levels['color2'], font=zhcn4)
-        draw.text((205, 768), f'|', fill=levels['color'], font=zhcn2)
-        draw.text((235, 773), f'{xp_need}', fill=levels['color2'], font=zhcn4)
-        draw.text((140, 750), f'xp amount', fill=levels['color'], font=zhcn3)
-        draw.text((275, 85), f"{user.name}", fill=levels['color2'], font=zhcn)
-        draw.text((295, 137), f"chroma levels", fill=levels['color'], font=zhcn3)
-        draw.text((125, 265), f"badges", fill=levels['color2'], font=zhcn)
-        draw.text((115, 885), f'rank {str(rank)}', fill=levels['color2'], font=zhcn)
-        draw.text((435, 885), f'level {level-1}', fill=levels['color2'], font=zhcn)
-        draw.text((735, 885), f'{messages}', fill=levels['color2'], font=zhcn)
+        draw.text((683, 412), f'{xp_have} / {xp_need}', fill=levels['color2'], font=size33)
+        draw.text((200, 68), f"{user.name}", fill=levels['color2'], font=size25)
+        draw.text((200, 99), f"chroma levels", fill=levels['color'], font=size18)
+        draw.text((1275, 20), f"badges", fill=levels['color2'], font=size25)
+        draw.text((1220, 372), f'{msgs} msgs | #{str(rank)}', fill=levels['color2'], font=size25)
+        draw.text((75, 412), f'{level-1}', fill=levels['color2'], font=size33)
+        draw.text((1400, 412), f'{level}', fill=levels['color'], font=size33)
 
         buffer = BytesIO()
         card.save(buffer, 'png')
         buffer.seek(0)
         return buffer
-
-    def get_card2(self, avatar: BytesIO, levels: LevelRow, rank: int, user: discord.User, guild: discord.Guild) -> BytesIO:
-        percentage, xp_have, xp_need, level = self.xp_calculations(levels)
-        card = Image.new('RGBA', size=(1000, 500), color='grey')
-        
-        if levels['image'] is not None:
-            bg = Image.open(BytesIO(levels["image"]))
-        else:
-            bg = Image.open("./assets/rankcard/rankcard.png")
-
-        bg_aspect_ratio = bg.width / bg.height
-        target_aspect_ratio = 1000 / 500
-        
-        if bg_aspect_ratio > target_aspect_ratio:
-            new_width = int(bg.height * target_aspect_ratio)
-            left = (bg.width - new_width) // 2
-            right = left + new_width
-            top = 0
-            bottom = bg.height
-        else:
-            new_height = int(bg.width / target_aspect_ratio)
-            top = (bg.height - new_height) // 2
-            bottom = top + new_height
-            left = 0
-            right = bg.width
-        
-        bg = bg.crop((left, top, right, bottom))
-        bg = bg.resize((1000, 500))
-        dark = ImageEnhance.Brightness(bg)
-        bg_dark = dark.enhance(0.5)
-        bg_blurred = bg_dark.filter(ImageFilter.GaussianBlur(radius=20))
-        mask = Image.open("./assets/rankcard/boxmask2.png").resize((1000, 500)).convert("L")
-        xpneedbox = Image.open("./assets/rankcard/xpneed2.png").resize((1000, 500))
-        icons = Image.open("./assets/rankcard/icons2.png").resize((1000, 500))
-        inverted_mask = ImageOps.invert(mask)
-        bg_frosted = Image.composite(bg_blurred, Image.new("RGBA", bg.size, "white"), inverted_mask)
-        bg_frosted.putalpha(inverted_mask)
-        bar, mask_bar = self._make_progress_bar(percentage, levels['color'], levels["color2"])
-        avatar_paste, circle = self.get_avatar(avatar)
-        empty = Image.open("./assets/badges/badgeempty.png").resize((100, 100))
-        card.paste(bg, (0, 0))
-        card.paste(bg_frosted, (0, 0), bg_frosted)
-        card.paste(bar, (28, 26), mask_bar)
-        card.paste(avatar_paste, (40, 39), circle)
-        card.paste(xpneedbox, xpneedbox)
-        card.paste(icons, (0,0) ,icons)
-
-        leads_role = 753678720119603341
-        has_leads_role = any(role.id == leads_role for role in user.roles)
-
-        staff_role = 739513680860938290
-        has_staff_role = any(role.id == staff_role for role in user.roles)
-
-        member_role = 694016195090710579
-        has_member_role = any(role.id == member_role for role in user.roles)
-
-        top1_role = 1363283035574767676
-        has_top1_role = any(role.id == top1_role for role in user.roles)
-
-        top20_role = 1304568190294294558
-        has_top20_role = any(role.id == top20_role for role in user.roles)
-
-        booster = 728684846846574703
-        has_booster_role = any(role.id == booster for role in user.roles)
-
-        empty_role_id = 1068334859157778474
-        has_empty_role = any(role.id == empty_role_id for role in user.roles)
-
-        if has_leads_role:
-            leads_role_png = Image.open('./assets/badges/leads.png').resize((100, 100))
-            card.paste(leads_role_png, (450, 50), leads_role_png)
-        else:
-            card.paste(empty, (450, 50), empty)
-
-        if has_staff_role:
-            staff_role_png = Image.open('./assets/badges/staff.png').resize((100, 100))
-            card.paste(staff_role_png, (575, 50), staff_role_png)
-        else:
-            card.paste(empty, (575, 50), empty)
-
-        if has_top20_role:
-            top20_role_png = Image.open('./assets/badges/top20.png').resize((100, 100))
-            card.paste(top20_role_png, (700, 50), top20_role_png)
-        else:
-            card.paste(empty, (700, 50), empty)
-
-        if has_member_role:
-            member_role_png = Image.open('./assets/badges/chromies.png').resize((100, 100))
-            card.paste(member_role_png, (825, 50), member_role_png)
-        else:
-            card.paste(empty, (825, 50), empty)
-
-        if has_booster_role:
-            booster_role_png = Image.open('./assets/badges/booster.png').resize((100, 100))
-            card.paste(booster_role_png, (450, 140), booster_role_png)
-        else:
-            card.paste(empty, (450, 140), empty)
-
-        if has_top1_role:
-            top1 = Image.open('./assets/badges/crown2.png').resize((1000, 500))
-            card.paste(top1, (0, 0), top1)
-
-        if has_top1_role:
-            top1st = Image.open('./assets/badges/1st.png').resize((100, 100))
-            card.paste(top1st, (575, 140), top1st)
-        else:
-            card.paste(empty, (575, 140), empty)
-
-        if has_empty_role:
-            empty_filler = Image.open('./assets/badges/badgeempty.png').resize((100, 100))
-            card.paste(empty_filler, (700, 140), empty_filler)
-        else:
-            card.paste(empty, (700, 140), empty)
-
-        if has_empty_role:
-            empty_filler = Image.open('./assets/badges/badgeempty.png').resize((100, 100))
-            card.paste(empty_filler, (825, 140), empty_filler)
-        else:
-            card.paste(empty, (825, 140), empty)
-
-        if has_empty_role:
-            empty_filler = Image.open('./assets/badges/badgeempty.png').resize((100, 100))
-            card.paste(empty_filler, (450, 230), empty_filler)
-        else:
-            card.paste(empty, (450, 230), empty)
-
-        if has_empty_role:
-            empty_filler = Image.open('./assets/badges/badgeempty.png').resize((100, 100))
-            card.paste(empty_filler, (575, 230), empty_filler)
-        else:
-            card.paste(empty, (575, 230), empty)
-
-        if has_empty_role:
-            empty_filler = Image.open('./assets/badges/badgeempty.png').resize((100, 100))
-            card.paste(empty_filler, (700, 230), empty_filler)
-        else:
-            card.paste(empty, (700, 230), empty)
-
-        if has_empty_role:
-            empty_filler = Image.open('./assets/badges/badgeempty.png').resize((100, 100))
-            card.paste(empty_filler, (825, 230), empty_filler)
-        else:
-            card.paste(empty, (825, 230), empty)
-
-        zhcn = ImageFont.truetype("./fonts/IntegralCF-Regular.otf", size=40)
-        zhcn2 = ImageFont.truetype("./fonts/IntegralCF-Regular.otf", size=20)
-        zhcn3 = ImageFont.truetype("./fonts/IntegralCF-Regular.otf", size=22)
-        zhcn4 = ImageFont.truetype("./fonts/IntegralCF-Regular.otf", size=30)
-        draw = ImageDraw.Draw(card, 'RGBA')
-        messages = levels["messages"]
-
-        draw.text((615, 313), f'{xp_have}', fill=levels['color2'], font=zhcn4)
-        draw.text((700, 308), f'|', fill=levels['color'], font=zhcn)
-        draw.text((725, 313), f'{xp_need}', fill=levels['color2'], font=zhcn4)
-        draw.text((140, 750), f'xp amount', fill=levels['color'], font=zhcn3)
-        draw.text((43, 250), f"{user.name}", fill=levels['color2'], font=zhcn)
-        draw.text((43, 295), f"chroma levels", fill=levels['color'], font=zhcn3)
-        draw.text((625, 5), f"badges", fill=levels['color2'], font=zhcn)
-        draw.text((125, 410), f'rank {str(rank)}', fill=levels['color2'], font=zhcn)
-        draw.text((445, 410), f'level {level-1}', fill=levels['color2'], font=zhcn)
-        draw.text((745, 410), f'{messages}', fill=levels['color2'], font=zhcn)
-        buffer = BytesIO()
-        card.save(buffer, 'png')
-        buffer.seek(0)
-        return buffer
-
-    async def generate_card1(self, avatar: BytesIO, levels: LevelRow, rank: int, member: discord.Member, guild: discord.Guild) -> BytesIO:
-        card_generator = functools.partial(self.get_card1, avatar, levels, rank, guild)
-        card = await self.bot.loop.run_in_executor(None, self.get_card1, avatar, levels, rank, member, guild)
-        return card
     
-    async def generate_card2(self, avatar: BytesIO, levels: LevelRow, rank: int, member: discord.Member, guild: discord.Guild) -> BytesIO:
-        card_generator = functools.partial(self.get_card2, avatar, levels, rank, guild)
-        card = await self.bot.loop.run_in_executor(None, self.get_card2, avatar, levels, rank, member, guild)
+    async def generate_card(self, avatar: BytesIO, levels: LevelRow, rank: int, member: discord.Member, guild: discord.Guild) -> BytesIO:
+        card_generator = functools.partial(self.get_card, avatar, levels, rank, guild)
+        card = await self.bot.loop.run_in_executor(None, self.get_card, avatar, levels, rank, member, guild)
         return card
 
     async def get_rank(self, member_id: int, guild_id: int) -> int:
@@ -1087,12 +840,12 @@ class levels(commands.Cog):
 
         if format == 1:
             if levels:
-                    card = await self.generate_card1(avatar, levels, rank, member, guild)
+                    card = await self.generate_card(avatar, levels, rank, member, guild)
             else:
                 card = None
         elif format == 2:
             if levels:
-                    card = await self.generate_card2(avatar, levels, rank, member, guild)
+                    card = await self.generate_card(avatar, levels, rank, member, guild)
             else:
                 card = None
         if card:
