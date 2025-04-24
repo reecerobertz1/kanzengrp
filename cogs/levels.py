@@ -739,7 +739,7 @@ class levels(commands.Cog):
         messages = levels["messages"]
         msgs = self.human_format(messages)
 
-        draw.text((683, 412), f'{xp_have} / {xp_need}', fill=levels['color2'], font=size33)
+        draw.text((683, 412), f'{xp_have} / {xp_need}', fill="#ffffff", font=size33)
         draw.text((200, 68), f"{user.name}", fill=levels['color2'], font=size25)
         draw.text((200, 99), f"chroma levels", fill=levels['color'], font=size18)
         draw.text((1275, 20), f"badges", fill=levels['color2'], font=size25)
