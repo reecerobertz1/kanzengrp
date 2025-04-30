@@ -318,25 +318,56 @@ class levels(commands.Cog):
                 await conn.commit()
             await self.bot.pool.release(conn)
 
+    async def get_messages(self, member_id: int, guild_id: int) -> int:
+        query = '''SELECT messages FROM levelling WHERE member_id = ? AND guild_id = ?'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, guild_id)
+                status = await cursor.fetchone()
+            await self.bot.pool.release(conn)
+        if status is not None:
+            return status[0]
+        else:
+            return 1
+
     async def check_levels(self, message: discord.Message, xp: int, xp_to_add: int) -> None:
         new_xp = xp + xp_to_add
         lvl = 0
+        msgs = self.get_messages(member_id=message.author.id)
+
         while True:
-            if xp < ((50*(lvl**2))+(50*(lvl-1))):
+            required_xp = (50 * (lvl ** 2)) + (50 * (lvl - 1))
+            if new_xp < required_xp:
                 break
             lvl += 1
-        next_level_xp = ((50*(lvl**2))+(50*(lvl-1)))
-        if new_xp > next_level_xp:
+
+        old_lvl = 0
+        temp_xp = xp
+        while True:
+            required_xp = (50 * (old_lvl ** 2)) + (50 * (old_lvl - 1))
+            if temp_xp < required_xp:
+                break
+            old_lvl += 1
+
+        if lvl > old_lvl:
+            msg = f"Yay! {message.author.mention} you just reached **level {lvl}**"
+
             if message.guild.id == 694010548605550675:
-                if lvl == 2:
+                if lvl == 2 and msgs >= 50:
                     reprole = await self.get_reprole(message.guild.id)
                     role = message.guild.get_role(reprole)
-                    if role:
-                        await message.author.add_roles(role, reason=f"{message.author.name} reached level 2")
+                    if role and role not in message.author.roles:
+                        await message.author.add_roles(role, reason=f"{message.author.name} reached level 2 and has 50 messages")
+                        msg += (
+                            "\nYou also have enough messages to unlock "
+                            "<#1349020268130992203> and <#1348711229866119188>"
+                        )
+
                         top20 = await self.get_top20(message.guild.id)
                         if top20 is not None:
                             await self.top_20_role_handler(message.author, message.guild, top20)
-                await message.channel.send(f"Yay! {message.author.mention} you just reached **level {lvl}**")
+
+            await message.channel.send(msg)
 
     async def get_reprole(self, guild_id: int) -> int:
         query = '''SELECT reprole FROM settings WHERE guild_id = ?'''
@@ -519,9 +550,8 @@ class levels(commands.Cog):
         progress_width = int(width * progress)
 
         if progress_width == 0:
-            return Image.new("RGBA", (1, height), (0, 0, 0, 0)), None  # return empty if no progress
+            return Image.new("RGBA", (1, height), (0, 0, 0, 0)), None
 
-        # Create the gradient bar (only up to progress width)
         gradient = Image.new('RGBA', (progress_width, height), (0, 0, 0, 0))
         gradient_draw = ImageDraw.Draw(gradient)
 
@@ -531,12 +561,10 @@ class levels(commands.Cog):
             color = interpolate_color(color1, color2, t)
             gradient_draw.line([(i, 0), (i, height)], fill=color)
 
-        # Rounded mask
+  
         mask = Image.new('L', (progress_width, height), 0)
         mask_draw = ImageDraw.Draw(mask)
         mask_draw.rounded_rectangle([(0, 0), (progress_width, height)], fill=255, radius=radius)
-
-        # Apply mask to gradient for rounded edges
         rounded_gradient = Image.new("RGBA", (progress_width, height), (0, 0, 0, 0))
         rounded_gradient.paste(gradient, (0, 0), mask)
 
