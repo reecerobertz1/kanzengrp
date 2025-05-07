@@ -333,7 +333,7 @@ class levels(commands.Cog):
     async def check_levels(self, message: discord.Message, xp: int, xp_to_add: int) -> None:
         new_xp = xp + xp_to_add
         lvl = 0
-        msgs = self.get_messages(member_id=message.author.id, guild_id=message.author.guild.id)
+        msgs = await self.get_messages(member_id=message.author.id, guild_id=message.author.guild.id)
 
         while True:
             required_xp = (50 * (lvl ** 2)) + (50 * (lvl - 1))
