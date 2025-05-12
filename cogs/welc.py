@@ -80,7 +80,6 @@ class welcandleave(commands.Cog):
         elif member.guild.id == aster:
             channel = self.bot.get_channel(1292647516222787686)
             await channel.send(f"**{member.display_name}** has left Aster\n-# ・⋆  We will miss you ")
-            await self.remove_member(member.id)
 
 async def setup(bot):
     await bot.add_cog(welcandleave(bot))
