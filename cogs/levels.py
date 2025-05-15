@@ -961,7 +961,8 @@ class levels(commands.Cog):
             return
         levels = await self.get_member_levels(member.id, ctx.guild.id)
         if not levels:
-            await self.add_member(member.id)
+            await self.add_member(member.id, guild_id=ctx.guild.id)
+            await ctx.reply(f"{member.name} was not in the database. I have added them and added **25xp**")
 
         current_xp = levels["xp"]
         new_xp = current_xp + amount
