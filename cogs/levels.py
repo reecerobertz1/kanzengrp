@@ -961,8 +961,7 @@ class levels(commands.Cog):
             return
         levels = await self.get_member_levels(member.id, ctx.guild.id)
         if not levels:
-            await ctx.reply("Could not retrieve the member's level data. Please try again later.", ephemeral=True)
-            return
+            await self.add_member(member.id)
 
         current_xp = levels["xp"]
         new_xp = current_xp + amount
