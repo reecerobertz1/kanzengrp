@@ -1236,5 +1236,20 @@ class levels(commands.Cog):
         await self.add_messages(amount, member.id, ctx.guild.id, levels)
         await ctx.reply(f"<:check:1296872662622273546> Gave `{amount} messages` to {str(member)}.")
 
+    @commands.command(name="test", description="Add XP to someone", extras="+add @member amount")
+    async def testlolol(self, ctx, member: discord.Member, amount: int):
+        required_roles = {739513680860938290, 1261435772775563315}
+        member_roles = {role.id for role in ctx.author.roles}
+        if required_roles.isdisjoint(member_roles):
+            await ctx.reply("Sorry, this command is only available for staff members.", ephemeral=True)
+            return
+        levels = await self.get_member_levels(member.id, ctx.guild.id)
+        if not levels:
+            await self.add_member(member.id, guild_id=ctx.guild.id)
+            await ctx.reply(f"{member.name} was not in the database. I have added them and added **25xp**")
+
+        await self.add_xp(member.id, ctx.guild.id, amount, levels)
+        await ctx.reply(f"<:check:1296872662622273546> Gave <a:Comp1:1361349439738089833> **{amount}** to {str(member)}.")
+
 async def setup(bot):
     await bot.add_cog(levels(bot))
