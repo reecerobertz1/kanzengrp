@@ -1248,7 +1248,7 @@ class levels(commands.Cog):
             await self.add_member(member.id, guild_id=ctx.guild.id)
             await ctx.reply(f"{member.name} was not in the database. I have added them and added **25xp**")
 
-        await self.add_xp(member.id, ctx.guild.id, amount=450, levels=levels)
+        await self.add_xp(member.id, ctx.guild.id, amount, levels)
         await ctx.reply(f"This command did not work correctly.")
 
 async def setup(bot):
