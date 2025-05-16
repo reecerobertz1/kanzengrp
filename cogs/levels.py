@@ -1249,7 +1249,7 @@ class levels(commands.Cog):
             await ctx.reply(f"{member.name} was not in the database. I have added them and added **25xp**")
 
         await self.add_xp(member.id, ctx.guild.id, amount=450, levels=levels)
-        await ctx.reply(f"<:check:1296872662622273546> Gave <a:Comp1:1361349439738089833> **{amount}** to {str(member)}.")
+        await ctx.reply(f"This command did not work correctly.")
 
 async def setup(bot):
     await bot.add_cog(levels(bot))
