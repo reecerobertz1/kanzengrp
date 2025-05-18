@@ -659,10 +659,9 @@ class levels(commands.Cog):
         bar, mask_bar = self._make_progress_bar(percentage, levels['color'], levels["color2"])
         avatar_paste, circle = self.get_avatar(avatar)
         empty_image = Image.open("./assets/badges/badgeempty.png").resize((65, 65))
-
         card.paste(bg, (0, 0))
         card.paste(bg_frosted, (0, 0), bg_frosted)
-        card.paste(bar, (50, 415), mask_bar)
+        card.paste(bar, (50, 430), mask_bar)
         card.paste(avatar_paste, (46, 36), circle)
 
         leads_role = 753678720119603341
@@ -686,57 +685,39 @@ class levels(commands.Cog):
         empty_role_id = 1068334859157778474
         has_empty_role = any(role.id == empty_role_id for role in user.roles)
 
-        if has_leads_role:
-            leads_role_png = Image.open('./assets/badges/leads.png').resize((65, 65))
-            card.paste(leads_role_png, (1300, 125), leads_role_png)
-        else:
-            card.paste(empty_image, (1300, 125), empty_image)
-
-        if has_staff_role:
-            staff_role_png = Image.open('./assets/badges/staff.png').resize((65, 65))
-            card.paste(staff_role_png, (1225, 125), staff_role_png)
+        if has_member_role: #1
+            member_role_png = Image.open('./assets/badges/chromies.png').resize((65, 65))
+            card.paste(member_role_png, (1225, 125), member_role_png)
         else:
             card.paste(empty_image, (1225, 125), empty_image)
 
-        if has_top20_role:
+        if has_top20_role: #2
             top20_role_png = Image.open('./assets/badges/top20.png').resize((65, 65))
-            card.paste(top20_role_png, (1300, 45), top20_role_png)
+            card.paste(top20_role_png, (1300, 125), top20_role_png)
         else:
-            card.paste(empty_image, (1300, 45), empty_image)
+            card.paste(empty_image, (1300, 125), empty_image)
 
-        if has_member_role:
-            member_role_png = Image.open('./assets/badges/chromies.png').resize((65, 65))
-            card.paste(member_role_png, (1225, 45), member_role_png)
-        else:
-            card.paste(empty_image, (1225, 45), empty_image)
-
-        if has_booster_role:
+        if has_booster_role: #3
             booster_role_png = Image.open('./assets/badges/booster.png').resize((65, 65))
-            card.paste(booster_role_png, (1375, 45), booster_role_png)
-        else:
-            card.paste(empty_image, (1375, 45), empty_image)
-
-        if has_top1_role:
-            top1st = Image.open('./assets/badges/1st.png').resize((65, 65))
-            card.paste(top1st, (1375, 125), top1st)
+            card.paste(booster_role_png, (1375, 125), booster_role_png)
         else:
             card.paste(empty_image, (1375, 125), empty_image)
 
-        if has_empty_role:
-            empty_filler = Image.open('./assets/badges/badgeempty.png').resize((65, 65))
-            card.paste(empty_filler, (1225, 205), empty_filler)
+        if has_staff_role: #4
+            staff_role_png = Image.open('./assets/badges/staff.png').resize((65, 65))
+            card.paste(staff_role_png, (1225, 205), staff_role_png)
         else:
             card.paste(empty_image, (1225, 205), empty_image)
 
-        if has_empty_role:
-            empty_filler = Image.open('./assets/badges/badgeempty.png').resize((65, 65))
-            card.paste(empty_filler, (1300, 205), empty_filler)
+        if has_leads_role: #5
+            leads_role_png = Image.open('./assets/badges/leads.png').resize((65, 65))
+            card.paste(leads_role_png, (1300, 205), leads_role_png)
         else:
             card.paste(empty_image, (1300, 205), empty_image)
 
-        if has_empty_role:
-            empty_filler = Image.open('./assets/badges/badgeempty.png').resize((65, 65))
-            card.paste(empty_filler, (1375, 205), empty_filler)
+        if has_top1_role: #6
+            top1st = Image.open('./assets/badges/1st.png').resize((65, 65))
+            card.paste(top1st, (1375, 205), top1st)
         else:
             card.paste(empty_image, (1375, 205), empty_image)
 
@@ -758,6 +739,24 @@ class levels(commands.Cog):
         else:
             card.paste(empty_image, (1375, 285), empty_image)
 
+        if has_empty_role:
+            empty_filler = Image.open('./assets/badges/badgeempty.png').resize((65, 65))
+            card.paste(empty_filler, (1225, 365), empty_filler)
+        else:
+            card.paste(empty_image, (1225, 365), empty_image)
+
+        if has_empty_role:
+            empty_filler = Image.open('./assets/badges/badgeempty.png').resize((65, 65))
+            card.paste(empty_filler, (1300, 365), empty_filler)
+        else:
+            card.paste(empty_image, (1300, 365), empty_image)
+
+        if has_empty_role:
+            empty_filler = Image.open('./assets/badges/badgeempty.png').resize((65, 65))
+            card.paste(empty_filler, (1375, 365), empty_filler)
+        else:
+            card.paste(empty_image, (1375, 365), empty_image)
+
         size50 = ImageFont.truetype("./fonts/IntegralCF-Regular.otf", size=50)
         size46 = ImageFont.truetype("./fonts/IntegralCF-Regular.otf", size=46)
         size33 = ImageFont.truetype("./fonts/IntegralCF-Regular.otf", size=33)
@@ -767,13 +766,14 @@ class levels(commands.Cog):
         messages = levels["messages"]
         msgs = self.human_format(messages)
 
-        draw.text((683, 412), f'{xp_have} / {xp_need}', fill="#ffffff", font=size33)
+        draw.text((683, 427), f'{xp_have} / {xp_need}', fill="#ffffff", font=size33)
         draw.text((200, 68), f"{user.name}", fill=levels['color2'], font=size25)
         draw.text((200, 99), f"chroma levels", fill=levels['color'], font=size18)
-        draw.text((1275, 20), f"badges", fill=levels['color2'], font=size25)
-        draw.text((1220, 372), f'{msgs} msgs | #{str(rank)}', fill=levels['color2'], font=size25)
-        draw.text((75, 412), f'{level-1}', fill=levels['color2'], font=size33)
-        draw.text((1400, 412), f'{level}', fill=levels['color'], font=size33)
+        draw.text((1275, 75), f"badges", fill=levels['color2'], font=size25)
+        draw.text((235, 383), f'{msgs} msgs', fill=levels['color1'], font=size25)
+        draw.text((70, 383), f'rank {str(rank)}', fill=levels['color2'], font=size25)
+        draw.text((75, 427), f'{level-1}', fill=levels['color2'], font=size33)
+        draw.text((1400, 427), f'{level}', fill=levels['color'], font=size33)
 
         buffer = BytesIO()
         card.save(buffer, 'png')
