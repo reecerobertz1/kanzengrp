@@ -770,7 +770,7 @@ class levels(commands.Cog):
         draw.text((200, 68), f"{user.name}", fill=levels['color2'], font=size25)
         draw.text((200, 99), f"chroma levels", fill=levels['color'], font=size18)
         draw.text((1275, 75), f"badges", fill=levels['color2'], font=size25)
-        draw.text((235, 383), f'{msgs} msgs', fill=levels['color1'], font=size25)
+        draw.text((235, 383), f'{msgs} msgs', fill=levels['color'], font=size25)
         draw.text((70, 383), f'rank {str(rank)}', fill=levels['color2'], font=size25)
         draw.text((75, 427), f'{level-1}', fill=levels['color2'], font=size33)
         draw.text((1400, 427), f'{level}', fill=levels['color'], font=size33)
