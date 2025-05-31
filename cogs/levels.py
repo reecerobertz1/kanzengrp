@@ -853,6 +853,7 @@ class levels(commands.Cog):
                     return None
 
     @app_commands.command(name="rank", description="Check your rank")
+    @app_commands.checks.cooldown(1, 5)
     @app_commands.guilds(discord.Object(id=694010548605550675))
     async def rank(self, interaction: discord.Interaction, member: Optional[discord.Member] = None):
         member = member or interaction.user
@@ -879,6 +880,22 @@ class levels(commands.Cog):
             await interaction.response.send_message(file=discord.File(card, 'card.png'), view=configrankcard(member=member.id, bot=self.bot))
         else:
             await interaction.response.send_message(f"{member} hasn't gotten levels yet!")
+
+    @rank.error
+    async def rank_error(self, interaction: discord.Interaction, error: Exception):
+        try:
+            if isinstance(error, CommandOnCooldown):
+                remaining_time = int(error.retry_after)
+                await interaction.response.send_message(
+                    f"Slow down! You're on cooldown for **{remaining_time} seconds**.",
+                    ephemeral=True
+                )
+            else:
+                print(f"Error in 'rank' command: {error}")
+                if not interaction.response.is_done():
+                    await interaction.response.send_message(f"An unexpected error occurred. Please try again later.\n{error}",ephemeral=True)
+        except discord.InteractionResponded:
+            pass
 
     @app_commands.command(description="See the level leaderboard")
     @app_commands.checks.cooldown(1, 5)
