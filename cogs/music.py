@@ -95,12 +95,16 @@ class Music(commands.Cog):
             client_secret="3ca1783aac3c4f87ade7faab25ce6373"
         ))
 
-        self.cookies_path = "./utils/stufflol.txt"
+        self.cookies_path = "./utils/stufflol.txt"  # Kept as requested
         if os.getenv("YOUTUBE_COOKIES"):
-            cookies_content = base64.b64decode(os.getenv("YOUTUBE_COOKIES")).decode("utf-8")
-            os.makedirs(os.path.dirname(self.cookies_path), exist_ok=True)
-            with open(self.cookies_path, "w") as f:
-                f.write(cookies_content)
+            try:
+                cookies_content = base64.b64decode(os.getenv("YOUTUBE_COOKIES")).decode("utf-8")
+                os.makedirs(os.path.dirname(self.cookies_path), exist_ok=True)
+                with open(self.cookies_path, "w") as f:
+                    f.write(cookies_content)
+                print(f"Successfully wrote cookies to {self.cookies_path} from YOUTUBE_COOKIES")
+            except Exception as e:
+                print(f"Error decoding YOUTUBE_COOKIES: {e}")
         elif not os.path.exists(self.cookies_path):
             print(f"Warning: Cookies file {self.cookies_path} not found. YouTube authentication may fail.")
 
@@ -111,7 +115,9 @@ class Music(commands.Cog):
             "no_warnings": True,
             "default_search": "ytsearch",
             "source_address": "0.0.0.0",
-            "cookies": self.cookies_path if os.path.exists(self.cookies_path) else None
+            "cookies": self.cookies_path if os.path.exists(self.cookies_path) else None,
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+            "verbose": True  # Added for debugging
         }
 
         self.ffmpeg_options = {
@@ -282,6 +288,7 @@ class Music(commands.Cog):
             data = await loop.run_in_executor(None, lambda: self.ytdl.extract_info(search, download=False))
             print(f"Extracted data in add_to_queue: {data}")
         except Exception as e:
+            print(f"Failed to extract song in add_to_queue: {e}")
             await interaction.followup.send(f"Failed to extract song: {e}")
             return
 
