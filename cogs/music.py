@@ -13,6 +13,8 @@ from spotipy.oauth2 import SpotifyClientCredentials
 from imageio_ffmpeg import get_ffmpeg_exe
 from discord import File
 from discord.ui import View, Button
+import os
+import base64
 
 class MusicUI(View):
     def __init__(self, bot, music_cog):
@@ -20,11 +22,11 @@ class MusicUI(View):
         self.bot = bot
         self.music_cog = music_cog
 
-    @discord.ui.button(label="◁◁")
+    @discord.ui.button(label="◁◁", style=discord.ButtonStyle.secondary)
     async def previous(self, interaction: discord.Interaction, button: discord.Button):
         await interaction.response.send_message("Sorry, we can't go back to the last song played. This button is just for aesthetics", ephemeral=True)
 
-    @discord.ui.button(label="▷")
+    @discord.ui.button(label="▷", style=discord.ButtonStyle.green)
     async def play_pause(self, interaction: discord.Interaction, button: discord.Button):
         guild_id = interaction.guild.id
         vc = self.music_cog.voice_clients.get(guild_id)
@@ -47,7 +49,7 @@ class MusicUI(View):
 
         await interaction.message.edit(view=self)
 
-    @discord.ui.button(label="▷▷")
+    @discord.ui.button(label="▷▷", style=discord.ButtonStyle.primary)
     async def skip(self, interaction: discord.Interaction, button: discord.Button):
         guild_id = interaction.guild.id
         vc = self.music_cog.voice_clients.get(guild_id)
@@ -66,7 +68,7 @@ class MusicUI(View):
         else:
             await interaction.response.send_message("No song is playing.", ephemeral=True)
 
-    @discord.ui.button(label="↺")
+    @discord.ui.button(label="↺", style=discord.ButtonStyle.secondary)
     async def loop(self, interaction: discord.Interaction, button: discord.Button):
         guild_id = interaction.guild.id
         vc = self.music_cog.voice_clients.get(guild_id)
@@ -93,13 +95,23 @@ class Music(commands.Cog):
             client_secret="3ca1783aac3c4f87ade7faab25ce6373"
         ))
 
+        self.cookies_path = "./utils/stufflol.txt"
+        if os.getenv("YOUTUBE_COOKIES"):
+            cookies_content = base64.b64decode(os.getenv("YOUTUBE_COOKIES")).decode("utf-8")
+            os.makedirs(os.path.dirname(self.cookies_path), exist_ok=True)
+            with open(self.cookies_path, "w") as f:
+                f.write(cookies_content)
+        elif not os.path.exists(self.cookies_path):
+            print(f"Warning: Cookies file {self.cookies_path} not found. YouTube authentication may fail.")
+
         self.ytdl_format_options = {
             "format": "bestaudio[ext=webm]/bestaudio/best",
             "noplaylist": True,
             "quiet": True,
             "no_warnings": True,
             "default_search": "ytsearch",
-            "source_address": "0.0.0.0"
+            "source_address": "0.0.0.0",
+            "cookies": self.cookies_path if os.path.exists(self.cookies_path) else None
         }
 
         self.ffmpeg_options = {
@@ -115,7 +127,7 @@ class Music(commands.Cog):
         self.last_played_time = {}
         self.now_playing = {}
         self.text_channels = {}
-        self.looping = {}  # Track loop state per guild
+        self.looping = {}
 
         self.check_inactivity.start()
 
