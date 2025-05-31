@@ -21,7 +21,6 @@ extensions = {
     "cogs.profiles",
     "cogs.qotd",
     "cogs.settings",
-    "cogs.starboard",
     "cogs.welc"
 }
 
