@@ -1,5 +1,6 @@
 import asyncio
 import re
+import textwrap
 import discord
 from discord.ext import commands, tasks
 from random import randint
@@ -571,9 +572,9 @@ class levels(commands.Cog):
         return rounded_gradient, mask
 
     def get_avatar(self, avatar: BytesIO) -> Tuple[Image.Image, Image.Image]:
-        circle = Image.open('./assets/circle-mask.png').resize((128, 128)).convert('L')
+        circle = Image.open('./assets/circle-mask.png').resize((117, 117)).convert('L')
         avatar_image = Image.open(avatar).convert('RGBA')
-        avatar_image = avatar_image.resize((128, 128))
+        avatar_image = avatar_image.resize((117, 117))
         return avatar_image, circle
 
     def human_format(self, number: int) -> str:
@@ -622,6 +623,24 @@ class levels(commands.Cog):
 
         return percentage, xp_progress_have, xp_progress_need, lvl
 
+    def draw_centered_text(self, draw: ImageDraw.ImageDraw,levels: LevelRow, text: str, font: ImageFont.FreeTypeFont, *, x_center: int, y_start: int, line_spacing: int = 5):
+        """Draws multiline text centered at x_center, starting from y_start."""
+        lines = text.split('\n')
+        for line in lines:
+            text_width, text_height = draw.textsize(line, font=font)
+            x_position = x_center - text_width // 2
+            draw.text((x_position, y_start), line, font=font, fill=levels["color"])
+            y_start += text_height + line_spacing
+
+    def draw_centered_text2(self, draw: ImageDraw.ImageDraw,levels: LevelRow, text: str, font: ImageFont.FreeTypeFont, *, x_center: int, y_start: int, line_spacing: int = 5):
+        """Draws multiline text centered at x_center, starting from y_start."""
+        lines = text.split('\n')
+        for line in lines:
+            text_width, text_height = draw.textsize(line, font=font)
+            x_position = x_center - text_width // 2
+            draw.text((x_position, y_start), line, font=font, fill=levels["color2"])
+            y_start += text_height + line_spacing            
+
     def get_card(self, avatar: BytesIO, levels: LevelRow, rank: int, user: discord.User, guild: discord.Guild) -> BytesIO:
         percentage, xp_have, xp_need, level = self.xp_calculations(levels)
         card = Image.new('RGBA', size=(1500, 500), color='grey')
@@ -662,7 +681,7 @@ class levels(commands.Cog):
         card.paste(bg, (0, 0))
         card.paste(bg_frosted, (0, 0), bg_frosted)
         card.paste(bar, (50, 430), mask_bar)
-        card.paste(avatar_paste, (46, 36), circle)
+        card.paste(avatar_paste, (55, 55), circle)
 
         leads_role = 753678720119603341
         has_leads_role = any(role.id == leads_role for role in user.roles)
@@ -757,8 +776,6 @@ class levels(commands.Cog):
         else:
             card.paste(empty_image, (1375, 365), empty_image)
 
-        size50 = ImageFont.truetype("./fonts/IntegralCF-Regular.otf", size=50)
-        size46 = ImageFont.truetype("./fonts/IntegralCF-Regular.otf", size=46)
         size33 = ImageFont.truetype("./fonts/IntegralCF-Regular.otf", size=33)
         size18 = ImageFont.truetype("./fonts/IntegralCF-Regular.otf", size=18)
         size25 = ImageFont.truetype("./fonts/IntegralCF-Regular.otf", size=25)
@@ -766,14 +783,22 @@ class levels(commands.Cog):
         messages = levels["messages"]
         msgs = self.human_format(messages)
 
+        #WRAPPED TEXT
+        ranked = f"{str(rank)}"
+        wrapped_rank = "\n".join(textwrap.fill(line, width=75) for line in ranked.splitlines())
+        self.draw_centered_text2(draw, text=wrapped_rank, font=size25, x_center=111, y_start=383, levels=levels)
+
+        wrapped_rank = "\n".join(textwrap.fill(line, width=75) for line in msgs.splitlines())
+        self.draw_centered_text2(draw, text=wrapped_rank, font=size25, x_center=252, y_start=383, levels=levels)
+
         draw.text((683, 427), f'{xp_have} / {xp_need}', fill="#ffffff", font=size33)
-        draw.text((200, 68), f"{user.name}", fill=levels['color2'], font=size25)
-        draw.text((200, 99), f"chroma levels", fill=levels['color'], font=size18)
+        draw.text((181, 87), f"{user.name}", fill=levels['color2'], font=size25)
+        draw.text((181, 117), f"chroma levels", fill=levels['color'], font=size18)
+        draw.text((200, 367), f"messages", fill=levels['color'], font=size18)
+        draw.text((84, 367), f"rank", fill=levels['color'], font=size18)
         draw.text((1275, 75), f"badges", fill=levels['color2'], font=size25)
-        draw.text((235, 383), f'{msgs} msgs', fill=levels['color'], font=size25)
-        draw.text((70, 383), f'rank {str(rank)}', fill=levels['color2'], font=size25)
         draw.text((75, 427), f'{level-1}', fill=levels['color2'], font=size33)
-        draw.text((1400, 427), f'{level}', fill=levels['color'], font=size33)
+        draw.text((1380, 427), f'{level}', fill=levels['color'], font=size33)
 
         buffer = BytesIO()
         card.save(buffer, 'png')
