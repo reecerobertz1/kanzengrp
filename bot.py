@@ -15,7 +15,6 @@ extensions = {
     "cogs.editing",
     "cogs.fun",
     "cogs.levels",
-    "cogs.music",
     "cogs.mod",
     "cogs.other",
     "cogs.profiles",
