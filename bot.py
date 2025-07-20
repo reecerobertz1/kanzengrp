@@ -19,6 +19,7 @@ extensions = {
     "cogs.other",
     "cogs.profiles",
     "cogs.qotd",
+    "cogs.roles",
     "cogs.settings",
     "cogs.welc"
 }
