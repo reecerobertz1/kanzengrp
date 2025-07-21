@@ -71,7 +71,7 @@ class Tickets(discord.ui.View):
             interaction.user: discord.PermissionOverwrite(read_messages=True, send_messages=True)
         }
 
-        staff_role = discord.utils.get(guild.roles, id=1220492654455033936)
+        staff_role = discord.utils.get(guild.roles, id=1335919331162329118)
         if staff_role:
             overwrites[staff_role] = discord.PermissionOverwrite(
                 read_messages=True,
@@ -97,9 +97,10 @@ class Tickets(discord.ui.View):
             ),
             color=0x505147
         )
+        staff_embed.set_thumbnail(url=interaction.user.avatar)
 
         await channel.send(
-            "<@609515684740988959>",
+            "<@&1335919331162329118>",
             embed=staff_embed,
             view=CloseTicket(self.log_channel_id)
         )
