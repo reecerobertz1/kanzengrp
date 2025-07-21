@@ -21,6 +21,7 @@ extensions = {
     "cogs.qotd",
     "cogs.roles",
     "cogs.settings",
+    "cogs.tickets",
     "cogs.welc"
 }
 
