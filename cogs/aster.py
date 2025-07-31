@@ -1,8 +1,7 @@
-import datetime as dt
-from datetime import datetime, timedelta
+import math
 import textwrap
 import discord
-from discord.ext import commands, tasks
+from discord.ext import commands
 from bot import LalisaBot
 from random import randint
 from typing import Optional, TypedDict, List, Union, Tuple
@@ -19,18 +18,19 @@ class LevelRow(TypedDict):
     messages: int
     bar_color: str
 
-class Asstral(commands.Cog):
+class Aster(commands.Cog):
     def __init__(self, bot: LalisaBot):
         self.bot = bot
         self.embed_colour = 0xCA253B
         self.cd_mapping = commands.CooldownMapping.from_cooldown(1, 60, commands.BucketType.user)
         self.regex_hex = "^#(?:[0-9a-fA-F]{3}){1,2}$"
-        self.channels = [1115953207898820660, 1116540790139781251, 1328202149401727018, 1138631181257146379, 1115962090092507207, 1115959285818589226 ,1116901595423199306]
-        self.guilds = [1115953206497906728]
-        self.role = 1116511748875362346
+        self.channels = [748021504830341334, 1322221753136844901, 1292636469630079058, 1292636015198081204, 1396657383404605450, 1322222080376442970, 1194312595524567060, 1362203770703839302]
+        self.guilds = [748021504830341330]
+        self.role = 1295488589378879509
+        self.leads_role = 748022931426115644
                 
     async def _register_member_levels(self, member_id: int, xp: Optional[int] = 25) -> None:
-        query = '''INSERT INTO levels (member_id, messages, xp, bar_color) VALUES (?, ?, ?, ?)'''
+        query = '''INSERT INTO asterlevels (member_id, messages, xp, bar_color) VALUES (?, ?, ?, ?)'''
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cursor:
                 await cursor.execute(query, (member_id, 1, xp, "#FFEDEF"))
@@ -38,7 +38,7 @@ class Asstral(commands.Cog):
             await self.bot.pool.release(conn)
 
     async def _update_message_count(self, member_id: int, levels: LevelRow) -> None:
-        query = '''UPDATE levels SET messages = ? WHERE member_id = ?'''
+        query = '''UPDATE asterlevels SET messages = ? WHERE member_id = ?'''
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cursor:
                 await cursor.execute(query, (levels['messages'] + 1, member_id))
@@ -46,7 +46,7 @@ class Asstral(commands.Cog):
             await self.bot.pool.release(conn)
 
     async def _update_xp(self, member_id: int, levels: LevelRow, xp: int) -> None:
-        query = '''UPDATE levels SET messages = ?, xp = ? WHERE member_id = ?'''
+        query = '''UPDATE asterlevels SET messages = ?, xp = ? WHERE member_id = ?'''
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cursor:
                 await cursor.execute(query, (levels['messages'] + 1, levels['xp'] + xp, member_id))
@@ -213,7 +213,7 @@ class Asstral(commands.Cog):
     def _get_card(self, name: str, status: str, avatar: BytesIO, levels: LevelRow, rank: int) -> BytesIO:
         percentage, xp_have, xp_need, level = self._xp_calculations(levels)
         card = Image.new('RGBA', size=(1500, 500), color='grey')
-        bg = Image.open("./assets/astral/rankcard.png")
+        bg = Image.open("./assets/astral/rankbg.png")
 
         bg_aspect_ratio = bg.width / bg.height
         target_aspect_ratio = 1500 / 500
@@ -280,7 +280,7 @@ class Asstral(commands.Cog):
         draw.text((180, 380), f"rank", fill=levels['bar_color'], font=black_size20)
         draw.text((283, 380), f"messages", fill=levels['bar_color'], font=black_size20)
         draw.text((471, 380), f"xp", fill=levels['bar_color'], font=black_size20)
-        draw.text((172, 116), f"Astral Levels", fill="#ffffff", font=bold_size23)
+        draw.text((172, 116), f"Aster Levels", fill="#ffffff", font=bold_size23)
         draw.text((1250, 10), f"hoshi | made by chromagrp", fill="#ffffff", font=regular_size20)
         buffer = BytesIO()
         card.save(buffer, 'png')
@@ -288,7 +288,7 @@ class Asstral(commands.Cog):
         return buffer
 
     async def get_member_levels(self, member_id: int) -> Optional[LevelRow]:
-        query = '''SELECT * from levels WHERE member_id = ?'''
+        query = '''SELECT * from asterlevels WHERE member_id = ?'''
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cursor:
                 await cursor.execute(query, (member_id))
@@ -300,7 +300,7 @@ class Asstral(commands.Cog):
 
     async def add_xp(self, member_id: int, xp: int, levels: Optional[LevelRow]) -> None:
         if levels:
-            query = '''UPDATE levels SET xp = ? WHERE member_id = ?'''
+            query = '''UPDATE asterlevels SET xp = ? WHERE member_id = ?'''
             async with self.bot.pool.acquire() as conn:
                 async with conn.cursor() as cursor:
                     await cursor.execute(query, (levels['xp'] + xp, member_id))
@@ -310,7 +310,7 @@ class Asstral(commands.Cog):
             await self._register_member_levels(member_id, xp)
 
     async def remove_xp(self, member_id: int, xp: int, levels: LevelRow) -> None:
-        query = '''UPDATE levels SET xp = ? WHERE member_id = ?'''
+        query = '''UPDATE asterlevels SET xp = ? WHERE member_id = ?'''
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cursor:
                 await cursor.execute(query, (levels['xp'] - xp, member_id))
@@ -318,7 +318,7 @@ class Asstral(commands.Cog):
             await self.bot.pool.release(conn)
 
     async def reset_levels(self):
-        query = '''UPDATE levels SET xp = 0'''
+        query = '''UPDATE asterlevels SET xp = 0'''
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cursor:
                 await cursor.execute(query)
@@ -326,7 +326,7 @@ class Asstral(commands.Cog):
             await self.bot.pool.release(conn)
 
     async def get_rank(self, member_id: int) -> int:
-        query = '''SELECT COUNT(*) FROM levels WHERE xp > (SELECT xp FROM levels WHERE member_id = ?)'''
+        query = '''SELECT COUNT(*) FROM asterlevels WHERE xp > (SELECT xp FROM levels WHERE member_id = ?)'''
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cursor:
                 await cursor.execute(query, (member_id))
@@ -340,7 +340,7 @@ class Asstral(commands.Cog):
         return card
 
     async def get_leaderboard_stats(self) -> List[LevelRow]:
-        query = '''SELECT * FROM levels ORDER BY xp DESC'''
+        query = '''SELECT * FROM asterlevels ORDER BY xp DESC'''
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cursor:
                 await cursor.execute(query)
@@ -348,7 +348,7 @@ class Asstral(commands.Cog):
         return rows
                 
     async def set_rank_color(self, member: discord.Member, color: str) -> None:
-        query = '''UPDATE levels SET bar_color = ? WHERE member_id = ?'''
+        query = '''UPDATE asterlevels SET bar_color = ? WHERE member_id = ?'''
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cursor:
                 await cursor.execute(query, color, member.id)
@@ -356,11 +356,11 @@ class Asstral(commands.Cog):
             await self.bot.pool.release(conn)
 
     @commands.command()
-    async def levels(self, ctx: commands.Context):
+    async def ranks(self, ctx: commands.Context):
         required_role_id = self.role
         role = ctx.guild.get_role(required_role_id)
         if role not in ctx.author.roles:
-            return await ctx.reply("Hello! You aren't a member on Astral. Only members can use Hoshi's levels <3")
+            return await ctx.reply("Hello! You aren't a member on Aster. Only members can use Hoshi's levels <3")
         
         embeds = []
         description = ""
@@ -390,13 +390,13 @@ class Asstral(commands.Cog):
         else:
             await ctx.send(embed=embed)
 
-    @commands.command()
-    async def level(self, ctx: commands.Context, member: Optional[discord.Member]):
+    @commands.command(aliases=['cr'])
+    async def currentrank(self, ctx: commands.Context, member: Optional[discord.Member]):
         required_role_id = self.role
         role = ctx.guild.get_role(required_role_id)
         if role not in ctx.author.roles:
-            return await ctx.reply("Hello! You aren't a member on Astral. Only members can use Hoshi's levels <3")
-        
+            return await ctx.reply("Hello! You aren't a member on Aster. Only members can use Hoshi's levels <3")
+
         async with ctx.typing():
             member = member or ctx.author
             levels = await self.get_member_levels(member.id)
@@ -412,12 +412,12 @@ class Asstral(commands.Cog):
                 await ctx.send(f"{member} doesn't have any levels yet!!")
 
     @commands.command()
-    async def colour(self, ctx: commands.Context, color: str):
+    async def rankcolor(self, ctx: commands.Context, color: str):
         required_role_id = self.role
         role = ctx.guild.get_role(required_role_id)
         if role not in ctx.author.roles:
-            return await ctx.reply("Hello! You aren't a member on Astral. Only members can use Hoshi's levels <3")
-        
+            return await ctx.reply("Hello! You aren't a member on Aster. Only members can use Hoshi's levels <3")
+
         match = re.search(self.regex_hex, color)
         if match:
             await self.set_rank_color(ctx.author, color)
@@ -431,11 +431,11 @@ class Asstral(commands.Cog):
             await ctx.reply(f"`{color}` is not a valid hex color")
 
     @commands.command()
-    async def xpadd(self, ctx: commands.Context, member: discord.Member, amount: int):
+    async def addxp(self, ctx: commands.Context, member: discord.Member, amount: int):
         required_role_id = self.role
         role = ctx.guild.get_role(required_role_id)
         if role not in ctx.author.roles:
-            return await ctx.reply("Hello! You aren't a member on Astral. Only members can use Hoshi's levels <3")
+            return await ctx.reply("Hello! You aren't a member on Aster. Only members can use Hoshi's levels <3")
         
         levels = await self.get_member_levels(member.id)
         await self.add_xp(member.id, amount, levels)
@@ -447,12 +447,12 @@ class Asstral(commands.Cog):
         await ctx.reply(embed=embed)
 
     @commands.command()
-    async def xpremove(self, ctx: commands.Context, member: discord.Member, amount: int):
+    async def removexp(self, ctx: commands.Context, member: discord.Member, amount: int):
         required_role_id = self.role
         role = ctx.guild.get_role(required_role_id)
         if role not in ctx.author.roles:
-            return await ctx.reply("Hello! You aren't a member on Astral. Only members can use Hoshi's levels <3")
-        
+            return await ctx.reply("Hello! You aren't a member on Aster. Only members can use Hoshi's levels <3")
+
         levels = await self.get_member_levels(member.id)
         if levels:
             if amount > levels['xp']:
@@ -470,7 +470,12 @@ class Asstral(commands.Cog):
 
     @commands.command()
     @commands.has_permissions(administrator=True)
-    async def erase(self, ctx: commands.Context):
+    async def reset(self, ctx: commands.Context):
+        required_role_id = self.leads_role
+        role = ctx.guild.get_role(required_role_id)
+        if role not in ctx.author.roles:
+            return await ctx.reply("Hello! You aren't a lead of Aster. Only leads can use Hoshi's reset command <3")
+
         message = await ctx.reply("are you sure you want to reset the ranks? it's irreversible!")
         await message.add_reaction('👍')
 
@@ -494,71 +499,27 @@ class Asstral(commands.Cog):
         await self.handle_message(message)
 
     @commands.command()
-    async def astralhelp(self, ctx):
+    async def asterhelp(self, ctx):
         required_role_id = self.role
         role = ctx.guild.get_role(required_role_id)
         if role not in ctx.author.roles:
-            return await ctx.reply("Hello! You aren't a member on Astral. Only members can use Hoshi's levels <3")
+            return await ctx.reply("Hello! You aren't a member on Aster. Only members can use Hoshi's levels <3")
 
-        embed = discord.Embed(
-            description=(
-                "### Astral Commands\n"
-                "Below are all available commands for Astral's levels, sorted by who can use them.\n"
-                "If you need any help, please ping the bot developer!\n"
-                "\n"
-                "### 🌸 Member Commands\n"
-                "### **+level**\n"
-                "```+level | +level @member```\n"
-                "### **+levels**\n"
-                "```+levels shows leaderboard```\n"
-                "### **+colour**\n"
-                "```+colour #000000 (hex codes only)```\n"
-                "\n"
-                "### 🛠️ Staff Commands\n"
-                "### **+xpadd**\n"
-                "```+xpadd @member xp```\n"
-                "### **+xpremove**\n"
-                "```+xpremove @member xp```\n"
-                "### **+erase**\n"
-                "```+erase (will ask for confirmation)```"
-            ),
-            color=self.embed_colour
-        )
+        embed=discord.Embed(description="### Aster commands"
+        "\nShows all available commands for Aster's levels and their functionality. If you need any help, please ping the bot developer!"
+        "\n\n### **+addxp**\n```+addxp @member xp```"
+        "\n### **+removexp**"
+        "\n```+removexp @member xp```"
+        "\n### **+currentrank**"
+        "\n```+currentrank | +currentrank @member```"
+        "\n### **+ranks**"
+        "\n```+ranks shows leaderboard```"
+        "\n### **+rankcolor**"
+        "\n```+rankcolor #000000 (hex codes only)```"
+        "\n### **+reset**"
+        "\n```+reset (will ask for confirmation)```", color=self.embed_colour)
         embed.set_thumbnail(url=ctx.guild.icon)
         await ctx.reply(embed=embed)
 
-    @commands.Cog.listener()
-    async def on_voice_state_update(self, member, before, after):
-        channel = self.bot.get_channel(1115958863993241700)
-        levels = await self.get_member_levels(member.id, guild_id=member.guild.id)
-        if before.channel is None and after.channel is not None:
-            self.voice_times[member.id] = datetime.utcnow()
-            self.xp_tracker[member.id] = 0
-
-        elif before.channel is not None and after.channel is None:
-            if member.id in self.voice_times:
-                join_time = self.voice_times.pop(member.id)
-                time_spent = (datetime.utcnow() - join_time).total_seconds()
-                xp_earned = self.xp_tracker.pop(member.id, 0)
-                required_role = member.guild.get_role(self.chromie_role)
-
-                if required_role in member.roles:
-                    if channel:
-                        await self.add_xp(member.id, xp=xp_earned, levels=levels, guild_id=member.guild.id)
-                        await channel.send(f"{member.mention}, you earned **{xp_earned} XP** from talking in {before.channel.mention}.")
-
-    @tasks.loop(seconds=15)
-    async def gain_xp(self):
-        for member_id in list(self.xp_tracker.keys()):
-            guild = self.bot.get_guild(694010548605550675)
-            member = guild.get_member(member_id) if guild else None
-            if member and member.voice and len(member.voice.channel.members) > 1:
-                if not member.voice.self_mute and not member.voice.self_deaf:
-                    self.xp_tracker[member_id] += 1
-
-    @gain_xp.before_loop
-    async def before_gain_xp(self):
-        await self.bot.wait_until_ready()
-
 async def setup(bot: LalisaBot) -> None:
-    await bot.add_cog(Asstral(bot))
+    await bot.add_cog(Aster(bot))
