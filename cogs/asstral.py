@@ -86,7 +86,7 @@ class Asstral(commands.Cog):
         if message.channel.id not in self.channels:
             return
 
-        if self.role not in message.author.roles:
+        if self.role not in [role.id for role in message.author.roles]:
             return
 
         bucket = self.cd_mapping.get_bucket(message)
