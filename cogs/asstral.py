@@ -492,7 +492,7 @@ class Asstral(commands.Cog):
     @commands.Cog.listener()
     async def on_message(self, message: discord.Message) -> None:
         await self.handle_message(message)
-        await self.bot.process_commands(message)
+        
     @commands.command()
     async def astralhelp(self, ctx):
         required_role_id = self.role
