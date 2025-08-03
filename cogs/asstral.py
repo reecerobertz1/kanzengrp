@@ -62,7 +62,8 @@ class Asstral(commands.Cog):
             lvl += 1
         next_level_xp = ((50*(lvl**2))+(50*(lvl-1)))
         if new_xp > next_level_xp:
-            await message.channel.send(f"{message.author.mention} reached **level {lvl+1}**")
+            channel = self.bot.get_channel(1115958863993241700)
+            await channel.send(f"{message.author.mention} reached **level {lvl+1}**")
 
     async def _level_handler(self, message: discord.Message, retry_after: Optional[commands.CooldownMapping], xp: int) -> None:
         member_id = message.author.id
