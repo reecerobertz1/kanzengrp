@@ -739,7 +739,7 @@ class levels(commands.Cog):
         await channel.send(f"{member.mention} you received **{amount}xp** from added xp")
 
     @commands.command(name="addmulti")
-    async def addmulti(self, ctx, *user_ids: int, amount: int):
+    async def addmulti(self, ctx, amount: int, *user_ids: int):
         staff_roles = {739513680860938290, 1261435772775563315}
         author_roles = {role.id for role in ctx.author.roles}
         channel = self.bot.get_channel(822422177612824580)
