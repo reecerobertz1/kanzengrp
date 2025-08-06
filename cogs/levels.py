@@ -738,6 +738,47 @@ class levels(commands.Cog):
         await ctx.reply(f"Gave **{amount}xp** to {member.mention}.")
         await channel.send(f"{member.mention} you received **{amount}xp** from added xp")
 
+    @commands.command(name="addmulti")
+    async def addmulti(self, ctx, *user_ids: int, amount: int):
+        staff_roles = {739513680860938290, 1261435772775563315}
+        author_roles = {role.id for role in ctx.author.roles}
+        channel = self.bot.get_channel(822422177612824580)
+
+        if staff_roles.isdisjoint(author_roles):
+            return await ctx.reply("Sorry, this command is only available for staff members.", ephemeral=True)
+
+        if not user_ids:
+            return await ctx.reply("You must provide at least one user ID.", ephemeral=True)
+
+        success = []
+        failed = []
+
+        for user_id in user_ids:
+            try:
+                member = await ctx.guild.fetch_member(user_id)
+            except discord.NotFound:
+                failed.append(str(user_id))
+                continue
+
+            levels = await self.get_member_levels(member.id, ctx.guild.id)
+            if not levels:
+                await self.add_member(member.id, guild_id=ctx.guild.id)
+                await self.add_xp(member.id, ctx.guild.id, 25)
+                await channel.send(f"{member.mention} was not in the database. I've added them and gave them **25 XP** to get started!")
+                success.append(f"{member.mention} (new)")
+            else:
+                await self.add_xp(member.id, ctx.guild.id, amount, levels)
+                await channel.send(f"{member.mention} you received **{amount}xp** from added xp")
+                success.append(member.mention)
+
+        msg = ""
+        if success:
+            msg += f"✅ Gave **{amount}xp** to:\n" + "\n".join(success)
+        if failed:
+            msg += f"\nCould not find users with IDs:\n" + ", ".join(failed)
+
+        await ctx.reply(msg)
+
     @commands.command()
     async def remove(self, ctx, member: discord.Member, amount: int):
         staff_roles = {739513680860938290, 1261435772775563315}
