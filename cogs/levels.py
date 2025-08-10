@@ -288,7 +288,7 @@ class levels(commands.Cog):
             old_lvl += 1
 
         if lvl > old_lvl:
-            msg = f"Yay! {message.author.mention} you just reached **level {lvl}**"
+            msg = f"Yay! {message.author.mention} you just reached **level {lvl-1}**"
 
             if message.guild.id == 694010548605550675:
                 if lvl == 2 and msgs >= 50:
