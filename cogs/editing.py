@@ -3,11 +3,10 @@ import json
 import random
 import discord
 from discord.ext import commands
-from PIL import Image, ImageDraw, ImageFont
 from colorthief import ColorThief
 from discord import app_commands
 import numpy as np
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFont, ImageFilter, ImageEnhance, ImageOps
 from sklearn.cluster import KMeans
 from sklearn.preprocessing import StandardScaler
 from matplotlib import colors
@@ -110,18 +109,15 @@ class editing(commands.Cog):
         img = Image.open(io.BytesIO(image_bytes))
         input_width, input_height = img.size
         if input_width <= max_size and input_height <= max_size:
-            print(f"Image is smaller than {max_size}x{max_size}, no resizing needed.")
             return img.copy()
 
         scale_factor = max_size / max(input_width, input_height)
         new_width = int(input_width * scale_factor)
         new_height = int(input_height * scale_factor)
         resized = img.resize((new_width, new_height))
-        print(f"Image resized from {input_width}x{input_height} to {new_width}x{new_height}.")
         return resized
 
     def extract_colors(self, input_image):
-        print("Converting image to RGB format.")
         img = input_image.convert("RGB")
         pixels = np.array(img)
         colors = pixels.reshape(-1, 3)
@@ -140,35 +136,62 @@ class editing(commands.Cog):
         return hex_colors
 
     def get_palette(self, hex_colors, output_path="palette.png"):
-        color_box_size = 100
+        square_size = 100
         font_size = 15
-        padding = 15
-        text_padding = 10
-        bottom_padding = 1
+        padding = 0
+        bar_height = 28
+        radius = 18
+        bar_margin_x = 10
+        bar_margin_bottom = 8
+
         num_colors = len(hex_colors)
-        width = num_colors * color_box_size
-        height = color_box_size + font_size + padding + bottom_padding + text_padding
+        width = num_colors * (square_size + padding) - padding
+        height = square_size
         img = Image.new("RGB", (width, height), "white")
         draw = ImageDraw.Draw(img)
-        try:
-            font = ImageFont.truetype("./fonts/zhcn.ttf", font_size)
-        except IOError:
-            font = ImageFont.load_default()
+        font = ImageFont.truetype("./fonts/Bold.otf", font_size)
+
         for i, hex_color in enumerate(hex_colors):
-            x0 = i * color_box_size
-            y0 = 0
-            x1 = x0 + color_box_size
-            y1 = color_box_size
-            draw.rectangle([x0, y0, x1, y1], fill=hex_color)
-            text = hex_color
+            x0 = i * (square_size + padding)
+            x1 = x0 + square_size
+            draw.rectangle([x0, 0, x1, square_size], fill=hex_color)
+
+        bar_y1 = height - bar_margin_bottom
+        bar_y0 = bar_y1 - bar_height
+        bar_x0 = bar_margin_x
+        bar_x1 = width - bar_margin_x
+
+        blur_area = img.crop((bar_x0, bar_y0, bar_x1, bar_y1))
+        blurred = blur_area.filter(ImageFilter.GaussianBlur(20))
+        brightened = ImageEnhance.Brightness(blurred).enhance(1.5)
+
+        mask = Image.new("L", (bar_x1 - bar_x0, bar_height), 0)
+        ImageDraw.Draw(mask).rounded_rectangle((0, 0, bar_x1 - bar_x0, bar_height), radius=radius, fill=255)
+
+        img.paste(brightened, (bar_x0, bar_y0), mask)
+
+        text_mask = Image.new("L", (width, height), 0)
+        text_draw = ImageDraw.Draw(text_mask)
+
+        for i, hex_color in enumerate(hex_colors):
+            x0 = i * (square_size + padding)
+            text = hex_color.upper()
             text_bbox = draw.textbbox((0, 0), text, font=font)
             text_width = text_bbox[2] - text_bbox[0]
             text_height = text_bbox[3] - text_bbox[1]
-            text_x = x0 + (color_box_size - text_width) // 2
-            text_y = y1 + padding // 2 + (font_size // 4)
-            draw.text((text_x, text_y), text, fill="black", font=font)
+            text_x = x0 + (square_size - text_width) // 2
+            text_y = bar_y0 + (bar_height - text_height) // 2 - 3
+
+            if bar_x0 <= text_x <= bar_x1 - text_width:
+                text_draw.text((text_x, text_y), text, fill=255, font=font)
+
+        darkened_img = img.copy()
+        enhancer = ImageEnhance.Brightness(darkened_img)
+        darkened_img = enhancer.enhance(0.3)
+
+        img.paste(darkened_img, (0, 0), text_mask)
+
         img.save(output_path)
-        print(f"Palette with labels saved to {output_path}")
         return output_path
 
     @app_commands.command(name="palette", description="Upload an image to generate a color palette.")
