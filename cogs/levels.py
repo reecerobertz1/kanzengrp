@@ -833,20 +833,20 @@ class levels(commands.Cog):
 
         if ctx.guild.id != allowed_guild_id:
             return await ctx.reply("Sorry, this command cannot be used outside of Chromagrp.", ephemeral=True if ctx.interaction else False)
+        else:
+            member = ctx.author
+            guild_id = ctx.guild.id
+            member_id = member.id
+            levels = await self.get_member_levels(member_id, guild_id)
+            xp_range = await self.get_dailyxp(guild_id)
+            try:
+                min_xp, max_xp = map(int, xp_range.replace(" ", "").split("-"))
+            except ValueError:
+                return await ctx.reply("Server daily XP setting is misconfigured.")
 
-        member = ctx.author
-        guild_id = ctx.guild.id
-        member_id = member.id
-        levels = await self.get_member_levels(member_id, guild_id)
-        xp_range = await self.get_dailyxp(guild_id)
-        try:
-            min_xp, max_xp = map(int, xp_range.replace(" ", "").split("-"))
-        except ValueError:
-            return await ctx.reply("Server daily XP setting is misconfigured.")
-
-        xp_amount = randint(min_xp, max_xp)
-        await self.add_xp(member_id, guild_id, xp_amount, levels)
-        await ctx.reply(f"You claimed your **daily reward** and earned `{xp_amount} XP`!")
+            xp_amount = randint(min_xp, max_xp)
+            await self.add_xp(member_id, guild_id, xp_amount, levels)
+            await ctx.reply(f"You claimed your **daily reward** and earned `{xp_amount} XP`!")
 
     @daily.error
     async def daily_error(self, ctx: commands.Context, error):
