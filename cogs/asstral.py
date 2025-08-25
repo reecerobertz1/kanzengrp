@@ -561,5 +561,26 @@ class Asstral(commands.Cog):
     async def before_gain_xp(self):
         await self.bot.wait_until_ready()
 
+    async def check_level_for_logos(self, ctx, member: discord.Member, message: discord.Message):
+        levels = await self.get_member_levels(member.id, ctx.guild.id)
+        required_level = 2
+
+        xp = levels["xp"]
+        lvl = 0
+        while True:
+            if xp < ((50 * (lvl ** 2)) + (50 * (lvl - 1))):
+                break
+            lvl += 1
+
+        role_id = 1312344613926862909
+        rep_role = ctx.guild.get_role(role_id)
+
+        if lvl >= required_level and rep_role not in member.roles:
+            await member.add_roles(rep_role)
+            await message.channel.send(
+                f"Congrats {member.mention}! You have unlocked logos!\n"
+                "The role should be automatically added. If not, please ping a staff member!"
+            )
+
 async def setup(bot: LalisaBot) -> None:
     await bot.add_cog(Asstral(bot))

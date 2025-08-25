@@ -829,6 +829,11 @@ class levels(commands.Cog):
     @commands.hybrid_command(name="daily", description="Claim your daily XP reward")
     @commands.cooldown(1, 86400, commands.BucketType.user)
     async def daily(self, ctx: commands.Context):
+        allowed_guild_id = 694010548605550675
+
+        if ctx.guild.id != allowed_guild_id:
+            return await ctx.reply("Sorry, this command cannot be used outside of Chromagrp.", ephemeral=True if ctx.interaction else False)
+
         member = ctx.author
         guild_id = ctx.guild.id
         member_id = member.id
@@ -852,7 +857,10 @@ class levels(commands.Cog):
             time_left = f"{hours}h {minutes}m {seconds}s"
 
             if ctx.interaction:
-                await ctx.interaction.response.send_message(f"You already claimed your daily! Try again in `{time_left}`.", ephemeral=True)
+                await ctx.interaction.response.send_message(
+                    f"You already claimed your daily! Try again in `{time_left}`.",
+                    ephemeral=True
+                )
             else:
                 await ctx.reply(f"You already claimed your daily! Try again in `{time_left}`.")
         else:
