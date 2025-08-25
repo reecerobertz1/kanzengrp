@@ -593,7 +593,7 @@ class Asstral(commands.Cog):
                 break
             lvl += 1
 
-        role_id = 1312344613926862909
+        role_id = 1131593570827120721
         rep_role = ctx.guild.get_role(role_id)
 
         if lvl >= required_level and rep_role not in member.roles:
