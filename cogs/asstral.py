@@ -614,7 +614,7 @@ class Asstral(commands.Cog):
             member = ctx.author
             guild_id = ctx.guild.id
             member_id = member.id
-            levels = await self.get_member_levels(member_id, guild_id)
+            levels = await self.get_member_levels(member_id)
             xp_amount = randint(100, 300)
             await self.add_xp(member_id, guild_id, xp_amount, levels)
             await ctx.reply(f"You claimed your **daily reward** and earned `{xp_amount} XP`!")
