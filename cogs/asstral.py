@@ -603,5 +603,39 @@ class Asstral(commands.Cog):
                 "The safe role should be automatically added. If not, please ping a staff member!"
             )
 
+    @commands.hybrid_command(name="dailies", description="Claim your daily XP reward")
+    @commands.cooldown(1, 86400, commands.BucketType.user)
+    async def dailies(self, ctx: commands.Context):
+        allowed_guild_id = 1115953206497906728
+
+        if ctx.guild.id != allowed_guild_id:
+            return await ctx.reply("Sorry, this command cannot be used outside of Astral Group.", ephemeral=True if ctx.interaction else False)
+        else:
+            member = ctx.author
+            guild_id = ctx.guild.id
+            member_id = member.id
+            levels = await self.get_member_levels(member_id, guild_id)
+            xp_amount = randint(100, 300)
+            await self.add_xp(member_id, guild_id, xp_amount, levels)
+            await ctx.reply(f"You claimed your **daily reward** and earned `{xp_amount} XP`!")
+
+    @dailies.error
+    async def dailies_error(self, ctx: commands.Context, error):
+        if isinstance(error, commands.CommandOnCooldown):
+            retry = timedelta(seconds=round(error.retry_after))
+            hours, remainder = divmod(retry.seconds, 3600)
+            minutes, seconds = divmod(remainder, 60)
+            time_left = f"{hours}h {minutes}m {seconds}s"
+
+            if ctx.interaction:
+                await ctx.interaction.response.send_message(
+                    f"You already claimed your daily! Try again in `{time_left}`.",
+                    ephemeral=True
+                )
+            else:
+                await ctx.reply(f"You already claimed your daily! Try again in `{time_left}`.")
+        else:
+            raise error
+
 async def setup(bot: LalisaBot) -> None:
     await bot.add_cog(Asstral(bot))
