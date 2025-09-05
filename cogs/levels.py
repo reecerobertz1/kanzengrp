@@ -953,5 +953,17 @@ class levels(commands.Cog):
             await member.add_roles(rep_role)
             await message.channel.send(f"Congrats {member.mention}! You have unlocked rep!\nThe role should be automatically added. If not, please ping a staff member!")
 
+    async def remove_member(self, member_id: int) -> None:
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute('DELETE FROM levelling WHERE member_id = $1', member_id)
+                await conn.commit()
+            await self.bot.pool.release(conn)
+
+    @commands.command()
+    async def asswipe(self, ctx, member: discord.Member):
+        await self.remove_member(member.id)
+        await ctx.reply(f"Okay! I have wiped <@{member.id}> from Asstral's database!")
+
 async def setup(bot):
     await bot.add_cog(levels(bot))
