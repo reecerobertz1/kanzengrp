@@ -637,5 +637,22 @@ class Asstral(commands.Cog):
         else:
             raise error
 
+    async def remove_member(self, member_id: int) -> None:
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute('DELETE FROM levels WHERE member_id = $1', member_id)
+                await conn.commit()
+            await self.bot.pool.release(conn)
+
+    @commands.command()
+    async def asswipe(self, ctx, member: discord.Member):
+        required_role_id = 1116512016195141712
+        role = ctx.guild.get_role(required_role_id)
+        if role not in ctx.author.roles:
+            return await ctx.reply("Hello! You aren't a staff member in Astral. Only staff members can use this command. <3")
+        
+        await self.remove_member(member.id)
+        await ctx.reply(f"Okay! I have wiped <@{member.id}> from Asstral's database!")
+
 async def setup(bot: LalisaBot) -> None:
     await bot.add_cog(Asstral(bot))
