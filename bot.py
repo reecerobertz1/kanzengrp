@@ -14,6 +14,7 @@ extensions = {
     "cogs.chromies",
     "cogs.community",
     "cogs.editing",
+    "cogs.errands",
     "cogs.fun",
     "cogs.levels",
     "cogs.mod",
