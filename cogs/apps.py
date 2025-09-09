@@ -499,6 +499,7 @@ class AnswerFeedback(discord.ui.Modal, title="Chroma Application Feedback"):
         )
         await channel.send(embed=logs)
         await self.member2.send(embed=embed)
+        await interaction.response.send_message(f"Okay i have sent your feedback to {self.member2}")
 
 class applications(commands.Cog):
     def __init__(self, bot: LalisaBot):
