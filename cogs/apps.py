@@ -558,5 +558,25 @@ class applications(commands.Cog):
         info=discord.Embed(description="**INFORMATION**\n• Make sure you have followed all recruit rules.\n• Click the **Apply** button and fill out the form.\n• Hoshi will DM you with our response.\n⠀— ・You will get a response if you're declined!.\n⠀— ・You can request for feedback.\n• You only have 3 attempts to apply.\n• Please make sure your dms are open.\n• The recruit will close on **<t:1758712200:D>**.⠀⠀\n\n-# **Note:** Please be patient with us! You'll get a response.\n-# Ask any questions in <#862624723057508372>.",color=0x2b2d31)
         await ctx.send(embeds=[image, embed, info], view=apply(bot=self.bot))
 
+    @commands.command(name="clearapps")
+    @commands.has_permissions(administrator=True)
+    async def clearapps(self, ctx: commands.Context):
+        query = '''DELETE FROM apps'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query)
+                await conn.commit()
+            await self.bot.pool.release(conn)
+
+        await ctx.send("✅ All application data has been cleared from the database.", delete_after=10)
+
+    @clearapps.error
+    async def clearapps_error(self, ctx: commands.Context, error):
+        if isinstance(error, commands.MissingPermissions):
+            await ctx.send("❌ You don’t have permission to use this command.", delete_after=10)
+        else:
+            raise error
+
+
 async def setup(bot: LalisaBot) -> None:
     await bot.add_cog(applications(bot))
