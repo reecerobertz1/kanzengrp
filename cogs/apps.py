@@ -15,7 +15,16 @@ class answerfeedback(discord.ui.View):
 
     @discord.ui.button(label="Give Feedback")
     async def feedback(self, interaction: discord.Interaction, button: discord.Button):
-        await interaction.response.send_modal(asnwerfeedback(bot=self.bot, member=self.member, member2=self.member2, username=self.username, app_message=self.app_message, reviewer = self.reviewer))
+        await interaction.response.send_modal(
+            AnswerFeedback(
+                bot=self.bot,
+                member2=self.member2,
+                member=self.member,
+                username=self.username,
+                app_message=self.app_message,
+                reviewer=self.reviewer
+            )
+        )
 
 class feedback(discord.ui.View):
     def __init__(self, bot, username, member, member2, app_message, reviewer):
@@ -462,26 +471,34 @@ class application(discord.ui.Modal, title='Chroma Applications'):
             
             await self.bot.pool.release(conn)
 
-class asnwerfeedback(discord.ui.Modal, title='Chroma Application Feedback'):
-    def __init__(self, bot, member2, member, username, app_message):
+class AnswerFeedback(discord.ui.Modal, title="Chroma Application Feedback"):
+    def __init__(self, bot, member2, member, username, app_message, reviewer):
         super().__init__()
         self.bot = bot
         self.member2 = member2
         self.member = member
         self.username = username
         self.app_message = app_message
+        self.reviewer = reviewer
 
-    givenfeedback = discord.ui.TextInput(label="What is your feedback?", style=discord.TextStyle.long)
+    givenfeedback = discord.ui.TextInput(
+        label="What is your feedback?",
+        style=discord.TextStyle.long
+    )
 
     async def on_submit(self, interaction: discord.Interaction):
         channel = interaction.client.get_channel(1409994437261787332)
         embed = discord.Embed(title="Chroma Application Feedback", color=0x2b2d31)
         embed.add_field(name="Response:", value=self.givenfeedback.value, inline=False)
         embed.set_thumbnail(url=interaction.guild.icon)
-        member = self.member2
-        logs = discord.Embed(title="Feedback Logs", description=f"**Feedback**:\n{self.givenfeedback.value}\n\nSent from {interaction.user.mention} to {self.member2}")
+
+        logs = discord.Embed(
+            title="Feedback Logs",
+            description=f"**Feedback**:\n{self.givenfeedback.value}\n\n"
+                        f"Sent from {interaction.user.mention} to {self.member2}"
+        )
         await channel.send(embed=logs)
-        await member.send(embed=embed)
+        await self.member2.send(embed=embed)
 
 class applications(commands.Cog):
     def __init__(self, bot: LalisaBot):
