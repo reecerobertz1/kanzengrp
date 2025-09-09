@@ -492,14 +492,10 @@ class AnswerFeedback(discord.ui.Modal, title="Chroma Application Feedback"):
         embed.add_field(name="Response:", value=self.givenfeedback.value, inline=False)
         embed.set_thumbnail(url=interaction.guild.icon)
 
-        logs = discord.Embed(
-            title="Feedback Logs",
-            description=f"**Feedback**:\n{self.givenfeedback.value}\n\n"
-                        f"Sent from {interaction.user.mention} to {self.member2}"
-        )
+        logs = discord.Embed(title="Feedback Logs", description=f"**Feedback**:\n{self.givenfeedback.value}\n\n"f"Sent from {interaction.user.mention} to {self.member2}")
+        await interaction.response.send_message(f"Okay I have sent your feedback to {self.member2}", ephemeral=True)
         await channel.send(embed=logs)
         await self.member2.send(embed=embed)
-        await interaction.followup.send(f"Okay i have sent your feedback to {self.member2}", ephemeral=True)
 
 class applications(commands.Cog):
     def __init__(self, bot: LalisaBot):
