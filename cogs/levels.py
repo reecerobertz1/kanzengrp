@@ -1196,5 +1196,18 @@ class levels(commands.Cog):
         data = "\n".join(f"{key}: {row[key]}" for key in row.keys())
         await ctx.reply(f"```{data}```")
 
+    async def remove_member(self, member_id: int) -> None:
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute('DELETE FROM levelling WHERE member_id = $1', member_id)
+                await conn.commit()
+            await self.bot.pool.release(conn)
+
+    @commands.command(name="deleteuser")
+    @commands.has_permissions(administrator=True)
+    async def deleteuser(self, ctx, member: discord.Member):
+        await self.remove_member(member.id)
+        await ctx.reply(f"Deleted leveling data for {member.mention}.")
+
 async def setup(bot):
     await bot.add_cog(levels(bot))
