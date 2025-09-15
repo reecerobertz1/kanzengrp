@@ -876,9 +876,10 @@ class levels(commands.Cog):
 
         avatar_url = None
         if is_gif_bg and hasattr(member, 'avatar') and member.avatar and member.avatar.is_animated:
-            avatar_url = member.avatar.replace(static_format='gif', size=256).url
+            avatar_url = member.avatar.url
         else:
             avatar_url = member.display_avatar.replace(static_format='png', size=256).url
+            
         response = await self.bot.session.get(avatar_url)
         avatar = BytesIO(await response.read())
         avatar.seek(0)
