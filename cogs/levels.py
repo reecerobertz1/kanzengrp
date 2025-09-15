@@ -60,11 +60,18 @@ class RankCardConfig(discord.ui.View):
             selection = self.values[0]
 
             if selection == "image":
+                booster_role_id = 728684846846574703
+                extra_role_id = 739513680860938290
+                has_booster = any(role.id == booster_role_id for role in interaction.user.roles)
+                has_extra = any(role.id == extra_role_id for role in interaction.user.roles)
+                can_upload_gif = has_booster or has_extra
+                allowed_types = "PNG, JPEG, or GIF" if can_upload_gif else "PNG or JPEG only — no GIFs, PDFs, or videos."
                 await interaction.response.send_message(
-                    f"<:settings:1304222799639871530>**{interaction.user.name}**, Please upload an image for your rank card within 60 seconds.\n"
-                    f"- PNG or JPEG only — no GIFs, PDFs, or videos.",
-                    ephemeral=True
-                )
+                        f"<:settings:1304222799639871530>**{interaction.user.name}**, Please upload an image for your rank card within 60 seconds.\n"
+                        f"- {allowed_types}\n"
+                        f"- You can upload an image or paste a direct image/GIF URL (e.g. from Tenor, Giphy, Imgur, etc.)",
+                        ephemeral=True
+                    )
 
                 def check(msg):
                     return (
@@ -79,20 +86,47 @@ class RankCardConfig(discord.ui.View):
 
                     if msg.attachments:
                         attachment = msg.attachments[0]
-                        if attachment.content_type.startswith("image") and "gif" not in attachment.content_type:
-                            async with self.view.bot.session.get(attachment.url) as resp:
-                                image_data = BytesIO(await resp.read())
-                                image_data.seek(0)
-                        else:
-                            return await interaction.followup.send("Invalid image format. Try again.", ephemeral=True)
-                    else:
-                        url = msg.content
+                        filename = attachment.filename.lower()
+                        is_gif = filename.endswith(".gif")
+                        print(f"DEBUG: CanUploadGIF={can_upload_gif}, Filename={filename}, is_gif={is_gif}")
+                        if not can_upload_gif and is_gif:
+                            return await interaction.followup.send("GIFs are only allowed for boosters.", ephemeral=True)
+                        valid_exts = (".png", ".jpg", ".jpeg", ".gif") if can_upload_gif else (".png", ".jpg", ".jpeg")
+                        if not filename.endswith(valid_exts):
+                            return await interaction.followup.send(
+                                f"Invalid image format. {'You can use GIFs.' if can_upload_gif else 'Try PNG or JPEG.'}",
+                                ephemeral=True
+                            )
+                        async with self.view.bot.session.get(attachment.url) as resp:
+                            image_data = BytesIO(await resp.read())
+                            image_data.seek(0)
+                    elif msg.content.startswith(("http://", "https://")):
+                        url = msg.content.strip()
+                        if "tenor.com/view/" in url:
+                            async with self.view.bot.session.get(url) as page_resp:
+                                html = await page_resp.text()
+                            import re
+                            match = re.search(r'<meta[^>]+property=["\']og:image["\'][^>]+content=["\']([^"\']+\.gif)["\']', html)
+                            if not match:
+                                match = re.search(r'(https://media\.tenor\.com/[^"\s]+\.gif)', html)
+                            if not match:
+                                return await interaction.followup.send("Could not find a GIF on that Tenor page.", ephemeral=True)
+                            direct_gif_url = match.group(1)
+                            url = direct_gif_url
                         async with self.view.bot.session.get(url) as resp:
-                            if resp.headers.get("content-type", "").startswith("image") and "gif" not in resp.headers.get("content-type", ""):
-                                image_data = BytesIO(await resp.read())
-                                image_data.seek(0)
-                            else:
-                                return await interaction.followup.send("Invalid image URL. Try again.", ephemeral=True)
+                            content_type = resp.headers.get("Content-Type", "").lower()
+                            allowed_types_gif = ["image/png", "image/jpeg", "image/gif"]
+                            allowed_types_no_gif = ["image/png", "image/jpeg"]
+                            is_gif = "image/gif" in content_type
+                            if not can_upload_gif and is_gif:
+                                return await interaction.followup.send("GIFs are only allowed for boosters.", ephemeral=True)
+                            if (can_upload_gif and content_type not in allowed_types_gif) or (not can_upload_gif and content_type not in allowed_types_no_gif):
+                                return await interaction.followup.send(
+                                    f"Invalid image URL. {'You can use GIFs.' if can_upload_gif else 'Try PNG or JPEG.'}",
+                                    ephemeral=True
+                                )
+                            image_data = BytesIO(await resp.read())
+                            image_data.seek(0)
 
                     await self.view.set_card_image(image_data, interaction.user.id, interaction.guild.id)
                     await interaction.followup.send(f"<:check:1291748345194348594> Updated your rank card image.", ephemeral=True)
@@ -498,28 +532,63 @@ class levels(commands.Cog):
 
         return percentage, xp_progress_have, xp_progress_need, lvl
 
-    def draw_centered_text(self, draw: ImageDraw.ImageDraw,levels: LevelRow, text: str, font: ImageFont.FreeTypeFont, *, x_center: int, y_start: int, line_spacing: int = 5):
+    def draw_centered_text(self, draw: ImageDraw.ImageDraw, levels: LevelRow, text: str, font: ImageFont.FreeTypeFont, *, x_center: int, y_start: int, line_spacing: int = 5):
         """Draws multiline text centered at x_center, starting from y_start."""
         lines = text.split('\n')
         for line in lines:
-            text_width, text_height = draw.textsize(line, font=font)
+            bbox = font.getbbox(line)
+            text_width = bbox[2] - bbox[0]
+            text_height = bbox[3] - bbox[1]
             x_position = x_center - text_width // 2
             draw.text((x_position, y_start), line, font=font, fill=levels["color"])
             y_start += text_height + line_spacing
 
-    def draw_centered_text2(self, draw: ImageDraw.ImageDraw,levels: LevelRow, text: str, font: ImageFont.FreeTypeFont, *, x_center: int, y_start: int, line_spacing: int = 5):
+    def draw_centered_text2(self, draw: ImageDraw.ImageDraw, levels: LevelRow, text: str, font: ImageFont.FreeTypeFont, *, x_center: int, y_start: int, line_spacing: int = 5):
         """Draws multiline text centered at x_center, starting from y_start."""
         lines = text.split('\n')
         for line in lines:
-            text_width, text_height = draw.textsize(line, font=font)
+            bbox = font.getbbox(line)
+            text_width = bbox[2] - bbox[0]
+            text_height = bbox[3] - bbox[1]
             x_position = x_center - text_width // 2
             draw.text((x_position, y_start), line, font=font, fill=levels["color2"])
-            y_start += text_height + line_spacing            
+            y_start += text_height + line_spacing      
 
     def get_card(self, avatar: BytesIO, levels: LevelRow, rank: int, user: discord.User, guild: discord.Guild) -> BytesIO:
+        booster_role_id = 728684846846574703
+        is_booster = any(role.id == booster_role_id for role in user.roles)
+        bg_bytes = levels['image']
+        is_gif_bg = False
+
+        if bg_bytes is not None:
+            if bg_bytes[:3] == b'GIF':
+                try:
+                    bg_test = Image.open(BytesIO(bg_bytes))
+                    is_gif_bg = getattr(bg_test, "is_animated", False)
+                except Exception:
+                    is_gif_bg = False
+            else:
+                is_gif_bg = False
+
+        if is_booster and is_gif_bg:
+            bg = Image.open(BytesIO(bg_bytes))
+            frames = []
+            max_frames = min(bg.n_frames, 35)
+            for frame_idx in range(max_frames):
+                bg.seek(frame_idx)
+                frame = bg.convert("RGBA").copy()
+                card = Image.new('RGBA', size=(1500, 500), color='grey')
+                card = self._draw_card(card, frame, avatar, levels, rank, user)
+                frames.append(card)
+            buffer = BytesIO()
+            frames[0].save(
+                buffer, format='GIF', save_all=True, append_images=frames[1:], duration=bg.info.get('duration', 100), loop=0, disposal=2
+            )
+            buffer.seek(0)
+            return buffer
+
         percentage, xp_have, xp_need, level = self.xp_calculations(levels)
         card = Image.new('RGBA', size=(1500, 500), color='grey')
-
         if levels['image'] is not None:
             bg = Image.open(BytesIO(levels["image"]))
         else:
@@ -545,7 +614,7 @@ class levels(commands.Cog):
         bg = bg.resize((1500, 500))
         dark = ImageEnhance.Brightness(bg)
         bg_dark = dark.enhance(1.5)
-        bg_blurred = bg_dark.filter(ImageFilter.GaussianBlur(radius=10))
+        bg_blurred = bg_dark.filter(ImageFilter.GaussianBlur(radius=20))
         mask = Image.open("./assets/rankcard/rank_mask.png").resize((1500, 500)).convert("L")
         inverted_mask = ImageOps.invert(mask)
         bg_frosted = Image.composite(bg_blurred, Image.new("RGBA", bg.size, "white"), inverted_mask)
@@ -594,7 +663,7 @@ class levels(commands.Cog):
         black_size32 = ImageFont.truetype("./fonts/Black.otf", size=32)
 
         ranked = f"#{str(rank)}"
-        levelled = f"{level-1}"
+        levelled = f"{level}"
         xp = f"{xp_have}/{xp_need}"
         msgs = f"{levels['messages']}"
 
@@ -616,17 +685,133 @@ class levels(commands.Cog):
         draw.text((283, 380), f"messages", fill=levels['color'], font=black_size20)
         draw.text((471, 380), f"xp", fill=levels['color'], font=black_size20)
         draw.text((1290, 95), f"badges", fill=levels['color'], font=black_size27)
-        draw.text((172, 116), f"Chroma Levels", fill=levels['color2'], font=bold_size23)
+        draw.text((172, 116), f"chroma levels", fill=levels['color2'], font=bold_size23)
 
         buffer = BytesIO()
         card.save(buffer, 'png')
         buffer.seek(0)
         return buffer
     
-    async def generate_card(self, avatar: BytesIO, levels: LevelRow, rank: int, member: discord.Member, guild: discord.Guild) -> BytesIO:
-        card_generator = functools.partial(self.get_card, avatar, levels, rank, guild)
-        card = await self.bot.loop.run_in_executor(None, self.get_card, avatar, levels, rank, member, guild)
+    def _draw_card(self, card, bg, avatar, levels, rank, user):
+        # Calculate XP progress and level
+        percentage, xp_have, xp_need, level = self.xp_calculations(levels)
+
+        bg_aspect_ratio = bg.width / bg.height
+        target_aspect_ratio = 1500 / 500
+
+        if bg_aspect_ratio > target_aspect_ratio:
+            new_width = int(bg.height * target_aspect_ratio)
+            left = (bg.width - new_width) // 2
+            right = left + new_width
+            top = 0
+            bottom = bg.height
+        else:
+            new_height = int(bg.width / target_aspect_ratio)
+            top = (bg.height - new_height) // 2
+            bottom = top + new_height
+            left = 0
+            right = bg.width
+
+        bg = bg.crop((left, top, right, bottom))
+        bg = bg.resize((1500, 500))
+        dark = ImageEnhance.Brightness(bg)
+        bg_dark = dark.enhance(1.5)
+        bg_blurred = bg_dark.filter(ImageFilter.GaussianBlur(radius=20))
+        mask = Image.open("./assets/rankcard/rank_mask.png").resize((1500, 500)).convert("L")
+        inverted_mask = ImageOps.invert(mask)
+        bg_frosted = Image.composite(bg_blurred, Image.new("RGBA", bg.size, "white"), inverted_mask)
+        bg_frosted.putalpha(inverted_mask)
+        bar, mask_bar = self._make_progress_bar(percentage, levels['color'], levels["color2"])
+        avatar_paste, circle = self.get_avatar(avatar)
+        card.paste(bg, (0, 0))
+        card.paste(bg_frosted, (0, 0), bg_frosted)
+        card.paste(bar, (70, 459), mask_bar)
+        card.paste(avatar_paste, (59, 64), circle)
+
+        empty_badge = Image.open("./assets/badges/badgeempty.png").resize((55, 55))
+
+        badges = [
+            {"path": "./assets/badges/chromies.png", "has": any(role.id == 694016195090710579 for role in user.roles), "rarity": 1},
+            {"path": "./assets/badges/booster.png", "has": any(role.id == 728684846846574703 for role in user.roles), "rarity": 2},
+            {"path": "./assets/badges/staff.png", "has": any(role.id == 739513680860938290 for role in user.roles), "rarity": 3},
+            {"path": "./assets/badges/leads.png", "has": any(role.id == 753678720119603341 for role in user.roles), "rarity": 4},
+            {"path": "./assets/badges/1st.png", "has": any(role.id == 1363283035574767676 for role in user.roles), "rarity": 5},
+        ]
+
+        active_badges = sorted([b for b in badges if b["has"]], key=lambda x: x["rarity"])
+        max_badges = 12
+        badge_size = 55
+        padding_x = 20
+        padding_y = 20
+        start_x = 1234
+        start_y = 145
+
+        for i in range(max_badges):
+            row = i // 3
+            col = i % 3
+            x = start_x + col * (badge_size + padding_x)
+            y = start_y + row * (badge_size + padding_y)
+            if i < len(active_badges):
+                badge_img = Image.open(active_badges[i]["path"]).resize((badge_size, badge_size))
+            else:
+                badge_img = empty_badge
+            card.paste(badge_img, (x, y), badge_img)
+
+        draw = ImageDraw.Draw(card, 'RGBA')
+
+        bold_size23 = ImageFont.truetype("./fonts/Bold.otf", size=23)
+        black_size20 = ImageFont.truetype("./fonts/Black.otf", size=20)
+        black_size27 = ImageFont.truetype("./fonts/Black.otf", size=27)
+        black_size32 = ImageFont.truetype("./fonts/Black.otf", size=32)
+
+        ranked = f"#{str(rank)}"
+        levelled = f"{level}"
+        xp = f"{xp_have}/{xp_need}"
+        msgs = f"{levels['messages']}"
+
+        wrapped_rank = "\n".join(textwrap.fill(line, width=75) for line in ranked.splitlines())
+        self.draw_centered_text2(draw, text=wrapped_rank, font=bold_size23, x_center=201, y_start=400, levels=levels)
+
+        wrapped_levels = "\n".join(textwrap.fill(line, width=75) for line in levelled.splitlines())
+        self.draw_centered_text2(draw, text=wrapped_levels, font=bold_size23, x_center=95, y_start=400, levels=levels)
+
+        wrapped_messages = "\n".join(textwrap.fill(line, width=75) for line in msgs.splitlines())
+        self.draw_centered_text2(draw, text=wrapped_messages, font=bold_size23, x_center=331, y_start=400, levels=levels)
+
+        wrapped_xp = "\n".join(textwrap.fill(line, width=75) for line in xp.splitlines())
+        self.draw_centered_text2(draw, text=wrapped_xp, font=bold_size23, x_center=482, y_start=400, levels=levels)
+
+        draw.text((172, 84), f"{user.name}", fill=levels['color'], font=black_size32)
+        draw.text((72, 380), f"level", fill=levels['color'], font=black_size20)
+        draw.text((180, 380), f"rank", fill=levels['color'], font=black_size20)
+        draw.text((283, 380), f"messages", fill=levels['color'], font=black_size20)
+        draw.text((471, 380), f"xp", fill=levels['color'], font=black_size20)
+        draw.text((1290, 95), f"badges", fill=levels['color'], font=black_size27)
+        draw.text((172, 116), f"chroma levels", fill=levels['color2'], font=bold_size23)
+
         return card
+
+    async def generate_card(self, avatar: BytesIO, levels: LevelRow, rank: int, member: discord.Member, guild: discord.Guild) -> BytesIO:
+        booster_role_id = 728684846846574703
+        is_booster = any(role.id == booster_role_id for role in member.roles)
+        bg_bytes = levels['image']
+        is_gif_bg = False
+        if bg_bytes is not None:
+            if bg_bytes[:3] == b'GIF':
+                try:
+                    bg_test = Image.open(BytesIO(bg_bytes))
+                    is_gif_bg = getattr(bg_test, "is_animated", False)
+                except Exception:
+                    is_gif_bg = False
+            else:
+                is_gif_bg = False
+
+        if is_booster and is_gif_bg:
+            card = await self.bot.loop.run_in_executor(None, self.get_card, avatar, levels, rank, member, guild)
+            return card
+        else:
+            card = await self.bot.loop.run_in_executor(None, self.get_card, avatar, levels, rank, member, guild)
+            return card
 
     async def get_rank(self, member_id: int, guild_id: int) -> int:
         query = '''SELECT COUNT(*) FROM levelling WHERE guild_id = ? AND xp > (SELECT xp FROM levelling WHERE member_id = ? AND guild_id = ?)'''
@@ -675,22 +860,44 @@ class levels(commands.Cog):
     @app_commands.command(name="rank", description="Check your rank")
     @app_commands.guilds(discord.Object(id=694010548605550675))
     async def rank(self, interaction: discord.Interaction, member: Optional[discord.Member] = None):
+        await interaction.response.defer()
         member = member or interaction.user
         levels = await self.get_member_levels(member.id, interaction.guild_id)
         rank = await self.get_rank(member.id, interaction.guild_id)
-        avatar_url = member.display_avatar.replace(static_format='png', size=256).url
-        response = await self.bot.session.get(avatar_url)
         guild = interaction.guild.id
+
+        is_gif_bg = False
+        bg_bytes = levels['image'] if levels else None
+        if bg_bytes is not None and bg_bytes[:3] == b'GIF':
+            try:
+                bg_test = Image.open(BytesIO(bg_bytes))
+                is_gif_bg = getattr(bg_test, "is_animated", False)
+            except Exception:
+                is_gif_bg = False
+
+        avatar_url = None
+        if is_gif_bg and hasattr(member, 'avatar') and member.avatar and member.avatar.is_animated:
+            avatar_url = member.avatar.replace(static_format='gif', size=256).url
+        else:
+            avatar_url = member.display_avatar.replace(static_format='png', size=256).url
+        response = await self.bot.session.get(avatar_url)
         avatar = BytesIO(await response.read())
         avatar.seek(0)
         if levels:
-                card = await self.generate_card(avatar, levels, rank, member, guild)
+            card = await self.generate_card(avatar, levels, rank, member, guild)
         else:
             card = None
         if card:
-            await interaction.response.send_message(file=discord.File(card, 'card.png'), view=RankCardConfig(member.id, bot=self.bot))
+            card.seek(0)
+            header = card.read(6)
+            card.seek(0)
+            ext = 'gif' if header[:3] == b'GIF' else 'png'
+            await interaction.followup.send(
+                file=discord.File(card, f'card.{ext}'),
+                view=RankCardConfig(member.id, bot=self.bot)
+            )
         else:
-            await interaction.response.send_message(f"{member} hasn't gotten levels yet!")
+            await interaction.followup.send(f"{member} hasn't gotten levels yet!")
 
     @app_commands.command(description="See the level leaderboard")
     @app_commands.guilds(discord.Object(id=694010548605550675))
