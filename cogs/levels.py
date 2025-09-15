@@ -1177,5 +1177,23 @@ class levels(commands.Cog):
 
         await ctx.reply(f"Reset rank card colors and image for {member.mention}.")
 
+    @commands.command(name="debugcard")
+    @commands.has_permissions(administrator=True)
+    async def debugcard(self, ctx, member: discord.Member = None):
+        member = member or ctx.author
+        query = '''SELECT * FROM levelling WHERE member_id = ? AND guild_id = ?'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, (member.id, ctx.guild.id))
+                row = await cursor.fetchone()
+            await self.bot.pool.release(conn)
+
+        if not row:
+            await ctx.reply(f"No data found for {member.mention}.")
+            return
+
+        data = "\n".join(f"{key}: {value}" for key, value in row.items())
+        await ctx.reply(f"```{data}```")
+
 async def setup(bot):
     await bot.add_cog(levels(bot))
