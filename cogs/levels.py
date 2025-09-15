@@ -589,7 +589,7 @@ class levels(commands.Cog):
 
         percentage, xp_have, xp_need, level = self.xp_calculations(levels)
         card = Image.new('RGBA', size=(1500, 500), color='grey')
-        if levels['image'] is not None:
+        if levels['image'] is not None and levels['image'] != b'':
             bg = Image.open(BytesIO(levels["image"]))
         else:
             bg = Image.open("./assets/rankcard/rankcard.png")
@@ -693,7 +693,6 @@ class levels(commands.Cog):
         return buffer
     
     def _draw_card(self, card, bg, avatar, levels, rank, user):
-        # Calculate XP progress and level
         percentage, xp_have, xp_need, level = self.xp_calculations(levels)
 
         bg_aspect_ratio = bg.width / bg.height
