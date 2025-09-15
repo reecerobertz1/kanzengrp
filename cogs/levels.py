@@ -1192,7 +1192,7 @@ class levels(commands.Cog):
             await ctx.reply(f"No data found for {member.mention}.")
             return
 
-        data = "\n".join(f"{key}: {value}" for key, value in row.items())
+        data = "\n".join(f"{key}: {row[key]}" for key in row.keys())
         await ctx.reply(f"```{data}```")
 
 async def setup(bot):
