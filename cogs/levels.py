@@ -1160,5 +1160,23 @@ class levels(commands.Cog):
             await member.add_roles(rep_role)
             await message.channel.send(f"Congrats {member.mention}! You have unlocked rep!\nThe role should be automatically added. If not, please ping a staff member!")
 
+    @commands.command(name="resetcard")
+    async def resetcard(self, ctx, member: discord.Member = None):
+        staff_roles = {739513680860938290, 1261435772775563315}
+        author_roles = {role.id for role in ctx.author.roles}
+        if staff_roles.isdisjoint(author_roles):
+            await ctx.reply("Sorry, this command is only available for staff members.", ephemeral=True)
+            return
+
+        member = member or ctx.author
+        query = '''UPDATE levelling SET color = NULL, color2 = NULL, image = NULL WHERE member_id = ? AND guild_id = ?'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, (member.id, ctx.guild.id))
+                await conn.commit()
+            await self.bot.pool.release(conn)
+
+        await ctx.reply(f"Reset rank card colors and image for {member.mention}.")
+
 async def setup(bot):
     await bot.add_cog(levels(bot))
