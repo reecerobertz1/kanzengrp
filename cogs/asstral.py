@@ -618,6 +618,8 @@ class Asstral(commands.Cog):
             xp_amount = randint(100, 300)
             await self.add_xp(member_id, xp_amount, levels)
             await ctx.reply(f"You claimed your **daily reward** and earned `{xp_amount} XP`!")
+            message = ctx.message if ctx.message else await ctx.channel.fetch_message(ctx.channel.last_message_id)
+            await self.check_level_for_logos(ctx, member, message)
 
     @dailies.error
     async def dailies_error(self, ctx: commands.Context, error):
