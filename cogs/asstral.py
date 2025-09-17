@@ -562,7 +562,7 @@ class Asstral(commands.Cog):
         await self.bot.wait_until_ready()
 
     async def check_level_for_logos(self, ctx, member: discord.Member, message: discord.Message):
-        levels = await self.get_member_levels(member.id, ctx.guild.id)
+        levels = await self.get_member_levels(member.id)
         if not levels:
             await message.channel.send("No level data found for this member.")
             return
