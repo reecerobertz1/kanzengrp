@@ -592,7 +592,7 @@ class Asstral(commands.Cog):
                 await message.channel.send("I don't have permission to add roles.")
 
     async def check_level_for_safe_role(self, ctx, member: discord.Member, message: discord.Message):
-        levels = await self.get_member_levels(member.id, ctx.guild.id)
+        levels = await self.get_member_levels(member.id)
         required_level = 5
 
         xp = levels["xp"]
