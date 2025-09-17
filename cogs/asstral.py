@@ -563,8 +563,11 @@ class Asstral(commands.Cog):
 
     async def check_level_for_logos(self, ctx, member: discord.Member, message: discord.Message):
         levels = await self.get_member_levels(member.id, ctx.guild.id)
-        required_level = 2
+        if not levels:
+            await message.channel.send("No level data found for this member.")
+            return
 
+        required_level = 2
         xp = levels["xp"]
         lvl = 0
         while True:
@@ -574,13 +577,19 @@ class Asstral(commands.Cog):
 
         role_id = 1312344613926862909
         rep_role = ctx.guild.get_role(role_id)
+        if not rep_role:
+            await message.channel.send("Role not found in this guild.")
+            return
 
         if lvl >= required_level and rep_role not in member.roles:
-            await member.add_roles(rep_role)
-            await message.channel.send(
-                f"Congrats {member.mention}! You have unlocked logos!\n"
-                "The role should be automatically added. If not, please ping a staff member!"
-            )
+            try:
+                await member.add_roles(rep_role)
+                await message.channel.send(
+                    f"Congrats {member.mention}! You have unlocked logos!\n"
+                    "The role should be automatically added. If not, please ping a staff member!"
+                )
+            except discord.Forbidden:
+                await message.channel.send("I don't have permission to add roles.")
 
     async def check_level_for_safe_role(self, ctx, member: discord.Member, message: discord.Message):
         levels = await self.get_member_levels(member.id, ctx.guild.id)
