@@ -722,5 +722,10 @@ class Asstral(commands.Cog):
     async def on_command_error(self, ctx, error):
         await self.log_error(error, context="Command Error", ctx=ctx)
 
+    @commands.command()
+    async def debugme(self, ctx):
+        levels = await self.get_member_levels(ctx.author.id)
+        await ctx.send(f"Levels: {levels}\nRoles: {[r.id for r in ctx.author.roles]}")
+
 async def setup(bot: LalisaBot) -> None:
     await bot.add_cog(Asstral(bot))
