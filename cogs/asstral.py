@@ -358,137 +358,155 @@ class Asstral(commands.Cog):
 
     @commands.command()
     async def levels(self, ctx: commands.Context):
-        required_role_id = self.role
-        role = ctx.guild.get_role(required_role_id)
-        if role not in ctx.author.roles:
-            return await ctx.reply("Hello! You aren't a member on Astral. Only members can use Hoshi's levels <3")
-        
-        embeds = []
-        description = ""
-        rows = await self.get_leaderboard_stats()
-        per_page = 5 if ctx.author.is_on_mobile() else 10
+        try:
+            required_role_id = self.role
+            role = ctx.guild.get_role(required_role_id)
+            if role not in ctx.author.roles:
+                return await ctx.reply("Hello! You aren't a member on Astral. Only members can use Hoshi's levels <3")
+            
+            embeds = []
+            description = ""
+            rows = await self.get_leaderboard_stats()
+            per_page = 5 if ctx.author.is_on_mobile() else 10
 
-        for i, row in enumerate(rows, start=1):
-            xp = row["xp"]
-            lvl = 0
-            while True:
-                if xp < ((50*(lvl**2))+(50*(lvl-1))):
-                    break
-                lvl += 1
-            msg = "messages" if row['messages'] != 1 else "message"
+            for i, row in enumerate(rows, start=1):
+                xp = row["xp"]
+                lvl = 0
+                while True:
+                    if xp < ((50*(lvl**2))+(50*(lvl-1))):
+                        break
+                    lvl += 1
+                msg = "messages" if row['messages'] != 1 else "message"
 
-            description += f"**{i}.** <@!{row['member_id']}> Level {lvl} / {row['xp']}xp\n\n"
+                description += f"**{i}.** <@!{row['member_id']}> Level {lvl} / {row['xp']}xp\n\n"
 
-            if i % per_page == 0 or i == len(rows):
-                embed = discord.Embed(title="leaderboard", description=description, color=self.embed_colour)
-                embed.set_thumbnail(url=ctx.guild.icon.url)
-                embeds.append(embed)
-                description = ""
+                if i % per_page == 0 or i == len(rows):
+                    embed = discord.Embed(title="leaderboard", description=description, color=self.embed_colour)
+                    embed.set_thumbnail(url=ctx.guild.icon.url)
+                    embeds.append(embed)
+                    description = ""
 
-        if len(embeds) > 1:
-            view = Paginator(embeds)
-            await ctx.send(embed=view.initial, view=view)
-        else:
-            await ctx.send(embed=embed)
+            if len(embeds) > 1:
+                view = Paginator(embeds)
+                await ctx.send(embed=view.initial, view=view)
+            else:
+                await ctx.send(embed=embed)
+        except Exception as e:
+            await self.log_error(e, context="leaderboard command", ctx=ctx)
 
     @commands.command()
     async def level(self, ctx: commands.Context, member: Optional[discord.Member]):
-        required_role_id = self.role
-        role = ctx.guild.get_role(required_role_id)
-        if role not in ctx.author.roles:
-            return await ctx.reply("Hello! You aren't a member on Astral. Only members can use Hoshi's levels <3")
-        
-        async with ctx.typing():
-            member = member or ctx.author
-            levels = await self.get_member_levels(member.id)
-            rank = await self.get_rank(member.id)
-            avatar_url = member.display_avatar.replace(static_format='png', size=256).url
-            response = await self.bot.session.get(avatar_url)
-            avatar = BytesIO(await response.read())
-            avatar.seek(0)
-            if levels:
-                card = await self.generate_card(str(member), str(member.status), avatar, levels, rank)
-                await ctx.send(file=discord.File(card, 'card.png'))
-            else:
-                await ctx.send(f"{member} doesn't have any levels yet!!")
+        try:
+            required_role_id = self.role
+            role = ctx.guild.get_role(required_role_id)
+            if role not in ctx.author.roles:
+                return await ctx.reply("Hello! You aren't a member on Astral. Only members can use Hoshi's levels <3")
+            
+            async with ctx.typing():
+                member = member or ctx.author
+                levels = await self.get_member_levels(member.id)
+                rank = await self.get_rank(member.id)
+                avatar_url = member.display_avatar.replace(static_format='png', size=256).url
+                response = await self.bot.session.get(avatar_url)
+                avatar = BytesIO(await response.read())
+                avatar.seek(0)
+                if levels:
+                    card = await self.generate_card(str(member), str(member.status), avatar, levels, rank)
+                    await ctx.send(file=discord.File(card, 'card.png'))
+                else:
+                    await ctx.send(f"{member} doesn't have any levels yet!!")
+        except Exception as e:
+            await self.log_error(e, context="level card command", ctx=ctx)
 
     @commands.command()
     async def colour(self, ctx: commands.Context, color: str):
-        required_role_id = self.role
-        role = ctx.guild.get_role(required_role_id)
-        if role not in ctx.author.roles:
-            return await ctx.reply("Hello! You aren't a member on Astral. Only members can use Hoshi's levels <3")
-        
-        match = re.search(self.regex_hex, color)
-        if match:
-            await self.set_rank_color(ctx.author, color)
-            embed = discord.Embed(
-                title='changed your bar color!',
-                description=f'your new bar color is `{color}`',
-                color=self.embed_colour
-            )
-            await ctx.reply(embed=embed)
-        else:
-            await ctx.reply(f"`{color}` is not a valid hex color")
-
-    @commands.command()
-    async def xpadd(self, ctx: commands.Context, member: discord.Member, amount: int):
-        required_role_id = self.role
-        role = ctx.guild.get_role(required_role_id)
-        if role not in ctx.author.roles:
-            return await ctx.reply("Hello! You aren't a member on Astral. Only members can use Hoshi's levels <3")
-        
-        levels = await self.get_member_levels(member.id)
-        await self.add_xp(member.id, amount, levels)
-        embed = discord.Embed(
-            title='xp added!',
-            description=f'gave `{amount}xp` to {str(member)}',
-            color=self.embed_colour
-        )
-        await ctx.reply(embed=embed)
-
-    @commands.command()
-    async def xpremove(self, ctx: commands.Context, member: discord.Member, amount: int):
-        required_role_id = self.role
-        role = ctx.guild.get_role(required_role_id)
-        if role not in ctx.author.roles:
-            return await ctx.reply("Hello! You aren't a member on Astral. Only members can use Hoshi's levels <3")
-        
-        levels = await self.get_member_levels(member.id)
-        if levels:
-            if amount > levels['xp']:
-                await ctx.reply("you can't take away more xp than the user already has!")
-            else:
-                await self.remove_xp(member.id, amount, levels)
+        try:
+            required_role_id = self.role
+            role = ctx.guild.get_role(required_role_id)
+            if role not in ctx.author.roles:
+                return await ctx.reply("Hello! You aren't a member on Astral. Only members can use Hoshi's levels <3")
+            
+            match = re.search(self.regex_hex, color)
+            if match:
+                await self.set_rank_color(ctx.author, color)
                 embed = discord.Embed(
-                    title='xp removed!',
-                    description=f'removed `{amount}xp` from {str(member)}',
+                    title='changed your bar color!',
+                    description=f'your new bar color is `{color}`',
                     color=self.embed_colour
                 )
                 await ctx.reply(embed=embed)
-        else:
-            await ctx.reply(f"{str(member)} doesn't have any xp yet!")
+            else:
+                await ctx.reply(f"`{color}` is not a valid hex color")
+        except Exception as e:
+            await self.log_error(e, context="custom color command", ctx=ctx)
+
+    @commands.command()
+    async def xpadd(self, ctx: commands.Context, member: discord.Member, amount: int):
+        try:
+            required_role_id = self.role
+            role = ctx.guild.get_role(required_role_id)
+            if role not in ctx.author.roles:
+                return await ctx.reply("Hello! You aren't a member on Astral. Only members can use Hoshi's levels <3")
+            
+            levels = await self.get_member_levels(member.id)
+            await self.add_xp(member.id, amount, levels)
+            embed = discord.Embed(
+                title='xp added!',
+                description=f'gave `{amount}xp` to {str(member)}',
+                color=self.embed_colour
+            )
+            await ctx.reply(embed=embed)
+        except Exception as e:
+            await self.log_error(e, context="xp add command", ctx=ctx)
+
+    @commands.command()
+    async def xpremove(self, ctx: commands.Context, member: discord.Member, amount: int):
+        try:
+            required_role_id = self.role
+            role = ctx.guild.get_role(required_role_id)
+            if role not in ctx.author.roles:
+                return await ctx.reply("Hello! You aren't a member on Astral. Only members can use Hoshi's levels <3")
+            
+            levels = await self.get_member_levels(member.id)
+            if levels:
+                if amount > levels['xp']:
+                    await ctx.reply("you can't take away more xp than the user already has!")
+                else:
+                    await self.remove_xp(member.id, amount, levels)
+                    embed = discord.Embed(
+                        title='xp removed!',
+                        description=f'removed `{amount}xp` from {str(member)}',
+                        color=self.embed_colour
+                    )
+                    await ctx.reply(embed=embed)
+            else:
+                await ctx.reply(f"{str(member)} doesn't have any xp yet!")
+        except Exception as e:
+            await self.log_error(e, context="xp remove command", ctx=ctx)
 
     @commands.command()
     @commands.has_permissions(administrator=True)
     async def erase(self, ctx: commands.Context):
-        message = await ctx.reply("are you sure you want to reset the ranks? it's irreversible!")
-        await message.add_reaction('👍')
-
-        def check(reaction, user):
-            return user == ctx.author and str(reaction) == '👍'
-
         try:
-            reaction, user = await self.bot.wait_for('reaction_add', timeout=15.0, check=check)
-            await self.reset_levels()
-            embed = discord.Embed(
-                title='success!',
-                description=f'ranks have been erased.',
-                color=self.embed_colour
-            )
-            return await message.edit(content=None, embed=embed)
-        except asyncio.TimeoutError:
-            await message.edit(content="~~are you sure you want to reset the ranks? it's irreversible!~~\nreset has been cancelled!")
+            message = await ctx.reply("are you sure you want to reset the ranks? it's irreversible!")
+            await message.add_reaction('👍')
+
+            def check(reaction, user):
+                return user == ctx.author and str(reaction) == '👍'
+
+            try:
+                reaction, user = await self.bot.wait_for('reaction_add', timeout=15.0, check=check)
+                await self.reset_levels()
+                embed = discord.Embed(
+                    title='success!',
+                    description=f'ranks have been erased.',
+                    color=self.embed_colour
+                )
+                return await message.edit(content=None, embed=embed)
+            except asyncio.TimeoutError:
+                await message.edit(content="~~are you sure you want to reset the ranks? it's irreversible!~~\nreset has been cancelled!")
+        except Exception as e:
+            await self.log_error(e, context="erase command", ctx=ctx)
 
     @commands.Cog.listener()
     async def on_message(self, message: discord.Message) -> None:
@@ -562,83 +580,92 @@ class Asstral(commands.Cog):
         await self.bot.wait_until_ready()
 
     async def check_level_for_logos(self, ctx, member: discord.Member, message: discord.Message):
-        levels = await self.get_member_levels(member.id)
-        if not levels:
-            await message.channel.send("No level data found for this member.")
-            return
+        try:
+            levels = await self.get_member_levels(member.id)
+            if not levels:
+                await message.channel.send("No level data found for this member.")
+                return
 
-        required_level = 2
-        xp = levels["xp"]
-        lvl = 0
-        while True:
-            if xp < ((50 * (lvl ** 2)) + (50 * (lvl - 1))):
-                break
-            lvl += 1
+            required_level = 2
+            xp = levels["xp"]
+            lvl = 0
+            while True:
+                if xp < ((50 * (lvl ** 2)) + (50 * (lvl - 1))):
+                    break
+                lvl += 1
 
-        print(f"Member: {member}, XP: {xp}, Calculated Level: {lvl}")
+            print(f"Member: {member}, XP: {xp}, Calculated Level: {lvl}")
 
-        role_id = 1312344613926862909
-        rep_role = ctx.guild.get_role(role_id)
-        if not rep_role:
-            await message.channel.send("Role not found in this guild.")
-            print("Role not found!")
-            return
+            role_id = 1312344613926862909
+            rep_role = ctx.guild.get_role(role_id)
+            if not rep_role:
+                await message.channel.send("Role not found in this guild.")
+                print("Role not found!")
+                return
 
-        if lvl >= required_level:
-            if rep_role not in member.roles:
-                try:
-                    await member.add_roles(rep_role)
-                    await message.channel.send(
-                        f"Congrats {member.mention}! You have unlocked logos!\n"
-                        "The role should be automatically added. If not, please ping a staff member!"
-                    )
-                    print("Role added!")
-                except discord.Forbidden:
-                    await message.channel.send("I don't have permission to add roles.")
-                    print("Permission error!")
+            if lvl >= required_level:
+                if rep_role not in member.roles:
+                    try:
+                        await member.add_roles(rep_role)
+                        await message.channel.send(
+                            f"Congrats {member.mention}! You have unlocked logos!\n"
+                            "The role should be automatically added. If not, please ping a staff member!"
+                        )
+                        print("Role added!")
+                    except discord.Forbidden:
+                        await message.channel.send("I don't have permission to add roles.")
+                        print("Permission error!")
+                else:
+                    print("Member already has the role.")
             else:
-                print("Member already has the role.")
-        else:
-            print("Member does not meet level requirement.")
+                print("Member does not meet level requirement.")
+        except Exception as e:
+            await self.log_error(e, context="adding level 2", ctx=ctx)
 
     async def check_level_for_safe_role(self, ctx, member: discord.Member, message: discord.Message):
-        levels = await self.get_member_levels(member.id)
-        required_level = 5
+        try:
+            levels = await self.get_member_levels(member.id)
+            required_level = 5
 
-        xp = levels["xp"]
-        lvl = 0
-        while True:
-            if xp < ((50 * (lvl ** 2)) + (50 * (lvl - 1))):
-                break
-            lvl += 1
+            xp = levels["xp"]
+            lvl = 0
+            while True:
+                if xp < ((50 * (lvl ** 2)) + (50 * (lvl - 1))):
+                    break
+                lvl += 1
 
-        role_id = 1131593570827120721
-        rep_role = ctx.guild.get_role(role_id)
+            role_id = 1131593570827120721
+            rep_role = ctx.guild.get_role(role_id)
 
-        if lvl >= required_level and rep_role not in member.roles:
-            await member.add_roles(rep_role)
-            await message.channel.send(
-                f"Congrats {member.mention}! You reached our level requirement!\n"
-                "The safe role should be automatically added. If not, please ping a staff member!"
-            )
+            if lvl >= required_level and rep_role not in member.roles:
+                await member.add_roles(rep_role)
+                await message.channel.send(
+                    f"Congrats {member.mention}! You reached our level requirement!\n"
+                    "The safe role should be automatically added. If not, please ping a staff member!"
+                )
+        except Exception as e:
+            await self.log_error(e, context="adding level 5", ctx=ctx)
 
     @commands.hybrid_command(name="dailies", description="Claim your daily XP reward")
     @commands.cooldown(1, 86400, commands.BucketType.user)
     async def dailies(self, ctx: commands.Context):
-        allowed_guild_id = 1115953206497906728
+        try:
+            allowed_guild_id = 1115953206497906728
 
-        if ctx.guild.id != allowed_guild_id:
-            return await ctx.reply("Sorry, this command cannot be used outside of Astral Group.", ephemeral=True if ctx.interaction else False)
-        else:
-            member = ctx.author
-            guild_id = ctx.guild.id
-            member_id = member.id
-            levels = await self.get_member_levels(member_id)
-            xp_amount = randint(100, 300)
-            await self.add_xp(member_id, xp_amount, levels)
-            await ctx.reply(f"You claimed your **daily reward** and earned `{xp_amount} XP`!")
-            message = ctx.message if ctx.message else await ctx.channel.fetch_message(ctx.channel.last_message_id)
-            await self.check_level_for_logos(ctx, member, message)
+            if ctx.guild.id != allowed_guild_id:
+                return await ctx.reply("Sorry, this command cannot be used outside of Astral Group.", ephemeral=True if ctx.interaction else False)
+            else:
+                member = ctx.author
+                guild_id = ctx.guild.id
+                member_id = member.id
+                levels = await self.get_member_levels(member_id)
+                xp_amount = randint(100, 300)
+                await self.add_xp(member_id, xp_amount, levels)
+                await ctx.reply(f"You claimed your **daily reward** and earned `{xp_amount} XP`!")
+                message = ctx.message if ctx.message else await ctx.channel.fetch_message(ctx.channel.last_message_id)
+                await self.check_level_for_logos(ctx, member, message)
+        except Exception as e:
+            await self.log_error(e, context="dailies command", ctx=ctx)
 
     @dailies.error
     async def dailies_error(self, ctx: commands.Context, error):
@@ -659,21 +686,45 @@ class Asstral(commands.Cog):
             raise error
 
     async def remove_member(self, member_id: int) -> None:
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cursor:
-                await cursor.execute('DELETE FROM levels WHERE member_id = $1', member_id)
-                await conn.commit()
-            await self.bot.pool.release(conn)
+        try:
+            async with self.bot.pool.acquire() as conn:
+                async with conn.cursor() as cursor:
+                    await cursor.execute('DELETE FROM levels WHERE member_id = $1', member_id)
+                    await conn.commit()
+                await self.bot.pool.release(conn)
+        except Exception as e:
+            await self.log_error(e, context="wipe command")
 
     @commands.command()
     async def asswipe(self, ctx, member: discord.Member):
-        required_role_id = 1116512016195141712
-        role = ctx.guild.get_role(required_role_id)
-        if role not in ctx.author.roles:
-            return await ctx.reply("Hello! You aren't a staff member in Astral. Only staff members can use this command. <3")
-        
-        await self.remove_member(member.id)
-        await ctx.reply(f"Okay! I have wiped <@{member.id}> from Asstral's database!")
+        try:
+            required_role_id = 1116512016195141712
+            role = ctx.guild.get_role(required_role_id)
+            if role not in ctx.author.roles:
+                return await ctx.reply("Hello! You aren't a staff member in Astral. Only staff members can use this command. <3")
+            
+            await self.remove_member(member.id)
+            await ctx.reply(f"Okay! I have wiped <@{member.id}> from Asstral's database!")
+        except Exception as e:
+            await self.log_error(e, context="wipe command", ctx=ctx)
+
+    async def log_error(self, error: Exception, context: str = "Unknown", ctx: Optional[commands.Context] = None):
+        error_channel_id = 1328202149401727018
+        error_channel = self.bot.get_channel(error_channel_id)
+        embed = discord.Embed(
+            title="Astral Error",
+            description=f"**Context:** {context}\n**Error:** `{error}`",
+            color=discord.Color.red()
+        )
+        if ctx:
+            embed.add_field(name="User", value=str(ctx.author), inline=False)
+            embed.add_field(name="Command", value=str(ctx.command), inline=False)
+        if error_channel:
+            await error_channel.send(embed=embed)
+
+    @commands.Cog.listener()
+    async def on_command_error(self, ctx, error):
+        await self.log_error(error, context="Command Error", ctx=ctx)
 
 async def setup(bot: LalisaBot) -> None:
     await bot.add_cog(Asstral(bot))
