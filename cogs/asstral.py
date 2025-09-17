@@ -292,7 +292,7 @@ class Asstral(commands.Cog):
         query = '''SELECT * from levels WHERE member_id = ?'''
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cursor:
-                await cursor.execute(query, (member_id))
+                await cursor.execute(query, (member_id,))
                 row = await cursor.fetchone()
                 if row:
                     return row
