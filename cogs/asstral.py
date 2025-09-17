@@ -181,7 +181,7 @@ class Asstral(commands.Cog):
                 xp_progress_need = self._human_format(xp_progress_need)
 
             else:
-                xp_progress_need = f"{xp_progress_need} XP"
+                xp_progress_need = f"{xp_progress_need}"
 
             if xp_progress_have > 999:
                 xp_progress_have = self._human_format(xp_progress_have)
@@ -594,33 +594,29 @@ class Asstral(commands.Cog):
                     break
                 lvl += 1
 
-            print(f"Member: {member}, XP: {xp}, Calculated Level: {lvl}")
-
             role_id = 1312344613926862909
             rep_role = ctx.guild.get_role(role_id)
             if not rep_role:
-                await message.channel.send("Role not found in this guild.")
-                print("Role not found!")
+                await message.channel.send("Role not found in this guild. Please contact staff.")
+                await self.log_error(Exception("Role not found"), context="logos role missing", ctx=ctx)
                 return
 
             if lvl >= required_level:
                 if rep_role not in member.roles:
                     try:
-                        await member.add_roles(rep_role)
+                        await member.add_roles(rep_role, reason="Reached level 2")
                         await message.channel.send(
                             f"Congrats {member.mention}! You have unlocked logos!\n"
                             "The role should be automatically added. If not, please ping a staff member!"
                         )
-                        print("Role added!")
                     except discord.Forbidden:
-                        await message.channel.send("I don't have permission to add roles.")
-                        print("Permission error!")
-                else:
-                    print("Member already has the role.")
-            else:
-                print("Member does not meet level requirement.")
+                        await message.channel.send("I don't have permission to add roles. Please contact staff.")
+                        await self.log_error(Exception("Missing permissions to add role"), context="logos role permission", ctx=ctx)
+                    except Exception as e:
+                        await message.channel.send("An unexpected error occurred while adding the role.")
+                        await self.log_error(e, context="logos role unexpected error", ctx=ctx)
         except Exception as e:
-            await self.log_error(e, context="adding level 2", ctx=ctx)
+            await self.log_error(e, context="check_level_for_logos", ctx=ctx)
 
     async def check_level_for_safe_role(self, ctx, member: discord.Member, message: discord.Message):
         try:
