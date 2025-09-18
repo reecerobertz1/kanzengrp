@@ -576,46 +576,52 @@ class applications(commands.Cog):
 
     @commands.command(name="getapp")
     @commands.has_permissions(administrator=True)
-    async def getapp(self, ctx, query: str):
+    async def getapp(self, ctx, message_link: str = None):
         try:
-            channel = self.bot.get_channel(835497793703247903)
-            if not channel:
-                return await ctx.send("Application channel not found.")
+            if ctx.message.reference:
+                ref = ctx.message.reference
+                channel = ctx.channel
+                original_message = await channel.fetch_message(ref.message_id)
+            elif message_link:
+                try:
+                    parts = message_link.strip().split("/")
+                    channel_id = int(parts[-2])
+                    message_id = int(parts[-1])
+                except Exception:
+                    return await ctx.send("Invalid message link format.", delete_after=10)
+                channel = self.bot.get_channel(channel_id)
+                if not channel:
+                    return await ctx.send("Channel not found.", delete_after=10)
+                original_message = await channel.fetch_message(message_id)
+            else:
+                return await ctx.send("Please reply to an application message or provide a message link.", delete_after=10)
 
-            user_id = None
-            if query.isdigit():
-                user_id = int(query)
+            if not original_message.embeds:
+                return await ctx.send("No embed found in the application message.", delete_after=10)
+            embed = original_message.embeds[0]
 
-            found = False
-            async for message in channel.history(limit=None, oldest_first=True):  # Search entire history, oldest first
-                if message.embeds:
-                    embed = message.embeds[0]
-                    match_instagram = False
-                    match_userid = False
+            instagram = None
+            member_id = None
+            member2 = None
+            for field in embed.fields:
+                if field.name == "What is your Instagram?":
+                    instagram = field.value
 
-                    for field in embed.fields:
-                        if field.name == "What is your Instagram?" and field.value.lower() == query.lower():
-                            match_instagram = True
+            member2 = original_message.author
+            member_id = member2.id if member2 else None
 
-                    if user_id and message.author and message.author.id == user_id:
-                        match_userid = True
+            reviews_view = reviews(
+                bot=self.bot,
+                username=instagram if instagram else "",
+                member=member_id,
+                member2=member2,
+                app_message=None
+            )
 
-                    if embed.title == "Chroma Applications" and (match_instagram or match_userid):
-                        reviews_view = reviews(
-                            bot=self.bot,
-                            username=embed.fields[0].value if embed.fields else "",
-                            member=message.author.id if message.author else None,
-                            member2=message.author,
-                            app_message=None
-                        )
-                        sent_msg = await channel.send(embed=embed, view=reviews_view)
-                        reviews_view.app_message = sent_msg
-                        await sent_msg.edit(view=reviews_view)
-                        await ctx.send(f"Application for **{query}** sent!", delete_after=10)
-                        found = True
-                        break
-            if not found:
-                await ctx.send(f"No application found for: **{query}**", delete_after=10)
+            sent_msg = await ctx.channel.send(embed=embed, view=reviews_view)
+            reviews_view.app_message = sent_msg
+            await sent_msg.edit(view=reviews_view)
+            await ctx.send("✅ Application has been remade in this channel.", delete_after=10)
         except Exception as e:
             await self.log_error(e, context="getapp command", ctx=ctx)
 
