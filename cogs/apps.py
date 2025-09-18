@@ -708,41 +708,54 @@ class applications(commands.Cog):
             await ctx.send(f"⚠️ Error while accepting: `{e}`")
 
 
-    @commands.command(name="decline")
+    @commands.command()
     @commands.has_permissions(manage_guild=True)
-    async def decline_command(self, ctx: commands.Context):
-        if not ctx.message.reference:
-            return await ctx.send("❌ Please reply to an application embed to decline it.", delete_after=10)
+    async def decline(self, ctx, message_link: str):
         try:
-            ref_message = await ctx.channel.fetch_message(ctx.message.reference.message_id)
-            if not ref_message.embeds:
-                return await ctx.send("❌ That message doesn’t have an embed.", delete_after=10)
+            parts = message_link.strip().split("/")
+            channel_id = int(parts[-2])
+            message_id = int(parts[-1])
+            channel = ctx.guild.get_channel(channel_id)
+            msg = await channel.fetch_message(message_id)
 
-            embed = ref_message.embeds[0]
+            if not msg.embeds:
+                return await ctx.send("❌ No embed found.")
+
+            embed = msg.embeds[0]
             instagram = None
             for field in embed.fields:
                 if field.name.lower().startswith("what is your instagram"):
                     instagram = field.value
 
-            query = '''SELECT member_id FROM apps WHERE applied = 1 AND status = 1 LIMIT 1'''
-            async with self.bot.pool.acquire() as conn:
+            query = "SELECT member_id FROM apps WHERE applied = 1 AND status = 1 LIMIT 1"
+            async with ctx.bot.pool.acquire() as conn:
                 async with conn.cursor() as cursor:
                     await cursor.execute(query)
                     row = await cursor.fetchone()
-                await self.bot.pool.release(conn)
+                await ctx.bot.pool.release(conn)
 
             if not row:
-                return await ctx.send("❌ Could not find matching applicant in database.")
+                return await ctx.send("❌ Could not find applicant in DB.")
 
-            applicant_id = int(row[0])
+            applicant_id = row[0]
             member = ctx.guild.get_member(applicant_id) or await ctx.guild.fetch_member(applicant_id)
 
-            view = areyousuredecline(self.bot, instagram or "Unknown", applicant_id, member, ref_message)
-            await view.yes.__wrapped__(view, ctx, None)
+            attempts = await self.get_attempts(ctx.bot, applicant_id)
+            if attempts == 2:
+                remaining_msg = "Remaining attempts: **2**"
+            elif attempts == 1:
+                remaining_msg = "Remaining attempts: **1**"
+            else:
+                remaining_msg = "No more attempts left."
+
+            await member.send(f"Unfortunately your application was declined.\n{remaining_msg}")
+            await ctx.send(f"✅ Declined **{instagram}** and notified them.")
+
+            await self.update_status(ctx.bot, applicant_id, 2)
+            await self.update_applied(ctx.bot, applicant_id, 0)
 
         except Exception as e:
             await ctx.send(f"⚠️ Error while declining: `{e}`")
-
 
 async def setup(bot: LalisaBot) -> None:
     await bot.add_cog(applications(bot))
