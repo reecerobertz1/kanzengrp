@@ -625,5 +625,27 @@ class applications(commands.Cog):
         except Exception as e:
             await self.log_error(e, context="getapp command", ctx=ctx)
 
+    @commands.command(name="deleteapp")
+    @commands.has_permissions(administrator=True)
+    async def deleteapp(self, ctx: commands.Context, user_id: int = None):
+        if not user_id:
+            return await ctx.send("Please provide a user ID.", delete_after=10)
+
+        query = '''DELETE FROM apps WHERE member_id = ?'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, (user_id,))
+                await conn.commit()
+            await self.bot.pool.release(conn)
+
+        await ctx.send(f"✅ Application data for user ID `{user_id}` has been deleted.", delete_after=10)
+
+    @deleteapp.error
+    async def deleteapp_error(self, ctx: commands.Context, error):
+        if isinstance(error, commands.MissingPermissions):
+            await ctx.send("You don’t have permission to use this command.", delete_after=10)
+        else:
+            raise error
+
 async def setup(bot: LalisaBot) -> None:
     await bot.add_cog(applications(bot))
