@@ -576,31 +576,43 @@ class applications(commands.Cog):
 
     @commands.command(name="getapp")
     @commands.has_permissions(administrator=True)
-    async def getapp(self, ctx, instagram: str):
+    async def getapp(self, ctx, query: str):
         try:
             channel = self.bot.get_channel(835497793703247903)
             if not channel:
                 return await ctx.send("Application channel not found.")
 
+            user_id = None
+            if query.isdigit():
+                user_id = int(query)
+
             async for message in channel.history(limit=200):
                 if message.embeds:
                     embed = message.embeds[0]
-                    if embed.title == "Chroma Applications":
-                        for field in embed.fields:
-                            if field.name == "What is your Instagram?" and field.value.lower() == instagram.lower():
-                                reviews_view = reviews(
-                                    bot=self.bot,
-                                    username=instagram,
-                                    member=message.author.id if message.author else None,
-                                    member2=message.author,
-                                    app_message=None
-                                )
-                                sent_msg = await channel.send(embed=embed, view=reviews_view)
-                                reviews_view.app_message = sent_msg
-                                await sent_msg.edit(view=reviews_view)
-                                await ctx.send(f"Application for **{instagram}** sent!", delete_after=10)
-                                return
-            await ctx.send(f"No application found for Instagram: **{instagram}**", delete_after=10)
+                    match_instagram = False
+                    match_userid = False
+
+                    for field in embed.fields:
+                        if field.name == "What is your Instagram?" and field.value.lower() == query.lower():
+                            match_instagram = True
+
+                    if user_id and message.author and message.author.id == user_id:
+                        match_userid = True
+
+                    if embed.title == "Chroma Applications" and (match_instagram or match_userid):
+                        reviews_view = reviews(
+                            bot=self.bot,
+                            username=embed.fields[0].value if embed.fields else "",
+                            member=message.author.id if message.author else None,
+                            member2=message.author,
+                            app_message=None
+                        )
+                        sent_msg = await channel.send(embed=embed, view=reviews_view)
+                        reviews_view.app_message = sent_msg
+                        await sent_msg.edit(view=reviews_view)
+                        await ctx.send(f"Application for **{query}** sent!", delete_after=10)
+                        return
+            await ctx.send(f"No application found for: **{query}**", delete_after=10)
         except Exception as e:
             await self.log_error(e, context="getapp command", ctx=ctx)
 
