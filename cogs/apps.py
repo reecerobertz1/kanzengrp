@@ -576,54 +576,34 @@ class applications(commands.Cog):
 
     @commands.command(name="getapp")
     @commands.has_permissions(administrator=True)
-    async def getapp(self, ctx, message_link: str = None):
-        try:
-            if ctx.message.reference:
-                ref = ctx.message.reference
-                channel = ctx.channel
-                original_message = await channel.fetch_message(ref.message_id)
-            elif message_link:
-                try:
-                    parts = message_link.strip().split("/")
-                    channel_id = int(parts[-2])
-                    message_id = int(parts[-1])
-                except Exception:
-                    return await ctx.send("Invalid message link format.", delete_after=10)
-                channel = self.bot.get_channel(channel_id)
-                if not channel:
-                    return await ctx.send("Channel not found.", delete_after=10)
-                original_message = await channel.fetch_message(message_id)
-            else:
-                return await ctx.send("Please reply to an application message or provide a message link.", delete_after=10)
+    async def getapp(self, ctx, user_id: int):
+        """Fetch an application from the DB and rebuild it with working buttons."""
+        query = '''SELECT * FROM apps WHERE member_id = ?'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, (user_id,))
+                row = await cursor.fetchone()
+            await self.bot.pool.release(conn)
 
-            if not original_message.embeds:
-                return await ctx.send("No embed found in the application message.", delete_after=10)
-            embed = original_message.embeds[0]
+        if not row:
+            return await ctx.send("❌ No application found for that user ID.")
 
-            instagram = None
-            member_id = None
-            member2 = None
-            for field in embed.fields:
-                if field.name == "What is your Instagram?":
-                    instagram = field.value
+        applicant_id = row[0]
+        reviewer_id = row[1]
 
-            member2 = original_message.author
-            member_id = member2.id if member2 else None
+        applicant = await self.bot.fetch_user(applicant_id)
 
-            reviews_view = reviews(
-                bot=self.bot,
-                username=instagram if instagram else "",
-                member=member_id,
-                member2=member2,
-                app_message=None
-            )
+        embed = discord.Embed(
+            title="Application",
+            description=f"Application from {applicant}",
+            color=discord.Color.blue()
+        )
+        embed.add_field(name="Applicant ID", value=applicant_id)
+        embed.add_field(name="Reviewer ID", value=reviewer_id)
 
-            sent_msg = await ctx.channel.send(embed=embed, view=reviews_view)
-            reviews_view.app_message = sent_msg
-            await sent_msg.edit(view=reviews_view)
-            await ctx.send("✅ Application has been remade in this channel.", delete_after=10)
-        except Exception as e:
-            await self.log_error(e, context="getapp command", ctx=ctx)
+        view = reviews(self.bot, applicant_id, reviewer_id)
+
+        await ctx.send(embed=embed, view=view)
 
     @commands.command(name="deleteapp")
     @commands.has_permissions(administrator=True)
