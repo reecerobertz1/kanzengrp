@@ -574,6 +574,35 @@ class applications(commands.Cog):
         else:
             raise error
 
+    @commands.command(name="getapp")
+    @commands.has_permissions(administrator=True)
+    async def getapp(self, ctx, instagram: str):
+        try:
+            channel = self.bot.get_channel(835497793703247903)
+            if not channel:
+                return await ctx.send("Application channel not found.")
+
+            async for message in channel.history(limit=200):
+                if message.embeds:
+                    embed = message.embeds[0]
+                    if embed.title == "Chroma Applications":
+                        for field in embed.fields:
+                            if field.name == "What is your Instagram?" and field.value.lower() == instagram.lower():
+                                reviews_view = reviews(
+                                    bot=self.bot,
+                                    username=instagram,
+                                    member=message.author.id if message.author else None,
+                                    member2=message.author,
+                                    app_message=None
+                                )
+                                sent_msg = await channel.send(embed=embed, view=reviews_view)
+                                reviews_view.app_message = sent_msg
+                                await sent_msg.edit(view=reviews_view)
+                                await ctx.send(f"Application for **{instagram}** sent!", delete_after=10)
+                                return
+            await ctx.send(f"No application found for Instagram: **{instagram}**", delete_after=10)
+        except Exception as e:
+            await self.log_error(e, context="getapp command", ctx=ctx)
 
 async def setup(bot: LalisaBot) -> None:
     await bot.add_cog(applications(bot))
