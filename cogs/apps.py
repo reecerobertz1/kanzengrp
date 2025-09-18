@@ -757,5 +757,21 @@ class applications(commands.Cog):
         except Exception as e:
             await ctx.send(f"⚠️ Error while declining: `{e}`")
 
+    async def update_status(self, member, status=1):
+        query = '''UPDATE apps SET status = ? WHERE member_id = ?'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, (status, member))
+                await conn.commit()
+            await self.bot.pool.release(conn)
+
+    async def update_applied(self, member, applied):
+        query = '''UPDATE apps SET applied = ? WHERE member_id = ?'''
+        async with self.bot.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, (applied, member))
+                await conn.commit()
+            await self.bot.pool.release(conn)
+
 async def setup(bot: LalisaBot) -> None:
     await bot.add_cog(applications(bot))
