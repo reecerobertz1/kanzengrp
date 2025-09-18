@@ -576,34 +576,79 @@ class applications(commands.Cog):
 
     @commands.command(name="getapp")
     @commands.has_permissions(administrator=True)
-    async def getapp(self, ctx, user_id: int):
-        """Fetch an application from the DB and rebuild it with working buttons."""
-        query = '''SELECT * FROM apps WHERE member_id = ?'''
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cursor:
-                await cursor.execute(query, (user_id,))
-                row = await cursor.fetchone()
-            await self.bot.pool.release(conn)
+    async def getapp(self, ctx, message_link: str):
+        try:
+            parts = message_link.strip().split("/")
+            if len(parts) < 3:
+                return await ctx.send("❌ Invalid message link.")
 
-        if not row:
-            return await ctx.send("❌ No application found for that user ID.")
+            channel_id = int(parts[-2])
+            message_id = int(parts[-1])
 
-        applicant_id = row[0]
-        reviewer_id = row[1]
+            channel = self.bot.get_channel(channel_id)
+            if not channel:
+                return await ctx.send("❌ Channel not found.")
 
-        applicant = await self.bot.fetch_user(applicant_id)
+            message = await channel.fetch_message(message_id)
 
-        embed = discord.Embed(
-            title="Application",
-            description=f"Application from {applicant}",
-            color=discord.Color.blue()
-        )
-        embed.add_field(name="Applicant ID", value=applicant_id)
-        embed.add_field(name="Reviewer ID", value=reviewer_id)
+            if not message.embeds:
+                return await ctx.send("❌ No embed found on that message.")
 
-        view = reviews(self.bot, applicant_id, reviewer_id)
+            embed = message.embeds[0]
+            embed = discord.Embed.from_dict(embed.to_dict())
 
-        await ctx.send(embed=embed, view=view)
+            instagram = None
+            edit_link = None
+            program = None
+            other = None
+
+            for field in embed.fields:
+                if field.name.lower().startswith("what is your instagram"):
+                    instagram = field.value
+                elif field.name.lower().startswith("link one edit"):
+                    edit_link = field.value
+                elif field.name.lower().startswith("what editing program"):
+                    program = field.value
+                elif field.name.lower().startswith("anything else"):
+                    other = field.value
+
+            query = '''SELECT member_id FROM apps WHERE applied = 1 AND status = 1 LIMIT 1'''
+            async with self.bot.pool.acquire() as conn:
+                async with conn.cursor() as cursor:
+                    await cursor.execute(query)
+                    row = await cursor.fetchone()
+                await self.bot.pool.release(conn)
+
+            if not row:
+                return await ctx.send("❌ Could not find matching applicant in database.")
+
+            applicant_id = int(row[0])
+            member = ctx.guild.get_member(applicant_id) or await ctx.guild.fetch_member(applicant_id)
+
+            rebuilt = discord.Embed(title="Chroma Applications", color=0x2b2d31)
+            if instagram:
+                rebuilt.add_field(name="What is your Instagram?", value=instagram, inline=False)
+            if edit_link:
+                rebuilt.add_field(name="Link one edit", value=edit_link, inline=False)
+            if program:
+                rebuilt.add_field(name="What editing program or app do you use?", value=program, inline=False)
+            if other:
+                rebuilt.add_field(name="Anything else you want us to know?", value=other, inline=False)
+
+            rebuilt.set_thumbnail(url=ctx.guild.icon)
+
+            view = reviews(
+                bot=self.bot,
+                username=instagram or "Unknown",
+                member=applicant_id,
+                member2=member,
+                app_message=None
+            )
+
+            await ctx.send(embed=rebuilt, view=view)
+
+        except Exception as e:
+            await ctx.send(f"⚠️ Error while fetching application: `{e}`")
 
     @commands.command(name="deleteapp")
     @commands.has_permissions(administrator=True)
