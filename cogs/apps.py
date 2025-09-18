@@ -586,7 +586,8 @@ class applications(commands.Cog):
             if query.isdigit():
                 user_id = int(query)
 
-            async for message in channel.history(limit=200):
+            found = False
+            async for message in channel.history(limit=None, oldest_first=True):  # Search entire history, oldest first
                 if message.embeds:
                     embed = message.embeds[0]
                     match_instagram = False
@@ -611,8 +612,10 @@ class applications(commands.Cog):
                         reviews_view.app_message = sent_msg
                         await sent_msg.edit(view=reviews_view)
                         await ctx.send(f"Application for **{query}** sent!", delete_after=10)
-                        return
-            await ctx.send(f"No application found for: **{query}**", delete_after=10)
+                        found = True
+                        break
+            if not found:
+                await ctx.send(f"No application found for: **{query}**", delete_after=10)
         except Exception as e:
             await self.log_error(e, context="getapp command", ctx=ctx)
 
