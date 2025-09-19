@@ -705,7 +705,7 @@ class Asstral(commands.Cog):
             await self.log_error(e, context="wipe command", ctx=ctx)
 
     async def log_error(self, error: Exception, context: str = "Unknown", ctx: Optional[commands.Context] = None):
-        error_channel_id = 1328202149401727018
+        error_channel_id = 1417859995654951003
         error_channel = self.bot.get_channel(error_channel_id)
         embed = discord.Embed(
             title="Astral Error",
