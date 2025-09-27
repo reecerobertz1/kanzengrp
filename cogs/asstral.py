@@ -378,7 +378,7 @@ class Asstral(commands.Cog):
                     lvl += 1
                 msg = "messages" if row['messages'] != 1 else "message"
 
-                description += f"**{i}.** <@!{row['member_id']}> Level {lvl} / {row['xp']}xp\n\n"
+                description += f"**{i}.** <@!{row['member_id']}>\nLevel {lvl} / {row['xp']}xp / {row['messages']} {msg}\n\n"
 
                 if i % per_page == 0 or i == len(rows):
                     embed = discord.Embed(title="leaderboard", description=description, color=self.embed_colour)

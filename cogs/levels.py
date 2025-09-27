@@ -663,7 +663,7 @@ class levels(commands.Cog):
         black_size32 = ImageFont.truetype("./fonts/Black.otf", size=32)
 
         ranked = f"#{str(rank)}"
-        levelled = f"{level}"
+        levelled = f"{level-1}"
         xp = f"{xp_have}/{xp_need}"
         msgs = f"{levels['messages']}"
 
