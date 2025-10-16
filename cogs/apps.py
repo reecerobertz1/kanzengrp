@@ -55,38 +55,45 @@ class areyousuredecline(discord.ui.View):
         self.member2 = member2
         self.app_message = app_message
 
-    @discord.ui.button(label="Yes", style=discord.ButtonStyle.green)
+    @discord.ui.button(label="Are you sure you want to Accept?", disabled=True)
+    async def are_you_sure(self, interaction: discord.Interaction, button: discord.Button):
+        await interaction.response.send_message("Fake Button", ephemeral=True)
+
+    @discord.ui.button(label="Yes")
     async def yes(self, interaction: discord.Interaction, button: discord.Button):
         member = self.member2
         attempts = await self.get_attempts(member=self.member)
         if self.app_message and self.app_message.embeds:
             embed = self.app_message.embeds[0]
             embed.color = discord.Color(0xdc343d)
-            embed.set_thumbnail(
-                url="https://cdn.discordapp.com/attachments/1055168099252437094/1406644414809378886/Comp_1_00001.png"
-            )
+            embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/1055168099252437094/1406644414809378886/Comp_1_00001.png")
             await self.app_message.edit(embed=embed, view=None)
 
         await interaction.response.send_message(f"You declined **{self.username}**", ephemeral=True)
         if attempts == 2:
-            msg = "Unfortunately your application was declined.\nYou can re-apply when you are ready!\n\nRemaining attempts: **2**\n\nYou can now request feedback during chroma recruits!\nClick the button below to get feedback on your edit."
+            msg = "Unfortunately your application was declined.\nYou can re-apply when you are ready!\n\nRemaining attempts: **2**\n\nYou can now request feedback during chroma recruits!\nClick the button below to get feedback on your edit. Please DM a lead or staff member to request feedback."
             view=feedback(self.bot, self.username, self.member, self.member2, self.app_message, reviewer=interaction.user.id)
         elif attempts == 1:
-            msg = "Unfortunately your application was declined.\nYou can re-apply when you are ready!\n\nRemaining attempts: **1**"
+            msg = "Unfortunately your application was declined.\nYou can re-apply when you are ready!\n\nRemaining attempts: **1**\n\nIf the button does not work. Please DM a lead or staff member to request feedback."
             view=feedback(self.bot, self.username, self.member, self.member2, self.app_message, reviewer=interaction.user.id)
         else:
             msg = "Unfortunately your application was declined and you have used all your attempts for this recruit.\nPlease don't be discouraged as we will do more recruits in the future!\n\nUnfortunetly you're not able to receive feedback now."
             view=None
-        await member.send(msg, view=view)
+        try:
+            await member.send(msg, view=view)
+        except Exception as e:
+            error_channel = interaction.client.get_channel(1420069890420899910)
+            if error_channel:
+                await error_channel.send(f"<@{interaction.user.id}> Could not DM user {member}: {e} \n\nTheir username is **{self.username}**. Please contact a lead or DM the applicant privately.")
 
         await self.update_status(status=2, member=self.member)
         await self.update_applied(applied=0, member=self.member)
-        await interaction.message.delete()
+        await interaction.client.get_channel(1428365138326458458).send(f"{interaction.user.name} declined {self.username}")
 
-    @discord.ui.button(label="No", style=discord.ButtonStyle.red)
+    @discord.ui.button(label="No")
     async def no(self, interaction: discord.Interaction, button: discord.Button):
         await interaction.response.send_message("Okay I have cancelled the decline!", ephemeral=True)
-        await interaction.message.delete()
+        await interaction.message.edit(view=reviews(self.bot, self.username, self.member, self.member2, self.app_message))
 
     async def update_status(self, member, status):
         query = '''UPDATE apps SET status = ? WHERE member_id = ?'''
@@ -130,15 +137,17 @@ class areyousureaccept(discord.ui.View):
         self.member2 = member2
         self.app_message = app_message
 
-    @discord.ui.button(label="Yes", style=discord.ButtonStyle.green)
+    @discord.ui.button(label="Are you sure you want to Accept?", disabled=True)
+    async def are_you_sure(self, interaction: discord.Interaction, button: discord.Button):
+        await interaction.response.send_message("Fake Button", ephemeral=True)
+
+    @discord.ui.button(label="Yes")
     async def yes(self, interaction: discord.Interaction, button: discord.Button):
         member = self.member2
         if self.app_message and self.app_message.embeds:
             embed = self.app_message.embeds[0]
             embed.color = discord.Color(0x248045)
-            embed.set_thumbnail(
-                url="https://cdn.discordapp.com/attachments/1055168099252437094/1406644414360846407/Comp_1_00000.png"
-            )
+            embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/1055168099252437094/1406644414360846407/Comp_1_00000.png")
             await self.app_message.edit(embed=embed, view=None)
 
         await interaction.response.send_message(f"You accepted **{self.username}**", ephemeral=True)
@@ -150,21 +159,25 @@ class areyousureaccept(discord.ui.View):
         )
         channel = interaction.client.get_channel(725373131220320347)
         invite = await channel.create_invite(max_age=86400, max_uses=1, unique=True)
-        await member.send(str(invite), embed=embed)
+        try:
+            await member.send(str(invite), embed=embed)
+        except Exception as e:
+            error_channel = interaction.client.get_channel(1420069890420899910)
+            if error_channel:
+                await error_channel.send(f"<@{interaction.user.id}> Could not DM user {member}: {e} \n\nTheir username is **{self.username}**. Please contact a lead so they can DM the applicant privately.")
 
         await interaction.client.get_channel(835837557036023819).send(
-            f"https://instagram.com/{self.username}/"
+            f"{interaction.user.name} accepted https://instagram.com/{self.username}/"
         )
 
         await self.update_status(status=4, member=self.member)
         await self.update_applied(applied=0, member=self.member)
         await self.update_accepted(accepted=1, member=self.member)
-        await interaction.message.delete()
 
-    @discord.ui.button(label="No", style=discord.ButtonStyle.red)
+    @discord.ui.button(label="No")
     async def no(self, interaction: discord.Interaction, button: discord.Button):
         await interaction.response.send_message("Okay I have cancelled the accept!", ephemeral=True)
-        await interaction.message.delete()
+        await interaction.message.edit(view=reviews(self.bot, self.username, self.member, self.member2, self.app_message))
 
     async def update_status(self, member, status):
         query = '''UPDATE apps SET status = ? WHERE member_id = ?'''
@@ -209,19 +222,11 @@ class reviews(discord.ui.View):
 
     @discord.ui.button(label="Accept", style=discord.ButtonStyle.green)
     async def accept(self, interaction: discord.Interaction, button: discord.Button):
-        await interaction.response.send_message(
-            f"Are you sure you'd like to accept {self.username}?",
-            view=areyousureaccept(self.bot, self.username, self.member, self.member2, self.app_message),
-            ephemeral=True
-        )
+        await interaction.message.edit(view=areyousureaccept(self.bot, self.username, self.member, self.member2, self.app_message))
 
     @discord.ui.button(label="Decline", style=discord.ButtonStyle.red)
     async def decline(self, interaction: discord.Interaction, button: discord.Button):
-        await interaction.response.send_message(
-            f"Are you sure you'd like to decline {self.username}?",
-            view=areyousuredecline(self.bot, self.username, self.member, self.member2, self.app_message),
-            ephemeral=True
-        )
+        await interaction.message.edit(view=areyousuredecline(self.bot, self.username, self.member, self.member2, self.app_message))
 
     @discord.ui.button(label="Send to voting")
     async def vote(self, interaction: discord.Interaction, button: discord.Button):
@@ -400,6 +405,7 @@ class application(discord.ui.Modal, title='Chroma Applications'):
         embed.add_field(name="Link one edit", value=self.edit.value, inline=False)
         embed.add_field(name="What editing program or app do you use?", value=self.program.value, inline=False)
         embed.set_thumbnail(url=interaction.guild.icon)
+        embed.set_footer(text=f"Applicant ID: {interaction.user.id} | Applicant Name: {interaction.user}", icon_url=interaction.user.display_avatar.url)
 
         if self.other.value:
             embed.add_field(name="Anything else you want us to know?", value=self.other.value, inline=False)
@@ -552,7 +558,7 @@ class applications(commands.Cog):
         image=discord.Embed(color=0x2b2d31)
         image.set_image(url="https://cdn.discordapp.com/attachments/1055168099252437094/1404752434076844082/welc_banner_00000_00000_00000_00000_00000.png?ex=689c5527&is=689b03a7&hm=36d9529dbac9c55fab855ba37596287458991beba4c926c0bbc3ec892b697df1&")
         embed=discord.Embed(title="CHROMA APPLICATIONS", description="Welcome to [chromagrp's](https://instagram.com/chromagrp) recruitment!! Please read \nthe information below!", color=0x2b2d31)
-        info=discord.Embed(description="**INFORMATION**\n• Make sure you have followed all recruit rules.\n• Click the **Apply** button and fill out the form.\n• Hoshi will DM you with our response.\n⠀— ・You will get a response if you're declined!.\n⠀— ・You can request for feedback.\n• You only have 3 attempts to apply.\n• Please make sure your dms are open.\n• The recruit will close on **<t:1758712200:D>**.⠀⠀\n\n-# **Note:** Please be patient with us! You'll get a response.\n-# Ask any questions in <#862624723057508372>.",color=0x2b2d31)
+        info=discord.Embed(description="**INFORMATION**\n• Make sure you have followed all recruit rules.\n• Click the **Apply** button and fill out the form.\n• Hoshi will DM you with our response.\n⠀— ・You will get a response if you're declined!.\n⠀— ・You can request for feedback.\n• You only have 3 attempts to apply.\n• Please make sure your dms are open.\n• The recruit will close on **<t:1761832740:D>**.⠀⠀\n\n-# **Note:** Please be patient with us! You'll get a response.\n-# Ask any questions in <#862624723057508372>.",color=0x2b2d31)
         await ctx.send(embeds=[image, embed, info], view=apply(bot=self.bot))
 
     @commands.command(name="clearapps")
@@ -772,6 +778,11 @@ class applications(commands.Cog):
                 await cursor.execute(query, (applied, member))
                 await conn.commit()
             await self.bot.pool.release(conn)
+
+    async def notify_error(self, interaction, error_message):
+        channel = interaction.client.get_channel(1420069890420899910)
+        if channel:
+            await channel.send(f"<@{interaction.user.id}> {error_message}")
 
 async def setup(bot: LalisaBot) -> None:
     await bot.add_cog(applications(bot))
