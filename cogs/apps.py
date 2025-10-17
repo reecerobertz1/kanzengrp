@@ -71,10 +71,10 @@ class areyousuredecline(discord.ui.View):
 
         await interaction.response.send_message(f"You declined **{self.username}**", ephemeral=True)
         if attempts == 2:
-            msg = "Unfortunately your application was declined.\nYou can re-apply when you are ready!\n\nRemaining attempts: **2**\n\nYou can now request feedback during chroma recruits!\nClick the button below to get feedback on your edit. Please DM a lead or staff member to request feedback."
+            msg = "Unfortunately your application was declined.\nYou can re-apply when you are ready!\n\nRemaining attempts: **2**\n\nYou can now request feedback during chroma recruits!\nClick the button below to get feedback on your edit.\n\nIf the button does not work, please DM a lead or staff member to request feedback."
             view=feedback(self.bot, self.username, self.member, self.member2, self.app_message, reviewer=interaction.user.id)
         elif attempts == 1:
-            msg = "Unfortunately your application was declined.\nYou can re-apply when you are ready!\n\nRemaining attempts: **1**\n\nIf the button does not work. Please DM a lead or staff member to request feedback."
+            msg = "Unfortunately your application was declined.\nYou can re-apply when you are ready!\n\nRemaining attempts: **1**\n\nIf the button does not work, please DM a lead or staff member to request feedback."
             view=feedback(self.bot, self.username, self.member, self.member2, self.app_message, reviewer=interaction.user.id)
         else:
             msg = "Unfortunately your application was declined and you have used all your attempts for this recruit.\nPlease don't be discouraged as we will do more recruits in the future!\n\nUnfortunetly you're not able to receive feedback now."
