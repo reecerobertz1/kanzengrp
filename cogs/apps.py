@@ -55,7 +55,7 @@ class areyousuredecline(discord.ui.View):
         self.member2 = member2
         self.app_message = app_message
 
-    @discord.ui.button(label="Are you sure you want to Accept?", disabled=True)
+    @discord.ui.button(label="Are you sure you want to Decline?", disabled=True)
     async def are_you_sure(self, interaction: discord.Interaction, button: discord.Button):
         await interaction.response.send_message("Fake Button", ephemeral=True)
 
@@ -558,7 +558,7 @@ class applications(commands.Cog):
         image=discord.Embed(color=0x2b2d31)
         image.set_image(url="https://cdn.discordapp.com/attachments/1055168099252437094/1404752434076844082/welc_banner_00000_00000_00000_00000_00000.png?ex=689c5527&is=689b03a7&hm=36d9529dbac9c55fab855ba37596287458991beba4c926c0bbc3ec892b697df1&")
         embed=discord.Embed(title="CHROMA APPLICATIONS", description="Welcome to [chromagrp's](https://instagram.com/chromagrp) recruitment!! Please read \nthe information below!", color=0x2b2d31)
-        info=discord.Embed(description="**INFORMATION**\n• Make sure you have followed all recruit rules.\n• Click the **Apply** button and fill out the form.\n• Hoshi will DM you with our response.\n⠀— ・You will get a response if you're declined!.\n⠀— ・You can request for feedback.\n• You only have **3** attempts to apply.\n• Please make sure your dms are open.\n• Instagram editors only.\n• Remakes or velocities are **not** accepted.\n• The recruit will close on **<t:1761832740:D>**.⠀⠀\n\n-# **Note:** Please be patient with us! Ask any questions \n-# in <#862624723057508372>.",color=0x2b2d31)
+        info=discord.Embed(description="**INFORMATION**\n• Make sure you have followed all recruit rules.\n• Click the **Apply** button and fill out the form.\n• Hoshi will DM you with our response.\n⠀— ・You will get a response if you're declined!.\n⠀— ・You can request for feedback.\n• You only have **3** attempts to apply.\n• Please make sure your dms are open.\n• Instagram editors only.\n• Remakes or velocities are **not** accepted.\n• Edits older than **6 months** will be auto declined.\n• The recruit will close on **<t:1761832740:D>**.⠀⠀\n\n-# **Note:** Please be patient with us! Ask any questions \n-# in <#862624723057508372>.",color=0x2b2d31)
         await ctx.send(embeds=[image, embed, info], view=apply(bot=self.bot))
 
     @commands.command(name="clearapps")
