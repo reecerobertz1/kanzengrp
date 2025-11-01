@@ -105,7 +105,7 @@ class RankCardConfig(discord.ui.View):
                         if "tenor.com/view/" in url:
                             async with self.view.bot.session.get(url) as page_resp:
                                 html = await page_resp.text()
-                            import re
+                            
                             match = re.search(r'<meta[^>]+property=["\']og:image["\'][^>]+content=["\']([^"\']+\.gif)["\']', html)
                             if not match:
                                 match = re.search(r'(https://media\.tenor\.com/[^"\s]+\.gif)', html)
