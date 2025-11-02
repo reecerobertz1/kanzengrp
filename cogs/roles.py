@@ -68,7 +68,6 @@ class ColourRoleDropdown(discord.ui.Select):
 
         await interaction.response.send_message(msg, ephemeral=True)
 
-
 class ColourRoleView(discord.ui.View):
     def __init__(self, roles: list[discord.Role]):
         super().__init__(timeout=None)
@@ -131,7 +130,6 @@ class ProgramRolesDropDown(discord.ui.Select):
 
         await interaction.response.send_message(msg, ephemeral=True)
 
-
 class ProgramRoles(discord.ui.View):
     def __init__(self, roles: list[discord.Role]):
         super().__init__(timeout=None)
@@ -182,7 +180,6 @@ class PronounsRolesDropDown(discord.ui.Select):
 
         await interaction.response.send_message(msg, ephemeral=True)
 
-
 class PronounsRoles(discord.ui.View):
     def __init__(self, roles: list[discord.Role]):
         super().__init__(timeout=None)
@@ -195,11 +192,12 @@ class GamesRolesDropDown(discord.ui.Select):
             "<:game_HonkaiStarRail:1334957545424556062>",
             "<:game_GenshinImpact:1334957721161695273>",
             "<:game_ZenlessZoneZero:1334957918382067785>",
-            "<:game_minecraft:838325085679910913>",
-            "<:game_valorant:838325478384205834>",
-            "<:game_roblox:838324839781236748>",
-            "<:game_vbucks:1285692390652510309>",
+            "<:game_DuetNightAbyss:1431984077497434123>",
             "<:game_ProjectSekai:1380146074156793976>",
+            "<:game_minecraft:838325085679910913>",
+            "<:game_roblox:838324839781236748>",
+            "<:game_valorant:838325478384205834>",
+            "<:game_vbucks:1285692390652510309>",
             "<:icon_discord:1358790160799502608>"
         ]
 
@@ -399,6 +397,27 @@ class roles(commands.Cog):
         roles = [ctx.guild.get_role(rid) for rid in role_ids if ctx.guild.get_role(rid)]
 
         await ctx.send(embed=pings_embed, view=ServerPingRoles(roles))
+
+        games_embed = discord.Embed(description="**        ×       Favourite Games     ༝ ⁺  **")
+        games_embed.add_field(name=" ", value="<:game_WutheringWaves:1334957321096269919><@&1334956809445970055>"
+        "\n<:game_HonkaiStarRail:1334957545424556062><@&1285680260955770910>"
+        "\n<:game_GenshinImpact:1334957721161695273><@&836939480215846932>"
+        "\n<:game_ZenlessZoneZero:1334957918382067785><@&1285679969627803739>"
+        "\n<:game_DuetNightAbyss:1431984077497434123><@&1431984148880424970>", inline=True)
+        games_embed.add_field(name=" ", value="<:game_ProjectSekai:1380146074156793976><@&1295758757506060348>"
+        "\n<:game_minecraft:838325085679910913><@&740236368931979377>"
+        "\n<:game_roblox:838324839781236748><@&838323307765170236>"
+        "\n<:game_valorant:838325478384205834><@&838323263041175572>"
+        "\n<:game_vbucks:1285692390652510309><@&1285692240169013350>", inline=True)
+        games_embed.add_field(name=" ", value="<:icon_discord:1358790160799502608><@&1310217573262163978>", inline=True)
+        games_embed.set_image(url="https://cdn.discordapp.com/attachments/1248039148888129647/1393627203249508373/Comp_10_00000.png?ex=687d1679&is=687bc4f9&hm=9d4554d8cef4cdb9921328a07f6efb1fafd34d5fbed30a90fe609ff492eb7d2c&")
+        role_ids = [
+            1334956809445970055, 1285680260955770910, 836939480215846932, 1285679969627803739, 1431984148880424970,
+            1295758757506060348, 740236368931979377, 838323307765170236, 838323263041175572, 1285692240169013350,
+            1310217573262163978
+        ]
+        roles = [ctx.guild.get_role(rid) for rid in role_ids if ctx.guild.get_role(rid)]
+        await ctx.send(embed=games_embed, view=gameRoles(roles))
 
 async def setup(bot: LalisaBot) -> None:
     await bot.add_cog(roles(bot))
