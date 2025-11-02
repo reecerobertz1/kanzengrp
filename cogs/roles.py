@@ -216,7 +216,7 @@ class GamesRolesDropDown(discord.ui.Select):
         super().__init__(
             placeholder=".　　　　 Select your favourite games",
             min_values=0,
-            max_values=1,
+            max_values=100,
             options=options
         )
 
