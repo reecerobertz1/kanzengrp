@@ -16,6 +16,7 @@ extensions = {
     "cogs.editing",
     "cogs.errands",
     "cogs.fun",
+    "cogs.games",
     "cogs.levels",
     "cogs.mod",
     "cogs.other",
