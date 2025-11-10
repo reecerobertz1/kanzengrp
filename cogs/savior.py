@@ -114,7 +114,6 @@ class Savior(commands.Cog):
     @commands.command()
     async def saviorverify(self, ctx):
         embed = discord.Embed(description="## Verification Required\n• To access the server, you need to pass the verification first.\n• Click `Verify` to begin the verification process.", color=0x2b2d31)
-        embed.set_image(url="https://cdn.discordapp.com/attachments/1395051044773298236/1411030763255890104/verify_banner_00000.png?ex=68b32c4d&is=68b1dacd&hm=d67ca1aa5dacc39f6361224173bed89bb1563e282a86416ffef2275dd2895659&")
         await ctx.send(embed=embed, view=verify())
 
 async def setup(bot):
