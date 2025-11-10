@@ -23,6 +23,7 @@ extensions = {
     "cogs.profiles",
     "cogs.qotd",
     "cogs.roles",
+    "cogs.savior",
     "cogs.settings",
     "cogs.tickets",
     "cogs.welc"
