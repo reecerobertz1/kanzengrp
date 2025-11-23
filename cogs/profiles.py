@@ -71,7 +71,7 @@ class ConfigSelectMenu(discord.ui.Select):
             await self.get_text_response(interaction, "styles you prefer to do", 50, self.set_card_styles)
 
         elif selection == "Stan List":
-            await self.get_text_response(interaction, "your stan list", 300, self.set_card_stan)
+            await self.get_text_response(interaction, "your stan list", 400, self.set_card_stan)
 
         elif selection == "Birthday":
             await self.get_text_response(interaction, "your birthday (e.g. 21st June)", 50, self.set_card_birthday)
