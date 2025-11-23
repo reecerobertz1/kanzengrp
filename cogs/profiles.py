@@ -308,7 +308,7 @@ class profiles(commands.Cog):
         tiktok = profiles["tiktok"] or "-"
         games = profiles["games"] or "-"
         birthday = f'Birthday: {profiles["birthday"]}' or "-"
-        joined_at = user.joined_at.strftime("%d %B %Y") if user.joined_at else "-"
+        joined_at = user.joined_at.strftime("%d %B") if user.joined_at else "-"
 
         wrapped_styles = "\n".join(textwrap.fill(line, width=30) for line in styles.splitlines())
         wrapped_about_me = "\n".join(textwrap.fill(line, width=35) for line in about_me.splitlines())
