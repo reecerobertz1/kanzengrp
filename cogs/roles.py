@@ -388,7 +388,7 @@ class roles(commands.Cog):
         "\n<@&1312389423807332463> "
         "\n<@&1350946646841626635> "
         "\n<@&1352451309822804098>"
-        "\n<@1439749244301869107>", inline=True)
+        "\n<@&1439749244301869107>", inline=True)
         pings_embed.set_image(url="https://cdn.discordapp.com/attachments/1248039148888129647/1393627203249508373/Comp_10_00000.png?ex=687d1679&is=687bc4f9&hm=9d4554d8cef4cdb9921328a07f6efb1fafd34d5fbed30a90fe609ff492eb7d2c&")
 
         role_ids = [
