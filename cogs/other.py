@@ -13,10 +13,7 @@ class other(commands.Cog):
         if message.author.bot:
             return
         if message.content.lower() == "chroma":
-            if message.author.id == 756361726257004625:
-                await message.channel.send(f"OMG RYAN WE LOVE YOU TOO!!!!!!!!!")
-            else:
-                await message.channel.send(f"**{message.author.name}** loves chroma\n-# <:1166196258499727480:1325926576042410094> we love you too! **<3**")
+            await message.channel.send(f"**{message.author.name}** loves chroma\n-# <:1166196258499727480:1325926576042410094> we love you too! **<3**")
         if message.type == discord.MessageType.premium_guild_subscription:
             chromaembed = discord.Embed(
                 title="Thank you for boosting",

@@ -16,10 +16,8 @@ class welcandleave(commands.Cog):
     async def on_member_join(self ,member: discord.Member):
         public = 835498963418480650
         role = 694016195090710579
-        asterrole = 762053343245500425
         stored_guild_id = 694010548605550675
         scout_guild_id = 835495688832811039
-        aster = 748021504830341330
         # CHROMA MEMBERS WELCOME EMBED
         if member.guild.id == stored_guild_id:
             await member.add_roles(member.guild.get_role(role))
@@ -45,12 +43,6 @@ class welcandleave(commands.Cog):
                 await member.add_roles(member.guild.get_role(public))
             else:
                 await member.add_roles(member.guild.get_role(836244165637046283))
-        # ASTER WELCOME EMBED
-        elif member.guild.id == aster:
-            embed = discord.Embed(title=f'ᯓ Welcome {member.name} ༝ ⁺', color=0x505147, description=f"Read our [rules](https://discord.com/channels/748021504830341330/1292635243987210260)\nChat with other members [here](https://discord.com/channels/748021504830341330/1292636359302971402)\nGet edit help [here](https://discord.com/channels/748021504830341330/1292636638404677662)")
-            channel = self.bot.get_channel(1292647516222787686)
-            embed.set_thumbnail(url=member.display_avatar.url)
-            await channel.send(f'{member.mention}', embed=embed)
 
     async def add_member(self, member_id: int, xp=5) -> None:
         query = '''INSERT INTO levelling (member_id, xp, messages, color) VALUES (?, ?, ?, ?)'''
@@ -76,10 +68,6 @@ class welcandleave(commands.Cog):
             channel = self.bot.get_channel(725389930607673384)
             await channel.send(f"**{member.display_name}** has left Chroma\n-# ・⋆  We will miss you ")
             await self.remove_member(member.id)
-        # ASTER LEAVE MESSAGE
-        elif member.guild.id == aster:
-            channel = self.bot.get_channel(1292647516222787686)
-            await channel.send(f"**{member.display_name}** has left Aster\n-# ・⋆  We will miss you ")
 
 async def setup(bot):
     await bot.add_cog(welcandleave(bot))

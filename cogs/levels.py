@@ -626,40 +626,10 @@ class levels(commands.Cog):
         card.paste(bar, (70, 459), mask_bar)
         card.paste(avatar_paste, (59, 64), circle)
 
-        empty_badge = Image.open("./assets/badges/badgeempty.png").resize((55, 55))
-
-        badges = [
-            {"path": "./assets/badges/chromies.png", "has": any(role.id == 694016195090710579 for role in user.roles), "rarity": 1},
-            {"path": "./assets/badges/booster.png", "has": any(role.id == 728684846846574703 for role in user.roles), "rarity": 2},
-            {"path": "./assets/badges/staff.png", "has": any(role.id == 739513680860938290 for role in user.roles), "rarity": 3},
-            {"path": "./assets/badges/leads.png", "has": any(role.id == 753678720119603341 for role in user.roles), "rarity": 4},
-            {"path": "./assets/badges/1st.png", "has": any(role.id == 1363283035574767676 for role in user.roles), "rarity": 5},
-        ]
-
-        active_badges = sorted([b for b in badges if b["has"]], key=lambda x: x["rarity"])
-        max_badges = 12
-        badge_size = 55
-        padding_x = 20
-        padding_y = 20
-        start_x = 1234
-        start_y = 145
-
-        for i in range(max_badges):
-            row = i // 3
-            col = i % 3
-            x = start_x + col * (badge_size + padding_x)
-            y = start_y + row * (badge_size + padding_y)
-            if i < len(active_badges):
-                badge_img = Image.open(active_badges[i]["path"]).resize((badge_size, badge_size))
-            else:
-                badge_img = empty_badge
-            card.paste(badge_img, (x, y), badge_img)
-
         draw = ImageDraw.Draw(card, 'RGBA')
 
         bold_size23 = ImageFont.truetype("./fonts/Bold.otf", size=23)
         black_size20 = ImageFont.truetype("./fonts/Black.otf", size=20)
-        black_size27 = ImageFont.truetype("./fonts/Black.otf", size=27)
         black_size32 = ImageFont.truetype("./fonts/Black.otf", size=32)
 
         ranked = f"#{str(rank)}"
@@ -684,7 +654,6 @@ class levels(commands.Cog):
         draw.text((180, 380), f"rank", fill=levels['color'], font=black_size20)
         draw.text((283, 380), f"messages", fill=levels['color'], font=black_size20)
         draw.text((471, 380), f"xp", fill=levels['color'], font=black_size20)
-        draw.text((1290, 95), f"badges", fill=levels['color'], font=black_size27)
         draw.text((172, 116), f"chroma levels", fill=levels['color2'], font=bold_size23)
 
         buffer = BytesIO()
@@ -727,40 +696,10 @@ class levels(commands.Cog):
         card.paste(bar, (70, 459), mask_bar)
         card.paste(avatar_paste, (59, 64), circle)
 
-        empty_badge = Image.open("./assets/badges/badgeempty.png").resize((55, 55))
-
-        badges = [
-            {"path": "./assets/badges/chromies.png", "has": any(role.id == 694016195090710579 for role in user.roles), "rarity": 1},
-            {"path": "./assets/badges/booster.png", "has": any(role.id == 728684846846574703 for role in user.roles), "rarity": 2},
-            {"path": "./assets/badges/staff.png", "has": any(role.id == 739513680860938290 for role in user.roles), "rarity": 3},
-            {"path": "./assets/badges/leads.png", "has": any(role.id == 753678720119603341 for role in user.roles), "rarity": 4},
-            {"path": "./assets/badges/1st.png", "has": any(role.id == 1363283035574767676 for role in user.roles), "rarity": 5},
-        ]
-
-        active_badges = sorted([b for b in badges if b["has"]], key=lambda x: x["rarity"])
-        max_badges = 12
-        badge_size = 55
-        padding_x = 20
-        padding_y = 20
-        start_x = 1234
-        start_y = 145
-
-        for i in range(max_badges):
-            row = i // 3
-            col = i % 3
-            x = start_x + col * (badge_size + padding_x)
-            y = start_y + row * (badge_size + padding_y)
-            if i < len(active_badges):
-                badge_img = Image.open(active_badges[i]["path"]).resize((badge_size, badge_size))
-            else:
-                badge_img = empty_badge
-            card.paste(badge_img, (x, y), badge_img)
-
         draw = ImageDraw.Draw(card, 'RGBA')
 
         bold_size23 = ImageFont.truetype("./fonts/Bold.otf", size=23)
         black_size20 = ImageFont.truetype("./fonts/Black.otf", size=20)
-        black_size27 = ImageFont.truetype("./fonts/Black.otf", size=27)
         black_size32 = ImageFont.truetype("./fonts/Black.otf", size=32)
 
         ranked = f"#{str(rank)}"
@@ -785,7 +724,6 @@ class levels(commands.Cog):
         draw.text((180, 380), f"rank", fill=levels['color'], font=black_size20)
         draw.text((283, 380), f"messages", fill=levels['color'], font=black_size20)
         draw.text((471, 380), f"xp", fill=levels['color'], font=black_size20)
-        draw.text((1290, 95), f"badges", fill=levels['color'], font=black_size27)
         draw.text((172, 116), f"chroma levels", fill=levels['color2'], font=bold_size23)
 
         return card
@@ -944,48 +882,7 @@ class levels(commands.Cog):
         await self.add_xp(member.id, ctx.guild.id, amount, levels)
         await ctx.reply(f"Gave **{amount}xp** to {member.mention}.")
         await channel.send(f"{member.mention} you received **{amount}xp** from added xp")
-
-    @commands.command(name="addmulti")
-    async def addmulti(self, ctx, amount: int, *user_ids: int):
-        staff_roles = {739513680860938290, 1261435772775563315}
-        author_roles = {role.id for role in ctx.author.roles}
-        channel = self.bot.get_channel(822422177612824580)
-
-        if staff_roles.isdisjoint(author_roles):
-            return await ctx.reply("Sorry, this command is only available for staff members.", ephemeral=True)
-
-        if not user_ids:
-            return await ctx.reply("You must provide at least one user ID.", ephemeral=True)
-
-        success = []
-        failed = []
-
-        for user_id in user_ids:
-            try:
-                member = await ctx.guild.fetch_member(user_id)
-            except discord.NotFound:
-                failed.append(str(user_id))
-                continue
-
-            levels = await self.get_member_levels(member.id, ctx.guild.id)
-            if not levels:
-                await self.add_member(member.id, guild_id=ctx.guild.id)
-                await self.add_xp(member.id, ctx.guild.id, 25)
-                await channel.send(f"{member.mention} was not in the database. I've added them and gave them **25 XP** to get started!")
-                success.append(f"{member.mention} (new)")
-            else:
-                await self.add_xp(member.id, ctx.guild.id, amount, levels)
-                await channel.send(f"{member.mention} you received **{amount}xp** from added xp")
-                success.append(member.mention)
-
-        msg = ""
-        if success:
-            msg += f"✅ Gave **{amount}xp** to:\n" + "\n".join(success)
-        if failed:
-            msg += f"\nCould not find users with IDs:\n" + ", ".join(failed)
-
-        await ctx.reply(msg)
-
+        
     @commands.command()
     async def remove(self, ctx, member: discord.Member, amount: int):
         staff_roles = {739513680860938290, 1261435772775563315}
