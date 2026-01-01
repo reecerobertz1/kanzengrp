@@ -16,7 +16,7 @@ class infoview(discord.ui.View):
         logos = discord.Embed(title="<a:bun:1098764398962671677> Chroma Logos!", description="˃ Please make sure you watermark the logos!\n˃ Use the watermark on every edit\n˃ Do not share this link with anyone outside the group!", color=0x2b2d31)
         logos.set_footer(text="Made us some logos? send them to Reece or Alisha!")
         logos.set_image(url=interaction.guild.banner)
-        await interaction.user.send("key: `chUZuZ7Eu0mqLOM5rxRsQw`\nhttps://mega.nz/folder/xOk1SApA", embed=logos)
+        await interaction.user.send("group hashtag: #𝗰𝗵𝗿𝗼𝗺𝗮𝗴𝗿𝗽\nkey: `chUZuZ7Eu0mqLOM5rxRsQw`\nhttps://mega.nz/folder/xOk1SApA", embed=logos)
         channel = interaction.client.get_channel(1011212849965715528)
         log = discord.Embed(title="Logo button has been used!", description=f"`{interaction.user.display_name}` has used the logos button", color=0x2b2d31)
         log.set_footer(text=f"id: {interaction.user.id}", icon_url=interaction.user.display_avatar)
@@ -218,7 +218,7 @@ class chromies(commands.Cog):
     @commands.command()
     @commands.has_permissions(manage_guild=True)
     async def rules(self, ctx):
-        embed = discord.Embed(title="ᯓ Welcome to Chromagrp ༝ ⁺", description="T**Group Rules**\n・Must be following [remqsi](https://instagram.com/remqsi), [wqndqs](https://instagram.com/wqndqs) + [chromagrp](https://instagram.com/chromagrp).\n・Always use our hashtag #𝗰𝗵𝗿𝗼𝗺𝗮𝗴𝗿𝗽.\n・Watermark logos if the background is mostly plain.\n-# ⠀— ・**Note:** Leaking our logos will get you banned.", color=self.color)
+        embed = discord.Embed(title="ᯓ Welcome to Chromagrp ༝ ⁺", description="**Group Rules**\n・Must be following [remqsi](https://instagram.com/remqsi), [wqndqs](https://instagram.com/wqndqs) + [chromagrp](https://instagram.com/chromagrp).\n・Always use our hashtag #𝗰𝗵𝗿𝗼𝗺𝗮𝗴𝗿𝗽.\n・Watermark logos if the background is mostly plain.\n-# ⠀— ・**Note:** Leaking our logos will get you banned.", color=self.color)
         embed.set_image(url="https://cdn.discordapp.com/attachments/1248039148888129647/1349013015881842728/fit_embeds_00000_00000.png?ex=67e6a5c6&is=67e55446&hm=2a5e41cee28ae9818b09efa61a193656c0e33d0deb301b38928e14a86a6ea70a&")
         embed2 = discord.Embed(description='**Chat Rules**\n・No NSFW, offensive jokes, or distribution.\n・Please stay as active as possible.\n・Set your nickname as "name | username".\n・ No impersonating other editors.\n・ Be friendly and respect everyone.\n・If you move accounts or leave, please dm [chromagrp](https://instagram.com/chromagrp).\n・Do not start or bring drama from other servers.\n・Respect the server and use channels correctly.\n-# ⠀— ・**Note:** Breaking these rules will lead to a warning/kick or ban!', color=self.color)
         embed2.set_image(url="https://cdn.discordapp.com/attachments/1248039148888129647/1353845796088315904/welc_banner_00000.png?ex=67e66e67&is=67e51ce7&hm=4fd36540bff9b041d18fb25918c0d681862b7ee15087fdf7965da780e1cbe5ea&")
