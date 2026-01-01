@@ -11,14 +11,6 @@ class infoview(discord.ui.View):
         self.value = None
         self.bot = bot
 
-    @discord.ui.button(label="Rules", style=discord.ButtonStyle.red)
-    async def rules(self, interaction: discord.Interaction, button: discord.Button):
-        embed = discord.Embed(description="**Group Rules**\n・Must be following [remqsi](https://instagram.com/remqsi), [wqndqs](https://instagram.com/wqndqs) + [chromagrp](https://instagram.com/chromagrp).\n・Always use our hashtag #𝗰𝗵𝗿𝗼𝗺𝗮𝗴𝗿𝗽.\n・Watermark logos if the background is mostly plain.\n-# ⠀— ・**Note:** Leaking our logos will get you banned.", color=0x433757)
-        embed.set_image(url="https://cdn.discordapp.com/attachments/1248039148888129647/1349013015881842728/fit_embeds_00000_00000.png?ex=67ea9a46&is=67e948c6&hm=d1d21f2da78237158a639f1ddf4ceca9fea162d057bb49924db7d383351aca00&")
-        embed2 = discord.Embed(description='**Chat Rules**\n・No NSFW, offensive jokes, or distribution.\n・Please stay as active as possible.\n・Set your nickname as "name | username".\n・ No impersonating other editors.\n・ Be friendly and respect everyone.\n・If you move accounts or leave, please dm [chromagrp](https://instagram.com/chromagrp).\n・Do not start or bring drama from other servers.\n・Respect the server and use channels correctly.\n-# ⠀— ・**Note:** Breaking any of the rules will lead to a warning / kick or ban!', color=0x433757)
-        embed2.set_image(url="https://cdn.discordapp.com/attachments/1248039148888129647/1349013015881842728/fit_embeds_00000_00000.png?ex=67ea9a46&is=67e948c6&hm=d1d21f2da78237158a639f1ddf4ceca9fea162d057bb49924db7d383351aca00&")
-        await interaction.response.send_message(embeds=[embed, embed2], ephemeral=True)
-
     @discord.ui.button(label="Logos")
     async def klogos(self, interaction: discord.Interaction, button: discord.ui.Button):
         logos = discord.Embed(title="<a:bun:1098764398962671677> Chroma Logos!", description="˃ Please make sure you watermark the logos!\n˃ Use the watermark on every edit\n˃ Do not share this link with anyone outside the group!", color=0x2b2d31)
@@ -30,17 +22,6 @@ class infoview(discord.ui.View):
         log.set_footer(text=f"id: {interaction.user.id}", icon_url=interaction.user.display_avatar)
         await channel.send(embed=log)
         await interaction.response.send_message(f'I have sent you the logos! Check your DMs', ephemeral=True)
-
-    @discord.ui.button(label="Inactive")
-    async def inactive(self, interaction: discord.Interaction, button: discord.Button):
-        iamsgs = await self.get_iamsgs(guild_id=interaction.guild.id, member_id=interaction.user.id)
-        is_inactive = await self.get_inactive(guild_id=interaction.guild.id, member_id=interaction.user.id)
-        if iamsgs == 0:
-            await interaction.response.send_message(f"You are no longer able to send inactive messages due to you being inactive for 3 months in a row!\nIf it is an urgent matter, please reach out to a member of staff or leads.", ephemeral=True)
-        if is_inactive == 1:
-            await interaction.response.send_message(f"You have already sent an inactive message this month!\nAll inactivity messages reset on the 1st of each month along with the level resets. Please send another then when you need one.", ephemeral=True)
-        else:
-            await interaction.response.send_modal(ia(bot=self.bot))
 
     async def get_inactive(self, member_id: int, guild_id: int) -> Optional[int]:
         query = '''SELECT inactive FROM chromies WHERE member_id = ? AND guild_id = ?'''
@@ -237,9 +218,9 @@ class chromies(commands.Cog):
     @commands.command()
     @commands.has_permissions(manage_guild=True)
     async def rules(self, ctx):
-        embed = discord.Embed(title="ᯓ Welcome to Chromagrp ༝ ⁺", description="Thank you so much for joining Chroma!\n-# ・Please use the buttons below to read our rules and get our logos!\n-# ・If you ever need to go inactive, use our inactivity button below!", color=self.color)
+        embed = discord.Embed(title="ᯓ Welcome to Chromagrp ༝ ⁺", description="T**Group Rules**\n・Must be following [remqsi](https://instagram.com/remqsi), [wqndqs](https://instagram.com/wqndqs) + [chromagrp](https://instagram.com/chromagrp).\n・Always use our hashtag #𝗰𝗵𝗿𝗼𝗺𝗮𝗴𝗿𝗽.\n・Watermark logos if the background is mostly plain.\n-# ⠀— ・**Note:** Leaking our logos will get you banned.", color=self.color)
         embed.set_image(url="https://cdn.discordapp.com/attachments/1248039148888129647/1349013015881842728/fit_embeds_00000_00000.png?ex=67e6a5c6&is=67e55446&hm=2a5e41cee28ae9818b09efa61a193656c0e33d0deb301b38928e14a86a6ea70a&")
-        embed2 = discord.Embed(description="**Reporting Members**\n-# ・If you see someone breaking our rules, report them below.\n-# ・You can stay anonymous by leaving your username blank.\n-# ・Click the Report Member button to report a chroma member.\n-# ⠀— ・Note: Note: We may DM you for more information if we need more.", color=self.color)
+        embed2 = discord.Embed(description='**Chat Rules**\n・No NSFW, offensive jokes, or distribution.\n・Please stay as active as possible.\n・Set your nickname as "name | username".\n・ No impersonating other editors.\n・ Be friendly and respect everyone.\n・If you move accounts or leave, please dm [chromagrp](https://instagram.com/chromagrp).\n・Do not start or bring drama from other servers.\n・Respect the server and use channels correctly.\n-# ⠀— ・**Note:** Breaking these rules will lead to a warning/kick or ban!', color=self.color)
         embed2.set_image(url="https://cdn.discordapp.com/attachments/1248039148888129647/1353845796088315904/welc_banner_00000.png?ex=67e66e67&is=67e51ce7&hm=4fd36540bff9b041d18fb25918c0d681862b7ee15087fdf7965da780e1cbe5ea&")
         view=infoview(bot=self.bot)
         await ctx.send(embeds=[embed, embed2], view=view)
