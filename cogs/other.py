@@ -12,8 +12,6 @@ class other(commands.Cog):
     async def on_message(self, message):
         if message.author.bot:
             return
-        if message.content.lower() == "chroma":
-            await message.channel.send(f"**{message.author.name}** loves chroma\n-# <:1166196258499727480:1325926576042410094> we love you too! **<3**")
         if message.type == discord.MessageType.premium_guild_subscription:
             chromaembed = discord.Embed(
                 title="Thank you for boosting",
