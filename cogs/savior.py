@@ -48,7 +48,7 @@ class verify(discord.ui.View):
 
     @discord.ui.button(label="Help")
     async def help(self, interaction: discord.Interaction, button: discord.Button):
-        embed = discord.Embed (description="## Verification Help\n<:bullet_point_blue:1340661702378786879>Click the `Verify` button below\n<:bullet_point_blue:1340661702378786879>Hoshi will randomly generate a code for you to use\n<:bullet_point_blue:1340661702378786879>Send the same code within 60 seconds into chat to complete verification\n<:bullet_point_blue:1340661702378786879>If the bot does not reply after you have sent the code, or doesn't give you <@&1341753597368733736>. Please contact a staff member!", color=0xA4C4E6)
+        embed = discord.Embed (title="Verification Help", description="・⠀Click the `Verify` button below\n・⠀Hoshi will randomly generate a code for you to use\n・⠀Send the same code within 60 seconds into chat to complete verification\n・⠀If the bot does not reply after you have sent the code, or doesn't give you <@&1437208382514663486>. Please contact a lead!")
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
 class Apply(discord.ui.View):
@@ -95,7 +95,7 @@ class AppModal(discord.ui.Modal):
         embed.set_thumbnail(url=interaction.user.display_avatar)
         now = datetime.datetime.now()
         timestamp = now.strftime("%d/%m/%Y %I:%M %p")
-        embed.set_footer(text=f"User ID: {interaction.user.id} • {timestamp}")
+        embed.set_footer(text=f"User ID: {interaction.user.id} ・⠀{timestamp}")
         msg = await interaction.client.get_channel(1436127348901810196).send(embed=embed)
         await interaction.response.send_message(f'Thank you for applying to Savior\nPlease wait for a response for us!', ephemeral=True)
 
@@ -107,13 +107,13 @@ class Savior(commands.Cog):
     @commands.command()
     async def saviorapps(self, ctx: commands.Context):
         view = Apply(bot=self.bot)
-        embed = discord.Embed(title="Savior applications", description="Welcome to [saviorogs](https://www.instagram.com/saviorogs/) recruitment!\nPlease read all the information below before applying.\n\n**INFORMATION**\n• You can only apply once per **24 hours**.\n• We will ping you in #channel with your review.\n⠀— ・You will get **Accept** or **Re-app** from us.\n• Remakes and velocities are auto declined.\n• Edits older than **6 month** are auto declined.")
+        embed = discord.Embed(title="Savior applications", description="Welcome to [saviorogs](https://www.instagram.com/saviorogs/) recruitment!\nPlease read all the information below before applying.\n\n**INFORMATION**\n・⠀You can only apply once per **24 hours**.\n・⠀We will ping you in #channel with your review.\n⠀— ・You will get **Accept** or **Re-app** from us.\n・⠀Remakes and velocities are auto declined.\n・⠀Edits older than **6 month** are auto declined.")
         embed.set_thumbnail(url="https://cdn.discordapp.com/icons/1401326232431231006/77c2c07a25904f931b7e669defe86e55.webp?size=1024")
         await ctx.send(embed=embed, view=view)
 
     @commands.command()
     async def saviorverify(self, ctx):
-        embed = discord.Embed(description="## Verification Required\n• To access the server, you need to pass the verification first.\n• Click `Verify` to begin the verification process.", color=0x2b2d31)
+        embed = discord.Embed(description="## Verification Required\n・⠀To access the server, you need to pass the verification first.\n・⠀Click `Verify` to begin the verification process.", color=0x2b2d31)
         await ctx.send(embed=embed, view=verify())
 
 async def setup(bot):
