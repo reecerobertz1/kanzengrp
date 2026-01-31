@@ -912,63 +912,12 @@ class levels(commands.Cog):
             await self.reset_levels(interaction.guild_id)
             await interaction.response.send_message("All levels have been reset! All members are back to level 1")
 
-    async def get_dailyxp(self, guild_id: int) -> str:
-        query = '''SELECT dailyxp FROM settings WHERE guild_id = ?'''
-        async with self.bot.pool.acquire() as conn:
-            async with conn.cursor() as cursor:
-                await cursor.execute(query, (guild_id,))
-                status = await cursor.fetchone()
-        if status is not None:
-            return status[0]
-        else:
-            return "150 - 300"
-
     async def get_level_row(self, member_id: int, guild_id: int) -> Optional[LevelRow]:
         query = '''SELECT xp, messages FROM levelling WHERE member_id = ? AND guild_id = ?'''
         async with self.bot.pool.acquire() as conn:
             async with conn.cursor() as cursor:
                 await cursor.execute(query, (member_id, guild_id))
                 return await cursor.fetchone()
-
-    @commands.hybrid_command(name="daily", description="Claim your daily XP reward")
-    @commands.cooldown(1, 86400, commands.BucketType.user)
-    async def daily(self, ctx: commands.Context):
-        allowed_guild_id = 694010548605550675
-
-        if ctx.guild.id != allowed_guild_id:
-            return await ctx.reply("Sorry, this command cannot be used outside of Chromagrp.", ephemeral=True if ctx.interaction else False)
-        else:
-            member = ctx.author
-            guild_id = ctx.guild.id
-            member_id = member.id
-            levels = await self.get_member_levels(member_id, guild_id)
-            xp_range = await self.get_dailyxp(guild_id)
-            try:
-                min_xp, max_xp = map(int, xp_range.replace(" ", "").split("-"))
-            except ValueError:
-                return await ctx.reply("Server daily XP setting is misconfigured.")
-
-            xp_amount = randint(min_xp, max_xp)
-            await self.add_xp(member_id, guild_id, xp_amount, levels)
-            await ctx.reply(f"You claimed your **daily reward** and earned `{xp_amount} XP`!")
-
-    @daily.error
-    async def daily_error(self, ctx: commands.Context, error):
-        if isinstance(error, commands.CommandOnCooldown):
-            retry = timedelta(seconds=round(error.retry_after))
-            hours, remainder = divmod(retry.seconds, 3600)
-            minutes, seconds = divmod(remainder, 60)
-            time_left = f"{hours}h {minutes}m {seconds}s"
-
-            if ctx.interaction:
-                await ctx.interaction.response.send_message(
-                    f"You already claimed your daily! Try again in `{time_left}`.",
-                    ephemeral=True
-                )
-            else:
-                await ctx.reply(f"You already claimed your daily! Try again in `{time_left}`.")
-        else:
-            raise error
 
     @commands.Cog.listener()
     async def on_message(self, message: discord.Message) -> None:
