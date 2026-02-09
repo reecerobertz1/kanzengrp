@@ -57,8 +57,7 @@ class welcandleave(commands.Cog):
             channel3 = self.bot.get_channel(1462849510504923220)
             await channel3.send(f'{member.mention}', embed=embed2, view=view)
             member2 = guild.get_member(member.id)
-            if member2 is None:
-                await member.add_roles(member.guild.get_role(1462092433637773322))
+            await member.add_roles(member.guild.get_role(1462092433637773322))
 
     async def add_member(self, member_id: int, xp=5) -> None:
         query = '''INSERT INTO levelling (member_id, xp, messages, color) VALUES (?, ?, ?, ?)'''
