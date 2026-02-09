@@ -2,6 +2,7 @@ import datetime
 import random
 import discord
 from discord.ext import commands
+from discord.ui import View, Button
 
 class welcandleave(commands.Cog):
     def __init__(self, bot):
@@ -18,6 +19,7 @@ class welcandleave(commands.Cog):
         role = 694016195090710579
         stored_guild_id = 694010548605550675
         scout_guild_id = 835495688832811039
+        chromatica_guild_id = 1462079847433244799
         # CHROMA MEMBERS WELCOME EMBED
         if member.guild.id == stored_guild_id:
             await member.add_roles(member.guild.get_role(role))
@@ -43,6 +45,20 @@ class welcandleave(commands.Cog):
                 await member.add_roles(member.guild.get_role(public))
             else:
                 await member.add_roles(member.guild.get_role(836244165637046283))
+        # CHROMATICA WELCOME EMBED
+        elif member.guild.id == chromatica_guild_id:
+            embed2 = discord.Embed(title=f'†    WELCOME ： {member.name}', description=f"\n・⠀01 : [Grab some roles](https://discord.com/channels/1462079847433244799/1462139108515254294)\n・⠀02 : [Apply for Chromatica](https://discord.com/channels/1462079847433244799/1462096191096361205)\n・⠀03 : [Chat to other members](https://discord.com/channels/1462079847433244799/1462281588099387432)")
+            embed2.set_footer(text='CHRT_OS // MEMBER_ADDED_v1.01')
+            embed2.set_thumbnail(url=member.display_avatar.url)
+            view = View()
+            button = Button(label="・⠀Verify here to enter", url="https://discord.com/channels/1462079847433244799/1462096750964641927", style=discord.ButtonStyle.link)
+            view.add_item(button)
+            
+            channel3 = self.bot.get_channel(1462849510504923220)
+            await channel3.send(f'{member.mention}', embed=embed2, view=view)
+            member2 = guild.get_member(member.id)
+            if member2 is None:
+                await member.add_roles(member.guild.get_role(1462092433637773322))
 
     async def add_member(self, member_id: int, xp=5) -> None:
         query = '''INSERT INTO levelling (member_id, xp, messages, color) VALUES (?, ?, ?, ?)'''
