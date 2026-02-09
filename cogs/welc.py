@@ -47,7 +47,7 @@ class welcandleave(commands.Cog):
                 await member.add_roles(member.guild.get_role(836244165637046283))
         # CHROMATICA WELCOME EMBED
         elif member.guild.id == chromatica_guild_id:
-            embed2 = discord.Embed(title=f'†    WELCOME ： {member.name}', description=f"\n・⠀01 : [Grab some roles](https://discord.com/channels/1462079847433244799/1462139108515254294)\n・⠀02 : [Apply for Chromatica](https://discord.com/channels/1462079847433244799/1462096191096361205)\n・⠀03 : [Chat to other members](https://discord.com/channels/1462079847433244799/1462281588099387432)")
+            embed2 = discord.Embed(title=f'†    WELCOME ： {member.name.upper()}', description=f"\n・⠀01 : [Grab some roles](https://discord.com/channels/1462079847433244799/1462139108515254294)\n・⠀02 : [Apply for Chromatica](https://discord.com/channels/1462079847433244799/1462096191096361205)\n・⠀03 : [Chat to other members](https://discord.com/channels/1462079847433244799/1462281588099387432)")
             embed2.set_footer(text='CHRT_OS // MEMBER_ADDED_v1.01')
             embed2.set_thumbnail(url=member.display_avatar.url)
             view = View()
