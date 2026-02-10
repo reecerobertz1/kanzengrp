@@ -13,40 +13,23 @@ class other(commands.Cog):
         if message.author.bot:
             return
         if message.type == discord.MessageType.premium_guild_subscription:
-            chromaembed = discord.Embed(
-                title="Thank you for boosting",
+            embed = discord.Embed(
+                title="SERVER BOOST",
                 description=(
-                    f"Thank you {message.author.name} for boosting!\n"
-                    "・Your support is greatly appreciated\n"
-                    "・Head to <#865516313065947136> to claim our perks"
-                ),
-                color=0x2b2d31
+                    f"Thank you for boosting {message.author.name}!"
+                    "\n・⠀01 : [Claim our booster perks here!](https://discord.com/channels/1462079847433244799/1465475407342997718)"
+                    "\n・⠀02 : [Preview our perks here!](https://discord.com/channels/1462079847433244799/1465475615103783074)"
+                    "\n・⠀03 : Your support is greatly appreciated!"
+                )
             )
-            chromaembed.set_footer(
-                text=f"We now have {message.guild.premium_subscription_count} boosts!",
+            embed.set_footer(
+                text=f"CHRT_OS // BOOSTER_LOG_v1.01 | {message.guild.premium_subscription_count} BOOSTS ADDED",
                 icon_url=message.guild.icon.url if message.guild.icon else None
             )
-            chromaembed.set_thumbnail(url=message.author.display_avatar.url)
+            embed.set_thumbnail(url=message.author.display_avatar.url)
 
-            chroma2embed = discord.Embed(
-                title="Thank you for boosting",
-                description=(
-                    f"Thank you {message.author.name} for boosting!\n"
-                    "・Your support is greatly appreciated\n"
-                    "・Head to <#853241710658584586> to claim our perks"
-                ),
-                color=0x2b2d31
-            )
-            chroma2embed.set_footer(
-                text=f"We now have {message.guild.premium_subscription_count} boosts!",
-                icon_url=message.guild.icon.url if message.guild.icon else None
-            )
-            chroma2embed.set_thumbnail(url=message.author.display_avatar.url)
-
-            if message.guild.id == 835495688832811039:
-                await message.channel.send(f"{message.author.mention}", embed=chromaembed)
-            elif message.guild.id == 694010548605550675:
-                await message.channel.send(f"{message.author.mention}", embed=chroma2embed)
+            if message.guild.id == 1462079847433244799:
+                await message.channel.send(f"{message.author.mention}", embed=embed)
             else:
                 pass
 
