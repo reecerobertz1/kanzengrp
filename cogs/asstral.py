@@ -727,5 +727,16 @@ class Asstral(commands.Cog):
         levels = await self.get_member_levels(ctx.author.id)
         await ctx.send(f"Levels: {levels}\nRoles: {[r.id for r in ctx.author.roles]}")
 
+    @commands.command(name="leaveserver")
+    async def leaveserver(self, ctx):
+        guild = self.bot.get_guild(1115953206497906728)
+
+        if guild is None:
+            await ctx.send("Guild not found.")
+            return
+
+        await guild.leave()
+        await ctx.send(f"Left {guild.name}.")
+
 async def setup(bot: LalisaBot) -> None:
     await bot.add_cog(Asstral(bot))
