@@ -616,8 +616,9 @@ class levels(commands.Cog):
         dark = ImageEnhance.Brightness(bg)
         bg_dark = dark.enhance(1.5)
         bg_blurred = bg_dark.filter(ImageFilter.GaussianBlur(radius=20))
-        number = random.choice([1, 2, 3, 4])
-        mask = Image.open(f"./assets/rankcard/mask{number}.png").resize((1500, 500)).convert("L")
+        mask_files = ["1.png", "2.png", "3.png", "4.png"]
+        mask_file = random.choice(mask_files)
+        mask = Image.open(f"./assets/rankcard/{mask_file}").resize((1500, 500)).convert("L")
         inverted_mask = ImageOps.invert(mask)
         bg_frosted = Image.composite(bg_blurred, Image.new("RGBA", bg.size, "white"), inverted_mask)
         bg_frosted.putalpha(inverted_mask)
