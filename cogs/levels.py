@@ -628,7 +628,6 @@ class levels(commands.Cog):
         card.paste(bar, (70, 459), mask_bar)
         card.paste(avatar_paste, (59, 64), circle)
         teaser = Image.open(f"./assets/rankcard/{number}.png").resize((1500, 500)).convert("RGBA")
-        card.paste(teaser, (0, 0), teaser)
 
         draw = ImageDraw.Draw(card, 'RGBA')
 
@@ -654,11 +653,12 @@ class levels(commands.Cog):
         self.draw_centered_text2(draw, text=wrapped_xp, font=bold_size23, x_center=482, y_start=400, levels=levels)
 
         draw.text((172, 84), f"{user.name}", fill=levels['color'], font=black_size32)
+        draw.text((172, 116), f"chroma levels", fill=levels['color2'], font=bold_size23)
+        card.paste(teaser, (0, 0), teaser)
         draw.text((72, 380), f"level", fill=levels['color'], font=black_size20)
         draw.text((180, 380), f"rank", fill=levels['color'], font=black_size20)
         draw.text((283, 380), f"messages", fill=levels['color'], font=black_size20)
         draw.text((471, 380), f"xp", fill=levels['color'], font=black_size20)
-        draw.text((172, 116), f"chroma levels", fill=levels['color2'], font=bold_size23)
 
         buffer = BytesIO()
         card.save(buffer, 'png')
