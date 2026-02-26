@@ -617,7 +617,7 @@ class levels(commands.Cog):
         bg_dark = dark.enhance(1.5)
         bg_blurred = bg_dark.filter(ImageFilter.GaussianBlur(radius=20))
         number = randint(1, 4)
-        mask = Image.open(f"./assets/rankcard/{number}.png").resize((1500, 500)).convert("L")
+        mask = Image.open(f"./assets/rankcard/rank_mask.png").resize((1500, 500)).convert("L")
         inverted_mask = ImageOps.invert(mask)
         bg_frosted = Image.composite(bg_blurred, Image.new("RGBA", bg.size, "white"), inverted_mask)
         bg_frosted.putalpha(inverted_mask)
@@ -627,6 +627,7 @@ class levels(commands.Cog):
         card.paste(bg_frosted, (0, 0), bg_frosted)
         card.paste(bar, (70, 459), mask_bar)
         card.paste(avatar_paste, (59, 64), circle)
+        teaser = Image.open(f"./assets/rankcard/{number}.png").resize((1500, 500)).convert("RGBA")
 
         draw = ImageDraw.Draw(card, 'RGBA')
 
