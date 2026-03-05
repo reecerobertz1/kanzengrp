@@ -9,17 +9,13 @@ my_guild = discord.Object(id=1121841073673736215)
 
 extensions = {
     "jishaku",
-    "cogs.asstral",
     "cogs.chromies",
     "cogs.games",
     "cogs.levels",
-    "cogs.logs",
     "cogs.mod",
     "cogs.other",
     "cogs.profiles",
-    "cogs.qotd",
     "cogs.roles",
-    "cogs.savior",
     "cogs.settings",
     "cogs.welc"
 }
