@@ -613,6 +613,7 @@ class levels(commands.Cog):
 
         bg = bg.crop((left, top, right, bottom))
         bg = bg.resize((1500, 500))
+        bg = ImageOps.grayscale(bg)
         dark = ImageEnhance.Brightness(bg)
         bg_dark = dark.enhance(1.5)
         bg_blurred = bg_dark.filter(ImageFilter.GaussianBlur(radius=20))
@@ -686,6 +687,7 @@ class levels(commands.Cog):
 
         bg = bg.crop((left, top, right, bottom))
         bg = bg.resize((1500, 500))
+        bg = ImageOps.grayscale(bg)
         dark = ImageEnhance.Brightness(bg)
         bg_dark = dark.enhance(1.5)
         bg_blurred = bg_dark.filter(ImageFilter.GaussianBlur(radius=20))
