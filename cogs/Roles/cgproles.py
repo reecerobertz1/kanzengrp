@@ -88,7 +88,7 @@ class GameRoles(discord.ui.View):
         self.add_item(RoleSelect(roles, emoji_map))
         ALL_ROLE_IDS.update(r.id for r in roles)
 
-class roles(commands.Cog):
+class cgproles(commands.Cog):
     def __init__(self, bot: LalisaBot):
         self.bot = bot
 
@@ -165,4 +165,4 @@ class roles(commands.Cog):
         await ctx.send(embed=games, view=GameRoles(fourth_roles))
 
 async def setup(bot: LalisaBot) -> None:
-    await bot.add_cog(roles(bot))
+    await bot.add_cog(cgproles(bot))
