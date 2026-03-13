@@ -630,7 +630,8 @@ class levels(commands.Cog):
         card.paste(bg, (0, 0))
         card.paste(bg_frosted, (0, 0), bg_frosted)
         card.paste(bar, (70, 459), mask_bar)
-        card.paste(avatar_paste, (59, 64), circle)
+        avatar = card.paste(avatar_paste, (59, 64), circle)
+        avatar = ImageOps.grayscale(bg)
         teaser = Image.open(f"./assets/rankcard/{number}.png").resize((1500, 500)).convert("RGBA")
 
         draw = ImageDraw.Draw(card, 'RGBA')
