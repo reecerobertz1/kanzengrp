@@ -488,6 +488,8 @@ class levels(commands.Cog):
         circle = Image.open('./assets/circle-mask.png').resize((102, 102)).convert('L')
         avatar_image = Image.open(avatar).convert('RGBA')
         avatar_image = avatar_image.resize((102, 102))
+        avatar_image = ImageOps.grayscale(avatar_image)
+        avatar_image = avatar_image.convert('RGBA')
         return avatar_image, circle
 
     def human_format(self, number: int) -> str:
@@ -630,8 +632,7 @@ class levels(commands.Cog):
         card.paste(bg, (0, 0))
         card.paste(bg_frosted, (0, 0), bg_frosted)
         card.paste(bar, (70, 459), mask_bar)
-        avatar = card.paste(avatar_paste, (59, 64), circle)
-        avatar = ImageOps.grayscale(bg)
+        card.paste(avatar_paste, (59, 64), circle)
         teaser = Image.open(f"./assets/rankcard/{number}.png").resize((1500, 500)).convert("RGBA")
 
         draw = ImageDraw.Draw(card, 'RGBA')
