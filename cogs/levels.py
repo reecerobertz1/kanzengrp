@@ -441,6 +441,9 @@ class levels(commands.Cog):
         height = 11
         radius = 100
 
+        color1 = "#000000"
+        color2 = "#ffffff"
+
         if isinstance(color2, str):
             color2 = ImageColor.getcolor(color2, "RGBA")
         elif len(color2) == 3:
@@ -653,13 +656,13 @@ class levels(commands.Cog):
         wrapped_xp = "\n".join(textwrap.fill(line, width=75) for line in xp.splitlines())
         self.draw_centered_text2(draw, text=wrapped_xp, font=bold_size23, x_center=482, y_start=400, levels=levels)
 
-        draw.text((172, 84), f"{user.name}", fill=levels['color'], font=black_size32)
-        draw.text((172, 116), f"chroma levels", fill=levels['color2'], font=bold_size23)
+        draw.text((172, 84), f"{user.name}", "#000000", font=black_size32)
+        draw.text((172, 116), f"chroma levels", "#ffffff", font=bold_size23)
         card.paste(teaser, (0, 0), teaser)
-        draw.text((72, 380), f"level", fill=levels['color'], font=black_size20)
-        draw.text((180, 380), f"rank", fill=levels['color'], font=black_size20)
-        draw.text((283, 380), f"messages", fill=levels['color'], font=black_size20)
-        draw.text((471, 380), f"xp", fill=levels['color'], font=black_size20)
+        draw.text((72, 380), f"level", "#000000", font=black_size20)
+        draw.text((180, 380), f"rank", "#000000", font=black_size20)
+        draw.text((283, 380), f"messages", "#000000", font=black_size20)
+        draw.text((471, 380), f"xp", "#000000", font=black_size20)
 
         buffer = BytesIO()
         card.save(buffer, 'png')
