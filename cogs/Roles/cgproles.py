@@ -93,7 +93,7 @@ class roles(commands.Cog):
         self.bot = bot
 
     @commands.command()
-    async def roles(self, ctx):
+    async def cgproles(self, ctx):
         banner_embed = discord.Embed()
         banner_embed.set_image(url="https://cdn.discordapp.com/attachments/1477651776139427872/1482102173021114480/iDENTITY.png?ex=69b5bab6&is=69b46936&hm=3363cfdf9b66473907fa9e696880ed00b72b465b3ee09c8c8b7f43d73e104ce0&")
 
