@@ -128,7 +128,7 @@ class cgproles(commands.Cog):
 
         banner_embed = discord.Embed()
         banner_embed.set_image(
-            url="https://cdn.discordapp.com/attachments/1477651776139427872/1482102173021114480/iDENTITY.png"
+            url="https://cdn.discordapp.com/attachments/1477651776139427872/1482129845860438186/Identity_00000.png?ex=69b5d47b&is=69b482fb&hm=7a43c4606c9a0663185af0011326391304a0bac7bb368850dcff075ee7adc3ee&"
         )
 
         pronouns_ages = discord.Embed(
@@ -159,7 +159,7 @@ class cgproles(commands.Cog):
         )
 
         pronouns_ages.set_image(
-            url="https://cdn.discordapp.com/attachments/1477651776139427872/1477661228955467889/Comp_2_00000.png"
+            url="https://cdn.discordapp.com/attachments/1477651776139427872/1482129813182615693/Comp_5_00000.png?ex=69b5d474&is=69b482f4&hm=847a5cd06ff7070a26b5fdf65a5c1134c52b7b378175c6ca1be9ff71850c5474&"
         )
 
         await ctx.send(embed=banner_embed)
@@ -207,7 +207,7 @@ class cgproles(commands.Cog):
         )
 
         serverping.set_image(
-            url="https://cdn.discordapp.com/attachments/1477651776139427872/1477661228955467889/Comp_2_00000.png"
+            url="https://cdn.discordapp.com/attachments/1477651776139427872/1482129813182615693/Comp_5_00000.png?ex=69b5d474&is=69b482f4&hm=847a5cd06ff7070a26b5fdf65a5c1134c52b7b378175c6ca1be9ff71850c5474&"
         )
 
         second_role_ids = [
@@ -251,7 +251,7 @@ class cgproles(commands.Cog):
         )
 
         programs.set_image(
-            url="https://cdn.discordapp.com/attachments/1477651776139427872/1477661228955467889/Comp_2_00000.png"
+            url="https://cdn.discordapp.com/attachments/1477651776139427872/1482129813182615693/Comp_5_00000.png?ex=69b5d474&is=69b482f4&hm=847a5cd06ff7070a26b5fdf65a5c1134c52b7b378175c6ca1be9ff71850c5474&"
         )
 
         third_roles_ids = [
@@ -298,7 +298,7 @@ class cgproles(commands.Cog):
         )
 
         games.set_image(
-            url="https://cdn.discordapp.com/attachments/1477651776139427872/1477661228955467889/Comp_2_00000.png"
+            url="https://cdn.discordapp.com/attachments/1477651776139427872/1482129813182615693/Comp_5_00000.png?ex=69b5d474&is=69b482f4&hm=847a5cd06ff7070a26b5fdf65a5c1134c52b7b378175c6ca1be9ff71850c5474&"
         )
 
         fourth_roles_ids = [
