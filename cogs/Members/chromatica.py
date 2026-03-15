@@ -1,5 +1,5 @@
 import discord
-from discord.ext import commands
+from discord.ext import commands, tasks
 from bot import LalisaBot
 import asyncio
 import datetime
@@ -57,6 +57,56 @@ class LogosView(discord.ui.View):
 class chromatica(commands.Cog):
     def __init__(self, bot: LalisaBot):
         self.bot = bot
+        self.pool = bot.pool
+        self.monthly_reset.start()
+
+    async def add_member(self, member_id: int, guild_id: int) -> None:
+        query_check = '''SELECT 1 FROM chromies WHERE member_id = ? AND guild_id = ?'''
+        query_insert = '''INSERT INTO chromies (member_id, guild_id, inactive, iamsgs) VALUES (?, ?, ?, ?)'''
+
+        async with self.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query_check, (member_id, guild_id))
+                exists = await cursor.fetchone()
+                
+                if not exists:
+                    await cursor.execute(query_insert, (member_id, guild_id, 1, 2))
+                    await conn.commit()
+
+    async def set_inactive(self, member_id: int, guild_id: int) -> None:
+        query = '''UPDATE chromies SET inactive = 1 WHERE member_id = ? AND guild_id = ?'''
+        
+        async with self.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, (member_id, guild_id))
+                await conn.commit()
+
+    async def remove_iamsg(self, member_id: int, guild_id: int) -> None:
+        query_check = '''SELECT iamsgs FROM chromies WHERE member_id = ? AND guild_id = ?'''
+        async with self.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query_check, (member_id, guild_id))
+                result = await cursor.fetchone()
+                
+                if result is None:
+                    await self.add_member(member_id=member_id, guild_id=guild_id)
+                else:
+                    current_iamsgs = result[0]
+                    query_update = '''UPDATE chromies SET iamsgs = ? WHERE member_id = ? AND guild_id = ?'''
+                    await cursor.execute(query_update, (current_iamsgs - 1, member_id, guild_id))
+                    await conn.commit()
+
+    async def get_iamsgs(self, member_id: int, guild_id: int):
+        query = '''SELECT iamsgs FROM chromies WHERE member_id = ? AND guild_id = ?'''
+        async with self.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, (member_id, guild_id))
+                result = await cursor.fetchone()
+                
+                if result is not None:
+                    return result[0]
+                else:
+                    return None
 
     @commands.Cog.listener()
     async def on_message(self, message):
@@ -86,7 +136,22 @@ class chromatica(commands.Cog):
             await self.invalid_template(message)
             return
 
+        # Check if user has iamsgs left
+        iamsgs = await self.get_iamsgs(message.author.id, message.guild.id)
+        if iamsgs is not None and iamsgs <= 0:
+            temp_msg = await message.channel.send(f"{message.author.mention}, you have no hiatus messages left for this month.")
+            await asyncio.sleep(10)
+            try:
+                await temp_msg.delete()
+            except:
+                pass
+            return
+
         await message.delete()
+
+        await self.remove_iamsg(message.author.id, message.guild.id)
+        await self.set_inactive(message.author.id, message.guild.id)
+
         role = message.guild.get_role(1462661321064710164)
         if role:
             try:
@@ -101,7 +166,8 @@ class chromatica(commands.Cog):
             embed.set_footer(text="Hiatus Submission")
             await log_channel.send(embed=embed)
         
-        temp_msg = await message.channel.send(f"{message.author.mention}, your hiatus has been submitted successfully!")
+        remaining = await self.get_iamsgs(message.author.id, message.guild.id)
+        temp_msg = await message.channel.send(f"{message.author.mention}, your hiatus has been submitted successfully! You have {remaining} hiatus messages left.")
         await asyncio.sleep(5)
         try:
             await temp_msg.delete()
@@ -138,6 +204,70 @@ class chromatica(commands.Cog):
         embed_logos.set_image(url="https://cdn.discordapp.com/attachments/1477651776139427872/1482129813182615693/Comp_5_00000.png?ex=69b7ceb4&is=69b67d34&hm=03d2f507c5438ee6dc717ca27c72483505571562a94e1ee5c5328a037bbd5a2d&")
         view = LogosView(self.bot)
         await ctx.send(embeds=[embed_banner, embed_info, embed_logos], view=view)
+
+    @tasks.loop(time=datetime.time(hour=0, minute=0))
+    async def monthly_reset(self):
+        now = datetime.datetime.now()
+        if now.day == 1:
+            reset_users = []
+            query = '''SELECT member_id, guild_id, iamsgs FROM chromies WHERE inactive = 1'''
+            async with self.pool.acquire() as conn:
+                async with conn.cursor() as cursor:
+                    await cursor.execute(query)
+                    results = await cursor.fetchall()
+                    
+                    for member_id, guild_id, iamsgs in results:
+                        update_query = '''UPDATE chromies SET inactive = 0 WHERE member_id = ? AND guild_id = ?'''
+                        await cursor.execute(update_query, (member_id, guild_id))
+
+                        if iamsgs == 0:
+                            new_iamsgs = -1
+                        elif iamsgs == -1:
+                            new_iamsgs = 3
+                        else:
+                            new_iamsgs = iamsgs
+                        
+                        update_iamsgs = '''UPDATE chromies SET iamsgs = ? WHERE member_id = ? AND guild_id = ?'''
+                        await cursor.execute(update_iamsgs, (new_iamsgs, member_id, guild_id))
+
+                        guild = self.bot.get_guild(guild_id)
+                        if guild:
+                            member = guild.get_member(member_id)
+                            if member:
+                                reset_users.append((member, new_iamsgs))
+                                month_name = datetime.datetime.now().strftime("%B")
+                                embed = discord.Embed(
+                                    title="†⠀HIATUS RESET",
+                                    description=f"Hello! {member.display_name}, your hiatus message has been reset. You have **{new_iamsgs}** hiatus messages left.\n\nIf you need to resend another hiatus message for **{month_name}**, please do so to avoid being kicked this month for inactivity.\n\nIf you think you can reach this month's level requirement, please don't waste a hiatus message this month.",
+                                    color=0x2b2d31
+                                )
+                                embed.set_footer(text="CHRT_OS // MONTHLY_RESET")
+                                try:
+                                    await member.send(embed=embed)
+                                except discord.Forbidden:
+                                    pass
+                    
+                    await conn.commit()
+
+            if reset_users:
+                channel = self.bot.get_channel(1482761188621287497)
+                if channel:
+                    month_name = now.strftime("%B %Y")
+                    time_str = now.strftime("%H:%M BST")
+                    description = f"**Hiatus Reset for {month_name} at {time_str}**\n\n"
+                    for member, iamsgs in reset_users:
+                        description += f"・ {member.mention} - {iamsgs} messages left\n"
+                    
+                    embed = discord.Embed(
+                        title="†⠀MONTHLY HIATUS RESET",
+                        description=description
+                    )
+                    embed.set_footer(text="CHRT_OS // RESET_LOG")
+                    await channel.send(embed=embed)
+
+    @monthly_reset.before_loop
+    async def before_monthly_reset(self):
+        await self.bot.wait_until_ready()
 
 async def setup(bot: LalisaBot) -> None:
     await bot.add_cog(chromatica(bot))
