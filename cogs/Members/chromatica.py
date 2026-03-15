@@ -3,6 +3,7 @@ from discord.ext import commands, tasks
 from bot import LalisaBot
 import asyncio
 import datetime
+import calendar
 
 class MegaLinkView(discord.ui.View):
     def __init__(self):
@@ -204,6 +205,44 @@ class chromatica(commands.Cog):
         embed_logos.set_image(url="https://cdn.discordapp.com/attachments/1477651776139427872/1482129813182615693/Comp_5_00000.png?ex=69b7ceb4&is=69b67d34&hm=03d2f507c5438ee6dc717ca27c72483505571562a94e1ee5c5328a037bbd5a2d&")
         view = LogosView(self.bot)
         await ctx.send(embeds=[embed_banner, embed_info, embed_logos], view=view)
+
+    @commands.command()
+    @commands.has_role(1462092462292992094)
+    async def checkoffline(self, ctx):
+        now = datetime.datetime.now()
+        _, last_day = calendar.monthrange(now.year, now.month)
+        days_left = last_day - now.day
+        
+        query = '''SELECT member_id, guild_id, iamsgs FROM chromies WHERE inactive = 1'''
+        async with self.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query)
+                results = await cursor.fetchall()
+        
+        if not results:
+            embed = discord.Embed(
+                title="†⠀OFFLINE STATUS",
+                description="No members are currently on hiatus.",
+                color=0x2b2d31
+            )
+            embed.set_footer(text="CHRT_OS // OFFLINE_CHECK")
+            await ctx.send(embed=embed)
+            return
+        
+        description = f"**Current Month:** {now.strftime('%B %Y')}\n**Days Left in Month:** {days_left}\n\n"
+        for member_id, guild_id, iamsgs in results:
+            guild = self.bot.get_guild(guild_id)
+            if guild:
+                member = guild.get_member(member_id)
+                if member:
+                    description += f"・ {member.mention} - {iamsgs} messages left\n"
+        
+        embed = discord.Embed(
+            title="†⠀OFFLINE STATUS",
+            description=description
+        )
+        embed.set_footer(text="CHRT_OS // OFFLINE_CHECK")
+        await ctx.send(embed=embed)
 
     @tasks.loop(time=datetime.time(hour=0, minute=0))
     async def monthly_reset(self):
