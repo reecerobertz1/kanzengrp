@@ -87,6 +87,12 @@ class chromatica(commands.Cog):
             return
 
         await message.delete()
+        role = message.guild.get_role(1462661321064710164)
+        if role:
+            try:
+                await message.author.add_roles(role)
+            except discord.Forbidden:
+                pass
         
         log_channel = self.bot.get_channel(1462660735170641950)
         if log_channel:
