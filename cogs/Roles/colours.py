@@ -1,11 +1,12 @@
 import discord
 from discord.ext import commands
 from bot import LalisaBot
+from typing import Union
 
 ALL_COLOUR_ROLE_IDS: set[int] = set()
 
 class SingleRoleButton(discord.ui.Button):
-    def __init__(self, role: discord.Role, emoji: discord.PartialEmoji | None = None):
+    def __init__(self, role: discord.Role, emoji: Union[discord.PartialEmoji, None] = None):
         kwargs: dict = {"style": discord.ButtonStyle.secondary}
         if emoji is not None:
             kwargs["emoji"] = emoji
