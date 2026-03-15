@@ -1,7 +1,6 @@
 import discord
 from discord.ext import commands
 from bot import LalisaBot
-from utils.views import VerificationSelectView
 import asyncio
 import datetime
 
