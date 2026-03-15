@@ -48,10 +48,9 @@ class LogosView(discord.ui.View):
         if log_channel:
             log_embed = discord.Embed(
                 title="CHROMATICA LOGOS",
-                description="`User has used the logos button.`"
-            )
+                description=f"`{interaction.user.display_name}` has used the logos button.")
             log_embed.set_thumbnail(url=interaction.user.display_avatar.url)
-            log_embed.set_footer(text=f"User ID: {interaction.user.id} | {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+            log_embed.set_footer(text=f"User ID: {interaction.user.id} | {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}", icon_url=interaction.guild.icon.url)
             await log_channel.send(embed=log_embed)
         
 
