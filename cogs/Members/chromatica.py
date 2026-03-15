@@ -244,6 +244,72 @@ class chromatica(commands.Cog):
         embed.set_footer(text="CHRT_OS // OFFLINE_CHECK")
         await ctx.send(embed=embed)
 
+    @commands.command()
+    @commands.has_role(1462092462292992094)
+    async def clearoffline(self, ctx):
+        embed = discord.Embed(
+            title="†⠀CONFIRM CLEAR",
+            description="Are you sure you want to clear the entire chromies database? This action cannot be undone.\n\nReact with ✅ to confirm or ❌ to cancel.",
+            color=0xff0000
+        )
+        embed.set_footer(text="CHRT_OS // CLEAR_CONFIRM")
+        msg = await ctx.send(embed=embed)
+        await msg.add_reaction("✅")
+        await msg.add_reaction("❌")
+        
+        def check(reaction, user):
+            return user == ctx.author and str(reaction.emoji) in ["✅", "❌"] and reaction.message.id == msg.id
+        
+        try:
+            reaction, user = await self.bot.wait_for('reaction_add', timeout=30.0, check=check)
+            if str(reaction.emoji) == "✅":
+                query = '''DELETE FROM chromies'''
+                async with self.pool.acquire() as conn:
+                    async with conn.cursor() as cursor:
+                        await cursor.execute(query)
+                        await conn.commit()
+                
+                embed = discord.Embed(
+                    title="†⠀DATABASE CLEARED",
+                    description="The chromies database has been completely cleared.",
+                    color=0x00ff00
+                )
+                embed.set_footer(text="CHRT_OS // CLEARED")
+                await ctx.send(embed=embed)
+            else:
+                embed = discord.Embed(
+                    title="†⠀CANCELLED",
+                    description="Clear operation cancelled.",
+                    color=0x0000ff
+                )
+                embed.set_footer(text="CHRT_OS // CANCELLED")
+                await ctx.send(embed=embed)
+        except asyncio.TimeoutError:
+            embed = discord.Embed(
+                title="†⠀TIMEOUT",
+                description="Clear operation timed out.",
+                color=0x0000ff
+            )
+            embed.set_footer(text="CHRT_OS // TIMEOUT")
+            await ctx.send(embed=embed)
+
+    @commands.command()
+    @commands.has_role(1462092462292992094)
+    async def removeoffline(self, ctx, member: discord.Member):
+        query = '''DELETE FROM chromies WHERE member_id = ? AND guild_id = ?'''
+        async with self.pool.acquire() as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, (member.id, ctx.guild.id))
+                await conn.commit()
+        
+        embed = discord.Embed(
+            title="†⠀MEMBER REMOVED",
+            description=f"{member.mention} has been removed from the chromies database.",
+            color=0x00ff00
+        )
+        embed.set_footer(text="CHRT_OS // REMOVED")
+        await ctx.send(embed=embed)
+
     @tasks.loop(time=datetime.time(hour=0, minute=0))
     async def monthly_reset(self):
         now = datetime.datetime.now()
