@@ -99,8 +99,8 @@ class colours(commands.Cog):
 
     @commands.command()
     async def cgpcolours(self, ctx):
-        ariana_embed = discord.Embed()
-        ariana_embed.set_image(url="https://cdn.discordapp.com/attachments/1477651776139427872/1477659310292209737/Palette.png?ex=69a590f9&is=69a43f79&hm=0218b206af5a9b62e9ab2c2bb54220abeaf9f765d6bfe25e217c83a4e5ad75d1&")
+        banner_embed = discord.Embed()
+        banner_embed.set_image(url="https://cdn.discordapp.com/attachments/1477651776139427872/1482665082155700334/Palette_00000.png?ex=69b7c6f6&is=69b67576&hm=2dc51d46994d200310b81b165f5b91981103fd70639b3453570126ee7b3ad216&")
 
         first_colours = discord.Embed(description="**        †       Name Colours     ༝ ⁺  **")
         first_colours.add_field(name=" ", value="<:cherry:1477655091153735681><@&1462465113310236702>"
@@ -109,9 +109,9 @@ class colours(commands.Cog):
         first_colours.add_field(name=" ", value="<:envy:1477655160204562553><@&1462465333527973982>"
             "\n<:ivy:1477655167741591582><@&1462465304285286451>"
             "\n<:ice:1477655182048231749><@&1462162383719104554>", inline=True)
-        first_colours.set_image(url="https://cdn.discordapp.com/attachments/1477651776139427872/1477661228955467889/Comp_2_00000.png?ex=69a592c2&is=69a44142&hm=a91386b25458a1ef556bd93441ad781cf22d889146c42b373e89e407ca00f50f&")
+        first_colours.set_image(url="https://cdn.discordapp.com/attachments/1477651776139427872/1482129813182615693/Comp_5_00000.png?ex=69b725f4&is=69b5d474&hm=708979c3062f26316d655d98a598c454d6d040b2f0ba783bccb9f1a1a2d5b703&")
 
-        await ctx.send(embed=ariana_embed)
+        await ctx.send(embed=banner_embed)
 
         first_role_ids = [
             1462465113310236702, 1462465066778624070, 1462162217251246233, 1462465333527973982, 1462465304285286451, 1462162383719104554
@@ -126,7 +126,7 @@ class colours(commands.Cog):
         second_colours.add_field(name=" ", value="<:haze:1477655219100848169><@&1462464732132016231>"
             "\n<:gloss:1477655212939546675><@&1462464728801742939>"
             "\n<:reign:1477655194962493552><@&1462465435520991388>", inline=True)
-        second_colours.set_image(url="https://cdn.discordapp.com/attachments/1477651776139427872/1477661228955467889/Comp_2_00000.png?ex=69a592c2&is=69a44142&hm=a91386b25458a1ef556bd93441ad781cf22d889146c42b373e89e407ca00f50f&")
+        second_colours.set_image(url="https://cdn.discordapp.com/attachments/1477651776139427872/1482129813182615693/Comp_5_00000.png?ex=69b725f4&is=69b5d474&hm=708979c3062f26316d655d98a598c454d6d040b2f0ba783bccb9f1a1a2d5b703&")
 
         second_role_ids = [
             1462464107142713454, 1462465400695558317, 1462465364842516584, 1462464732132016231, 1462464728801742939, 1462465435520991388
@@ -141,7 +141,7 @@ class colours(commands.Cog):
         third_colours.add_field(name=" ", value="<:chrome:1477655242316320789><@&1462465221594579156>"
             "\n<:pearl:1477655236054089879><@&1462464734531162183>"
             "\n<:smoke:1477655247911522316><@&1462465261834866976>", inline=True)
-        third_colours.set_image(url="https://cdn.discordapp.com/attachments/1477651776139427872/1477661228955467889/Comp_2_00000.png?ex=69a592c2&is=69a44142&hm=a91386b25458a1ef556bd93441ad781cf22d889146c42b373e89e407ca00f50f&")
+        third_colours.set_image(url="https://cdn.discordapp.com/attachments/1477651776139427872/1482129813182615693/Comp_5_00000.png?ex=69b725f4&is=69b5d474&hm=708979c3062f26316d655d98a598c454d6d040b2f0ba783bccb9f1a1a2d5b703&")
 
         third_roles_ids = [
             1462465182289760309, 1462464962009108686, 1462464736733040775, 1462465221594579156, 1462464734531162183, 1462465261834866976
