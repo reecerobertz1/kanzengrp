@@ -94,7 +94,7 @@ class chromatica(commands.Cog):
             except discord.Forbidden:
                 pass
         
-        log_channel = self.bot.get_channel(1462660735170641950)
+        log_channel = self.bot.get_channel(1477648405294747690)
         if log_channel:
             embed = discord.Embed(description=content)
             embed.set_author(name=message.author.display_name, icon_url=message.author.avatar.url if message.author.avatar else None)
