@@ -11,7 +11,7 @@ import string
 class VerificationSelectView(ui.View):
     def __init__(self, cog):
         self.cog = cog
-        super().__init__(timeout=300)
+        super().__init__(timeout=None)
 
     @ui.select(
         placeholder="Choose a verification method...",
