@@ -16,20 +16,13 @@ class VerificationSelectView(ui.View):
     @ui.select(
         placeholder="Choose a verification method...",
         options=[
-            SelectOption(label="Type the correct code Hoshi sends", value="code", emoji="<:ice:1477655182048231749>", description="Hoshi will send a code into this chat. You will need to copy the code correctly to verify."),
-            SelectOption(label="List the 5 colours in order", value="colours", emoji="<:ice:1477655182048231749>", description="List the 5 colours in order as Hoshi sends them."),
-            SelectOption(label="Press the buttons in the correct order", value="buttons", emoji="<:ice:1477655182048231749>", description="5 icons will appear in an image, please use the buttons given to put them in order."),
+            SelectOption(label="Select the correct order of colours", value="colours", emoji="<:ice:1477655182048231749>", description="Press the coolours in the same order Hoshi shows you."),
+            SelectOption(label="Select the correct order of numbers", value="buttons", emoji="<:ice:1477655182048231749>", description="Press the buttons in the same order Hoshi shows you."),
         ]
     )
     async def select_method(self, interaction: Interaction, select: ui.Select):
         choice = select.values[0]
-        if choice == "code":
-            code_list = random.choices(string.ascii_uppercase, k=4) + random.choices(string.digits, k=4)
-            random.shuffle(code_list)
-            code = ''.join(code_list)
-            self.cog.pending_codes[interaction.user.id] = code
-            await interaction.response.send_message(f"The code is: `{code}`\nType this code in the chat (all caps).", ephemeral=True)
-        elif choice == "colours":
+        if choice == "colours":
             colour_view = ColourView()
             code_str = ' '.join(colour_view.code)
             await interaction.response.send_message(f"Select the 5 colours in order\n{code_str}", view=colour_view, ephemeral=True)
@@ -135,7 +128,7 @@ class verify(commands.Cog):
 
     @commands.command(name="verify")
     async def verify(self, ctx: commands.Context):
-        embed = discord.Embed(title="†    CHROMATICA ： VERIFICATION", description="Select one of 3 options to verify yourself to join the Chromatica server.\n> -# ・⠀01 : Type the correct code Hoshi sends you.\n> -# ・⠀02 : List the 5 colours in order.\n> -# ・⠀03 : Press the buttons in the correct order.")
+        embed = discord.Embed(title="†    CHROMATICA ： VERIFICATION", description="Select one of 3 options to verify yourself to join the Chromatica server.\n> -# ・⠀01 : List the 5 colours in order.\n> -# ・⠀02 : Press the buttons in order.")
         embed.set_footer(text="Use the dropdown menu below to select a verification option.")
         view = VerificationSelectView(self)
         await ctx.send(embed=embed, view=view)
