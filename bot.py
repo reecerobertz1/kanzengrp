@@ -9,6 +9,9 @@ my_guild = discord.Object(id=1121841073673736215)
 
 extensions = {
     "jishaku",
+    "cogs.Members.chromatica",
+    "cogs.Members.qna",
+    "cogs.Members.verify",
     "cogs.chromies",
     "cogs.games",
     "cogs.levels",
