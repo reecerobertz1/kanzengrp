@@ -50,43 +50,43 @@ class QnAView(discord.ui.View):
         modal = QnAModal(self.bot)
         await interaction.response.send_modal(modal)
 
-@discord.ui.button(label="View FAQs", style=discord.ButtonStyle.secondary, custom_id="view_faqs")
-async def view_faqs(self, interaction: discord.Interaction, button: discord.ui.Button):
-    faq_embed = discord.Embed(
-        title="Frequently Asked Questions",
-        description=(
-            "・⠀**When will Chromatica recruit again?**\n"
-            "-# ⠀— ・⠀We don’t have a fixed schedule for recruiting. We usually open applications when it feels right or when we need new members.\n\n"
+    @discord.ui.button(label="View FAQs", style=discord.ButtonStyle.secondary, custom_id="view_faqs")
+    async def view_faqs(self, interaction: discord.Interaction, button: discord.ui.Button):
+        faq_embed = discord.Embed(
+            title="Frequently Asked Questions",
+            description=(
+                "・⠀**When will Chromatica recruit again?**\n"
+                "-# ⠀— ・⠀We don’t have a fixed schedule for recruiting. We usually open applications when it feels right or when we need new members.\n\n"
 
-            "・⠀**How many members are accepted during recruitment?**\n"
-            "-# ⠀— ・⠀There is no set number. It depends on the applicants and what we are looking for at the time.\n\n"
+                "・⠀**How many members are accepted during recruitment?**\n"
+                "-# ⠀— ・⠀There is no set number. It depends on the applicants and what we are looking for at the time.\n\n"
 
-            "・⠀**If accepted, can we use Chromagrp logos?**\n"
-            "-# ⠀— ・⠀No. Chromaticagp is a completely separate group from Chromagrp.\n\n"
+                "・⠀**If accepted, can we use Chromagrp logos?**\n"
+                "-# ⠀— ・⠀No. Chromaticagp is a completely separate group from Chromagrp.\n\n"
 
-            "・⠀**Can we receive feedback if our application is declined?**\n"
-            "-# ⠀— ・⠀We currently do not provide feedback due to past issues with how it was received.\n"
-            "-# ⠀— ・⠀However, you can ask for editing opinions in #・edit﹒help.\n"
-            "-# ⠀— ・⠀This may return in the future if we find a better system.\n\n"
+                "・⠀**Can we receive feedback if our application is declined?**\n"
+                "-# ⠀— ・⠀We currently do not provide feedback due to past issues with how it was received.\n"
+                "-# ⠀— ・⠀However, you can ask for editing opinions in #・edit﹒help.\n"
+                "-# ⠀— ・⠀This may return in the future if we find a better system.\n\n"
 
-            "・⠀**Can we pay or contribute logos to join the group?**\n"
-            "-# ⠀— ・⠀No. Chromatica will never allow this, as it would be unfair to other applicants.\n\n"
+                "・⠀**Can we pay or contribute logos to join the group?**\n"
+                "-# ⠀— ・⠀No. Chromatica will never allow this, as it would be unfair to other applicants.\n\n"
 
-            "・⠀**Does Chromatica accept TikTok editors?**\n"
-            "-# ⠀— ・⠀Yes. We accept editors from both TikTok and Instagram.\n\n"
+                "・⠀**Does Chromatica accept TikTok editors?**\n"
+                "-# ⠀— ・⠀Yes. We accept editors from both TikTok and Instagram.\n\n"
 
-            "・⠀**What does Chromatica look for in edits?**\n"
-            "-# ⠀— ・⠀A common misconception is that we only accept one style or specific software.\n"
-            "-# ⠀— ・⠀We look for creative transitions that are smooth and well executed.\n"
-            "-# ⠀— ・⠀Your program, style, or fandom does not matter.\n\n"
+                "・⠀**What does Chromatica look for in edits?**\n"
+                "-# ⠀— ・⠀A common misconception is that we only accept one style or specific software.\n"
+                "-# ⠀— ・⠀We look for creative transitions that are smooth and well executed.\n"
+                "-# ⠀— ・⠀Your program, style, or fandom does not matter.\n\n"
 
-            "・⠀**If I join Chromatica, am I also part of Chromagrp?**\n"
-            "-# ⠀— ・⠀No. Chromagrp disbanded in January 2026 and is no longer active.\n"
-            "-# ⠀— ・⠀Any use of Chromagrp logos is likely from leaks or former members ignoring the disbandment."
+                "・⠀**If I join Chromatica, am I also part of Chromagrp?**\n"
+                "-# ⠀— ・⠀No. Chromagrp disbanded in January 2026 and is no longer active.\n"
+                "-# ⠀— ・⠀Any use of Chromagrp logos is likely from leaks or former members ignoring the disbandment."
+            )
         )
-    )
 
-    await interaction.response.send_message(embed=faq_embed, ephemeral=True)
+        await interaction.response.send_message(embed=faq_embed, ephemeral=True)
 
 class QnAModal(discord.ui.Modal, title="Ask a Question"):
     question = discord.ui.TextInput(label="Your Question", style=discord.TextStyle.paragraph)
