@@ -180,8 +180,8 @@ class QnA(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
-    @commands.command(name="qna", description="Open the Q&A menu")
-    async def qna(self, ctx):
+    @commands.command(name="cgpqna", description="Open the Q&A menu")
+    async def cgpqna(self, ctx):
         banner_embed = discord.Embed()
         banner_embed.set_image(url="https://cdn.discordapp.com/attachments/1477651776139427872/1482750185099493426/Small_Headers_00005.png")
         embed = discord.Embed(title="CHROMATICA Q&A", description="**INFORMATION**\n・⠀01 : Use the **Ask a Question** button to submit your question.\n・⠀02 : Our answers will be sent into <#1465297627976564830> and your dms.\n・⠀03 : You're able to ask a follow-up question from our answers.\n・⠀04 : No question is dumb, feel free to ask anything!\n・⠀05 : Please **View FAQs** before asking questions.\n・⠀06 : Any negative questions will be ignored.\n\n**INFORMATION**\n・⠀01 : We will try our best to answer as soon as possible.\n・⠀02 : Spamming this feature will result in a timeout.\n\n-# **Note:** Harrassing staff will result in a kick or ban from our server!")
