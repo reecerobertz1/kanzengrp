@@ -315,11 +315,9 @@ class Recruit(commands.Cog):
 
     @commands.command(name='apply')
     async def apply(self, ctx):
-        image = discord.Embed()
-        image.set_image(url="https://cdn.discordapp.com/attachments/1477651776139427872/1480209332472905889/Apps_Banner_00000.png?ex=69aed7dd&is=69ad865d&hm=99498a29b68c81161f07be29e074af7cbf0466467bd8a5b482a1af7bc85dae56&")
         embed1 = discord.Embed(title="CHROMATICA RECRUITMENT", description="Welcome to [Chromaticagp's](https://www.instagram.com/chromaticagp/) first recruitment!\nPlease read the information below before applying.")
         embed2 = discord.Embed(title="INFORMATION",description="・⠀Make sure you have followed all recruit rules.\n・⠀No edits older than **4 months**.\n・⠀Remakes, heavy ib & velocity are auto declined.\n・⠀You get **2 attempts** to apply for Chromatica.\n⠀⠀・⠀You will get a response if you're declined!.\n・⠀No feedback will be given during our recruits.\n・⠀Any style, program & fandoms are accepted!\n・⠀Only Streamable, TikTok or Instagram links.\n\n-# **Note:** Please be patient with us! Ask any questions\n-# in <#1462097184487903337>.")
-        await ctx.send(embeds=[image, embed1, embed2], view=ApplyView(self.bot))
+        await ctx.send(embeds=[embed1, embed2], view=ApplyView(self.bot))
 
     @commands.command(name='clearapps')
     @commands.has_permissions(administrator=True)

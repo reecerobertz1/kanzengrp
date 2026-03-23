@@ -13,12 +13,9 @@ extensions = {
     "cogs.Members.qna",
     "cogs.Members.verify",
     "cogs.chromies",
-    "cogs.games",
     "cogs.levels",
     "cogs.mod",
     "cogs.other",
-    "cogs.profiles",
-    "cogs.roles",
     "cogs.settings",
     "cogs.welc"
 }
