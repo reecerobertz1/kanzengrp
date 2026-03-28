@@ -912,7 +912,7 @@ class levels(commands.Cog):
             await self.add_xp(member.id, ctx.guild.id, 25)
             return await ctx.reply(f"{member.name} was not in the database.\nI've added them and gave them +25 AMP to get started!")
 
-        await self.add_xp(member.id, ctx.guild.id, amount, levels)
+        await self.add_xp(member.id, ctx.guild.id, amount)
         await ctx.reply(f"Gave **{amount}xp** to {member.mention}.")
         await channel.send(f"{member.mention} +{amount} AMP was added to your Frequency Level")
         
