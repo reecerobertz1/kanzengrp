@@ -763,8 +763,7 @@ class levels(commands.Cog):
             ext = 'gif' if header[:3] == b'GIF' else 'png'
             view = RankCardConfig(member.id, bot=self.bot)
             await interaction.followup.send(
-                file=discord.File(card, f'card.{ext}'),
-                view=view)
+                file=discord.File(card, f'card.{ext}'))
         else:
             await interaction.followup.send(f"{member} hasn't gotten levels yet!")
 
