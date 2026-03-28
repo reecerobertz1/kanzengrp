@@ -27,8 +27,8 @@ class channelselect(discord.ui.View):
             group = "Chroma"
             group1 = "Chromies"
         else:
-            group = "Lyra"
-            group1 = "Lyres"
+            group = "Chromatica"
+            group1 = "Resonators"
         embed = discord.Embed(title=f"<:settings:1304222799639871530> Home Page", description=f"Welcome to the home page!\nHere you can change all the settings for Hoshi in {group}.\n\nCategories:\n<:bulletpoint:1304247536021667871> Levelling for {group1}\n-# <:thread1:1304222965042249781>Change XP amounts\n<:bulletpoint:1304247536021667871> Automatic Roles\n-# <:thread1:1304222965042249781>Change role ID's for the roles Hoshi can give out\n<:bulletpoint:1304247536021667871> Channels\n-# <:thread1:1304222965042249781>Change what channels members can level up in", color=0x2b2d31)
         await interaction.response.edit_message(embed=embed, view=settingselect(bot=self.bot))
 
@@ -103,8 +103,8 @@ class rolesettings(discord.ui.View):
             group = "Chroma"
             group1 = "Chromies"
         else:
-            group = "Lyra"
-            group1 = "Lyres"
+            group = "Chromatica"
+            group1 = "Resonators"
         embed = discord.Embed(title=f"<:settings:1304222799639871530> Home Page", description=f"Welcome to the home page!\nHere you can change all the settings for Hoshi in {group}.\n\nCategories:\n<:bulletpoint:1304247536021667871> Levelling for {group1}\n-# <:thread1:1304222965042249781>Change XP amounts\n<:bulletpoint:1304247536021667871> Automatic Roles\n-# <:thread1:1304222965042249781>Change role ID's for the roles Hoshi can give out\n<:bulletpoint:1304247536021667871> Channels\n-# <:thread1:1304222965042249781>Change what channels members can level up in", color=0x2b2d31)
         await interaction.response.edit_message(embed=embed, view=settingselect(bot=self.bot))
 
@@ -205,8 +205,8 @@ class levelsettings(discord.ui.View):
             group = "Chroma"
             group1 = "Chromies"
         else:
-            group = "Lyra"
-            group1 = "Lyres"
+            group = "Chromatica"
+            group1 = "Resonators"
         embed = discord.Embed(title=f"<:settings:1304222799639871530> Home Page", description=f"Welcome to the home page!\nHere you can change all the settings for Hoshi in {group}.\n\nCategories:\n<:bulletpoint:1304247536021667871> Levelling for {group1}\n-# <:thread1:1304222965042249781>Change XP amounts\n<:bulletpoint:1304247536021667871> Automatic Roles\n-# <:thread1:1304222965042249781>Change role ID's for the roles Hoshi can give out\n<:bulletpoint:1304247536021667871> Channels\n-# <:thread1:1304222965042249781>Change what channels members can level up in", color=0x2b2d31)
         await interaction.response.edit_message(embed=embed, view=settingselect(bot=self.bot))
 
@@ -408,8 +408,8 @@ class settingselect(discord.ui.View):
             group = "Chroma"
             group1 = "Chromies"
         else:
-            group = "Lyra"
-            group1 = "Lyres"
+            group = "Chromatica"
+            group1 = "Resonators"
         dailyxp = await self.get_dailyxp(interaction.guild.id)
         voicexp = await self.get_voicexp(interaction.guild.id)
         chatxp = await self.get_chatxp(interaction.guild.id)
@@ -423,8 +423,8 @@ class settingselect(discord.ui.View):
             group = "Chroma"
             group1 = "Chromies"
         else:
-            group = "Lyra"
-            group1 = "Lyres"
+            group = "Chromatica"
+            group1 = "Resonators"
         top20 = await self.get_top20(interaction.guild.id)
         reprole = await self.get_reprole(interaction.guild.id)
         embed = discord.Embed(title=f"<:settings:1304222799639871530> {group}'s Automatic Roles", description=f"<:bulletpoint:1304247536021667871> What role do {group1} receive when unlocking rep?\n-# <:thread1:1304222965042249781> <@&{reprole}>\n\n<:bulletpoint:1304247536021667871> What role do {group1} receive when they're top 20?\n-# <:thread1:1304222965042249781> <@&{top20}>\n\n-# If you'd like more automatic roles added to Hoshi. Please feel free to DM Reece!", color=0x2b2d31)
@@ -433,7 +433,7 @@ class settingselect(discord.ui.View):
     @discord.ui.button(label="Channels")
     async def channels(self, interaction: discord.Interaction, button: discord.ui.Button):
         guild = interaction.guild
-        group = "Chroma" if guild.id == 694010548605550675 else "Lyra"
+        group = "Chroma" if guild.id == 694010548605550675 else "Chromatica"
         textchannels = await self.get_textchannels(interaction.guild.id)
         embed = discord.Embed(title=f"<:settings:1304222799639871530> {group}'s Channels",description=f"<:bulletpoint:1304247536021667871> Text Channels:\n{textchannels}",color=0x2b2d31)
         await interaction.response.edit_message(embed=embed, view=channelselect(bot=self.bot))
