@@ -723,59 +723,59 @@ class levels(commands.Cog):
                 rows = await cursor.fetchall()
         return rows
 
-@commands.command(name="rank")
-async def rank(self, ctx, member: Optional[discord.Member] = None):
-    if not any(role.id == 1462092411122749732 for role in ctx.author.roles):
-        return await ctx.reply(
-            "Sorry, this command is only available for members of Chromatica",
-            mention_author=False
-        )
+    @commands.command(name="rank")
+    async def rank(self, ctx, member: Optional[discord.Member] = None):
+        if not any(role.id == 1462092411122749732 for role in ctx.author.roles):
+            return await ctx.reply(
+                "Sorry, this command is only available for members of Chromatica",
+                mention_author=False
+            )
 
-    member = member or ctx.author
-    levels = await self.get_member_levels(member.id, ctx.guild.id)
-    
-    if not levels:
-        return await ctx.reply(f"{member} hasn't gotten levels yet!", mention_author=False)
+        member = member or ctx.author
+        levels = await self.get_member_levels(member.id, ctx.guild.id)
+        
+        if not levels:
+            return await ctx.reply(f"{member} hasn't gotten levels yet!", mention_author=False)
 
-    rank = await self.get_rank(member.id, ctx.guild.id)
-    guild = ctx.guild  # ✅ fixed (was id before)
+        rank = await self.get_rank(member.id, ctx.guild.id)
+        guild = ctx.guild  # ✅ fixed (was id before)
 
-    # --- GIF background check ---
-    is_gif_bg = False
-    bg_bytes = levels['image']
+        # --- GIF background check ---
+        is_gif_bg = False
+        bg_bytes = levels['image']
 
-    if bg_bytes and bg_bytes.startswith(b'GIF'):
-        try:
-            bg_test = Image.open(BytesIO(bg_bytes))
-            is_gif_bg = getattr(bg_test, "is_animated", False)
-        except Exception:
-            is_gif_bg = False
+        if bg_bytes and bg_bytes.startswith(b'GIF'):
+            try:
+                bg_test = Image.open(BytesIO(bg_bytes))
+                is_gif_bg = getattr(bg_test, "is_animated", False)
+            except Exception:
+                is_gif_bg = False
 
-    # --- Avatar handling ---
-    if is_gif_bg and member.avatar and member.avatar.is_animated:
-        avatar_url = member.avatar.url
-    else:
-        avatar_url = member.display_avatar.replace(static_format='png', size=256).url
+        # --- Avatar handling ---
+        if is_gif_bg and member.avatar and member.avatar.is_animated:
+            avatar_url = member.avatar.url
+        else:
+            avatar_url = member.display_avatar.replace(static_format='png', size=256).url
 
-    async with self.bot.session.get(avatar_url) as response:
-        avatar = BytesIO(await response.read())
-        avatar.seek(0)
+        async with self.bot.session.get(avatar_url) as response:
+            avatar = BytesIO(await response.read())
+            avatar.seek(0)
 
-    # --- Generate card ---
-    card = await self.generate_card(avatar, levels, rank, member, guild)
+        # --- Generate card ---
+        card = await self.generate_card(avatar, levels, rank, member, guild)
 
-    if card:
-        card.seek(0)
-        header = card.read(6)
-        card.seek(0)
-        ext = 'gif' if header.startswith(b'GIF') else 'png'
+        if card:
+            card.seek(0)
+            header = card.read(6)
+            card.seek(0)
+            ext = 'gif' if header.startswith(b'GIF') else 'png'
 
-        view = RankCardConfig(member.id, bot=self.bot)
+            view = RankCardConfig(member.id, bot=self.bot)
 
-        await ctx.send(
-            file=discord.File(card, f'card.{ext}'),
-            view=view
-        )
+            await ctx.send(
+                file=discord.File(card, f'card.{ext}'),
+                view=view
+            )
 
     @app_commands.command(description="See Chromatica's leaderboard")
     async def leaderboard(self, interaction: discord.Interaction):
