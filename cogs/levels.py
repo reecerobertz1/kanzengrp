@@ -612,8 +612,6 @@ class levels(commands.Cog):
         bright = ImageEnhance.Brightness(bg)
         bg_bright = bright.enhance(1.5)
         bg_blurred = bg_bright.filter(ImageFilter.GaussianBlur(radius=20))
-        frame_number = 4
-        frame = Image.open(f"./assets/frames/{frame_number}.png").resize((1500, 500)).convert("RGBA")
         mask = Image.open("./assets/rankcard/rank_mask.png").resize((1500, 500)).convert("L")
         inverted_mask = ImageOps.invert(mask)
         bg_frosted = Image.composite(bg_blurred, Image.new("RGBA", bg.size, "white"), inverted_mask)
@@ -635,7 +633,6 @@ class levels(commands.Cog):
         final_texture_mask = ImageChops.multiply(texture_alpha, mask_bar)
         card.paste(texture_crop, (58, 447), final_texture_mask)
         card.paste(avatar_paste, (59, 34), circle)
-        card.paste(frame, (0, 0), frame)
 
         draw = ImageDraw.Draw(card, 'RGBA')
 
