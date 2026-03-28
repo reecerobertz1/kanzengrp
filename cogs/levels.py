@@ -15,7 +15,6 @@ from utils.views import Paginator
 from colorthief import ColorThief
 import datetime as dt
 from datetime import datetime, timedelta
-from .RankViews import RankCardConfig, DarkMode, LightMode
 
 class LevelRow(TypedDict):
     guild_id: int
