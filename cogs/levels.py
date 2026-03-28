@@ -695,14 +695,15 @@ class levels(commands.Cog):
                 await conn.commit()
             await self.bot.pool.release(conn)
 
-    async def add_xp(self, member_id: int, guild_id: int, xp: int, levels: Optional[LevelRow]) -> None:
+    async def add_xp(self, member_id: int, guild_id: int, xp: int) -> None:
+        levels = await self.get_member_levels(member_id, guild_id)
+
         if levels:
             query = '''UPDATE levelling SET xp = ? WHERE member_id = ? AND guild_id = ?'''
             async with self.bot.pool.acquire() as conn:
                 async with conn.cursor() as cursor:
                     await cursor.execute(query, (levels['xp'] + xp, member_id, guild_id))
                     await conn.commit()
-                await self.bot.pool.release(conn)
         else:
             await self.add_member(member_id, guild_id, xp)
 
