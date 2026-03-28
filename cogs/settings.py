@@ -558,8 +558,8 @@ class hoshisettings(commands.Cog):
             group = "Chroma"
             group1 = "Chromies"
         else:
-            group = "Lyra"
-            group1 = "Lyres"
+            group = "Chromatica"
+            group1 = "Resonators"
         embed = discord.Embed(title=f"<:settings:1304222799639871530> Home Page", description=f"Welcome to the home page!\nHere you can change all the settings for Hoshi in {group}.\n\nCategories:\n<:bulletpoint:1304247536021667871> Levelling for {group1}\n-# <:thread1:1304222965042249781>Change XP amounts\n<:bulletpoint:1304247536021667871> Automatic Roles\n-# <:thread1:1304222965042249781>Change role ID's for the roles Hoshi can give out\n<:bulletpoint:1304247536021667871> Channels\n-# <:thread1:1304222965042249781>Change what channels members can level up in", color=0x2b2d31)
         await interaction.response.send_message(embed=embed, view=settingselect(bot=self.bot), ephemeral=True)
 
