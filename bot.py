@@ -54,11 +54,7 @@ class LalisaBot(commands.Bot):
         self.pool = await asqlite.create_pool('databases/levels.db')
 
         async with self.pool.acquire() as conn:
-            await conn.execute('''CREATE TABLE IF NOT EXISTS levelling (guild_id BIGINT, member_id BIGINT, xp INTEGER, messages INTEGER, color TEXT, color2 TEXT, image TEXT, decor TEXT, format INTEGER, PRIMARY KEY(guild_id, member_id))''')
-            await conn.execute('''CREATE TABLE IF NOT EXISTS levels (guild_id BIGINT, member_id INTEGER, xp INTEGER, messages INTEGER, bar_color TEXT, PRIMARY KEY (guild_id, member_id))''')
-            await conn.execute('''CREATE TABLE IF NOT EXISTS asterlevels (guild_id BIGINT, member_id INTEGER, xp INTEGER, messages INTEGER, bar_color TEXT, PRIMARY KEY (guild_id, member_id))''')
-            await conn.execute('''CREATE TABLE IF NOT EXISTS profiles (member_id BIGINT, aboutme TEXT, stanlist TEXT, styles TEXT, instagram TEXT, tiktok TEXT, birthday TEXT, games TEXT, PRIMARY KEY (member_id))''')
-            await conn.execute('''CREATE TABLE IF NOT EXISTS levels (guild_id BIGINT, member_id INTEGER, xp INTEGER, messages INTEGER, bar_color TEXT, PRIMARY KEY (guild_id, member_id))''')
+            await conn.execute('''CREATE TABLE IF NOT EXISTS levelling (guild_id BIGINT, member_id BIGINT, xp INTEGER, messages INTEGER, color TEXT, color2 TEXT, image TEXT, mode INTEGER, PRIMARY KEY(guild_id, member_id))''')
             await conn.execute('''CREATE TABLE IF NOT EXISTS apps (member_id BIGINT, attempts TEXT, accepted TEXT, applied TEXT, status TEXT)''')
             await conn.execute('''CREATE TABLE IF NOT EXISTS settings (guild_id BIGINT, chatxp INTEGER, voicexp INTEGER, dailyxp TEXT, top20 INTEGER, reprole INTEGER, channels TEXT, voicechannels TEXT, levels INTEGER, PRIMARY KEY(guild_id))''')
             await conn.execute('''CREATE TABLE IF NOT EXISTS chromies (guild_id INTEGER, member_id INTEGER, inactive INTEGER, iamsgs INTEGER, PRIMARY KEY (guild_id, member_id))''')

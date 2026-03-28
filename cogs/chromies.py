@@ -13,15 +13,7 @@ class infoview(discord.ui.View):
 
     @discord.ui.button(label="Logos")
     async def klogos(self, interaction: discord.Interaction, button: discord.ui.Button):
-        logos = discord.Embed(title="<a:bun:1098764398962671677> Chroma Logos!", description="˃ Please make sure you watermark the logos!\n˃ Use the watermark on every edit\n˃ Do not share this link with anyone outside the group!", color=0x2b2d31)
-        logos.set_footer(text="Made us some logos? send them to Reece or Alisha!")
-        logos.set_image(url=interaction.guild.banner)
-        await interaction.user.send("group hashtag: #𝗰𝗵𝗿𝗼𝗺𝗮𝗴𝗿𝗽\nkey: `chUZuZ7Eu0mqLOM5rxRsQw`\nhttps://mega.nz/folder/xOk1SApA", embed=logos)
-        channel = interaction.client.get_channel(1011212849965715528)
-        log = discord.Embed(title="Logo button has been used!", description=f"`{interaction.user.display_name}` has used the logos button", color=0x2b2d31)
-        log.set_footer(text=f"id: {interaction.user.id}", icon_url=interaction.user.display_avatar)
-        await channel.send(embed=log)
-        await interaction.response.send_message(f'I have sent you the logos! Check your DMs', ephemeral=True)
+        await interaction.response.send_message("Unfortunetly our logos are no longer available for use. Chroma disbanded on March 28th 2026. Our logos should not be used anymore.", ephemeral=True)
 
     async def get_inactive(self, member_id: int, guild_id: int) -> Optional[int]:
         query = '''SELECT inactive FROM chromies WHERE member_id = ? AND guild_id = ?'''
