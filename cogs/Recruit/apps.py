@@ -342,5 +342,25 @@ class Recruit(commands.Cog):
         except TimeoutError:
             await ctx.send("Clear operation timed out. No action taken.")
 
+    @commands.command(name="fixuser")
+    @commands.has_permissions(administrator=True)
+    async def fixuser(self, ctx, member: discord.Member, attempts: int = None):
+        status_query = 'UPDATE recruit SET status = 0 WHERE member_id = ?'
+
+        async with self.bot.pool.acquire() as conn:
+            await conn.execute(status_query, (member.id,))
+
+            if attempts is not None:
+                attempts_query = 'UPDATE recruit SET attempts = ? WHERE member_id = ?'
+                await conn.execute(attempts_query, (attempts, member.id))
+
+            await conn.commit()
+
+        await ctx.send(
+            f"✅ Reset **{member.display_name}**'s application.\n"
+            f"• Status → `0` (can apply again)\n"
+            f"{f'• Attempts → `{attempts}`' if attempts is not None else ''}"
+        )
+
 async def setup(bot):
     await bot.add_cog(Recruit(bot))
