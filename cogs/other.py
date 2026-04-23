@@ -36,10 +36,13 @@ class other(commands.Cog):
     @commands.command()
     async def botinfo(self, ctx):
         app = await self.bot.application_info()
-        owner = app.owner
+        if isinstance(app.owner, discord.Team):
+            owner = app.team.owner
+        else:
+            owner = app.owner
         total_members = sum(guild.member_count for guild in self.bot.guilds)
         
-        embed = discord.Embed(title=f"{self.bot.user.name} Info")
+        embed = discord.Embed(title=f"{self.bot.user.name} Info", color=self.color)
         embed.add_field(name="Owner", value=owner.mention, inline=True)
         embed.add_field(name="Prefix", value="+", inline=True)
         embed.add_field(name="Servers", value=len(self.bot.guilds), inline=True)
