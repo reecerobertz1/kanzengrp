@@ -33,5 +33,28 @@ class other(commands.Cog):
             else:
                 pass
 
+    @commands.command()
+    async def botinfo(self, ctx):
+        app = await self.bot.application_info()
+        owner = app.owner
+        total_members = sum(guild.member_count for guild in self.bot.guilds)
+        
+        embed = discord.Embed(title=f"{self.bot.user.name} Info")
+        embed.add_field(name="Owner", value=owner.mention, inline=True)
+        embed.add_field(name="Prefix", value="+", inline=True)
+        embed.add_field(name="Servers", value=len(self.bot.guilds), inline=True)
+        embed.add_field(name="Total Members", value=total_members, inline=True)
+        embed.add_field(name="Ping", value=f"{round(self.bot.latency * 1000)}ms", inline=True)
+        embed.add_field(name="Bot ID", value=self.bot.user.id, inline=True)
+        embed.add_field(name="Name", value=self.bot.user.name, inline=True)
+        
+        embed.set_thumbnail(url=self.bot.user.avatar.url)
+        if self.bot.user.banner:
+            embed.set_image(url=self.bot.user.banner.url)
+        else:
+            embed.set_image(url=self.bot.user.avatar.url)
+        
+        await ctx.send(embed=embed)
+
 async def setup(bot):
     await bot.add_cog(other(bot))
