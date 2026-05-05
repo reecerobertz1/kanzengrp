@@ -87,7 +87,7 @@ class CollabModal(discord.ui.Modal, title="Create Collab"):
             view = CollabView(self.cog, collab_id)
             self.cog.bot.add_view(view)
 
-            await interaction.response.send_message(embed=embed, view=view)
+            await interaction.response.send_message("<@&1462502133319598230>", embed=embed, view=view)
         except Exception as error:
             await report_error(self.cog.bot, error, "CollabModal.on_submit")
             await interaction.response.send_message(
