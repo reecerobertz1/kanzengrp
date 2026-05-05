@@ -112,7 +112,7 @@ class CollabView(discord.ui.View):
             color=discord.Color.purple()
         )
 
-    @discord.ui.button(label="Join", style=discord.ButtonStyle.green)
+    @discord.ui.button(label="Join", style=discord.ButtonStyle.green, custom_id="collab_join")
     async def join(self, interaction: discord.Interaction, button: discord.ui.Button):
         try:
             data = self.get_data()
@@ -141,7 +141,7 @@ class CollabView(discord.ui.View):
                 ephemeral=True
             )
 
-    @discord.ui.button(label="Leave", style=discord.ButtonStyle.red)
+    @discord.ui.button(label="Leave", style=discord.ButtonStyle.red, custom_id="collab_leave")
     async def leave(self, interaction: discord.Interaction, button: discord.ui.Button):
         try:
             data = self.get_data()
@@ -167,7 +167,7 @@ class CollabView(discord.ui.View):
                 ephemeral=True
             )
 
-    @discord.ui.button(label="Lock", style=discord.ButtonStyle.blurple)
+    @discord.ui.button(label="Lock", style=discord.ButtonStyle.blurple, custom_id="collab_lock")
     async def lock(self, interaction: discord.Interaction, button: discord.ui.Button):
         try:
             data = self.get_data()
