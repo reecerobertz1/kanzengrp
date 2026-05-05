@@ -10,8 +10,16 @@ DATA_FILE = "json/collabs.json"
 def load_data():
     if not os.path.exists(DATA_FILE):
         return {}
+
     with open(DATA_FILE, "r") as f:
-        return json.load(f)
+        content = f.read()
+        if not content.strip():
+            return {}
+
+        try:
+            return json.loads(content)
+        except json.JSONDecodeError:
+            return {}
 
 
 def save_data(data):
