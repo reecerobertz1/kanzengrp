@@ -315,7 +315,7 @@ class Recruit(commands.Cog):
 
     @commands.command(name='apply')
     async def apply(self, ctx):
-        embed1 = discord.Embed(title="CHROMATICA RECRUITMENT", description="Welcome to [Chromaticagp's](https://www.instagram.com/chromaticagp/) first recruitment!\nPlease read the information below before applying.")
+        embed1 = discord.Embed(title="CHROMATICA RECRUITMENT", description="Welcome to [Chromaticagp's](https://www.instagram.com/chromaticagp/) comeback recruitment!\nPlease read the information below before applying.")
         embed2 = discord.Embed(title="INFORMATION",description="・⠀Make sure you have followed all recruit rules.\n・⠀No edits older than **4 months**.\n・⠀Remakes, heavy ib & velocity are auto declined.\n・⠀You get **2 attempts** to apply for Chromatica.\n⠀⠀・⠀You will get a response if you're declined!.\n・⠀No feedback will be given during our recruits.\n・⠀Any style, program & fandoms are accepted!\n・⠀Only Streamable, TikTok or Instagram links.\n\n-# **Note:** Please be patient with us! Ask any questions\n-# in <#1462097184487903337>.")
         await ctx.send(embeds=[embed1, embed2], view=ApplyView(self.bot))
 
